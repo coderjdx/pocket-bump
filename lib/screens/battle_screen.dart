@@ -329,7 +329,7 @@ class _BattleScreenState extends State<BattleScreen> {
       childAspectRatio: 2.4,
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
-      physics: const NeverScrollableScrollButton(),
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         _buildActionButton("FIGHT", Colors.red.shade700, Icons.flash_on, () {
           setState(() => _isSelectingMove = true);
@@ -360,7 +360,7 @@ class _BattleScreenState extends State<BattleScreen> {
           child: GridView.builder(
             gridDelegate: const dynamicDelegate(),
             itemCount: _playerPokemon.moves.length,
-            physics: const NeverScrollableScrollButton(),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (ctx, idx) {
               final move = _playerPokemon.moves[idx];
               return ElevatedButton(

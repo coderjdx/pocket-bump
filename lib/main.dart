@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
@@ -22,14 +21,11 @@ class PocketBumpApp extends StatelessWidget {
           return MaterialApp(
             title: 'Pocket Bump',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              brightness: Brightness.dark,
+            theme: ThemeData.dark().copyWith(
               scaffoldBackgroundColor: const Color(0xFF1E1E24),
               primaryColor: Colors.red.shade700,
-              textTheme: GoogleFonts.rajdhaniTextTheme(
-                ThemeData.dark().textTheme,
-              ).copyWith(
-                bodyMedium: GoogleFonts.rajdhani(
+              textTheme: ThemeData.dark().textTheme.copyWith(
+                bodyMedium: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
