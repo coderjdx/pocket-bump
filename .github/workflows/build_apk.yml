@@ -46,6 +46,12 @@ jobs:
               content = content.replace("<application", perms + "    <application", 1)
           with open(path, "w") as f:
               f.write(content)
+          gradle_path = "android/app/build.gradle.kts"
+          with open(gradle_path, "r") as f:
+              g = f.read()
+          g = g.replace("compileSdk = flutter.compileSdkVersion", "compileSdk = 37")
+          with open(gradle_path, "w") as f:
+              f.write(g)
           '
 
       - name: Install Dependencies
