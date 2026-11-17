@@ -101,7 +101,16 @@ jobs:
         run: |
           flutter create --platforms=web .
           flutter pub get
-          flutter build web --release --base-href "/pocket-bump/"
+          flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none
+          python3 -c '
+          with open("build/web/index.html", "r") as f:
+              html = f.read()
+          unreg = "<script>if(\"serviceWorker\" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister()));}</script>"
+          if "serviceWorker.getRegistrations" not in html:
+              html = html.replace("</head>", unreg + "\n</head>", 1)
+          with open("build/web/index.html", "w") as f:
+              f.write(html)
+          '
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

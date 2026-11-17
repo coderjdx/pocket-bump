@@ -34,7 +34,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   String _currentMessage = "";
   bool _isSelectingMove = false;
-  bool _isProcessingTurn = false;
+  bool _isProcessingTurn = true;
   bool _battleEnded = false;
   bool _didHealOnExit = false;
 
@@ -55,6 +55,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _showEvolutionGlow = false;
   String _throwingBallType = 'poke_ball';
 
+  // Trainer & summon throw states
+  bool _showTrainerSprite = true;
+  int _trainerPose = 0; // 0 = ready, 1 = windup, 2 = throw
+  double _trainerSlideX = 0.0;
+  bool _showPlayerPokemon = false;
+  double _playerSummonScale = 0.05;
+  bool _showSummonBallArc = false;
+  bool _showSummonBurst = false;
+  String _trainerHeldBallType = 'poke_ball';
+
   // Active VFX overlay state
   PokemonType? _activeVfxType;
   bool _vfxOnOpponent = true;
@@ -67,7 +77,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     _trainer = Provider.of<Trainer>(context, listen: false);
-    // Ensure party starts healthy if coming straight in
     _playerPokemon = _trainer.leadPokemon!;
     _opponentPokemon = widget.opponentPokemon;
     _displayedPlayerHp = _playerPokemon.currentHp;
@@ -106,6 +115,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _playBattleIntroSummon();
+    });
   }
 
   @override
@@ -132,6 +145,134 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
     if (mounted) {
       Navigator.pop(context);
+    }
+  }
+
+  Future<void> _playBattleIntroSummon() async {
+    if (!mounted) return;
+    await Future.delayed(const Duration(milliseconds: 650));
+    if (!mounted) return;
+
+    setState(() {
+      _currentMessage = "${_trainer.name}: Go! ${_playerPokemon.nickname}!";
+    });
+
+    await _animateTrainerSummonThrow(_playerPokemon);
+    if (!mounted) return;
+
+    setState(() {
+      _isProcessingTurn = false;
+    });
+  }
+
+  Future<void> _animateTrainerSummonThrow(PokemonInstance mon) async {
+    if (!mounted) return;
+    setState(() {
+      _trainerHeldBallType = 'poke_ball';
+      _showTrainerSprite = true;
+      _trainerPose = 0;
+      _trainerSlideX = 0.0;
+      _showPlayerPokemon = false;
+      _playerSummonScale = 0.05;
+      _showSummonBallArc = false;
+      _showSummonBurst = false;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 160));
+    if (!mounted) return;
+
+    // Wind-up pose
+    setState(() {
+      _trainerPose = 1;
+    });
+    await Future.delayed(const Duration(milliseconds: 180));
+    if (!mounted) return;
+
+    // Throw pose + Trainer steps aside + Poké Ball arcs onto player platform
+    setState(() {
+      _trainerPose = 2;
+      _trainerSlideX = -1.25;
+      _showSummonBallArc = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 380));
+    if (!mounted) return;
+
+    // Ball opens with summon burst & Pokémon pops onto the platform
+    HapticFeedback.mediumImpact();
+    setState(() {
+      _showSummonBallArc = false;
+      _showTrainerSprite = false;
+      _showSummonBurst = true;
+      _showPlayerPokemon = true;
+      _playerSummonScale = 1.0;
+    });
+    await Future.delayed(const Duration(milliseconds: 280));
+    if (!mounted) return;
+
+    setState(() {
+      _showSummonBurst = false;
+    });
+  }
+
+  Future<void> _performPokemonSwitch(
+    PokemonInstance nextMon, {
+    required bool forced,
+  }) async {
+    if (!mounted) return;
+    setState(() {
+      _isSelectingMove = false;
+      _isProcessingTurn = true;
+    });
+
+    if (!forced) {
+      setState(() {
+        _currentMessage = "Come back, ${_playerPokemon.nickname}!";
+        _playerFlash = true;
+        _playerSummonScale = 0.05;
+        _showPlayerPokemon = false;
+      });
+      await Future.delayed(const Duration(milliseconds: 320));
+      if (!mounted) return;
+      setState(() {
+        _playerFlash = false;
+      });
+    } else {
+      setState(() {
+        _showPlayerPokemon = false;
+        _playerSummonScale = 0.05;
+      });
+    }
+
+    setState(() {
+      _playerPokemon = nextMon;
+      _displayedPlayerHp = nextMon.currentHp;
+      _currentMessage = "${_trainer.name}: Go! ${nextMon.nickname}!";
+    });
+
+    await _animateTrainerSummonThrow(nextMon);
+    if (!mounted) return;
+
+    if (!forced && _opponentPokemon.moves.isNotEmpty) {
+      await Future.delayed(const Duration(milliseconds: 320));
+      if (!mounted) return;
+      final oppMove =
+          _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
+      final events = BattleEngine.executeSingleAttack(
+        _opponentPokemon,
+        oppMove,
+        _playerPokemon,
+        isPlayer: false,
+        isWild: widget.isWild,
+      );
+      for (final ev in events) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+      await _checkPostTurnConditions();
+    } else {
+      setState(() {
+        _isProcessingTurn = false;
+      });
     }
   }
 
@@ -210,7 +351,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _vfxController.forward(from: 0);
 
       // 2. Impact flash, shake, floating callout & HP animation
-      if (event.damageDealt > 0 || event.statChangedLabel != null || event.statusInflictedLabel != null) {
+      if (event.damageDealt > 0 ||
+          event.statChangedLabel != null ||
+          event.statusInflictedLabel != null) {
         String? callout;
         Color calloutCol = Colors.white;
         if (event.effectiveness >= 2.0) {
@@ -404,20 +547,50 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (ballType == 'great_ball') _trainer.greatBalls--;
       if (ballType == 'ultra_ball') _trainer.ultraBalls--;
       _throwingBallType = ballType;
+      _trainerHeldBallType = ballType;
+      _isSelectingMove = false;
       _isProcessingTurn = true;
-      _showPokeBallThrow = true;
+      _showPlayerPokemon = false;
+      _playerSummonScale = 0.05;
+      _showTrainerSprite = true;
+      _trainerPose = 0;
+      _trainerSlideX = 0.0;
       _currentMessage =
           "${_trainer.name} threw a ${ballType.replaceAll('_', ' ').toUpperCase()}!";
     });
 
-    // Arc flight + capture flash
+    await Future.delayed(const Duration(milliseconds: 150));
+    if (!mounted) return;
+
+    // Trainer wind-up
+    setState(() {
+      _trainerPose = 1;
+    });
+    await Future.delayed(const Duration(milliseconds: 180));
+    if (!mounted) return;
+
+    // Trainer throws ball & steps back while ball arcs across the battlefield
+    setState(() {
+      _trainerPose = 2;
+      _trainerSlideX = -1.25;
+      _showPokeBallThrow = true;
+    });
     await Future.delayed(const Duration(milliseconds: 520));
     if (!mounted) return;
+
+    // Absorption red flash + hide wild Pokémon
     setState(() {
+      _showTrainerSprite = false;
+      _opponentFlash = true;
       _opponentInBall = true;
     });
+    await Future.delayed(const Duration(milliseconds: 140));
+    if (!mounted) return;
+    setState(() {
+      _opponentFlash = false;
+    });
 
-    // Wobble 3 times
+    // Wobble 3 times on opponent platform
     for (int i = 0; i < 3; i++) {
       _ballWobbleController.forward(from: 0);
       HapticFeedback.selectionClick();
@@ -442,6 +615,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _opponentInBall = false;
         _showPokeBallThrow = false;
+        _showTrainerSprite = false;
+        _showPlayerPokemon = true;
+        _playerSummonScale = 1.0;
         _currentMessage = "Oh no! The wild ${_opponentPokemon.species.name} broke free!";
       });
 
@@ -519,101 +695,179 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     margin: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white12, width: 1.5),
+                      border: Border.all(color: Colors.white24, width: 1.5),
                     ),
                     clipBehavior: Clip.antiAlias,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        // Scenic layered grass/sky battle backdrop
-                        CustomPaint(painter: _ArenaBackdropPainter()),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final arenaW = constraints.maxWidth;
+                        final arenaH = constraints.maxHeight;
 
-                        // Opponent Info Card (Top-Left)
-                        Positioned(
-                          top: 12,
-                          left: 12,
-                          child: _buildPokemonInfoCard(
-                            _opponentPokemon,
-                            displayedHp: _displayedOpponentHp,
-                            isPlayer: false,
-                          ),
-                        ),
+                        return Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            // Vibrant daytime route background
+                            CustomPaint(painter: _ArenaBackdropPainter()),
 
-                        // Opponent Animated Sprite / Poké Ball (Top-Right)
-                        Positioned(
-                          top: 34,
-                          right: 22,
-                          child: SizedBox(
-                            width: 125,
-                            height: 125,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                if (!_opponentInBall)
-                                  _buildAnimatedCombatant(
-                                    url: _opponentPokemon.species.spriteUrl,
-                                    fallbackUrl: _opponentPokemon.species.staticSpriteUrl,
-                                    size: 112,
-                                    isFainted: _opponentPokemon.isFainted,
-                                    lungeOffset: _opponentLungeOffset,
-                                    shakeController: _opponentShakeController,
-                                    flashWhite: _opponentFlash,
-                                    isPlayer: false,
-                                  ),
-                                if (_showPokeBallThrow)
-                                  _buildAnimatedPokeBall(),
-                                if (_activeVfxType != null && _vfxOnOpponent)
-                                  _buildVfxWidget(_activeVfxType!, _vfxIsStat),
-                                if (_floatingCallout != null && _calloutOnOpponent)
-                                  _buildCalloutBanner(
-                                      _floatingCallout!, _calloutColor),
-                              ],
+                            // Opponent Info Card (Top-Left)
+                            Positioned(
+                              top: 12,
+                              left: 12,
+                              child: _buildPokemonInfoCard(
+                                _opponentPokemon,
+                                displayedHp: _displayedOpponentHp,
+                                isPlayer: false,
+                              ),
                             ),
-                          ),
-                        ),
 
-                        // Player Animated Back Sprite (Bottom-Left)
-                        Positioned(
-                          bottom: 12,
-                          left: 20,
-                          child: SizedBox(
-                            width: 140,
-                            height: 140,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                _buildAnimatedCombatant(
-                                  url: _playerPokemon.species.backSpriteUrl,
-                                  fallbackUrl:
-                                      _playerPokemon.species.staticBackSpriteUrl,
-                                  size: 130,
-                                  isFainted: _playerPokemon.isFainted,
-                                  lungeOffset: _playerLungeOffset,
-                                  shakeController: _playerShakeController,
-                                  flashWhite: _playerFlash || _showEvolutionGlow,
-                                  isPlayer: true,
+                            // Opponent Animated Sprite (Top-Right)
+                            Positioned(
+                              top: 34,
+                              right: 22,
+                              child: SizedBox(
+                                width: 125,
+                                height: 125,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    if (!_opponentInBall)
+                                      _buildAnimatedCombatant(
+                                        url: _opponentPokemon.species.spriteUrl,
+                                        fallbackUrl:
+                                            _opponentPokemon.species.staticSpriteUrl,
+                                        size: 112,
+                                        isFainted: _opponentPokemon.isFainted,
+                                        lungeOffset: _opponentLungeOffset,
+                                        shakeController: _opponentShakeController,
+                                        flashWhite: _opponentFlash,
+                                        isPlayer: false,
+                                      ),
+                                    if (_activeVfxType != null && _vfxOnOpponent)
+                                      _buildVfxWidget(_activeVfxType!, _vfxIsStat),
+                                    if (_floatingCallout != null && _calloutOnOpponent)
+                                      _buildCalloutBanner(
+                                          _floatingCallout!, _calloutColor),
+                                  ],
                                 ),
-                                if (_activeVfxType != null && !_vfxOnOpponent)
-                                  _buildVfxWidget(_activeVfxType!, _vfxIsStat),
-                                if (_floatingCallout != null && !_calloutOnOpponent)
-                                  _buildCalloutBanner(
-                                      _floatingCallout!, _calloutColor),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
 
-                        // Player Info Card (Bottom-Right)
-                        Positioned(
-                          bottom: 14,
-                          right: 12,
-                          child: _buildPokemonInfoCard(
-                            _playerPokemon,
-                            displayedHp: _displayedPlayerHp,
-                            isPlayer: true,
-                          ),
-                        ),
-                      ],
+                            // Player Platform Area: Trainer Throw Sprite & Player Pokémon (Bottom-Left)
+                            Positioned(
+                              bottom: 12,
+                              left: 20,
+                              child: SizedBox(
+                                width: 140,
+                                height: 140,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    // Trainer back-sprite throwing a Poké Ball
+                                    if (_showTrainerSprite)
+                                      AnimatedSlide(
+                                        offset: Offset(_trainerSlideX, 0),
+                                        duration: const Duration(milliseconds: 360),
+                                        curve: Curves.easeInOutCubic,
+                                        child: AnimatedOpacity(
+                                          opacity: _showTrainerSprite ? 1.0 : 0.0,
+                                          duration: const Duration(milliseconds: 220),
+                                          child: CustomPaint(
+                                            size: const Size(115, 132),
+                                            painter: _TrainerBackSpritePainter(
+                                              pose: _trainerPose,
+                                              ballColor:
+                                                  _ballTopColor(_trainerHeldBallType),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                    // Player's summoned Pokémon
+                                    AnimatedOpacity(
+                                      opacity:
+                                          (_showPlayerPokemon && !_playerPokemon.isFainted)
+                                              ? 1.0
+                                              : 0.0,
+                                      duration: const Duration(milliseconds: 220),
+                                      child: AnimatedScale(
+                                        scale:
+                                            _showPlayerPokemon ? _playerSummonScale : 0.05,
+                                        duration: const Duration(milliseconds: 280),
+                                        curve: Curves.easeOutBack,
+                                        child: _buildAnimatedCombatant(
+                                          url: _playerPokemon.species.backSpriteUrl,
+                                          fallbackUrl:
+                                              _playerPokemon.species.staticBackSpriteUrl,
+                                          size: 130,
+                                          isFainted: _playerPokemon.isFainted,
+                                          lungeOffset: _playerLungeOffset,
+                                          shakeController: _playerShakeController,
+                                          flashWhite:
+                                              _playerFlash || _showEvolutionGlow,
+                                          isPlayer: true,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Summon flash starburst when ball pops open
+                                    if (_showSummonBurst)
+                                      TweenAnimationBuilder<double>(
+                                        tween: Tween<double>(begin: 0.0, end: 1.0),
+                                        duration: const Duration(milliseconds: 280),
+                                        builder: (context, t, _) {
+                                          return CustomPaint(
+                                            size: const Size(130, 130),
+                                            painter: _SummonBurstPainter(progress: t),
+                                          );
+                                        },
+                                      ),
+
+                                    if (_activeVfxType != null && !_vfxOnOpponent)
+                                      _buildVfxWidget(_activeVfxType!, _vfxIsStat),
+                                    if (_floatingCallout != null && !_calloutOnOpponent)
+                                      _buildCalloutBanner(
+                                          _floatingCallout!, _calloutColor),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            // Summon Poké Ball arc (Trainer hand -> Player platform)
+                            if (_showSummonBallArc)
+                              _buildArcingBallOverlay(
+                                start: Offset(96, arenaH - 102),
+                                end: Offset(90, arenaH - 36),
+                                arcHeight: 46,
+                                durationMs: 360,
+                                ballType: 'poke_ball',
+                                wobble: false,
+                              ),
+
+                            // Catching Poké Ball throw (Trainer hand -> Wild Pokémon)
+                            if (_showPokeBallThrow)
+                              _buildArcingBallOverlay(
+                                start: Offset(104, arenaH - 104),
+                                end: Offset(arenaW - 84, 114),
+                                arcHeight: 68,
+                                durationMs: 500,
+                                ballType: _throwingBallType,
+                                wobble: true,
+                              ),
+
+                            // Player Info Card (Bottom-Right)
+                            Positioned(
+                              bottom: 14,
+                              right: 12,
+                              child: _buildPokemonInfoCard(
+                                _playerPokemon,
+                                displayedHp: _displayedPlayerHp,
+                                isPlayer: true,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -679,6 +933,88 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
+  Color _ballTopColor(String ballType) {
+    if (ballType == 'ultra_ball') return Colors.amber.shade700;
+    if (ballType == 'great_ball') return Colors.blue.shade600;
+    return Colors.red.shade600;
+  }
+
+  Widget _buildArcingBallOverlay({
+    required Offset start,
+    required Offset end,
+    required double arcHeight,
+    required int durationMs,
+    required String ballType,
+    required bool wobble,
+  }) {
+    final topColor = _ballTopColor(ballType);
+
+    final ballWidget = Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.black, width: 2),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [topColor, topColor, Colors.white, Colors.white],
+          stops: const [0.0, 0.48, 0.52, 1.0],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.45),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.black, width: 2),
+          ),
+        ),
+      ),
+    );
+
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      duration: Duration(milliseconds: durationMs),
+      curve: Curves.easeOutCubic,
+      builder: (context, t, child) {
+        final x = start.dx + (end.dx - start.dx) * t;
+        final y = start.dy + (end.dy - start.dy) * t - sin(t * pi) * arcHeight;
+        final spinAngle = (1.0 - t) * pi * 4;
+
+        return Positioned(
+          left: x - 16,
+          top: y - 16,
+          child: wobble
+              ? AnimatedBuilder(
+                  animation: _ballWobbleController,
+                  builder: (context, inner) {
+                    final wobbleAngle = sin(_ballWobbleController.value * pi * 2) *
+                        0.38 *
+                        (1 - _ballWobbleController.value);
+                    return Transform.rotate(
+                      angle: t < 1.0 ? spinAngle : wobbleAngle,
+                      child: inner,
+                    );
+                  },
+                  child: child,
+                )
+              : Transform.rotate(angle: spinAngle, child: child),
+        );
+      },
+      child: ballWidget,
+    );
+  }
+
   Widget _buildAnimatedCombatant({
     required String url,
     required String fallbackUrl,
@@ -726,77 +1062,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 filterQuality: FilterQuality.none,
                 errorBuilder: (c, e, s) =>
                     const Icon(Icons.catching_pokemon, size: 70, color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnimatedPokeBall() {
-    return AnimatedBuilder(
-      animation: _ballWobbleController,
-      builder: (context, child) {
-        final angle = sin(_ballWobbleController.value * pi * 2) *
-            0.35 *
-            (1 - _ballWobbleController.value);
-        return Transform.rotate(angle: angle, child: child);
-      },
-      child: TweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0.0, end: 1.0),
-        duration: const Duration(milliseconds: 450),
-        curve: Curves.easeOutBack,
-        builder: (context, t, child) {
-          return Transform.translate(
-            offset: Offset(
-              (1 - t) * -90,
-              (1 - t) * 70 - sin(t * pi) * 45 + 16,
-            ),
-            child: child,
-          );
-        },
-        child: Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.black, width: 2),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                _throwingBallType == 'ultra_ball'
-                    ? Colors.amber.shade700
-                    : (_throwingBallType == 'great_ball'
-                        ? Colors.blue.shade600
-                        : Colors.red.shade600),
-                _throwingBallType == 'ultra_ball'
-                    ? Colors.amber.shade700
-                    : (_throwingBallType == 'great_ball'
-                        ? Colors.blue.shade600
-                        : Colors.red.shade600),
-                Colors.white,
-                Colors.white,
-              ],
-              stops: const [0.0, 0.48, 0.52, 1.0],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.45),
-                blurRadius: 6,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Center(
-            child: Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 2),
               ),
             ),
           ),
@@ -974,8 +1239,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
               ),
             ),
           ],
-          if (stageBadges.isNotEmpty)
-            Wrap(children: stageBadges),
+          if (stageBadges.isNotEmpty) Wrap(children: stageBadges),
         ],
       ),
     );
@@ -1267,32 +1531,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                       : ElevatedButton(
                           onPressed: mon.isFainted
                               ? null
-                              : () async {
+                              : () {
                                   Navigator.pop(ctx);
-                                  setState(() {
-                                    _playerPokemon = mon;
-                                    _displayedPlayerHp = mon.currentHp;
-                                    _currentMessage = "Go! ${_playerPokemon.nickname}!";
-                                  });
-                                  if (!forced && _opponentPokemon.moves.isNotEmpty) {
-                                    setState(() => _isProcessingTurn = true);
-                                    await Future.delayed(const Duration(milliseconds: 700));
-                                    if (!mounted) return;
-                                    final oppMove = _opponentPokemon.moves[
-                                        Random().nextInt(_opponentPokemon.moves.length)];
-                                    final events = BattleEngine.executeSingleAttack(
-                                      _opponentPokemon,
-                                      oppMove,
-                                      _playerPokemon,
-                                      isPlayer: false,
-                                      isWild: widget.isWild,
-                                    );
-                                    for (final ev in events) {
-                                      await _playStepEvent(ev);
-                                      if (!mounted) return;
-                                    }
-                                    await _checkPostTurnConditions();
-                                  }
+                                  _performPokemonSwitch(mon, forced: forced);
                                 },
                           child: const Text("SWITCH"),
                         ),
@@ -1327,87 +1568,310 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 class _ArenaBackdropPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    // 1. Sky-to-horizon gradient
-    final skyPaint = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Color(0xFF1F2A44),
-          Color(0xFF2D4363),
-          Color(0xFF2C4D43),
-          Color(0xFF1E332B),
-        ],
-        stops: [0.0, 0.45, 0.55, 1.0],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), skyPaint);
+    // 1. Bright daytime route sky gradient
+    final skyRect = Rect.fromLTWH(0, 0, size.width, size.height * 0.56);
+    canvas.drawRect(
+      skyRect,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF4FA8FF),
+            Color(0xFF8ED2FF),
+            Color(0xFFCCF0FF),
+          ],
+          stops: [0.0, 0.58, 1.0],
+        ).createShader(skyRect),
+    );
 
-    // 2. Distant rolling hills silhouette
-    final hillPath = Path()
-      ..moveTo(0, size.height * 0.52)
-      ..quadraticBezierTo(size.width * 0.25, size.height * 0.40, size.width * 0.52, size.height * 0.50)
-      ..quadraticBezierTo(size.width * 0.80, size.height * 0.60, size.width, size.height * 0.45)
-      ..lineTo(size.width, size.height * 0.58)
-      ..lineTo(0, size.height * 0.58)
+    // 2. Soft drifting clouds
+    final cloudPaint = Paint()..color = Colors.white.withOpacity(0.85);
+    void drawCloud(double cx, double cy, double w) {
+      canvas.drawOval(Rect.fromCenter(center: Offset(cx, cy), width: w, height: w * 0.42), cloudPaint);
+      canvas.drawCircle(Offset(cx - w * 0.24, cy - w * 0.08), w * 0.18, cloudPaint);
+      canvas.drawCircle(Offset(cx + w * 0.18, cy - w * 0.12), w * 0.22, cloudPaint);
+    }
+    drawCloud(size.width * 0.22, size.height * 0.14, 72);
+    drawCloud(size.width * 0.72, size.height * 0.19, 86);
+
+    // 3. Distant sunlit mountain silhouettes
+    final mtnPath = Path()
+      ..moveTo(0, size.height * 0.48)
+      ..lineTo(size.width * 0.18, size.height * 0.30)
+      ..lineTo(size.width * 0.38, size.height * 0.45)
+      ..lineTo(size.width * 0.58, size.height * 0.27)
+      ..lineTo(size.width * 0.80, size.height * 0.44)
+      ..lineTo(size.width, size.height * 0.33)
+      ..lineTo(size.width, size.height * 0.55)
+      ..lineTo(0, size.height * 0.55)
       ..close();
     canvas.drawPath(
-      hillPath,
-      Paint()..color = const Color(0xFF1A2932).withOpacity(0.55),
+      mtnPath,
+      Paint()..color = const Color(0xFF7CA7C9).withOpacity(0.65),
     );
 
-    // 3. Opponent oval grass platform (top-right)
-    final oppPlatform = Rect.fromCenter(
-      center: Offset(size.width - 84, 134),
-      width: 144,
-      height: 40,
-    );
-    canvas.drawOval(
-      oppPlatform.shift(const Offset(0, 4)),
-      Paint()..color = Colors.black.withOpacity(0.32),
-    );
-    canvas.drawOval(
-      oppPlatform,
+    // 4. Vibrant grassy ground floor
+    final groundRect = Rect.fromLTWH(0, size.height * 0.48, size.width, size.height * 0.52);
+    canvas.drawRect(
+      groundRect,
       Paint()
-        ..shader = const RadialGradient(
-          colors: [Color(0xFF6BBF73), Color(0xFF3E8E4E)],
-        ).createShader(oppPlatform),
-    );
-    canvas.drawOval(
-      oppPlatform,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2
-        ..color = const Color(0xFF9BE89E).withOpacity(0.45),
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFF66BB6A),
+            Color(0xFF43A047),
+          ],
+        ).createShader(groundRect),
     );
 
-    // 4. Player oval grass platform (bottom-left)
-    final playerPlatform = Rect.fromCenter(
-      center: Offset(90, size.height - 26),
-      width: 168,
-      height: 46,
-    );
-    canvas.drawOval(
-      playerPlatform.shift(const Offset(0, 4)),
-      Paint()..color = Colors.black.withOpacity(0.35),
-    );
-    canvas.drawOval(
-      playerPlatform,
-      Paint()
-        ..shader = const RadialGradient(
-          colors: [Color(0xFF6BBF73), Color(0xFF357A42)],
-        ).createShader(playerPlatform),
-    );
-    canvas.drawOval(
-      playerPlatform,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2
-        ..color = const Color(0xFF9BE89E).withOpacity(0.45),
-    );
+    // Light turf stripes for depth
+    final stripePaint = Paint()..color = const Color(0xFF81C784).withOpacity(0.32);
+    for (int i = 0; i < 4; i++) {
+      final y = size.height * (0.56 + i * 0.11);
+      canvas.drawRect(Rect.fromLTWH(0, y, size.width, 10 + i * 3.0), stripePaint);
+    }
+
+    // 5. Lush forest treeline along the horizon
+    final treeDark = Paint()..color = const Color(0xFF2E7D32);
+    final treeLight = Paint()..color = const Color(0xFF388E3C);
+    final horizonY = size.height * 0.48;
+    for (double x = -10; x < size.width + 20; x += 28) {
+      canvas.drawCircle(Offset(x, horizonY - 4), 20, treeDark);
+      canvas.drawCircle(Offset(x + 14, horizonY - 9), 17, treeLight);
+    }
+
+    // 6. Stylized 3D grassy battle platforms
+    void drawPlatform(Offset center, double w, double h) {
+      final rect = Rect.fromCenter(center: center, width: w, height: h);
+      // Drop shadow
+      canvas.drawOval(
+        rect.shift(const Offset(0, 8)),
+        Paint()..color = Colors.black.withOpacity(0.24),
+      );
+      // Earthy rim (3D thickness)
+      canvas.drawOval(
+        rect.shift(const Offset(0, 4)),
+        Paint()..color = const Color(0xFF6D4C41),
+      );
+      // Bright grass surface
+      canvas.drawOval(
+        rect,
+        Paint()
+          ..shader = const RadialGradient(
+            colors: [Color(0xFFA5D6A7), Color(0xFF4CAF50)],
+          ).createShader(rect),
+      );
+      canvas.drawOval(
+        rect,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.2
+          ..color = const Color(0xFFE8F5E9).withOpacity(0.65),
+      );
+    }
+
+    drawPlatform(Offset(size.width - 84, 134), 148, 42);
+    drawPlatform(Offset(90, size.height - 26), 172, 48);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _TrainerBackSpritePainter extends CustomPainter {
+  final int pose; // 0 = ready, 1 = windup, 2 = throw
+  final Color ballColor;
+
+  _TrainerBackSpritePainter({
+    required this.pose,
+    required this.ballColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width * 0.48;
+    final bottomY = size.height - 6;
+
+    // Ground shadow
+    canvas.drawOval(
+      Rect.fromCenter(center: Offset(cx, bottomY), width: 54, height: 14),
+      Paint()..color = Colors.black.withOpacity(0.28),
+    );
+
+    // Legs (Blue jeans)
+    final jeanPaint = Paint()..color = const Color(0xFF28559A);
+    final jeanShade = Paint()..color = const Color(0xFF1D3E73);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 17, bottomY - 40, 14, 38), const Radius.circular(5)),
+      jeanPaint,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 3, bottomY - 40, 14, 38), const Radius.circular(5)),
+      jeanShade,
+    );
+
+    // Sneakers
+    final shoePaint = Paint()..color = const Color(0xFFD32F2F);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 19, bottomY - 8, 16, 8), const Radius.circular(4)),
+      shoePaint,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 3, bottomY - 8, 16, 8), const Radius.circular(4)),
+      shoePaint,
+    );
+
+    // Torso (Red Vest over White Tee)
+    final vestPaint = Paint()..color = const Color(0xFFE53935);
+    final whiteShirtPaint = Paint()..color = Colors.white;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 21, bottomY - 82, 42, 45), const Radius.circular(8)),
+      vestPaint,
+    );
+    // White collar strip
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 10, bottomY - 85, 20, 7), const Radius.circular(3)),
+      whiteShirtPaint,
+    );
+
+    // Backpack
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 16, bottomY - 78, 30, 34), const Radius.circular(7)),
+      Paint()..color = const Color(0xFF8D6E63),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 14, bottomY - 62, 26, 14), const Radius.circular(4)),
+      Paint()..color = const Color(0xFF6D4C41),
+    );
+
+    // Left Arm (stabilizing)
+    final skinPaint = Paint()..color = const Color(0xFFF3C39B);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 29, bottomY - 78, 10, 26), const Radius.circular(5)),
+      skinPaint,
+    );
+
+    // Head & Dark Hair (seen from behind)
+    canvas.drawCircle(Offset(cx, bottomY - 98), 16, Paint()..color = const Color(0xFF212121));
+
+    // Classic Red & White Trainer Cap
+    canvas.drawArc(
+      Rect.fromCenter(center: Offset(cx, bottomY - 103), width: 34, height: 28),
+      pi,
+      pi,
+      true,
+      Paint()..color = const Color(0xFFD32F2F),
+    );
+    // Cap brim / strap detail
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 10, bottomY - 106, 20, 5), const Radius.circular(3)),
+      whiteShirtPaint,
+    );
+    // Side brim hint (angled right toward battle)
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 8, bottomY - 104, 16, 4), const Radius.circular(2)),
+      Paint()..color = const Color(0xFFB71C1C),
+    );
+
+    // Throwing Right Arm + Poké Ball by Pose
+    Offset handPos;
+    final armPaint = Paint()
+      ..color = const Color(0xFFF3C39B)
+      ..strokeWidth = 9
+      ..strokeCap = StrokeCap.round;
+
+    final shoulder = Offset(cx + 20, bottomY - 75);
+    if (pose == 0) {
+      // Ready stance
+      handPos = Offset(cx + 34, bottomY - 84);
+      canvas.drawLine(shoulder, handPos, armPaint);
+    } else if (pose == 1) {
+      // Wind-up arm cocked back
+      handPos = Offset(cx + 42, bottomY - 56);
+      canvas.drawLine(shoulder, handPos, armPaint);
+    } else {
+      // Extended forward release pose (ball already left hand!)
+      handPos = Offset(cx + 32, bottomY - 112);
+      canvas.drawLine(shoulder, handPos, armPaint);
+    }
+
+    // Draw held Poké Ball during poses 0 & 1
+    if (pose != 2) {
+      canvas.drawCircle(handPos, 8.5, Paint()..color = Colors.white);
+      canvas.drawArc(
+        Rect.fromCircle(center: handPos, radius: 8.5),
+        pi,
+        pi,
+        true,
+        Paint()..color = ballColor,
+      );
+      canvas.drawLine(
+        handPos + const Offset(-8.5, 0),
+        handPos + const Offset(8.5, 0),
+        Paint()
+          ..color = Colors.black
+          ..strokeWidth = 2,
+      );
+      canvas.drawCircle(
+        handPos,
+        8.5,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.8
+          ..color = Colors.black,
+      );
+      canvas.drawCircle(handPos, 2.5, Paint()..color = Colors.white);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _TrainerBackSpritePainter oldDelegate) =>
+      oldDelegate.pose != pose || oldDelegate.ballColor != ballColor;
+}
+
+class _SummonBurstPainter extends CustomPainter {
+  final double progress;
+
+  _SummonBurstPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2 + 10);
+    final opacity = (1.0 - progress).clamp(0.0, 1.0);
+
+    canvas.drawCircle(
+      center,
+      14 + progress * 44,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 5 * opacity
+        ..color = Colors.cyanAccent.withOpacity(opacity),
+    );
+    canvas.drawCircle(
+      center,
+      26 * (1 - progress * 0.4),
+      Paint()..color = Colors.white.withOpacity(opacity * 0.85),
+    );
+    for (int i = 0; i < 8; i++) {
+      final angle = (i / 8) * pi * 2;
+      final p1 = center + Offset(cos(angle) * (10 + progress * 20), sin(angle) * (10 + progress * 20));
+      final p2 = center + Offset(cos(angle) * (24 + progress * 38), sin(angle) * (24 + progress * 38));
+      canvas.drawLine(
+        p1,
+        p2,
+        Paint()
+          ..color = Colors.white.withOpacity(opacity)
+          ..strokeWidth = 3
+          ..strokeCap = StrokeCap.round,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _SummonBurstPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
 
 class _ElementalVfxPainter extends CustomPainter {
@@ -1427,7 +1891,6 @@ class _ElementalVfxPainter extends CustomPainter {
     final baseColor = type.color;
 
     if (isStat) {
-      // Rising or pulsing aura rings for stat buff/debuff
       final ringPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 3.5
@@ -1444,7 +1907,6 @@ class _ElementalVfxPainter extends CustomPainter {
 
     switch (type) {
       case PokemonType.fire:
-        // Expanding flame bursts
         for (int i = 0; i < 8; i++) {
           final angle = (i / 8) * pi * 2 + progress * 1.2;
           final dist = 12 + progress * 38;
@@ -1458,7 +1920,6 @@ class _ElementalVfxPainter extends CustomPainter {
         break;
 
       case PokemonType.water:
-        // Expanding water splash rings + droplets
         final ripple = Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 4
@@ -1466,13 +1927,13 @@ class _ElementalVfxPainter extends CustomPainter {
         canvas.drawCircle(center, 15 + progress * 35, ripple);
         for (int i = 0; i < 6; i++) {
           final angle = (i / 6) * pi * 2;
-          final pos = center + Offset(cos(angle) * (progress * 44), sin(angle) * (progress * 44));
+          final pos =
+              center + Offset(cos(angle) * (progress * 44), sin(angle) * (progress * 44));
           canvas.drawCircle(pos, 6, Paint()..color = Colors.cyanAccent);
         }
         break;
 
       case PokemonType.electric:
-        // Jagged lightning bolt
         final boltPaint = Paint()
           ..color = Colors.yellowAccent
           ..strokeWidth = 4.5
@@ -1484,11 +1945,11 @@ class _ElementalVfxPainter extends CustomPainter {
           ..lineTo(center.dx - 10, center.dy + 4)
           ..lineTo(center.dx + 18, center.dy + 42);
         canvas.drawPath(path, boltPaint);
-        canvas.drawCircle(center, 18 * (1 - progress), Paint()..color = Colors.yellow.withOpacity(0.5));
+        canvas.drawCircle(
+            center, 18 * (1 - progress), Paint()..color = Colors.yellow.withOpacity(0.5));
         break;
 
       case PokemonType.grass:
-        // Spinning razor leaves
         for (int i = 0; i < 6; i++) {
           final angle = (i / 6) * pi * 2 + progress * 4.0;
           final dist = 10 + progress * 36;
@@ -1506,17 +1967,16 @@ class _ElementalVfxPainter extends CustomPainter {
 
       case PokemonType.poison:
       case PokemonType.bug:
-        // Bubbling toxic/spore orbs
         for (int i = 0; i < 7; i++) {
           final angle = (i / 7) * pi * 2;
           final dist = 8 + progress * 34;
-          final pos = center + Offset(cos(angle) * dist, sin(angle) * dist - progress * 12);
+          final pos =
+              center + Offset(cos(angle) * dist, sin(angle) * dist - progress * 12);
           canvas.drawCircle(pos, 8, Paint()..color = baseColor);
         }
         break;
 
       case PokemonType.psychic:
-        // Concentric psychic rings
         for (int i = 0; i < 3; i++) {
           canvas.drawCircle(
             center,
@@ -1530,7 +1990,6 @@ class _ElementalVfxPainter extends CustomPainter {
         break;
 
       default:
-        // Diagonal claw / wing slash streaks
         final slashPaint = Paint()
           ..color = Colors.white
           ..strokeWidth = 5
