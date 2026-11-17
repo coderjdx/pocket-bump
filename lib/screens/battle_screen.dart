@@ -666,7 +666,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
 
         if (_playerPokemon.checkCanEvolve()) {
-          final nextId = _playerPokemon.species.evolutionSpeciesId!;
+          int nextId = _playerPokemon.species.evolutionSpeciesId!;
+          if (_playerPokemon.species.id == 133) {
+            const eeveelutions = [134, 135, 136];
+            nextId = eeveelutions[Random().nextInt(eeveelutions.length)];
+          }
           final nextSpecies = PokedexDatabase.species[nextId];
           if (nextSpecies != null) {
             setState(() {
@@ -4545,6 +4549,584 @@ class _MoveVfxPainter extends CustomPainter {
               );
             }
           }
+        }
+        break;
+
+
+      // ─── EXPANDED GEN 1 MOVES VFX ─────────────────────────────────────────
+      case 'headbutt':
+        if (t < 0.6) {
+          final surge = t / 0.6;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, surge * 0.75)!;
+          canvas.drawCircle(pos, 18 * fade, Paint()..color = Colors.white.withOpacity(0.8 * fade));
+        } else {
+          final imp = (t - 0.6) / 0.4;
+          canvas.drawCircle(defenderCenter, (16 + imp * 28) * fade,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 4 * fade..color = Colors.white.withOpacity(fade));
+          _drawStarPath(canvas, defenderCenter, 20 * fade, 8 * fade, Colors.amberAccent, fade);
+        }
+        break;
+
+      case 'take_down':
+        final surge = min(1.0, t * 1.3);
+        final pos = Offset.lerp(attackerCenter, defenderCenter, surge)!;
+        canvas.drawCircle(pos, 22 * fade, Paint()..color = Colors.orangeAccent.withOpacity(0.6 * fade));
+        canvas.drawLine(attackerCenter, pos, Paint()..color = Colors.white.withOpacity(0.7 * fade)..strokeWidth = 6 * fade);
+        if (t > 0.5) {
+          canvas.drawCircle(defenderCenter, 26 * fade, Paint()..color = Colors.deepOrangeAccent.withOpacity(0.5 * fade));
+        }
+        break;
+
+      case 'stomp':
+        final drop = (1.0 - cos(min(1.0, t * 1.4) * pi * 0.5)) * 40.0;
+        final footCenter = defenderCenter - Offset(0, 40 - drop);
+        final footRect = Rect.fromCenter(center: footCenter, width: 36 * fade, height: 22 * fade);
+        canvas.drawOval(footRect, Paint()..color = const Color(0xFF795548).withOpacity(0.85 * fade));
+        if (t > 0.5) {
+          canvas.drawCircle(defenderCenter, (20 + (t - 0.5) * 35) * fade,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 3 * fade..color = Colors.white.withOpacity(fade));
+        }
+        break;
+
+      case 'mega_punch':
+        final punchT = min(1.0, t * 1.5);
+        final punchPos = Offset.lerp(attackerCenter, defenderCenter, punchT)!;
+        canvas.drawCircle(punchPos, (16 + punchT * 12) * fade, Paint()..color = Colors.amberAccent.withOpacity(0.9 * fade));
+        if (t > 0.4) {
+          final impT = (t - 0.4) / 0.6;
+          for (int i = 0; i < 4; i++) {
+            final ang = i * pi * 0.5 + t * 2;
+            final spark = defenderCenter + Offset(cos(ang) * impT * 35, sin(ang) * impT * 35);
+            _drawStarPath(canvas, spark, 12 * fade, 5 * fade, Colors.yellowAccent, fade);
+          }
+        }
+        break;
+
+      case 'mach_punch':
+        for (int i = 0; i < 3; i++) {
+          final offT = ((t - i * 0.1) / 0.6).clamp(0.0, 1.0);
+          final pos = Offset.lerp(attackerCenter, defenderCenter, offT)! + perp * ((i - 1) * 12.0);
+          canvas.drawLine(pos - unit * 18, pos, Paint()..color = Colors.white.withOpacity(0.8 * fade)..strokeWidth = 3 * fade);
+          canvas.drawCircle(pos, 8 * fade, Paint()..color = Colors.orangeAccent.withOpacity(fade));
+        }
+        break;
+
+      case 'fire_punch':
+        final fpT = min(1.0, t * 1.4);
+        final fPos = Offset.lerp(attackerCenter, defenderCenter, fpT)!;
+        canvas.drawCircle(fPos, 18 * fade, Paint()..color = Colors.deepOrangeAccent.withOpacity(0.9 * fade));
+        canvas.drawCircle(fPos, 10 * fade, Paint()..color = Colors.yellowAccent.withOpacity(fade));
+        if (t > 0.4) {
+          for (int i = 0; i < 6; i++) {
+            final ang = i * pi / 3 + t * 4;
+            final spark = defenderCenter + Offset(cos(ang) * (t - 0.4) * 45, sin(ang) * (t - 0.4) * 45);
+            canvas.drawCircle(spark, 5 * fade, Paint()..color = Colors.deepOrange.withOpacity(fade));
+          }
+        }
+        break;
+
+      case 'ice_punch':
+        final ipT = min(1.0, t * 1.4);
+        final iPos = Offset.lerp(attackerCenter, defenderCenter, ipT)!;
+        canvas.drawCircle(iPos, 18 * fade, Paint()..color = Colors.cyanAccent.withOpacity(0.85 * fade));
+        if (t > 0.4) {
+          _drawIceCrystal(canvas, defenderCenter, 28 * fade, t * 2, fade);
+        }
+        break;
+
+      case 'thunder_punch':
+        final tpT = min(1.0, t * 1.4);
+        final tPos = Offset.lerp(attackerCenter, defenderCenter, tpT)!;
+        canvas.drawCircle(tPos, 18 * fade, Paint()..color = Colors.yellowAccent.withOpacity(0.9 * fade));
+        if (t > 0.3) {
+          _drawLightningBolt(canvas, tPos - const Offset(15, 15), defenderCenter, fade, 4.0);
+          _drawLightningBolt(canvas, tPos + const Offset(15, -15), defenderCenter, fade, 4.0);
+        }
+        break;
+
+      case 'mega_kick':
+      case 'jump_kick':
+      case 'high_jump_kick':
+      case 'rolling_kick':
+        final sweep = sin(t * pi);
+        final arcPos = defenderCenter + perp * (sweep * 35.0);
+        canvas.drawLine(attackerCenter, arcPos, Paint()..color = Colors.orangeAccent.withOpacity(0.8 * fade)..strokeWidth = 6 * fade);
+        canvas.drawCircle(defenderCenter, (14 + sweep * 22) * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
+        _drawStarPath(canvas, defenderCenter, 22 * fade, 9 * fade, Colors.white, fade, points: 6, rotation: t * pi);
+        break;
+
+      case 'close_combat':
+        for (int i = 0; i < 6; i++) {
+          final strikeT = ((t - i * 0.08) / 0.45).clamp(0.0, 1.0);
+          if (strikeT <= 0) continue;
+          final ang = i * 1.1;
+          final offset = Offset(cos(ang) * 22, sin(ang) * 22);
+          final strikePos = defenderCenter + offset;
+          canvas.drawLine(strikePos - offset * 0.8, strikePos,
+              Paint()..color = (i.isEven ? Colors.redAccent : Colors.amberAccent).withOpacity(fade)..strokeWidth = 4 * fade);
+          _drawStarPath(canvas, strikePos, 12 * fade, 5 * fade, Colors.white, fade);
+        }
+        break;
+
+      case 'hyper_beam':
+        final beamWidth = 24.0 * sin(t * pi);
+        final pCore = Paint()..color = Colors.white.withOpacity(0.95 * fade)..strokeWidth = beamWidth * 0.5..strokeCap = StrokeCap.round;
+        final pGlow = Paint()..color = Colors.amberAccent.withOpacity(0.85 * fade)..strokeWidth = beamWidth..strokeCap = StrokeCap.round;
+        canvas.drawLine(attackerCenter, defenderCenter, pGlow);
+        canvas.drawLine(attackerCenter, defenderCenter, pCore);
+        for (int i = 1; i <= 3; i++) {
+          final ringPos = Offset.lerp(attackerCenter, defenderCenter, (i / 4.0) + (t * 0.25) % 0.25)!;
+          canvas.drawCircle(ringPos, (beamWidth * 0.9 * i).clamp(6.0, 36.0),
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 3 * fade..color = Colors.yellowAccent.withOpacity(fade));
+        }
+        canvas.drawCircle(defenderCenter, (20 + t * 30) * fade, Paint()..color = Colors.yellow.withOpacity(0.5 * fade));
+        break;
+
+      case 'tri_attack':
+        final tA = min(1.0, t * 1.5);
+        final endA = Offset.lerp(attackerCenter, defenderCenter, tA)!;
+        // Fire beam (red), Ice beam (cyan), Electric beam (yellow)
+        final colors = [Colors.redAccent, Colors.cyanAccent, Colors.yellowAccent];
+        for (int i = 0; i < 3; i++) {
+          final off = perp * ((i - 1) * 14.0);
+          canvas.drawLine(attackerCenter + off, endA + off,
+              Paint()..color = colors[i].withOpacity(0.9 * fade)..strokeWidth = 4.5 * fade..strokeCap = StrokeCap.round);
+        }
+        if (t > 0.45) {
+          canvas.drawCircle(defenderCenter, 22 * fade, Paint()..color = Colors.white.withOpacity(fade));
+        }
+        break;
+
+      case 'flash_cannon':
+        final fcT = min(1.0, t * 1.4);
+        final fcPos = Offset.lerp(attackerCenter, defenderCenter, fcT)!;
+        canvas.drawLine(attackerCenter, fcPos,
+            Paint()..color = Colors.blueGrey.shade100.withOpacity(0.95 * fade)..strokeWidth = 14 * fade..strokeCap = StrokeCap.round);
+        canvas.drawLine(attackerCenter, fcPos,
+            Paint()..color = Colors.white.withOpacity(fade)..strokeWidth = 6 * fade..strokeCap = StrokeCap.round);
+        canvas.drawCircle(defenderCenter, 24 * fade, Paint()..color = Colors.lightBlueAccent.withOpacity(0.6 * fade));
+        break;
+
+      case 'blizzard':
+        for (int i = 0; i < 8; i++) {
+          final ang = (i / 8) * pi * 2 + t * 4;
+          final r = 20 + t * 50;
+          final p = defenderCenter + Offset(cos(ang) * r, sin(ang) * r * 0.5);
+          _drawIceCrystal(canvas, p, 10 * fade, t * 5 + i, fade);
+        }
+        canvas.drawCircle(defenderCenter, 35 * fade, Paint()..color = Colors.lightBlue.withOpacity(0.35 * fade));
+        break;
+
+      case 'powder_snow':
+        for (int i = 0; i < 10; i++) {
+          final lt = ((t - i * 0.05) / 0.6).clamp(0.0, 1.0);
+          final p = Offset.lerp(attackerCenter, defenderCenter, lt)! + perp * (sin(lt * 10 + i) * 18);
+          canvas.drawCircle(p, 4.5 * fade, Paint()..color = Colors.white.withOpacity(0.85 * fade));
+        }
+        break;
+
+      case 'thunder':
+        final skyStart = Offset(defenderCenter.dx + sin(t * 10) * 10, defenderCenter.dy - 120);
+        _drawLightningBolt(canvas, skyStart, defenderCenter, fade, 7.0);
+        _drawLightningBolt(canvas, skyStart, defenderCenter, fade, 3.5);
+        canvas.drawCircle(defenderCenter, (20 + t * 35) * fade,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 5 * fade..color = Colors.yellowAccent.withOpacity(fade));
+        break;
+
+      case 'shock_wave':
+      case 'discharge':
+        for (int i = 0; i < 8; i++) {
+          final ang = (i / 8) * pi * 2;
+          final rad = 15 + t * 55;
+          final p = attackerCenter + Offset(cos(ang) * rad, sin(ang) * rad);
+          _drawLightningBolt(canvas, attackerCenter, p, fade, 2.5);
+        }
+        break;
+
+      case 'sludge':
+        for (int i = 0; i < 5; i++) {
+          final lt = ((t - i * 0.08) / 0.6).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final arc = sin(lt * pi) * 35;
+          final p = Offset.lerp(attackerCenter, defenderCenter, lt)! - Offset(0, arc);
+          canvas.drawCircle(p, 10 * fade, Paint()..color = Colors.purple.shade800.withOpacity(fade));
+          canvas.drawCircle(p + const Offset(-2, -2), 4 * fade, Paint()..color = Colors.purpleAccent.withOpacity(fade));
+        }
+        break;
+
+      case 'toxic':
+      case 'poison_gas':
+        for (int i = 0; i < 7; i++) {
+          final ang = (i / 7) * pi * 2 + t * 3;
+          final r = 10 + t * 35;
+          final p = defenderCenter + Offset(cos(ang) * r, sin(ang) * r * 0.7);
+          canvas.drawCircle(p, (8 + sin(t * 6 + i) * 4) * fade,
+              Paint()..color = Colors.purple.shade700.withOpacity(0.6 * fade));
+        }
+        break;
+
+      case 'acid_armor':
+        final aaRect = Rect.fromCenter(center: attackerCenter, width: 45 * fade, height: 60 * fade);
+        canvas.drawOval(aaRect, Paint()..color = Colors.deepPurpleAccent.withOpacity(0.45 * fade));
+        canvas.drawOval(aaRect,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 3 * fade..color = Colors.purpleAccent.withOpacity(fade));
+        break;
+
+      case 'bone_club':
+        final bPos = defenderCenter;
+        canvas.save();
+        canvas.translate(bPos.dx, bPos.dy);
+        canvas.rotate(sin(t * pi) * 1.5);
+        final bPaint = Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade)..strokeWidth = 6 * fade..strokeCap = StrokeCap.round;
+        canvas.drawLine(const Offset(-18, 0), const Offset(18, 0), bPaint);
+        canvas.drawCircle(const Offset(-18, -4), 4 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
+        canvas.drawCircle(const Offset(-18, 4), 4 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
+        canvas.drawCircle(const Offset(18, -4), 4 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
+        canvas.drawCircle(const Offset(18, 4), 4 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
+        canvas.restore();
+        break;
+
+      case 'bonemerang':
+        final ang = t * pi * 4;
+        final radX = dist * 0.5 * sin(t * pi);
+        final bPos = Offset.lerp(attackerCenter, defenderCenter, sin(t * pi))! + perp * radX;
+        canvas.save();
+        canvas.translate(bPos.dx, bPos.dy);
+        canvas.rotate(ang);
+        final bmPaint = Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade)..strokeWidth = 5 * fade..strokeCap = StrokeCap.round;
+        canvas.drawLine(const Offset(-14, 0), const Offset(14, 0), bmPaint);
+        canvas.restore();
+        break;
+
+      case 'drill_run':
+      case 'horn_drill':
+        final drillT = min(1.0, t * 1.4);
+        final drillPos = Offset.lerp(attackerCenter, defenderCenter, drillT)!;
+        for (int i = 0; i < 4; i++) {
+          final spin = t * 16 + i * (pi / 2);
+          final drillW = (6 + i * 4) * fade;
+          final dP = drillPos + perp * (sin(spin) * drillW);
+          canvas.drawCircle(dP, 4 * fade, Paint()..color = Colors.grey.shade300.withOpacity(fade));
+        }
+        canvas.drawCircle(drillPos, 14 * fade, Paint()..color = Colors.amber.withOpacity(0.7 * fade));
+        break;
+
+      case 'pin_missile':
+        for (int i = 0; i < 6; i++) {
+          final pT = ((t - i * 0.08) / 0.5).clamp(0.0, 1.0);
+          if (pT <= 0) continue;
+          final pPos = Offset.lerp(attackerCenter, defenderCenter, pT)! + perp * ((i.isEven ? 1 : -1) * 8.0);
+          canvas.drawLine(pPos - unit * 12, pPos,
+              Paint()..color = Colors.limeAccent.withOpacity(fade)..strokeWidth = 2.5 * fade);
+        }
+        break;
+
+      case 'dragon_rage':
+        final drT = min(1.0, t * 1.3);
+        final drPos = Offset.lerp(attackerCenter, defenderCenter, drT)!;
+        canvas.drawCircle(drPos, (16 + drT * 18) * fade, Paint()..color = Colors.indigoAccent.withOpacity(0.85 * fade));
+        canvas.drawCircle(drPos, (8 + drT * 10) * fade, Paint()..color = Colors.purpleAccent.withOpacity(fade));
+        if (t > 0.45) {
+          canvas.drawCircle(defenderCenter, 30 * fade, Paint()..color = Colors.purple.withOpacity(0.5 * fade));
+        }
+        break;
+
+      case 'dragon_claw':
+        for (int i = -1; i <= 1; i++) {
+          final p1 = defenderCenter + Offset(-24 + i * 14, -28 + t * 15);
+          final p2 = defenderCenter + Offset(18 + i * 14, 28 + t * 15);
+          canvas.drawLine(p1, p2,
+              Paint()..color = Colors.tealAccent.withOpacity(fade)..strokeWidth = 4.5 * fade..strokeCap = StrokeCap.round);
+        }
+        break;
+
+      case 'dragon_breath':
+        for (int i = 0; i < 10; i++) {
+          final lt = ((t - i * 0.05) / 0.55).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final cone = sin(lt * pi) * (15 + i * 4);
+          final p = Offset.lerp(attackerCenter, defenderCenter, lt)! + perp * cone;
+          canvas.drawCircle(p, (6 + lt * 10) * fade,
+              Paint()..color = (i.isEven ? Colors.indigoAccent : Colors.tealAccent).withOpacity(0.8 * fade));
+        }
+        break;
+
+      case 'outrage':
+        canvas.drawCircle(attackerCenter, (20 + t * 40) * fade,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 5 * fade..color = Colors.redAccent.withOpacity(fade));
+        for (int i = -1; i <= 1; i++) {
+          final p1 = defenderCenter + Offset(-28, i * 18);
+          final p2 = defenderCenter + Offset(28, -i * 18);
+          canvas.drawLine(p1, p2,
+              Paint()..color = Colors.deepOrangeAccent.withOpacity(fade)..strokeWidth = 5 * fade..strokeCap = StrokeCap.round);
+        }
+        break;
+
+      case 'ancient_power':
+        for (int i = 0; i < 4; i++) {
+          final ang = (i / 4) * pi * 2 + t * 2;
+          final rockPos = attackerCenter + Offset(cos(ang) * 35, sin(ang) * 35);
+          final dest = Offset.lerp(rockPos, defenderCenter, min(1.0, t * 1.6))!;
+          _drawPolygonBoulder(canvas, dest, 12 * fade, t * 4 + i, fade);
+        }
+        break;
+
+      case 'egg_bomb':
+        final arc = sin(t * pi) * 45;
+        final eggPos = Offset.lerp(attackerCenter, defenderCenter, t)! - Offset(0, arc);
+        canvas.drawOval(Rect.fromCenter(center: eggPos, width: 16 * fade, height: 22 * fade),
+            Paint()..color = const Color(0xFFFFF9C4).withOpacity(fade));
+        if (t > 0.55) {
+          canvas.drawCircle(defenderCenter, 24 * fade, Paint()..color = Colors.yellow.withOpacity(0.8 * fade));
+        }
+        break;
+
+      case 'fire_spin':
+        for (int i = 0; i < 8; i++) {
+          final ang = (i / 8) * pi * 2 + t * 6;
+          final r = 16 + sin(t * 8 + i) * 10;
+          final p = defenderCenter + Offset(cos(ang) * r, sin(ang) * r * 0.6);
+          canvas.drawCircle(p, 6 * fade, Paint()..color = Colors.deepOrangeAccent.withOpacity(fade));
+          canvas.drawCircle(p, 3 * fade, Paint()..color = Colors.yellowAccent.withOpacity(fade));
+        }
+        break;
+
+      case 'flame_wheel':
+        final wheelPos = Offset.lerp(attackerCenter, defenderCenter, t)!;
+        for (int i = 0; i < 6; i++) {
+          final ang = (i / 6) * pi * 2 + t * 10;
+          final p = wheelPos + Offset(cos(ang) * 18, sin(ang) * 18);
+          canvas.drawCircle(p, 7 * fade, Paint()..color = Colors.deepOrangeAccent.withOpacity(fade));
+        }
+        canvas.drawCircle(wheelPos, 10 * fade, Paint()..color = Colors.yellowAccent.withOpacity(fade));
+        break;
+
+      case 'rest':
+        for (int i = 0; i < 3; i++) {
+          final zT = (t + i * 0.3) % 1.0;
+          final zPos = attackerCenter + Offset(15 + i * 10, -10 - zT * 35);
+          canvas.drawCircle(zPos, 5 * (1 - zT) * fade, Paint()..color = Colors.lightBlueAccent.withOpacity(fade));
+        }
+        canvas.drawCircle(attackerCenter, 25 * fade, Paint()..color = Colors.cyan.withOpacity(0.3 * fade));
+        break;
+
+      case 'snore':
+        for (int i = 1; i <= 3; i++) {
+          final ringR = (i * 15 + t * 30) * fade;
+          canvas.drawCircle(attackerCenter, ringR,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 2.5 * fade..color = Colors.white.withOpacity(fade * (1 - t * 0.7)));
+        }
+        break;
+
+      case 'rollout':
+        final rollX = attackerCenter.dx + (defenderCenter.dx - attackerCenter.dx) * t;
+        final rollY = defenderCenter.dy + sin(t * pi * 3).abs() * -12;
+        _drawPolygonBoulder(canvas, Offset(rollX, rollY), 16 * fade, t * 8, fade);
+        break;
+
+      case 'explosion':
+        canvas.drawCircle(defenderCenter, (15 + t * 65) * fade,
+            Paint()..color = Colors.white.withOpacity(fade));
+        canvas.drawCircle(defenderCenter, (20 + t * 50) * fade,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 8 * fade..color = Colors.yellowAccent.withOpacity(fade));
+        canvas.drawCircle(defenderCenter, (30 + t * 40) * fade,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 4 * fade..color = Colors.deepOrangeAccent.withOpacity(fade));
+        break;
+
+      case 'extreme_speed':
+        canvas.drawLine(attackerCenter, defenderCenter,
+            Paint()..color = Colors.white.withOpacity(0.9 * fade)..strokeWidth = 10 * fade..strokeCap = StrokeCap.round);
+        _drawStarPath(canvas, defenderCenter, 28 * fade, 10 * fade, Colors.amberAccent, fade);
+        break;
+
+      case 'seed_bomb':
+        for (int i = -1; i <= 1; i++) {
+          final arc = sin(t * pi) * (35 + i.abs() * 10);
+          final sPos = Offset.lerp(attackerCenter, defenderCenter, t)! + perp * (i * 12.0) - Offset(0, arc);
+          canvas.drawCircle(sPos, 6 * fade, Paint()..color = Colors.green.shade800.withOpacity(fade));
+        }
+        if (t > 0.5) {
+          canvas.drawCircle(defenderCenter, 25 * fade, Paint()..color = Colors.lightGreenAccent.withOpacity(0.7 * fade));
+        }
+        break;
+
+      case 'transform':
+        final colors = [Colors.pinkAccent, Colors.purpleAccent, Colors.cyanAccent, Colors.amberAccent];
+        for (int i = 0; i < 4; i++) {
+          final r = (12 + i * 8 + sin(t * pi) * 10) * fade;
+          canvas.drawCircle(attackerCenter, r,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 2.5 * fade..color = colors[i].withOpacity(fade));
+        }
+        break;
+
+      case 'struggle':
+        canvas.drawCircle(defenderCenter, 20 * fade, Paint()..color = Colors.redAccent.withOpacity(fade));
+        canvas.drawCircle(attackerCenter, 14 * fade, Paint()..color = Colors.red.withOpacity(0.5 * fade));
+        break;
+
+      case 'soft_boiled':
+        canvas.drawOval(Rect.fromCenter(center: attackerCenter, width: 30 * fade, height: 42 * fade),
+            Paint()..color = const Color(0xFFFFF59D).withOpacity(0.75 * fade));
+        canvas.drawCircle(attackerCenter, 24 * fade, Paint()..color = Colors.white.withOpacity(fade * 0.5));
+        break;
+
+      case 'light_screen':
+        final lsCenter = attackerCenter + unit * 25;
+        final lsRect = Rect.fromCenter(center: lsCenter, width: 14 * fade, height: 50 * fade);
+        canvas.drawRRect(RRect.fromRectAndRadius(lsRect, const Radius.circular(6)),
+            Paint()..color = Colors.lightBlueAccent.withOpacity(0.7 * fade));
+        break;
+
+      case 'mega_drain':
+      case 'giga_drain':
+        for (int i = 0; i < 5; i++) {
+          final drainT = ((t - i * 0.1) / 0.6).clamp(0.0, 1.0);
+          if (drainT <= 0) continue;
+          final pos = Offset.lerp(defenderCenter, attackerCenter, drainT)!;
+          canvas.drawCircle(pos, 6 * fade, Paint()..color = Colors.greenAccent.withOpacity(fade));
+        }
+        break;
+
+      case 'dizzy_punch':
+        final dpT = min(1.0, t * 1.4);
+        final dpPos = Offset.lerp(attackerCenter, defenderCenter, dpT)!;
+        canvas.drawCircle(dpPos, 16 * fade, Paint()..color = Colors.pinkAccent.withOpacity(fade));
+        if (t > 0.4) {
+          for (int i = 0; i < 3; i++) {
+            final ang = i * (pi * 2 / 3) + t * 6;
+            final starPos = defenderCenter + Offset(cos(ang) * 22, sin(ang) * 12);
+            _drawStarPath(canvas, starPos, 9 * fade, 4 * fade, Colors.yellowAccent, fade);
+          }
+        }
+        break;
+
+      case 'vise_grip':
+      case 'guillotine':
+        final pinch = (1.0 - sin(min(1.0, t * 1.5) * pi * 0.5)) * 30.0;
+        final pPaint = Paint()..color = Colors.blueGrey.shade700.withOpacity(fade)..strokeWidth = 6 * fade..strokeCap = StrokeCap.round;
+        // Left jaw
+        canvas.drawLine(defenderCenter + Offset(-25 - pinch, -15), defenderCenter + Offset(-pinch * 0.3, 0), pPaint);
+        // Right jaw
+        canvas.drawLine(defenderCenter + Offset(25 + pinch, -15), defenderCenter + Offset(pinch * 0.3, 0), pPaint);
+        if (t > 0.5) {
+          _drawStarPath(canvas, defenderCenter, 20 * fade, 7 * fade, Colors.redAccent, fade);
+        }
+        break;
+
+      case 'zen_headbutt':
+        canvas.drawCircle(attackerCenter, 24 * fade, Paint()..color = Colors.purpleAccent.withOpacity(0.5 * fade));
+        final zhPos = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.5))!;
+        canvas.drawCircle(zhPos, 16 * fade, Paint()..color = Colors.deepPurpleAccent.withOpacity(fade));
+        if (t > 0.4) {
+          canvas.drawCircle(defenderCenter, 28 * fade,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 4 * fade..color = Colors.purpleAccent.withOpacity(fade));
+        }
+        break;
+
+      case 'sharpen':
+      case 'withdraw':
+        final sRect = Rect.fromCenter(center: attackerCenter, width: 40 * fade, height: 40 * fade);
+        canvas.drawRect(sRect,
+            Paint()..style = PaintingStyle.stroke..strokeWidth = 3 * fade..color = Colors.cyanAccent.withOpacity(fade));
+        break;
+
+      case 'recover':
+        canvas.drawCircle(attackerCenter, (15 + sin(t * pi) * 20) * fade,
+            Paint()..color = Colors.greenAccent.withOpacity(0.4 * fade));
+        break;
+
+      case 'spike_cannon':
+        for (int i = 0; i < 5; i++) {
+          final sT = ((t - i * 0.08) / 0.5).clamp(0.0, 1.0);
+          if (sT <= 0) continue;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, sT)!;
+          canvas.drawLine(pos - unit * 10, pos,
+              Paint()..color = Colors.white.withOpacity(fade)..strokeWidth = 3 * fade);
+        }
+        break;
+
+      case 'aqua_jet':
+        final ajPos = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.4))!;
+        canvas.drawOval(Rect.fromCenter(center: ajPos, width: 34 * fade, height: 18 * fade),
+            Paint()..color = Colors.cyanAccent.withOpacity(0.85 * fade));
+        break;
+
+      case 'iron_head':
+        final ihPos = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.4))!;
+        canvas.drawCircle(ihPos, 18 * fade, Paint()..color = Colors.blueGrey.shade200.withOpacity(fade));
+        if (t > 0.4) {
+          _drawStarPath(canvas, defenderCenter, 22 * fade, 8 * fade, Colors.white, fade);
+        }
+        break;
+
+      case 'constrict':
+      case 'wrap':
+        for (int i = 0; i < 3; i++) {
+          final squeeze = sin(t * pi * 2 + i) * 6;
+          canvas.drawOval(Rect.fromCenter(center: defenderCenter + Offset(0, (i - 1) * 12.0), width: (28 + squeeze) * fade, height: 12 * fade),
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 3 * fade..color = Colors.amber.shade700.withOpacity(fade));
+        }
+        break;
+
+      case 'confuse_ray':
+        for (int i = 0; i < 2; i++) {
+          final sign = i == 0 ? 1 : -1;
+          final crT = (t * 1.3).clamp(0.0, 1.0);
+          final p = Offset.lerp(attackerCenter, defenderCenter, crT)! + perp * (sin(crT * pi * 3) * 18 * sign);
+          canvas.drawCircle(p, 7 * fade, Paint()..color = (i == 0 ? Colors.amberAccent : Colors.purpleAccent).withOpacity(fade));
+        }
+        break;
+
+      case 'fury_attack':
+      case 'double_slap':
+      case 'pound':
+      case 'slam':
+        for (int i = 0; i < 3; i++) {
+          final sT = ((t - i * 0.12) / 0.5).clamp(0.0, 1.0);
+          if (sT <= 0) continue;
+          final strikeP = defenderCenter + Offset((i - 1) * 10.0, (i % 2 == 0 ? 1 : -1) * 8.0);
+          _drawStarPath(canvas, strikeP, 14 * fade, 5 * fade, Colors.white, fade);
+        }
+        break;
+
+      case 'smokescreen':
+        for (int i = 0; i < 6; i++) {
+          final ang = (i / 6) * pi * 2;
+          final r = t * 28;
+          final p = defenderCenter + Offset(cos(ang) * r, sin(ang) * r * 0.7);
+          canvas.drawCircle(p, 12 * fade, Paint()..color = Colors.blueGrey.shade800.withOpacity(0.7 * fade));
+        }
+        break;
+
+      case 'comet_punch':
+        for (int i = 0; i < 5; i++) {
+          final cpT = ((t - i * 0.08) / 0.5).clamp(0.0, 1.0);
+          if (cpT <= 0) continue;
+          final ang = i * 1.3;
+          final pos = defenderCenter + Offset(cos(ang) * 16, sin(ang) * 16);
+          canvas.drawCircle(pos, 8 * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
+          _drawStarPath(canvas, pos, 12 * fade, 5 * fade, Colors.white, fade);
+        }
+        break;
+
+      case 'seismic_toss':
+        final tossY = sin(t * pi) * -50.0;
+        final tossPos = defenderCenter + Offset(0, tossY);
+        canvas.drawCircle(tossPos, 16 * fade, Paint()..color = Colors.deepOrangeAccent.withOpacity(fade));
+        if (t > 0.6) {
+          canvas.drawCircle(defenderCenter, (20 + (t - 0.6) * 40) * fade,
+              Paint()..style = PaintingStyle.stroke..strokeWidth = 4 * fade..color = Colors.brown.withOpacity(fade));
+        }
+        break;
+
+      case 'thrash':
+        for (int i = 0; i < 4; i++) {
+          final thT = ((t - i * 0.1) / 0.5).clamp(0.0, 1.0);
+          if (thT <= 0) continue;
+          final ang = i * 1.57;
+          final p1 = defenderCenter + Offset(cos(ang) * 22, sin(ang) * 22);
+          final p2 = defenderCenter - Offset(cos(ang) * 22, sin(ang) * 22);
+          canvas.drawLine(p1, p2, Paint()..color = Colors.redAccent.withOpacity(fade)..strokeWidth = 4 * fade);
         }
         break;
 
