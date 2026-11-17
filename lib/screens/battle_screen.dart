@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_type.dart';
 import '../models/move.dart';
 import '../models/trainer.dart';
 import '../services/battle_engine.dart';

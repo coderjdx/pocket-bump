@@ -191,7 +191,7 @@ class BattleEngine {
     if (a >= 255) return true;
 
     // Shake check
-    double b = 65536 * pow(a / 255.0, 0.25);
+    double b = 65536.0 * pow(a / 255.0, 0.25).toDouble();
     for (int i = 0; i < 4; i++) {
       if (_rng.nextInt(65536) >= b) {
         return false; // Broke free on this shake
