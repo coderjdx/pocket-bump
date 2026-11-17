@@ -41,6 +41,7 @@ class BattleAction {
 class BattleStepEvent {
   final String message;
   final bool isPlayerActor;
+  final String? moveId;
   final PokemonType? moveType;
   final MoveCategory? moveCategory;
   final int damageDealt;
@@ -57,6 +58,7 @@ class BattleStepEvent {
   const BattleStepEvent({
     required this.message,
     required this.isPlayerActor,
+    this.moveId,
     this.moveType,
     this.moveCategory,
     this.damageDealt = 0,
@@ -257,6 +259,7 @@ class BattleEngine {
       events.add(BattleStepEvent(
         message: msg,
         isPlayerActor: isPlayer,
+        moveId: move.id,
         moveType: move.type,
         moveCategory: move.category,
         statChangedLabel: statLabel,
@@ -323,6 +326,7 @@ class BattleEngine {
     events.add(BattleStepEvent(
       message: msgBuffer.toString(),
       isPlayerActor: isPlayer,
+      moveId: move.id,
       moveType: move.type,
       moveCategory: move.category,
       damageDealt: damage,
