@@ -43,6 +43,7 @@ class PokemonSpecies {
   });
 
   double get speciesScale {
+    if (heightMeters <= 0.2) return 0.44;
     if (heightMeters <= 0.3) return 0.49;
     if (heightMeters <= 0.4) return 0.56;
     if (heightMeters <= 0.5) return 0.63;

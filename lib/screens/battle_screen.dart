@@ -2767,6 +2767,214 @@ class _MoveVfxPainter extends CustomPainter {
         }
         break;
 
+      // ─── ADDITIONAL GEN 1 SIGNATURE MOVE VFX ──────────────────────────────
+      case 'karate_chop':
+      case 'cross_chop':
+        final blades = moveId == 'cross_chop' ? 2 : 1;
+        for (int i = 0; i < blades; i++) {
+          final lt = ((t - i * 0.14) / 0.55).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final sign = i == 0 ? 1.0 : -1.0;
+          final pA = defenderCenter + Offset(-26 * sign, -30);
+          final pB = defenderCenter + Offset(26 * sign, 26);
+          canvas.drawLine(
+            pA,
+            Offset.lerp(pA, pB, lt)!,
+            Paint()
+              ..color = Colors.orangeAccent.withOpacity(fade)
+              ..strokeWidth = 7 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+        }
+        break;
+
+      case 'submission':
+        for (int i = 0; i < 3; i++) {
+          final lt = ((t - i * 0.12) / 0.55).clamp(0.0, 1.0);
+          canvas.drawCircle(
+            defenderCenter,
+            14 + lt * 34,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 4 * fade
+              ..color = Colors.redAccent.withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'pay_day':
+        for (int i = 0; i < 6; i++) {
+          final lt = ((t - i * 0.08) / 0.6).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+              perp * (sin(lt * pi * 2 + i) * 14);
+          canvas.drawCircle(pos, 7 * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
+          canvas.drawRect(
+            Rect.fromCenter(center: pos, width: 3, height: 7),
+            Paint()..color = Colors.brown.withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'fury_swipes':
+      case 'x_scissor':
+        final slashAngles = moveId == 'x_scissor' ? [-0.8, 0.8] : [-0.45, 0.0, 0.45];
+        final col = moveId == 'x_scissor' ? Colors.lightGreenAccent : Colors.white;
+        for (int i = 0; i < slashAngles.length; i++) {
+          final lt = ((t - i * 0.11) / 0.5).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final ang = slashAngles[i];
+          final delta = Offset(cos(ang) * 28, sin(ang) * 28);
+          canvas.drawLine(
+            defenderCenter - delta,
+            Offset.lerp(defenderCenter - delta, defenderCenter + delta, lt)!,
+            Paint()
+              ..color = col.withOpacity(fade)
+              ..strokeWidth = 5 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+        }
+        break;
+
+      case 'horn_attack':
+        final thrust = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.5))!;
+        canvas.drawPath(
+          Path()
+            ..moveTo(thrust.dx + unit.dx * 16, thrust.dy + unit.dy * 16)
+            ..lineTo(thrust.dx + perp.dx * 9 - unit.dx * 12, thrust.dy + perp.dy * 9 - unit.dy * 12)
+            ..lineTo(thrust.dx - perp.dx * 9 - unit.dx * 12, thrust.dy - perp.dy * 9 - unit.dy * 12)
+            ..close(),
+          Paint()..color = Colors.white.withOpacity(fade),
+        );
+        break;
+
+      case 'sonic_boom':
+        for (int i = 0; i < 4; i++) {
+          final lt = ((t - i * 0.1) / 0.6).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
+          canvas.drawCircle(
+            pos,
+            10 + lt * 22,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 3 * fade
+              ..color = Colors.cyanAccent.withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'bubble_beam':
+        for (int i = 0; i < 8; i++) {
+          final lt = ((t - i * 0.06) / 0.55).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final wave = sin(lt * 10 + i) * 10;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! + perp * wave;
+          canvas.drawCircle(
+            pos,
+            (5 + (i % 3) * 2.5) * fade,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.5
+              ..color = Colors.lightBlueAccent.withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'waterfall':
+      case 'crabhammer':
+        final accent = moveId == 'crabhammer' ? Colors.redAccent : Colors.lightBlueAccent;
+        final dropT = min(1.0, t / 0.65);
+        canvas.drawLine(
+          defenderCenter + const Offset(0, -100),
+          defenderCenter + Offset(0, -100 + dropT * 115),
+          Paint()
+            ..color = accent.withOpacity(0.9 * fade)
+            ..strokeWidth = 14 * fade
+            ..strokeCap = StrokeCap.round,
+        );
+        canvas.drawCircle(defenderCenter, 16 * fade, Paint()..color = Colors.white.withOpacity(0.65 * fade));
+        break;
+
+      case 'aurora_beam':
+      case 'ice_beam':
+        final colors = moveId == 'aurora_beam'
+            ? [Colors.pinkAccent, Colors.cyanAccent, Colors.lightGreenAccent]
+            : [Colors.cyanAccent, Colors.white, Colors.lightBlueAccent];
+        final reach = min(1.0, t / 0.65);
+        for (int i = 0; i < colors.length; i++) {
+          final off = perp * ((i - 1) * 4.5);
+          canvas.drawLine(
+            attackerCenter + off,
+            Offset.lerp(attackerCenter, defenderCenter, reach)! + off,
+            Paint()
+              ..color = colors[i].withOpacity(0.9 * fade)
+              ..strokeWidth = 4.5 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+        }
+        break;
+
+      case 'spore':
+        for (int i = 0; i < 10; i++) {
+          final lt = ((t - i * 0.05) / 0.6).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final drift = Offset(cos(i * 1.4) * lt * 34, -sin(lt * pi) * 22 + sin(i) * 14);
+          canvas.drawCircle(
+            Offset.lerp(attackerCenter, defenderCenter, lt)! + drift,
+            4.5 * fade,
+            Paint()..color = (i.isEven ? Colors.yellowAccent : Colors.amberAccent).withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'hypnosis':
+        for (int i = 0; i < 3; i++) {
+          final lt = ((t - i * 0.14) / 0.6).clamp(0.0, 1.0);
+          if (lt <= 0) continue;
+          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
+          canvas.drawCircle(
+            pos,
+            8 + i * 6.0,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.8 * fade
+              ..color = Colors.purpleAccent.withOpacity(fade),
+          );
+        }
+        break;
+
+      case 'lick':
+        canvas.drawArc(
+          Rect.fromCenter(center: defenderCenter, width: 46, height: 34),
+          0.2,
+          2.6 * min(1.0, t * 1.6),
+          false,
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 7 * fade
+            ..strokeCap = StrokeCap.round
+            ..color = Colors.pinkAccent.withOpacity(fade),
+        );
+        break;
+
+      case 'night_shade':
+      case 'shadow_ball':
+        final ghostPos = moveId == 'shadow_ball'
+            ? Offset.lerp(attackerCenter, defenderCenter, min(1.0, t / 0.6))!
+            : defenderCenter;
+        canvas.drawCircle(
+          ghostPos,
+          (moveId == 'night_shade' ? 28 + t * 24 : 20) * fade,
+          Paint()..color = const Color(0xFF4A148C).withOpacity(0.85 * fade),
+        );
+        canvas.drawCircle(
+          ghostPos,
+          10 * fade,
+          Paint()..color = Colors.deepPurpleAccent.withOpacity(fade),
+        );
+        break;
+
       default:
         canvas.drawCircle(
           defenderCenter,
