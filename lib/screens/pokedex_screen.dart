@@ -447,8 +447,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
 
             const SizedBox(height: 5),
 
-            // Type Badges (if Seen or Caught)
-            if (isSeen)
+            // Type Badges & Rarity Pill (if Seen or Caught)
+            if (isSeen) ...[
               Wrap(
                 spacing: 4,
                 runSpacing: 2,
@@ -471,8 +471,26 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     ),
                   );
                 }).toList(),
-              )
-            else
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1.5),
+                decoration: BoxDecoration(
+                  color: spec.rarity.color.withOpacity(0.16),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: spec.rarity.color.withOpacity(0.65)),
+                ),
+                child: Text(
+                  spec.rarity.displayName.toUpperCase(),
+                  style: TextStyle(
+                    color: spec.rarity.color,
+                    fontSize: 7.5,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ] else
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
@@ -604,14 +622,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          ...spec.types.map((t) => Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4),
-                                child: TypeBadge(type: t),
-                              )),
-                          const SizedBox(width: 8),
+                          ...spec.types.map((t) => TypeBadge(type: t)),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
@@ -624,6 +641,23 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 color: Colors.white70,
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: spec.rarity.color.withOpacity(0.16),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: spec.rarity.color.withOpacity(0.65)),
+                            ),
+                            child: Text(
+                              "${spec.rarity.displayName.toUpperCase()} • ${(spec.rarity.encounterProbability * 100).round()}%",
+                              style: TextStyle(
+                                color: spec.rarity.color,
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.4,
                               ),
                             ),
                           ),

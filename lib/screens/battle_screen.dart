@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/battle_engine.dart';
@@ -1484,7 +1485,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         : 0.0;
 
     return Container(
-      width: 170,
+      width: 184,
       padding: const EdgeInsets.all(9),
       decoration: BoxDecoration(
         color: const Color(0xFF23232E).withOpacity(0.92),
@@ -1533,6 +1534,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  if (!isPlayer)
+                    Container(
+                      margin: const EdgeInsets.only(right: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: mon.species.rarity.color.withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: mon.species.rarity.color.withOpacity(0.7),
+                          width: 0.8,
+                        ),
+                      ),
+                      child: Text(
+                        mon.species.rarity.displayName.toUpperCase(),
+                        style: TextStyle(
+                          color: mon.species.rarity.color,
+                          fontSize: 7.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -1,4 +1,46 @@
+import 'package:flutter/material.dart';
 import 'pokemon_type.dart';
+
+enum PokemonRarity {
+  common,
+  uncommon,
+  rare,
+}
+
+extension PokemonRarityExtension on PokemonRarity {
+  String get displayName {
+    switch (this) {
+      case PokemonRarity.common:
+        return 'Common';
+      case PokemonRarity.uncommon:
+        return 'Uncommon';
+      case PokemonRarity.rare:
+        return 'Rare';
+    }
+  }
+
+  double get encounterProbability {
+    switch (this) {
+      case PokemonRarity.common:
+        return 0.65;
+      case PokemonRarity.uncommon:
+        return 0.30;
+      case PokemonRarity.rare:
+        return 0.05;
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case PokemonRarity.common:
+        return const Color(0xFFB0BEC5);
+      case PokemonRarity.uncommon:
+        return const Color(0xFF4FC3F7);
+      case PokemonRarity.rare:
+        return const Color(0xFFFFD54F);
+    }
+  }
+}
 
 class LearnedMove {
   final int level;
@@ -20,6 +62,9 @@ class PokemonSpecies {
   final int baseCatchRate;
   final int baseExp;
   final double heightMeters;
+  final int evolutionStage;
+  final bool isPseudoLegendary;
+  final PokemonRarity? rarityOverride;
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
   final List<LearnedMove> learnset;
@@ -37,10 +82,26 @@ class PokemonSpecies {
     this.baseCatchRate = 45,
     this.baseExp = 64,
     this.heightMeters = 0.7,
+    this.evolutionStage = 1,
+    this.isPseudoLegendary = false,
+    this.rarityOverride,
     this.evolutionLevel,
     this.evolutionSpeciesId,
     this.learnset = const [LearnedMove(1, 'tackle')],
   });
+
+  bool get isFinalStage => evolutionSpeciesId == null;
+
+  PokemonRarity get rarity {
+    if (rarityOverride != null) return rarityOverride!;
+    if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
+      return PokemonRarity.rare;
+    }
+    if (evolutionStage == 2) {
+      return PokemonRarity.uncommon;
+    }
+    return PokemonRarity.common;
+  }
 
   double get speciesScale {
     if (heightMeters <= 0.2) return 0.44;
