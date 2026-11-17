@@ -20,6 +20,8 @@ class Trainer extends ChangeNotifier {
   int greatBalls;
   int ultraBalls;
   int potions;
+  int superPotions;
+  int hyperPotions;
   int revives;
   int totalSteps;
   int dailySteps;
@@ -33,11 +35,13 @@ class Trainer extends ChangeNotifier {
     required this.name,
     TrainerAvatar? avatar,
     List<PokemonInstance>? party,
-    this.pokeBalls = 10,
-    this.greatBalls = 3,
-    this.ultraBalls = 1,
+    this.pokeBalls = 5,
+    this.greatBalls = 0,
+    this.ultraBalls = 0,
     this.potions = 5,
-    this.revives = 2,
+    this.superPotions = 0,
+    this.hyperPotions = 0,
+    this.revives = 0,
     this.totalSteps = 0,
     this.dailySteps = 0,
     String? lastStepDate,
@@ -143,7 +147,14 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  int get totalItems => pokeBalls + greatBalls + ultraBalls + potions + revives;
+  int get totalItems =>
+      pokeBalls +
+      greatBalls +
+      ultraBalls +
+      potions +
+      superPotions +
+      hyperPotions +
+      revives;
 
   void setLeadPokemon(int index) {
     if (index <= 0 || index >= party.length) return;
@@ -240,6 +251,12 @@ class Trainer extends ChangeNotifier {
       case 'potion':
         potions = (potions + delta).clamp(0, 99);
         break;
+      case 'super_potion':
+        superPotions = (superPotions + delta).clamp(0, 99);
+        break;
+      case 'hyper_potion':
+        hyperPotions = (hyperPotions + delta).clamp(0, 99);
+        break;
       case 'revive':
         revives = (revives + delta).clamp(0, 99);
         break;
@@ -254,6 +271,7 @@ class Trainer extends ChangeNotifier {
     greatBalls = (greatBalls + 2).clamp(0, 99);
     ultraBalls = (ultraBalls + 1).clamp(0, 99);
     potions = (potions + 3).clamp(0, 99);
+    superPotions = (superPotions + 2).clamp(0, 99);
     revives = (revives + 1).clamp(0, 99);
     notifyListeners();
   }
@@ -268,6 +286,8 @@ class Trainer extends ChangeNotifier {
       'greatBalls': greatBalls,
       'ultraBalls': ultraBalls,
       'potions': potions,
+      'superPotions': superPotions,
+      'hyperPotions': hyperPotions,
       'revives': revives,
       'totalSteps': totalSteps,
       'dailySteps': dailySteps,
@@ -288,11 +308,13 @@ class Trainer extends ChangeNotifier {
       (a) => a.id == avatarId,
       orElse: () => TrainerAvatar.presets.first,
     );
-    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 10).clamp(0, 99);
-    greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 3).clamp(0, 99);
-    ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 1).clamp(0, 99);
+    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 5).clamp(0, 99);
+    greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     potions = ((json['potions'] as num?)?.toInt() ?? 5).clamp(0, 99);
-    revives = ((json['revives'] as num?)?.toInt() ?? 2).clamp(0, 99);
+    superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    revives = ((json['revives'] as num?)?.toInt() ?? 0).clamp(0, 99);
     totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
     dailySteps = max(0, (json['dailySteps'] as num?)?.toInt() ?? 0);
     lastStepDate = (json['lastStepDate'] as String?) ?? todayDateKey();
@@ -373,11 +395,13 @@ class Trainer extends ChangeNotifier {
     name = 'Red';
     avatar = TrainerAvatar.presets.first;
     party = [];
-    pokeBalls = 10;
-    greatBalls = 3;
-    ultraBalls = 1;
+    pokeBalls = 5;
+    greatBalls = 0;
+    ultraBalls = 0;
     potions = 5;
-    revives = 2;
+    superPotions = 0;
+    hyperPotions = 0;
+    revives = 0;
     totalSteps = 0;
     dailySteps = 0;
     lastStepDate = todayDateKey();

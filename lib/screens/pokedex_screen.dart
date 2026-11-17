@@ -652,7 +652,9 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               border: Border.all(color: spec.rarity.color.withOpacity(0.65)),
                             ),
                             child: Text(
-                              "${spec.rarity.displayName.toUpperCase()} • ${(spec.rarity.encounterProbability * 100).round()}%",
+                              spec.rarity == PokemonRarity.special
+                                  ? "SPECIAL • EVENT ONLY"
+                                  : "${spec.rarity.displayName.toUpperCase()} • ${(spec.rarity.encounterProbability * 100).round()}%",
                               style: TextStyle(
                                 color: spec.rarity.color,
                                 fontSize: 10.5,

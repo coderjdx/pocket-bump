@@ -5,6 +5,7 @@ enum PokemonRarity {
   common,
   uncommon,
   rare,
+  special,
 }
 
 extension PokemonRarityExtension on PokemonRarity {
@@ -16,6 +17,8 @@ extension PokemonRarityExtension on PokemonRarity {
         return 'Uncommon';
       case PokemonRarity.rare:
         return 'Rare';
+      case PokemonRarity.special:
+        return 'Special';
     }
   }
 
@@ -27,6 +30,8 @@ extension PokemonRarityExtension on PokemonRarity {
         return 0.30;
       case PokemonRarity.rare:
         return 0.05;
+      case PokemonRarity.special:
+        return 0.0;
     }
   }
 
@@ -38,6 +43,8 @@ extension PokemonRarityExtension on PokemonRarity {
         return const Color(0xFF4FC3F7);
       case PokemonRarity.rare:
         return const Color(0xFFFFD54F);
+      case PokemonRarity.special:
+        return const Color(0xFFE040FB);
     }
   }
 }
@@ -64,6 +71,8 @@ class PokemonSpecies {
   final double heightMeters;
   final int evolutionStage;
   final bool isPseudoLegendary;
+  final bool isLegendary;
+  final bool isMythical;
   final PokemonRarity? rarityOverride;
   final int minEncounterLevel;
   final int? evolutionLevel;
@@ -85,6 +94,8 @@ class PokemonSpecies {
     this.heightMeters = 0.7,
     this.evolutionStage = 1,
     this.isPseudoLegendary = false,
+    this.isLegendary = false,
+    this.isMythical = false,
     this.rarityOverride,
     this.minEncounterLevel = 2,
     this.evolutionLevel,
@@ -96,6 +107,9 @@ class PokemonSpecies {
 
   PokemonRarity get rarity {
     if (rarityOverride != null) return rarityOverride!;
+    if (isLegendary || isMythical) {
+      return PokemonRarity.special;
+    }
     if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
       return PokemonRarity.rare;
     }
@@ -120,6 +134,7 @@ class PokemonSpecies {
   }
 
   bool canEncounterAtPlayerLevel(int playerLevel) {
+    if (rarity == PokemonRarity.special) return false;
     return playerLevel >= requiredPlayerLevelForEncounter;
   }
 

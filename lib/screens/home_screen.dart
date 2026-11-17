@@ -1540,6 +1540,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 count: trainer.pokeBalls,
                 color: Colors.redAccent,
                 icon: Icons.catching_pokemon,
+                rarity: 'Common',
               ),
               _ItemMeta(
                 id: 'great_ball',
@@ -1548,6 +1549,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 count: trainer.greatBalls,
                 color: Colors.blueAccent,
                 icon: Icons.catching_pokemon,
+                rarity: 'Uncommon',
               ),
               _ItemMeta(
                 id: 'ultra_ball',
@@ -1556,15 +1558,37 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 count: trainer.ultraBalls,
                 color: Colors.amberAccent,
                 icon: Icons.catching_pokemon,
+                rarity: 'Rare',
               ),
               _ItemMeta(
                 id: 'potion',
                 name: 'Potion',
-                description: 'Restores party HP, status, and move PP.',
+                description: 'Restores 20 HP for a party Pokémon.',
                 count: trainer.potions,
                 color: Colors.greenAccent,
                 icon: Icons.medical_services,
                 isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'super_potion',
+                name: 'Super Potion',
+                description: 'Restores 50 HP for a party Pokémon.',
+                count: trainer.superPotions,
+                color: Colors.tealAccent,
+                icon: Icons.medical_services,
+                isHealing: true,
+                rarity: 'Uncommon',
+              ),
+              _ItemMeta(
+                id: 'hyper_potion',
+                name: 'Hyper Potion',
+                description: 'Restores 200 HP for a party Pokémon.',
+                count: trainer.hyperPotions,
+                color: Colors.pinkAccent,
+                icon: Icons.medical_services,
+                isHealing: true,
+                rarity: 'Rare',
               ),
               _ItemMeta(
                 id: 'revive',
@@ -1574,6 +1598,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 color: Colors.orangeAccent,
                 icon: Icons.favorite,
                 isHealing: true,
+                rarity: 'Rare',
               ),
             ];
 
@@ -1686,6 +1711,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           const SizedBox(width: 8),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
+                                                horizontal: 6, vertical: 1.5),
+                                            decoration: BoxDecoration(
+                                              color: item.color.withOpacity(0.18),
+                                              borderRadius: BorderRadius.circular(6),
+                                              border: Border.all(
+                                                color: item.color.withOpacity(0.6),
+                                                width: 0.8,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              item.rarity.toUpperCase(),
+                                              style: TextStyle(
+                                                color: item.color,
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 0.4,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 7, vertical: 2),
                                             decoration: BoxDecoration(
                                               color: Colors.black38,
@@ -1794,6 +1841,7 @@ class _ItemMeta {
   final Color color;
   final IconData icon;
   final bool isHealing;
+  final String rarity;
 
   const _ItemMeta({
     required this.id,
@@ -1803,5 +1851,6 @@ class _ItemMeta {
     required this.color,
     required this.icon,
     this.isHealing = false,
+    this.rarity = 'Common',
   });
 }
