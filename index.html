@@ -43,6 +43,7 @@
 
   <title>pocket_bump</title>
   <link rel="manifest" href="manifest.json">
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister()));}</script>
 </head>
 <body>
   <!--
