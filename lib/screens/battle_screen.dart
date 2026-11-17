@@ -53,6 +53,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Offset _opponentLungeOffset = Offset.zero;
   bool _playerFlash = false;
   bool _opponentFlash = false;
+  bool _playerSubmerged = false;
+  bool _opponentSubmerged = false;
   bool _visualPlayerFainted = false;
   bool _visualOpponentFainted = false;
   bool _opponentInBall = false;
@@ -387,18 +389,83 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
+  bool _isHeavyMove(String moveId) {
+    const heavyMoves = {
+      'earthquake',
+      'rock_slide',
+      'body_slam',
+      'submission',
+      'cross_chop',
+      'crabhammer',
+      'drill_peck',
+      'aqua_tail',
+      'fire_blast',
+      'hydro_pump',
+      'solar_beam',
+      'thunderbolt',
+    };
+    return heavyMoves.contains(moveId);
+  }
+
+  Offset _lungeForMove(String moveId, bool isPlayer) {
+    const highLeapMoves = {
+      'body_slam',
+      'submission',
+      'double_kick',
+      'crabhammer',
+      'waterfall',
+      'splash',
+    };
+    const rapidBlitzMoves = {
+      'quick_attack',
+      'drill_peck',
+      'peck',
+      'horn_attack',
+      'slash',
+      'x_scissor',
+      'karate_chop',
+      'cross_chop',
+      'fury_swipes',
+      'aqua_tail',
+      'wing_attack',
+      'poison_jab',
+      'twinneedle',
+      'tackle',
+    };
+    if (highLeapMoves.contains(moveId)) {
+      return isPlayer ? const Offset(0.18, -0.26) : const Offset(-0.18, 0.22);
+    }
+    if (rapidBlitzMoves.contains(moveId)) {
+      return isPlayer ? const Offset(0.26, -0.13) : const Offset(-0.26, 0.13);
+    }
+    return isPlayer ? const Offset(0.16, -0.08) : const Offset(-0.16, 0.08);
+  }
+
     // Standard attack / stat / status move
     if (event.moveType != null && !event.isMiss) {
       final isPlayer = event.isPlayerActor;
       final isSelfBuff = event.statChangedLabel != null && event.statTargetIsSelf;
+      final moveId = event.moveId ?? event.moveType!.name;
+      final isDig = moveId == 'dig';
 
-      // 1. Lunge forward (unless self-buff)
-      if (!isSelfBuff) {
+      // 1. Move-specific attacker choreography (submerge for Dig, lunge/leap otherwise)
+      if (isDig) {
         setState(() {
           if (isPlayer) {
-            _playerLungeOffset = const Offset(0.16, -0.08);
+            _playerSubmerged = true;
           } else {
-            _opponentLungeOffset = const Offset(-0.16, 0.08);
+            _opponentSubmerged = true;
+          }
+        });
+        await Future.delayed(const Duration(milliseconds: 180));
+        if (!mounted) return;
+      } else if (!isSelfBuff) {
+        final lunge = _lungeForMove(moveId, isPlayer);
+        setState(() {
+          if (isPlayer) {
+            _playerLungeOffset = lunge;
+          } else {
+            _opponentLungeOffset = lunge;
           }
         });
         await Future.delayed(const Duration(milliseconds: 140));
@@ -409,16 +476,23 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _playerLungeOffset = Offset.zero;
         _opponentLungeOffset = Offset.zero;
-        _activeMoveId = event.moveId ?? event.moveType!.name;
+        _activeMoveId = moveId;
         _activeVfxType = event.moveType;
         _vfxAttackerIsPlayer = isPlayer;
         _vfxTargetIsSelf = isSelfBuff;
       });
       _vfxController.forward(from: 0);
 
-      // Pause briefly so projectile/beam reaches target before hit flash
-      await Future.delayed(const Duration(milliseconds: 220));
+      // Pause briefly so projectile/beam/burrow reaches target before hit flash
+      await Future.delayed(Duration(milliseconds: isDig ? 280 : 220));
       if (!mounted) return;
+
+      if (isDig) {
+        setState(() {
+          _playerSubmerged = false;
+          _opponentSubmerged = false;
+        });
+      }
 
       // 3. Impact flash, shake, floating callout & HP animation
       final bool calloutOnOpp = isSelfBuff ? !isPlayer : isPlayer;
@@ -464,7 +538,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           } else {
             _playerShakeController.forward(from: 0);
           }
-          if (event.isCrit || event.effectiveness >= 2.0) {
+          if (event.isCrit || event.effectiveness >= 2.0 || _isHeavyMove(moveId)) {
             _arenaShakeController.forward(from: 0);
           }
         } else {
@@ -481,6 +555,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _playerFlash = false;
         _opponentFlash = false;
+        _playerSubmerged = false;
+        _opponentSubmerged = false;
       });
       await Future.delayed(const Duration(milliseconds: 520));
       if (!mounted) return;
@@ -829,14 +905,42 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               filterQuality: FilterQuality.none,
                             ),
 
-                            // Thunderbolt dark storm tint overlay
-                            if (_activeMoveId == 'thunderbolt')
+                            // Atmospheric Arena Tint Overlay for dramatic moves
+                            if (const {
+                              'thunderbolt',
+                              'night_shade',
+                              'shadow_ball',
+                              'moonblast',
+                              'hypnosis',
+                              'glare',
+                            }.contains(_activeMoveId))
+                              AnimatedBuilder(
+                                animation: _vfxController,
+                                builder: (context, _) {
+                                  final flash = sin(_vfxController.value * pi);
+                                  final tint = _activeMoveId == 'moonblast'
+                                      ? const Color(0xFF1A0E2E)
+                                      : Colors.black;
+                                  return Container(
+                                    color: tint.withOpacity(0.46 * flash),
+                                  );
+                                },
+                              )
+                            else if (const {
+                              'solar_beam',
+                              'fire_blast',
+                              'psychic',
+                              'ice_beam',
+                              'aurora_beam',
+                              'power_gem',
+                            }.contains(_activeMoveId))
                               AnimatedBuilder(
                                 animation: _vfxController,
                                 builder: (context, _) {
                                   final flash = sin(_vfxController.value * pi);
                                   return Container(
-                                    color: Colors.black.withOpacity(0.42 * flash),
+                                    color: (_activeVfxType?.color ?? Colors.white)
+                                        .withOpacity(0.18 * flash),
                                   );
                                 },
                               ),
@@ -870,6 +974,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             _opponentPokemon.species.staticSpriteUrl,
                                         size: oppSize,
                                         isFainted: _visualOpponentFainted,
+                                        isSubmerged: _opponentSubmerged,
                                         lungeOffset: _opponentLungeOffset,
                                         shakeController: _opponentShakeController,
                                         koController: _opponentKoController,
@@ -948,6 +1053,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                               _playerPokemon.species.staticBackSpriteUrl,
                                           size: playerSize,
                                           isFainted: _visualPlayerFainted,
+                                          isSubmerged: _playerSubmerged,
                                           lungeOffset: _playerLungeOffset,
                                           shakeController: _playerShakeController,
                                           koController: _playerKoController,
@@ -1214,6 +1320,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required String fallbackUrl,
     required double size,
     required bool isFainted,
+    bool isSubmerged = false,
     required Offset lungeOffset,
     required AnimationController shakeController,
     required AnimationController koController,
@@ -1296,11 +1403,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       child: spriteImage,
     );
 
-    return AnimatedSlide(
-      offset: lungeOffset,
+    return AnimatedOpacity(
+      opacity: isSubmerged ? 0.0 : 1.0,
       duration: const Duration(milliseconds: 140),
-      curve: Curves.easeOutCubic,
-      child: isFainted ? ClipRect(child: animatedSprite) : animatedSprite,
+      child: AnimatedSlide(
+        offset: isSubmerged ? const Offset(0, 0.35) : lungeOffset,
+        duration: const Duration(milliseconds: 140),
+        curve: Curves.easeOutCubic,
+        child: isFainted ? ClipRect(child: animatedSprite) : animatedSprite,
+      ),
     );
   }
 
@@ -2511,468 +2622,1273 @@ class _MoveVfxPainter extends CustomPainter {
         }
         break;
 
-      // ─── NEW KANTO MOVES (FLYING, FIGHTING, GROUND, ROCK, FAIRY, GRASS, PSYCHIC) ─
+      // ─── NEW KANTO MOVES (FLYING, FIGHTING, GROUND, ROCK, FAIRY, GRASS, PSYCHIC, GHOST, ICE) ─
       case 'peck':
       case 'drill_peck':
-        final spins = moveId == 'drill_peck' ? 4 : 1;
-        for (int i = 0; i < spins; i++) {
-          final lt = ((t - i * 0.1) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final stabPos = attackerCenter + unit * (lt * dist * 0.92);
-          canvas.drawLine(
-            stabPos - unit * 16,
-            stabPos + unit * 14,
-            Paint()
-              ..color = Colors.white.withOpacity(fade)
-              ..strokeWidth = moveId == 'drill_peck' ? 6 : 4
-              ..strokeCap = StrokeCap.round,
-          );
-        }
-        if (t > 0.35) {
-          canvas.drawCircle(
-            defenderCenter,
-            14 + (t - 0.35) * 28,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3.5 * fade
-              ..color = Colors.cyanAccent.withOpacity(fade),
-          );
+        {
+          final isDrill = moveId == 'drill_peck';
+          final strikes = isDrill ? 3 : 2;
+          for (int i = 0; i < strikes; i++) {
+            final lt = ((t - i * 0.14) / 0.48).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final off = perp * ((i - (strikes - 1) / 2.0) * 14.0);
+            final tip = Offset.lerp(attackerCenter + off, defenderCenter + off * 0.4, lt)!;
+            final beakLen = isDrill ? 26.0 : 18.0;
+            final beakW = isDrill ? 10.0 : 7.0;
+            final beakPath = Path()
+              ..moveTo(tip.dx + unit.dx * beakLen, tip.dy + unit.dy * beakLen)
+              ..lineTo(tip.dx - unit.dx * 8 + perp.dx * beakW, tip.dy - unit.dy * 8 + perp.dy * beakW)
+              ..lineTo(tip.dx - unit.dx * 8 - perp.dx * beakW, tip.dy - unit.dy * 8 - perp.dy * beakW)
+              ..close();
+            canvas.drawPath(
+              beakPath,
+              Paint()..color = (isDrill ? Colors.cyanAccent : Colors.amberAccent).withOpacity(fade),
+            );
+            canvas.drawPath(
+              beakPath,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2.0
+                ..color = Colors.white.withOpacity(fade),
+            );
+            if (isDrill) {
+              // Spinning helical wind-tunnel rings along drill shaft
+              for (int r = 0; r < 3; r++) {
+                final ringPos = tip - unit * (r * 11.0);
+                canvas.drawOval(
+                  Rect.fromCenter(center: ringPos, width: 22 - r * 3.0, height: 10),
+                  Paint()
+                    ..style = PaintingStyle.stroke
+                    ..strokeWidth = 2.5 * fade
+                    ..color = Colors.white.withOpacity(0.85 * fade),
+                );
+              }
+            }
+          }
+          if (t > 0.35) {
+            final st = (t - 0.35) / 0.65;
+            for (int f = 0; f < 6; f++) {
+              final ang = (f / 6) * pi * 2 + st * 2.0;
+              final fp = defenderCenter + Offset(cos(ang) * st * 42, sin(ang) * st * 34);
+              _drawStarPath(canvas, fp, 6 * fade, 2.5 * fade, Colors.white, fade, points: 4);
+            }
+          }
         }
         break;
 
       case 'double_kick':
-        for (int kick = 0; kick < 2; kick++) {
-          final lt = ((t - kick * 0.32) / 0.45).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final hitPos = defenderCenter + Offset(kick == 0 ? -12 : 12, kick == 0 ? 6 : -8);
-          canvas.drawCircle(
-            hitPos,
-            10 + lt * 20,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 4 * fade
-              ..color = Colors.deepOrangeAccent.withOpacity(fade),
-          );
-          canvas.drawCircle(hitPos, 8 * (1 - lt * 0.4), Paint()..color = Colors.white.withOpacity(fade));
+        {
+          for (int kick = 0; kick < 2; kick++) {
+            final lt = ((t - kick * 0.30) / 0.45).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final hitPos = defenderCenter + Offset(kick == 0 ? -15 : 15, kick == 0 ? 8 : -10);
+            canvas.drawCircle(
+              hitPos,
+              12 + lt * 28,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.5 * (1.0 - lt * 0.4) * fade
+                ..color = Colors.deepOrangeAccent.withOpacity(fade),
+            );
+            for (int r = 0; r < 8; r++) {
+              final ang = (r / 8) * pi * 2 + kick * 0.4;
+              canvas.drawLine(
+                hitPos + Offset(cos(ang) * 8, sin(ang) * 8),
+                hitPos + Offset(cos(ang) * (14 + lt * 26), sin(ang) * (14 + lt * 26)),
+                Paint()
+                  ..color = (r.isEven ? Colors.white : Colors.amberAccent).withOpacity(fade)
+                  ..strokeWidth = 3.2
+                  ..strokeCap = StrokeCap.round,
+              );
+            }
+            canvas.drawCircle(
+              hitPos,
+              10 * (1.0 - lt * 0.45),
+              Paint()..color = Colors.white.withOpacity(0.9 * fade),
+            );
+          }
         }
         break;
 
       case 'mud_slap':
       case 'acid':
-        final globColor = moveId == 'mud_slap' ? const Color(0xFF9C7A4C) : Colors.lightGreenAccent;
-        for (int i = 0; i < 6; i++) {
-          final lt = ((t - i * 0.06) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final spread = perp * ((i - 2.5) * 9.0 * lt);
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! + spread;
-          canvas.drawCircle(pos, (6 + i % 3 * 2.0) * fade, Paint()..color = globColor.withOpacity(fade));
+        {
+          final isMud = moveId == 'mud_slap';
+          final mainCol = isMud ? const Color(0xFF8D6E63) : Colors.lightGreenAccent;
+          final darkCol = isMud ? const Color(0xFF4E342E) : Colors.green.shade700;
+          for (int i = 0; i < 8; i++) {
+            final lt = ((t - i * 0.05) / 0.55).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final arc = sin(lt * pi) * (18 + (i % 3) * 8.0);
+            final spread = perp * ((i - 3.5) * 8.0 * lt);
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+                spread +
+                Offset(0, -arc);
+            canvas.drawCircle(pos, (6 + (i % 3) * 2.5) * fade, Paint()..color = darkCol.withOpacity(fade));
+            canvas.drawCircle(
+                pos + const Offset(-1.5, -1.5), (4 + (i % 2) * 1.5) * fade, Paint()..color = mainCol.withOpacity(fade));
+          }
+          if (t > 0.42) {
+            final bt = (t - 0.42) / 0.58;
+            for (int b = 0; b < 5; b++) {
+              final bx = (b - 2.0) * 14.0;
+              final by = isMud ? bt * 24.0 : -bt * 34.0;
+              final bp = defenderCenter + Offset(bx, by + sin(b * 1.7) * 8.0);
+              canvas.drawCircle(
+                bp,
+                (isMud ? 6.0 : 5.0 + (b % 2) * 2.0) * (1.0 - bt * 0.35) * fade,
+                Paint()..color = mainCol.withOpacity(0.85 * fade),
+              );
+              if (!isMud) {
+                canvas.drawCircle(
+                  bp,
+                  6.5 * (1.0 - bt * 0.3),
+                  Paint()
+                    ..style = PaintingStyle.stroke
+                    ..strokeWidth = 1.6
+                    ..color = Colors.white.withOpacity(0.7 * fade),
+                );
+              }
+            }
+          }
         }
         break;
 
       case 'dig':
-        if (t < 0.45) {
-          final r = (t / 0.45) * 32;
-          canvas.drawOval(
-            Rect.fromCenter(center: attackerCenter + const Offset(0, 18), width: r * 2, height: r * 0.7),
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3.5
-              ..color = const Color(0xFF9C7A4C).withOpacity(fade),
-          );
-        } else {
-          final pop = (t - 0.45) / 0.55;
-          canvas.drawLine(
-            defenderCenter + const Offset(0, 32),
-            defenderCenter + Offset(0, 32 - pop * 64),
-            Paint()
-              ..color = const Color(0xFFD7A86E).withOpacity(fade)
-              ..strokeWidth = 14
-              ..strokeCap = StrokeCap.round,
-          );
+        {
+          if (t < 0.48) {
+            // Phase 1: Burrow mound at attacker + subterranean dirt trail toward defender
+            final bt = (t / 0.48).clamp(0.0, 1.0);
+            for (int cl = 0; cl < 5; cl++) {
+              final cx = (cl - 2.0) * 10.0;
+              final cy = -sin(bt * pi * 2 + cl) * 12.0 + 18.0;
+              canvas.drawCircle(
+                attackerCenter + Offset(cx, cy),
+                7.0 * (1.0 - bt * 0.4),
+                Paint()..color = const Color(0xFF795548).withOpacity(0.9),
+              );
+            }
+            canvas.drawOval(
+              Rect.fromCenter(center: attackerCenter + const Offset(0, 20), width: 52, height: 18),
+              Paint()..color = const Color(0xFF4E342E).withOpacity(0.85),
+            );
+            // Moving subterranean tremor mounds along the path
+            final steps = (bt * 6).floor();
+            for (int s = 0; s <= steps; s++) {
+              final mp = Offset.lerp(attackerCenter + const Offset(0, 18),
+                  defenderCenter + const Offset(0, 18), s / 6.0)!;
+              canvas.drawOval(
+                Rect.fromCenter(center: mp, width: 20, height: 8),
+                Paint()..color = const Color(0xFF8D6E63).withOpacity(0.85),
+              );
+            }
+          } else {
+            // Phase 2: Ground fissure & earthen geyser eruption beneath defender
+            final et = ((t - 0.48) / 0.52).clamp(0.0, 1.0);
+            canvas.drawOval(
+              Rect.fromCenter(
+                center: defenderCenter + const Offset(0, 20),
+                width: 30 + et * 64,
+                height: 12 + et * 24,
+              ),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.5 * fade
+                ..color = const Color(0xFFD7A86E).withOpacity(fade),
+            );
+            for (int sp = -2; sp <= 2; sp++) {
+              final basePt = defenderCenter + Offset(sp * 11.0, 22);
+              final peakPt = defenderCenter + Offset(sp * 14.0, 18 - sin(et * pi) * 68);
+              canvas.drawLine(
+                basePt,
+                peakPt,
+                Paint()
+                  ..color = (sp.isEven ? const Color(0xFFD7A86E) : const Color(0xFF8D6E63))
+                      .withOpacity(fade)
+                  ..strokeWidth = 8.0 * fade
+                  ..strokeCap = StrokeCap.round,
+              );
+            }
+            for (int r = 0; r < 6; r++) {
+              final ang = -pi * (0.15 + r / 6.0 * 0.70);
+              final rp = defenderCenter + Offset(cos(ang) * et * 48, 12 + sin(ang) * et * 54);
+              _drawPolygonBoulder(canvas, rp, 7.0, et * 5 + r, fade);
+            }
+          }
         }
         break;
 
       case 'earthquake':
-        for (int i = 0; i < 3; i++) {
-          final lt = ((t - i * 0.14) / 0.65).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          canvas.drawOval(
-            Rect.fromCenter(
-              center: defenderCenter + const Offset(0, 18),
-              width: 36 + lt * 130,
-              height: 14 + lt * 46,
-            ),
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 4.5 * fade
-              ..color = const Color(0xFFE0C068).withOpacity(fade),
-          );
+        {
+          // Jagged tectonic fault cracks + expanding seismic shockwaves + bouncing boulders
+          for (int k = 0; k < 4; k++) {
+            final ang = (k / 4) * pi * 2 + 0.35;
+            final crackPath = Path()..moveTo(defenderCenter.dx, defenderCenter.dy + 18);
+            Offset cur = defenderCenter + const Offset(0, 18);
+            for (int seg = 1; seg <= 4; seg++) {
+              final reachSeg = min(1.0, t * 1.8) * (seg / 4.0) * 68.0;
+              final jitter = (seg.isEven ? 1 : -1) * 11.0;
+              cur = defenderCenter +
+                  const Offset(0, 18) +
+                  Offset(cos(ang) * reachSeg + sin(ang) * jitter,
+                      sin(ang) * reachSeg * 0.45 + cos(ang) * jitter * 0.4);
+              crackPath.lineTo(cur.dx, cur.dy);
+            }
+            canvas.drawPath(
+              crackPath,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.5 * fade
+                ..strokeCap = StrokeCap.round
+                ..color = const Color(0xFF3E2723).withOpacity(fade),
+            );
+            canvas.drawPath(
+              crackPath,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2.0 * fade
+                ..color = const Color(0xFFFFD54F).withOpacity(0.8 * fade),
+            );
+          }
+          for (int i = 0; i < 3; i++) {
+            final lt = ((t - i * 0.14) / 0.65).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            canvas.drawOval(
+              Rect.fromCenter(
+                center: defenderCenter + const Offset(0, 18),
+                width: 40 + lt * 145,
+                height: 14 + lt * 48,
+              ),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.5 * fade
+                ..color = const Color(0xFFE0C068).withOpacity(fade),
+            );
+          }
+          for (int b = 0; b < 6; b++) {
+            final bx = (b - 2.5) * 24.0;
+            final hop = sin((t * pi * 2 + b * 0.7).clamp(0.0, pi)) * 26.0;
+            _drawPolygonBoulder(
+              canvas,
+              defenderCenter + Offset(bx, 16 - hop),
+              7.5,
+              t * 6 + b,
+              fade,
+            );
+          }
         }
         break;
 
       case 'rock_throw':
       case 'rock_slide':
-        final boulderCount = moveId == 'rock_slide' ? 5 : 2;
-        for (int i = 0; i < boulderCount; i++) {
-          final lt = ((t - i * 0.08) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final xOff = (i - (boulderCount - 1) / 2.0) * 18.0;
-          final startY = defenderCenter.dy - 120;
-          final curY = startY + (defenderCenter.dy - startY) * lt;
-          canvas.drawCircle(
-            Offset(defenderCenter.dx + xOff, curY),
-            moveId == 'rock_slide' ? 12 : 14,
-            Paint()..color = const Color(0xFF8D7B68).withOpacity(fade),
-          );
+        {
+          final isSlide = moveId == 'rock_slide';
+          final boulderCount = isSlide ? 5 : 2;
+          for (int i = 0; i < boulderCount; i++) {
+            final lt = ((t - i * 0.08) / 0.56).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final xOff = (i - (boulderCount - 1) / 2.0) * (isSlide ? 20.0 : 18.0);
+            final startY = defenderCenter.dy - 125;
+            final curY = startY + (defenderCenter.dy + 6 - startY) * (lt * lt);
+            final boulderPos = Offset(defenderCenter.dx + xOff, curY);
+            _drawPolygonBoulder(
+              canvas,
+              boulderPos,
+              isSlide ? 13.0 : 16.0,
+              lt * 4.5 + i,
+              fade,
+            );
+            if (lt > 0.85) {
+              final dt = (lt - 0.85) / 0.15;
+              for (int d = -1; d <= 1; d += 2) {
+                canvas.drawCircle(
+                  boulderPos + Offset(d * dt * 16, 4 - dt * 8),
+                  5 * fade,
+                  Paint()..color = const Color(0xFFD7CCC8).withOpacity(0.75 * fade),
+                );
+              }
+            }
+          }
+          if (t > 0.45) {
+            canvas.drawOval(
+              Rect.fromCenter(
+                center: defenderCenter + const Offset(0, 16),
+                width: 44 + (t - 0.45) * 76,
+                height: 16 + (t - 0.45) * 24,
+              ),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.5 * fade
+                ..color = const Color(0xFFD7CCC8).withOpacity(0.8 * fade),
+            );
+          }
         }
         break;
 
       case 'power_gem':
-        final reach = min(1.0, t / 0.65);
-        final beamEnd = Offset.lerp(attackerCenter, defenderCenter, reach)!;
-        canvas.drawLine(
-          attackerCenter,
-          beamEnd,
-          Paint()
-            ..color = Colors.amberAccent.withOpacity(0.95 * fade)
-            ..strokeWidth = 7 * fade
-            ..strokeCap = StrokeCap.round,
-        );
-        canvas.drawCircle(beamEnd, 10 * fade, Paint()..color = Colors.white.withOpacity(fade));
+        {
+          // Rotating crystalline gem prism at attacker + refracted gold/magenta beam + gem burst
+          final gemR = 16.0;
+          final rot = t * pi * 3;
+          final prism = Path()
+            ..moveTo(attackerCenter.dx + cos(rot) * gemR, attackerCenter.dy + sin(rot) * gemR)
+            ..lineTo(attackerCenter.dx + cos(rot + pi / 2) * gemR * 0.65,
+                attackerCenter.dy + sin(rot + pi / 2) * gemR * 0.65)
+            ..lineTo(attackerCenter.dx - cos(rot) * gemR, attackerCenter.dy - sin(rot) * gemR)
+            ..lineTo(attackerCenter.dx - cos(rot + pi / 2) * gemR * 0.65,
+                attackerCenter.dy - sin(rot + pi / 2) * gemR * 0.65)
+            ..close();
+          canvas.drawPath(prism, Paint()..color = Colors.pinkAccent.withOpacity(0.85 * fade));
+          canvas.drawPath(
+            prism,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.0
+              ..color = Colors.white.withOpacity(fade),
+          );
+          final beamReach = min(1.0, t / 0.60);
+          final beamEnd = Offset.lerp(attackerCenter, defenderCenter, beamReach)!;
+          canvas.drawLine(
+            attackerCenter,
+            beamEnd,
+            Paint()
+              ..color = Colors.amberAccent.withOpacity(0.9 * fade)
+              ..strokeWidth = 10 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+          canvas.drawLine(
+            attackerCenter,
+            beamEnd,
+            Paint()
+              ..color = Colors.white.withOpacity(fade)
+              ..strokeWidth = 4 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+          if (t > 0.40) {
+            final st = (t - 0.40) / 0.60;
+            for (int g = 0; g < 6; g++) {
+              final ang = (g / 6) * pi * 2 + st * 2.5;
+              final gp = defenderCenter + Offset(cos(ang) * st * 38, sin(ang) * st * 38);
+              _drawStarPath(
+                canvas,
+                gp,
+                7 * fade,
+                3 * fade,
+                g.isEven ? Colors.pinkAccent : Colors.amberAccent,
+                fade,
+                points: 4,
+              );
+            }
+          }
+        }
         break;
 
       case 'sing':
+        {
+          const notes = ['♪', '♫', '♬', '♪', '♫'];
+          for (int i = 0; i < notes.length; i++) {
+            final lt = ((t - i * 0.11) / 0.65).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final wave = perp * (sin(lt * pi * 3 + i * 1.1) * 18);
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+                wave +
+                Offset(0, -lt * 16);
+            canvas.drawCircle(
+              pos,
+              14,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2.0 * fade
+                ..color = Colors.pinkAccent.withOpacity(0.55 * fade),
+            );
+            final tp = TextPainter(
+              text: TextSpan(
+                text: notes[i],
+                style: TextStyle(
+                  color: (i.isEven ? Colors.pinkAccent : Colors.cyanAccent).withOpacity(fade),
+                  fontSize: 18 + (i % 2) * 3.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              textDirection: TextDirection.ltr,
+            )..layout();
+            tp.paint(canvas, pos - Offset(tp.width / 2, tp.height / 2));
+          }
+          if (t > 0.55) {
+            final tp = TextPainter(
+              text: TextSpan(
+                text: 'Zzz',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(fade),
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              textDirection: TextDirection.ltr,
+            )..layout();
+            tp.paint(canvas, defenderCenter + Offset(-12, -32 - (t - 0.55) * 28));
+          }
+        }
+        break;
+
       case 'disarming_voice':
-        final ringCol = moveId == 'sing' ? Colors.pinkAccent : Colors.pink.shade200;
-        for (int i = 0; i < 4; i++) {
-          final lt = ((t - i * 0.14) / 0.65).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
-              perp * (sin(lt * pi * 3 + i) * 12);
-          canvas.drawCircle(
-            pos,
-            7 + i * 2.0,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 2.8 * fade
-              ..color = ringCol.withOpacity(fade),
-          );
+        {
+          for (int i = 0; i < 4; i++) {
+            final lt = ((t - i * 0.12) / 0.62).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final wave = perp * (sin(lt * pi * 2.5 + i) * 14);
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! + wave;
+            _drawHeartPath(
+              canvas,
+              pos,
+              10 + lt * 8.0,
+              Paint()..color = (i.isEven ? Colors.pinkAccent : Colors.pink.shade200).withOpacity(0.85 * fade),
+            );
+            _drawHeartPath(
+              canvas,
+              pos,
+              12 + lt * 8.0,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2.0 * fade
+                ..color = Colors.white.withOpacity(0.75 * fade),
+            );
+          }
+          if (t > 0.45) {
+            final st = (t - 0.45) / 0.55;
+            for (int s = 0; s < 5; s++) {
+              final ang = (s / 5) * pi * 2 + st * 2;
+              _drawStarPath(
+                canvas,
+                defenderCenter + Offset(cos(ang) * st * 36, sin(ang) * st * 36),
+                6 * fade,
+                2.5 * fade,
+                Colors.pinkAccent,
+                fade,
+                points: 4,
+              );
+            }
+          }
         }
         break;
 
       case 'body_slam':
-        final slamScale = 1.0 + sin(t * pi) * 0.8;
-        canvas.drawOval(
-          Rect.fromCenter(center: defenderCenter, width: 42 * slamScale, height: 22 * slamScale),
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 4 * fade
-            ..color = Colors.white.withOpacity(fade),
-        );
+        {
+          final slamScale = 1.0 + sin(t * pi) * 0.85;
+          canvas.drawOval(
+            Rect.fromCenter(
+                center: defenderCenter + const Offset(0, 14),
+                width: 58 * slamScale,
+                height: 24 * slamScale),
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 5 * fade
+              ..color = Colors.white.withOpacity(fade),
+          );
+          canvas.drawOval(
+            Rect.fromCenter(
+                center: defenderCenter + const Offset(0, 14),
+                width: 84 * t,
+                height: 34 * t),
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 3.5 * fade
+              ..color = Colors.amberAccent.withOpacity(fade),
+          );
+          for (int i = 0; i < 8; i++) {
+            final ang = (i / 8) * pi * 2;
+            canvas.drawLine(
+              defenderCenter + Offset(cos(ang) * 14, sin(ang) * 10),
+              defenderCenter + Offset(cos(ang) * (20 + t * 42), sin(ang) * (16 + t * 32)),
+              Paint()
+                ..color = Colors.white.withOpacity(fade)
+                ..strokeWidth = 4.0 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+          }
+        }
         break;
 
       case 'swift':
-        for (int i = 0; i < 5; i++) {
-          final lt = ((t - i * 0.08) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
-              perp * (sin(lt * pi) * ((i - 2) * 14.0));
-          canvas.drawCircle(pos, 7 * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
-          canvas.drawCircle(pos, 3.5 * fade, Paint()..color = Colors.white.withOpacity(fade));
+        {
+          for (int i = 0; i < 7; i++) {
+            final lt = ((t - i * 0.065) / 0.52).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final spread = (i - 3.0) * 11.0;
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+                perp * (sin(lt * pi) * spread);
+            final prevPos = Offset.lerp(attackerCenter, defenderCenter, max(0.0, lt - 0.14))! +
+                perp * (sin(max(0.0, lt - 0.14) * pi) * spread);
+            canvas.drawLine(
+              prevPos,
+              pos,
+              Paint()
+                ..color = Colors.amberAccent.withOpacity(0.55 * fade)
+                ..strokeWidth = 4.5 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+            _drawStarPath(
+              canvas,
+              pos,
+              11 * fade,
+              4.8 * fade,
+              Colors.amberAccent,
+              fade,
+              rotation: lt * 8 + i,
+            );
+            _drawStarPath(
+              canvas,
+              pos,
+              6 * fade,
+              2.6 * fade,
+              Colors.white,
+              fade,
+              rotation: lt * 8 + i,
+            );
+          }
         }
         break;
 
       case 'splash':
-        for (int i = 0; i < 6; i++) {
-          final ang = -pi * (i / 5.0);
-          final hopPos = attackerCenter +
-              Offset(cos(ang) * t * 34, sin(ang) * t * 28 + t * t * 24);
-          canvas.drawCircle(hopPos, 5 * fade, Paint()..color = Colors.lightBlueAccent.withOpacity(fade));
+        {
+          // Flopping water splash crown + droplet arcs + ripple rings around attacker
+          for (int r = 0; r < 2; r++) {
+            final rt = ((t - r * 0.22) / 0.78).clamp(0.0, 1.0);
+            if (rt <= 0) continue;
+            canvas.drawOval(
+              Rect.fromCenter(
+                center: attackerCenter + const Offset(0, 18),
+                width: 26 + rt * 72,
+                height: 10 + rt * 26,
+              ),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.0 * fade
+                ..color = Colors.lightBlueAccent.withOpacity(fade),
+            );
+          }
+          for (int i = 0; i < 8; i++) {
+            final ang = -pi * (0.08 + (i / 7.0) * 0.84);
+            final hopPos = attackerCenter +
+                Offset(cos(ang) * t * 44, sin(ang) * t * 38 + t * t * 32);
+            canvas.drawCircle(hopPos, 5.5 * fade, Paint()..color = Colors.lightBlueAccent.withOpacity(fade));
+            canvas.drawCircle(hopPos + const Offset(-1, -1), 2.5 * fade, Paint()..color = Colors.white.withOpacity(fade));
+          }
         }
         break;
 
       case 'moonblast':
-        final orbPos = Offset.lerp(
-            defenderCenter + const Offset(0, -110), defenderCenter, min(1.0, t / 0.7))!;
-        canvas.drawCircle(orbPos, 24 * fade, Paint()..color = Colors.pinkAccent.withOpacity(0.55 * fade));
-        canvas.drawCircle(orbPos, 14 * fade, Paint()..color = Colors.white.withOpacity(0.9 * fade));
+        {
+          // Glowing crescent moon high in the sky projecting a celestial pink lunar beam + star bursts
+          final moonCenter = Offset(defenderCenter.dx - 44, max(36.0, defenderCenter.dy - 110));
+          canvas.drawCircle(
+            moonCenter,
+            26 * fade,
+            Paint()..color = Colors.pinkAccent.withOpacity(0.28 * fade),
+          );
+          final moonPath = Path.combine(
+            PathOperation.difference,
+            Path()..addOval(Rect.fromCircle(center: moonCenter, radius: 18)),
+            Path()..addOval(Rect.fromCircle(center: moonCenter + const Offset(7, -4), radius: 15)),
+          );
+          canvas.drawPath(moonPath, Paint()..color = const Color(0xFFFFE0F0).withOpacity(fade));
+
+          final beamReach = min(1.0, t / 0.55);
+          final beamEnd = Offset.lerp(moonCenter, defenderCenter, beamReach)!;
+          canvas.drawLine(
+            moonCenter,
+            beamEnd,
+            Paint()
+              ..color = Colors.pinkAccent.withOpacity(0.55 * fade)
+              ..strokeWidth = 26 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+          canvas.drawLine(
+            moonCenter,
+            beamEnd,
+            Paint()
+              ..color = Colors.white.withOpacity(0.9 * fade)
+              ..strokeWidth = 10 * fade
+              ..strokeCap = StrokeCap.round,
+          );
+          if (t > 0.35) {
+            final st = (t - 0.35) / 0.65;
+            for (int s = 0; s < 6; s++) {
+              final ang = (s / 6) * pi * 2 + st * 2;
+              _drawStarPath(
+                canvas,
+                defenderCenter + Offset(cos(ang) * st * 44, sin(ang) * st * 40),
+                8 * fade,
+                3.5 * fade,
+                s.isEven ? Colors.pinkAccent : Colors.white,
+                fade,
+                points: 4,
+              );
+            }
+          }
+        }
         break;
 
       case 'glare':
-        for (final sign in [-1.0, 1.0]) {
-          canvas.drawCircle(
-            attackerCenter + Offset(sign * 8, -10),
-            6 + t * 8,
-            Paint()..color = Colors.redAccent.withOpacity(fade),
-          );
+        {
+          // Menacing almond reptile eyes with glowing red irises & vertical slit pupils + petrifying rings
+          for (final sign in [-1.0, 1.0]) {
+            final eyeC = attackerCenter + Offset(sign * 15, -14);
+            final eyeShape = Path()
+              ..moveTo(eyeC.dx - 11, eyeC.dy)
+              ..quadraticBezierTo(eyeC.dx, eyeC.dy - 9, eyeC.dx + 11, eyeC.dy)
+              ..quadraticBezierTo(eyeC.dx, eyeC.dy + 9, eyeC.dx - 11, eyeC.dy)
+              ..close();
+            canvas.drawPath(eyeShape, Paint()..color = Colors.redAccent.withOpacity(0.95 * fade));
+            canvas.drawLine(
+              eyeC + const Offset(0, -6),
+              eyeC + const Offset(0, 6),
+              Paint()
+                ..color = Colors.black.withOpacity(fade)
+                ..strokeWidth = 3.0,
+            );
+          }
+          for (int i = 0; i < 3; i++) {
+            final lt = ((t - i * 0.14) / 0.65).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            canvas.drawCircle(
+              defenderCenter,
+              14 + lt * 34,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.2 * fade
+                ..color = (i.isEven ? Colors.redAccent : Colors.yellowAccent).withOpacity(fade),
+            );
+          }
         }
-        canvas.drawCircle(
-          defenderCenter,
-          14 + t * 22,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 3 * fade
-            ..color = Colors.yellowAccent.withOpacity(fade),
-        );
         break;
 
       case 'aqua_tail':
-        canvas.drawArc(
-          Rect.fromCenter(center: defenderCenter, width: 72, height: 54),
-          -pi * 0.8 + t * 2.2,
-          pi * 1.1,
-          false,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 10 * fade
-            ..strokeCap = StrokeCap.round
-            ..color = Colors.lightBlueAccent.withOpacity(fade),
-        );
+        {
+          // Dual S-curve bezier water whip + swirling crash vortex
+          for (int pass = 0; pass < 2; pass++) {
+            final whipAngle = -pi * 0.85 + t * 3.0 + pass * 0.25;
+            final tailRect = Rect.fromCenter(center: defenderCenter, width: 82, height: 60);
+            canvas.drawArc(
+              tailRect,
+              whipAngle,
+              pi * 1.15,
+              false,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = (pass == 0 ? 12.0 : 5.0) * fade
+                ..strokeCap = StrokeCap.round
+                ..color = (pass == 0 ? const Color(0xFF1E88E5) : Colors.white).withOpacity(fade),
+            );
+          }
+          for (int s = 0; s < 8; s++) {
+            final ang = (s / 8) * pi * 2 + t * 4;
+            final sp = defenderCenter + Offset(cos(ang) * t * 42, sin(ang) * t * 32);
+            canvas.drawCircle(sp, 5 * fade, Paint()..color = Colors.cyanAccent.withOpacity(fade));
+          }
+        }
         break;
 
       case 'absorb':
-        for (int i = 0; i < 6; i++) {
-          final lt = ((t - i * 0.08) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(defenderCenter, attackerCenter, lt)! +
-              perp * (sin(lt * pi * 2 + i) * 12);
-          canvas.drawCircle(pos, 6 * fade, Paint()..color = Colors.lightGreenAccent.withOpacity(fade));
+        {
+          // Double-helix emerald life orbs spiraling FROM defender INTO attacker + healing aura
+          for (int i = 0; i < 10; i++) {
+            final lt = ((t - i * 0.05) / 0.58).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final side = i.isEven ? 1.0 : -1.0;
+            final spiral = perp * (sin(lt * pi * 3 + i) * 18.0 * side);
+            final pos = Offset.lerp(defenderCenter, attackerCenter, lt)! + spiral;
+            canvas.drawCircle(pos, 7.5 * fade, Paint()..color = Colors.lightGreenAccent.withOpacity(0.85 * fade));
+            canvas.drawCircle(pos, 3.5 * fade, Paint()..color = Colors.white.withOpacity(fade));
+          }
+          if (t > 0.40) {
+            final ht = (t - 0.40) / 0.60;
+            canvas.drawOval(
+              Rect.fromCenter(center: attackerCenter + const Offset(0, -ht * 24), width: 68, height: 22),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.5 * fade
+                ..color = Colors.greenAccent.withOpacity(fade),
+            );
+          }
         }
         break;
 
       case 'petal_blizzard':
-        for (int i = 0; i < 10; i++) {
-          final lt = ((t - i * 0.05) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
-              perp * (sin(lt * 10 + i * 1.3) * 24);
-          canvas.drawOval(
-            Rect.fromCenter(center: pos, width: 10, height: 6),
-            Paint()..color = (i.isEven ? Colors.pinkAccent : Colors.lightGreenAccent).withOpacity(fade),
-          );
+        {
+          // Arena-spanning swirling wind ribbons + 18 rotating cherry-blossom petals
+          for (int w = 0; w < 2; w++) {
+            final yBase = size.height * (0.38 + w * 0.24);
+            final ribbon = Path()..moveTo(0, yBase);
+            ribbon.quadraticBezierTo(
+              size.width * 0.5,
+              yBase + sin(t * pi * 2 + w) * 44,
+              size.width * min(1.0, t * 1.4),
+              yBase - 28,
+            );
+            canvas.drawPath(
+              ribbon,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.0 * fade
+                ..color = Colors.pink.shade100.withOpacity(0.55 * fade),
+            );
+          }
+          for (int i = 0; i < 18; i++) {
+            final lt = ((t - i * 0.03) / 0.55).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final spread = (i % 5 - 2.0) * 14.0;
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+                perp * (spread + sin(lt * 10 + i * 1.3) * 18);
+            canvas.save();
+            canvas.translate(pos.dx, pos.dy);
+            canvas.rotate(lt * 9 + i);
+            canvas.drawOval(
+              const Rect.fromLTWH(-6, -3.5, 12, 7),
+              Paint()
+                ..color = (i % 3 == 0
+                        ? Colors.pinkAccent
+                        : (i % 3 == 1 ? Colors.pink.shade100 : Colors.lightGreenAccent))
+                    .withOpacity(fade),
+            );
+            canvas.restore();
+          }
         }
         break;
 
       case 'psychic':
-        for (int i = 0; i < 4; i++) {
-          final waveR = 14.0 + i * 10.0 + sin(t * pi * 3) * 8.0;
-          canvas.drawCircle(
-            defenderCenter,
-            waveR,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3.5 * fade
-              ..color = (i.isEven ? Colors.purpleAccent : Colors.pinkAccent).withOpacity(fade),
-          );
+        {
+          // Concentric distortion rings + 6 orbiting telekinetic spheres collapsing inward
+          for (int i = 0; i < 4; i++) {
+            final waveR = 14.0 + i * 12.0 + sin(t * pi * 3) * 10.0;
+            canvas.drawOval(
+              Rect.fromCenter(center: defenderCenter, width: waveR * 2.1, height: waveR * 1.5),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.5 * fade
+                ..color = (i.isEven ? Colors.purpleAccent : Colors.pinkAccent).withOpacity(0.8 * fade),
+            );
+          }
+          final orbitR = 52.0 * (1.0 - sin(min(1.0, t * 1.25) * pi * 0.5) * 0.85);
+          for (int o = 0; o < 6; o++) {
+            final ang = (o / 6) * pi * 2 + t * pi * 3;
+            final op = defenderCenter + Offset(cos(ang) * orbitR, sin(ang) * orbitR * 0.72);
+            canvas.drawCircle(op, 7 * fade, Paint()..color = Colors.cyanAccent.withOpacity(fade));
+            canvas.drawCircle(op, 3.5 * fade, Paint()..color = Colors.white.withOpacity(fade));
+          }
         }
         break;
 
       // ─── ADDITIONAL GEN 1 SIGNATURE MOVE VFX ──────────────────────────────
       case 'karate_chop':
       case 'cross_chop':
-        final blades = moveId == 'cross_chop' ? 2 : 1;
-        for (int i = 0; i < blades; i++) {
-          final lt = ((t - i * 0.14) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final sign = i == 0 ? 1.0 : -1.0;
-          final pA = defenderCenter + Offset(-26 * sign, -30);
-          final pB = defenderCenter + Offset(26 * sign, 26);
-          canvas.drawLine(
-            pA,
-            Offset.lerp(pA, pB, lt)!,
-            Paint()
-              ..color = Colors.orangeAccent.withOpacity(fade)
-              ..strokeWidth = 7 * fade
-              ..strokeCap = StrokeCap.round,
-          );
+        {
+          final isCross = moveId == 'cross_chop';
+          final blades = isCross ? 2 : 1;
+          for (int i = 0; i < blades; i++) {
+            final lt = ((t - i * 0.12) / 0.50).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final sign = isCross ? (i == 0 ? 1.0 : -1.0) : 0.4;
+            final pA = defenderCenter + Offset(-28 * sign, -36);
+            final pB = defenderCenter + Offset(28 * sign, 32);
+            final tip = Offset.lerp(pA, pB, lt)!;
+            canvas.drawLine(
+              pA,
+              tip,
+              Paint()
+                ..color = Colors.deepOrangeAccent.withOpacity(fade)
+                ..strokeWidth = 10 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+            canvas.drawLine(
+              pA,
+              tip,
+              Paint()
+                ..color = Colors.white.withOpacity(fade)
+                ..strokeWidth = 4.5 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+          }
+          if (t > 0.35) {
+            final bt = (t - 0.35) / 0.65;
+            for (int r = 0; r < 8; r++) {
+              final ang = (r / 8) * pi * 2;
+              canvas.drawLine(
+                defenderCenter + Offset(cos(ang) * 10, sin(ang) * 10),
+                defenderCenter + Offset(cos(ang) * (16 + bt * 34), sin(ang) * (16 + bt * 34)),
+                Paint()
+                  ..color = Colors.amberAccent.withOpacity(fade)
+                  ..strokeWidth = 3.5 * fade
+                  ..strokeCap = StrokeCap.round,
+              );
+            }
+          }
         }
         break;
 
       case 'submission':
-        for (int i = 0; i < 3; i++) {
-          final lt = ((t - i * 0.12) / 0.55).clamp(0.0, 1.0);
-          canvas.drawCircle(
-            defenderCenter,
-            14 + lt * 34,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 4 * fade
-              ..color = Colors.redAccent.withOpacity(fade),
-          );
+        {
+          // Whirling grapple cyclone rings + slam shockwaves + impact stars
+          for (int i = 0; i < 4; i++) {
+            final lt = ((t - i * 0.1) / 0.58).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final yOff = (1.0 - lt) * -28.0 + 10.0;
+            canvas.drawOval(
+              Rect.fromCenter(
+                center: defenderCenter + Offset(0, yOff),
+                width: 34 + lt * 54,
+                height: 16 + lt * 22,
+              ),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4.0 * fade
+                ..color = (i.isEven ? Colors.deepOrangeAccent : Colors.amberAccent).withOpacity(fade),
+            );
+          }
+          for (int s = 0; s < 5; s++) {
+            final ang = (s / 5) * pi * 2 + t * 3;
+            _drawStarPath(
+              canvas,
+              defenderCenter + Offset(cos(ang) * t * 38, sin(ang) * t * 30),
+              7 * fade,
+              3 * fade,
+              Colors.white,
+              fade,
+              points: 4,
+            );
+          }
         }
         break;
 
       case 'pay_day':
-        for (int i = 0; i < 6; i++) {
-          final lt = ((t - i * 0.08) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
-              perp * (sin(lt * pi * 2 + i) * 14);
-          canvas.drawCircle(pos, 7 * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
-          canvas.drawRect(
-            Rect.fromCenter(center: pos, width: 3, height: 7),
-            Paint()..color = Colors.brown.withOpacity(fade),
-          );
+        {
+          // Shower of spinning gold Koban coins with center stamps + glints
+          for (int i = 0; i < 8; i++) {
+            final lt = ((t - i * 0.06) / 0.58).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final arc = sin(lt * pi) * (20 + (i % 3) * 10.0);
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! +
+                perp * ((i - 3.5) * 9.0 * lt) +
+                Offset(0, -arc);
+            _drawKobanCoin(canvas, pos, 1.0, lt * 6 + i, fade);
+          }
+          if (t > 0.45) {
+            final st = (t - 0.45) / 0.55;
+            for (int g = 0; g < 6; g++) {
+              final ang = (g / 6) * pi * 2 + st * 2;
+              _drawStarPath(
+                canvas,
+                defenderCenter + Offset(cos(ang) * st * 40, sin(ang) * st * 34),
+                7 * fade,
+                2.5 * fade,
+                Colors.amberAccent,
+                fade,
+                points: 4,
+              );
+            }
+          }
         }
         break;
 
       case 'fury_swipes':
       case 'x_scissor':
-        final slashAngles = moveId == 'x_scissor' ? [-0.8, 0.8] : [-0.45, 0.0, 0.45];
-        final col = moveId == 'x_scissor' ? Colors.lightGreenAccent : Colors.white;
-        for (int i = 0; i < slashAngles.length; i++) {
-          final lt = ((t - i * 0.11) / 0.5).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final ang = slashAngles[i];
-          final delta = Offset(cos(ang) * 28, sin(ang) * 28);
-          canvas.drawLine(
-            defenderCenter - delta,
-            Offset.lerp(defenderCenter - delta, defenderCenter + delta, lt)!,
-            Paint()
-              ..color = col.withOpacity(fade)
-              ..strokeWidth = 5 * fade
-              ..strokeCap = StrokeCap.round,
-          );
+        {
+          final isScissor = moveId == 'x_scissor';
+          final slashAngles = isScissor ? [-0.78, 0.78] : [-0.55, 0.0, 0.55, -0.35];
+          final bladeCol = isScissor ? Colors.lightGreenAccent : Colors.white;
+          for (int i = 0; i < slashAngles.length; i++) {
+            final lt = ((t - i * 0.10) / 0.46).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final ang = slashAngles[i];
+            final off = isScissor ? Offset.zero : Offset((i - 1.5) * 8.0, (i - 1.5) * 4.0);
+            final delta = Offset(cos(ang) * 34, sin(ang) * 34);
+            final pStart = defenderCenter - delta + off;
+            final pEnd = Offset.lerp(pStart, defenderCenter + delta + off, lt)!;
+            canvas.drawLine(
+              pStart,
+              pEnd,
+              Paint()
+                ..color = (isScissor ? Colors.tealAccent : Colors.amberAccent).withOpacity(fade)
+                ..strokeWidth = 9 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+            canvas.drawLine(
+              pStart,
+              pEnd,
+              Paint()
+                ..color = bladeCol.withOpacity(fade)
+                ..strokeWidth = 4.5 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+          }
         }
         break;
 
       case 'horn_attack':
-        final thrust = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.5))!;
-        canvas.drawPath(
-          Path()
-            ..moveTo(thrust.dx + unit.dx * 16, thrust.dy + unit.dy * 16)
-            ..lineTo(thrust.dx + perp.dx * 9 - unit.dx * 12, thrust.dy + perp.dy * 9 - unit.dy * 12)
-            ..lineTo(thrust.dx - perp.dx * 9 - unit.dx * 12, thrust.dy - perp.dy * 9 - unit.dy * 12)
-            ..close(),
-          Paint()..color = Colors.white.withOpacity(fade),
-        );
+        {
+          // Spiraling metallic horn lance + speed streaks + piercing shock cone
+          final lt = min(1.0, t * 1.55);
+          final tip = Offset.lerp(attackerCenter, defenderCenter, lt)!;
+          final hornLen = 34.0;
+          final hornW = 12.0;
+          final hornPath = Path()
+            ..moveTo(tip.dx + unit.dx * hornLen, tip.dy + unit.dy * hornLen)
+            ..lineTo(tip.dx - unit.dx * 8 + perp.dx * hornW, tip.dy - unit.dy * 8 + perp.dy * hornW)
+            ..lineTo(tip.dx - unit.dx * 8 - perp.dx * hornW, tip.dy - unit.dy * 8 - perp.dy * hornW)
+            ..close();
+          canvas.drawPath(hornPath, Paint()..color = Colors.white.withOpacity(fade));
+          canvas.drawPath(
+            hornPath,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.5
+              ..color = Colors.grey.shade400.withOpacity(fade),
+          );
+          for (int s = -1; s <= 1; s++) {
+            final off = perp * (s * 11.0);
+            canvas.drawLine(
+              tip - unit * 42 + off,
+              tip - unit * 10 + off,
+              Paint()
+                ..color = Colors.amberAccent.withOpacity(0.8 * fade)
+                ..strokeWidth = 3.0 * fade
+                ..strokeCap = StrokeCap.round,
+            );
+          }
+        }
         break;
 
       case 'sonic_boom':
-        for (int i = 0; i < 4; i++) {
-          final lt = ((t - i * 0.1) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
-          canvas.drawCircle(
-            pos,
-            10 + lt * 22,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3 * fade
-              ..color = Colors.cyanAccent.withOpacity(fade),
-          );
+        {
+          // 5 tilted supersonic Mach shockwave ovals racing along path
+          final travelAngle = atan2(dir.dy, dir.dx);
+          for (int i = 0; i < 5; i++) {
+            final lt = ((t - i * 0.085) / 0.56).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
+            canvas.save();
+            canvas.translate(pos.dx, pos.dy);
+            canvas.rotate(travelAngle + pi / 2);
+            canvas.drawOval(
+              Rect.fromCenter(center: Offset.zero, width: 22 + lt * 46, height: 10 + lt * 12),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.5 * fade
+                ..color = (i.isEven ? Colors.cyanAccent : Colors.white).withOpacity(fade),
+            );
+            canvas.restore();
+          }
         }
         break;
 
       case 'bubble_beam':
-        for (int i = 0; i < 8; i++) {
-          final lt = ((t - i * 0.06) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final wave = sin(lt * 10 + i) * 10;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! + perp * wave;
-          canvas.drawCircle(
-            pos,
-            (5 + (i % 3) * 2.5) * fade,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 2.5
-              ..color = Colors.lightBlueAccent.withOpacity(fade),
-          );
+        {
+          // 14 glossy translucent bubbles with white highlight crescents spiraling to defender
+          for (int i = 0; i < 14; i++) {
+            final lt = ((t - i * 0.04) / 0.54).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final wave = sin(lt * 11 + i * 0.9) * 14.0;
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)! + perp * wave;
+            final rad = (5.5 + (i % 3) * 3.0) * fade;
+            canvas.drawCircle(pos, rad, Paint()..color = Colors.lightBlueAccent.withOpacity(0.32 * fade));
+            canvas.drawCircle(
+              pos,
+              rad,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 2.0
+                ..color = Colors.cyanAccent.withOpacity(fade),
+            );
+            canvas.drawArc(
+              Rect.fromCircle(center: pos, radius: max(1.0, rad * 0.65)),
+              -pi * 0.85,
+              pi * 0.45,
+              false,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 1.8
+                ..strokeCap = StrokeCap.round
+                ..color = Colors.white.withOpacity(fade),
+            );
+          }
         }
         break;
 
       case 'waterfall':
       case 'crabhammer':
-        final accent = moveId == 'crabhammer' ? Colors.redAccent : Colors.lightBlueAccent;
-        final dropT = min(1.0, t / 0.65);
-        canvas.drawLine(
-          defenderCenter + const Offset(0, -100),
-          defenderCenter + Offset(0, -100 + dropT * 115),
-          Paint()
-            ..color = accent.withOpacity(0.9 * fade)
-            ..strokeWidth = 14 * fade
-            ..strokeCap = StrokeCap.round,
-        );
-        canvas.drawCircle(defenderCenter, 16 * fade, Paint()..color = Colors.white.withOpacity(0.65 * fade));
+        {
+          final isHammer = moveId == 'crabhammer';
+          if (isHammer) {
+            // Giant crimson upper & lower crab claw jaws slamming together + water jets
+            final snap = (1.0 - sin(min(1.0, t * 1.45) * pi * 0.5)) * 28.0;
+            final clawPaint = Paint()..color = Colors.redAccent.withOpacity(fade);
+            final clawRim = Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.5
+              ..color = Colors.white.withOpacity(fade);
+            final topClaw = Path()
+              ..moveTo(defenderCenter.dx - 26, defenderCenter.dy - 14 - snap)
+              ..quadraticBezierTo(defenderCenter.dx, defenderCenter.dy - 46 - snap,
+                  defenderCenter.dx + 28, defenderCenter.dy - 4 - snap)
+              ..quadraticBezierTo(defenderCenter.dx, defenderCenter.dy - 14 - snap,
+                  defenderCenter.dx - 26, defenderCenter.dy - 14 - snap)
+              ..close();
+            final botClaw = Path()
+              ..moveTo(defenderCenter.dx - 22, defenderCenter.dy + 12 + snap)
+              ..quadraticBezierTo(defenderCenter.dx + 4, defenderCenter.dy + 34 + snap,
+                  defenderCenter.dx + 26, defenderCenter.dy + 2 + snap)
+              ..quadraticBezierTo(defenderCenter.dx, defenderCenter.dy + 12 + snap,
+                  defenderCenter.dx - 22, defenderCenter.dy + 12 + snap)
+              ..close();
+            canvas.drawPath(topClaw, clawPaint);
+            canvas.drawPath(topClaw, clawRim);
+            canvas.drawPath(botClaw, clawPaint);
+            canvas.drawPath(botClaw, clawRim);
+          } else {
+            // Thundering vertical waterfall pillar + cresting foam splash
+            final reachH = min(1.0, t / 0.55);
+            final topY = defenderCenter.dy - 120;
+            final curBot = topY + (defenderCenter.dy + 18 - topY) * reachH;
+            for (final sign in [-1.0, 0.0, 1.0]) {
+              canvas.drawLine(
+                Offset(defenderCenter.dx + sign * 10, topY),
+                Offset(defenderCenter.dx + sign * 10, curBot),
+                Paint()
+                  ..color = (sign == 0.0 ? Colors.white : const Color(0xFF1E88E5)).withOpacity(0.85 * fade)
+                  ..strokeWidth = (sign == 0.0 ? 8.0 : 12.0) * fade
+                  ..strokeCap = StrokeCap.round,
+              );
+            }
+          }
+          if (t > 0.38) {
+            final st = (t - 0.38) / 0.62;
+            for (int f = 0; f < 8; f++) {
+              final ang = (f / 8) * pi * 2;
+              final fp = defenderCenter + Offset(cos(ang) * st * 44, 10 + sin(ang) * st * 22);
+              canvas.drawCircle(fp, 6 * fade, Paint()..color = Colors.cyanAccent.withOpacity(0.8 * fade));
+            }
+          }
+        }
         break;
 
       case 'aurora_beam':
       case 'ice_beam':
-        final colors = moveId == 'aurora_beam'
-            ? [Colors.pinkAccent, Colors.cyanAccent, Colors.lightGreenAccent]
-            : [Colors.cyanAccent, Colors.white, Colors.lightBlueAccent];
-        final reach = min(1.0, t / 0.65);
-        for (int i = 0; i < colors.length; i++) {
-          final off = perp * ((i - 1) * 4.5);
-          canvas.drawLine(
-            attackerCenter + off,
-            Offset.lerp(attackerCenter, defenderCenter, reach)! + off,
-            Paint()
-              ..color = colors[i].withOpacity(0.9 * fade)
-              ..strokeWidth = 4.5 * fade
-              ..strokeCap = StrokeCap.round,
-          );
+        {
+          final isAurora = moveId == 'aurora_beam';
+          final beamColors = isAurora
+              ? [Colors.pinkAccent, Colors.amberAccent, Colors.lightGreenAccent, Colors.cyanAccent, Colors.purpleAccent]
+              : [Colors.cyanAccent, Colors.white, Colors.lightBlueAccent];
+          final reachBeam = min(1.0, t / 0.62);
+          for (int c = 0; c < beamColors.length; c++) {
+            final path = Path();
+            final lane = (c - (beamColors.length - 1) / 2.0) * 4.5;
+            for (int seg = 0; seg <= 12; seg++) {
+              final f = (seg / 12.0) * reachBeam;
+              final ripple = isAurora ? sin(f * pi * 4 + t * 14 + c) * 6.0 : 0.0;
+              final pt = Offset.lerp(attackerCenter, defenderCenter, f)! + perp * (lane + ripple);
+              if (seg == 0) {
+                path.moveTo(pt.dx, pt.dy);
+              } else {
+                path.lineTo(pt.dx, pt.dy);
+              }
+            }
+            canvas.drawPath(
+              path,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = (isAurora ? 3.5 : 6.0) * fade
+                ..strokeCap = StrokeCap.round
+                ..color = beamColors[c].withOpacity(0.92 * fade),
+            );
+          }
+          if (t > 0.38) {
+            final ct = (t - 0.38) / 0.62;
+            for (int k = 0; k < 6; k++) {
+              final ang = (k / 6) * pi * 2 + 0.3;
+              final kp = defenderCenter + Offset(cos(ang) * (12 + ct * 26), sin(ang) * (10 + ct * 22));
+              _drawIceCrystal(canvas, kp, isAurora ? 7.0 : 10.0, ct * 3 + k, fade);
+            }
+          }
         }
         break;
 
       case 'spore':
-        for (int i = 0; i < 10; i++) {
-          final lt = ((t - i * 0.05) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final drift = Offset(cos(i * 1.4) * lt * 34, -sin(lt * pi) * 22 + sin(i) * 14);
+        {
+          // Expanding glowing spore cloud + 16 bioluminescent drifting spores + floating Zzz
           canvas.drawCircle(
-            Offset.lerp(attackerCenter, defenderCenter, lt)! + drift,
-            4.5 * fade,
-            Paint()..color = (i.isEven ? Colors.yellowAccent : Colors.amberAccent).withOpacity(fade),
+            defenderCenter,
+            18 + sin(t * pi) * 32,
+            Paint()..color = Colors.amberAccent.withOpacity(0.18 * fade),
           );
+          for (int i = 0; i < 16; i++) {
+            final lt = ((t - i * 0.03) / 0.62).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final ang = (i / 16) * pi * 2 + lt * 3.0;
+            final r = 10 + sin(lt * pi) * 36.0;
+            final pos = defenderCenter + Offset(cos(ang) * r, sin(ang) * r * 0.85 - lt * 22);
+            canvas.drawCircle(
+              pos,
+              (i % 3 == 0 ? 6.0 : 4.5) * fade,
+              Paint()..color = (i.isEven ? Colors.yellowAccent : Colors.amberAccent).withOpacity(0.9 * fade),
+            );
+          }
+          if (t > 0.45) {
+            final tp = TextPainter(
+              text: TextSpan(
+                text: 'Zzz',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(fade),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              textDirection: TextDirection.ltr,
+            )..layout();
+            tp.paint(canvas, defenderCenter + Offset(-12, -32 - (t - 0.45) * 26));
+          }
         }
         break;
 
       case 'hypnosis':
-        for (int i = 0; i < 3; i++) {
-          final lt = ((t - i * 0.14) / 0.6).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
-          canvas.drawCircle(
-            pos,
-            8 + i * 6.0,
+        {
+          // Rotating purple Archimedes hypnotic spiral over defender + swinging golden pendulum
+          final spiral = Path();
+          for (int step = 0; step <= 48; step++) {
+            final a = (step / 48.0) * pi * 5 - t * pi * 4;
+            final r = (step / 48.0) * 38.0 * min(1.0, t * 1.4);
+            final pt = defenderCenter + Offset(cos(a) * r, sin(a) * r * 0.85);
+            if (step == 0) {
+              spiral.moveTo(pt.dx, pt.dy);
+            } else {
+              spiral.lineTo(pt.dx, pt.dy);
+            }
+          }
+          canvas.drawPath(
+            spiral,
             Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 2.8 * fade
-              ..color = Colors.purpleAccent.withOpacity(fade),
+              ..strokeWidth = 3.2 * fade
+              ..strokeCap = StrokeCap.round
+              ..color = Colors.purpleAccent.withOpacity(0.9 * fade),
           );
+          // Swinging golden pendulum above target
+          final swing = sin(t * pi * 4) * 24.0;
+          final anchor = defenderCenter + const Offset(0, -68);
+          final bob = anchor + Offset(swing, 34);
+          canvas.drawLine(
+            anchor,
+            bob,
+            Paint()
+              ..color = Colors.amberAccent.withOpacity(fade)
+              ..strokeWidth = 2.0,
+          );
+          canvas.drawCircle(bob, 6.5 * fade, Paint()..color = Colors.amberAccent.withOpacity(fade));
         }
         break;
 
       case 'lick':
-        canvas.drawArc(
-          Rect.fromCenter(center: defenderCenter, width: 46, height: 34),
-          0.2,
-          2.6 * min(1.0, t * 1.6),
-          false,
-          Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 7 * fade
-            ..strokeCap = StrokeCap.round
-            ..color = Colors.pinkAccent.withOpacity(fade),
-        );
+        {
+          // Sweeping pink curved tongue with center groove + saliva droplets & paralysis sparks
+          final sweep = min(1.0, t * 1.5);
+          final tongue = Path()
+            ..moveTo(defenderCenter.dx - 26, defenderCenter.dy + 20)
+            ..quadraticBezierTo(
+              defenderCenter.dx - 2,
+              defenderCenter.dy - 24 * sweep,
+              defenderCenter.dx + 24 * sweep,
+              defenderCenter.dy - 14 * sweep,
+            );
+          canvas.drawPath(
+            tongue,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 14 * fade
+              ..strokeCap = StrokeCap.round
+              ..color = Colors.pinkAccent.withOpacity(0.92 * fade),
+          );
+          canvas.drawPath(
+            tongue,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 3 * fade
+              ..strokeCap = StrokeCap.round
+              ..color = Colors.pink.shade100.withOpacity(0.8 * fade),
+          );
+          for (int d = 0; d < 5; d++) {
+            final dp = defenderCenter + Offset((d - 2) * 10.0, -10 + t * 24 + (d % 2) * 8);
+            canvas.drawCircle(dp, 3.5 * fade, Paint()..color = Colors.yellowAccent.withOpacity(fade));
+          }
+        }
         break;
 
       case 'night_shade':
       case 'shadow_ball':
-        final ghostPos = moveId == 'shadow_ball'
-            ? Offset.lerp(attackerCenter, defenderCenter, min(1.0, t / 0.6))!
-            : defenderCenter;
-        canvas.drawCircle(
-          ghostPos,
-          (moveId == 'night_shade' ? 28 + t * 24 : 20) * fade,
-          Paint()..color = const Color(0xFF4A148C).withOpacity(0.85 * fade),
-        );
-        canvas.drawCircle(
-          ghostPos,
-          10 * fade,
-          Paint()..color = Colors.deepPurpleAccent.withOpacity(fade),
-        );
+        {
+          final isBall = moveId == 'shadow_ball';
+          if (isBall) {
+            final travel = min(1.0, t / 0.62);
+            final orbPos = Offset.lerp(attackerCenter, defenderCenter, travel)!;
+            // Churning black/violet energy orb with orbiting dark tendrils
+            canvas.drawCircle(
+              orbPos,
+              24 * fade,
+              Paint()..color = Colors.deepPurpleAccent.withOpacity(0.45 * fade),
+            );
+            canvas.drawCircle(
+              orbPos,
+              17 * fade,
+              Paint()..color = const Color(0xFF1A0033).withOpacity(0.95 * fade),
+            );
+            canvas.drawCircle(
+              orbPos,
+              17 * fade,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.0 * fade
+                ..color = Colors.purpleAccent.withOpacity(fade),
+            );
+            for (int w = 0; w < 6; w++) {
+              final ang = (w / 6) * pi * 2 + t * 8;
+              final wp = orbPos + Offset(cos(ang) * 20, sin(ang) * 20);
+              canvas.drawCircle(wp, 4 * fade, Paint()..color = Colors.purpleAccent.withOpacity(0.75 * fade));
+            }
+            if (t > 0.45) {
+              final bt = (t - 0.45) / 0.55;
+              canvas.drawCircle(
+                defenderCenter,
+                16 + bt * 38,
+                Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 4.5 * fade
+                  ..color = Colors.deepPurpleAccent.withOpacity(fade),
+              );
+            }
+          } else {
+            // Night Shade: eerie void vortex + spectral glowing crimson eyes + shadow tendrils
+            canvas.drawCircle(
+              defenderCenter,
+              28 + t * 34,
+              Paint()..color = const Color(0xFF1A0033).withOpacity(0.75 * fade),
+            );
+            for (int r = 0; r < 6; r++) {
+              final ang = (r / 6) * pi * 2 + t * 3;
+              canvas.drawLine(
+                defenderCenter + Offset(cos(ang) * 14, sin(ang) * 14),
+                defenderCenter + Offset(cos(ang) * (32 + t * 28), sin(ang) * (32 + t * 28)),
+                Paint()
+                  ..color = Colors.deepPurpleAccent.withOpacity(fade)
+                  ..strokeWidth = 5 * fade
+                  ..strokeCap = StrokeCap.round,
+              );
+            }
+            for (final sign in [-1.0, 1.0]) {
+              canvas.drawOval(
+                Rect.fromCenter(center: attackerCenter + Offset(sign * 12, -16), width: 12, height: 7),
+                Paint()..color = Colors.redAccent.withOpacity(fade),
+              );
+            }
+          }
+        }
         break;
 
       default:
@@ -3028,6 +3944,157 @@ class _MoveVfxPainter extends CustomPainter {
     if (t > 0.45) {
       canvas.drawCircle(center, 18 * fade, Paint()..color = flashColor.withOpacity(0.35 * fade));
     }
+  }
+
+  void _drawStarPath(
+    Canvas canvas,
+    Offset center,
+    double outerR,
+    double innerR,
+    Color color,
+    double fade, {
+    int points = 5,
+    double rotation = 0.0,
+  }) {
+    final path = Path();
+    final step = pi / points;
+    for (int i = 0; i < points * 2; i++) {
+      final r = i.isEven ? outerR : innerR;
+      final a = rotation - pi / 2 + i * step;
+      final pt = center + Offset(cos(a) * r, sin(a) * r);
+      if (i == 0) {
+        path.moveTo(pt.dx, pt.dy);
+      } else {
+        path.lineTo(pt.dx, pt.dy);
+      }
+    }
+    path.close();
+    canvas.drawPath(path, Paint()..color = color.withOpacity(fade));
+  }
+
+  void _drawPolygonBoulder(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double rotation,
+    double fade,
+  ) {
+    final path = Path();
+    const sides = 6;
+    const offsets = [1.0, 0.85, 1.05, 0.9, 1.08, 0.82];
+    for (int i = 0; i < sides; i++) {
+      final a = rotation + (i / sides) * pi * 2;
+      final r = radius * offsets[i];
+      final pt = center + Offset(cos(a) * r, sin(a) * r);
+      if (i == 0) {
+        path.moveTo(pt.dx, pt.dy);
+      } else {
+        path.lineTo(pt.dx, pt.dy);
+      }
+    }
+    path.close();
+    canvas.drawPath(
+      path,
+      Paint()..color = const Color(0xFF8D7B68).withOpacity(fade),
+    );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.0
+        ..color = const Color(0xFF4E342E).withOpacity(fade),
+    );
+    canvas.drawCircle(
+      center + Offset(-radius * 0.25, -radius * 0.25),
+      radius * 0.25,
+      Paint()..color = const Color(0xFFD7CCC8).withOpacity(0.55 * fade),
+    );
+  }
+
+  void _drawIceCrystal(
+    Canvas canvas,
+    Offset center,
+    double radius,
+    double rotation,
+    double fade,
+  ) {
+    final paint = Paint()
+      ..color = Colors.cyanAccent.withOpacity(fade)
+      ..strokeWidth = 2.4
+      ..strokeCap = StrokeCap.round;
+    final corePaint = Paint()
+      ..color = Colors.white.withOpacity(fade)
+      ..strokeWidth = 1.2
+      ..strokeCap = StrokeCap.round;
+    for (int i = 0; i < 6; i++) {
+      final a = rotation + (i / 6) * pi * 2;
+      final p1 = center + Offset(cos(a) * radius, sin(a) * radius);
+      canvas.drawLine(center, p1, paint);
+      canvas.drawLine(center, p1, corePaint);
+      // Small V barbs
+      final mid = center + Offset(cos(a) * radius * 0.6, sin(a) * radius * 0.6);
+      for (final side in [-1.0, 1.0]) {
+        final bAng = a + side * 0.65;
+        canvas.drawLine(
+          mid,
+          mid + Offset(cos(bAng) * radius * 0.32, sin(bAng) * radius * 0.32),
+          corePaint,
+        );
+      }
+    }
+  }
+
+  void _drawHeartPath(Canvas canvas, Offset center, double size, Paint paint) {
+    final path = Path()
+      ..moveTo(center.dx, center.dy + size * 0.38)
+      ..cubicTo(
+        center.dx - size * 0.65,
+        center.dy - size * 0.05,
+        center.dx - size * 0.48,
+        center.dy - size * 0.62,
+        center.dx,
+        center.dy - size * 0.22,
+      )
+      ..cubicTo(
+        center.dx + size * 0.48,
+        center.dy - size * 0.62,
+        center.dx + size * 0.65,
+        center.dy - size * 0.05,
+        center.dx,
+        center.dy + size * 0.38,
+      )
+      ..close();
+    canvas.drawPath(path, paint);
+  }
+
+  void _drawKobanCoin(
+    Canvas canvas,
+    Offset center,
+    double scale,
+    double rotation,
+    double fade,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(rotation);
+    final rect = Rect.fromCenter(center: Offset.zero, width: 12 * scale, height: 17 * scale);
+    canvas.drawOval(rect, Paint()..color = Colors.amberAccent.withOpacity(fade));
+    canvas.drawOval(
+      rect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.6
+        ..color = Colors.orange.shade800.withOpacity(fade),
+    );
+    canvas.drawRect(
+      Rect.fromCenter(center: Offset.zero, width: 5 * scale, height: 2.2 * scale),
+      Paint()..color = Colors.brown.withOpacity(fade),
+    );
+    canvas.drawRect(
+      Rect.fromCenter(center: const Offset(0, -4.5), width: 6 * scale, height: 1.5 * scale),
+      Paint()..color = Colors.orange.shade900.withOpacity(0.75 * fade),
+    );
+    canvas.restore();
   }
 
   @override
