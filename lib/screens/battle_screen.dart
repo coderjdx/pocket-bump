@@ -2090,6 +2090,53 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await _checkPostTurnConditions();
   }
 
+  Future<void> _useStatusHealingItem(
+    String itemId,
+    String itemName, {
+    StatusCondition? specificCondition,
+    bool fullRestore = false,
+  }) async {
+    _trainer.adjustItemCount(itemId, -1);
+    if (fullRestore) {
+      _playerPokemon.currentHp = _playerPokemon.maxHp;
+      _playerPokemon.status = StatusCondition.none;
+    } else if (specificCondition != null) {
+      if (_playerPokemon.status == specificCondition) {
+        _playerPokemon.status = StatusCondition.none;
+      }
+    } else {
+      _playerPokemon.status = StatusCondition.none;
+    }
+
+    Navigator.pop(context);
+    setState(() {
+      _isProcessingTurn = true;
+      _displayedPlayerHp = _playerPokemon.currentHp;
+      _currentMessage = fullRestore
+          ? "${_trainer.name} used a $itemName! ${_playerPokemon.nickname} fully restored HP and cured status!"
+          : "${_trainer.name} used an $itemName! ${_playerPokemon.nickname}'s status condition was healed!";
+    });
+
+    await Future.delayed(const Duration(milliseconds: 900));
+    if (!mounted) return;
+    if (_opponentPokemon.moves.isNotEmpty) {
+      final oppMove = _opponentPokemon
+          .moves[Random().nextInt(_opponentPokemon.moves.length)];
+      final events = BattleEngine.executeSingleAttack(
+        _opponentPokemon,
+        oppMove,
+        _playerPokemon,
+        isPlayer: false,
+        isWild: widget.isWild,
+      );
+      for (final ev in events) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+    }
+    await _checkPostTurnConditions();
+  }
+
   void _openBagModal() {
     showModalBottomSheet(
       context: context,
@@ -2099,6 +2146,221 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
+        final rows = <Widget>[];
+
+        // Balls (wild battles only, only if count > 0)
+        if (widget.isWild) {
+          if (_trainer.pokeBalls > 0) {
+            rows.add(_bagRow(
+              icon: Icons.catching_pokemon,
+              iconColor: Colors.redAccent,
+              leadingWidget: const PokeBallSpriteWidget(
+                  ballType: 'poke_ball', size: 28),
+              title: "Poké Ball",
+              rarity: "Common",
+              subtitle: "x${_trainer.pokeBalls} remaining",
+              btnLabel: "THROW",
+              btnColor: Colors.redAccent,
+              enabled: true,
+              onTap: () {
+                Navigator.pop(ctx);
+                _onThrowPokeBall('poke_ball');
+              },
+            ));
+          }
+          if (_trainer.greatBalls > 0) {
+            rows.add(_bagRow(
+              icon: Icons.catching_pokemon,
+              iconColor: Colors.blueAccent,
+              leadingWidget: const PokeBallSpriteWidget(
+                  ballType: 'great_ball', size: 28),
+              title: "Great Ball (1.5x)",
+              rarity: "Uncommon",
+              subtitle: "x${_trainer.greatBalls} remaining",
+              btnLabel: "THROW",
+              btnColor: Colors.blueAccent,
+              enabled: true,
+              onTap: () {
+                Navigator.pop(ctx);
+                _onThrowPokeBall('great_ball');
+              },
+            ));
+          }
+          if (_trainer.ultraBalls > 0) {
+            rows.add(_bagRow(
+              icon: Icons.catching_pokemon,
+              iconColor: Colors.amberAccent,
+              leadingWidget: const PokeBallSpriteWidget(
+                  ballType: 'ultra_ball', size: 28),
+              title: "Ultra Ball (2.0x)",
+              rarity: "Rare",
+              subtitle: "x${_trainer.ultraBalls} remaining",
+              btnLabel: "THROW",
+              btnColor: Colors.amber.shade800,
+              enabled: true,
+              onTap: () {
+                Navigator.pop(ctx);
+                _onThrowPokeBall('ultra_ball');
+              },
+            ));
+          }
+        }
+
+        // HP Medicines (only if count > 0)
+        if (_trainer.potions > 0) {
+          rows.add(_bagRow(
+            icon: Icons.medical_services,
+            iconColor: Colors.greenAccent,
+            title: "Potion",
+            rarity: "Common",
+            subtitle: "x${_trainer.potions} remaining (+20 HP)",
+            btnLabel: "USE",
+            btnColor: Colors.green,
+            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
+            onTap: () => _useHealingItem('potion', 20, "Potion"),
+          ));
+        }
+        if (_trainer.superPotions > 0) {
+          rows.add(_bagRow(
+            icon: Icons.medical_services,
+            iconColor: Colors.tealAccent,
+            title: "Super Potion",
+            rarity: "Uncommon",
+            subtitle: "x${_trainer.superPotions} remaining (+50 HP)",
+            btnLabel: "USE",
+            btnColor: Colors.teal.shade700,
+            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
+            onTap: () => _useHealingItem('super_potion', 50, "Super Potion"),
+          ));
+        }
+        if (_trainer.hyperPotions > 0) {
+          rows.add(_bagRow(
+            icon: Icons.medical_services,
+            iconColor: Colors.pinkAccent,
+            title: "Hyper Potion",
+            rarity: "Rare",
+            subtitle: "x${_trainer.hyperPotions} remaining (+200 HP)",
+            btnLabel: "USE",
+            btnColor: Colors.pink.shade700,
+            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
+            onTap: () => _useHealingItem('hyper_potion', 200, "Hyper Potion"),
+          ));
+        }
+        if (_trainer.revives > 0) {
+          rows.add(_bagRow(
+            icon: Icons.favorite,
+            iconColor: Colors.orangeAccent,
+            title: "Revive",
+            rarity: "Rare",
+            subtitle: "x${_trainer.revives} remaining (+50% HP)",
+            btnLabel: "USE",
+            btnColor: Colors.orange.shade800,
+            enabled: _trainer.party.any((p) => p.isFainted),
+            onTap: _useReviveItem,
+          ));
+        }
+
+        // Status Remedies (only if count > 0)
+        if (_trainer.antidotes > 0) {
+          rows.add(_bagRow(
+            icon: Icons.healing,
+            iconColor: Colors.purpleAccent,
+            title: "Antidote",
+            rarity: "Common",
+            subtitle: "x${_trainer.antidotes} remaining (Cures Poison)",
+            btnLabel: "USE",
+            btnColor: Colors.purple,
+            enabled: _playerPokemon.status == StatusCondition.poison,
+            onTap: () => _useStatusHealingItem('antidote', 'Antidote',
+                specificCondition: StatusCondition.poison),
+          ));
+        }
+        if (_trainer.paralyzeHeals > 0) {
+          rows.add(_bagRow(
+            icon: Icons.bolt,
+            iconColor: Colors.amberAccent,
+            title: "Paralyze Heal",
+            rarity: "Common",
+            subtitle: "x${_trainer.paralyzeHeals} remaining (Cures Paralysis)",
+            btnLabel: "USE",
+            btnColor: Colors.amber.shade800,
+            enabled: _playerPokemon.status == StatusCondition.paralysis,
+            onTap: () => _useStatusHealingItem('paralyze_heal', 'Paralyze Heal',
+                specificCondition: StatusCondition.paralysis),
+          ));
+        }
+        if (_trainer.awakenings > 0) {
+          rows.add(_bagRow(
+            icon: Icons.alarm,
+            iconColor: Colors.lightBlueAccent,
+            title: "Awakening",
+            rarity: "Common",
+            subtitle: "x${_trainer.awakenings} remaining (Cures Sleep)",
+            btnLabel: "USE",
+            btnColor: Colors.lightBlue.shade700,
+            enabled: _playerPokemon.status == StatusCondition.sleep,
+            onTap: () => _useStatusHealingItem('awakening', 'Awakening',
+                specificCondition: StatusCondition.sleep),
+          ));
+        }
+        if (_trainer.burnHeals > 0) {
+          rows.add(_bagRow(
+            icon: Icons.local_fire_department,
+            iconColor: Colors.deepOrangeAccent,
+            title: "Burn Heal",
+            rarity: "Common",
+            subtitle: "x${_trainer.burnHeals} remaining (Cures Burn)",
+            btnLabel: "USE",
+            btnColor: Colors.deepOrange,
+            enabled: _playerPokemon.status == StatusCondition.burn,
+            onTap: () => _useStatusHealingItem('burn_heal', 'Burn Heal',
+                specificCondition: StatusCondition.burn),
+          ));
+        }
+        if (_trainer.iceHeals > 0) {
+          rows.add(_bagRow(
+            icon: Icons.ac_unit,
+            iconColor: Colors.cyanAccent,
+            title: "Ice Heal",
+            rarity: "Common",
+            subtitle: "x${_trainer.iceHeals} remaining (Cures Freeze)",
+            btnLabel: "USE",
+            btnColor: Colors.cyan.shade700,
+            enabled: _playerPokemon.status == StatusCondition.freeze,
+            onTap: () => _useStatusHealingItem('ice_heal', 'Ice Heal',
+                specificCondition: StatusCondition.freeze),
+          ));
+        }
+        if (_trainer.fullHeals > 0) {
+          rows.add(_bagRow(
+            icon: Icons.auto_fix_high,
+            iconColor: Colors.tealAccent,
+            title: "Full Heal",
+            rarity: "Uncommon",
+            subtitle: "x${_trainer.fullHeals} remaining (Cures all status)",
+            btnLabel: "USE",
+            btnColor: Colors.teal.shade700,
+            enabled: _playerPokemon.status != StatusCondition.none,
+            onTap: () => _useStatusHealingItem('full_heal', 'Full Heal'),
+          ));
+        }
+        if (_trainer.fullRestores > 0) {
+          rows.add(_bagRow(
+            icon: Icons.stars,
+            iconColor: const Color(0xFFFF80AB),
+            title: "Full Restore",
+            rarity: "Rare",
+            subtitle:
+                "x${_trainer.fullRestores} remaining (100% HP + Cures status)",
+            btnLabel: "USE",
+            btnColor: Colors.pink.shade700,
+            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp ||
+                _playerPokemon.status != StatusCondition.none,
+            onTap: () => _useStatusHealingItem('full_restore', 'Full Restore',
+                fullRestore: true),
+          ));
+        }
+
         return SizedBox(
           height: MediaQuery.of(ctx).size.height * 0.72,
           child: Padding(
@@ -2124,115 +2386,28 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 ),
                 const SizedBox(height: 8),
                 Expanded(
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      if (widget.isWild) ...[
-                        _bagRow(
-                          icon: Icons.catching_pokemon,
-                          iconColor: Colors.redAccent,
-                          leadingWidget: const PokeBallSpriteWidget(
-                              ballType: 'poke_ball', size: 28),
-                          title: "Poké Ball",
-                          rarity: "Common",
-                          subtitle: "x${_trainer.pokeBalls} remaining",
-                          btnLabel: "THROW",
-                          btnColor: Colors.redAccent,
-                          enabled: _trainer.pokeBalls > 0,
-                          onTap: () {
-                            Navigator.pop(ctx);
-                            _onThrowPokeBall('poke_ball');
-                          },
+                  child: rows.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.inventory_2_outlined,
+                                  color: Colors.white24, size: 40),
+                              SizedBox(height: 10),
+                              Text(
+                                "Your Bag is empty!",
+                                style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView(
+                          physics: const BouncingScrollPhysics(),
+                          children: rows,
                         ),
-                        _bagRow(
-                          icon: Icons.catching_pokemon,
-                          iconColor: Colors.blueAccent,
-                          leadingWidget: const PokeBallSpriteWidget(
-                              ballType: 'great_ball', size: 28),
-                          title: "Great Ball (1.5x)",
-                          rarity: "Uncommon",
-                          subtitle: "x${_trainer.greatBalls} remaining",
-                          btnLabel: "THROW",
-                          btnColor: Colors.blueAccent,
-                          enabled: _trainer.greatBalls > 0,
-                          onTap: () {
-                            Navigator.pop(ctx);
-                            _onThrowPokeBall('great_ball');
-                          },
-                        ),
-                        _bagRow(
-                          icon: Icons.catching_pokemon,
-                          iconColor: Colors.amberAccent,
-                          leadingWidget: const PokeBallSpriteWidget(
-                              ballType: 'ultra_ball', size: 28),
-                          title: "Ultra Ball (2.0x)",
-                          rarity: "Rare",
-                          subtitle: "x${_trainer.ultraBalls} remaining",
-                          btnLabel: "THROW",
-                          btnColor: Colors.amber.shade800,
-                          enabled: _trainer.ultraBalls > 0,
-                          onTap: () {
-                            Navigator.pop(ctx);
-                            _onThrowPokeBall('ultra_ball');
-                          },
-                        ),
-                      ],
-                      _bagRow(
-                        icon: Icons.medical_services,
-                        iconColor: Colors.greenAccent,
-                        title: "Potion",
-                        rarity: "Common",
-                        subtitle: "x${_trainer.potions} remaining (+20 HP)",
-                        btnLabel: "USE",
-                        btnColor: Colors.green,
-                        enabled: _trainer.potions > 0 &&
-                            _playerPokemon.currentHp < _playerPokemon.maxHp,
-                        onTap: () =>
-                            _useHealingItem('potion', 20, "Potion"),
-                      ),
-                      _bagRow(
-                        icon: Icons.medical_services,
-                        iconColor: Colors.tealAccent,
-                        title: "Super Potion",
-                        rarity: "Uncommon",
-                        subtitle:
-                            "x${_trainer.superPotions} remaining (+50 HP)",
-                        btnLabel: "USE",
-                        btnColor: Colors.teal.shade700,
-                        enabled: _trainer.superPotions > 0 &&
-                            _playerPokemon.currentHp < _playerPokemon.maxHp,
-                        onTap: () => _useHealingItem(
-                            'super_potion', 50, "Super Potion"),
-                      ),
-                      _bagRow(
-                        icon: Icons.medical_services,
-                        iconColor: Colors.pinkAccent,
-                        title: "Hyper Potion",
-                        rarity: "Rare",
-                        subtitle:
-                            "x${_trainer.hyperPotions} remaining (+200 HP)",
-                        btnLabel: "USE",
-                        btnColor: Colors.pink.shade700,
-                        enabled: _trainer.hyperPotions > 0 &&
-                            _playerPokemon.currentHp < _playerPokemon.maxHp,
-                        onTap: () => _useHealingItem(
-                            'hyper_potion', 200, "Hyper Potion"),
-                      ),
-                      _bagRow(
-                        icon: Icons.favorite,
-                        iconColor: Colors.orangeAccent,
-                        title: "Revive",
-                        rarity: "Rare",
-                        subtitle:
-                            "x${_trainer.revives} remaining (+50% HP)",
-                        btnLabel: "USE",
-                        btnColor: Colors.orange.shade800,
-                        enabled: _trainer.revives > 0 &&
-                            _trainer.party.any((p) => p.isFainted),
-                        onTap: _useReviveItem,
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),

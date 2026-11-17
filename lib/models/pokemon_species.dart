@@ -114,7 +114,7 @@ class PokemonSpecies {
     if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
       return PokemonRarity.rare;
     }
-    if (evolutionStage == 2 || isSingleStage) {
+    if (evolutionStage == 2 || (isSingleStage && !isPseudoLegendary)) {
       return PokemonRarity.uncommon;
     }
     return PokemonRarity.common;
@@ -122,13 +122,13 @@ class PokemonSpecies {
 
   /// Minimum player level required to encounter this species in the wild:
   /// - 1st stage (multi-stage line): any level (1)
-  /// - 2nd stage or single-stage species: within 5 levels of minEncounterLevel
+  /// - 2nd stage or single-stage non-pseudo-legendary: within 5 levels of minEncounterLevel
   /// - 3rd stage or final-stage pseudo-legendary: within 10 levels of minEncounterLevel
   int get requiredPlayerLevelForEncounter {
     if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
       return (minEncounterLevel - 10).clamp(1, 100);
     }
-    if (evolutionStage == 2 || isSingleStage) {
+    if (evolutionStage == 2 || (isSingleStage && !isPseudoLegendary)) {
       return (minEncounterLevel - 5).clamp(1, 100);
     }
     return 1;

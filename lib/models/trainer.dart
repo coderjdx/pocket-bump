@@ -23,6 +23,13 @@ class Trainer extends ChangeNotifier {
   int superPotions;
   int hyperPotions;
   int revives;
+  int antidotes;
+  int paralyzeHeals;
+  int awakenings;
+  int burnHeals;
+  int iceHeals;
+  int fullHeals;
+  int fullRestores;
   int totalSteps;
   int dailySteps;
   String lastStepDate;
@@ -42,6 +49,13 @@ class Trainer extends ChangeNotifier {
     this.superPotions = 0,
     this.hyperPotions = 0,
     this.revives = 0,
+    this.antidotes = 0,
+    this.paralyzeHeals = 0,
+    this.awakenings = 0,
+    this.burnHeals = 0,
+    this.iceHeals = 0,
+    this.fullHeals = 0,
+    this.fullRestores = 0,
     this.totalSteps = 0,
     this.dailySteps = 0,
     String? lastStepDate,
@@ -133,6 +147,38 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool curePartyStatus(StatusCondition condition) {
+    bool cured = false;
+    for (final mon in party) {
+      if (mon.status == condition) {
+        mon.status = StatusCondition.none;
+        cured = true;
+      }
+    }
+    if (cured) notifyListeners();
+    return cured;
+  }
+
+  bool cureAllPartyStatus() {
+    bool cured = false;
+    for (final mon in party) {
+      if (mon.status != StatusCondition.none) {
+        mon.status = StatusCondition.none;
+        cured = true;
+      }
+    }
+    if (cured) notifyListeners();
+    return cured;
+  }
+
+  void fullRestoreParty() {
+    for (final mon in party) {
+      mon.currentHp = mon.maxHp;
+      mon.status = StatusCondition.none;
+    }
+    notifyListeners();
+  }
+
   void usePokeBall() {
     if (pokeBalls > 0) {
       pokeBalls--;
@@ -154,7 +200,27 @@ class Trainer extends ChangeNotifier {
       potions +
       superPotions +
       hyperPotions +
-      revives;
+      revives +
+      antidotes +
+      paralyzeHeals +
+      awakenings +
+      burnHeals +
+      iceHeals +
+      fullHeals +
+      fullRestores;
+
+  int get totalMedicine =>
+      potions +
+      superPotions +
+      hyperPotions +
+      revives +
+      antidotes +
+      paralyzeHeals +
+      awakenings +
+      burnHeals +
+      iceHeals +
+      fullHeals +
+      fullRestores;
 
   void setLeadPokemon(int index) {
     if (index <= 0 || index >= party.length) return;
@@ -260,6 +326,27 @@ class Trainer extends ChangeNotifier {
       case 'revive':
         revives = (revives + delta).clamp(0, 99);
         break;
+      case 'antidote':
+        antidotes = (antidotes + delta).clamp(0, 99);
+        break;
+      case 'paralyze_heal':
+        paralyzeHeals = (paralyzeHeals + delta).clamp(0, 99);
+        break;
+      case 'awakening':
+        awakenings = (awakenings + delta).clamp(0, 99);
+        break;
+      case 'burn_heal':
+        burnHeals = (burnHeals + delta).clamp(0, 99);
+        break;
+      case 'ice_heal':
+        iceHeals = (iceHeals + delta).clamp(0, 99);
+        break;
+      case 'full_heal':
+        fullHeals = (fullHeals + delta).clamp(0, 99);
+        break;
+      case 'full_restore':
+        fullRestores = (fullRestores + delta).clamp(0, 99);
+        break;
       default:
         return;
     }
@@ -273,6 +360,8 @@ class Trainer extends ChangeNotifier {
     potions = (potions + 3).clamp(0, 99);
     superPotions = (superPotions + 2).clamp(0, 99);
     revives = (revives + 1).clamp(0, 99);
+    fullHeals = (fullHeals + 1).clamp(0, 99);
+    antidotes = (antidotes + 1).clamp(0, 99);
     notifyListeners();
   }
 
@@ -289,6 +378,13 @@ class Trainer extends ChangeNotifier {
       'superPotions': superPotions,
       'hyperPotions': hyperPotions,
       'revives': revives,
+      'antidotes': antidotes,
+      'paralyzeHeals': paralyzeHeals,
+      'awakenings': awakenings,
+      'burnHeals': burnHeals,
+      'iceHeals': iceHeals,
+      'fullHeals': fullHeals,
+      'fullRestores': fullRestores,
       'totalSteps': totalSteps,
       'dailySteps': dailySteps,
       'lastStepDate': lastStepDate,
@@ -315,6 +411,13 @@ class Trainer extends ChangeNotifier {
     superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     revives = ((json['revives'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    antidotes = ((json['antidotes'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    paralyzeHeals = ((json['paralyzeHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    awakenings = ((json['awakenings'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    burnHeals = ((json['burnHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    iceHeals = ((json['iceHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    fullHeals = ((json['fullHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    fullRestores = ((json['fullRestores'] as num?)?.toInt() ?? 0).clamp(0, 99);
     totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
     dailySteps = max(0, (json['dailySteps'] as num?)?.toInt() ?? 0);
     lastStepDate = (json['lastStepDate'] as String?) ?? todayDateKey();
@@ -402,6 +505,13 @@ class Trainer extends ChangeNotifier {
     superPotions = 0;
     hyperPotions = 0;
     revives = 0;
+    antidotes = 0;
+    paralyzeHeals = 0;
+    awakenings = 0;
+    burnHeals = 0;
+    iceHeals = 0;
+    fullHeals = 0;
+    fullRestores = 0;
     totalSteps = 0;
     dailySteps = 0;
     lastStepDate = todayDateKey();

@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const Icon(Icons.medical_services, color: Colors.greenAccent, size: 14),
                       const SizedBox(width: 4),
                       Text(
-                        "${trainer.potions + trainer.revives}",
+                        "${trainer.totalMedicine}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -666,7 +666,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   // ─── 4. PARTY & ITEMS MANAGEMENT CARDS ────────────────────────────────────
   Widget _buildManagementRow(Trainer trainer) {
     final int ballTotal = trainer.pokeBalls + trainer.greatBalls + trainer.ultraBalls;
-    final int medTotal = trainer.potions + trainer.revives;
+    final int medTotal = trainer.totalMedicine;
 
     return Row(
       children: [
@@ -1600,7 +1600,82 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 isHealing: true,
                 rarity: 'Rare',
               ),
+              _ItemMeta(
+                id: 'antidote',
+                name: 'Antidote',
+                description: 'Cures Poison for party Pokémon.',
+                count: trainer.antidotes,
+                color: Colors.purpleAccent,
+                icon: Icons.healing,
+                isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'paralyze_heal',
+                name: 'Paralyze Heal',
+                description: 'Cures Paralysis for party Pokémon.',
+                count: trainer.paralyzeHeals,
+                color: Colors.amberAccent,
+                icon: Icons.bolt,
+                isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'awakening',
+                name: 'Awakening',
+                description: 'Awakens sleeping party Pokémon.',
+                count: trainer.awakenings,
+                color: Colors.lightBlueAccent,
+                icon: Icons.alarm,
+                isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'burn_heal',
+                name: 'Burn Heal',
+                description: 'Heals Burns for party Pokémon.',
+                count: trainer.burnHeals,
+                color: Colors.deepOrangeAccent,
+                icon: Icons.local_fire_department,
+                isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'ice_heal',
+                name: 'Ice Heal',
+                description: 'Thaws frozen party Pokémon.',
+                count: trainer.iceHeals,
+                color: Colors.cyanAccent,
+                icon: Icons.ac_unit,
+                isHealing: true,
+                rarity: 'Common',
+              ),
+              _ItemMeta(
+                id: 'full_heal',
+                name: 'Full Heal',
+                description: 'Heals all status conditions for party Pokémon.',
+                count: trainer.fullHeals,
+                color: Colors.tealAccent,
+                icon: Icons.auto_fix_high,
+                isHealing: true,
+                rarity: 'Uncommon',
+              ),
+              _ItemMeta(
+                id: 'full_restore',
+                name: 'Full Restore',
+                description:
+                    'Fully restores HP and cures all status ailments for party Pokémon.',
+                count: trainer.fullRestores,
+                color: const Color(0xFFFF80AB),
+                icon: Icons.stars,
+                isHealing: true,
+                rarity: 'Rare',
+              ),
             ];
+
+            // Only display items the player actually possesses (count > 0)
+            final availableItems =
+                itemDefs.where((item) => item.count > 0).toList();
 
             return SizedBox(
               height: MediaQuery.of(ctx).size.height * 0.78,
@@ -1666,112 +1741,285 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 12),
                     Expanded(
-                      child: ListView.separated(
-                        itemCount: itemDefs.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 10),
-                        itemBuilder: (c, idx) {
-                          final item = itemDefs[idx];
-                          return Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2E2E3B),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: item.color.withOpacity(0.35)),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 44,
-                                  height: 44,
+                      child: availableItems.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.inventory_2_outlined,
+                                      size: 48, color: Colors.white24),
+                                  const SizedBox(height: 12),
+                                  const Text(
+                                    "Your Bag is empty!",
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  const Text(
+                                    "Claim a Poké Mart supply drop above or explore to get item drops from wild Pokémon encounters.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white38,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.separated(
+                              itemCount: availableItems.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 10),
+                              itemBuilder: (c, idx) {
+                                final item = availableItems[idx];
+                                return Container(
+                                  padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: item.color.withOpacity(0.18),
-                                    borderRadius: BorderRadius.circular(12),
+                                    color: const Color(0xFF2E2E3B),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                        color: item.color.withOpacity(0.35)),
                                   ),
-                                  child: Center(
-                                    child: item.id.endsWith('_ball')
-                                        ? PokeBallSpriteWidget(ballType: item.id, size: 30)
-                                        : Icon(item.icon, color: item.color, size: 24),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  child: Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            item.name,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 6, vertical: 1.5),
-                                            decoration: BoxDecoration(
-                                              color: item.color.withOpacity(0.18),
-                                              borderRadius: BorderRadius.circular(6),
-                                              border: Border.all(
-                                                color: item.color.withOpacity(0.6),
-                                                width: 0.8,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              item.rarity.toUpperCase(),
-                                              style: TextStyle(
-                                                color: item.color,
-                                                fontSize: 8,
-                                                fontWeight: FontWeight.bold,
-                                                letterSpacing: 0.4,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 6),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 7, vertical: 2),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black38,
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              "x${item.count}",
-                                              style: TextStyle(
-                                                color: item.count > 0 ? item.color : Colors.white38,
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: BoxDecoration(
+                                          color: item.color.withOpacity(0.18),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Center(
+                                          child: item.id.endsWith('_ball')
+                                              ? PokeBallSpriteWidget(
+                                                  ballType: item.id, size: 30)
+                                              : Icon(item.icon,
+                                                  color: item.color, size: 24),
+                                        ),
                                       ),
-                                      const SizedBox(height: 3),
-                                      Text(
-                                        item.description,
-                                        style: const TextStyle(color: Colors.white60, fontSize: 11),
-                                      ),
-                                      if (item.isHealing) ...[
-                                        const SizedBox(height: 6),
-                                        SizedBox(
-                                          height: 28,
-                                          child: OutlinedButton(
-                                            onPressed: item.count > 0
-                                                ? () {
-                                                    trainer.adjustItemCount(item.id, -1);
-                                                    trainer.healAndResetAllParty();
-                                                    ScaffoldMessenger.of(this.context).showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                            "Used ${item.name}! Entire party restored to full HP & PP."),
-                                                        duration: const Duration(seconds: 2),
-                                                      ),
-                                                    );
-                                                  }
-                                                : null,
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  item.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 6,
+                                                      vertical: 1.5),
+                                                  decoration: BoxDecoration(
+                                                    color: item.color
+                                                        .withOpacity(0.18),
+                                                    borderRadius:
+                                                        BorderRadius.circular(6),
+                                                    border: Border.all(
+                                                      color: item.color
+                                                          .withOpacity(0.6),
+                                                      width: 0.8,
+                                                    ),
+                                                  ),
+                                                  child: Text(
+                                                    item.rarity.toUpperCase(),
+                                                    style: TextStyle(
+                                                      color: item.color,
+                                                      fontSize: 8,
+                                                      fontWeight: FontWeight.bold,
+                                                      letterSpacing: 0.4,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 6),
+                                                Container(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 7,
+                                                      vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black38,
+                                                    borderRadius:
+                                                        BorderRadius.circular(8),
+                                                  ),
+                                                  child: Text(
+                                                    "x${item.count}",
+                                                    style: TextStyle(
+                                                      color: item.count > 0
+                                                          ? item.color
+                                                          : Colors.white38,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 3),
+                                            Text(
+                                              item.description,
+                                              style: const TextStyle(
+                                                  color: Colors.white60,
+                                                  fontSize: 11),
+                                            ),
+                                            if (item.isHealing) ...[
+                                              const SizedBox(height: 6),
+                                              SizedBox(
+                                                height: 28,
+                                                child: OutlinedButton(
+                                                  onPressed: item.count > 0
+                                                      ? () {
+                                                          trainer.adjustItemCount(
+                                                              item.id, -1);
+                                                          if (item.id ==
+                                                              'antidote') {
+                                                            trainer.curePartyStatus(
+                                                                StatusCondition
+                                                                    .poison);
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Poison cured for party Pokémon."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'paralyze_heal') {
+                                                            trainer.curePartyStatus(
+                                                                StatusCondition
+                                                                    .paralysis);
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Paralysis cured for party Pokémon."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'awakening') {
+                                                            trainer.curePartyStatus(
+                                                                StatusCondition
+                                                                    .sleep);
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Sleeping party Pokémon awakened."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'burn_heal') {
+                                                            trainer.curePartyStatus(
+                                                                StatusCondition
+                                                                    .burn);
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Burns healed for party Pokémon."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'ice_heal') {
+                                                            trainer.curePartyStatus(
+                                                                StatusCondition
+                                                                    .freeze);
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Frozen party Pokémon thawed."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'full_heal') {
+                                                            trainer
+                                                                .cureAllPartyStatus();
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! All status ailments cured for party Pokémon."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else if (item.id ==
+                                                              'full_restore') {
+                                                            trainer
+                                                                .fullRestoreParty();
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Entire party restored to full HP and cured of all status ailments."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            trainer
+                                                                .healAndResetAllParty();
+                                                            ScaffoldMessenger.of(
+                                                                    this.context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                    "Used ${item.name}! Entire party restored to full HP & PP."),
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            2),
+                                                              ),
+                                                            );
+                                                          }
+                                                        }
+                                                      : null,
                                             style: OutlinedButton.styleFrom(
                                               foregroundColor: item.color,
                                               side: BorderSide(color: item.color.withOpacity(0.6)),
