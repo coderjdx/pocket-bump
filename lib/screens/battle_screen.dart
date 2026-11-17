@@ -10,7 +10,18 @@ import '../models/trainer.dart';
 import '../services/battle_engine.dart';
 import '../services/pokedex_database.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
+
+enum _BallAnimPhase {
+  none,
+  flight,
+  absorb,
+  bounce,
+  wobble,
+  locked,
+  breakout,
+}
 
 class BattleScreen extends StatefulWidget {
   final PokemonInstance opponentPokemon;
@@ -49,6 +60,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late AnimationController _arenaShakeController;
   late AnimationController _vfxController;
   late AnimationController _ballWobbleController;
+  late AnimationController _ballPhaseController;
 
   Offset _playerLungeOffset = Offset.zero;
   Offset _opponentLungeOffset = Offset.zero;
@@ -59,7 +71,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _visualPlayerFainted = false;
   bool _visualOpponentFainted = false;
   bool _opponentInBall = false;
+  double _opponentCaptureScale = 1.0;
   bool _showPokeBallThrow = false;
+  _BallAnimPhase _catchBallPhase = _BallAnimPhase.none;
+  Color? _ballButtonGlowColor;
+  bool _showCaptureLockBurst = false;
   bool _showEvolutionGlow = false;
   String _throwingBallType = 'poke_ball';
 
@@ -132,7 +148,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     _ballWobbleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 350),
+      duration: const Duration(milliseconds: 420),
+    );
+
+    _ballPhaseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 360),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -151,6 +172,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _arenaShakeController.dispose();
     _vfxController.dispose();
     _ballWobbleController.dispose();
+    _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -220,7 +242,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await Future.delayed(const Duration(milliseconds: 210));
     if (!mounted) return;
 
-    // Throw follow-through pose held briefly in view, then Trainer steps aside as Poké Ball arcs
+    // Throw follow-through pose held briefly in view, then Trainer steps aside as Poké Ball arcs & bounces
     setState(() {
       _trainerPose = 2;
       _showSummonBallArc = true;
@@ -231,7 +253,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     setState(() {
       _trainerSlideX = -1.2;
     });
-    await Future.delayed(const Duration(milliseconds: 260));
+    await Future.delayed(const Duration(milliseconds: 370));
     if (!mounted) return;
 
     // Ball opens with summon burst & Pokémon pops onto the platform
@@ -737,47 +759,90 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _showTrainerSprite = true;
       _trainerPose = 0;
       _trainerSlideX = 0.0;
+      _opponentInBall = false;
+      _opponentCaptureScale = 1.0;
+      _showCaptureLockBurst = false;
+      _ballButtonGlowColor = null;
+      _catchBallPhase = _BallAnimPhase.none;
       _currentMessage =
           "${_trainer.name} threw a ${ballType.replaceAll('_', ' ').toUpperCase()}!";
     });
 
-    await Future.delayed(const Duration(milliseconds: 180));
+    await Future.delayed(const Duration(milliseconds: 160));
     if (!mounted) return;
 
     setState(() {
       _trainerPose = 1;
     });
-    await Future.delayed(const Duration(milliseconds: 210));
+    await Future.delayed(const Duration(milliseconds: 190));
     if (!mounted) return;
 
+    // Phase 1: Throw Flight Arc from Trainer hand to wild Pokémon
     setState(() {
       _trainerPose = 2;
       _showPokeBallThrow = true;
+      _catchBallPhase = _BallAnimPhase.flight;
     });
-    await Future.delayed(const Duration(milliseconds: 150));
-    if (!mounted) return;
+    _ballPhaseController.duration = const Duration(milliseconds: 360);
+    _ballPhaseController.forward(from: 0);
 
+    await Future.delayed(const Duration(milliseconds: 140));
+    if (!mounted) return;
     setState(() {
       _trainerSlideX = -1.2;
     });
-    await Future.delayed(const Duration(milliseconds: 370));
+    await Future.delayed(const Duration(milliseconds: 220));
     if (!mounted) return;
 
+    // Phase 2: Open Capsule & Laser Absorption (wild Pokémon shrinks into beam)
+    HapticFeedback.lightImpact();
     setState(() {
       _showTrainerSprite = false;
+      _catchBallPhase = _BallAnimPhase.absorb;
       _opponentFlash = true;
-      _opponentInBall = true;
+      _opponentCaptureScale = 0.08;
     });
-    await Future.delayed(const Duration(milliseconds: 140));
+    _ballPhaseController.duration = const Duration(milliseconds: 360);
+    _ballPhaseController.forward(from: 0);
+
+    await Future.delayed(const Duration(milliseconds: 220));
     if (!mounted) return;
     setState(() {
       _opponentFlash = false;
     });
+    await Future.delayed(const Duration(milliseconds: 140));
+    if (!mounted) return;
 
+    // Phase 3: Gravity Drop & Multi-Bounce on Opponent Platform
+    setState(() {
+      _opponentInBall = true;
+      _catchBallPhase = _BallAnimPhase.bounce;
+    });
+    _ballPhaseController.duration = const Duration(milliseconds: 560);
+    _ballPhaseController.forward(from: 0);
+
+    await Future.delayed(const Duration(milliseconds: 140));
+    if (!mounted) return;
+    HapticFeedback.selectionClick();
+    await Future.delayed(const Duration(milliseconds: 420));
+    if (!mounted) return;
+
+    // Phase 4: Bottom-Pivoted Ground Wobble Checks (3 checks)
+    setState(() {
+      _catchBallPhase = _BallAnimPhase.wobble;
+    });
     for (int i = 0; i < 3; i++) {
+      setState(() {
+        _ballButtonGlowColor = Colors.redAccent;
+      });
       _ballWobbleController.forward(from: 0);
       HapticFeedback.selectionClick();
-      await Future.delayed(const Duration(milliseconds: 520));
+      await Future.delayed(const Duration(milliseconds: 420));
+      if (!mounted) return;
+      setState(() {
+        _ballButtonGlowColor = null;
+      });
+      await Future.delayed(const Duration(milliseconds: 180));
       if (!mounted) return;
     }
 
@@ -787,18 +852,51 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
 
     if (caught) {
+      // Phase 5a: Capture Lock & Golden Stars
       _trainer.addPokemon(_opponentPokemon);
       HapticFeedback.heavyImpact();
       setState(() {
+        _catchBallPhase = _BallAnimPhase.locked;
+        _ballButtonGlowColor = Colors.amberAccent;
+        _showCaptureLockBurst = true;
         _currentMessage = "Gotcha! ${_opponentPokemon.species.name} was caught!";
         _battleEnded = true;
         _isProcessingTurn = false;
       });
-    } else {
+      _ballPhaseController.duration = const Duration(milliseconds: 520);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 520));
+      if (!mounted) return;
       setState(() {
+        _ballButtonGlowColor = null;
+        _showCaptureLockBurst = false;
+      });
+    } else {
+      // Phase 5b: Break-Free Open Capsule Burst
+      setState(() {
+        _catchBallPhase = _BallAnimPhase.breakout;
+        _ballButtonGlowColor = null;
+        _showCaptureLockBurst = false;
         _opponentInBall = false;
+        _opponentFlash = true;
+        _opponentCaptureScale = 0.12;
+      });
+      _ballPhaseController.duration = const Duration(milliseconds: 280);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 90));
+      if (!mounted) return;
+      setState(() {
+        _opponentCaptureScale = 1.0;
+      });
+      await Future.delayed(const Duration(milliseconds: 190));
+      if (!mounted) return;
+
+      setState(() {
+        _opponentFlash = false;
         _showPokeBallThrow = false;
-        _showTrainerSprite = false;
+        _catchBallPhase = _BallAnimPhase.none;
         _showPlayerPokemon = true;
         _playerSummonScale = 1.0;
         _currentMessage = "Oh no! The wild ${_opponentPokemon.species.name} broke free!";
@@ -968,20 +1066,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
                                   children: [
-                                    if (!_opponentInBall)
-                                      _buildAnimatedCombatant(
-                                        url: _opponentPokemon.species.spriteUrl,
-                                        fallbackUrl:
-                                            _opponentPokemon.species.staticSpriteUrl,
-                                        size: oppSize,
-                                        isFainted: _visualOpponentFainted,
-                                        isSubmerged: _opponentSubmerged,
-                                        lungeOffset: _opponentLungeOffset,
-                                        shakeController: _opponentShakeController,
-                                        koController: _opponentKoController,
-                                        flashWhite: _opponentFlash,
-                                        isPlayer: false,
+                                    AnimatedOpacity(
+                                      opacity: _opponentInBall ? 0.0 : 1.0,
+                                      duration: const Duration(milliseconds: 110),
+                                      child: AnimatedScale(
+                                        scale: _opponentCaptureScale,
+                                        duration: const Duration(milliseconds: 220),
+                                        curve: Curves.easeInOutCubic,
+                                        alignment: Alignment.bottomCenter,
+                                        child: _buildAnimatedCombatant(
+                                          url: _opponentPokemon.species.spriteUrl,
+                                          fallbackUrl: _opponentPokemon
+                                              .species.staticSpriteUrl,
+                                          size: oppSize,
+                                          isFainted: _visualOpponentFainted,
+                                          isSubmerged: _opponentSubmerged,
+                                          lungeOffset: _opponentLungeOffset,
+                                          shakeController: _opponentShakeController,
+                                          koController: _opponentKoController,
+                                          flashWhite: _opponentFlash,
+                                          isPlayer: false,
+                                        ),
                                       ),
+                                    ),
                                     AnimatedBuilder(
                                       animation: _opponentKoController,
                                       builder: (context, _) {
@@ -1134,26 +1241,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                 ),
                               ),
 
-                            // Summon Poké Ball arc (Trainer hand -> Player platform)
+                            // Summon Poké Ball arc & ground bounce (Trainer hand -> Player platform)
                             if (_showSummonBallArc)
-                              _buildArcingBallOverlay(
-                                start: playerPlatform + const Offset(36, -116),
-                                end: playerPlatform + const Offset(0, -14),
-                                arcHeight: 48,
-                                durationMs: 400,
-                                ballType: 'poke_ball',
-                                wobble: false,
+                              _buildSummonBallOverlay(
+                                playerPlatform: playerPlatform,
                               ),
 
-                            // Catching Poké Ball throw (Trainer hand -> Wild Pokémon)
+                            // Multi-phase Catching Poké Ball throw, beam, bounce, wobble & lock
                             if (_showPokeBallThrow)
-                              _buildArcingBallOverlay(
-                                start: playerPlatform + const Offset(38, -118),
-                                end: oppPlatform + Offset(0, -oppSize * 0.35),
-                                arcHeight: 72,
-                                durationMs: 520,
-                                ballType: _throwingBallType,
-                                wobble: true,
+                              _buildCatchBallOverlay(
+                                playerPlatform: playerPlatform,
+                                oppPlatform: oppPlatform,
+                                oppSize: oppSize,
                               ),
 
                             // Player Info Card (Bottom-Right)
@@ -1240,79 +1339,280 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     return Colors.red.shade600;
   }
 
-  Widget _buildArcingBallOverlay({
-    required Offset start,
-    required Offset end,
-    required double arcHeight,
-    required int durationMs,
-    required String ballType,
-    required bool wobble,
+  Widget _buildBallShadow({
+    required Offset floorPos,
+    required double width,
+    required double opacity,
   }) {
-    final topColor = _ballTopColor(ballType);
-
-    final ballWidget = Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.black, width: 2),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [topColor, topColor, Colors.white, Colors.white],
-          stops: const [0.0, 0.48, 0.52, 1.0],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.45),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Center(
+    return Positioned(
+      left: floorPos.dx - width / 2,
+      top: floorPos.dy - width * 0.16,
+      child: IgnorePointer(
         child: Container(
-          width: 10,
-          height: 10,
+          width: width,
+          height: width * 0.32,
           decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.black, width: 2),
+            color: Colors.black.withOpacity(opacity.clamp(0.0, 0.5)),
+            borderRadius: BorderRadius.circular(width),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildSummonBallOverlay({required Offset playerPlatform}) {
+    final Offset start = playerPlatform + const Offset(36, -116);
+    final Offset end = playerPlatform + const Offset(0, -14);
+    final Offset startFloor = playerPlatform + const Offset(30, -2);
+    final Offset endFloor = playerPlatform + const Offset(0, -2);
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
-      duration: Duration(milliseconds: durationMs),
-      curve: Curves.easeOutCubic,
-      builder: (context, t, child) {
-        final x = start.dx + (end.dx - start.dx) * t;
-        final y = start.dy + (end.dy - start.dy) * t - sin(t * pi) * arcHeight;
-        final spinAngle = (1.0 - t) * pi * 4;
+      duration: const Duration(milliseconds: 520),
+      builder: (context, t, _) {
+        double x;
+        double y;
+        double spinAngle = 0.0;
+        double scaleX = 1.0;
+        double scaleY = 1.0;
+        bool isOpen = false;
+        Offset floorPos = endFloor;
 
-        return Positioned(
-          left: x - 16,
-          top: y - 16,
-          child: wobble
-              ? AnimatedBuilder(
-                  animation: _ballWobbleController,
-                  builder: (context, inner) {
-                    final wobbleAngle = sin(_ballWobbleController.value * pi * 2) *
-                        0.38 *
-                        (1 - _ballWobbleController.value);
-                    return Transform.rotate(
-                      angle: t < 1.0 ? spinAngle : wobbleAngle,
-                      child: inner,
-                    );
-                  },
-                  child: child,
-                )
-              : Transform.rotate(angle: spinAngle, child: child),
+        if (t < 0.72) {
+          final u = Curves.easeOutCubic.transform(t / 0.72);
+          x = start.dx + (end.dx - start.dx) * u;
+          y = start.dy + (end.dy - start.dy) * u - sin(u * pi) * 48;
+          floorPos = Offset(
+            startFloor.dx + (endFloor.dx - startFloor.dx) * u,
+            startFloor.dy + (endFloor.dy - startFloor.dy) * u,
+          );
+          spinAngle = u * pi * 5;
+        } else if (t < 0.90) {
+          final b = (t - 0.72) / 0.18;
+          x = end.dx;
+          y = end.dy - sin(b * pi) * 14;
+          spinAngle = pi * 5;
+          if (b < 0.28) {
+            scaleX = 1.15;
+            scaleY = 0.85;
+          }
+        } else {
+          x = end.dx;
+          y = end.dy;
+          spinAngle = 0.0;
+          isOpen = true;
+        }
+
+        final double heightAboveFloor = (floorPos.dy - y).clamp(0.0, 140.0);
+        final double shadowFactor = (1.0 - heightAboveFloor / 160.0).clamp(0.45, 1.0);
+        const double ballSize = 30.0;
+
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _buildBallShadow(
+              floorPos: floorPos,
+              width: 24.0 * shadowFactor,
+              opacity: 0.36 * shadowFactor,
+            ),
+            Positioned(
+              left: x - ballSize / 2,
+              top: y - (isOpen ? ballSize * 0.75 : ballSize / 2),
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.diagonal3Values(scaleX, scaleY, 1.0),
+                child: Transform.rotate(
+                  angle: spinAngle,
+                  child: PokeBallSpriteWidget(
+                    ballType: 'poke_ball',
+                    size: ballSize,
+                    isOpen: isOpen,
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       },
-      child: ballWidget,
+    );
+  }
+
+  Widget _buildCatchBallOverlay({
+    required Offset playerPlatform,
+    required Offset oppPlatform,
+    required double oppSize,
+  }) {
+    final Offset startPos = playerPlatform + const Offset(38, -118);
+    final Offset impactPos = oppPlatform + Offset(0, -oppSize * 0.48);
+    final Offset groundPos = oppPlatform + const Offset(0, -13);
+    final Offset startFloor = playerPlatform + const Offset(24, -2);
+    final Offset oppFloor = oppPlatform + const Offset(0, -1);
+
+    return AnimatedBuilder(
+      animation: Listenable.merge([_ballPhaseController, _ballWobbleController]),
+      builder: (context, _) {
+        final phase = _catchBallPhase;
+        if (phase == _BallAnimPhase.none) {
+          return const SizedBox.shrink();
+        }
+
+        Offset ballPos = groundPos;
+        Offset shadowFloor = oppFloor;
+        double ballSize = 26.0;
+        double angle = 0.0;
+        Alignment rotatePivot = Alignment.center;
+        double scaleX = 1.0;
+        double scaleY = 1.0;
+        bool isOpen = false;
+        bool isLocked = false;
+        Color? glowColor = _ballButtonGlowColor;
+        Widget? phaseFx;
+
+        switch (phase) {
+          case _BallAnimPhase.flight:
+            final u = Curves.easeOutCubic.transform(_ballPhaseController.value);
+            ballPos = Offset(
+              startPos.dx + (impactPos.dx - startPos.dx) * u,
+              startPos.dy + (impactPos.dy - startPos.dy) * u - sin(u * pi) * 76,
+            );
+            shadowFloor = Offset(
+              startFloor.dx + (oppFloor.dx - startFloor.dx) * u,
+              startFloor.dy + (oppFloor.dy - startFloor.dy) * u,
+            );
+            ballSize = 34.0 + (26.0 - 34.0) * u;
+            angle = u * pi * 7;
+            break;
+
+          case _BallAnimPhase.absorb:
+            final t = _ballPhaseController.value;
+            ballPos = impactPos + Offset(0, -sin(t * pi) * 14);
+            ballSize = 28.0;
+            isOpen = true;
+            glowColor = Colors.white;
+            phaseFx = Positioned.fill(
+              child: IgnorePointer(
+                child: CustomPaint(
+                  painter: _CaptureAbsorbPainter(
+                    ballCenter: ballPos,
+                    targetCenter: oppPlatform + Offset(0, -oppSize * 0.36),
+                    progress: t,
+                  ),
+                ),
+              ),
+            );
+            break;
+
+          case _BallAnimPhase.bounce:
+            final t = _ballPhaseController.value;
+            ballSize = 26.0;
+            double y;
+            if (t < 0.25) {
+              final fallU = (t / 0.25).clamp(0.0, 1.0);
+              final fallEase = fallU * fallU;
+              y = impactPos.dy + (groundPos.dy - impactPos.dy) * fallEase;
+              if (fallU > 0.90) {
+                scaleX = 1.12;
+                scaleY = 0.88;
+              }
+            } else {
+              final bt = ((t - 0.25) / 0.75).clamp(0.0, 1.0);
+              final maxBounce = max(26.0, (groundPos.dy - impactPos.dy).abs() * 0.62);
+              final hop = sin(bt * pi * 3.0).abs() * pow(1.0 - bt, 1.55) * maxBounce;
+              y = groundPos.dy - hop;
+              if (hop < 2.8 && bt < 0.92) {
+                scaleX = 1.16;
+                scaleY = 0.84;
+              }
+            }
+            ballPos = Offset(groundPos.dx, y);
+            break;
+
+          case _BallAnimPhase.wobble:
+            final wt = _ballWobbleController.isAnimating ? _ballWobbleController.value : 0.0;
+            angle = sin(wt * pi * 2.5) * 0.44 * (1.0 - wt * 0.55);
+            ballPos = groundPos + Offset(angle * 14.0, 0);
+            rotatePivot = Alignment.bottomCenter;
+            ballSize = 26.0;
+            break;
+
+          case _BallAnimPhase.locked:
+            ballPos = groundPos;
+            ballSize = 26.0;
+            isLocked = true;
+            if (_showCaptureLockBurst) {
+              phaseFx = Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: _CaptureLockBurstPainter(
+                      center: groundPos,
+                      progress: _ballPhaseController.value,
+                    ),
+                  ),
+                ),
+              );
+            }
+            break;
+
+          case _BallAnimPhase.breakout:
+            final t = _ballPhaseController.value;
+            ballPos = groundPos + Offset(0, -10.0 * sin(t * pi));
+            ballSize = 28.0;
+            isOpen = true;
+            glowColor = Colors.white;
+            phaseFx = Positioned.fill(
+              child: IgnorePointer(
+                child: CustomPaint(
+                  painter: _CaptureLockBurstPainter(
+                    center: groundPos,
+                    progress: t,
+                    isBreakout: true,
+                  ),
+                ),
+              ),
+            );
+            break;
+
+          case _BallAnimPhase.none:
+            break;
+        }
+
+        final double heightAboveFloor = (shadowFloor.dy - ballPos.dy).clamp(0.0, 160.0);
+        final double shadowFactor = (1.0 - heightAboveFloor / 180.0).clamp(0.40, 1.0);
+
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            if (phaseFx != null) phaseFx,
+            _buildBallShadow(
+              floorPos: Offset(
+                phase == _BallAnimPhase.wobble ? ballPos.dx : shadowFloor.dx,
+                shadowFloor.dy,
+              ),
+              width: (ballSize * 0.90) * shadowFactor,
+              opacity: 0.40 * shadowFactor,
+            ),
+            Positioned(
+              left: ballPos.dx - ballSize / 2,
+              top: ballPos.dy - (isOpen ? ballSize * 0.75 : ballSize / 2),
+              child: Transform(
+                alignment: Alignment.bottomCenter,
+                transform: Matrix4.diagonal3Values(scaleX, scaleY, 1.0),
+                child: Transform.rotate(
+                  angle: angle,
+                  alignment: rotatePivot,
+                  child: PokeBallSpriteWidget(
+                    ballType: _throwingBallType,
+                    size: ballSize,
+                    isOpen: isOpen,
+                    buttonGlowColor: glowColor,
+                    isLocked: isLocked,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -1723,6 +2023,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 _bagRow(
                   icon: Icons.catching_pokemon,
                   iconColor: Colors.redAccent,
+                  leadingWidget: const PokeBallSpriteWidget(ballType: 'poke_ball', size: 28),
                   title: "Poké Ball",
                   subtitle: "x${_trainer.pokeBalls} remaining",
                   btnLabel: "THROW",
@@ -1736,6 +2037,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 _bagRow(
                   icon: Icons.catching_pokemon,
                   iconColor: Colors.blueAccent,
+                  leadingWidget: const PokeBallSpriteWidget(ballType: 'great_ball', size: 28),
                   title: "Great Ball (1.5x)",
                   subtitle: "x${_trainer.greatBalls} remaining",
                   btnLabel: "THROW",
@@ -1749,6 +2051,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 _bagRow(
                   icon: Icons.catching_pokemon,
                   iconColor: Colors.amberAccent,
+                  leadingWidget: const PokeBallSpriteWidget(ballType: 'ultra_ball', size: 28),
                   title: "Ultra Ball (2.0x)",
                   subtitle: "x${_trainer.ultraBalls} remaining",
                   btnLabel: "THROW",
@@ -1809,6 +2112,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Widget _bagRow({
     required IconData icon,
     required Color iconColor,
+    Widget? leadingWidget,
     required String title,
     required String subtitle,
     required String btnLabel,
@@ -1818,7 +2122,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Icon(icon, color: iconColor, size: 28),
+      leading: leadingWidget ?? Icon(icon, color: iconColor, size: 28),
       title: Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       subtitle: Text(subtitle, style: const TextStyle(color: Colors.white60, fontSize: 12)),
       trailing: ElevatedButton(
@@ -2047,6 +2351,170 @@ class _KoBurstPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _KoBurstPainter oldDelegate) =>
       oldDelegate.progress != progress;
+}
+
+class _CaptureAbsorbPainter extends CustomPainter {
+  final Offset ballCenter;
+  final Offset targetCenter;
+  final double progress;
+
+  _CaptureAbsorbPainter({
+    required this.ballCenter,
+    required this.targetCenter,
+    required this.progress,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final t = progress.clamp(0.0, 1.0);
+    final beamOpacity = (sin(t * pi) * 0.95).clamp(0.0, 1.0);
+
+    // Conical crimson/pink capture beam between the open ball and the wild Pokémon
+    final dir = targetCenter - ballCenter;
+    final len = dir.distance.clamp(1.0, 500.0);
+    final perp = Offset(-dir.dy / len, dir.dx / len);
+    final spread = 24.0 * (1.0 - t * 0.55);
+
+    final conePath = Path()
+      ..moveTo(ballCenter.dx - perp.dx * 4, ballCenter.dy - perp.dy * 4)
+      ..lineTo(ballCenter.dx + perp.dx * 4, ballCenter.dy + perp.dy * 4)
+      ..lineTo(targetCenter.dx + perp.dx * spread, targetCenter.dy + perp.dy * spread)
+      ..lineTo(targetCenter.dx - perp.dx * spread, targetCenter.dy - perp.dy * spread)
+      ..close();
+
+    canvas.drawPath(
+      conePath,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white.withOpacity(0.9 * beamOpacity),
+            const Color(0xFFFF4081).withOpacity(0.55 * beamOpacity),
+          ],
+        ).createShader(Rect.fromPoints(ballCenter, targetCenter)),
+    );
+
+    // Contracting capture rings zooming up into the open ball
+    for (int i = 0; i < 3; i++) {
+      final frac = ((t + i * 0.22) % 1.0).clamp(0.0, 1.0);
+      final ringCenter = Offset(
+        targetCenter.dx + (ballCenter.dx - targetCenter.dx) * frac,
+        targetCenter.dy + (ballCenter.dy - targetCenter.dy) * frac,
+      );
+      final radius = (22.0 * (1.0 - frac)).clamp(2.0, 26.0);
+      canvas.drawCircle(
+        ringCenter,
+        radius,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.4
+          ..color = Colors.white.withOpacity((1.0 - frac) * 0.85),
+      );
+    }
+
+    // Core glow inside the open capsule
+    canvas.drawCircle(
+      ballCenter,
+      16 * beamOpacity + 4,
+      Paint()..color = const Color(0xFFFF80AB).withOpacity(0.45 * beamOpacity),
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _CaptureAbsorbPainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.ballCenter != ballCenter ||
+      oldDelegate.targetCenter != targetCenter;
+}
+
+class _CaptureLockBurstPainter extends CustomPainter {
+  final Offset center;
+  final double progress;
+  final bool isBreakout;
+
+  _CaptureLockBurstPainter({
+    required this.center,
+    required this.progress,
+    this.isBreakout = false,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final t = progress.clamp(0.0, 1.0);
+    final opacity = (1.0 - t).clamp(0.0, 1.0);
+
+    if (isBreakout) {
+      canvas.drawCircle(
+        center,
+        14 + t * 44,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 4.5 * opacity
+          ..color = const Color(0xFFFF5252).withOpacity(opacity),
+      );
+      canvas.drawCircle(
+        center,
+        24 * (1.0 - t * 0.5),
+        Paint()..color = Colors.white.withOpacity(opacity * 0.85),
+      );
+      for (int i = 0; i < 8; i++) {
+        final ang = (i / 8) * pi * 2;
+        final p1 = center + Offset(cos(ang) * (10 + t * 18), sin(ang) * (10 + t * 18));
+        final p2 = center + Offset(cos(ang) * (24 + t * 34), sin(ang) * (24 + t * 34));
+        canvas.drawLine(
+          p1,
+          p2,
+          Paint()
+            ..color = Colors.white.withOpacity(opacity)
+            ..strokeWidth = 2.8
+            ..strokeCap = StrokeCap.round,
+        );
+      }
+      return;
+    }
+
+    // Capture Lock Click: soft golden ring + 3 classic rising lock stars
+    canvas.drawCircle(
+      center,
+      12 + t * 28,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.6 * opacity
+        ..color = Colors.amberAccent.withOpacity(opacity * 0.85),
+    );
+
+    const starOffsets = [-16.0, 0.0, 16.0];
+    const starHeights = [22.0, 30.0, 22.0];
+    for (int i = 0; i < 3; i++) {
+      final starPos = center +
+          Offset(
+            starOffsets[i] * (0.8 + t * 0.45),
+            -starHeights[i] - sin(t * pi * 0.85) * 14.0,
+          );
+      final r = (5.5 + (i == 1 ? 1.5 : 0.0)) * (1.0 - t * 0.25);
+      final starPath = Path()
+        ..moveTo(starPos.dx, starPos.dy - r)
+        ..lineTo(starPos.dx + r * 0.34, starPos.dy - r * 0.34)
+        ..lineTo(starPos.dx + r, starPos.dy)
+        ..lineTo(starPos.dx + r * 0.34, starPos.dy + r * 0.34)
+        ..lineTo(starPos.dx, starPos.dy + r)
+        ..lineTo(starPos.dx - r * 0.34, starPos.dy + r * 0.34)
+        ..lineTo(starPos.dx - r, starPos.dy)
+        ..lineTo(starPos.dx - r * 0.34, starPos.dy - r * 0.34)
+        ..close();
+      canvas.drawPath(
+        starPath,
+        Paint()..color = Colors.amberAccent.withOpacity((1.0 - max(0.0, t - 0.35) / 0.65).clamp(0.0, 1.0)),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _CaptureLockBurstPainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.center != center ||
+      oldDelegate.isBreakout != isBreakout;
 }
 
 class _MoveVfxPainter extends CustomPainter {

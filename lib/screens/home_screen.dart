@@ -8,6 +8,7 @@ import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../services/step_counter_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
@@ -1661,7 +1662,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     color: item.color.withOpacity(0.18),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child: Icon(item.icon, color: item.color, size: 24),
+                                  child: Center(
+                                    child: item.id.endsWith('_ball')
+                                        ? PokeBallSpriteWidget(ballType: item.id, size: 30)
+                                        : Icon(item.icon, color: item.color, size: 24),
+                                  ),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(

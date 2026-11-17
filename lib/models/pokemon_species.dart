@@ -65,6 +65,7 @@ class PokemonSpecies {
   final int evolutionStage;
   final bool isPseudoLegendary;
   final PokemonRarity? rarityOverride;
+  final int minEncounterLevel;
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
   final List<LearnedMove> learnset;
@@ -85,6 +86,7 @@ class PokemonSpecies {
     this.evolutionStage = 1,
     this.isPseudoLegendary = false,
     this.rarityOverride,
+    this.minEncounterLevel = 2,
     this.evolutionLevel,
     this.evolutionSpeciesId,
     this.learnset = const [LearnedMove(1, 'tackle')],
@@ -101,6 +103,24 @@ class PokemonSpecies {
       return PokemonRarity.uncommon;
     }
     return PokemonRarity.common;
+  }
+
+  /// Minimum player level required to encounter this species in the wild:
+  /// - 1st stage: any level (1)
+  /// - 2nd stage (non-pseudo-legendary): within 5 levels of minEncounterLevel
+  /// - 3rd stage or final-stage pseudo-legendary: within 10 levels of minEncounterLevel
+  int get requiredPlayerLevelForEncounter {
+    if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
+      return (minEncounterLevel - 10).clamp(1, 100);
+    }
+    if (evolutionStage == 2) {
+      return (minEncounterLevel - 5).clamp(1, 100);
+    }
+    return 1;
+  }
+
+  bool canEncounterAtPlayerLevel(int playerLevel) {
+    return playerLevel >= requiredPlayerLevelForEncounter;
   }
 
   double get speciesScale {

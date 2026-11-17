@@ -935,6 +935,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 32,
       evolutionSpeciesId: 3,
       learnset: [
@@ -961,6 +962,7 @@ class PokedexDatabase {
       baseExp: 236,
       heightMeters: 2.0,
       evolutionStage: 3,
+      minEncounterLevel: 32,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(7, 'vine_whip'),
@@ -1011,6 +1013,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.1,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 6,
       learnset: [
@@ -1037,6 +1040,7 @@ class PokedexDatabase {
       baseExp: 240,
       heightMeters: 1.7,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(7, 'ember'),
@@ -1087,6 +1091,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 9,
       learnset: [
@@ -1113,6 +1118,7 @@ class PokedexDatabase {
       baseExp: 239,
       heightMeters: 1.6,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(7, 'water_gun'),
@@ -1159,6 +1165,7 @@ class PokedexDatabase {
       baseExp: 72,
       heightMeters: 0.7,
       evolutionStage: 2,
+      minEncounterLevel: 7,
       evolutionLevel: 10,
       evolutionSpeciesId: 12,
       learnset: [
@@ -1182,6 +1189,7 @@ class PokedexDatabase {
       baseExp: 178,
       heightMeters: 1.1,
       evolutionStage: 3,
+      minEncounterLevel: 10,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(10, 'confusion'),
@@ -1230,6 +1238,7 @@ class PokedexDatabase {
       baseExp: 72,
       heightMeters: 0.6,
       evolutionStage: 2,
+      minEncounterLevel: 7,
       evolutionLevel: 10,
       evolutionSpeciesId: 15,
       learnset: [
@@ -1253,6 +1262,7 @@ class PokedexDatabase {
       baseExp: 178,
       heightMeters: 1.0,
       evolutionStage: 3,
+      minEncounterLevel: 10,
       learnset: [
         LearnedMove(1, 'poison_sting'),
         LearnedMove(10, 'twinneedle'),
@@ -1301,6 +1311,7 @@ class PokedexDatabase {
       baseExp: 122,
       heightMeters: 1.1,
       evolutionStage: 2,
+      minEncounterLevel: 18,
       evolutionLevel: 36,
       evolutionSpeciesId: 18,
       learnset: [
@@ -1326,6 +1337,7 @@ class PokedexDatabase {
       baseExp: 216,
       heightMeters: 1.5,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'gust'),
         LearnedMove(9, 'quick_attack'),
@@ -1374,6 +1386,7 @@ class PokedexDatabase {
       baseExp: 145,
       heightMeters: 0.7,
       evolutionStage: 2,
+      minEncounterLevel: 20,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(4, 'quick_attack'),
@@ -1425,6 +1438,7 @@ class PokedexDatabase {
       baseExp: 218,
       heightMeters: 0.8,
       evolutionStage: 2,
+      minEncounterLevel: 22,
       learnset: [
         LearnedMove(1, 'thunder_shock'),
         LearnedMove(10, 'quick_attack'),
@@ -1473,6 +1487,7 @@ class PokedexDatabase {
       baseExp: 155,
       heightMeters: 1.2,
       evolutionStage: 2,
+      minEncounterLevel: 20,
       learnset: [
         LearnedMove(1, 'peck'),
         LearnedMove(8, 'quick_attack'),
@@ -1521,6 +1536,7 @@ class PokedexDatabase {
       baseExp: 157,
       heightMeters: 3.5,
       evolutionStage: 2,
+      minEncounterLevel: 22,
       learnset: [
         LearnedMove(1, 'poison_sting'),
         LearnedMove(9, 'bite'),
@@ -1571,6 +1587,7 @@ class PokedexDatabase {
       baseExp: 158,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 22,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(7, 'mud_slap'),
@@ -1620,6 +1637,7 @@ class PokedexDatabase {
       baseExp: 128,
       heightMeters: 0.8,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 31,
       learnset: [
@@ -1645,6 +1663,7 @@ class PokedexDatabase {
       baseExp: 227,
       heightMeters: 1.3,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'double_kick'),
         LearnedMove(20, 'bite'),
@@ -1693,6 +1712,7 @@ class PokedexDatabase {
       baseExp: 128,
       heightMeters: 0.9,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 34,
       learnset: [
@@ -1717,6 +1737,7 @@ class PokedexDatabase {
       baseExp: 227,
       heightMeters: 1.4,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'double_kick'),
         LearnedMove(20, 'poison_jab'),
@@ -1765,6 +1786,7 @@ class PokedexDatabase {
       baseExp: 217,
       heightMeters: 1.3,
       evolutionStage: 2,
+      minEncounterLevel: 26,
       learnset: [
         LearnedMove(1, 'sing'),
         LearnedMove(12, 'disarming_voice'),
@@ -1812,6 +1834,7 @@ class PokedexDatabase {
       baseExp: 196,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 24,
       learnset: [
         LearnedMove(1, 'sing'),
         LearnedMove(9, 'disarming_voice'),
@@ -1859,6 +1882,7 @@ class PokedexDatabase {
       baseExp: 138,
       heightMeters: 0.8,
       evolutionStage: 2,
+      minEncounterLevel: 21,
       evolutionLevel: 36,
       evolutionSpeciesId: 45,
       learnset: [
@@ -1883,6 +1907,7 @@ class PokedexDatabase {
       baseExp: 221,
       heightMeters: 1.2,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'acid'),
         LearnedMove(15, 'sleep_powder'),
@@ -1929,6 +1954,7 @@ class PokedexDatabase {
       baseExp: 140,
       heightMeters: 1.3,
       evolutionStage: 2,
+      minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 65,
       learnset: [
@@ -1952,6 +1978,7 @@ class PokedexDatabase {
       baseExp: 225,
       heightMeters: 1.5,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'confusion'),
         LearnedMove(16, 'psybeam'),
@@ -1999,6 +2026,7 @@ class PokedexDatabase {
       baseExp: 137,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 21,
       evolutionLevel: 36,
       evolutionSpeciesId: 71,
       learnset: [
@@ -2024,6 +2052,7 @@ class PokedexDatabase {
       baseExp: 221,
       heightMeters: 1.7,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'vine_whip'),
         LearnedMove(20, 'razor_leaf'),
@@ -2073,6 +2102,7 @@ class PokedexDatabase {
       baseExp: 137,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 25,
       evolutionLevel: 38,
       evolutionSpeciesId: 76,
       learnset: [
@@ -2098,6 +2128,7 @@ class PokedexDatabase {
       baseExp: 223,
       heightMeters: 1.4,
       evolutionStage: 3,
+      minEncounterLevel: 38,
       learnset: [
         LearnedMove(1, 'rock_throw'),
         LearnedMove(18, 'dig'),
@@ -2172,6 +2203,7 @@ class PokedexDatabase {
       baseExp: 182,
       heightMeters: 1.1,
       evolutionStage: 2,
+      minEncounterLevel: 26,
       learnset: [
         LearnedMove(1, 'water_gun'),
         LearnedMove(12, 'swift'),
@@ -2220,6 +2252,7 @@ class PokedexDatabase {
       heightMeters: 6.5,
       evolutionStage: 2,
       isPseudoLegendary: true,
+      minEncounterLevel: 20,
       learnset: [
         LearnedMove(1, 'bite'),
         LearnedMove(20, 'aqua_tail'),
@@ -2267,6 +2300,7 @@ class PokedexDatabase {
       baseExp: 159,
       heightMeters: 1.6,
       evolutionStage: 2,
+      minEncounterLevel: 22,
       learnset: [
         LearnedMove(1, 'absorb'),
         LearnedMove(5, 'bite'),
@@ -2317,6 +2351,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 24,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(15, 'bug_bite'),
@@ -2365,6 +2400,7 @@ class PokedexDatabase {
       baseExp: 149,
       heightMeters: 0.7,
       evolutionStage: 2,
+      minEncounterLevel: 26,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(7, 'mud_slap'),
@@ -2413,6 +2449,7 @@ class PokedexDatabase {
       baseExp: 154,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 28,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(8, 'bite'),
@@ -2461,6 +2498,7 @@ class PokedexDatabase {
       baseExp: 159,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 28,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(12, 'karate_chop'),
@@ -2508,6 +2546,7 @@ class PokedexDatabase {
       baseExp: 135,
       heightMeters: 1.0,
       evolutionStage: 2,
+      minEncounterLevel: 25,
       evolutionLevel: 36,
       evolutionSpeciesId: 62,
       learnset: [
@@ -2532,6 +2571,7 @@ class PokedexDatabase {
       baseExp: 230,
       heightMeters: 1.3,
       evolutionStage: 3,
+      minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'bubble_beam'),
         LearnedMove(25, 'body_slam'),
@@ -2579,6 +2619,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.5,
       evolutionStage: 2,
+      minEncounterLevel: 28,
       evolutionLevel: 38,
       evolutionSpeciesId: 68,
       learnset: [
@@ -2602,6 +2643,7 @@ class PokedexDatabase {
       baseExp: 227,
       heightMeters: 1.6,
       evolutionStage: 3,
+      minEncounterLevel: 38,
       learnset: [
         LearnedMove(1, 'karate_chop'),
         LearnedMove(21, 'submission'),
@@ -2673,6 +2715,7 @@ class PokedexDatabase {
       baseExp: 184,
       heightMeters: 1.5,
       evolutionStage: 2,
+      minEncounterLevel: 28,
       learnset: [
         LearnedMove(1, 'harden'),
         LearnedMove(15, 'aurora_beam'),
@@ -2720,6 +2763,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.6,
       evolutionStage: 2,
+      minEncounterLevel: 25,
       evolutionLevel: 38,
       evolutionSpeciesId: 94,
       learnset: [
@@ -2744,6 +2788,7 @@ class PokedexDatabase {
       baseExp: 225,
       heightMeters: 1.5,
       evolutionStage: 3,
+      minEncounterLevel: 38,
       learnset: [
         LearnedMove(1, 'lick'),
         LearnedMove(1, 'hypnosis'),
@@ -2791,6 +2836,7 @@ class PokedexDatabase {
       baseExp: 169,
       heightMeters: 1.6,
       evolutionStage: 2,
+      minEncounterLevel: 26,
       learnset: [
         LearnedMove(1, 'hypnosis'),
         LearnedMove(8, 'confusion'),
@@ -2838,6 +2884,7 @@ class PokedexDatabase {
       baseExp: 166,
       heightMeters: 1.3,
       evolutionStage: 2,
+      minEncounterLevel: 28,
       learnset: [
         LearnedMove(1, 'harden'),
         LearnedMove(10, 'bubble_beam'),
@@ -2886,6 +2933,7 @@ class PokedexDatabase {
       baseExp: 168,
       heightMeters: 1.2,
       evolutionStage: 2,
+      minEncounterLevel: 30,
       learnset: [
         LearnedMove(1, 'sonic_boom'),
         LearnedMove(13, 'thunder_shock'),
@@ -2934,6 +2982,7 @@ class PokedexDatabase {
       baseExp: 158,
       heightMeters: 1.3,
       evolutionStage: 2,
+      minEncounterLevel: 33,
       learnset: [
         LearnedMove(1, 'peck'),
         LearnedMove(9, 'horn_attack'),
@@ -2991,11 +3040,14 @@ class PokedexDatabase {
     String? nickname,
   }) {
     final spec = species[speciesId]!;
+    final effectiveLevel = level < spec.minEncounterLevel
+        ? spec.minEncounterLevel
+        : level;
     return PokemonInstance(
       species: spec,
       nickname: nickname,
-      level: level,
-      moves: movesForSpeciesAtLevel(spec, level),
+      level: effectiveLevel,
+      moves: movesForSpeciesAtLevel(spec, effectiveLevel),
     );
   }
 
@@ -3011,21 +3063,38 @@ class PokedexDatabase {
     return PokemonRarity.rare;
   }
 
-  static List<PokemonSpecies> speciesForRarity(PokemonRarity rarity) {
-    return species.values.where((s) => s.rarity == rarity).toList();
+  static List<PokemonSpecies> speciesForRarity(
+    PokemonRarity rarity, {
+    int? playerLevel,
+  }) {
+    return species.values.where((s) {
+      if (s.rarity != rarity) return false;
+      if (playerLevel != null && !s.canEncounterAtPlayerLevel(playerLevel)) {
+        return false;
+      }
+      return true;
+    }).toList();
   }
 
   // ─── WILD ENCOUNTER GENERATOR ─────────────────────────────────────────
   static PokemonInstance generateWildEncounter({int playerLevel = 5}) {
-    final minLvl = (playerLevel - 2).clamp(2, 99);
-    final maxLvl = (playerLevel + 1).clamp(minLvl, 100);
-    final level = minLvl + _rng.nextInt(maxLvl - minLvl + 1);
-
-    // 65% Common (1st stage), 30% Uncommon (2nd stage), 5% Rare (3rd stage / final pseudo-legendary)
+    // 65% Common (1st stage), 30% Uncommon (2nd stage within 5 levels),
+    // 5% Rare (3rd stage / final pseudo-legendary within 10 levels).
     final targetRarity = rollEncounterRarity();
-    final rarityPool = speciesForRarity(targetRarity);
-    final pool = rarityPool.isNotEmpty ? rarityPool : species.values.toList();
+    final rarityPool = speciesForRarity(targetRarity, playerLevel: playerLevel);
+    final eligiblePool = species.values
+        .where((s) => s.canEncounterAtPlayerLevel(playerLevel))
+        .toList();
+    final pool = rarityPool.isNotEmpty
+        ? rarityPool
+        : (eligiblePool.isNotEmpty ? eligiblePool : species.values.toList());
     final chosen = pool[_rng.nextInt(pool.length)];
+
+    final baseMin = (playerLevel - 2).clamp(2, 99);
+    final baseMax = (playerLevel + 1).clamp(baseMin, 100);
+    final minLvl = max(baseMin, chosen.minEncounterLevel).clamp(2, 100);
+    final maxLvl = max(baseMax, minLvl).clamp(minLvl, 100);
+    final level = minLvl + _rng.nextInt(maxLvl - minLvl + 1);
     return createPokemon(chosen.id, level: level);
   }
 
@@ -3074,7 +3143,15 @@ class PokedexDatabase {
     if (level >= 10) rivalPool.addAll([12, 15]);
     if (level >= 20) rivalPool.add(130);
 
-    final speciesId = rivalPool[_rng.nextInt(rivalPool.length)];
+    final eligibleRivalIds = rivalPool.where((id) {
+      final spec = species[id];
+      return spec != null &&
+          level >= spec.minEncounterLevel &&
+          spec.canEncounterAtPlayerLevel(playerLevel);
+    }).toList();
+    final finalPool = eligibleRivalIds.isNotEmpty ? eligibleRivalIds : rivalPool;
+
+    final speciesId = finalPool[_rng.nextInt(finalPool.length)];
     return createPokemon(
       speciesId,
       level: level,
