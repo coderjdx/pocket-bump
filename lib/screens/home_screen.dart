@@ -21,8 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
-  static const int _encounterStepInterval = 400;
-  int _stepsToEncounter = _encounterStepInterval;
   late AnimationController _leadBobController;
 
   @override
@@ -37,20 +35,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       onStepDelta: (diff) {
         if (!mounted) return;
         final trainer = Provider.of<Trainer>(context, listen: false);
-        trainer.addSteps(diff);
-        setState(() {
-          _stepsToEncounter = (_stepsToEncounter - diff).clamp(0, _encounterStepInterval);
-          if (_stepsToEncounter == 0) {
-            _stepsToEncounter = _encounterStepInterval;
-          }
-        });
-      },
-      onEncounter: () {
-        if (!mounted) return;
-        setState(() {
-          _stepsToEncounter = _encounterStepInterval;
-        });
-        _launchWildEncounter();
+        final triggered = trainer.recordStepsAndCheckEncounter(diff);
+        if (triggered) {
+          StepCounterService.triggerEncounterAlert();
+          _launchWildEncounter();
+        }
       },
     );
   }
@@ -63,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _launchWildEncounter() {
     final trainer = Provider.of<Trainer>(context, listen: false);
+    trainer.resetEncounterSteps();
     final playerLevel = trainer.leadPokemon?.level ?? 5;
     final wildMon = PokedexDatabase.generateWildEncounter(playerLevel: playerLevel);
     Navigator.push(
@@ -74,16 +64,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   void _simulateSteps(Trainer trainer, int delta) {
-    trainer.addSteps(delta);
-    bool shouldEncounter = false;
-    setState(() {
-      _stepsToEncounter -= delta;
-      if (_stepsToEncounter <= 0) {
-        _stepsToEncounter = _encounterStepInterval;
-        shouldEncounter = true;
-      }
-    });
-    if (shouldEncounter) {
+    final triggered = trainer.recordStepsAndCheckEncounter(delta);
+    if (triggered) {
       _launchWildEncounter();
     }
   }
@@ -568,10 +550,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 3. POKÉWALKER STEP COUNTER CARD ──────────────────────────────────────
+  // ─── 3. DAILY STEP COUNTER CARD ───────────────────────────────────────────
   Widget _buildStepCounterCard(Trainer trainer) {
-    final double encounterProgress =
-        ((_encounterStepInterval - _stepsToEncounter) / _encounterStepInterval).clamp(0.0, 1.0);
+    final int stepsToday = trainer.todaySteps;
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -595,7 +576,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Icon(Icons.directions_walk, color: Colors.indigoAccent, size: 19),
                   SizedBox(width: 6),
                   Text(
-                    "POKÉWALKER STEP COUNTER",
+                    "DAILY STEP COUNTER",
                     style: TextStyle(
                       color: Colors.indigoAccent,
                       fontWeight: FontWeight.bold,
@@ -606,7 +587,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ],
               ),
               Text(
-                "${trainer.totalSteps} Steps",
+                "$stepsToday Steps Today",
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -615,27 +596,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: LinearProgressIndicator(
-              value: encounterProgress,
-              minHeight: 7,
-              backgroundColor: Colors.black38,
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
-            ),
-          ),
           const SizedBox(height: 6),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "$_stepsToEncounter steps until next wild encounter",
-                style: const TextStyle(fontSize: 11, color: Colors.white70),
-              ),
-            ],
+          const Text(
+            "Walking in the real world has a chance to trigger wild Pokémon encounters!",
+            style: TextStyle(fontSize: 11, color: Colors.white70),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:pedometer/pedometer.dart';
@@ -9,12 +8,9 @@ class StepCounterService {
   static StreamSubscription<StepCount>? _stepSubscription;
   static int _initialSteps = -1;
   static int _sessionSteps = 0;
-  static int _stepsUntilNextEncounter = 350;
-
-  static final Random _rng = Random();
 
   static Future<void> initialize({
-    required Function() onEncounter,
+    Function()? onEncounter,
     void Function(int stepDelta)? onStepDelta,
   }) async {
     if (kIsWeb) return;
@@ -36,15 +32,7 @@ class StepCounterService {
           int diff = currentSession - _sessionSteps;
           if (diff > 0) {
             _sessionSteps = currentSession;
-            _stepsUntilNextEncounter -= diff;
             onStepDelta?.call(diff);
-
-            if (_stepsUntilNextEncounter <= 0) {
-              // Trigger random encounter!
-              _stepsUntilNextEncounter = 300 + _rng.nextInt(200); // Reset for next ~300-500 steps
-              _triggerEncounterAlert();
-              onEncounter();
-            }
           }
         },
         onError: (_) {},
@@ -54,13 +42,12 @@ class StepCounterService {
     }
   }
 
-  static Future<void> _triggerEncounterAlert() async {
+  static Future<void> triggerEncounterAlert() async {
     await HapticFeedback.heavyImpact();
     await SystemSound.play(SystemSoundType.alert);
   }
 
   static int get sessionSteps => _sessionSteps;
-  static int get stepsUntilNextEncounter => _stepsUntilNextEncounter;
 
   static void dispose() {
     _stepSubscription?.cancel();

@@ -9,6 +9,8 @@ class Trainer extends ChangeNotifier {
   static const String _saveKey = 'pocket_bump_save_v1';
   static const String _backupSaveKey = 'pocket_bump_save_backup';
   static const int currentSchemaVersion = 1;
+  static const int maxEncounterSteps = 400;
+  static final Random _rng = Random();
 
   bool _suppressAutoSave = false;
   String name;
@@ -20,6 +22,9 @@ class Trainer extends ChangeNotifier {
   int potions;
   int revives;
   int totalSteps;
+  int dailySteps;
+  String lastStepDate;
+  int encounterSteps;
   int badges;
   Set<int> seenSpeciesIds;
   Set<int> caughtSpeciesIds;
@@ -34,17 +39,28 @@ class Trainer extends ChangeNotifier {
     this.potions = 5,
     this.revives = 2,
     this.totalSteps = 0,
+    this.dailySteps = 0,
+    String? lastStepDate,
+    this.encounterSteps = 0,
     this.badges = 0,
     Set<int>? seenSpeciesIds,
     Set<int>? caughtSpeciesIds,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
+        lastStepDate = lastStepDate ?? todayDateKey(),
         seenSpeciesIds = seenSpeciesIds ?? {},
         caughtSpeciesIds = caughtSpeciesIds ?? {} {
     for (final mon in this.party) {
       this.seenSpeciesIds.add(mon.species.id);
       this.caughtSpeciesIds.add(mon.species.id);
     }
+  }
+
+  static String todayDateKey() {
+    final now = DateTime.now();
+    return '${now.year.toString().padLeft(4, '0')}-'
+        '${now.month.toString().padLeft(2, '0')}-'
+        '${now.day.toString().padLeft(2, '0')}';
   }
 
   PokemonInstance? get leadPokemon {
@@ -157,8 +173,53 @@ class Trainer extends ChangeNotifier {
     return true;
   }
 
+  int get todaySteps {
+    _syncDailyRollover();
+    return dailySteps;
+  }
+
+  /// Proportional encounter chance: 0.0 (0%) at 0 steps, 0.25 (25%) at 100, 0.50 (50%) at 200, 1.0 (100%) at 400.
+  double get encounterChance =>
+      (encounterSteps / maxEncounterSteps).clamp(0.0, 1.0);
+
+  void _syncDailyRollover() {
+    final today = todayDateKey();
+    if (lastStepDate != today) {
+      dailySteps = 0;
+      lastStepDate = today;
+    }
+  }
+
+  /// Adds steps to today's total and the hidden 0..400 encounter counter.
+  /// Rolls against [encounterChance] (encounterSteps / 400.0); if triggered, resets encounterSteps to 0 and returns true.
+  bool recordStepsAndCheckEncounter(int delta) {
+    if (delta <= 0) return false;
+    _syncDailyRollover();
+    dailySteps += delta;
+    totalSteps += delta;
+    encounterSteps = (encounterSteps + delta).clamp(0, maxEncounterSteps);
+
+    final double chance = encounterChance;
+    final bool triggered =
+        encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance;
+    if (triggered) {
+      encounterSteps = 0;
+    }
+    notifyListeners();
+    return triggered;
+  }
+
+  void resetEncounterSteps() {
+    if (encounterSteps != 0) {
+      encounterSteps = 0;
+      notifyListeners();
+    }
+  }
+
   void addSteps(int delta) {
     if (delta <= 0) return;
+    _syncDailyRollover();
+    dailySteps += delta;
     totalSteps += delta;
     notifyListeners();
   }
@@ -207,6 +268,9 @@ class Trainer extends ChangeNotifier {
       'potions': potions,
       'revives': revives,
       'totalSteps': totalSteps,
+      'dailySteps': dailySteps,
+      'lastStepDate': lastStepDate,
+      'encounterSteps': encounterSteps,
       'badges': badges,
       'seenSpeciesIds': seenSpeciesIds.toList()..sort(),
       'caughtSpeciesIds': caughtSpeciesIds.toList()..sort(),
@@ -228,6 +292,11 @@ class Trainer extends ChangeNotifier {
     potions = ((json['potions'] as num?)?.toInt() ?? 5).clamp(0, 99);
     revives = ((json['revives'] as num?)?.toInt() ?? 2).clamp(0, 99);
     totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
+    dailySteps = max(0, (json['dailySteps'] as num?)?.toInt() ?? 0);
+    lastStepDate = (json['lastStepDate'] as String?) ?? todayDateKey();
+    encounterSteps = ((json['encounterSteps'] as num?)?.toInt() ?? 0)
+        .clamp(0, maxEncounterSteps);
+    _syncDailyRollover();
     badges = max(0, (json['badges'] as num?)?.toInt() ?? 0);
 
     final rawParty = json['party'] as List<dynamic>? ?? const [];
@@ -308,6 +377,9 @@ class Trainer extends ChangeNotifier {
     potions = 5;
     revives = 2;
     totalSteps = 0;
+    dailySteps = 0;
+    lastStepDate = todayDateKey();
+    encounterSteps = 0;
     badges = 0;
     seenSpeciesIds = {};
     caughtSpeciesIds = {};
