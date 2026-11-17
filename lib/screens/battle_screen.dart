@@ -2029,7 +2029,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
-  Widget _buildMoveButton(MoveInstance move) {
+  Widget _buildMoveButton(Move move) {
     return ElevatedButton(
       onPressed: _isProcessingTurn ? null : () => _onMoveSelected(move),
       style: ElevatedButton.styleFrom(
