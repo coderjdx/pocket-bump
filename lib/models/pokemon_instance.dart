@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'pokemon_species.dart';
 import 'move.dart';
 
@@ -27,6 +28,16 @@ extension StatusConditionExtension on StatusCondition {
         return 'SLP';
     }
   }
+}
+
+class LevelUpResult {
+  final bool leveledUp;
+  final List<String> learnedMoves;
+
+  const LevelUpResult({
+    required this.leveledUp,
+    required this.learnedMoves,
+  });
 }
 
 class PokemonInstance {
@@ -60,7 +71,7 @@ class PokemonInstance {
     int? currentExp,
     this.status = StatusCondition.none,
   })  : nickname = nickname ?? species.name,
-        moves = moves ?? [],
+        moves = (moves ?? []).take(4).toList(),
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
         maxHp = _calculateMaxHp(species.baseHp, level),
         currentHp = currentHp ?? _calculateMaxHp(species.baseHp, level),
@@ -78,6 +89,22 @@ class PokemonInstance {
   static int _calculateStat(int base, int lvl) {
     // Standard Pokémon Gen 4 Stat formula
     return (((2 * base + 31) * lvl) ~/ 100) + 5;
+  }
+
+  /// Scaled Gen 5/7 EXP formula based on defeated Pokémon's baseExp, level, and winnerLevel
+  static int calculateBattleExp({
+    required PokemonInstance defeated,
+    required int winnerLevel,
+    required bool isTrainerBattle,
+  }) {
+    final double trainerMultiplier = isTrainerBattle ? 1.5 : 1.0;
+    final double baseYield =
+        (trainerMultiplier * defeated.species.baseExp * defeated.level) / 5.0;
+    final double levelFactor = pow(
+      (2.0 * defeated.level + 10.0) / (defeated.level + winnerLevel + 10.0),
+      2.5,
+    ).toDouble();
+    return max(1, (baseYield * levelFactor).floor() + 1);
   }
 
   static double _stageMultiplier(int stage) {
@@ -149,6 +176,39 @@ class PokemonInstance {
     spe = _calculateStat(species.baseSpe, level);
   }
 
+  bool _learnMoveIfNew(Move move) {
+    if (moves.any((m) => m.id == move.id)) return false;
+    if (moves.length >= 4) {
+      moves.removeAt(0);
+    }
+    moves.add(move);
+    return true;
+  }
+
+  LevelUpResult gainExpWithLearnset(
+    int amount,
+    List<Move> Function(PokemonSpecies spec, int newLevel) unlockedLookup,
+  ) {
+    currentExp += amount;
+    bool leveledUp = false;
+    final List<String> learned = [];
+
+    while (currentExp >= expForNextLevel && level < 100) {
+      level++;
+      leveledUp = true;
+      recalculateStats();
+
+      final newMoves = unlockedLookup(species, level);
+      for (final m in newMoves) {
+        if (_learnMoveIfNew(m)) {
+          learned.add(m.name);
+        }
+      }
+    }
+
+    return LevelUpResult(leveledUp: leveledUp, learnedMoves: learned);
+  }
+
   bool gainExp(int amount) {
     currentExp += amount;
     bool leveledUp = false;
@@ -166,16 +226,20 @@ class PokemonInstance {
         level >= species.evolutionLevel!;
   }
 
-  PokemonSpecies? evolve(PokemonSpecies nextSpecies, List<Move> newMoves) {
+  List<String> evolve(PokemonSpecies nextSpecies, List<Move> unlockedEvolutionMoves) {
     if (nickname == species.name) {
       nickname = nextSpecies.name;
     }
     species = nextSpecies;
-    if (newMoves.isNotEmpty) {
-      moves = newMoves.take(4).toList();
-    }
     recalculateStats();
-    return species;
+
+    final List<String> learned = [];
+    for (final m in unlockedEvolutionMoves) {
+      if (_learnMoveIfNew(m)) {
+        learned.add(m.name);
+      }
+    }
+    return learned;
   }
 
   void resetBattleStateAndHeal() {

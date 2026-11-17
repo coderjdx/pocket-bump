@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/trainer.dart';
+import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../services/step_counter_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 
@@ -41,6 +43,87 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _openAvatarPicker(Trainer trainer) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2A2A35),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "SELECT TRAINER AVATAR",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              const SizedBox(height: 12),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 0.9,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: TrainerAvatar.presets.length,
+                itemBuilder: (c, idx) {
+                  final av = TrainerAvatar.presets[idx];
+                  final selected = av.id == trainer.avatar.id;
+                  return GestureDetector(
+                    onTap: () {
+                      trainer.setIdentity(newName: trainer.name, newAvatar: av);
+                      Navigator.pop(ctx);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: selected
+                            ? Colors.red.shade900.withOpacity(0.45)
+                            : const Color(0xFF1E1E24),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: selected ? Colors.redAccent : Colors.white12,
+                          width: selected ? 2 : 1,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TrainerSpriteWidget(
+                            avatar: av,
+                            isBackView: false,
+                            size: 62,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            av.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
@@ -54,63 +137,83 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ─── TRAINER PROFILE HEADER ────────────────────────────────
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A35),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white10),
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 26,
-                      backgroundColor: Colors.red.shade700,
-                      child: const Icon(Icons.person, color: Colors.white, size: 28),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            trainer.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+              GestureDetector(
+                onTap: () => _openAvatarPicker(trainer),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white10),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 54,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E1E24),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.white12),
+                        ),
+                        child: Center(
+                          child: TrainerSpriteWidget(
+                            avatar: trainer.avatar,
+                            isBackView: false,
+                            size: 52,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  trainer.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                const Icon(Icons.edit, size: 13, color: Colors.white38),
+                              ],
                             ),
+                            const SizedBox(height: 4),
+                            Text(
+                              "${trainer.avatar.title} • ${trainer.party.length}/6 Pokémon",
+                              style: const TextStyle(color: Colors.white60, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Item badges
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
+                              const SizedBox(width: 4),
+                              Text("${trainer.pokeBalls}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                            ],
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            "${trainer.badges} Badges • ${trainer.party.length}/6 Pokémon",
-                            style: const TextStyle(color: Colors.white60, fontSize: 12),
+                          Row(
+                            children: [
+                              const Icon(Icons.medical_services, color: Colors.greenAccent, size: 16),
+                              const SizedBox(width: 4),
+                              Text("${trainer.potions}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-                    // Item badges
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
-                            const SizedBox(width: 4),
-                            Text("${trainer.pokeBalls}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            const Icon(Icons.medical_services, color: Colors.greenAccent, size: 16),
-                            const SizedBox(width: 4),
-                            Text("${trainer.potions}", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -252,6 +355,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 const SizedBox(height: 6),
                                 HpBar(currentHp: mon.currentHp, maxHp: mon.maxHp),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "ATK ${mon.atk} • DEF ${mon.def} • SPD ${mon.spe}  |  ${mon.moves.map((m) => m.name).join(', ')}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 10, color: Colors.white54),
+                                ),
                               ],
                             ),
                           ),

@@ -9,6 +9,7 @@ import '../models/trainer.dart';
 import '../services/battle_engine.dart';
 import '../services/pokedex_database.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/trainer_sprite.dart';
 
 class BattleScreen extends StatefulWidget {
   final PokemonInstance opponentPokemon;
@@ -460,8 +461,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Future<void> _checkPostTurnConditions() async {
     if (!mounted) return;
     if (_opponentPokemon.isFainted) {
-      final int expGained = (_opponentPokemon.species.baseExp * _opponentPokemon.level) ~/ 5;
-      final bool leveledUp = _playerPokemon.gainExp(expGained);
+      final int expGained = PokemonInstance.calculateBattleExp(
+        defeated: _opponentPokemon,
+        winnerLevel: _playerPokemon.level,
+        isTrainerBattle: !widget.isWild,
+      );
+      final levelResult = _playerPokemon.gainExpWithLearnset(
+        expGained,
+        PokedexDatabase.movesUnlockedAtExactLevel,
+      );
 
       setState(() {
         _currentMessage = "${_playerPokemon.nickname} gained $expGained EXP!";
@@ -469,13 +477,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await Future.delayed(const Duration(milliseconds: 950));
       if (!mounted) return;
 
-      if (leveledUp) {
+      if (levelResult.leveledUp) {
         setState(() {
           _displayedPlayerHp = _playerPokemon.currentHp;
           _currentMessage = "${_playerPokemon.nickname} grew to Level ${_playerPokemon.level}!";
         });
         await Future.delayed(const Duration(milliseconds: 1000));
         if (!mounted) return;
+
+        for (final moveName in levelResult.learnedMoves) {
+          setState(() {
+            _currentMessage = "${_playerPokemon.nickname} learned $moveName!";
+          });
+          await Future.delayed(const Duration(milliseconds: 950));
+          if (!mounted) return;
+        }
 
         // Check for Evolution!
         if (_playerPokemon.checkCanEvolve()) {
@@ -490,7 +506,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             if (!mounted) return;
 
             final oldName = _playerPokemon.nickname;
-            _playerPokemon.evolve(nextSpecies, PokedexDatabase.movesForSpecies(nextSpecies));
+            final evoMoves = _playerPokemon.evolve(
+              nextSpecies,
+              PokedexDatabase.movesUnlockedAtExactLevel(
+                nextSpecies,
+                _playerPokemon.level,
+              ),
+            );
             HapticFeedback.heavyImpact();
             setState(() {
               _showEvolutionGlow = false;
@@ -499,6 +521,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                   "Congratulations! $oldName evolved into ${nextSpecies.name}!";
             });
             await Future.delayed(const Duration(milliseconds: 1200));
+            if (!mounted) return;
+
+            for (final moveName in evoMoves) {
+              setState(() {
+                _currentMessage = "${_playerPokemon.nickname} learned $moveName!";
+              });
+              await Future.delayed(const Duration(milliseconds: 950));
+              if (!mounted) return;
+            }
           }
         }
       }
@@ -772,13 +803,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         child: AnimatedOpacity(
                                           opacity: _showTrainerSprite ? 1.0 : 0.0,
                                           duration: const Duration(milliseconds: 220),
-                                          child: CustomPaint(
-                                            size: const Size(115, 132),
-                                            painter: _TrainerBackSpritePainter(
-                                              pose: _trainerPose,
-                                              ballColor:
-                                                  _ballTopColor(_trainerHeldBallType),
-                                            ),
+                                          child: TrainerSpriteWidget(
+                                            avatar: _trainer.avatar,
+                                            isBackView: true,
+                                            pose: _trainerPose,
+                                            ballColor:
+                                                _ballTopColor(_trainerHeldBallType),
+                                            size: 125,
                                           ),
                                         ),
                                       ),
@@ -1678,157 +1709,6 @@ class _ArenaBackdropPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-class _TrainerBackSpritePainter extends CustomPainter {
-  final int pose; // 0 = ready, 1 = windup, 2 = throw
-  final Color ballColor;
-
-  _TrainerBackSpritePainter({
-    required this.pose,
-    required this.ballColor,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width * 0.48;
-    final bottomY = size.height - 6;
-
-    // Ground shadow
-    canvas.drawOval(
-      Rect.fromCenter(center: Offset(cx, bottomY), width: 54, height: 14),
-      Paint()..color = Colors.black.withOpacity(0.28),
-    );
-
-    // Legs (Blue jeans)
-    final jeanPaint = Paint()..color = const Color(0xFF28559A);
-    final jeanShade = Paint()..color = const Color(0xFF1D3E73);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 17, bottomY - 40, 14, 38), const Radius.circular(5)),
-      jeanPaint,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 3, bottomY - 40, 14, 38), const Radius.circular(5)),
-      jeanShade,
-    );
-
-    // Sneakers
-    final shoePaint = Paint()..color = const Color(0xFFD32F2F);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 19, bottomY - 8, 16, 8), const Radius.circular(4)),
-      shoePaint,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 3, bottomY - 8, 16, 8), const Radius.circular(4)),
-      shoePaint,
-    );
-
-    // Torso (Red Vest over White Tee)
-    final vestPaint = Paint()..color = const Color(0xFFE53935);
-    final whiteShirtPaint = Paint()..color = Colors.white;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 21, bottomY - 82, 42, 45), const Radius.circular(8)),
-      vestPaint,
-    );
-    // White collar strip
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 10, bottomY - 85, 20, 7), const Radius.circular(3)),
-      whiteShirtPaint,
-    );
-
-    // Backpack
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 16, bottomY - 78, 30, 34), const Radius.circular(7)),
-      Paint()..color = const Color(0xFF8D6E63),
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 14, bottomY - 62, 26, 14), const Radius.circular(4)),
-      Paint()..color = const Color(0xFF6D4C41),
-    );
-
-    // Left Arm (stabilizing)
-    final skinPaint = Paint()..color = const Color(0xFFF3C39B);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 29, bottomY - 78, 10, 26), const Radius.circular(5)),
-      skinPaint,
-    );
-
-    // Head & Dark Hair (seen from behind)
-    canvas.drawCircle(Offset(cx, bottomY - 98), 16, Paint()..color = const Color(0xFF212121));
-
-    // Classic Red & White Trainer Cap
-    canvas.drawArc(
-      Rect.fromCenter(center: Offset(cx, bottomY - 103), width: 34, height: 28),
-      pi,
-      pi,
-      true,
-      Paint()..color = const Color(0xFFD32F2F),
-    );
-    // Cap brim / strap detail
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx - 10, bottomY - 106, 20, 5), const Radius.circular(3)),
-      whiteShirtPaint,
-    );
-    // Side brim hint (angled right toward battle)
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 8, bottomY - 104, 16, 4), const Radius.circular(2)),
-      Paint()..color = const Color(0xFFB71C1C),
-    );
-
-    // Throwing Right Arm + Poké Ball by Pose
-    Offset handPos;
-    final armPaint = Paint()
-      ..color = const Color(0xFFF3C39B)
-      ..strokeWidth = 9
-      ..strokeCap = StrokeCap.round;
-
-    final shoulder = Offset(cx + 20, bottomY - 75);
-    if (pose == 0) {
-      // Ready stance
-      handPos = Offset(cx + 34, bottomY - 84);
-      canvas.drawLine(shoulder, handPos, armPaint);
-    } else if (pose == 1) {
-      // Wind-up arm cocked back
-      handPos = Offset(cx + 42, bottomY - 56);
-      canvas.drawLine(shoulder, handPos, armPaint);
-    } else {
-      // Extended forward release pose (ball already left hand!)
-      handPos = Offset(cx + 32, bottomY - 112);
-      canvas.drawLine(shoulder, handPos, armPaint);
-    }
-
-    // Draw held Poké Ball during poses 0 & 1
-    if (pose != 2) {
-      canvas.drawCircle(handPos, 8.5, Paint()..color = Colors.white);
-      canvas.drawArc(
-        Rect.fromCircle(center: handPos, radius: 8.5),
-        pi,
-        pi,
-        true,
-        Paint()..color = ballColor,
-      );
-      canvas.drawLine(
-        handPos + const Offset(-8.5, 0),
-        handPos + const Offset(8.5, 0),
-        Paint()
-          ..color = Colors.black
-          ..strokeWidth = 2,
-      );
-      canvas.drawCircle(
-        handPos,
-        8.5,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.8
-          ..color = Colors.black,
-      );
-      canvas.drawCircle(handPos, 2.5, Paint()..color = Colors.white);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _TrainerBackSpritePainter oldDelegate) =>
-      oldDelegate.pose != pose || oldDelegate.ballColor != ballColor;
 }
 
 class _SummonBurstPainter extends CustomPainter {

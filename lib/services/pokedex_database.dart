@@ -494,7 +494,15 @@ class PokedexDatabase {
       baseExp: 64,
       evolutionLevel: 16,
       evolutionSpeciesId: 2,
-      moveIds: ['tackle', 'growl', 'vine_whip', 'poison_powder'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(3, 'growl'),
+        LearnedMove(7, 'vine_whip'),
+        LearnedMove(13, 'poison_powder'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(20, 'razor_leaf'),
+        LearnedMove(32, 'solar_beam'),
+      ],
     ),
     2: const PokemonSpecies(
       id: 2,
@@ -510,7 +518,15 @@ class PokedexDatabase {
       baseExp: 142,
       evolutionLevel: 32,
       evolutionSpeciesId: 3,
-      moveIds: ['vine_whip', 'razor_leaf', 'sleep_powder', 'poison_powder'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(3, 'growl'),
+        LearnedMove(7, 'vine_whip'),
+        LearnedMove(13, 'poison_powder'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(22, 'razor_leaf'),
+        LearnedMove(36, 'solar_beam'),
+      ],
     ),
     3: const PokemonSpecies(
       id: 3,
@@ -524,7 +540,14 @@ class PokedexDatabase {
       baseSpe: 80,
       baseCatchRate: 45,
       baseExp: 236,
-      moveIds: ['razor_leaf', 'solar_beam', 'sludge_bomb', 'sleep_powder'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(7, 'vine_whip'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(22, 'razor_leaf'),
+        LearnedMove(32, 'sludge_bomb'),
+        LearnedMove(45, 'solar_beam'),
+      ],
     ),
 
     // 2. Charmander Line (#004-#006)
@@ -542,7 +565,15 @@ class PokedexDatabase {
       baseExp: 62,
       evolutionLevel: 16,
       evolutionSpeciesId: 5,
-      moveIds: ['scratch', 'growl', 'ember', 'fire_fang'],
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(7, 'ember'),
+        LearnedMove(16, 'fire_fang'),
+        LearnedMove(24, 'slash'),
+        LearnedMove(34, 'flamethrower'),
+        LearnedMove(42, 'fire_blast'),
+      ],
     ),
     5: const PokemonSpecies(
       id: 5,
@@ -558,7 +589,15 @@ class PokedexDatabase {
       baseExp: 142,
       evolutionLevel: 36,
       evolutionSpeciesId: 6,
-      moveIds: ['slash', 'fire_fang', 'flamethrower', 'growl'],
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(7, 'ember'),
+        LearnedMove(17, 'fire_fang'),
+        LearnedMove(25, 'slash'),
+        LearnedMove(36, 'flamethrower'),
+        LearnedMove(46, 'fire_blast'),
+      ],
     ),
     6: const PokemonSpecies(
       id: 6,
@@ -572,7 +611,14 @@ class PokedexDatabase {
       baseSpe: 100,
       baseCatchRate: 45,
       baseExp: 240,
-      moveIds: ['flamethrower', 'fire_blast', 'air_slash', 'slash'],
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(7, 'ember'),
+        LearnedMove(25, 'slash'),
+        LearnedMove(36, 'air_slash'),
+        LearnedMove(36, 'flamethrower'),
+        LearnedMove(48, 'fire_blast'),
+      ],
     ),
 
     // 3. Squirtle Line (#007-#009)
@@ -590,7 +636,15 @@ class PokedexDatabase {
       baseExp: 63,
       evolutionLevel: 16,
       evolutionSpeciesId: 8,
-      moveIds: ['tackle', 'tail_whip', 'water_gun', 'bite'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(4, 'tail_whip'),
+        LearnedMove(7, 'water_gun'),
+        LearnedMove(13, 'bite'),
+        LearnedMove(19, 'water_pulse'),
+        LearnedMove(28, 'surf'),
+        LearnedMove(40, 'hydro_pump'),
+      ],
     ),
     8: const PokemonSpecies(
       id: 8,
@@ -606,7 +660,15 @@ class PokedexDatabase {
       baseExp: 142,
       evolutionLevel: 36,
       evolutionSpeciesId: 9,
-      moveIds: ['water_pulse', 'bite', 'tail_whip', 'surf'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(4, 'tail_whip'),
+        LearnedMove(7, 'water_gun'),
+        LearnedMove(16, 'bite'),
+        LearnedMove(20, 'water_pulse'),
+        LearnedMove(31, 'surf'),
+        LearnedMove(42, 'hydro_pump'),
+      ],
     ),
     9: const PokemonSpecies(
       id: 9,
@@ -620,7 +682,14 @@ class PokedexDatabase {
       baseSpe: 78,
       baseCatchRate: 45,
       baseExp: 239,
-      moveIds: ['surf', 'hydro_pump', 'crunch', 'harden'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(7, 'water_gun'),
+        LearnedMove(20, 'water_pulse'),
+        LearnedMove(36, 'crunch'),
+        LearnedMove(36, 'surf'),
+        LearnedMove(46, 'hydro_pump'),
+      ],
     ),
 
     // 4. Caterpie Line (#010-#012)
@@ -638,7 +707,11 @@ class PokedexDatabase {
       baseExp: 39,
       evolutionLevel: 7,
       evolutionSpeciesId: 11,
-      moveIds: ['tackle', 'string_shot', 'bug_bite'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'string_shot'),
+        LearnedMove(9, 'bug_bite'),
+      ],
     ),
     11: const PokemonSpecies(
       id: 11,
@@ -654,7 +727,12 @@ class PokedexDatabase {
       baseExp: 72,
       evolutionLevel: 10,
       evolutionSpeciesId: 12,
-      moveIds: ['harden', 'tackle', 'bug_bite'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'string_shot'),
+        LearnedMove(7, 'harden'),
+        LearnedMove(10, 'bug_bite'),
+      ],
     ),
     12: const PokemonSpecies(
       id: 12,
@@ -668,7 +746,16 @@ class PokedexDatabase {
       baseSpe: 70,
       baseCatchRate: 45,
       baseExp: 178,
-      moveIds: ['confusion', 'silver_wind', 'air_slash', 'sleep_powder'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(10, 'confusion'),
+        LearnedMove(12, 'poison_powder'),
+        LearnedMove(12, 'sleep_powder'),
+        LearnedMove(16, 'gust'),
+        LearnedMove(22, 'psybeam'),
+        LearnedMove(28, 'silver_wind'),
+        LearnedMove(34, 'air_slash'),
+      ],
     ),
 
     // 5. Weedle Line (#013-#015)
@@ -686,7 +773,11 @@ class PokedexDatabase {
       baseExp: 39,
       evolutionLevel: 7,
       evolutionSpeciesId: 14,
-      moveIds: ['poison_sting', 'string_shot', 'bug_bite'],
+      learnset: [
+        LearnedMove(1, 'poison_sting'),
+        LearnedMove(1, 'string_shot'),
+        LearnedMove(9, 'bug_bite'),
+      ],
     ),
     14: const PokemonSpecies(
       id: 14,
@@ -702,7 +793,12 @@ class PokedexDatabase {
       baseExp: 72,
       evolutionLevel: 10,
       evolutionSpeciesId: 15,
-      moveIds: ['harden', 'poison_sting', 'bug_bite'],
+      learnset: [
+        LearnedMove(1, 'poison_sting'),
+        LearnedMove(1, 'string_shot'),
+        LearnedMove(7, 'harden'),
+        LearnedMove(10, 'bug_bite'),
+      ],
     ),
     15: const PokemonSpecies(
       id: 15,
@@ -716,7 +812,13 @@ class PokedexDatabase {
       baseSpe: 75,
       baseCatchRate: 45,
       baseExp: 178,
-      moveIds: ['twinneedle', 'poison_jab', 'agility', 'quick_attack'],
+      learnset: [
+        LearnedMove(1, 'poison_sting'),
+        LearnedMove(10, 'twinneedle'),
+        LearnedMove(16, 'agility'),
+        LearnedMove(22, 'quick_attack'),
+        LearnedMove(28, 'poison_jab'),
+      ],
     ),
 
     // 6. Pidgey Line (#016-#018)
@@ -734,7 +836,14 @@ class PokedexDatabase {
       baseExp: 50,
       evolutionLevel: 18,
       evolutionSpeciesId: 17,
-      moveIds: ['tackle', 'gust', 'quick_attack', 'growl'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(5, 'gust'),
+        LearnedMove(9, 'quick_attack'),
+        LearnedMove(13, 'growl'),
+        LearnedMove(17, 'wing_attack'),
+        LearnedMove(25, 'air_slash'),
+      ],
     ),
     17: const PokemonSpecies(
       id: 17,
@@ -750,7 +859,14 @@ class PokedexDatabase {
       baseExp: 122,
       evolutionLevel: 36,
       evolutionSpeciesId: 18,
-      moveIds: ['wing_attack', 'quick_attack', 'gust', 'agility'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(5, 'gust'),
+        LearnedMove(9, 'quick_attack'),
+        LearnedMove(18, 'wing_attack'),
+        LearnedMove(27, 'agility'),
+        LearnedMove(36, 'air_slash'),
+      ],
     ),
     18: const PokemonSpecies(
       id: 18,
@@ -764,7 +880,13 @@ class PokedexDatabase {
       baseSpe: 101,
       baseCatchRate: 45,
       baseExp: 216,
-      moveIds: ['air_slash', 'wing_attack', 'quick_attack', 'agility'],
+      learnset: [
+        LearnedMove(1, 'gust'),
+        LearnedMove(9, 'quick_attack'),
+        LearnedMove(18, 'wing_attack'),
+        LearnedMove(27, 'agility'),
+        LearnedMove(38, 'air_slash'),
+      ],
     ),
 
     // 7. Rattata Line (#019-#020)
@@ -782,7 +904,14 @@ class PokedexDatabase {
       baseExp: 51,
       evolutionLevel: 20,
       evolutionSpeciesId: 20,
-      moveIds: ['tackle', 'tail_whip', 'quick_attack', 'bite'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'tail_whip'),
+        LearnedMove(4, 'quick_attack'),
+        LearnedMove(10, 'bite'),
+        LearnedMove(16, 'hyper_fang'),
+        LearnedMove(22, 'crunch'),
+      ],
     ),
     20: const PokemonSpecies(
       id: 20,
@@ -796,7 +925,14 @@ class PokedexDatabase {
       baseSpe: 97,
       baseCatchRate: 127,
       baseExp: 145,
-      moveIds: ['hyper_fang', 'crunch', 'quick_attack', 'swords_dance'],
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(4, 'quick_attack'),
+        LearnedMove(10, 'bite'),
+        LearnedMove(16, 'hyper_fang'),
+        LearnedMove(20, 'swords_dance'),
+        LearnedMove(26, 'crunch'),
+      ],
     ),
 
     // 8. Pikachu Line (#025-#026)
@@ -814,7 +950,16 @@ class PokedexDatabase {
       baseExp: 112,
       evolutionLevel: 22,
       evolutionSpeciesId: 26,
-      moveIds: ['thunder_shock', 'quick_attack', 'thunder_wave', 'electro_ball'],
+      learnset: [
+        LearnedMove(1, 'thunder_shock'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(5, 'tail_whip'),
+        LearnedMove(10, 'quick_attack'),
+        LearnedMove(13, 'thunder_wave'),
+        LearnedMove(18, 'electro_ball'),
+        LearnedMove(26, 'thunderbolt'),
+        LearnedMove(34, 'agility'),
+      ],
     ),
     26: const PokemonSpecies(
       id: 26,
@@ -828,15 +973,31 @@ class PokedexDatabase {
       baseSpe: 110,
       baseCatchRate: 75,
       baseExp: 218,
-      moveIds: ['thunderbolt', 'quick_attack', 'thunder_wave', 'agility'],
+      learnset: [
+        LearnedMove(1, 'thunder_shock'),
+        LearnedMove(10, 'quick_attack'),
+        LearnedMove(13, 'thunder_wave'),
+        LearnedMove(22, 'thunderbolt'),
+        LearnedMove(30, 'agility'),
+      ],
     ),
   };
 
-  static List<Move> movesForSpecies(PokemonSpecies spec) {
-    return spec.moveIds
-        .where((id) => moves.containsKey(id))
-        .take(4)
-        .map((id) => moves[id]!.copy())
+  static List<Move> movesForSpeciesAtLevel(PokemonSpecies spec, int level) {
+    final unlocked = spec.learnset
+        .where((lm) => lm.level <= level && moves.containsKey(lm.moveId))
+        .map((lm) => moves[lm.moveId]!.copy())
+        .toList();
+    if (unlocked.length > 4) {
+      return unlocked.sublist(unlocked.length - 4);
+    }
+    return unlocked;
+  }
+
+  static List<Move> movesUnlockedAtExactLevel(PokemonSpecies spec, int level) {
+    return spec.learnset
+        .where((lm) => lm.level == level && moves.containsKey(lm.moveId))
+        .map((lm) => moves[lm.moveId]!.copy())
         .toList();
   }
 
@@ -850,7 +1011,7 @@ class PokedexDatabase {
       species: spec,
       nickname: nickname,
       level: level,
-      moves: movesForSpecies(spec),
+      moves: movesForSpeciesAtLevel(spec, level),
     );
   }
 

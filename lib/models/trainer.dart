@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'pokemon_instance.dart';
+import 'trainer_avatar.dart';
 
 class Trainer extends ChangeNotifier {
   String name;
+  TrainerAvatar avatar;
   List<PokemonInstance> party;
   int pokeBalls;
   int greatBalls;
@@ -14,6 +16,7 @@ class Trainer extends ChangeNotifier {
 
   Trainer({
     required this.name,
+    TrainerAvatar? avatar,
     List<PokemonInstance>? party,
     this.pokeBalls = 10,
     this.greatBalls = 3,
@@ -22,7 +25,8 @@ class Trainer extends ChangeNotifier {
     this.revives = 2,
     this.totalSteps = 0,
     this.badges = 0,
-  }) : party = party ?? [];
+  })  : avatar = avatar ?? TrainerAvatar.presets.first,
+        party = party ?? [];
 
   PokemonInstance? get leadPokemon {
     if (party.isEmpty) return null;
@@ -31,6 +35,15 @@ class Trainer extends ChangeNotifier {
 
   bool get hasConsciousPokemon {
     return party.any((p) => !p.isFainted);
+  }
+
+  void setIdentity({
+    required String newName,
+    required TrainerAvatar newAvatar,
+  }) {
+    name = newName.trim().isEmpty ? 'Red' : newName.trim();
+    avatar = newAvatar;
+    notifyListeners();
   }
 
   void addPokemon(PokemonInstance mon) {

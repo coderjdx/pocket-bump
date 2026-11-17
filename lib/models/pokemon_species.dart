@@ -1,5 +1,12 @@
 import 'pokemon_type.dart';
 
+class LearnedMove {
+  final int level;
+  final String moveId;
+
+  const LearnedMove(this.level, this.moveId);
+}
+
 class PokemonSpecies {
   final int id;
   final String name;
@@ -14,7 +21,7 @@ class PokemonSpecies {
   final int baseExp;
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
-  final List<String> moveIds;
+  final List<LearnedMove> learnset;
 
   const PokemonSpecies({
     required this.id,
@@ -30,7 +37,7 @@ class PokemonSpecies {
     this.baseExp = 64,
     this.evolutionLevel,
     this.evolutionSpeciesId,
-    this.moveIds = const ['tackle'],
+    this.learnset = const [LearnedMove(1, 'tackle')],
   });
 
   String get spriteUrl =>
