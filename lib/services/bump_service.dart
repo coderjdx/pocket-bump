@@ -14,20 +14,23 @@ class BumpService {
   static void startListening({required Function(DateTime timestamp) onBump}) {
     _subscription?.cancel();
 
-    _subscription = accelerometerEventStream().listen((AccelerometerEvent event) {
-      // Calculate 3D magnitude
-      double magnitude = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
+    _subscription = accelerometerEventStream().listen(
+      (AccelerometerEvent event) {
+        // Calculate 3D magnitude
+        double magnitude = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
-      if (magnitude > bumpThreshold) {
-        final now = DateTime.now();
-        if (_lastBumpTime == null || now.difference(_lastBumpTime!).inMilliseconds > debounceDurationMs) {
-          _lastBumpTime = now;
-          // Trigger Haptic Feedback
-          HapticFeedback.heavyImpact();
-          onBump(now);
+        if (magnitude > bumpThreshold) {
+          final now = DateTime.now();
+          if (_lastBumpTime == null || now.difference(_lastBumpTime!).inMilliseconds > debounceDurationMs) {
+            _lastBumpTime = now;
+            // Trigger Haptic Feedback
+            HapticFeedback.heavyImpact();
+            onBump(now);
+          }
         }
-      }
-    });
+      },
+      onError: (_) {},
+    );
   }
 
   static void stopListening() {

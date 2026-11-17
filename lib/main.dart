@@ -39,6 +39,33 @@ class PocketBumpApp extends StatelessWidget {
             home: trainer.party.isEmpty
                 ? const StarterSelectScreen()
                 : const HomeScreen(),
+            builder: (context, child) {
+              if (child == null) return const SizedBox.shrink();
+              final screenWidth = MediaQuery.of(context).size.width;
+              if (screenWidth <= 500) return child;
+              return Scaffold(
+                backgroundColor: const Color(0xFF121217),
+                body: Center(
+                  child: Container(
+                    width: 420,
+                    height: 840,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(color: Colors.white12, width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 24,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: child,
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
