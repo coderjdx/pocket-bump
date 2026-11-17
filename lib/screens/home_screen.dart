@@ -606,34 +606,51 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () => _simulateSteps(trainer, 100),
-                  icon: const Icon(Icons.add_circle_outline, size: 16),
+                  onPressed: () => _simulateSteps(trainer, 1),
+                  icon: const Icon(Icons.directions_walk, size: 15),
                   label: const Text(
-                    "+100 Steps",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    "+1 Step",
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => _simulateSteps(trainer, 25),
+                  icon: const Icon(Icons.add_circle_outline, size: 15),
+                  label: const Text(
+                    "+25 Steps",
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _launchWildEncounter,
-                  icon: const Icon(Icons.explore, size: 16, color: Colors.black87),
+                  icon: const Icon(Icons.explore, size: 15, color: Colors.black87),
                   label: const Text(
                     "Tall Grass",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.greenAccent.shade400,
                     foregroundColor: Colors.black87,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
                     elevation: 0,
                   ),
                 ),

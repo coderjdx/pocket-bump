@@ -190,20 +190,22 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  /// Adds steps to today's total and the hidden 0..400 encounter counter.
-  /// Rolls against [encounterChance] (encounterSteps / 400.0); if triggered, resets encounterSteps to 0 and returns true.
+  /// Processes each step individually: increments today's total & hidden 0..400 encounter counter
+  /// and rolls probability `encounterSteps / 400.0` (1/400 at step 1, 2/400 at step 2, ..., 400/400 at 400).
   bool recordStepsAndCheckEncounter(int delta) {
     if (delta <= 0) return false;
     _syncDailyRollover();
-    dailySteps += delta;
-    totalSteps += delta;
-    encounterSteps = (encounterSteps + delta).clamp(0, maxEncounterSteps);
-
-    final double chance = encounterChance;
-    final bool triggered =
-        encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance;
-    if (triggered) {
-      encounterSteps = 0;
+    bool triggered = false;
+    for (int i = 0; i < delta; i++) {
+      dailySteps++;
+      totalSteps++;
+      encounterSteps = (encounterSteps + 1).clamp(0, maxEncounterSteps);
+      final double chance = encounterSteps / maxEncounterSteps;
+      if (encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance) {
+        encounterSteps = 0;
+        triggered = true;
+        break;
+      }
     }
     notifyListeners();
     return triggered;
