@@ -57,8 +57,24 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Configure Persistent Signing Keystore
+        run: |
+          mkdir -p ~/.android
+          rm -f ~/.android/debug.keystore
+          keytool -importkeystore \
+            -srckeystore assets/keystore/android_debug.p12 \
+            -srcstoretype PKCS12 \
+            -srcstorepass android \
+            -srckeypass android \
+            -destkeystore ~/.android/debug.keystore \
+            -deststoretype PKCS12 \
+            -deststorepass android \
+            -destkeypass android \
+            -alias androiddebugkey \
+            -noprompt
+
       - name: Build Release APK
-        run: flutter build apk --release
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

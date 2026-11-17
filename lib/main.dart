@@ -4,18 +4,21 @@ import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
 import 'screens/home_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const PocketBumpApp());
+  final savedTrainer = await Trainer.loadOrCreate();
+  runApp(PocketBumpApp(initialTrainer: savedTrainer));
 }
 
 class PocketBumpApp extends StatelessWidget {
-  const PocketBumpApp({super.key});
+  final Trainer initialTrainer;
+
+  const PocketBumpApp({super.key, required this.initialTrainer});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Trainer>(
-      create: (_) => Trainer(name: "Red"),
+    return ChangeNotifierProvider<Trainer>.value(
+      value: initialTrainer,
       child: Consumer<Trainer>(
         builder: (context, trainer, child) {
           return MaterialApp(

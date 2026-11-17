@@ -1,8 +1,16 @@
+import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pokemon_instance.dart';
 import 'trainer_avatar.dart';
 
 class Trainer extends ChangeNotifier {
+  static const String _saveKey = 'pocket_bump_save_v1';
+  static const String _backupSaveKey = 'pocket_bump_save_backup';
+  static const int currentSchemaVersion = 1;
+
+  bool _suppressAutoSave = false;
   String name;
   TrainerAvatar avatar;
   List<PokemonInstance> party;
@@ -141,5 +149,108 @@ class Trainer extends ChangeNotifier {
     potions = (potions + 3).clamp(0, 99);
     revives = (revives + 1).clamp(0, 99);
     notifyListeners();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'schemaVersion': currentSchemaVersion,
+      'savedAt': DateTime.now().toUtc().toIso8601String(),
+      'name': name,
+      'avatarId': avatar.id,
+      'pokeBalls': pokeBalls,
+      'greatBalls': greatBalls,
+      'ultraBalls': ultraBalls,
+      'potions': potions,
+      'revives': revives,
+      'totalSteps': totalSteps,
+      'badges': badges,
+      'party': party.map((mon) => mon.toJson()).toList(),
+    };
+  }
+
+  void applyFromJson(Map<String, dynamic> json) {
+    final rawName = (json['name'] as String?)?.trim() ?? 'Red';
+    name = rawName.isEmpty ? 'Red' : rawName;
+    final avatarId = json['avatarId'] as String?;
+    avatar = TrainerAvatar.presets.firstWhere(
+      (a) => a.id == avatarId,
+      orElse: () => TrainerAvatar.presets.first,
+    );
+    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 10).clamp(0, 99);
+    greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 3).clamp(0, 99);
+    ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 1).clamp(0, 99);
+    potions = ((json['potions'] as num?)?.toInt() ?? 5).clamp(0, 99);
+    revives = ((json['revives'] as num?)?.toInt() ?? 2).clamp(0, 99);
+    totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
+    badges = max(0, (json['badges'] as num?)?.toInt() ?? 0);
+
+    final rawParty = json['party'] as List<dynamic>? ?? const [];
+    final loadedParty = <PokemonInstance>[];
+    for (final item in rawParty) {
+      if (item is Map) {
+        loadedParty.add(
+          PokemonInstance.fromJson(Map<String, dynamic>.from(item)),
+        );
+      }
+      if (loadedParty.length >= 6) break;
+    }
+    party = loadedParty;
+  }
+
+  Future<void> saveProgress() async {
+    if (party.isEmpty) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final encoded = jsonEncode(toJson());
+      await prefs.setString(_saveKey, encoded);
+      await prefs.setString(_backupSaveKey, encoded);
+    } catch (_) {}
+  }
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
+    if (!_suppressAutoSave && party.isNotEmpty) {
+      saveProgress();
+    }
+  }
+
+  static Future<Trainer> loadOrCreate() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_saveKey) ?? prefs.getString(_backupSaveKey);
+      if (raw != null && raw.isNotEmpty) {
+        final decoded = jsonDecode(raw);
+        if (decoded is Map) {
+          final trainer = Trainer(name: 'Red');
+          trainer.applyFromJson(Map<String, dynamic>.from(decoded));
+          if (trainer.party.isNotEmpty) {
+            return trainer;
+          }
+        }
+      }
+    } catch (_) {}
+    return Trainer(name: 'Red');
+  }
+
+  Future<void> deleteSaveAndReset() async {
+    _suppressAutoSave = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_saveKey);
+      await prefs.remove(_backupSaveKey);
+    } catch (_) {}
+    name = 'Red';
+    avatar = TrainerAvatar.presets.first;
+    party = [];
+    pokeBalls = 10;
+    greatBalls = 3;
+    ultraBalls = 1;
+    potions = 5;
+    revives = 2;
+    totalSteps = 0;
+    badges = 0;
+    _suppressAutoSave = false;
+    super.notifyListeners();
   }
 }

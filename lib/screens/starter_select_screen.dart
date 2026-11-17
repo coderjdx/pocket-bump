@@ -5,7 +5,6 @@ import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/type_badge.dart';
-import 'home_screen.dart';
 
 class StarterSelectScreen extends StatefulWidget {
   const StarterSelectScreen({super.key});
@@ -439,10 +438,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 newAvatar: _selectedAvatar,
               );
               trainer.addPokemon(selectedMon);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
+              Navigator.of(context).popUntil((r) => r.isFirst);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red.shade600,

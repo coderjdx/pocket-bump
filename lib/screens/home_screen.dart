@@ -242,6 +242,23 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ],
               ),
             ),
+            const SizedBox(width: 8),
+            Tooltip(
+              message: "Delete Saved Progress",
+              child: InkWell(
+                onTap: () => _confirmDeleteProgress(trainer),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(9),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade900.withOpacity(0.28),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+                  ),
+                  child: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 18),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -930,7 +947,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (ctx) {
         return StatefulBuilder(
           builder: (ctx, setModalState) {
-            return Padding(
+            return SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
                 20,
                 18,
@@ -942,7 +959,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "TRAINER PROFILE & AVATAR",
+                    "TRAINER PROFILE & SETTINGS",
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
@@ -1042,6 +1059,46 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                     ),
                   ),
+                  const SizedBox(height: 14),
+                  const Divider(color: Colors.white12),
+                  const SizedBox(height: 8),
+                  const Row(
+                    children: [
+                      Icon(Icons.save, size: 15, color: Colors.greenAccent),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "Local Save Active (Retained Across Updates)",
+                          style: TextStyle(
+                            color: Colors.greenAccent,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 44,
+                    child: OutlinedButton.icon(
+                      onPressed: () => _confirmDeleteProgress(trainer, modalContext: ctx),
+                      icon: const Icon(Icons.delete_forever, size: 18, color: Colors.redAccent),
+                      label: const Text(
+                        "DELETE SAVED PROGRESS",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.redAccent.withOpacity(0.6)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );
@@ -1049,6 +1106,62 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         );
       },
     ).whenComplete(nameController.dispose);
+  }
+
+  void _confirmDeleteProgress(
+    Trainer trainer, {
+    BuildContext? modalContext,
+  }) {
+    showDialog(
+      context: context,
+      builder: (dlgCtx) => AlertDialog(
+        backgroundColor: const Color(0xFF2A2A35),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: const Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.redAccent),
+            SizedBox(width: 8),
+            Text(
+              "Delete Saved Progress?",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ],
+        ),
+        content: Text(
+          "This will permanently erase your local save for ${trainer.name} "
+          "(${trainer.party.length} Pokémon, ${trainer.totalSteps} steps, and ${trainer.totalItems} items) "
+          "and return to the start screen.",
+          style: const TextStyle(color: Colors.white70, fontSize: 13),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dlgCtx),
+            child: const Text("Cancel", style: TextStyle(color: Colors.white70)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              Navigator.pop(dlgCtx);
+              if (modalContext != null && modalContext.mounted) {
+                Navigator.pop(modalContext);
+              }
+              await trainer.deleteSaveAndReset();
+              messenger.showSnackBar(
+                const SnackBar(
+                  content: Text("Saved progress deleted. Starting a new adventure!"),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade700,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text("Delete Progress", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   // ─── PARTY MANAGER MODAL ──────────────────────────────────────────────────

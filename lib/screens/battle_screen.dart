@@ -540,6 +540,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         expGained,
         PokedexDatabase.movesUnlockedAtExactLevel,
       );
+      _trainer.saveProgress();
 
       setState(() {
         _currentMessage = "${_playerPokemon.nickname} gained $expGained EXP!";
@@ -582,6 +583,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 _playerPokemon.level,
               ),
             );
+            _trainer.saveProgress();
             HapticFeedback.heavyImpact();
             setState(() {
               _showEvolutionGlow = false;
@@ -646,6 +648,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (ballType == 'poke_ball') _trainer.pokeBalls--;
       if (ballType == 'great_ball') _trainer.greatBalls--;
       if (ballType == 'ultra_ball') _trainer.ultraBalls--;
+      _trainer.saveProgress();
       _throwingBallType = ballType;
       _trainerHeldBallType = ballType;
       _isSelectingMove = false;

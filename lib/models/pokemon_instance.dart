@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'pokemon_species.dart';
 import 'move.dart';
+import '../services/pokedex_database.dart';
 
 enum StatusCondition {
   none,
@@ -256,4 +257,71 @@ class PokemonInstance {
   }
 
   void healFull() => resetBattleStateAndHeal();
+
+  Map<String, dynamic> toJson() {
+    return {
+      'speciesId': species.id,
+      'nickname': nickname,
+      'level': level,
+      'currentHp': currentHp,
+      'currentExp': currentExp,
+      'status': status.name,
+      'moves': moves
+          .map((m) => {
+                'id': m.id,
+                'currentPp': m.currentPp,
+              })
+          .toList(),
+    };
+  }
+
+  factory PokemonInstance.fromJson(Map<String, dynamic> json) {
+    final int speciesId = (json['speciesId'] as num?)?.toInt() ?? 1;
+    final spec = PokedexDatabase.species[speciesId] ?? PokedexDatabase.species[1]!;
+    final int lvl = ((json['level'] as num?)?.toInt() ?? 5).clamp(1, 100);
+    final int minExpForLevel = (lvl - 1) * (lvl - 1) * (lvl - 1);
+    final int rawExp = (json['currentExp'] as num?)?.toInt() ?? minExpForLevel;
+    final int exp = max(minExpForLevel, rawExp);
+
+    final List<Move> restoredMoves = [];
+    final rawMoves = json['moves'] as List<dynamic>? ?? const [];
+    for (final item in rawMoves) {
+      final String? moveId = item is Map ? item['id'] as String? : item as String?;
+      final template = moveId != null ? PokedexDatabase.moves[moveId] : null;
+      if (template != null) {
+        final copy = template.copy();
+        if (item is Map && item['currentPp'] is num) {
+          copy.currentPp = (item['currentPp'] as num).toInt().clamp(0, copy.maxPp);
+        }
+        restoredMoves.add(copy);
+      }
+      if (restoredMoves.length >= 4) break;
+    }
+    if (restoredMoves.isEmpty) {
+      restoredMoves.addAll(PokedexDatabase.movesForSpeciesAtLevel(spec, lvl));
+    }
+
+    final int computedMaxHp = _calculateMaxHp(spec.baseHp, lvl);
+    final int rawHp = (json['currentHp'] as num?)?.toInt() ?? computedMaxHp;
+    final int hp = rawHp.clamp(1, computedMaxHp);
+
+    final String? statusName = json['status'] as String?;
+    final StatusCondition restoredStatus = StatusCondition.values.firstWhere(
+      (s) => s.name == statusName,
+      orElse: () => StatusCondition.none,
+    );
+
+    final rawNickname = json['nickname'] as String?;
+    return PokemonInstance(
+      species: spec,
+      nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
+          ? rawNickname
+          : spec.name,
+      level: lvl,
+      currentHp: hp,
+      moves: restoredMoves,
+      currentExp: exp,
+      status: restoredStatus,
+    );
+  }
 }
