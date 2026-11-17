@@ -74,4 +74,72 @@ class Trainer extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  int get totalItems => pokeBalls + greatBalls + ultraBalls + potions + revives;
+
+  void setLeadPokemon(int index) {
+    if (index <= 0 || index >= party.length) return;
+    final selected = party.removeAt(index);
+    party.insert(0, selected);
+    notifyListeners();
+  }
+
+  void swapPartySlots(int indexA, int indexB) {
+    if (indexA < 0 ||
+        indexB < 0 ||
+        indexA >= party.length ||
+        indexB >= party.length ||
+        indexA == indexB) {
+      return;
+    }
+    final tmp = party[indexA];
+    party[indexA] = party[indexB];
+    party[indexB] = tmp;
+    notifyListeners();
+  }
+
+  bool releasePokemon(int index) {
+    if (party.length <= 1 || index < 0 || index >= party.length) return false;
+    party.removeAt(index);
+    notifyListeners();
+    return true;
+  }
+
+  void addSteps(int delta) {
+    if (delta <= 0) return;
+    totalSteps += delta;
+    notifyListeners();
+  }
+
+  void adjustItemCount(String itemId, int delta) {
+    switch (itemId) {
+      case 'poke_ball':
+        pokeBalls = (pokeBalls + delta).clamp(0, 99);
+        break;
+      case 'great_ball':
+        greatBalls = (greatBalls + delta).clamp(0, 99);
+        break;
+      case 'ultra_ball':
+        ultraBalls = (ultraBalls + delta).clamp(0, 99);
+        break;
+      case 'potion':
+        potions = (potions + delta).clamp(0, 99);
+        break;
+      case 'revive':
+        revives = (revives + delta).clamp(0, 99);
+        break;
+      default:
+        return;
+    }
+    notifyListeners();
+  }
+
+  void claimSupplyDrop() {
+    pokeBalls = (pokeBalls + 5).clamp(0, 99);
+    greatBalls = (greatBalls + 2).clamp(0, 99);
+    ultraBalls = (ultraBalls + 1).clamp(0, 99);
+    potions = (potions + 3).clamp(0, 99);
+    revives = (revives + 1).clamp(0, 99);
+    notifyListeners();
+  }
 }

@@ -13,7 +13,10 @@ class StepCounterService {
 
   static final Random _rng = Random();
 
-  static Future<void> initialize({required Function() onEncounter}) async {
+  static Future<void> initialize({
+    required Function() onEncounter,
+    void Function(int stepDelta)? onStepDelta,
+  }) async {
     if (kIsWeb) return;
 
     // 1. Request Activity Recognition permission
@@ -34,6 +37,7 @@ class StepCounterService {
           if (diff > 0) {
             _sessionSteps = currentSession;
             _stepsUntilNextEncounter -= diff;
+            onStepDelta?.call(diff);
 
             if (_stepsUntilNextEncounter <= 0) {
               // Trigger random encounter!
@@ -56,6 +60,7 @@ class StepCounterService {
   }
 
   static int get sessionSteps => _sessionSteps;
+  static int get stepsUntilNextEncounter => _stepsUntilNextEncounter;
 
   static void dispose() {
     _stepSubscription?.cancel();
