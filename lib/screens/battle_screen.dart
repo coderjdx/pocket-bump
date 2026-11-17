@@ -3304,7 +3304,7 @@ class _MoveVfxPainter extends CustomPainter {
           if (t > 0.40) {
             final ht = (t - 0.40) / 0.60;
             canvas.drawOval(
-              Rect.fromCenter(center: attackerCenter + const Offset(0, -ht * 24), width: 68, height: 22),
+              Rect.fromCenter(center: attackerCenter + Offset(0, -ht * 24), width: 68, height: 22),
               Paint()
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = 3.5 * fade
