@@ -14,7 +14,7 @@ class TrainerSpriteWidget extends StatelessWidget {
     this.isBackView = false,
     this.pose = 0,
     this.ballColor = const Color(0xFFE53935),
-    this.size = 110,
+    this.size = 140,
   });
 
   String get _assetPath {
@@ -29,10 +29,10 @@ class TrainerSpriteWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final double stepOffsetX = !isBackView
         ? 0.0
-        : (pose == 1 ? -4.0 : (pose == 2 ? 8.0 : 0.0));
+        : (pose == 1 ? -6.0 : (pose == 2 ? 12.0 : 0.0));
     final double stepScale = !isBackView
         ? 1.0
-        : (pose == 2 ? 1.04 : 1.0);
+        : (pose == 2 ? 1.06 : 1.0);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 140),
@@ -51,6 +51,7 @@ class TrainerSpriteWidget extends StatelessWidget {
           width: size,
           height: size,
           fit: BoxFit.contain,
+          alignment: Alignment.bottomCenter,
           filterQuality: FilterQuality.none,
           gaplessPlayback: true,
         ),

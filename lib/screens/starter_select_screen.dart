@@ -129,7 +129,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                       TrainerSpriteWidget(
                         avatar: avatar,
                         isBackView: false,
-                        size: 92,
+                        size: 108,
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -172,14 +172,14 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                     TrainerSpriteWidget(
                       avatar: _selectedAvatar,
                       isBackView: false,
-                      size: 86,
+                      size: 102,
                     ),
                     const SizedBox(width: 14),
                     TrainerSpriteWidget(
                       avatar: _selectedAvatar,
                       isBackView: true,
                       pose: 1,
-                      size: 86,
+                      size: 102,
                     ),
                   ],
                 ),

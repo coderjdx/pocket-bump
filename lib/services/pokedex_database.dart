@@ -492,6 +492,7 @@ class PokedexDatabase {
       baseSpe: 45,
       baseCatchRate: 45,
       baseExp: 64,
+      heightMeters: 0.7,
       evolutionLevel: 16,
       evolutionSpeciesId: 2,
       learnset: [
@@ -516,6 +517,7 @@ class PokedexDatabase {
       baseSpe: 60,
       baseCatchRate: 45,
       baseExp: 142,
+      heightMeters: 1.0,
       evolutionLevel: 32,
       evolutionSpeciesId: 3,
       learnset: [
@@ -540,6 +542,7 @@ class PokedexDatabase {
       baseSpe: 80,
       baseCatchRate: 45,
       baseExp: 236,
+      heightMeters: 2.0,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(7, 'vine_whip'),
@@ -563,6 +566,7 @@ class PokedexDatabase {
       baseSpe: 65,
       baseCatchRate: 45,
       baseExp: 62,
+      heightMeters: 0.6,
       evolutionLevel: 16,
       evolutionSpeciesId: 5,
       learnset: [
@@ -587,6 +591,7 @@ class PokedexDatabase {
       baseSpe: 80,
       baseCatchRate: 45,
       baseExp: 142,
+      heightMeters: 1.1,
       evolutionLevel: 36,
       evolutionSpeciesId: 6,
       learnset: [
@@ -611,6 +616,7 @@ class PokedexDatabase {
       baseSpe: 100,
       baseCatchRate: 45,
       baseExp: 240,
+      heightMeters: 1.7,
       learnset: [
         LearnedMove(1, 'scratch'),
         LearnedMove(7, 'ember'),
@@ -634,6 +640,7 @@ class PokedexDatabase {
       baseSpe: 43,
       baseCatchRate: 45,
       baseExp: 63,
+      heightMeters: 0.5,
       evolutionLevel: 16,
       evolutionSpeciesId: 8,
       learnset: [
@@ -658,6 +665,7 @@ class PokedexDatabase {
       baseSpe: 58,
       baseCatchRate: 45,
       baseExp: 142,
+      heightMeters: 1.0,
       evolutionLevel: 36,
       evolutionSpeciesId: 9,
       learnset: [
@@ -682,6 +690,7 @@ class PokedexDatabase {
       baseSpe: 78,
       baseCatchRate: 45,
       baseExp: 239,
+      heightMeters: 1.6,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(7, 'water_gun'),
@@ -705,6 +714,7 @@ class PokedexDatabase {
       baseSpe: 45,
       baseCatchRate: 255,
       baseExp: 39,
+      heightMeters: 0.3,
       evolutionLevel: 7,
       evolutionSpeciesId: 11,
       learnset: [
@@ -725,6 +735,7 @@ class PokedexDatabase {
       baseSpe: 30,
       baseCatchRate: 120,
       baseExp: 72,
+      heightMeters: 0.7,
       evolutionLevel: 10,
       evolutionSpeciesId: 12,
       learnset: [
@@ -746,6 +757,7 @@ class PokedexDatabase {
       baseSpe: 70,
       baseCatchRate: 45,
       baseExp: 178,
+      heightMeters: 1.1,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(10, 'confusion'),
@@ -771,6 +783,7 @@ class PokedexDatabase {
       baseSpe: 50,
       baseCatchRate: 255,
       baseExp: 39,
+      heightMeters: 0.3,
       evolutionLevel: 7,
       evolutionSpeciesId: 14,
       learnset: [
@@ -791,6 +804,7 @@ class PokedexDatabase {
       baseSpe: 35,
       baseCatchRate: 120,
       baseExp: 72,
+      heightMeters: 0.6,
       evolutionLevel: 10,
       evolutionSpeciesId: 15,
       learnset: [
@@ -812,6 +826,7 @@ class PokedexDatabase {
       baseSpe: 75,
       baseCatchRate: 45,
       baseExp: 178,
+      heightMeters: 1.0,
       learnset: [
         LearnedMove(1, 'poison_sting'),
         LearnedMove(10, 'twinneedle'),
@@ -834,6 +849,7 @@ class PokedexDatabase {
       baseSpe: 56,
       baseCatchRate: 255,
       baseExp: 50,
+      heightMeters: 0.3,
       evolutionLevel: 18,
       evolutionSpeciesId: 17,
       learnset: [
@@ -857,6 +873,7 @@ class PokedexDatabase {
       baseSpe: 71,
       baseCatchRate: 120,
       baseExp: 122,
+      heightMeters: 1.1,
       evolutionLevel: 36,
       evolutionSpeciesId: 18,
       learnset: [
@@ -880,6 +897,7 @@ class PokedexDatabase {
       baseSpe: 101,
       baseCatchRate: 45,
       baseExp: 216,
+      heightMeters: 1.5,
       learnset: [
         LearnedMove(1, 'gust'),
         LearnedMove(9, 'quick_attack'),
@@ -902,6 +920,7 @@ class PokedexDatabase {
       baseSpe: 72,
       baseCatchRate: 255,
       baseExp: 51,
+      heightMeters: 0.3,
       evolutionLevel: 20,
       evolutionSpeciesId: 20,
       learnset: [
@@ -925,6 +944,7 @@ class PokedexDatabase {
       baseSpe: 97,
       baseCatchRate: 127,
       baseExp: 145,
+      heightMeters: 0.7,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(4, 'quick_attack'),
@@ -948,6 +968,7 @@ class PokedexDatabase {
       baseSpe: 90,
       baseCatchRate: 190,
       baseExp: 112,
+      heightMeters: 0.4,
       evolutionLevel: 22,
       evolutionSpeciesId: 26,
       learnset: [
@@ -973,6 +994,7 @@ class PokedexDatabase {
       baseSpe: 110,
       baseCatchRate: 75,
       baseExp: 218,
+      heightMeters: 0.8,
       learnset: [
         LearnedMove(1, 'thunder_shock'),
         LearnedMove(10, 'quick_attack'),
