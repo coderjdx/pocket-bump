@@ -21,6 +21,8 @@ class Trainer extends ChangeNotifier {
   int revives;
   int totalSteps;
   int badges;
+  Set<int> seenSpeciesIds;
+  Set<int> caughtSpeciesIds;
 
   Trainer({
     required this.name,
@@ -33,8 +35,17 @@ class Trainer extends ChangeNotifier {
     this.revives = 2,
     this.totalSteps = 0,
     this.badges = 0,
+    Set<int>? seenSpeciesIds,
+    Set<int>? caughtSpeciesIds,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
-        party = party ?? [];
+        party = party ?? [],
+        seenSpeciesIds = seenSpeciesIds ?? {},
+        caughtSpeciesIds = caughtSpeciesIds ?? {} {
+    for (final mon in this.party) {
+      this.seenSpeciesIds.add(mon.species.id);
+      this.caughtSpeciesIds.add(mon.species.id);
+    }
+  }
 
   PokemonInstance? get leadPokemon {
     if (party.isEmpty) return null;
@@ -54,12 +65,45 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addPokemon(PokemonInstance mon) {
-    mon.resetBattleStateAndHeal();
-    if (party.length < 6) {
-      party.add(mon);
+  bool isSpeciesCaught(int speciesId) =>
+      caughtSpeciesIds.contains(speciesId) ||
+      party.any((p) => p.species.id == speciesId);
+
+  bool isSpeciesSeen(int speciesId) =>
+      seenSpeciesIds.contains(speciesId) || isSpeciesCaught(speciesId);
+
+  int get caughtCount => caughtSpeciesIds
+      .union(party.map((p) => p.species.id).toSet())
+      .length;
+
+  int get seenCount => seenSpeciesIds
+      .union(caughtSpeciesIds)
+      .union(party.map((p) => p.species.id).toSet())
+      .length;
+
+  void markPokemonSeen(int speciesId) {
+    final added = seenSpeciesIds.add(speciesId);
+    if (added && party.isNotEmpty) {
       notifyListeners();
     }
+  }
+
+  void markPokemonCaught(int speciesId) {
+    final addedSeen = seenSpeciesIds.add(speciesId);
+    final addedCaught = caughtSpeciesIds.add(speciesId);
+    if ((addedSeen || addedCaught) && party.isNotEmpty) {
+      notifyListeners();
+    }
+  }
+
+  void addPokemon(PokemonInstance mon) {
+    mon.resetBattleStateAndHeal();
+    seenSpeciesIds.add(mon.species.id);
+    caughtSpeciesIds.add(mon.species.id);
+    if (party.length < 6) {
+      party.add(mon);
+    }
+    notifyListeners();
   }
 
   void healAndResetAllParty() {
@@ -164,6 +208,8 @@ class Trainer extends ChangeNotifier {
       'revives': revives,
       'totalSteps': totalSteps,
       'badges': badges,
+      'seenSpeciesIds': seenSpeciesIds.toList()..sort(),
+      'caughtSpeciesIds': caughtSpeciesIds.toList()..sort(),
       'party': party.map((mon) => mon.toJson()).toList(),
     };
   }
@@ -195,6 +241,19 @@ class Trainer extends ChangeNotifier {
       if (loadedParty.length >= 6) break;
     }
     party = loadedParty;
+
+    seenSpeciesIds = (json['seenSpeciesIds'] as List<dynamic>? ?? const [])
+        .whereType<num>()
+        .map((n) => n.toInt())
+        .toSet();
+    caughtSpeciesIds = (json['caughtSpeciesIds'] as List<dynamic>? ?? const [])
+        .whereType<num>()
+        .map((n) => n.toInt())
+        .toSet();
+    for (final mon in party) {
+      seenSpeciesIds.add(mon.species.id);
+      caughtSpeciesIds.add(mon.species.id);
+    }
   }
 
   Future<void> saveProgress() async {
@@ -250,6 +309,8 @@ class Trainer extends ChangeNotifier {
     revives = 2;
     totalSteps = 0;
     badges = 0;
+    seenSpeciesIds = {};
+    caughtSpeciesIds = {};
     _suppressAutoSave = false;
     super.notifyListeners();
   }

@@ -11,6 +11,7 @@ import '../widgets/hp_bar.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
+import 'pokedex_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -122,6 +123,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                       // ─── 4. PARTY & ITEM MANAGEMENT OPTIONS ──────────────
                       _buildManagementRow(trainer),
+                      const SizedBox(height: 12),
+
+                      // ─── 4B. KANTO POKÉDEX CARD ──────────────────────────
+                      _buildPokedexCard(trainer),
                       const SizedBox(height: 8),
                     ],
                   ),
@@ -855,6 +860,99 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPokedexCard(Trainer trainer) {
+    final int totalSpecies = PokedexDatabase.species.length;
+    final int caught = trainer.caughtCount;
+    final int seen = trainer.seenCount;
+
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PokedexScreen()),
+        );
+      },
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.red.shade900.withOpacity(0.32),
+              const Color(0xFF2A2A35),
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.redAccent.withOpacity(0.4)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.redAccent.withOpacity(0.16),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+              ),
+              child: const Center(
+                child: PokeBallSymbol(size: 24, isCaught: true),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Pokédex",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    "$caught Caught • $seen Encountered / $totalSpecies Kanto",
+                    style: const TextStyle(color: Colors.white70, fontSize: 11),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const PokeBallSymbol(size: 13, isCaught: true),
+                  const SizedBox(width: 4),
+                  Text(
+                    "$caught",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 6),
+            const Icon(Icons.chevron_right, color: Colors.white60, size: 20),
+          ],
+        ),
+      ),
     );
   }
 

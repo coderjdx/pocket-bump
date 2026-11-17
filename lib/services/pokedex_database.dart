@@ -475,6 +475,230 @@ class PokedexDatabase {
       maxPp: 15,
       description: 'Crunches up the target with sharp fangs.',
     ),
+
+    // Additional Physical, Ground, Rock, Fairy, Water, Grass & Psychic Moves
+    'peck': Move(
+      id: 'peck',
+      name: 'Peck',
+      type: PokemonType.flying,
+      category: MoveCategory.physical,
+      power: 35,
+      accuracy: 100,
+      maxPp: 35,
+      description: 'Jabs the target with a sharply pointed beak or horn.',
+    ),
+    'drill_peck': Move(
+      id: 'drill_peck',
+      name: 'Drill Peck',
+      type: PokemonType.flying,
+      category: MoveCategory.physical,
+      power: 80,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'A corkscrewing attack with the beak acting like a drill.',
+    ),
+    'double_kick': Move(
+      id: 'double_kick',
+      name: 'Double Kick',
+      type: PokemonType.fighting,
+      category: MoveCategory.physical,
+      power: 60,
+      accuracy: 100,
+      maxPp: 30,
+      description: 'Strikes the target twice in succession with rapid kicks.',
+    ),
+    'mud_slap': Move(
+      id: 'mud_slap',
+      name: 'Mud-Slap',
+      type: PokemonType.ground,
+      category: MoveCategory.special,
+      power: 30,
+      accuracy: 100,
+      maxPp: 20,
+      statTarget: 'spe',
+      statChange: -1,
+      description: 'Hurls mud in the target\'s face to inflict damage and lower Speed.',
+    ),
+    'dig': Move(
+      id: 'dig',
+      name: 'Dig',
+      type: PokemonType.ground,
+      category: MoveCategory.physical,
+      power: 80,
+      accuracy: 100,
+      maxPp: 10,
+      description: 'Burrows underground and strikes cleanly from below.',
+    ),
+    'earthquake': Move(
+      id: 'earthquake',
+      name: 'Earthquake',
+      type: PokemonType.ground,
+      category: MoveCategory.physical,
+      power: 100,
+      accuracy: 100,
+      maxPp: 10,
+      description: 'Sets off an earthquake that shakes the entire arena.',
+    ),
+    'rock_throw': Move(
+      id: 'rock_throw',
+      name: 'Rock Throw',
+      type: PokemonType.rock,
+      category: MoveCategory.physical,
+      power: 50,
+      accuracy: 90,
+      maxPp: 15,
+      description: 'Drops heavy stones onto the target.',
+    ),
+    'rock_slide': Move(
+      id: 'rock_slide',
+      name: 'Rock Slide',
+      type: PokemonType.rock,
+      category: MoveCategory.physical,
+      power: 75,
+      accuracy: 90,
+      maxPp: 10,
+      description: 'Large boulders are hurled crashing down on the foe.',
+    ),
+    'power_gem': Move(
+      id: 'power_gem',
+      name: 'Power Gem',
+      type: PokemonType.rock,
+      category: MoveCategory.special,
+      power: 80,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'Fires a focused ray of light that sparkles like gemstones.',
+    ),
+    'sing': Move(
+      id: 'sing',
+      name: 'Sing',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 65,
+      maxPp: 15,
+      statusEffect: 'sleep',
+      statusChance: 100,
+      description: 'A soothing lullaby that puts the target in a deep sleep.',
+    ),
+    'body_slam': Move(
+      id: 'body_slam',
+      name: 'Body Slam',
+      type: PokemonType.normal,
+      category: MoveCategory.physical,
+      power: 85,
+      accuracy: 100,
+      maxPp: 15,
+      statusEffect: 'paralysis',
+      statusChance: 30,
+      description: 'Drops its full body weight onto the target; may paralyze.',
+    ),
+    'swift': Move(
+      id: 'swift',
+      name: 'Swift',
+      type: PokemonType.normal,
+      category: MoveCategory.special,
+      power: 60,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'Star-shaped rays are shot at the target and never miss.',
+    ),
+    'splash': Move(
+      id: 'splash',
+      name: 'Splash',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 40,
+      statTarget: 'spe',
+      statChange: 1,
+      description: 'Flops and splashes energetically across the ground.',
+    ),
+    'disarming_voice': Move(
+      id: 'disarming_voice',
+      name: 'Disarming Voice',
+      type: PokemonType.fairy,
+      category: MoveCategory.special,
+      power: 45,
+      accuracy: 100,
+      maxPp: 15,
+      description: 'Lets out a charming cry that does emotional damage.',
+    ),
+    'moonblast': Move(
+      id: 'moonblast',
+      name: 'Moonblast',
+      type: PokemonType.fairy,
+      category: MoveCategory.special,
+      power: 95,
+      accuracy: 100,
+      maxPp: 15,
+      description: 'Borrows the power of the moon to attack the target.',
+    ),
+    'acid': Move(
+      id: 'acid',
+      name: 'Acid',
+      type: PokemonType.poison,
+      category: MoveCategory.special,
+      power: 40,
+      accuracy: 100,
+      maxPp: 30,
+      statusEffect: 'poison',
+      statusChance: 20,
+      description: 'Sprays harsh hide-melting acid; may inflict poison.',
+    ),
+    'glare': Move(
+      id: 'glare',
+      name: 'Glare',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 90,
+      maxPp: 30,
+      statusEffect: 'paralysis',
+      statusChance: 100,
+      description: 'Intimidates the target with gleaming eyes to paralyze it.',
+    ),
+    'aqua_tail': Move(
+      id: 'aqua_tail',
+      name: 'Aqua Tail',
+      type: PokemonType.water,
+      category: MoveCategory.physical,
+      power: 90,
+      accuracy: 90,
+      maxPp: 10,
+      description: 'Swings its tail as if it were a vicious wave in a raging storm.',
+    ),
+    'absorb': Move(
+      id: 'absorb',
+      name: 'Absorb',
+      type: PokemonType.grass,
+      category: MoveCategory.special,
+      power: 35,
+      accuracy: 100,
+      maxPp: 25,
+      description: 'A nutrient-draining grass attack.',
+    ),
+    'petal_blizzard': Move(
+      id: 'petal_blizzard',
+      name: 'Petal Blizzard',
+      type: PokemonType.grass,
+      category: MoveCategory.physical,
+      power: 90,
+      accuracy: 100,
+      maxPp: 15,
+      description: 'Stirs up a violent storm of sharp petals.',
+    ),
+    'psychic': Move(
+      id: 'psychic',
+      name: 'Psychic',
+      type: PokemonType.psychic,
+      category: MoveCategory.special,
+      power: 90,
+      accuracy: 100,
+      maxPp: 10,
+      description: 'Strikes the target with a strong telekinetic force.',
+    ),
   };
 
   // ─── SPECIES (22 POKÉMON ACROSS 8 LINES) ────────────────────────────────
@@ -1003,6 +1227,733 @@ class PokedexDatabase {
         LearnedMove(30, 'agility'),
       ],
     ),
+
+    // 9. Spearow Line (#021-#022)
+    21: const PokemonSpecies(
+      id: 21,
+      name: 'Spearow',
+      types: [PokemonType.normal, PokemonType.flying],
+      baseHp: 40,
+      baseAtk: 60,
+      baseDef: 30,
+      baseSpA: 31,
+      baseSpD: 31,
+      baseSpe: 70,
+      baseCatchRate: 255,
+      baseExp: 52,
+      heightMeters: 0.3,
+      evolutionLevel: 20,
+      evolutionSpeciesId: 22,
+      learnset: [
+        LearnedMove(1, 'peck'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(8, 'quick_attack'),
+        LearnedMove(15, 'wing_attack'),
+        LearnedMove(22, 'drill_peck'),
+        LearnedMove(29, 'agility'),
+      ],
+    ),
+    22: const PokemonSpecies(
+      id: 22,
+      name: 'Fearow',
+      types: [PokemonType.normal, PokemonType.flying],
+      baseHp: 65,
+      baseAtk: 90,
+      baseDef: 65,
+      baseSpA: 61,
+      baseSpD: 61,
+      baseSpe: 100,
+      baseCatchRate: 90,
+      baseExp: 155,
+      heightMeters: 1.2,
+      learnset: [
+        LearnedMove(1, 'peck'),
+        LearnedMove(8, 'quick_attack'),
+        LearnedMove(15, 'wing_attack'),
+        LearnedMove(20, 'drill_peck'),
+        LearnedMove(30, 'agility'),
+      ],
+    ),
+
+    // 10. Ekans Line (#023-#024)
+    23: const PokemonSpecies(
+      id: 23,
+      name: 'Ekans',
+      types: [PokemonType.poison],
+      baseHp: 35,
+      baseAtk: 60,
+      baseDef: 44,
+      baseSpA: 40,
+      baseSpD: 54,
+      baseSpe: 55,
+      baseCatchRate: 255,
+      baseExp: 58,
+      heightMeters: 2.0,
+      evolutionLevel: 22,
+      evolutionSpeciesId: 24,
+      learnset: [
+        LearnedMove(1, 'poison_sting'),
+        LearnedMove(1, 'tail_whip'),
+        LearnedMove(9, 'bite'),
+        LearnedMove(14, 'glare'),
+        LearnedMove(18, 'acid'),
+        LearnedMove(24, 'sludge_bomb'),
+      ],
+    ),
+    24: const PokemonSpecies(
+      id: 24,
+      name: 'Arbok',
+      types: [PokemonType.poison],
+      baseHp: 60,
+      baseAtk: 95,
+      baseDef: 69,
+      baseSpA: 65,
+      baseSpD: 79,
+      baseSpe: 80,
+      baseCatchRate: 90,
+      baseExp: 157,
+      heightMeters: 3.5,
+      learnset: [
+        LearnedMove(1, 'poison_sting'),
+        LearnedMove(9, 'bite'),
+        LearnedMove(14, 'glare'),
+        LearnedMove(22, 'crunch'),
+        LearnedMove(28, 'poison_jab'),
+        LearnedMove(34, 'sludge_bomb'),
+      ],
+    ),
+
+    // 11. Sandshrew Line (#027-#028)
+    27: const PokemonSpecies(
+      id: 27,
+      name: 'Sandshrew',
+      types: [PokemonType.ground],
+      baseHp: 50,
+      baseAtk: 75,
+      baseDef: 85,
+      baseSpA: 20,
+      baseSpD: 30,
+      baseSpe: 40,
+      baseCatchRate: 255,
+      baseExp: 60,
+      heightMeters: 0.6,
+      evolutionLevel: 22,
+      evolutionSpeciesId: 28,
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(1, 'harden'),
+        LearnedMove(7, 'mud_slap'),
+        LearnedMove(14, 'poison_sting'),
+        LearnedMove(19, 'slash'),
+        LearnedMove(24, 'dig'),
+        LearnedMove(32, 'earthquake'),
+      ],
+    ),
+    28: const PokemonSpecies(
+      id: 28,
+      name: 'Sandslash',
+      types: [PokemonType.ground],
+      baseHp: 75,
+      baseAtk: 100,
+      baseDef: 110,
+      baseSpA: 45,
+      baseSpD: 55,
+      baseSpe: 65,
+      baseCatchRate: 90,
+      baseExp: 158,
+      heightMeters: 1.0,
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(7, 'mud_slap'),
+        LearnedMove(19, 'slash'),
+        LearnedMove(22, 'dig'),
+        LearnedMove(30, 'swords_dance'),
+        LearnedMove(36, 'earthquake'),
+      ],
+    ),
+
+    // 12. Nidoran♀ Line (#029-#031)
+    29: const PokemonSpecies(
+      id: 29,
+      name: 'Nidoran♀',
+      types: [PokemonType.poison],
+      baseHp: 55,
+      baseAtk: 47,
+      baseDef: 52,
+      baseSpA: 40,
+      baseSpD: 40,
+      baseSpe: 41,
+      baseCatchRate: 235,
+      baseExp: 55,
+      heightMeters: 0.4,
+      evolutionLevel: 16,
+      evolutionSpeciesId: 30,
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(7, 'tail_whip'),
+        LearnedMove(10, 'double_kick'),
+        LearnedMove(13, 'poison_sting'),
+        LearnedMove(19, 'bite'),
+      ],
+    ),
+    30: const PokemonSpecies(
+      id: 30,
+      name: 'Nidorina',
+      types: [PokemonType.poison],
+      baseHp: 70,
+      baseAtk: 62,
+      baseDef: 67,
+      baseSpA: 55,
+      baseSpD: 55,
+      baseSpe: 56,
+      baseCatchRate: 120,
+      baseExp: 128,
+      heightMeters: 0.8,
+      evolutionLevel: 36,
+      evolutionSpeciesId: 31,
+      learnset: [
+        LearnedMove(1, 'scratch'),
+        LearnedMove(10, 'double_kick'),
+        LearnedMove(13, 'poison_sting'),
+        LearnedMove(20, 'bite'),
+        LearnedMove(28, 'poison_jab'),
+        LearnedMove(34, 'crunch'),
+      ],
+    ),
+    31: const PokemonSpecies(
+      id: 31,
+      name: 'Nidoqueen',
+      types: [PokemonType.poison, PokemonType.ground],
+      baseHp: 90,
+      baseAtk: 92,
+      baseDef: 87,
+      baseSpA: 75,
+      baseSpD: 85,
+      baseSpe: 76,
+      baseCatchRate: 45,
+      baseExp: 227,
+      heightMeters: 1.3,
+      learnset: [
+        LearnedMove(1, 'double_kick'),
+        LearnedMove(20, 'bite'),
+        LearnedMove(28, 'poison_jab'),
+        LearnedMove(36, 'body_slam'),
+        LearnedMove(40, 'earthquake'),
+      ],
+    ),
+
+    // 13. Nidoran♂ Line (#032-#034)
+    32: const PokemonSpecies(
+      id: 32,
+      name: 'Nidoran♂',
+      types: [PokemonType.poison],
+      baseHp: 46,
+      baseAtk: 57,
+      baseDef: 40,
+      baseSpA: 40,
+      baseSpD: 40,
+      baseSpe: 50,
+      baseCatchRate: 235,
+      baseExp: 55,
+      heightMeters: 0.5,
+      evolutionLevel: 16,
+      evolutionSpeciesId: 33,
+      learnset: [
+        LearnedMove(1, 'peck'),
+        LearnedMove(1, 'tail_whip'),
+        LearnedMove(7, 'poison_sting'),
+        LearnedMove(10, 'double_kick'),
+        LearnedMove(15, 'quick_attack'),
+        LearnedMove(22, 'poison_jab'),
+      ],
+    ),
+    33: const PokemonSpecies(
+      id: 33,
+      name: 'Nidorino',
+      types: [PokemonType.poison],
+      baseHp: 61,
+      baseAtk: 72,
+      baseDef: 57,
+      baseSpA: 55,
+      baseSpD: 55,
+      baseSpe: 65,
+      baseCatchRate: 120,
+      baseExp: 128,
+      heightMeters: 0.9,
+      evolutionLevel: 36,
+      evolutionSpeciesId: 34,
+      learnset: [
+        LearnedMove(1, 'peck'),
+        LearnedMove(7, 'poison_sting'),
+        LearnedMove(10, 'double_kick'),
+        LearnedMove(20, 'poison_jab'),
+        LearnedMove(28, 'dig'),
+      ],
+    ),
+    34: const PokemonSpecies(
+      id: 34,
+      name: 'Nidoking',
+      types: [PokemonType.poison, PokemonType.ground],
+      baseHp: 81,
+      baseAtk: 102,
+      baseDef: 77,
+      baseSpA: 85,
+      baseSpD: 75,
+      baseSpe: 85,
+      baseCatchRate: 45,
+      baseExp: 227,
+      heightMeters: 1.4,
+      learnset: [
+        LearnedMove(1, 'double_kick'),
+        LearnedMove(20, 'poison_jab'),
+        LearnedMove(28, 'sludge_bomb'),
+        LearnedMove(36, 'body_slam'),
+        LearnedMove(40, 'earthquake'),
+      ],
+    ),
+
+    // 14. Clefairy Line (#035-#036)
+    35: const PokemonSpecies(
+      id: 35,
+      name: 'Clefairy',
+      types: [PokemonType.fairy],
+      baseHp: 70,
+      baseAtk: 45,
+      baseDef: 48,
+      baseSpA: 60,
+      baseSpD: 65,
+      baseSpe: 35,
+      baseCatchRate: 150,
+      baseExp: 113,
+      heightMeters: 0.6,
+      evolutionLevel: 26,
+      evolutionSpeciesId: 36,
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'growl'),
+        LearnedMove(7, 'sing'),
+        LearnedMove(12, 'disarming_voice'),
+        LearnedMove(19, 'body_slam'),
+        LearnedMove(28, 'moonblast'),
+      ],
+    ),
+    36: const PokemonSpecies(
+      id: 36,
+      name: 'Clefable',
+      types: [PokemonType.fairy],
+      baseHp: 95,
+      baseAtk: 70,
+      baseDef: 73,
+      baseSpA: 95,
+      baseSpD: 90,
+      baseSpe: 60,
+      baseCatchRate: 25,
+      baseExp: 217,
+      heightMeters: 1.3,
+      learnset: [
+        LearnedMove(1, 'sing'),
+        LearnedMove(12, 'disarming_voice'),
+        LearnedMove(19, 'body_slam'),
+        LearnedMove(26, 'moonblast'),
+        LearnedMove(34, 'psychic'),
+      ],
+    ),
+
+    // 15. Jigglypuff Line (#039-#040)
+    39: const PokemonSpecies(
+      id: 39,
+      name: 'Jigglypuff',
+      types: [PokemonType.normal, PokemonType.fairy],
+      baseHp: 115,
+      baseAtk: 45,
+      baseDef: 20,
+      baseSpA: 45,
+      baseSpD: 25,
+      baseSpe: 20,
+      baseCatchRate: 170,
+      baseExp: 95,
+      heightMeters: 0.5,
+      evolutionLevel: 24,
+      evolutionSpeciesId: 40,
+      learnset: [
+        LearnedMove(1, 'sing'),
+        LearnedMove(1, 'tackle'),
+        LearnedMove(9, 'disarming_voice'),
+        LearnedMove(15, 'body_slam'),
+        LearnedMove(24, 'moonblast'),
+      ],
+    ),
+    40: const PokemonSpecies(
+      id: 40,
+      name: 'Wigglytuff',
+      types: [PokemonType.normal, PokemonType.fairy],
+      baseHp: 140,
+      baseAtk: 70,
+      baseDef: 45,
+      baseSpA: 85,
+      baseSpD: 50,
+      baseSpe: 45,
+      baseCatchRate: 50,
+      baseExp: 196,
+      heightMeters: 1.0,
+      learnset: [
+        LearnedMove(1, 'sing'),
+        LearnedMove(9, 'disarming_voice'),
+        LearnedMove(15, 'body_slam'),
+        LearnedMove(24, 'moonblast'),
+      ],
+    ),
+
+    // 16. Oddish Line (#043-#045)
+    43: const PokemonSpecies(
+      id: 43,
+      name: 'Oddish',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 45,
+      baseAtk: 50,
+      baseDef: 55,
+      baseSpA: 75,
+      baseSpD: 65,
+      baseSpe: 30,
+      baseCatchRate: 255,
+      baseExp: 64,
+      heightMeters: 0.5,
+      evolutionLevel: 21,
+      evolutionSpeciesId: 44,
+      learnset: [
+        LearnedMove(1, 'absorb'),
+        LearnedMove(5, 'acid'),
+        LearnedMove(11, 'poison_powder'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(22, 'sludge_bomb'),
+        LearnedMove(28, 'petal_blizzard'),
+      ],
+    ),
+    44: const PokemonSpecies(
+      id: 44,
+      name: 'Gloom',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 60,
+      baseAtk: 65,
+      baseDef: 70,
+      baseSpA: 85,
+      baseSpD: 75,
+      baseSpe: 40,
+      baseCatchRate: 120,
+      baseExp: 138,
+      heightMeters: 0.8,
+      evolutionLevel: 36,
+      evolutionSpeciesId: 45,
+      learnset: [
+        LearnedMove(1, 'absorb'),
+        LearnedMove(5, 'acid'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(24, 'sludge_bomb'),
+        LearnedMove(32, 'petal_blizzard'),
+      ],
+    ),
+    45: const PokemonSpecies(
+      id: 45,
+      name: 'Vileplume',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 75,
+      baseAtk: 80,
+      baseDef: 85,
+      baseSpA: 110,
+      baseSpD: 90,
+      baseSpe: 50,
+      baseCatchRate: 45,
+      baseExp: 221,
+      heightMeters: 1.2,
+      learnset: [
+        LearnedMove(1, 'acid'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(24, 'sludge_bomb'),
+        LearnedMove(36, 'petal_blizzard'),
+        LearnedMove(42, 'solar_beam'),
+      ],
+    ),
+
+    // 17. Abra Line (#063-#065)
+    63: const PokemonSpecies(
+      id: 63,
+      name: 'Abra',
+      types: [PokemonType.psychic],
+      baseHp: 25,
+      baseAtk: 20,
+      baseDef: 15,
+      baseSpA: 105,
+      baseSpD: 55,
+      baseSpe: 90,
+      baseCatchRate: 200,
+      baseExp: 62,
+      heightMeters: 0.9,
+      evolutionLevel: 16,
+      evolutionSpeciesId: 64,
+      learnset: [
+        LearnedMove(1, 'confusion'),
+        LearnedMove(1, 'agility'),
+        LearnedMove(10, 'swift'),
+        LearnedMove(14, 'psybeam'),
+      ],
+    ),
+    64: const PokemonSpecies(
+      id: 64,
+      name: 'Kadabra',
+      types: [PokemonType.psychic],
+      baseHp: 40,
+      baseAtk: 35,
+      baseDef: 30,
+      baseSpA: 120,
+      baseSpD: 70,
+      baseSpe: 105,
+      baseCatchRate: 100,
+      baseExp: 140,
+      heightMeters: 1.3,
+      evolutionLevel: 36,
+      evolutionSpeciesId: 65,
+      learnset: [
+        LearnedMove(1, 'confusion'),
+        LearnedMove(1, 'agility'),
+        LearnedMove(16, 'psybeam'),
+        LearnedMove(26, 'psychic'),
+      ],
+    ),
+    65: const PokemonSpecies(
+      id: 65,
+      name: 'Alakazam',
+      types: [PokemonType.psychic],
+      baseHp: 55,
+      baseAtk: 50,
+      baseDef: 45,
+      baseSpA: 135,
+      baseSpD: 95,
+      baseSpe: 120,
+      baseCatchRate: 50,
+      baseExp: 225,
+      heightMeters: 1.5,
+      learnset: [
+        LearnedMove(1, 'confusion'),
+        LearnedMove(16, 'psybeam'),
+        LearnedMove(26, 'psychic'),
+        LearnedMove(36, 'swift'),
+      ],
+    ),
+
+    // 18. Bellsprout Line (#069-#071)
+    69: const PokemonSpecies(
+      id: 69,
+      name: 'Bellsprout',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 50,
+      baseAtk: 75,
+      baseDef: 35,
+      baseSpA: 70,
+      baseSpD: 30,
+      baseSpe: 40,
+      baseCatchRate: 255,
+      baseExp: 60,
+      heightMeters: 0.7,
+      evolutionLevel: 21,
+      evolutionSpeciesId: 70,
+      learnset: [
+        LearnedMove(1, 'vine_whip'),
+        LearnedMove(7, 'acid'),
+        LearnedMove(13, 'poison_powder'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(20, 'razor_leaf'),
+        LearnedMove(26, 'poison_jab'),
+      ],
+    ),
+    70: const PokemonSpecies(
+      id: 70,
+      name: 'Weepinbell',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 65,
+      baseAtk: 90,
+      baseDef: 50,
+      baseSpA: 85,
+      baseSpD: 45,
+      baseSpe: 55,
+      baseCatchRate: 120,
+      baseExp: 137,
+      heightMeters: 1.0,
+      evolutionLevel: 36,
+      evolutionSpeciesId: 71,
+      learnset: [
+        LearnedMove(1, 'vine_whip'),
+        LearnedMove(7, 'acid'),
+        LearnedMove(15, 'sleep_powder'),
+        LearnedMove(20, 'razor_leaf'),
+        LearnedMove(28, 'poison_jab'),
+        LearnedMove(34, 'sludge_bomb'),
+      ],
+    ),
+    71: const PokemonSpecies(
+      id: 71,
+      name: 'Victreebel',
+      types: [PokemonType.grass, PokemonType.poison],
+      baseHp: 80,
+      baseAtk: 105,
+      baseDef: 65,
+      baseSpA: 100,
+      baseSpD: 70,
+      baseSpe: 70,
+      baseCatchRate: 45,
+      baseExp: 221,
+      heightMeters: 1.7,
+      learnset: [
+        LearnedMove(1, 'vine_whip'),
+        LearnedMove(20, 'razor_leaf'),
+        LearnedMove(28, 'poison_jab'),
+        LearnedMove(36, 'sludge_bomb'),
+        LearnedMove(42, 'petal_blizzard'),
+      ],
+    ),
+
+    // 19. Geodude (#074)
+    74: const PokemonSpecies(
+      id: 74,
+      name: 'Geodude',
+      types: [PokemonType.rock, PokemonType.ground],
+      baseHp: 40,
+      baseAtk: 80,
+      baseDef: 100,
+      baseSpA: 30,
+      baseSpD: 30,
+      baseSpe: 20,
+      baseCatchRate: 255,
+      baseExp: 60,
+      heightMeters: 0.4,
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'harden'),
+        LearnedMove(6, 'mud_slap'),
+        LearnedMove(11, 'rock_throw'),
+        LearnedMove(18, 'dig'),
+        LearnedMove(24, 'rock_slide'),
+        LearnedMove(32, 'earthquake'),
+      ],
+    ),
+
+    // 20. Onix (#095)
+    95: const PokemonSpecies(
+      id: 95,
+      name: 'Onix',
+      types: [PokemonType.rock, PokemonType.ground],
+      baseHp: 35,
+      baseAtk: 45,
+      baseDef: 160,
+      baseSpA: 30,
+      baseSpD: 45,
+      baseSpe: 70,
+      baseCatchRate: 45,
+      baseExp: 77,
+      heightMeters: 8.8,
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'harden'),
+        LearnedMove(7, 'rock_throw'),
+        LearnedMove(14, 'mud_slap'),
+        LearnedMove(20, 'dig'),
+        LearnedMove(26, 'rock_slide'),
+        LearnedMove(34, 'earthquake'),
+      ],
+    ),
+
+    // 21. Staryu Line (#120-#121)
+    120: const PokemonSpecies(
+      id: 120,
+      name: 'Staryu',
+      types: [PokemonType.water],
+      baseHp: 30,
+      baseAtk: 45,
+      baseDef: 55,
+      baseSpA: 70,
+      baseSpD: 55,
+      baseSpe: 85,
+      baseCatchRate: 225,
+      baseExp: 68,
+      heightMeters: 0.8,
+      evolutionLevel: 26,
+      evolutionSpeciesId: 121,
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(1, 'harden'),
+        LearnedMove(4, 'water_gun'),
+        LearnedMove(12, 'swift'),
+        LearnedMove(18, 'water_pulse'),
+        LearnedMove(24, 'power_gem'),
+        LearnedMove(32, 'hydro_pump'),
+      ],
+    ),
+    121: const PokemonSpecies(
+      id: 121,
+      name: 'Starmie',
+      types: [PokemonType.water, PokemonType.psychic],
+      baseHp: 60,
+      baseAtk: 75,
+      baseDef: 85,
+      baseSpA: 100,
+      baseSpD: 85,
+      baseSpe: 115,
+      baseCatchRate: 60,
+      baseExp: 182,
+      heightMeters: 1.1,
+      learnset: [
+        LearnedMove(1, 'water_gun'),
+        LearnedMove(12, 'swift'),
+        LearnedMove(18, 'water_pulse'),
+        LearnedMove(26, 'psybeam'),
+        LearnedMove(32, 'power_gem'),
+        LearnedMove(38, 'psychic'),
+        LearnedMove(42, 'hydro_pump'),
+      ],
+    ),
+
+    // 22. Magikarp Line (#129-#130)
+    129: const PokemonSpecies(
+      id: 129,
+      name: 'Magikarp',
+      types: [PokemonType.water],
+      baseHp: 20,
+      baseAtk: 10,
+      baseDef: 55,
+      baseSpA: 15,
+      baseSpD: 20,
+      baseSpe: 80,
+      baseCatchRate: 255,
+      baseExp: 40,
+      heightMeters: 0.9,
+      evolutionLevel: 20,
+      evolutionSpeciesId: 130,
+      learnset: [
+        LearnedMove(1, 'splash'),
+        LearnedMove(5, 'tackle'),
+      ],
+    ),
+    130: const PokemonSpecies(
+      id: 130,
+      name: 'Gyarados',
+      types: [PokemonType.water, PokemonType.flying],
+      baseHp: 95,
+      baseAtk: 125,
+      baseDef: 79,
+      baseSpA: 60,
+      baseSpD: 100,
+      baseSpe: 81,
+      baseCatchRate: 45,
+      baseExp: 189,
+      heightMeters: 6.5,
+      learnset: [
+        LearnedMove(1, 'bite'),
+        LearnedMove(20, 'aqua_tail'),
+        LearnedMove(24, 'crunch'),
+        LearnedMove(30, 'surf'),
+        LearnedMove(38, 'hydro_pump'),
+      ],
+    ),
   };
 
   static List<Move> movesForSpeciesAtLevel(PokemonSpecies spec, int level) {
@@ -1048,49 +1999,39 @@ class PokedexDatabase {
     final maxLvl = (playerLevel + 1).clamp(minLvl, 100);
     final level = minLvl + _rng.nextInt(maxLvl - minLvl + 1);
 
-    // Build an encounter pool reflecting the level tier across our 5 wild lines
+    // Build an encounter pool reflecting the level tier across all wild Kanto lines
     final List<int> wildPool = [];
 
-    // Caterpie line (#10 -> #11 at 7 -> #12 at 10)
-    if (level < 7) {
-      wildPool.addAll([10, 10]);
-    } else if (level < 10) {
-      wildPool.addAll([11, 10]);
-    } else {
-      wildPool.addAll([12, 11]);
-    }
+    // Early Route Bug & Bird Lines
+    wildPool.add(level < 7 ? 10 : (level < 10 ? 11 : 12));
+    wildPool.add(level < 7 ? 13 : (level < 10 ? 14 : 15));
+    wildPool.add(level < 18 ? 16 : (level < 36 ? 17 : 18));
+    wildPool.add(level < 20 ? 19 : 20);
+    wildPool.add(level < 20 ? 21 : 22);
+    wildPool.add(level < 22 ? 25 : 26);
 
-    // Weedle line (#13 -> #14 at 7 -> #15 at 10)
-    if (level < 7) {
-      wildPool.addAll([13, 13]);
-    } else if (level < 10) {
-      wildPool.addAll([14, 13]);
-    } else {
-      wildPool.addAll([15, 14]);
-    }
+    // Poison, Ground & Nidoran Lines
+    wildPool.add(level < 22 ? 23 : 24);
+    wildPool.add(level < 22 ? 27 : 28);
+    wildPool.add(level < 16 ? 29 : (level < 36 ? 30 : 31));
+    wildPool.add(level < 16 ? 32 : (level < 36 ? 33 : 34));
 
-    // Pidgey line (#16 -> #17 at 18 -> #18 at 36)
-    if (level < 18) {
-      wildPool.addAll([16, 16]);
-    } else if (level < 36) {
-      wildPool.addAll([17, 16]);
-    } else {
-      wildPool.add(18);
-    }
+    // Fairy & Moon Stone Lines
+    wildPool.add(level < 26 ? 35 : 36);
+    wildPool.add(level < 24 ? 39 : 40);
 
-    // Rattata line (#19 -> #20 at 20)
-    if (level < 20) {
-      wildPool.addAll([19, 19]);
-    } else {
-      wildPool.add(20);
-    }
+    // Grass & Psychic Lines
+    wildPool.add(level < 21 ? 43 : (level < 36 ? 44 : 45));
+    wildPool.add(level < 16 ? 63 : (level < 36 ? 64 : 65));
+    wildPool.add(level < 21 ? 69 : (level < 36 ? 70 : 71));
 
-    // Pikachu line (#25 -> #26 at 22)
-    if (level < 22) {
-      wildPool.add(25);
-    } else {
-      wildPool.addAll([25, 26]);
-    }
+    // Cave Rock & Ground
+    wildPool.add(74);
+    if (level >= 8) wildPool.add(95);
+
+    // Water Lines
+    wildPool.add(level < 26 ? 120 : 121);
+    wildPool.add(level < 20 ? 129 : 130);
 
     final speciesId = wildPool[_rng.nextInt(wildPool.length)];
     return createPokemon(speciesId, level: level);
@@ -1099,18 +2040,32 @@ class PokedexDatabase {
   // ─── RIVAL POKÉMON GENERATOR ──────────────────────────────────────────
   static PokemonInstance generateRivalPokemon({int playerLevel = 5}) {
     final level = (playerLevel + 1).clamp(5, 100);
-    final List<int> rivalPool = [];
+    final List<int> rivalPool = [
+      // Starters scaled to level
+      level >= 32 ? 3 : (level >= 16 ? 2 : 1),
+      level >= 36 ? 6 : (level >= 16 ? 5 : 4),
+      level >= 36 ? 9 : (level >= 16 ? 8 : 7),
+      // Iconic Kanto rival picks across all lines
+      level >= 36 ? 18 : (level >= 18 ? 17 : 16),
+      level >= 20 ? 20 : 19,
+      level >= 20 ? 22 : 21,
+      level >= 22 ? 24 : 23,
+      level >= 22 ? 26 : 25,
+      level >= 22 ? 28 : 27,
+      level >= 36 ? 31 : (level >= 16 ? 30 : 29),
+      level >= 36 ? 34 : (level >= 16 ? 33 : 32),
+      level >= 26 ? 36 : 35,
+      level >= 24 ? 40 : 39,
+      level >= 36 ? 45 : (level >= 21 ? 44 : 43),
+      level >= 36 ? 65 : (level >= 16 ? 64 : 63),
+      level >= 36 ? 71 : (level >= 21 ? 70 : 69),
+      74,
+      95,
+      level >= 26 ? 121 : 120,
+    ];
 
-    // Starters scaled to level
-    rivalPool.add(level >= 32 ? 3 : (level >= 16 ? 2 : 1));
-    rivalPool.add(level >= 36 ? 6 : (level >= 16 ? 5 : 4));
-    rivalPool.add(level >= 36 ? 9 : (level >= 16 ? 8 : 7));
-
-    // Iconic rival Kanto picks
-    rivalPool.add(level >= 36 ? 18 : (level >= 18 ? 17 : 16));
-    rivalPool.add(level >= 20 ? 20 : 19);
-    rivalPool.add(level >= 22 ? 26 : 25);
     if (level >= 10) rivalPool.addAll([12, 15]);
+    if (level >= 20) rivalPool.add(130);
 
     final speciesId = rivalPool[_rng.nextInt(rivalPool.length)];
     return createPokemon(
