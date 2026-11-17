@@ -17,6 +17,10 @@ class Move {
   int currentPp;
   final int priority;
   final String description;
+  final String? statTarget; // 'atk', 'def', 'spa', 'spd', 'spe'
+  final int statChange; // + buffs user, - debuffs target
+  final String? statusEffect; // 'burn', 'poison', 'paralysis', 'sleep'
+  final int statusChance; // 0-100
 
   Move({
     required this.id,
@@ -29,6 +33,10 @@ class Move {
     int? currentPp,
     this.priority = 0,
     required this.description,
+    this.statTarget,
+    this.statChange = 0,
+    this.statusEffect,
+    this.statusChance = 0,
   }) : currentPp = currentPp ?? maxPp;
 
   Move copy() {
@@ -43,6 +51,10 @@ class Move {
       currentPp: currentPp,
       priority: priority,
       description: description,
+      statTarget: statTarget,
+      statChange: statChange,
+      statusEffect: statusEffect,
+      statusChance: statusChance,
     );
   }
 }

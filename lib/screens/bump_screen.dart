@@ -1,6 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../models/trainer.dart';
 import '../services/bump_service.dart';
 import '../services/pokedex_database.dart';
 import 'battle_screen.dart';
@@ -42,15 +43,9 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (!mounted) return;
 
-      // Generate a Rival trainer Pokémon for the bump match
-      final rivalPool = [5, 8, 2, 25]; // Charmeleon, Wartortle, Ivysaur, Pikachu
-      final rivalSpeciesId = rivalPool[Random().nextInt(rivalPool.length)];
-      final rivalMon = PokedexDatabase.createStarter(
-        rivalSpeciesId == 25 ? 4 : (rivalSpeciesId == 2 ? 1 : (rivalSpeciesId == 8 ? 7 : 4)),
-        nickname: "Rival's ${PokedexDatabase.species[rivalSpeciesId]!.name}",
-      );
-      rivalMon.level = 8;
-      rivalMon.recalculateStats();
+      final trainer = Provider.of<Trainer>(context, listen: false);
+      final playerLevel = trainer.leadPokemon?.level ?? 5;
+      final rivalMon = PokedexDatabase.generateRivalPokemon(playerLevel: playerLevel);
 
       Navigator.pushReplacement(
         context,

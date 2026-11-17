@@ -83,7 +83,16 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                         mon.spriteUrl,
                         width: 60,
                         height: 60,
-                        errorBuilder: (ctx, err, stack) => const Icon(Icons.catching_pokemon, color: Colors.white, size: 50),
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                        errorBuilder: (ctx, err, stack) => Image.network(
+                          mon.staticSpriteUrl,
+                          width: 60,
+                          height: 60,
+                          filterQuality: FilterQuality.none,
+                          errorBuilder: (c2, e2, s2) =>
+                              const Icon(Icons.catching_pokemon, color: Colors.white, size: 50),
+                        ),
                       ),
                     ),
                   );
@@ -108,7 +117,15 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                         selectedMon.species.spriteUrl,
                         height: 120,
                         fit: BoxFit.contain,
-                        errorBuilder: (ctx, err, stack) => const Icon(Icons.catching_pokemon, color: Colors.white, size: 100),
+                        filterQuality: FilterQuality.none,
+                        errorBuilder: (ctx, err, stack) => Image.network(
+                          selectedMon.species.staticSpriteUrl,
+                          height: 120,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                          errorBuilder: (c2, e2, s2) =>
+                              const Icon(Icons.catching_pokemon, color: Colors.white, size: 100),
+                        ),
                       ),
                       Text(
                         selectedMon.species.name,

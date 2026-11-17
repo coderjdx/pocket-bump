@@ -25,6 +25,7 @@ class Trainer extends ChangeNotifier {
   }) : party = party ?? [];
 
   PokemonInstance? get leadPokemon {
+    if (party.isEmpty) return null;
     return party.firstWhere((p) => !p.isFainted, orElse: () => party.first);
   }
 
@@ -33,10 +34,18 @@ class Trainer extends ChangeNotifier {
   }
 
   void addPokemon(PokemonInstance mon) {
+    mon.resetBattleStateAndHeal();
     if (party.length < 6) {
       party.add(mon);
       notifyListeners();
     }
+  }
+
+  void healAndResetAllParty() {
+    for (final mon in party) {
+      mon.resetBattleStateAndHeal();
+    }
+    notifyListeners();
   }
 
   void usePokeBall() {

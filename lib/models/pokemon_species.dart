@@ -12,9 +12,9 @@ class PokemonSpecies {
   final int baseSpe;
   final int baseCatchRate;
   final int baseExp;
-  final String spriteUrl;
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
+  final List<String> moveIds;
 
   const PokemonSpecies({
     required this.id,
@@ -28,10 +28,25 @@ class PokemonSpecies {
     required this.baseSpe,
     this.baseCatchRate = 45,
     this.baseExp = 64,
-    required this.spriteUrl,
     this.evolutionLevel,
     this.evolutionSpeciesId,
+    this.moveIds = const ['tackle'],
   });
+
+  String get spriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/$id.gif';
+
+  String get backSpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/$id.gif';
+
+  String get staticSpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
+
+  String get staticBackSpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/$id.png';
+
+  String get artworkUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png';
 
   bool get isDualType => types.length > 1;
 }

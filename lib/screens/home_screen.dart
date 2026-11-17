@@ -30,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _launchWildEncounter() {
-    final wildMon = PokedexDatabase.generateWildEncounter();
+    final trainer = Provider.of<Trainer>(context, listen: false);
+    final playerLevel = trainer.leadPokemon?.level ?? 5;
+    final wildMon = PokedexDatabase.generateWildEncounter(playerLevel: playerLevel);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -217,9 +219,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Image.network(
                             mon.species.spriteUrl,
-                            width: 50,
-                            height: 50,
-                            errorBuilder: (c, e, s) => const Icon(Icons.catching_pokemon, color: Colors.white, size: 40),
+                            width: 52,
+                            height: 52,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (c, e, s) => Image.network(
+                              mon.species.staticSpriteUrl,
+                              width: 52,
+                              height: 52,
+                              filterQuality: FilterQuality.none,
+                              errorBuilder: (c2, e2, s2) =>
+                                  const Icon(Icons.catching_pokemon, color: Colors.white, size: 40),
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

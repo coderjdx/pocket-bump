@@ -38,131 +38,393 @@ class BattleAction {
         itemId = null;
 }
 
-class BattleResult {
-  final List<String> battleLog;
-  final bool isBattleOver;
-  final bool playerWon;
-  final bool isCaught;
+class BattleStepEvent {
+  final String message;
+  final bool isPlayerActor;
+  final PokemonType? moveType;
+  final MoveCategory? moveCategory;
+  final int damageDealt;
+  final int targetHpAfter;
+  final bool isCrit;
+  final double effectiveness;
+  final String? statChangedLabel;
+  final bool statTargetIsSelf;
+  final String? statusInflictedLabel;
+  final bool targetFainted;
+  final bool isMiss;
+  final bool isStatusTick;
 
-  BattleResult({
-    required this.battleLog,
-    this.isBattleOver = false,
-    this.playerWon = false,
-    this.isCaught = false,
+  const BattleStepEvent({
+    required this.message,
+    required this.isPlayerActor,
+    this.moveType,
+    this.moveCategory,
+    this.damageDealt = 0,
+    this.targetHpAfter = 0,
+    this.isCrit = false,
+    this.effectiveness = 1.0,
+    this.statChangedLabel,
+    this.statTargetIsSelf = false,
+    this.statusInflictedLabel,
+    this.targetFainted = false,
+    this.isMiss = false,
+    this.isStatusTick = false,
   });
 }
 
 class BattleEngine {
   static final Random _rng = Random();
 
-  /// Calculates turn results between Player's action and Opponent's action
-  static List<String> resolveTurn({
+  /// Resolves a full combat turn into ordered, animatable [BattleStepEvent]s.
+  static List<BattleStepEvent> resolveTurn({
     required PokemonInstance playerMon,
     required BattleAction playerAction,
     required PokemonInstance opponentMon,
     required BattleAction opponentAction,
+    bool isWild = true,
   }) {
-    List<String> log = [];
+    final List<BattleStepEvent> events = [];
 
-    // 1. Handle Switches or Items (Highest Priority)
-    if (playerAction.type == BattleActionType.useItem) {
-      log.add("You used an item!");
-    }
-
-    // 2. Determine Move Execution Order (Priority -> Speed)
+    // Determine Move Execution Order (Priority -> Speed)
     bool playerGoesFirst = true;
 
-    if (playerAction.type == BattleActionType.fight && opponentAction.type == BattleActionType.fight) {
+    if (playerAction.type == BattleActionType.fight &&
+        opponentAction.type == BattleActionType.fight) {
       final pPriority = playerAction.move!.priority;
       final oPriority = opponentAction.move!.priority;
 
       if (pPriority != oPriority) {
         playerGoesFirst = pPriority > oPriority;
       } else {
-        if (playerMon.spe != opponentMon.spe) {
-          playerGoesFirst = playerMon.spe > opponentMon.spe;
+        final pSpe = playerMon.effectiveSpe;
+        final oSpe = opponentMon.effectiveSpe;
+        if (pSpe != oSpe) {
+          playerGoesFirst = pSpe > oSpe;
         } else {
           playerGoesFirst = _rng.nextBool();
         }
       }
     }
 
-    // 3. Execute First Move
     if (playerGoesFirst) {
       if (playerAction.type == BattleActionType.fight && !playerMon.isFainted) {
-        _executeAttack(playerMon, playerAction.move!, opponentMon, log, isPlayer: true);
+        events.addAll(executeSingleAttack(
+          playerMon,
+          playerAction.move!,
+          opponentMon,
+          isPlayer: true,
+          isWild: isWild,
+        ));
       }
       if (!opponentMon.isFainted && opponentAction.type == BattleActionType.fight) {
-        _executeAttack(opponentMon, opponentAction.move!, playerMon, log, isPlayer: false);
+        events.addAll(executeSingleAttack(
+          opponentMon,
+          opponentAction.move!,
+          playerMon,
+          isPlayer: false,
+          isWild: isWild,
+        ));
       }
     } else {
       if (opponentAction.type == BattleActionType.fight && !opponentMon.isFainted) {
-        _executeAttack(opponentMon, opponentAction.move!, playerMon, log, isPlayer: false);
+        events.addAll(executeSingleAttack(
+          opponentMon,
+          opponentAction.move!,
+          playerMon,
+          isPlayer: false,
+          isWild: isWild,
+        ));
       }
       if (!playerMon.isFainted && playerAction.type == BattleActionType.fight) {
-        _executeAttack(playerMon, playerAction.move!, opponentMon, log, isPlayer: true);
+        events.addAll(executeSingleAttack(
+          playerMon,
+          playerAction.move!,
+          opponentMon,
+          isPlayer: true,
+          isWild: isWild,
+        ));
       }
     }
 
-    return log;
+    // End-of-turn Burn / Poison tick damage
+    if (!playerMon.isFainted && !opponentMon.isFainted) {
+      events.addAll(_processEndOfTurnStatus(playerMon, isPlayer: true, isWild: isWild));
+      if (!playerMon.isFainted) {
+        events.addAll(_processEndOfTurnStatus(opponentMon, isPlayer: false, isWild: isWild));
+      }
+    }
+
+    return events;
   }
 
-  static void _executeAttack(
+  static List<BattleStepEvent> executeSingleAttack(
     PokemonInstance attacker,
     Move move,
-    PokemonInstance defender,
-    List<String> log, {
+    PokemonInstance defender, {
     required bool isPlayer,
+    bool isWild = true,
   }) {
-    final attackerName = isPlayer ? attacker.nickname : "Wild ${attacker.nickname}";
-    final defenderName = isPlayer ? "Wild ${defender.nickname}" : defender.nickname;
+    final List<BattleStepEvent> events = [];
+    final attackerName = isPlayer
+        ? attacker.nickname
+        : (isWild ? "Wild ${attacker.nickname}" : attacker.nickname);
+    final defenderName = isPlayer
+        ? (isWild ? "Wild ${defender.nickname}" : defender.nickname)
+        : defender.nickname;
 
-    log.add("$attackerName used ${move.name}!");
-
-    // Accuracy Check
-    final roll = _rng.nextInt(100) + 1;
-    if (roll > move.accuracy) {
-      log.add("$attackerName's attack missed!");
-      return;
+    // 1. Pre-move status check (Sleep / Paralysis)
+    if (attacker.status == StatusCondition.sleep) {
+      if (_rng.nextInt(3) == 0) {
+        attacker.status = StatusCondition.none;
+        events.add(BattleStepEvent(
+          message: "$attackerName woke up!",
+          isPlayerActor: isPlayer,
+        ));
+      } else {
+        events.add(BattleStepEvent(
+          message: "$attackerName is fast asleep!",
+          isPlayerActor: isPlayer,
+          isMiss: true,
+        ));
+        return events;
+      }
+    } else if (attacker.status == StatusCondition.paralysis) {
+      if (_rng.nextInt(4) == 0) {
+        events.add(BattleStepEvent(
+          message: "$attackerName is paralyzed! It can't move!",
+          isPlayerActor: isPlayer,
+          isMiss: true,
+        ));
+        return events;
+      }
     }
 
-    // Status Moves
+    // 2. Spend PP
+    if (move.currentPp > 0) {
+      move.currentPp--;
+    }
+
+    // 3. Accuracy Check
+    final accRoll = _rng.nextInt(100) + 1;
+    if (accRoll > move.accuracy) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}, but it missed!",
+        isPlayerActor: isPlayer,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+      ));
+      return events;
+    }
+
+    // 4. Pure Status / Stat Moves
     if (move.category == MoveCategory.status || move.power == 0) {
-      log.add("It had a tactical effect!");
-      return;
+      String? statLabel;
+      String? statusLabel;
+      bool selfBuff = false;
+      String msg = "$attackerName used ${move.name}!";
+
+      if (move.statTarget != null && move.statChange != 0) {
+        selfBuff = move.statChange > 0;
+        final targetMon = selfBuff ? attacker : defender;
+        final targetLabel = selfBuff ? attackerName : defenderName;
+        final actualDelta = targetMon.modifyStatStage(move.statTarget!, move.statChange);
+        final statFullName = _statDisplayName(move.statTarget!);
+        final arrow = move.statChange > 0 ? '▲' : '▼';
+        statLabel = "${move.statTarget!.toUpperCase()} $arrow";
+
+        if (actualDelta == 0) {
+          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName won't go any ${move.statChange > 0 ? 'higher' : 'lower'}!";
+        } else if (move.statChange >= 2) {
+          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName rose sharply!";
+        } else if (move.statChange > 0) {
+          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName rose!";
+        } else if (move.statChange <= -2) {
+          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName harshly fell!";
+        } else {
+          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName fell!";
+        }
+      } else if (move.statusEffect != null) {
+        final inflicted = _tryInflictStatus(defender, move.statusEffect!);
+        if (inflicted != null) {
+          statusLabel = inflicted;
+          msg = "$attackerName used ${move.name}! $defenderName is $inflicted";
+        } else {
+          msg = "$attackerName used ${move.name}, but it failed!";
+        }
+      }
+
+      events.add(BattleStepEvent(
+        message: msg,
+        isPlayerActor: isPlayer,
+        moveType: move.type,
+        moveCategory: move.category,
+        statChangedLabel: statLabel,
+        statTargetIsSelf: selfBuff,
+        statusInflictedLabel: statusLabel,
+        targetHpAfter: defender.currentHp,
+      ));
+      return events;
     }
 
-    // Damage Calculation (Gen 4 Standard)
-    final int A = move.category == MoveCategory.physical ? attacker.atk : attacker.spa;
-    final int D = move.category == MoveCategory.physical ? defender.def : defender.spd;
+    // 5. Damaging Move Calculation (Gen 4 Standard)
+    int attackStat = move.category == MoveCategory.physical
+        ? attacker.effectiveAtk
+        : attacker.effectiveSpa;
+    if (move.category == MoveCategory.physical && attacker.status == StatusCondition.burn) {
+      attackStat = (attackStat * 0.5).round().clamp(1, 9999);
+    }
 
-    double base = (((2 * attacker.level / 5 + 2) * move.power * A / D) / 50) + 2;
+    final int defenseStat = move.category == MoveCategory.physical
+        ? defender.effectiveDef
+        : defender.effectiveSpd;
 
-    // STAB (Same-Type Attack Bonus)
-    double stab = attacker.species.types.contains(move.type) ? 1.5 : 1.0;
+    final double base =
+        (((2 * attacker.level / 5 + 2) * move.power * attackStat / defenseStat) / 50) + 2;
 
-    // Type Effectiveness
-    double typeMultiplier = PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
+    final double stab = attacker.species.types.contains(move.type) ? 1.5 : 1.0;
+    final double typeMultiplier =
+        PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
 
-    // Critical Hit (6.25% chance in Gen 4)
-    bool isCrit = _rng.nextInt(16) == 0;
-    double crit = isCrit ? 1.5 : 1.0;
-
-    // Random Variance (0.85 to 1.00)
-    double randomVariance = (85 + _rng.nextInt(16)) / 100.0;
+    final bool isCrit = typeMultiplier > 0 && _rng.nextInt(16) == 0;
+    final double crit = isCrit ? 1.5 : 1.0;
+    final double randomVariance = (85 + _rng.nextInt(16)) / 100.0;
 
     int damage = (base * crit * randomVariance * stab * typeMultiplier).floor();
     if (damage < 1 && typeMultiplier > 0) damage = 1;
+    if (typeMultiplier == 0.0) damage = 0;
 
     defender.currentHp = (defender.currentHp - damage).clamp(0, defender.maxHp);
 
-    if (isCrit) log.add("A critical hit!");
-    if (typeMultiplier >= 2.0) log.add("It's super effective!");
-    if (typeMultiplier > 0 && typeMultiplier <= 0.5) log.add("It's not very effective...");
-    if (typeMultiplier == 0.0) log.add("It had no effect on $defenderName.");
+    // Secondary status chance on damaging move
+    String? secondaryStatusLabel;
+    if (!defender.isFainted &&
+        typeMultiplier > 0 &&
+        move.statusEffect != null &&
+        move.statusChance > 0 &&
+        _rng.nextInt(100) < move.statusChance) {
+      secondaryStatusLabel = _tryInflictStatus(defender, move.statusEffect!);
+    }
+
+    final StringBuffer msgBuffer = StringBuffer("$attackerName used ${move.name}!");
+    if (typeMultiplier == 0.0) {
+      msgBuffer.write(" It had no effect on $defenderName.");
+    } else {
+      if (isCrit) msgBuffer.write(" A critical hit!");
+      if (typeMultiplier >= 2.0) msgBuffer.write(" It's super effective!");
+      if (typeMultiplier > 0 && typeMultiplier <= 0.5) {
+        msgBuffer.write(" It's not very effective...");
+      }
+      if (secondaryStatusLabel != null) {
+        msgBuffer.write(" $defenderName became $secondaryStatusLabel");
+      }
+    }
+
+    events.add(BattleStepEvent(
+      message: msgBuffer.toString(),
+      isPlayerActor: isPlayer,
+      moveType: move.type,
+      moveCategory: move.category,
+      damageDealt: damage,
+      targetHpAfter: defender.currentHp,
+      isCrit: isCrit,
+      effectiveness: typeMultiplier,
+      statusInflictedLabel: secondaryStatusLabel,
+      targetFainted: defender.isFainted,
+    ));
 
     if (defender.isFainted) {
-      log.add("$defenderName fainted!");
+      events.add(BattleStepEvent(
+        message: "$defenderName fainted!",
+        isPlayerActor: isPlayer,
+        targetHpAfter: 0,
+        targetFainted: true,
+      ));
+    }
+
+    return events;
+  }
+
+  static List<BattleStepEvent> _processEndOfTurnStatus(
+    PokemonInstance mon, {
+    required bool isPlayer,
+    required bool isWild,
+  }) {
+    final List<BattleStepEvent> events = [];
+    final monName = isPlayer
+        ? mon.nickname
+        : (isWild ? "Wild ${mon.nickname}" : mon.nickname);
+
+    if (mon.status == StatusCondition.burn || mon.status == StatusCondition.poison) {
+      final tickDmg = max(1, mon.maxHp ~/ 8);
+      mon.currentHp = (mon.currentHp - tickDmg).clamp(0, mon.maxHp);
+      final isBurn = mon.status == StatusCondition.burn;
+
+      events.add(BattleStepEvent(
+        message: isBurn
+            ? "$monName was hurt by its burn!"
+            : "$monName was hurt by poison!",
+        isPlayerActor: !isPlayer, // Damage applies to this Pokémon as target
+        moveType: isBurn ? PokemonType.fire : PokemonType.poison,
+        damageDealt: tickDmg,
+        targetHpAfter: mon.currentHp,
+        targetFainted: mon.isFainted,
+        isStatusTick: true,
+      ));
+
+      if (mon.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$monName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+      }
+    }
+    return events;
+  }
+
+  static String? _tryInflictStatus(PokemonInstance target, String effect) {
+    if (target.status != StatusCondition.none || target.isFainted) return null;
+
+    switch (effect) {
+      case 'burn':
+        if (target.species.types.contains(PokemonType.fire)) return null;
+        target.status = StatusCondition.burn;
+        return 'BURNED!';
+      case 'poison':
+        if (target.species.types.contains(PokemonType.poison) ||
+            target.species.types.contains(PokemonType.steel)) {
+          return null;
+        }
+        target.status = StatusCondition.poison;
+        return 'POISONED!';
+      case 'paralysis':
+        if (target.species.types.contains(PokemonType.electric)) return null;
+        target.status = StatusCondition.paralysis;
+        return 'PARALYZED!';
+      case 'sleep':
+        target.status = StatusCondition.sleep;
+        return 'ASLEEP!';
+      default:
+        return null;
+    }
+  }
+
+  static String _statDisplayName(String stat) {
+    switch (stat) {
+      case 'atk':
+        return 'Attack';
+      case 'def':
+        return 'Defense';
+      case 'spa':
+        return 'Sp. Atk';
+      case 'spd':
+        return 'Sp. Def';
+      case 'spe':
+        return 'Speed';
+      default:
+        return stat.toUpperCase();
     }
   }
 
