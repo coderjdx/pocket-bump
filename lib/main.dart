@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
@@ -6,6 +7,10 @@ import 'screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   final savedTrainer = await Trainer.loadOrCreate();
   runApp(PocketBumpApp(initialTrainer: savedTrainer));
 }
@@ -44,14 +49,24 @@ class PocketBumpApp extends StatelessWidget {
                 : const HomeScreen(),
             builder: (context, child) {
               if (child == null) return const SizedBox.shrink();
-              final screenWidth = MediaQuery.of(context).size.width;
+              final mediaQuery = MediaQuery.of(context);
+              final screenWidth = mediaQuery.size.width;
+              final screenHeight = mediaQuery.size.height;
+
+              // On mobile phones (portrait), adjust to phone's resolution directly
               if (screenWidth <= 500) return child;
+
+              // On wide screens (e.g. desktop/web preview), frame in a sleek portrait phone viewport
+              // that dynamically scales to the available window height so no scrolling is required
+              final containerHeight = (screenHeight * 0.94).clamp(560.0, 840.0);
+              final containerWidth = (containerHeight * (9.0 / 19.5)).clamp(320.0, 420.0);
+
               return Scaffold(
                 backgroundColor: const Color(0xFF121217),
                 body: Center(
                   child: Container(
-                    width: 420,
-                    height: 840,
+                    width: containerWidth,
+                    height: containerHeight,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(28),
                       border: Border.all(color: Colors.white12, width: 2),

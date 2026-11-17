@@ -81,42 +81,38 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       backgroundColor: const Color(0xFF1E1E24),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           child: Column(
             children: [
               // ─── 1. COMPACT TRAINER PROFILE BAR ──────────────────────────
               _buildTrainerHeader(trainer),
-              const SizedBox(height: 14),
+              const SizedBox(height: 10),
 
-              // ─── SCROLLABLE MAIN HOME DASHBOARD ──────────────────────────
+              // ─── MAIN HOME DASHBOARD (NO SCROLLING ON STANDARD PHONES) ──
               Expanded(
                 child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // ─── 2. SPOT #1 LEAD POKÉMON SHOWCASE ────────────────
                       if (leadPokemon != null)
                         _buildLeadPokemonCard(trainer, leadPokemon),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 10),
 
                       // ─── 3. POKÉWALKER STEP COUNTER ───────────────────────
                       _buildStepCounterCard(trainer),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 10),
 
-                      // ─── 4. PARTY & ITEM MANAGEMENT OPTIONS ──────────────
-                      _buildManagementRow(trainer),
-                      const SizedBox(height: 12),
-
-                      // ─── 4B. KANTO POKÉDEX CARD ──────────────────────────
-                      _buildPokedexCard(trainer),
-                      const SizedBox(height: 8),
+                      // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ─────────────
+                      _buildHubRow(trainer),
+                      const SizedBox(height: 4),
                     ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
 
               // ─── 5. CHALLENGE ANOTHER TRAINER (FIST-BUMP BATTLE) ─────────
               _buildChallengeTrainerButton(),
@@ -132,31 +128,31 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return GestureDetector(
       onTap: () => _openTrainerIdentityPicker(trainer),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: const Color(0xFF2A2A35),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white10),
         ),
         child: Row(
           children: [
             Container(
-              width: 52,
-              height: 54,
+              width: 44,
+              height: 46,
               decoration: BoxDecoration(
                 color: const Color(0xFF1E1E24),
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.white12),
               ),
               child: Center(
                 child: TrainerSpriteWidget(
                   avatar: trainer.avatar,
                   isBackView: false,
-                  size: 50,
+                  size: 42,
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,27 +166,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 15,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 6),
-                      const Icon(Icons.edit, size: 13, color: Colors.white38),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.edit, size: 12, color: Colors.white38),
                     ],
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 2),
                   Text(
                     "${trainer.avatar.title} • ${trainer.party.length}/6 Pokémon",
-                    style: const TextStyle(color: Colors.white60, fontSize: 12),
+                    style: const TextStyle(color: Colors.white60, fontSize: 11),
                   ),
                 ],
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.black26,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.white10),
               ),
               child: Column(
@@ -199,14 +195,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 14),
-                      const SizedBox(width: 4),
+                      const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 13),
+                      const SizedBox(width: 3),
                       Text(
                         "${trainer.pokeBalls + trainer.greatBalls + trainer.ultraBalls}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          fontSize: 11.5,
                         ),
                       ),
                     ],
@@ -215,14 +211,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.medical_services, color: Colors.greenAccent, size: 14),
-                      const SizedBox(width: 4),
+                      const Icon(Icons.medical_services, color: Colors.greenAccent, size: 13),
+                      const SizedBox(width: 3),
                       Text(
                         "${trainer.totalMedicine}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                          fontSize: 11.5,
                         ),
                       ),
                     ],
@@ -230,20 +226,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ],
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Tooltip(
               message: "Delete Saved Progress",
               child: InkWell(
                 onTap: () => _confirmDeleteProgress(trainer),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  padding: const EdgeInsets.all(9),
+                  padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     color: Colors.red.shade900.withOpacity(0.28),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
                   ),
-                  child: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 18),
+                  child: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 16),
                 ),
               ),
             ),
@@ -264,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final int expRemaining = max(0, nextLvlExp - lead.currentExp);
 
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -274,13 +270,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: primaryColor.withOpacity(0.55), width: 1.4),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: primaryColor.withOpacity(0.55), width: 1.2),
         boxShadow: [
           BoxShadow(
             color: primaryColor.withOpacity(0.12),
-            blurRadius: 14,
-            offset: const Offset(0, 6),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -292,24 +288,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: Colors.amber.shade700.withOpacity(0.22),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.amberAccent.withOpacity(0.5)),
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.bolt, color: Colors.amberAccent, size: 13),
-                    SizedBox(width: 4),
+                    Icon(Icons.bolt, color: Colors.amberAccent, size: 12),
+                    SizedBox(width: 3),
                     Text(
-                      "FIRST SPOT • SUMMONED FIRST",
+                      "LEAD POKÉMON • SPOT #1",
                       style: TextStyle(
                         color: Colors.amberAccent,
-                        fontSize: 10,
+                        fontSize: 9.5,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 0.7,
+                        letterSpacing: 0.6,
                       ),
                     ),
                   ],
@@ -317,24 +313,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
               InkWell(
                 onTap: () => _openPartyManagerModal(trainer),
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.white24),
                   ),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.swap_vert, color: Colors.white, size: 14),
-                      SizedBox(width: 4),
+                      Icon(Icons.swap_vert, color: Colors.white, size: 13),
+                      SizedBox(width: 3),
                       Text(
                         "Swap Lead",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 11,
+                          fontSize: 10.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -345,23 +341,23 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
 
-          // Sprite + Name/Level/Types/HP/EXP/Stats
+          // Sprite + Name/Level/Types/HP/EXP
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 92,
-                height: 92,
+                width: 68,
+                height: 68,
                 decoration: BoxDecoration(
                   color: const Color(0xFF1B1B23),
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: primaryColor.withOpacity(0.45)),
                   boxShadow: [
                     BoxShadow(
                       color: primaryColor.withOpacity(0.2),
-                      blurRadius: 12,
+                      blurRadius: 8,
                     ),
                   ],
                 ),
@@ -369,29 +365,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   child: AnimatedBuilder(
                     animation: _leadBobController,
                     builder: (context, child) {
-                      final dy = -sin(_leadBobController.value * pi) * 3.0;
+                      final dy = -sin(_leadBobController.value * pi) * 2.5;
                       return Transform.translate(offset: Offset(0, dy), child: child);
                     },
                     child: Image.network(
                       lead.species.spriteUrl,
-                      width: 74,
-                      height: 74,
+                      width: 56,
+                      height: 56,
                       fit: BoxFit.contain,
                       filterQuality: FilterQuality.none,
                       errorBuilder: (c, e, s) => Image.network(
                         lead.species.staticSpriteUrl,
-                        width: 74,
-                        height: 74,
+                        width: 56,
+                        height: 56,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                         errorBuilder: (c2, e2, s2) =>
-                            Icon(Icons.catching_pokemon, color: primaryColor, size: 52),
+                            Icon(Icons.catching_pokemon, color: primaryColor, size: 42),
                       ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,54 +402,54 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 15,
                             ),
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
                           decoration: BoxDecoration(
                             color: Colors.amberAccent.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             "Lv.${lead.level}",
                             style: const TextStyle(
                               color: Colors.amberAccent,
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 11,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 3),
                     Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
+                      spacing: 4,
+                      runSpacing: 2,
                       children: lead.species.types.map((t) {
                         return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                           decoration: BoxDecoration(
                             color: t.color.withOpacity(0.28),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: t.color.withOpacity(0.8)),
                           ),
                           child: Text(
                             t.displayName.toUpperCase(),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 9,
+                              fontSize: 8.5,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 0.5,
+                              letterSpacing: 0.4,
                             ),
                           ),
                         );
                       }).toList(),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 5),
                     HpBar(currentHp: lead.currentHp, maxHp: lead.maxHp),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -461,16 +457,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           lead.level >= 100
                               ? "MAX LEVEL"
                               : "EXP • $expRemaining to Lv.${lead.level + 1}",
-                          style: const TextStyle(fontSize: 10, color: Colors.lightBlueAccent),
+                          style: const TextStyle(fontSize: 9.5, color: Colors.lightBlueAccent),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(3),
+                      borderRadius: BorderRadius.circular(2),
                       child: LinearProgressIndicator(
                         value: expProgress,
-                        minHeight: 4,
+                        minHeight: 3,
                         backgroundColor: Colors.black38,
                         valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
                       ),
@@ -481,65 +477,65 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
           // Stat Strip
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.black26,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               "ATK ${lead.atk} • DEF ${lead.def} • SPA ${lead.spa} • SPD ${lead.spd} • SPE ${lead.spe}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white70,
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
 
           // Known Moves Pills
           Wrap(
-            spacing: 6,
-            runSpacing: 6,
+            spacing: 5,
+            runSpacing: 4,
             children: lead.moves.map((m) {
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1E1E24),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: m.type.color.withOpacity(0.55)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: 7,
-                      height: 7,
+                      width: 6,
+                      height: 6,
                       decoration: BoxDecoration(
                         color: m.type.color,
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 4),
                     Text(
                       m.name,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 4),
                     Text(
                       "${m.currentPp}/${m.maxPp}",
-                      style: const TextStyle(color: Colors.white54, fontSize: 10),
+                      style: const TextStyle(color: Colors.white54, fontSize: 9),
                     ),
                   ],
                 ),
@@ -556,14 +552,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     final int stepsToday = trainer.todaySteps;
 
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.indigo.shade900.withOpacity(0.55), const Color(0xFF2A2A35)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: Colors.indigoAccent.withOpacity(0.35)),
       ),
       child: Column(
@@ -574,15 +570,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             children: [
               const Row(
                 children: [
-                  Icon(Icons.directions_walk, color: Colors.indigoAccent, size: 19),
-                  SizedBox(width: 6),
+                  Icon(Icons.directions_walk, color: Colors.indigoAccent, size: 17),
+                  SizedBox(width: 5),
                   Text(
                     "DAILY STEP COUNTER",
                     style: TextStyle(
                       color: Colors.indigoAccent,
                       fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                      letterSpacing: 1.0,
+                      fontSize: 10.5,
+                      letterSpacing: 0.8,
                     ),
                   ),
                 ],
@@ -592,66 +588,61 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 15,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
-          const Text(
-            "Walking in the real world has a chance to trigger wild Pokémon encounters!",
-            style: TextStyle(fontSize: 11, color: Colors.white70),
-          ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             children: [
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _simulateSteps(trainer, 1),
-                  icon: const Icon(Icons.directions_walk, size: 15),
+                  icon: const Icon(Icons.directions_walk, size: 13),
                   label: const Text(
                     "+1 Step",
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _simulateSteps(trainer, 25),
-                  icon: const Icon(Icons.add_circle_outline, size: 15),
+                  icon: const Icon(Icons.add_circle_outline, size: 13),
                   label: const Text(
                     "+25 Steps",
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.white,
                     side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _launchWildEncounter,
-                  icon: const Icon(Icons.explore, size: 15, color: Colors.black87),
+                  icon: const Icon(Icons.explore, size: 13, color: Colors.black87),
                   label: const Text(
                     "Tall Grass",
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.greenAccent.shade400,
                     foregroundColor: Colors.black87,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                     elevation: 0,
                   ),
                 ),
@@ -663,23 +654,23 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 4. PARTY & ITEMS MANAGEMENT CARDS ────────────────────────────────────
-  Widget _buildManagementRow(Trainer trainer) {
-    final int ballTotal = trainer.pokeBalls + trainer.greatBalls + trainer.ultraBalls;
-    final int medTotal = trainer.totalMedicine;
+  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ──────────────────────────────────
+  Widget _buildHubRow(Trainer trainer) {
+    final int totalSpecies = PokedexDatabase.species.length;
+    final int caught = trainer.caughtCount;
 
     return Row(
       children: [
-        // Manage Party Card
+        // 1. Party
         Expanded(
           child: InkWell(
             onTap: () => _openPartyManagerModal(trainer),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
             child: Container(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFF2A2A35),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
               ),
               child: Column(
@@ -689,81 +680,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Colors.redAccent.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 20),
+                        child: const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
                       ),
-                      const Icon(Icons.chevron_right, color: Colors.white54, size: 20),
+                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   const Text(
-                    "Manage Party",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                    "Party",
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 1),
                   Text(
-                    "${trainer.party.length}/6 Pokémon • Set Lead",
-                    style: const TextStyle(color: Colors.white60, fontSize: 11),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 26,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: trainer.party.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: 4),
-                      itemBuilder: (context, idx) {
-                        final mon = trainer.party[idx];
-                        return Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1E1E24),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: idx == 0 ? Colors.amberAccent : Colors.white24,
-                              width: idx == 0 ? 1.5 : 1,
-                            ),
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              mon.species.staticSpriteUrl,
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.none,
-                              errorBuilder: (_, __, ___) =>
-                                  const Icon(Icons.catching_pokemon, size: 14, color: Colors.white54),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    "${trainer.party.length}/6 Pokémon",
+                    style: const TextStyle(color: Colors.white60, fontSize: 10),
                   ),
                 ],
               ),
             ),
           ),
         ),
+        const SizedBox(width: 8),
 
-        const SizedBox(width: 12),
-
-        // Manage Items Card
+        // 2. Bag
         Expanded(
           child: InkWell(
             onTap: () => _openItemsManagerModal(trainer),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(16),
             child: Container(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFF2A2A35),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
               ),
               child: Column(
@@ -773,70 +726,76 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Colors.amberAccent.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.backpack, color: Colors.amberAccent, size: 20),
+                        child: const Icon(Icons.backpack, color: Colors.amberAccent, size: 16),
                       ),
-                      const Icon(Icons.chevron_right, color: Colors.white54, size: 20),
+                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   const Text(
-                    "Manage Items",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                    "Bag",
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 1),
                   Text(
-                    "${trainer.totalItems} Items in Bag",
-                    style: const TextStyle(color: Colors.white60, fontSize: 11),
+                    "${trainer.totalItems} Items",
+                    style: const TextStyle(color: Colors.white60, fontSize: 10),
                   ),
-                  const SizedBox(height: 10),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 26),
-                    child: Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.redAccent.withOpacity(0.16),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            "$ballTotal Balls",
-                            style: const TextStyle(
-                              color: Colors.redAccent,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+
+        // 3. Pokédex
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PokedexScreen()),
+              );
+            },
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2A2A35),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent.withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.greenAccent.withOpacity(0.16),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            "$medTotal Meds",
-                            style: const TextStyle(
-                              color: Colors.greenAccent,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                        child: const PokeBallSymbol(size: 16, isCaught: true),
+                      ),
+                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    "Pokédex",
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    "$caught/$totalSpecies",
+                    style: const TextStyle(color: Colors.white60, fontSize: 10),
                   ),
                 ],
               ),
@@ -847,104 +806,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  Widget _buildPokedexCard(Trainer trainer) {
-    final int totalSpecies = PokedexDatabase.species.length;
-    final int caught = trainer.caughtCount;
-    final int seen = trainer.seenCount;
-
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const PokedexScreen()),
-        );
-      },
-      borderRadius: BorderRadius.circular(18),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.red.shade900.withOpacity(0.32),
-              const Color(0xFF2A2A35),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.redAccent.withOpacity(0.4)),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: Colors.redAccent.withOpacity(0.16),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-              ),
-              child: const Center(
-                child: PokeBallSymbol(size: 24, isCaught: true),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Pokédex",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    "$caught Caught • $seen Encountered / $totalSpecies Kanto",
-                    style: const TextStyle(color: Colors.white70, fontSize: 11),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.white12),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const PokeBallSymbol(size: 13, isCaught: true),
-                  const SizedBox(width: 4),
-                  Text(
-                    "$caught",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 6),
-            const Icon(Icons.chevron_right, color: Colors.white60, size: 20),
-          ],
-        ),
-      ),
-    );
-  }
-
   // ─── 5. PRIMARY FIST-BUMP CHALLENGE CTA ───────────────────────────────────
   Widget _buildChallengeTrainerButton() {
     return SizedBox(
       width: double.infinity,
-      height: 60,
+      height: 48,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -954,7 +820,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               MaterialPageRoute(builder: (context) => const BumpScreen()),
             );
           },
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           child: Ink(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -962,21 +828,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.red.shade900.withOpacity(0.45),
-                  blurRadius: 12,
+                  color: Colors.red.shade900.withOpacity(0.4),
+                  blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18),
+              padding: EdgeInsets.symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Icon(Icons.sports_mma, color: Colors.white, size: 26),
-                  SizedBox(width: 14),
+                  Icon(Icons.sports_mma, color: Colors.white, size: 22),
+                  SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -987,24 +853,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            letterSpacing: 0.7,
+                            fontSize: 12.5,
+                            letterSpacing: 0.6,
                           ),
                         ),
-                        SizedBox(height: 2),
+                        SizedBox(height: 1),
                         Text(
                           "FIST-BUMP BATTLE • DUEL A RIVAL",
                           style: TextStyle(
                             color: Colors.white70,
-                            fontSize: 10,
+                            fontSize: 9.5,
                             fontWeight: FontWeight.w600,
-                            letterSpacing: 0.8,
+                            letterSpacing: 0.6,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 16),
+                  Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 14),
                 ],
               ),
             ),

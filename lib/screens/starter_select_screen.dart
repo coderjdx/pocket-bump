@@ -45,7 +45,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
       backgroundColor: const Color(0xFF1E1E24),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
           child: _step == 0 ? _buildTrainerStep() : _buildStarterStep(),
         ),
       ),
@@ -58,37 +58,37 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(height: 8),
+        const SizedBox(height: 4),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
           decoration: BoxDecoration(
             color: Colors.red.shade700,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: const Text(
             "WELCOME TO KANTO",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-              fontSize: 12,
+              letterSpacing: 1.1,
+              fontSize: 11,
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         const Text(
           "Choose Your Trainer Avatar",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 10),
 
         // Gender Toggle
         Container(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
             color: const Color(0xFF2A2A35),
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.white12),
           ),
           child: Row(
@@ -100,7 +100,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           ),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
         // 3 Trainer Versions for selected gender
         Row(
@@ -111,16 +111,16 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 onTap: () => setState(() => _selectedAvatar = avatar),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? Colors.red.shade900.withOpacity(0.35)
                         : const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected ? Colors.redAccent : Colors.white12,
-                      width: isSelected ? 2.5 : 1,
+                      width: isSelected ? 2.0 : 1,
                     ),
                   ),
                   child: Column(
@@ -128,16 +128,16 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                       TrainerSpriteWidget(
                         avatar: avatar,
                         isBackView: false,
-                        size: 108,
+                        size: 80,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         avatar.title,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.bold,
                           color: isSelected ? Colors.white : Colors.white70,
                         ),
@@ -150,16 +150,16 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           }).toList(),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
 
         // Selected Preview + Trainer Name Input
         Expanded(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               color: const Color(0xFF2A2A35),
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(18),
               border: Border.all(color: Colors.white10),
             ),
             child: Column(
@@ -171,47 +171,48 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                     TrainerSpriteWidget(
                       avatar: _selectedAvatar,
                       isBackView: false,
-                      size: 102,
+                      size: 78,
                     ),
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 12),
                     TrainerSpriteWidget(
                       avatar: _selectedAvatar,
                       isBackView: true,
                       pose: 1,
-                      size: 102,
+                      size: 78,
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Text(
                   "${_selectedAvatar.title} (${_selectedAvatar.isFemale ? 'Female' : 'Male'})",
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: Colors.amberAccent,
                   ),
                 ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 10),
                 TextField(
                   controller: _nameController,
                   maxLength: 14,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                   decoration: InputDecoration(
                     labelText: "Trainer Name",
-                    labelStyle: const TextStyle(color: Colors.white60, fontSize: 13),
+                    labelStyle: const TextStyle(color: Colors.white60, fontSize: 12),
                     counterText: "",
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     filled: true,
                     fillColor: const Color(0xFF1E1E24),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.white24),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.white12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: const BorderSide(color: Colors.redAccent),
                     ),
                   ),
@@ -221,22 +222,22 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           ),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
 
         SizedBox(
           width: double.infinity,
-          height: 52,
+          height: 46,
           child: ElevatedButton(
             onPressed: () => setState(() => _step = 1),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red.shade600,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              elevation: 4,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              elevation: 3,
             ),
             child: const Text(
               "NEXT: CHOOSE PARTNER →",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 1),
+              style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold, letterSpacing: 0.8),
             ),
           ),
         ),
@@ -282,35 +283,37 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white70),
+              icon: const Icon(Icons.arrow_back, color: Colors.white70, size: 20),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
               onPressed: () => setState(() => _step = 0),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
               decoration: BoxDecoration(
                 color: Colors.red.shade700,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: const Text(
                 "PROFESSOR OAK'S LAB",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
+                  letterSpacing: 1.1,
                   fontSize: 11,
                 ),
               ),
             ),
-            const SizedBox(width: 48),
+            const SizedBox(width: 24),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         const Text(
           "Choose Your First Partner Pokémon!",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         // Starter Switcher Row
         Row(
@@ -322,31 +325,31 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
               onTap: () => setState(() => _selectedStarterId = id),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.red.shade900.withOpacity(0.4)
                       : const Color(0xFF2A2A35),
                   border: Border.all(
                     color: isSelected ? Colors.redAccent : Colors.white12,
-                    width: isSelected ? 2.5 : 1,
+                    width: isSelected ? 2.0 : 1,
                   ),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Image.network(
                   mon.spriteUrl,
-                  width: 60,
-                  height: 60,
+                  width: 50,
+                  height: 50,
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.none,
                   errorBuilder: (ctx, err, stack) => Image.network(
                     mon.staticSpriteUrl,
-                    width: 60,
-                    height: 60,
+                    width: 50,
+                    height: 50,
                     filterQuality: FilterQuality.none,
                     errorBuilder: (c2, e2, s2) =>
-                        const Icon(Icons.catching_pokemon, color: Colors.white, size: 50),
+                        const Icon(Icons.catching_pokemon, color: Colors.white, size: 40),
                   ),
                 ),
               ),
@@ -354,54 +357,54 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           }).toList(),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
 
         // Detailed Card for Selected Starter (showing true Lv.5 calculated stats & Lv.5 moves)
         Expanded(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               color: const Color(0xFF2A2A35),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.white10),
             ),
             child: Column(
               children: [
                 Image.network(
                   selectedMon.species.spriteUrl,
-                  height: 110,
+                  height: 80,
                   fit: BoxFit.contain,
                   filterQuality: FilterQuality.none,
                   errorBuilder: (ctx, err, stack) => Image.network(
                     selectedMon.species.staticSpriteUrl,
-                    height: 110,
+                    height: 80,
                     fit: BoxFit.contain,
                     filterQuality: FilterQuality.none,
                     errorBuilder: (c2, e2, s2) =>
-                        const Icon(Icons.catching_pokemon, color: Colors.white, size: 95),
+                        const Icon(Icons.catching_pokemon, color: Colors.white, size: 70),
                   ),
                 ),
                 Text(
                   "${selectedMon.species.name}  •  Lv.${selectedMon.level}",
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: selectedMon.species.types
                       .map((t) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
                             child: TypeBadge(type: t),
                           ))
                       .toList(),
                 ),
-                const SizedBox(height: 12),
-                const Divider(color: Colors.white12),
+                const SizedBox(height: 8),
+                const Divider(color: Colors.white12, height: 1),
                 const SizedBox(height: 6),
 
                 // Level 5 Calculated Stats
@@ -416,8 +419,8 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Lv.5 Moves (${selectedMon.moves.length}): ${selectedMon.moves.map((m) => m.name).join(', ')}",
-                    style: const TextStyle(fontSize: 12, color: Colors.white70),
+                    "Lv.5 Moves: ${selectedMon.moves.map((m) => m.name).join(', ')}",
+                    style: const TextStyle(fontSize: 11, color: Colors.white70),
                   ),
                 ),
               ],
@@ -425,11 +428,11 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           ),
         ),
 
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
 
         SizedBox(
           width: double.infinity,
-          height: 52,
+          height: 46,
           child: ElevatedButton(
             onPressed: () {
               final trainer = Provider.of<Trainer>(context, listen: false);
@@ -443,12 +446,12 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red.shade600,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              elevation: 4,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              elevation: 3,
             ),
             child: Text(
               "I CHOOSE ${selectedMon.species.name.toUpperCase()}!",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, letterSpacing: 1),
+              style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold, letterSpacing: 0.8),
             ),
           ),
         ),

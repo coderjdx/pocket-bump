@@ -70,6 +70,7 @@ class PokemonSpecies {
   final int baseExp;
   final double heightMeters;
   final int evolutionStage;
+  final bool isStarter;
   final bool isPseudoLegendary;
   final bool isLegendary;
   final bool isMythical;
@@ -93,6 +94,7 @@ class PokemonSpecies {
     this.baseExp = 64,
     this.heightMeters = 0.7,
     this.evolutionStage = 1,
+    this.isStarter = false,
     this.isPseudoLegendary = false,
     this.isLegendary = false,
     this.isMythical = false,
@@ -111,6 +113,10 @@ class PokemonSpecies {
     if (isLegendary || isMythical) {
       return PokemonRarity.special;
     }
+    // Starters can only be encountered in their first stage and are Rare encounters
+    if (isStarter) {
+      return PokemonRarity.rare;
+    }
     if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
       return PokemonRarity.rare;
     }
@@ -120,11 +126,23 @@ class PokemonSpecies {
     return PokemonRarity.common;
   }
 
+  /// Whether this species can ever appear in wild encounters.
+  /// Starter lines can only ever be encountered in the wild in their first stage.
+  bool get isWildEncounterable {
+    if (rarity == PokemonRarity.special) return false;
+    if (isStarter && evolutionStage > 1) return false;
+    return true;
+  }
+
   /// Minimum player level required to encounter this species in the wild:
+  /// - 1st stage starters: available from player level 1 as Rare encounters
   /// - 1st stage (multi-stage line): any level (1)
   /// - 2nd stage or single-stage non-pseudo-legendary: within 5 levels of minEncounterLevel
   /// - 3rd stage or final-stage pseudo-legendary: within 10 levels of minEncounterLevel
   int get requiredPlayerLevelForEncounter {
+    if (isStarter) {
+      return 1;
+    }
     if (evolutionStage >= 3 || (isPseudoLegendary && isFinalStage)) {
       return (minEncounterLevel - 10).clamp(1, 100);
     }
@@ -135,7 +153,7 @@ class PokemonSpecies {
   }
 
   bool canEncounterAtPlayerLevel(int playerLevel) {
-    if (rarity == PokemonRarity.special) return false;
+    if (!isWildEncounterable) return false;
     return playerLevel >= requiredPlayerLevelForEncounter;
   }
 

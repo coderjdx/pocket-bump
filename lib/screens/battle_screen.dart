@@ -966,16 +966,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          toolbarHeight: 44,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back, size: 20),
+            padding: EdgeInsets.zero,
             onPressed: _finishAndExit,
           ),
           title: Text(
             widget.isWild ? "WILD ENCOUNTER" : "RIVAL FIST-BUMP DUEL",
             style: const TextStyle(
-              fontSize: 13,
+              fontSize: 12.5,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.4,
+              letterSpacing: 1.2,
             ),
           ),
           centerTitle: true,
@@ -1300,14 +1302,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
               // ─── BATTLE LOG BOX ──────────────────────────────────────────
               Container(
-                height: 68,
+                height: 54,
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2A2A35),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.white12, width: 1.5),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white12, width: 1.2),
                 ),
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -1316,10 +1318,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 13,
+                      fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      height: 1.3,
+                      height: 1.25,
                     ),
                   ),
                 ),
@@ -1329,20 +1331,30 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
               Expanded(
                 flex: 3,
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
                   child: _battleEnded
                       ? Center(
-                          child: ElevatedButton.icon(
-                            onPressed: _finishAndExit,
-                            icon: const Icon(Icons.favorite, color: Colors.white),
-                            label: const Text("FINISH & RESTORE PARTY"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red.shade700,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 28, vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 46,
+                            child: ElevatedButton.icon(
+                              onPressed: _finishAndExit,
+                              icon: const Icon(Icons.favorite, color: Colors.white, size: 18),
+                              label: const Text(
+                                "FINISH & RESTORE PARTY",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red.shade700,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
                             ),
                           ),
                         )
@@ -1773,36 +1785,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required int displayedHp,
     required bool isPlayer,
   }) {
-    final stageBadges = <Widget>[];
-    final statsMap = {
-      'ATK': mon.atkStage,
-      'DEF': mon.defStage,
-      'SPA': mon.spaStage,
-      'SPD': mon.spdStage,
-      'SPE': mon.speStage,
-    };
-    statsMap.forEach((label, val) {
-      if (val != 0) {
-        final isBuff = val > 0;
-        stageBadges.add(Container(
-          margin: const EdgeInsets.only(right: 4, top: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-          decoration: BoxDecoration(
-            color: isBuff ? Colors.teal.shade700 : Colors.deepOrange.shade700,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Text(
-            "$label ${isBuff ? '+$val' : '$val'}",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ));
-      }
-    });
-
     final int prevLvlExp = (mon.level - 1) * (mon.level - 1) * (mon.level - 1);
     final int nextLvlExp = mon.expForNextLevel;
     final double expProgress = nextLvlExp > prevLvlExp
@@ -1810,11 +1792,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         : 0.0;
 
     return Container(
-      width: 184,
-      padding: const EdgeInsets.all(9),
+      width: 172,
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
       decoration: BoxDecoration(
         color: const Color(0xFF23232E).withOpacity(0.92),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white24, width: 1.2),
         boxShadow: [
           BoxShadow(
@@ -1837,7 +1819,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: 12.5,
                     color: Colors.white,
                   ),
                 ),
@@ -1888,7 +1870,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     "Lv.${mon.level}",
                     style: const TextStyle(
                       color: Colors.amberAccent,
-                      fontSize: 11,
+                      fontSize: 10.5,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1896,21 +1878,20 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
               ),
             ],
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 4),
           HpBar(currentHp: displayedHp, maxHp: mon.maxHp),
           if (isPlayer) ...[
-            const SizedBox(height: 4),
+            const SizedBox(height: 3),
             ClipRRect(
               borderRadius: BorderRadius.circular(2),
               child: LinearProgressIndicator(
                 value: expProgress,
-                minHeight: 3,
+                minHeight: 2.5,
                 backgroundColor: Colors.black38,
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
               ),
             ),
           ],
-          if (stageBadges.isNotEmpty) Wrap(children: stageBadges),
         ],
       ),
     );
@@ -1934,25 +1915,61 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildMainActionMenu() {
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 2.35,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
       children: [
-        _buildActionButton("FIGHT", Colors.red.shade700, Icons.flash_on, () {
-          setState(() => _isSelectingMove = true);
-        }),
-        _buildActionButton("BAG", Colors.amber.shade800, Icons.backpack, _openBagModal),
-        _buildActionButton(
-            "POKÉMON", Colors.green.shade700, Icons.catching_pokemon, () => _openSwitchModal()),
-        _buildActionButton("RUN", Colors.blueGrey.shade700, Icons.directions_run, _finishAndExit),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: _buildActionButton(
+                  "FIGHT",
+                  Colors.red.shade700,
+                  Icons.flash_on,
+                  () => setState(() => _isSelectingMove = true),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildActionButton(
+                  "BAG",
+                  Colors.amber.shade800,
+                  Icons.backpack,
+                  _openBagModal,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: _buildActionButton(
+                  "POKÉMON",
+                  Colors.green.shade700,
+                  Icons.catching_pokemon,
+                  () => _openSwitchModal(),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildActionButton(
+                  "RUN",
+                  Colors.blueGrey.shade700,
+                  Icons.directions_run,
+                  _finishAndExit,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildMoveSelection() {
+    final moves = _playerPokemon.moves;
     return Column(
       children: [
         Row(
@@ -1960,68 +1977,100 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           children: [
             const Text(
               "SELECT A MOVE",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white60),
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white60),
             ),
             IconButton(
-              icon: const Icon(Icons.close, color: Colors.white60, size: 20),
+              icon: const Icon(Icons.close, color: Colors.white60, size: 18),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               onPressed: () => setState(() => _isSelectingMove = false),
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         Expanded(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2.25,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            itemCount: _playerPokemon.moves.length,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, idx) {
-              final move = _playerPokemon.moves[idx];
-              return ElevatedButton(
-                onPressed: _isProcessingTurn ? null : () => _onMoveSelected(move),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: move.type.color.withOpacity(0.9),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: [
+              Expanded(
+                child: Row(
                   children: [
-                    Text(
-                      move.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                    ),
-                    const SizedBox(height: 2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          move.type.displayName.toUpperCase(),
-                          style: const TextStyle(fontSize: 9, color: Colors.white70),
-                        ),
-                        Text(
-                          "PP ${move.currentPp}/${move.maxPp}",
-                          style: const TextStyle(fontSize: 9, color: Colors.white),
-                        ),
-                      ],
-                    ),
+                    if (moves.isNotEmpty)
+                      Expanded(child: _buildMoveButton(moves[0]))
+                    else
+                      const Spacer(),
+                    const SizedBox(width: 8),
+                    if (moves.length > 1)
+                      Expanded(child: _buildMoveButton(moves[1]))
+                    else
+                      const Spacer(),
                   ],
                 ),
-              );
-            },
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: Row(
+                  children: [
+                    if (moves.length > 2)
+                      Expanded(child: _buildMoveButton(moves[2]))
+                    else
+                      const Spacer(),
+                    const SizedBox(width: 8),
+                    if (moves.length > 3)
+                      Expanded(child: _buildMoveButton(moves[3]))
+                    else
+                      const Spacer(),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMoveButton(MoveInstance move) {
+    return ElevatedButton(
+      onPressed: _isProcessingTurn ? null : () => _onMoveSelected(move),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: move.type.color.withOpacity(0.9),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        elevation: 2,
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              move.name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
+            const SizedBox(height: 2),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  move.type.displayName.toUpperCase(),
+                  style: const TextStyle(fontSize: 8.5, color: Colors.white70),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  "PP ${move.currentPp}/${move.maxPp}",
+                  style: const TextStyle(
+                    fontSize: 8.5,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -2546,16 +2595,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       String title, Color color, IconData icon, VoidCallback onPressed) {
     return ElevatedButton.icon(
       onPressed: _isProcessingTurn ? null : onPressed,
-      icon: Icon(icon, size: 18),
+      icon: Icon(icon, size: 16),
       label: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.8, fontSize: 13),
+        style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.6, fontSize: 12),
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       ),
     );
   }

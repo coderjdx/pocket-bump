@@ -42,10 +42,10 @@ class Trainer extends ChangeNotifier {
     required this.name,
     TrainerAvatar? avatar,
     List<PokemonInstance>? party,
-    this.pokeBalls = 5,
+    this.pokeBalls = 10,
     this.greatBalls = 0,
     this.ultraBalls = 0,
-    this.potions = 5,
+    this.potions = 10,
     this.superPotions = 0,
     this.hyperPotions = 0,
     this.revives = 0,
@@ -404,10 +404,10 @@ class Trainer extends ChangeNotifier {
       (a) => a.id == avatarId,
       orElse: () => TrainerAvatar.presets.first,
     );
-    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 5).clamp(0, 99);
+    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 10).clamp(0, 99);
     greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    potions = ((json['potions'] as num?)?.toInt() ?? 5).clamp(0, 99);
+    potions = ((json['potions'] as num?)?.toInt() ?? 10).clamp(0, 99);
     superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     revives = ((json['revives'] as num?)?.toInt() ?? 0).clamp(0, 99);
@@ -498,10 +498,10 @@ class Trainer extends ChangeNotifier {
     name = 'Red';
     avatar = TrainerAvatar.presets.first;
     party = [];
-    pokeBalls = 5;
+    pokeBalls = 10;
     greatBalls = 0;
     ultraBalls = 0;
-    potions = 5;
+    potions = 10;
     superPotions = 0;
     hyperPotions = 0;
     revives = 0;

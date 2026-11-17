@@ -1655,6 +1655,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 64,
       heightMeters: 0.7,
+      isStarter: true,
       evolutionLevel: 16,
       evolutionSpeciesId: 2,
       learnset: [
@@ -1681,6 +1682,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.0,
       evolutionStage: 2,
+      isStarter: true,
       minEncounterLevel: 16,
       evolutionLevel: 32,
       evolutionSpeciesId: 3,
@@ -1708,6 +1710,7 @@ class PokedexDatabase {
       baseExp: 236,
       heightMeters: 2.0,
       evolutionStage: 3,
+      isStarter: true,
       minEncounterLevel: 32,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -1733,6 +1736,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 62,
       heightMeters: 0.6,
+      isStarter: true,
       evolutionLevel: 16,
       evolutionSpeciesId: 5,
       learnset: [
@@ -1759,6 +1763,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.1,
       evolutionStage: 2,
+      isStarter: true,
       minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 6,
@@ -1786,6 +1791,7 @@ class PokedexDatabase {
       baseExp: 240,
       heightMeters: 1.7,
       evolutionStage: 3,
+      isStarter: true,
       minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'scratch'),
@@ -1811,6 +1817,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 63,
       heightMeters: 0.5,
+      isStarter: true,
       evolutionLevel: 16,
       evolutionSpeciesId: 8,
       learnset: [
@@ -1837,6 +1844,7 @@ class PokedexDatabase {
       baseExp: 142,
       heightMeters: 1.0,
       evolutionStage: 2,
+      isStarter: true,
       minEncounterLevel: 16,
       evolutionLevel: 36,
       evolutionSpeciesId: 9,
@@ -1864,6 +1872,7 @@ class PokedexDatabase {
       baseExp: 239,
       heightMeters: 1.6,
       evolutionStage: 3,
+      isStarter: true,
       minEncounterLevel: 36,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -5307,6 +5316,7 @@ class PokedexDatabase {
   }) {
     return species.values.where((s) {
       if (s.rarity != rarity) return false;
+      if (!s.isWildEncounterable) return false;
       if (playerLevel != null && !s.canEncounterAtPlayerLevel(playerLevel)) {
         return false;
       }
@@ -5317,7 +5327,7 @@ class PokedexDatabase {
   // ─── WILD ENCOUNTER GENERATOR ─────────────────────────────────────────
   static PokemonInstance generateWildEncounter({int playerLevel = 5}) {
     // 65% Common (1st stage), 30% Uncommon (2nd stage within 5 levels),
-    // 5% Rare (3rd stage / final pseudo-legendary within 10 levels).
+    // 5% Rare (1st stage starters, 3rd stage, final pseudo-legendary within 10 levels).
     final targetRarity = rollEncounterRarity();
     final rarityPool = speciesForRarity(targetRarity, playerLevel: playerLevel);
     final eligiblePool = species.values
@@ -5325,7 +5335,9 @@ class PokedexDatabase {
         .toList();
     final pool = rarityPool.isNotEmpty
         ? rarityPool
-        : (eligiblePool.isNotEmpty ? eligiblePool : species.values.toList());
+        : (eligiblePool.isNotEmpty
+            ? eligiblePool
+            : species.values.where((s) => s.isWildEncounterable).toList());
     final chosen = pool[_rng.nextInt(pool.length)];
 
     final baseMin = (playerLevel - 2).clamp(2, 99);
@@ -5425,7 +5437,7 @@ class PokedexDatabase {
       final spec = species[id];
       return spec != null &&
           level >= spec.minEncounterLevel &&
-          spec.canEncounterAtPlayerLevel(playerLevel);
+          playerLevel >= spec.requiredPlayerLevelForEncounter;
     }).toList();
     final finalPool = eligibleRivalIds.isNotEmpty ? eligibleRivalIds : rivalPool;
 
