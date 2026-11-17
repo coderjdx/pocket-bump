@@ -4371,7 +4371,7 @@ class PokedexDatabase {
         LearnedMove(14, 'acid_armor'),
         LearnedMove(28, 'sludge_bomb'),
         LearnedMove(38, 'toxic'),
-        LearnedMove(46, 'gunk_shot' if 'gunk_shot' in db_content else 'sludge_bomb'),
+        LearnedMove(46, 'sludge_bomb'),
       ],
     ),
 
