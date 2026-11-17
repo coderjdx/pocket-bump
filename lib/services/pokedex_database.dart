@@ -1812,7 +1812,7 @@ class PokedexDatabase {
       ],
     ),
 
-    // 19. Geodude (#074)
+    // 19. Geodude Line (#074-#076)
     74: const PokemonSpecies(
       id: 74,
       name: 'Geodude',
@@ -1826,6 +1826,8 @@ class PokedexDatabase {
       baseCatchRate: 255,
       baseExp: 60,
       heightMeters: 0.4,
+      evolutionLevel: 25,
+      evolutionSpeciesId: 75,
       learnset: [
         LearnedMove(1, 'tackle'),
         LearnedMove(1, 'harden'),
@@ -1834,6 +1836,51 @@ class PokedexDatabase {
         LearnedMove(18, 'dig'),
         LearnedMove(24, 'rock_slide'),
         LearnedMove(32, 'earthquake'),
+      ],
+    ),
+    75: const PokemonSpecies(
+      id: 75,
+      name: 'Graveler',
+      types: [PokemonType.rock, PokemonType.ground],
+      baseHp: 55,
+      baseAtk: 95,
+      baseDef: 115,
+      baseSpA: 45,
+      baseSpD: 45,
+      baseSpe: 35,
+      baseCatchRate: 120,
+      baseExp: 137,
+      heightMeters: 1.0,
+      evolutionLevel: 38,
+      evolutionSpeciesId: 76,
+      learnset: [
+        LearnedMove(1, 'tackle'),
+        LearnedMove(6, 'mud_slap'),
+        LearnedMove(11, 'rock_throw'),
+        LearnedMove(18, 'dig'),
+        LearnedMove(25, 'rock_slide'),
+        LearnedMove(34, 'earthquake'),
+      ],
+    ),
+    76: const PokemonSpecies(
+      id: 76,
+      name: 'Golem',
+      types: [PokemonType.rock, PokemonType.ground],
+      baseHp: 80,
+      baseAtk: 120,
+      baseDef: 130,
+      baseSpA: 55,
+      baseSpD: 65,
+      baseSpe: 45,
+      baseCatchRate: 45,
+      baseExp: 223,
+      heightMeters: 1.4,
+      learnset: [
+        LearnedMove(1, 'rock_throw'),
+        LearnedMove(18, 'dig'),
+        LearnedMove(25, 'rock_slide'),
+        LearnedMove(38, 'body_slam'),
+        LearnedMove(40, 'earthquake'),
       ],
     ),
 
@@ -2026,7 +2073,7 @@ class PokedexDatabase {
     wildPool.add(level < 21 ? 69 : (level < 36 ? 70 : 71));
 
     // Cave Rock & Ground
-    wildPool.add(74);
+    wildPool.add(level < 25 ? 74 : (level < 38 ? 75 : 76));
     if (level >= 8) wildPool.add(95);
 
     // Water Lines
@@ -2059,7 +2106,7 @@ class PokedexDatabase {
       level >= 36 ? 45 : (level >= 21 ? 44 : 43),
       level >= 36 ? 65 : (level >= 16 ? 64 : 63),
       level >= 36 ? 71 : (level >= 21 ? 70 : 69),
-      74,
+      level >= 38 ? 76 : (level >= 25 ? 75 : 74),
       95,
       level >= 26 ? 121 : 120,
     ];
