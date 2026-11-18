@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_type.dart';
 import 'type_badge.dart';
 
 class MoveLearnOutcome {

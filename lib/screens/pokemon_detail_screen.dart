@@ -4,6 +4,7 @@ import '../models/item.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
+import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/tm_service.dart';
