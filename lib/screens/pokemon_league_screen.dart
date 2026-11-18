@@ -19,6 +19,7 @@ class PokemonLeagueScreen extends StatefulWidget {
 class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   // === GAUNTLET RUNNER STATE ===
   GymDefinition? _activeGym;
+  List<GymTrainer> _activeGauntlet = const [];
   int _gauntletIndex = 0; // 0 to 4 (0-3: Gym Trainers, 4: Gym Leader)
   bool _inGauntletCheckpoint = false;
 
@@ -562,7 +563,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                         ),
                         if (isCleared) ...[
                           Text(
-                            "Re-challenge: 25% drop for ${gym.signatureHeldItemDrop.replaceAll('_', ' ').toUpperCase()}",
+                            "Re-challenge (On-Par Lv. • 2–5 Trainer / 6 Leader Mons): Rare Gen 1 TMs, ${gym.signatureHeldItemDrop.replaceAll('_', ' ')}, Stones & Fossils",
                             style: TextStyle(
                               color: gym.elementColor,
                               fontSize: 9.5,
@@ -770,8 +771,24 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
       return;
     }
 
+    final bool isRematch = trainer.isGymCleared(gym.id);
+    final List<GymTrainer> gauntletTeams;
+    if (isRematch) {
+      final double playerAvgLevel = trainer.party.isEmpty
+          ? 5.0
+          : trainer.party.fold<int>(0, (s, p) => s + p.level) /
+              trainer.party.length;
+      gauntletTeams = GymDatabase.buildRematchGauntlet(
+        gym,
+        playerAvgLevel: playerAvgLevel,
+      );
+    } else {
+      gauntletTeams = gym.fullGauntlet;
+    }
+
     setState(() {
       _activeGym = gym;
+      _activeGauntlet = gauntletTeams;
       _gauntletIndex = 0;
       _inGauntletCheckpoint = false;
     });
@@ -782,7 +799,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   Future<void> _launchNextGauntletBattle(Trainer trainer) async {
     if (_activeGym == null) return;
 
-    final gauntlet = _activeGym!.fullGauntlet;
+    final gauntlet = _activeGauntlet.isNotEmpty
+        ? _activeGauntlet
+        : _activeGym!.fullGauntlet;
     if (_gauntletIndex >= gauntlet.length) {
       // Completed all 5 battles!
       _onGauntletVictorious(trainer, _activeGym!);
@@ -834,6 +853,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
       setState(() {
         _inGauntletCheckpoint = false;
         _activeGym = null;
+        _activeGauntlet = const [];
         _gauntletIndex = 0;
       });
       if (mounted) {
@@ -864,8 +884,15 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   // === REST CHECKPOINT SCREEN (BETWEEN MATCHES) ===
   Widget _buildGauntletCheckpointScreen(Trainer trainer) {
     final gym = _activeGym!;
-    final nextOpponent = gym.fullGauntlet[_gauntletIndex];
+    final gauntlet =
+        _activeGauntlet.isNotEmpty ? _activeGauntlet : gym.fullGauntlet;
+    final nextOpponent = gauntlet[_gauntletIndex];
     final bool isLeaderNext = _gauntletIndex == 4;
+    final int nextAvgLvl = nextOpponent.team.isEmpty
+        ? 5
+        : (nextOpponent.team.fold<int>(0, (s, p) => s + p.level) /
+                nextOpponent.team.length)
+            .round();
 
     return Scaffold(
       backgroundColor: const Color(0xFF0C0E18),
@@ -950,12 +977,12 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                         const SizedBox(height: 6),
                         Text(
                           isLeaderNext
-                              ? "NEXT: FINAL BATTLE WITH LEADER ${gym.leaderName.toUpperCase()}!"
-                              : "NEXT: ${nextOpponent.name.toUpperCase()} (${nextOpponent.title})",
+                              ? "NEXT: FINAL BATTLE WITH LEADER ${gym.leaderName.toUpperCase()} (${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)!"
+                              : "NEXT: ${nextOpponent.name.toUpperCase()} (${nextOpponent.title} • ${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)",
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
-                            fontSize: 13.5,
+                            fontSize: 13.0,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -1461,26 +1488,35 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     trainer.resetAllPartyStatStages();
     trainer.saveProgress();
 
-    // Rare drop roll on repeat clears (held item, evolution stone, or fossil restoration item)
+    // Rare drop roll on repeat clears (Gen 1 TMs, held items, evolution stones, or fossil items)
     String? droppedItemName;
     if (!firstClear) {
-      final roll = Random().nextDouble();
-      if (roll < 0.20) {
+      final rng = Random();
+      final roll = rng.nextDouble();
+      if (roll < 0.28 && gym.tmDrops.isNotEmpty) {
+        // Rare Gen 1 TM drop (weighted toward the Gym Leader's signature TM)
+        final int tmIdx =
+            rng.nextDouble() < 0.35 ? 0 : rng.nextInt(gym.tmDrops.length);
+        final String tmId = gym.tmDrops[tmIdx];
+        trainer.adjustItemCount(tmId, 1);
+        final itemDef = ItemDatabase.byId(tmId);
+        droppedItemName = itemDef?.name ?? tmId.toUpperCase();
+      } else if (roll < 0.46) {
         // Drop signature held item
         trainer.adjustItemCount(gym.signatureHeldItemDrop, 1);
         final itemDef = ItemDatabase.byId(gym.signatureHeldItemDrop);
         droppedItemName = itemDef?.name ?? gym.signatureHeldItemDrop;
-      } else if (roll < 0.40) {
+      } else if (roll < 0.62) {
         // Drop signature stone
         trainer.adjustItemCount(gym.signatureStoneDrop, 1);
         final itemDef = ItemDatabase.byId(gym.signatureStoneDrop);
         droppedItemName = itemDef?.name ?? gym.signatureStoneDrop;
-      } else if (roll < 0.55) {
+      } else if (roll < 0.74) {
         // Rare Unknown Fossil drop
         trainer.adjustItemCount('unknown_fossil', 1);
         droppedItemName =
             ItemDatabase.byId('unknown_fossil')?.name ?? 'Unknown Fossil';
-      } else if (roll < 0.70) {
+      } else if (roll < 0.86) {
         // Rare Fossil Restoration Voucher drop
         trainer.adjustItemCount('fossil_restoration_voucher', 1);
         droppedItemName =
@@ -1592,6 +1628,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               Navigator.pop(ctx);
               setState(() {
                 _activeGym = null;
+                _activeGauntlet = const [];
                 _gauntletIndex = 0;
                 _inGauntletCheckpoint = false;
               });

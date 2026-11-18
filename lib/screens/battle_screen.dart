@@ -13,6 +13,7 @@ import '../services/item_drop_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/move_learn_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'evolution_screen.dart';
@@ -1020,12 +1021,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _currentMessage = "What? $oldName is evolving!";
     });
 
+    final List<Move> pendingEvoMoves = [];
     final evoMoves = participant.evolve(
       nextSpecies,
       PokedexDatabase.movesUnlockedAtExactLevel(
         nextSpecies,
         participant.level,
       ),
+      pendingMovesOut: pendingEvoMoves,
     );
     if (wasFainted) {
       participant.currentHp = 0;
@@ -1051,6 +1054,37 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     });
     await Future.delayed(const Duration(milliseconds: 650));
     if (!mounted) return;
+
+    for (final newMove in pendingEvoMoves) {
+      setState(() {
+        _currentMessage =
+            "${participant.nickname} wants to learn ${newMove.name}!";
+      });
+      await Future.delayed(const Duration(milliseconds: 550));
+      if (!mounted) return;
+
+      final outcome = await showMoveLearnDialog(
+        context,
+        pokemon: participant,
+        newMove: newMove,
+        recordOnSkip: true,
+      );
+      if (!mounted) return;
+      setState(() {
+        if (outcome.learned && outcome.forgottenMove != null) {
+          _currentMessage =
+              "1, 2, and... Poof! ${participant.nickname} forgot ${outcome.forgottenMove!.name} and learned ${newMove.name}!";
+        } else if (outcome.learned) {
+          _currentMessage = "${participant.nickname} learned ${newMove.name}!";
+        } else {
+          _currentMessage =
+              "${participant.nickname} did not learn ${newMove.name}.";
+        }
+      });
+      _trainer.saveProgress();
+      await Future.delayed(const Duration(milliseconds: 900));
+      if (!mounted) return;
+    }
   }
 
   Future<void> _checkPostTurnConditions({int? pvpTurn}) async {
@@ -1550,6 +1584,37 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _currentMessage = "${participant.nickname} learned $moveName!";
           });
           await Future.delayed(const Duration(milliseconds: 950));
+          if (!mounted) return;
+        }
+
+        for (final newMove in levelResult.pendingMoves) {
+          setState(() {
+            _currentMessage =
+                "${participant.nickname} wants to learn ${newMove.name}!";
+          });
+          await Future.delayed(const Duration(milliseconds: 550));
+          if (!mounted) return;
+
+          final outcome = await showMoveLearnDialog(
+            context,
+            pokemon: participant,
+            newMove: newMove,
+            recordOnSkip: true,
+          );
+          if (!mounted) return;
+          setState(() {
+            if (outcome.learned && outcome.forgottenMove != null) {
+              _currentMessage =
+                  "1, 2, and... Poof! ${participant.nickname} forgot ${outcome.forgottenMove!.name} and learned ${newMove.name}!";
+            } else if (outcome.learned) {
+              _currentMessage = "${participant.nickname} learned ${newMove.name}!";
+            } else {
+              _currentMessage =
+                  "${participant.nickname} did not learn ${newMove.name}.";
+            }
+          });
+          _trainer.saveProgress();
+          await Future.delayed(const Duration(milliseconds: 900));
           if (!mounted) return;
         }
 

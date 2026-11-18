@@ -34,10 +34,12 @@ extension StatusConditionExtension on StatusCondition {
 class LevelUpResult {
   final bool leveledUp;
   final List<String> learnedMoves;
+  final List<Move> pendingMoves;
 
   const LevelUpResult({
     required this.leveledUp,
     required this.learnedMoves,
+    this.pendingMoves = const [],
   });
 }
 
@@ -53,6 +55,7 @@ class PokemonInstance {
   int spd;
   int spe;
   List<Move> moves;
+  List<String> learnedMoveIds;
   int currentExp;
   StatusCondition status;
   String? heldItemId;
@@ -71,12 +74,14 @@ class PokemonInstance {
     this.level = 5,
     int? currentHp,
     List<Move>? moves,
+    List<String>? learnedMoveIds,
     int? currentExp,
     this.status = StatusCondition.none,
     this.heldItemId,
     this.caughtBall = 'poke_ball',
   })  : nickname = nickname ?? species.name,
         moves = (moves ?? []).take(4).toList(),
+        learnedMoveIds = <String>[],
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
         maxHp = _calculateMaxHp(species.baseHp, level),
         currentHp = currentHp ?? _calculateMaxHp(species.baseHp, level),
@@ -84,7 +89,19 @@ class PokemonInstance {
         def = _calculateStat(species.baseDef, level),
         spa = _calculateStat(species.baseSpA, level),
         spd = _calculateStat(species.baseSpD, level),
-        spe = _calculateStat(species.baseSpe, level);
+        spe = _calculateStat(species.baseSpe, level) {
+    if (learnedMoveIds != null) {
+      for (final id in learnedMoveIds) {
+        recordLearnedMoveId(id);
+      }
+    }
+    for (final id in PokedexDatabase.learnedMoveIdsUpToLevel(species, level)) {
+      recordLearnedMoveId(id);
+    }
+    for (final m in this.moves) {
+      recordLearnedMoveId(m.id);
+    }
+  }
 
   static int _calculateMaxHp(int base, int lvl) {
     // Standard Pokémon Gen 4 HP formula assuming 31 IV & 0 EV
@@ -183,13 +200,57 @@ class PokemonInstance {
     spe = _calculateStat(species.baseSpe, level);
   }
 
-  bool _learnMoveIfNew(Move move) {
-    if (moves.any((m) => m.id == move.id)) return false;
-    if (moves.length >= 4) {
-      moves.removeAt(0);
+  void recordLearnedMoveId(String moveId) {
+    if (moveId.isEmpty || !PokedexDatabase.moves.containsKey(moveId)) return;
+    if (!learnedMoveIds.contains(moveId)) {
+      learnedMoveIds.add(moveId);
     }
-    moves.add(move);
+  }
+
+  /// Remembered moves this Pokémon has previously learned that are not currently active.
+  List<Move> get rememberedReserveMoves {
+    final activeIds = moves.map((m) => m.id).toSet();
+    final List<Move> reserve = [];
+    for (final id in learnedMoveIds) {
+      if (activeIds.contains(id)) continue;
+      final template = PokedexDatabase.moves[id];
+      if (template != null) {
+        reserve.add(template.copy());
+      }
+    }
+    return reserve;
+  }
+
+  bool swapActiveMove(int activeSlotIndex, Move replacement) {
+    if (activeSlotIndex < 0 || activeSlotIndex >= moves.length) return false;
+    if (moves.any((m) => m.id == replacement.id)) return false;
+    recordLearnedMoveId(moves[activeSlotIndex].id);
+    recordLearnedMoveId(replacement.id);
+    moves[activeSlotIndex] = replacement.copy();
     return true;
+  }
+
+  bool equipReserveMove(Move replacement) {
+    if (moves.any((m) => m.id == replacement.id)) return false;
+    recordLearnedMoveId(replacement.id);
+    if (moves.length < 4) {
+      moves.add(replacement.copy());
+      return true;
+    }
+    return false;
+  }
+
+  void swapMoveSlots(int indexA, int indexB) {
+    if (indexA < 0 ||
+        indexA >= moves.length ||
+        indexB < 0 ||
+        indexB >= moves.length ||
+        indexA == indexB) {
+      return;
+    }
+    final tmp = moves[indexA];
+    moves[indexA] = moves[indexB];
+    moves[indexB] = tmp;
   }
 
   LevelUpResult gainExpWithLearnset(
@@ -199,6 +260,7 @@ class PokemonInstance {
     currentExp += amount;
     bool leveledUp = false;
     final List<String> learned = [];
+    final List<Move> pending = [];
 
     while (currentExp >= expForNextLevel && level < 100) {
       level++;
@@ -207,13 +269,24 @@ class PokemonInstance {
 
       final newMoves = unlockedLookup(species, level);
       for (final m in newMoves) {
-        if (_learnMoveIfNew(m)) {
+        recordLearnedMoveId(m.id);
+        final alreadyActive = moves.any((existing) => existing.id == m.id);
+        final alreadyPending = pending.any((existing) => existing.id == m.id);
+        if (alreadyActive || alreadyPending) continue;
+        if (moves.length < 4) {
+          moves.add(m);
           learned.add(m.name);
+        } else {
+          pending.add(m);
         }
       }
     }
 
-    return LevelUpResult(leveledUp: leveledUp, learnedMoves: learned);
+    return LevelUpResult(
+      leveledUp: leveledUp,
+      learnedMoves: learned,
+      pendingMoves: pending,
+    );
   }
 
   bool gainExp(int amount) {
@@ -233,17 +306,34 @@ class PokemonInstance {
         level >= species.evolutionLevel!;
   }
 
-  List<String> evolve(PokemonSpecies nextSpecies, List<Move> unlockedEvolutionMoves) {
+  List<String> evolve(
+    PokemonSpecies nextSpecies,
+    List<Move> unlockedEvolutionMoves, {
+    List<Move>? pendingMovesOut,
+  }) {
     if (nickname == species.name) {
       nickname = nextSpecies.name;
     }
     species = nextSpecies;
     recalculateStats();
 
+    for (final id
+        in PokedexDatabase.learnedMoveIdsUpToLevel(nextSpecies, level)) {
+      recordLearnedMoveId(id);
+    }
+
     final List<String> learned = [];
     for (final m in unlockedEvolutionMoves) {
-      if (_learnMoveIfNew(m)) {
+      recordLearnedMoveId(m.id);
+      final alreadyActive = moves.any((existing) => existing.id == m.id);
+      final alreadyPending =
+          pendingMovesOut?.any((existing) => existing.id == m.id) ?? false;
+      if (alreadyActive || alreadyPending) continue;
+      if (moves.length < 4) {
+        moves.add(m);
         learned.add(m.name);
+      } else {
+        pendingMovesOut?.add(m);
       }
     }
     return learned;
@@ -290,6 +380,7 @@ class PokemonInstance {
       'status': status.name,
       'heldItemId': heldItemId,
       'caughtBall': caughtBall,
+      'learnedMoveIds': learnedMoveIds,
       'moves': moves
           .map((m) => {
                 'id': m.id,
@@ -338,6 +429,9 @@ class PokemonInstance {
     final rawNickname = json['nickname'] as String?;
     final String? heldItem = json['heldItemId'] as String?;
     final String caughtBall = (json['caughtBall'] as String?) ?? 'poke_ball';
+    final rawLearned = json['learnedMoveIds'] as List<dynamic>?;
+    final List<String>? savedLearnedIds =
+        rawLearned?.whereType<String>().toList();
     return PokemonInstance(
       species: spec,
       nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
@@ -346,6 +440,7 @@ class PokemonInstance {
       level: lvl,
       currentHp: hp,
       moves: restoredMoves,
+      learnedMoveIds: savedLearnedIds,
       currentExp: exp,
       status: restoredStatus,
       heldItemId: heldItem,

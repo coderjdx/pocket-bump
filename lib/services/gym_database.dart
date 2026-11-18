@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
@@ -7,11 +8,13 @@ class GymPokemonSpec {
   final int speciesId;
   final int level;
   final List<String>? moveIds;
+  final String? heldItemId;
 
   const GymPokemonSpec({
     required this.speciesId,
     required this.level,
     this.moveIds,
+    this.heldItemId,
   });
 
   PokemonInstance createInstance() {
@@ -28,6 +31,7 @@ class GymPokemonSpec {
       species: species,
       level: level,
       moves: moves,
+      heldItemId: heldItemId,
       caughtBall: ballId,
     );
   }
@@ -69,6 +73,9 @@ class GymDefinition {
   final int requiredSteps;
   final String signatureHeldItemDrop;
   final String signatureStoneDrop;
+  final List<String> tmDrops;
+  final List<int> rematchTrainerSpeciesIds;
+  final List<GymPokemonSpec> rematchLeaderSpecs;
   final List<GymTrainer> trainers; // 4 Junior Gym Trainers
   final GymTrainer leader; // The Gym Leader
 
@@ -88,6 +95,9 @@ class GymDefinition {
     required this.requiredSteps,
     required this.signatureHeldItemDrop,
     required this.signatureStoneDrop,
+    required this.tmDrops,
+    required this.rematchTrainerSpeciesIds,
+    required this.rematchLeaderSpecs,
     required this.trainers,
     required this.leader,
   });
@@ -114,6 +124,46 @@ class GymDatabase {
       requiredSteps: 2000,
       signatureHeldItemDrop: 'hard_stone',
       signatureStoneDrop: 'moon_stone',
+      tmDrops: const ['tm_34', 'tm_48', 'tm_28', 'tm_08', 'tm_09', 'tm_20'],
+      rematchTrainerSpeciesIds: const [74, 75, 76, 95, 111, 27, 28, 138, 140],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 76,
+          level: 50,
+          moveIds: ['earthquake', 'rock_slide', 'explosion', 'body_slam'],
+          heldItemId: 'hard_stone',
+        ),
+        GymPokemonSpec(
+          speciesId: 95,
+          level: 50,
+          moveIds: ['earthquake', 'rock_slide', 'iron_head', 'toxic'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 139,
+          level: 50,
+          moveIds: ['hydro_pump', 'ice_beam', 'rock_slide', 'ancient_power'],
+          heldItemId: 'mystic_water',
+        ),
+        GymPokemonSpec(
+          speciesId: 141,
+          level: 50,
+          moveIds: ['waterfall', 'rock_slide', 'slash', 'swords_dance'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 142,
+          level: 50,
+          moveIds: ['sky_attack', 'rock_slide', 'earthquake', 'hyper_beam'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 112,
+          level: 50,
+          moveIds: ['earthquake', 'rock_slide', 'body_slam', 'fissure'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'pewter_t1',
@@ -186,6 +236,46 @@ class GymDatabase {
       requiredSteps: 4000,
       signatureHeldItemDrop: 'mystic_water',
       signatureStoneDrop: 'water_stone',
+      tmDrops: const ['tm_11', 'tm_12', 'tm_13', 'tm_14', 'tm_33', 'tm_39'],
+      rematchTrainerSpeciesIds: const [118, 119, 116, 117, 60, 61, 90, 91, 120, 54, 55],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 55,
+          level: 50,
+          moveIds: ['hydro_pump', 'psychic', 'ice_beam', 'zen_headbutt'],
+          heldItemId: 'mystic_water',
+        ),
+        GymPokemonSpec(
+          speciesId: 62,
+          level: 50,
+          moveIds: ['waterfall', 'submission', 'ice_punch', 'body_slam'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 91,
+          level: 50,
+          moveIds: ['ice_beam', 'blizzard', 'hydro_pump', 'spike_cannon'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 134,
+          level: 50,
+          moveIds: ['surf', 'ice_beam', 'acid_armor', 'shadow_ball'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 131,
+          level: 50,
+          moveIds: ['surf', 'ice_beam', 'thunderbolt', 'body_slam'],
+          heldItemId: 'leftovers',
+        ),
+        GymPokemonSpec(
+          speciesId: 121,
+          level: 50,
+          moveIds: ['hydro_pump', 'psychic', 'thunderbolt', 'ice_beam'],
+          heldItemId: 'mystic_water',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'cerulean_t1',
@@ -261,6 +351,46 @@ class GymDatabase {
       requiredSteps: 6000,
       signatureHeldItemDrop: 'magnet',
       signatureStoneDrop: 'thunder_stone',
+      tmDrops: const ['tm_24', 'tm_25', 'tm_45', 'tm_01', 'tm_05', 'tm_49', 'tm_16'],
+      rematchTrainerSpeciesIds: const [25, 26, 81, 82, 100, 101, 125, 135],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 101,
+          level: 50,
+          moveIds: ['thunderbolt', 'thunder_wave', 'explosion', 'swift'],
+          heldItemId: 'magnet',
+        ),
+        GymPokemonSpec(
+          speciesId: 82,
+          level: 50,
+          moveIds: ['thunderbolt', 'flash_cannon', 'tri_attack', 'reflect'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 135,
+          level: 50,
+          moveIds: ['thunderbolt', 'pin_missile', 'double_kick', 'quick_attack'],
+          heldItemId: 'magnet',
+        ),
+        GymPokemonSpec(
+          speciesId: 125,
+          level: 50,
+          moveIds: ['thunder_punch', 'thunderbolt', 'psychic', 'ice_punch'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 137,
+          level: 50,
+          moveIds: ['tri_attack', 'thunderbolt', 'ice_beam', 'recover'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 26,
+          level: 50,
+          moveIds: ['thunder', 'thunderbolt', 'mega_kick', 'body_slam'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'vermilion_t1',
@@ -337,6 +467,46 @@ class GymDatabase {
       requiredSteps: 8000,
       signatureHeldItemDrop: 'miracle_seed',
       signatureStoneDrop: 'leaf_stone',
+      tmDrops: const ['tm_21', 'tm_22', 'tm_03', 'tm_10', 'tm_32', 'tm_37', 'tm_41'],
+      rematchTrainerSpeciesIds: const [43, 44, 45, 69, 70, 71, 1, 2, 102, 103, 114],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 114,
+          level: 50,
+          moveIds: ['giga_drain', 'sleep_powder', 'ancient_power', 'sludge_bomb'],
+          heldItemId: 'miracle_seed',
+        ),
+        GymPokemonSpec(
+          speciesId: 47,
+          level: 50,
+          moveIds: ['spore', 'x_scissor', 'seed_bomb', 'slash'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 71,
+          level: 50,
+          moveIds: ['razor_leaf', 'sludge_bomb', 'sleep_powder', 'swords_dance'],
+          heldItemId: 'poison_barb',
+        ),
+        GymPokemonSpec(
+          speciesId: 103,
+          level: 50,
+          moveIds: ['psychic', 'solar_beam', 'sleep_powder', 'egg_bomb'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 3,
+          level: 50,
+          moveIds: ['petal_blizzard', 'sludge_bomb', 'earthquake', 'sleep_powder'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 45,
+          level: 50,
+          moveIds: ['petal_blizzard', 'sludge_bomb', 'moonblast', 'giga_drain'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'celadon_t1',
@@ -419,6 +589,46 @@ class GymDatabase {
       requiredSteps: 10000,
       signatureHeldItemDrop: 'poison_barb',
       signatureStoneDrop: 'fire_stone',
+      tmDrops: const ['tm_06', 'tm_36', 'tm_47', 'tm_31', 'tm_40', 'tm_44'],
+      rematchTrainerSpeciesIds: const [41, 42, 48, 49, 23, 24, 88, 89, 109, 110, 97, 73],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 42,
+          level: 50,
+          moveIds: ['wing_attack', 'poison_jab', 'confuse_ray', 'bite'],
+          heldItemId: 'poison_barb',
+        ),
+        GymPokemonSpec(
+          speciesId: 24,
+          level: 50,
+          moveIds: ['poison_jab', 'glare', 'earthquake', 'crunch'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 49,
+          level: 50,
+          moveIds: ['psychic', 'sludge_bomb', 'silver_wind', 'sleep_powder'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 73,
+          level: 50,
+          moveIds: ['surf', 'sludge_bomb', 'ice_beam', 'acid_armor'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 89,
+          level: 50,
+          moveIds: ['sludge_bomb', 'fire_punch', 'ice_punch', 'body_slam'],
+          heldItemId: 'poison_barb',
+        ),
+        GymPokemonSpec(
+          speciesId: 110,
+          level: 50,
+          moveIds: ['sludge_bomb', 'fire_blast', 'thunderbolt', 'explosion'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'fuchsia_t1',
@@ -502,6 +712,46 @@ class GymDatabase {
       requiredSteps: 12000,
       signatureHeldItemDrop: 'twisted_spoon',
       signatureStoneDrop: 'moon_stone',
+      tmDrops: const ['tm_46', 'tm_29', 'tm_30', 'tm_35', 'tm_42', 'tm_50'],
+      rematchTrainerSpeciesIds: const [63, 64, 65, 96, 97, 79, 80, 122, 124, 103, 93, 94],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 122,
+          level: 50,
+          moveIds: ['psychic', 'moonblast', 'thunderbolt', 'reflect'],
+          heldItemId: 'twisted_spoon',
+        ),
+        GymPokemonSpec(
+          speciesId: 97,
+          level: 50,
+          moveIds: ['psychic', 'hypnosis', 'dream_eater', 'shadow_ball'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 80,
+          level: 50,
+          moveIds: ['psychic', 'surf', 'ice_beam', 'fire_blast'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 124,
+          level: 50,
+          moveIds: ['ice_beam', 'psychic', 'shadow_ball', 'blizzard'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 94,
+          level: 50,
+          moveIds: ['shadow_ball', 'sludge_bomb', 'thunderbolt', 'hypnosis'],
+          heldItemId: 'twisted_spoon',
+        ),
+        GymPokemonSpec(
+          speciesId: 65,
+          level: 50,
+          moveIds: ['psychic', 'shadow_ball', 'recover', 'thunder_punch'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'saffron_t1',
@@ -585,6 +835,46 @@ class GymDatabase {
       requiredSteps: 15000,
       signatureHeldItemDrop: 'charcoal',
       signatureStoneDrop: 'fire_stone',
+      tmDrops: const ['tm_38', 'tm_15', 'tm_17', 'tm_18', 'tm_19', 'tm_23'],
+      rematchTrainerSpeciesIds: const [58, 59, 37, 38, 77, 78, 126, 4, 5, 6, 136],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 38,
+          level: 50,
+          moveIds: ['flamethrower', 'psychic', 'solar_beam', 'confuse_ray'],
+          heldItemId: 'charcoal',
+        ),
+        GymPokemonSpec(
+          speciesId: 78,
+          level: 50,
+          moveIds: ['fire_blast', 'drill_run', 'mega_kick', 'agility'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 136,
+          level: 50,
+          moveIds: ['fire_blast', 'body_slam', 'shadow_ball', 'quick_attack'],
+          heldItemId: 'charcoal',
+        ),
+        GymPokemonSpec(
+          speciesId: 6,
+          level: 50,
+          moveIds: ['fire_blast', 'air_slash', 'earthquake', 'dragon_claw'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 126,
+          level: 50,
+          moveIds: ['fire_blast', 'thunder_punch', 'psychic', 'cross_chop'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 59,
+          level: 50,
+          moveIds: ['fire_blast', 'extreme_speed', 'crunch', 'iron_head'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'cinnabar_t1',
@@ -668,6 +958,46 @@ class GymDatabase {
       requiredSteps: 20000,
       signatureHeldItemDrop: 'soft_sand',
       signatureStoneDrop: 'leftovers',
+      tmDrops: const ['tm_27', 'tm_26', 'tm_07', 'tm_02', 'tm_04', 'tm_43'],
+      rematchTrainerSpeciesIds: const [24, 28, 30, 31, 33, 34, 51, 67, 68, 75, 76, 111, 112, 128, 53],
+      rematchLeaderSpecs: const [
+        GymPokemonSpec(
+          speciesId: 51,
+          level: 50,
+          moveIds: ['earthquake', 'rock_slide', 'slash', 'fissure'],
+          heldItemId: 'soft_sand',
+        ),
+        GymPokemonSpec(
+          speciesId: 53,
+          level: 50,
+          moveIds: ['slash', 'hyper_beam', 'thunderbolt', 'shadow_ball'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 31,
+          level: 50,
+          moveIds: ['earthquake', 'sludge_bomb', 'ice_beam', 'thunderbolt'],
+          heldItemId: 'lum_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 34,
+          level: 50,
+          moveIds: ['earthquake', 'sludge_bomb', 'fire_blast', 'rock_slide'],
+          heldItemId: 'soft_sand',
+        ),
+        GymPokemonSpec(
+          speciesId: 128,
+          level: 50,
+          moveIds: ['body_slam', 'earthquake', 'rock_slide', 'hyper_beam'],
+          heldItemId: 'sitrus_berry',
+        ),
+        GymPokemonSpec(
+          speciesId: 112,
+          level: 50,
+          moveIds: ['earthquake', 'rock_slide', 'double_edge', 'fissure'],
+          heldItemId: 'leftovers',
+        ),
+      ],
       trainers: [
         const GymTrainer(
           id: 'viridian_t1',
@@ -735,6 +1065,134 @@ class GymDatabase {
       ),
     ),
   ];
+
+  static final Random _rng = Random();
+
+  static List<int> _levelsForAverage(int count, int targetAvg) {
+    switch (count) {
+      case 2:
+        return [(targetAvg - 1).clamp(2, 100), (targetAvg + 1).clamp(2, 100)];
+      case 3:
+        return [
+          (targetAvg - 1).clamp(2, 100),
+          targetAvg.clamp(2, 100),
+          (targetAvg + 1).clamp(2, 100),
+        ];
+      case 4:
+        return [
+          (targetAvg - 2).clamp(2, 100),
+          (targetAvg - 1).clamp(2, 100),
+          (targetAvg + 1).clamp(2, 100),
+          (targetAvg + 2).clamp(2, 100),
+        ];
+      case 5:
+        return [
+          (targetAvg - 2).clamp(2, 100),
+          (targetAvg - 1).clamp(2, 100),
+          targetAvg.clamp(2, 100),
+          (targetAvg + 1).clamp(2, 100),
+          (targetAvg + 2).clamp(2, 100),
+        ];
+      default:
+        return [
+          (targetAvg - 2).clamp(2, 100),
+          (targetAvg - 1).clamp(2, 100),
+          targetAvg.clamp(2, 100),
+          targetAvg.clamp(2, 100),
+          (targetAvg + 1).clamp(2, 100),
+          (targetAvg + 2).clamp(2, 100),
+        ];
+    }
+  }
+
+  static int _upgradeSpeciesForLevel(int speciesId, int lvl) {
+    int current = speciesId;
+    for (int guard = 0; guard < 3; guard++) {
+      final spec = PokedexDatabase.species[current];
+      if (spec == null || spec.evolutionSpeciesId == null) break;
+      if (spec.evolutionLevel != null && lvl >= spec.evolutionLevel!) {
+        current = spec.evolutionSpeciesId!;
+      } else {
+        break;
+      }
+    }
+    return current;
+  }
+
+  /// Generates a scaled rematch gauntlet for a cleared [gym]:
+  /// - Each of the 4 Gym Trainers has a random party size between 2 and 5.
+  /// - The Gym Leader always fields a full team of 6 powerhouse Pokémon with coverage/TM moves & held items.
+  /// - Every opponent's party average level is centered on [playerAvgLevel].
+  static List<GymTrainer> buildRematchGauntlet(
+    GymDefinition gym, {
+    required double playerAvgLevel,
+    Random? rng,
+  }) {
+    final random = rng ?? _rng;
+    final int targetAvg = playerAvgLevel.round().clamp(5, 100);
+    final List<GymTrainer> result = [];
+
+    for (int tIdx = 0; tIdx < gym.trainers.length; tIdx++) {
+      final baseTrainer = gym.trainers[tIdx];
+      final int partyCount = 2 + random.nextInt(4); // 2..5 Pokémon
+      final List<int> levels = _levelsForAverage(partyCount, targetAvg);
+
+      final pool = List<int>.from(gym.rematchTrainerSpeciesIds)..shuffle(random);
+      final List<GymPokemonSpec> team = [];
+      for (int slot = 0; slot < partyCount; slot++) {
+        final rawId = pool[slot % pool.length];
+        final lvl = levels[slot];
+        final evolvedId = _upgradeSpeciesForLevel(rawId, lvl);
+        final String? item = (slot == partyCount - 1 && tIdx >= 1)
+            ? (tIdx >= 3 ? 'sitrus_berry' : 'oran_berry')
+            : null;
+        team.add(GymPokemonSpec(
+          speciesId: evolvedId,
+          level: lvl,
+          heldItemId: item,
+        ));
+      }
+
+      final int scaledPrize =
+          max(baseTrainer.prizeMoney, (baseTrainer.prizeMoney * (1.0 + targetAvg / 25.0)).round());
+      result.add(GymTrainer(
+        id: baseTrainer.id,
+        name: baseTrainer.name,
+        title: "${baseTrainer.title} (Rematch)",
+        spriteId: baseTrainer.spriteId,
+        prizeMoney: scaledPrize,
+        introDialogue: baseTrainer.introDialogue,
+        team: team,
+      ));
+    }
+
+    // Gym Leader ALWAYS fields 6 Pokémon scaled symmetrically to playerAvgLevel.
+    final leaderLevels = _levelsForAverage(6, targetAvg);
+    final List<GymPokemonSpec> leaderTeam = [];
+    for (int i = 0; i < 6; i++) {
+      final template = gym.rematchLeaderSpecs[i % gym.rematchLeaderSpecs.length];
+      leaderTeam.add(GymPokemonSpec(
+        speciesId: template.speciesId,
+        level: leaderLevels[i],
+        moveIds: template.moveIds,
+        heldItemId: template.heldItemId,
+      ));
+    }
+
+    final int leaderPrize =
+        max(gym.leader.prizeMoney, (gym.leader.prizeMoney * (1.0 + targetAvg / 18.0)).round());
+    result.add(GymTrainer(
+      id: gym.leader.id,
+      name: gym.leader.name,
+      title: "${gym.leader.title} (Rematch)",
+      spriteId: gym.leader.spriteId,
+      prizeMoney: leaderPrize,
+      introDialogue: gym.leader.introDialogue,
+      team: leaderTeam,
+    ));
+
+    return result;
+  }
 
   static GymDefinition? getGymById(int id) {
     if (id < 1 || id > gyms.length) return null;

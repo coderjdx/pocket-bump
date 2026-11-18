@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/item.dart';
+import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/step_counter_service.dart';
+import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/move_learn_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
@@ -18,6 +21,7 @@ import 'evolution_screen.dart';
 import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
+import 'pokemon_detail_screen.dart';
 import 'pokemon_league_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -1339,8 +1343,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 ),
                               ),
                               Text(
-                                "Slot #1 Pokémon is summoned first (${trainer.party.length}/6)",
-                                style: const TextStyle(color: Colors.white60, fontSize: 11),
+                                "Tap a Pokémon for Stats, Moves & Held Item • Lead #1 (${trainer.party.length}/6)",
+                                style: const TextStyle(color: Colors.white60, fontSize: 10.5),
                               ),
                             ],
                           ),
@@ -1387,7 +1391,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           final isLead = idx == 0;
                           final typeColor = mon.species.types.first.color;
 
-                          return Container(
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                this.context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PokemonDetailScreen(partyIndex: idx),
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: const Color(0xFF1A2033),
@@ -1639,9 +1654,45 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         onPressed: () => _confirmReleasePokemon(ctx, trainer, idx, mon),
                                       ),
                                     ],
+                                    const SizedBox(width: 2),
+                                    OutlinedButton.icon(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          this.context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PokemonDetailScreen(
+                                                    partyIndex: idx),
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(
+                                          Icons.auto_stories_rounded,
+                                          size: 13),
+                                      label: const Text(
+                                        "INFO",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.cyanAccent,
+                                        side: BorderSide(
+                                            color: Colors.cyanAccent
+                                                .withOpacity(0.55)),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 5),
+                                        minimumSize: Size.zero,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(9)),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
+                            ),
                             ),
                           );
                         },
@@ -2048,9 +2099,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     trainer.adjustItemCount(stoneItem.id, -1);
     final fromSpecies = mon.species;
     final oldName = mon.nickname;
+    final List<Move> pendingEvoMoves = [];
     final evoMoves = mon.evolve(
       nextSpecies,
       PokedexDatabase.movesUnlockedAtExactLevel(nextSpecies, mon.level),
+      pendingMovesOut: pendingEvoMoves,
     );
     trainer.markPokemonCaught(nextSpecies.id);
     trainer.saveProgress();
@@ -2062,6 +2115,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       oldNickname: oldName,
       learnedMoves: evoMoves,
     );
+    if (mounted && pendingEvoMoves.isNotEmpty) {
+      for (final newMove in pendingEvoMoves) {
+        final outcome = await showMoveLearnDialog(
+          this.context,
+          pokemon: mon,
+          newMove: newMove,
+          recordOnSkip: true,
+        );
+        if (outcome.learned) {
+          trainer.saveProgress();
+        }
+      }
+      trainer.saveProgress();
+    }
     if (mounted) {
       setState(() {});
     }
@@ -2533,6 +2600,48 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   ),
                                                 ),
                                               ),
+                                            ] else if (item.isTm) ...[
+                                              const SizedBox(height: 6),
+                                              SizedBox(
+                                                height: 28,
+                                                child: ElevatedButton.icon(
+                                                  onPressed: count > 0
+                                                      ? () => _useTmFromBag(
+                                                            ctx,
+                                                            trainer,
+                                                            item,
+                                                          )
+                                                      : null,
+                                                  icon: const Icon(
+                                                      Icons.album_rounded,
+                                                      size: 14),
+                                                  label: const Text(
+                                                    "Teach Pokémon",
+                                                    style: TextStyle(
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: item.color
+                                                        .withOpacity(0.24),
+                                                    foregroundColor: item.color,
+                                                    side: BorderSide(
+                                                        color: item.color
+                                                            .withOpacity(0.7)),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8)),
+                                                  ),
+                                                ),
+                                              ),
                                             ] else if (item.isHeldItem || item.isBerry) ...[
                                               const SizedBox(height: 6),
                                               Container(
@@ -2591,6 +2700,164 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           },
         );
       },
+    );
+  }
+
+  void _useTmFromBag(
+    BuildContext parentContext,
+    Trainer trainer,
+    Item tmItem,
+  ) {
+    final tmMove = TmService.getMoveForTm(tmItem);
+    if (tmMove == null) return;
+
+    showDialog(
+      context: parentContext,
+      builder: (dlgCtx) => AlertDialog(
+        backgroundColor: const Color(0xFF141828),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Row(
+          children: [
+            Icon(tmItem.icon, color: tmItem.color, size: 22),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                "Teach ${tmItem.name}",
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(dlgCtx).size.height * 0.48,
+            ),
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: trainer.party.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 8),
+              itemBuilder: (_, idx) {
+                final mon = trainer.party[idx];
+                final compatible = TmService.canLearnTm(mon.species, tmItem);
+                final known = mon.learnedMoveIds.contains(tmMove.id);
+                final canTeach = compatible && !known;
+                return InkWell(
+                  onTap: canTeach
+                      ? () async {
+                          Navigator.pop(dlgCtx);
+                          final outcome = await showMoveLearnDialog(
+                            this.context,
+                            pokemon: mon,
+                            newMove: tmMove,
+                            recordOnSkip: false,
+                            headerNote:
+                                "Use 1x ${tmItem.name} to teach ${tmMove.name} to ${mon.nickname}?",
+                          );
+                          if (outcome.learned) {
+                            trainer.adjustItemCount(tmItem.id, -1);
+                            trainer.saveProgress();
+                            if (mounted) {
+                              ScaffoldMessenger.of(this.context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    outcome.forgottenMove != null
+                                        ? "${mon.nickname} forgot ${outcome.forgottenMove!.name} and learned ${tmMove.name}!"
+                                        : "${mon.nickname} learned ${tmMove.name}!",
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      : null,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Opacity(
+                    opacity: canTeach ? 1.0 : 0.45,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1A2033),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: canTeach
+                              ? tmItem.color.withOpacity(0.55)
+                              : Colors.white12,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            mon.species.spriteUrl,
+                            width: 36,
+                            height: 36,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (_, __, ___) => const Icon(
+                              Icons.catching_pokemon,
+                              color: Colors.white54,
+                              size: 26,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${mon.nickname} • Lv.${mon.level}",
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.5),
+                                ),
+                                Text(
+                                  known
+                                      ? "Already learned ${tmMove.name}"
+                                      : (compatible
+                                          ? "Compatible"
+                                          : "Not compatible"),
+                                  style: TextStyle(
+                                    color: canTeach
+                                        ? Colors.cyanAccent
+                                        : Colors.white54,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            known ? "KNOWN" : (compatible ? "TEACH" : "N/A"),
+                            style: TextStyle(
+                              color: canTeach ? tmItem.color : Colors.white38,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dlgCtx),
+            child:
+                const Text("Cancel", style: TextStyle(color: Colors.white60)),
+          ),
+        ],
+      ),
     );
   }
 }
