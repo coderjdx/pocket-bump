@@ -50,8 +50,14 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
 
     HapticFeedback.heavyImpact();
 
-    // Show pairing animation then launch duel
-    Future.delayed(const Duration(milliseconds: 1200), () {
+    // Show pairing animation & pre-cache PVP stadium arena then launch duel
+    Future.wait([
+      Future.delayed(const Duration(milliseconds: 1200)),
+      precacheImage(
+        const AssetImage('assets/images/battle_bg_pvp_arena.png'),
+        context,
+      ).catchError((_) {}),
+    ]).then((_) {
       if (!mounted) return;
 
       final playerLevel = trainer.leadPokemon?.level ?? 5;

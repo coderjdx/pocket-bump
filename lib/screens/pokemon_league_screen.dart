@@ -217,15 +217,17 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   }) {
     final gym = GymDatabase.getGymById(id);
     final color = gym?.elementColor ?? Colors.amber;
+    final String badgeAsset =
+        gym?.badgeAsset ?? 'assets/images/badges/boulder_badge.png';
 
     return Column(
       children: [
         Container(
-          width: 34,
-          height: 34,
+          width: 36,
+          height: 36,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isEarned ? color.withOpacity(0.25) : Colors.white.withOpacity(0.04),
+            color: isEarned ? color.withOpacity(0.22) : Colors.white.withOpacity(0.04),
             border: Border.all(
               color: isEarned ? color : Colors.white12,
               width: isEarned ? 1.8 : 1.0,
@@ -241,10 +243,27 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 : null,
           ),
           child: Center(
-            child: Icon(
-              Icons.military_tech,
-              size: 20,
-              color: isEarned ? color : Colors.white24,
+            child: Opacity(
+              opacity: isEarned ? 1.0 : 0.28,
+              child: isEarned
+                  ? Image.asset(
+                      badgeAsset,
+                      width: 24,
+                      height: 24,
+                      filterQuality: FilterQuality.none,
+                    )
+                  : ColorFiltered(
+                      colorFilter: const ColorFilter.mode(
+                        Colors.grey,
+                        BlendMode.saturation,
+                      ),
+                      child: Image.asset(
+                        badgeAsset,
+                        width: 22,
+                        height: 22,
+                        filterQuality: FilterQuality.none,
+                      ),
+                    ),
             ),
           ),
         ),
@@ -294,20 +313,24 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             // Gym Header Row
             Row(
               children: [
-                // Gym element badge icon
+                // Gym Badge image icon
                 Container(
-                  width: 40,
-                  height: 40,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
-                    color: gym.elementColor.withOpacity(0.2),
+                    color: gym.elementColor.withOpacity(0.18),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: gym.elementColor.withOpacity(0.6)),
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.shield,
-                      color: gym.elementColor,
-                      size: 22,
+                    child: Opacity(
+                      opacity: isCleared ? 1.0 : (isUnlocked ? 0.85 : 0.4),
+                      child: Image.asset(
+                        gym.badgeAsset,
+                        width: 28,
+                        height: 28,
+                        filterQuality: FilterQuality.none,
+                      ),
                     ),
                   ),
                 ),
@@ -673,6 +696,12 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     final currentOpponent = gauntlet[_gauntletIndex];
     final opponentTeamInstances = currentOpponent.team.map((spec) => spec.createInstance()).toList();
     final firstMon = opponentTeamInstances.first;
+
+    await precacheImage(
+      AssetImage(_activeGym!.backgroundAsset),
+      context,
+    ).catchError((_) {});
+    if (!mounted) return;
 
     final bool? won = await Navigator.push<bool>(
       context,
@@ -1364,21 +1393,34 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: gym.elementColor.withOpacity(0.6)),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      "AWARDED: ${gym.badgeName.toUpperCase()}!",
-                      style: TextStyle(
-                        color: gym.elementColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
+                    Image.asset(
+                      gym.badgeAsset,
+                      width: 42,
+                      height: 42,
+                      filterQuality: FilterQuality.none,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      gym.badgeDescription,
-                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "AWARDED: ${gym.badgeName.toUpperCase()}!",
+                            style: TextStyle(
+                              color: gym.elementColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            gym.badgeDescription,
+                            style: const TextStyle(color: Colors.white, fontSize: 11),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

@@ -15,15 +15,71 @@ Future<void> main() async {
   runApp(PocketBumpApp(initialTrainer: savedTrainer));
 }
 
-class PocketBumpApp extends StatelessWidget {
+class PocketBumpApp extends StatefulWidget {
   final Trainer initialTrainer;
 
   const PocketBumpApp({super.key, required this.initialTrainer});
 
   @override
+  State<PocketBumpApp> createState() => _PocketBumpAppState();
+}
+
+class _PocketBumpAppState extends State<PocketBumpApp> {
+  bool _didPrecache = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_didPrecache) {
+      _didPrecache = true;
+      _prewarmAssets();
+    }
+  }
+
+  void _prewarmAssets() {
+    const assetPaths = [
+      'assets/images/battle_bg_route.png',
+      'assets/images/battle_bg_cave.png',
+      'assets/images/battle_bg_beach.png',
+      'assets/images/battle_bg_forest.png',
+      'assets/images/battle_bg_volcano.png',
+      'assets/images/battle_bg_urban.png',
+      'assets/images/battle_bg_pvp_arena.png',
+      'assets/images/battle_bg_gym_rock.png',
+      'assets/images/battle_bg_gym_water.png',
+      'assets/images/battle_bg_gym_electric.png',
+      'assets/images/battle_bg_gym_grass.png',
+      'assets/images/battle_bg_gym_poison.png',
+      'assets/images/battle_bg_gym_psychic.png',
+      'assets/images/battle_bg_gym_fire.png',
+      'assets/images/battle_bg_gym_ground.png',
+      'assets/images/home_bg.png',
+      'assets/images/bg_pokemon_center.png',
+      'assets/images/bg_poke_mart.png',
+      'assets/images/bg_pokemon_lab.png',
+      'assets/images/bg_pokemon_league.png',
+      'assets/images/bg_pokedex.png',
+      'assets/images/bg_pc_storage.png',
+      'assets/images/bg_bump_radar.png',
+      'assets/images/bg_starter_select.png',
+      'assets/images/badges/boulder_badge.png',
+      'assets/images/badges/cascade_badge.png',
+      'assets/images/badges/thunder_badge.png',
+      'assets/images/badges/rainbow_badge.png',
+      'assets/images/badges/soul_badge.png',
+      'assets/images/badges/marsh_badge.png',
+      'assets/images/badges/volcano_badge.png',
+      'assets/images/badges/earth_badge.png',
+    ];
+    for (final path in assetPaths) {
+      precacheImage(AssetImage(path), context).catchError((_) {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Trainer>.value(
-      value: initialTrainer,
+      value: widget.initialTrainer,
       child: Consumer<Trainer>(
         builder: (context, trainer, child) {
           return MaterialApp(

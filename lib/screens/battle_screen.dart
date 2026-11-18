@@ -13,6 +13,7 @@ import '../services/pokedex_database.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
+import 'evolution_screen.dart';
 
 enum _BallAnimPhase {
   none,
@@ -86,6 +87,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _isProcessingTurn = true;
   bool _battleEnded = false;
   bool _didHealOnExit = false;
+  bool _arenaAssetsReady = false;
 
   // Animation states
   late AnimationController _idleController;
@@ -219,9 +221,32 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _trainer.markPokemonSeen(_opponentPokemon.species.id);
-      _playBattleIntroSummon();
+      _prepareAndPlayIntro();
     });
+  }
+
+  Future<void> _prepareAndPlayIntro() async {
+    if (!mounted) return;
+    await Future.wait([
+      precacheImage(AssetImage(_resolvedBattleBackgroundAsset), context)
+          .catchError((_) {}),
+      precacheImage(
+        AssetImage('assets/images/trainers/${_trainer.avatar.id}_back_0.png'),
+        context,
+      ).catchError((_) {}),
+      if (!widget.isWild && widget.opponentSpriteId != null)
+        precacheImage(
+          AssetImage(
+              'assets/images/trainers/${widget.opponentSpriteId}_front_0.png'),
+          context,
+        ).catchError((_) {}),
+    ]);
+    if (!mounted) return;
+    setState(() {
+      _arenaAssetsReady = true;
+    });
+    _trainer.markPokemonSeen(_opponentPokemon.species.id);
+    _playBattleIntroSummon();
   }
 
   @override
@@ -922,14 +947,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     final bool isActiveOnField = participant == _playerPokemon;
     final bool wasFainted = participant.isFainted;
+    final fromSpecies = participant.species;
+    final oldName = participant.nickname;
+
     setState(() {
       if (isActiveOnField) _showEvolutionGlow = true;
-      _currentMessage = "What? ${participant.nickname} is evolving!";
+      _currentMessage = "What? $oldName is evolving!";
     });
-    await Future.delayed(const Duration(milliseconds: 1200));
-    if (!mounted) return;
 
-    final oldName = participant.nickname;
     final evoMoves = participant.evolve(
       nextSpecies,
       PokedexDatabase.movesUnlockedAtExactLevel(
@@ -942,25 +967,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
     _trainer.markPokemonCaught(nextSpecies.id);
     _trainer.saveProgress();
-    HapticFeedback.heavyImpact();
+
+    await EvolutionScreen.show(
+      context,
+      fromSpecies: fromSpecies,
+      toSpecies: nextSpecies,
+      oldNickname: oldName,
+      learnedMoves: evoMoves,
+    );
+    if (!mounted) return;
+
     setState(() {
       if (isActiveOnField) {
         _showEvolutionGlow = false;
         _displayedPlayerHp = participant.currentHp;
       }
-      _currentMessage =
-          "Congratulations! $oldName evolved into ${nextSpecies.name}!";
+      _currentMessage = "$oldName evolved into ${nextSpecies.name}!";
     });
-    await Future.delayed(const Duration(milliseconds: 1200));
+    await Future.delayed(const Duration(milliseconds: 650));
     if (!mounted) return;
-
-    for (final moveName in evoMoves) {
-      setState(() {
-        _currentMessage = "${participant.nickname} learned $moveName!";
-      });
-      await Future.delayed(const Duration(milliseconds: 950));
-      if (!mounted) return;
-    }
   }
 
   Future<void> _checkPostTurnConditions() async {
@@ -1490,17 +1515,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         return Stack(
                           fit: StackFit.expand,
                           children: [
-                            // Habitat / Gym Pixel-Art Battle Background
+                            // Habitat / Gym / PVP Pixel-Art Battle Background (pre-cached before summon)
                             Image.asset(
                               _resolvedBattleBackgroundAsset,
                               fit: BoxFit.cover,
                               filterQuality: FilterQuality.none,
+                              gaplessPlayback: true,
                               errorBuilder: (_, __, ___) => Image.asset(
                                 'assets/images/battle_bg_route.png',
                                 fit: BoxFit.cover,
                                 filterQuality: FilterQuality.none,
+                                gaplessPlayback: true,
                               ),
                             ),
+                            if (!_arenaAssetsReady)
+                              Container(color: const Color(0xFF141622)),
 
                             // Atmospheric Arena Tint Overlay for dramatic moves
                             if (const {

@@ -24,5 +24,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/badges/
     - assets/images/balls/
     - assets/images/trainers/

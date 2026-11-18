@@ -60,6 +60,7 @@ class GymDefinition {
   final String leaderName;
   final String leaderTitle;
   final String badgeName;
+  final String badgeAsset;
   final String badgeDescription;
   final String element;
   final Color elementColor;
@@ -78,6 +79,7 @@ class GymDefinition {
     required this.leaderName,
     required this.leaderTitle,
     required this.badgeName,
+    required this.badgeAsset,
     required this.badgeDescription,
     required this.element,
     required this.elementColor,
@@ -103,6 +105,7 @@ class GymDatabase {
       leaderName: "Brock",
       leaderTitle: "The Rock-Solid Pokémon Trainer",
       badgeName: "Boulder Badge",
+      badgeAsset: 'assets/images/badges/boulder_badge.png',
       badgeDescription: "+10% Phys ATK • Commands Pokémon up to Lv. 25",
       element: "Rock",
       elementColor: const Color(0xFFBCAAA4),
@@ -174,6 +177,7 @@ class GymDatabase {
       leaderName: "Misty",
       leaderTitle: "The Tomboyish Mermaid",
       badgeName: "Cascade Badge",
+      badgeAsset: 'assets/images/badges/cascade_badge.png',
       badgeDescription: "+10% Spec ATK • Commands Pokémon up to Lv. 34",
       element: "Water",
       elementColor: const Color(0xFF4FC3F7),
@@ -248,6 +252,7 @@ class GymDatabase {
       leaderName: "Lt. Surge",
       leaderTitle: "The Lightning American",
       badgeName: "Thunder Badge",
+      badgeAsset: 'assets/images/badges/thunder_badge.png',
       badgeDescription: "+10% Speed • Commands Pokémon up to Lv. 42",
       element: "Electric",
       elementColor: const Color(0xFFFFD54F),
@@ -323,6 +328,7 @@ class GymDatabase {
       leaderName: "Erika",
       leaderTitle: "The Nature-Loving Princess",
       badgeName: "Rainbow Badge",
+      badgeAsset: 'assets/images/badges/rainbow_badge.png',
       badgeDescription: "+10% Spec DEF • Commands Pokémon up to Lv. 50",
       element: "Grass",
       elementColor: const Color(0xFF81C784),
@@ -404,6 +410,7 @@ class GymDatabase {
       leaderName: "Koga",
       leaderTitle: "The Poisonous Ninja Master",
       badgeName: "Soul Badge",
+      badgeAsset: 'assets/images/badges/soul_badge.png',
       badgeDescription: "+10% Phys DEF • Commands Pokémon up to Lv. 60",
       element: "Poison",
       elementColor: const Color(0xFFBA68C8),
@@ -486,6 +493,7 @@ class GymDatabase {
       leaderName: "Sabrina",
       leaderTitle: "The Master of Psychic Pokémon",
       badgeName: "Marsh Badge",
+      badgeAsset: 'assets/images/badges/marsh_badge.png',
       badgeDescription: "+10% Max HP • Commands Pokémon up to Lv. 70",
       element: "Psychic",
       elementColor: const Color(0xFFFF80AB),
@@ -568,6 +576,7 @@ class GymDatabase {
       leaderName: "Blaine",
       leaderTitle: "The Hotheaded Quiz Master",
       badgeName: "Volcano Badge",
+      badgeAsset: 'assets/images/badges/volcano_badge.png',
       badgeDescription: "+10% Critical Hit Rate • Commands Pokémon up to Lv. 82",
       element: "Fire",
       elementColor: const Color(0xFFFF7043),
@@ -650,6 +659,7 @@ class GymDatabase {
       leaderName: "Giovanni",
       leaderTitle: "The Master of Earth & Legendary Boss",
       badgeName: "Earth Badge",
+      badgeAsset: 'assets/images/badges/earth_badge.png',
       badgeDescription: "Master Boost (+5% All Stats) • Commands Lv. 100 • Unlocks Legendaries",
       element: "Ground",
       elementColor: const Color(0xFFFFB300),

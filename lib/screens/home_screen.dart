@@ -15,6 +15,7 @@ import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
+import 'evolution_screen.dart';
 import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  void _launchWildEncounter() {
+  Future<void> _launchWildEncounter() async {
     final trainer = Provider.of<Trainer>(context, listen: false);
     if (!trainer.hasConsciousPokemon) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,6 +83,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     trainer.resetEncounterSteps();
     final playerLevel = trainer.leadPokemon?.level ?? 5;
     final wildMon = PokedexDatabase.generateWildEncounter(playerLevel: playerLevel);
+    await precacheImage(
+      AssetImage(wildMon.species.battleBackgroundAsset),
+      context,
+    ).catchError((_) {});
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -825,14 +831,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ],
               ),
               const SizedBox(height: 5),
-              Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.5,
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.5,
+                  ),
                 ),
               ),
               const SizedBox(height: 1),
@@ -913,7 +922,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               accentColor: Colors.amberAccent,
               iconWidget: const Icon(Icons.military_tech,
                   color: Colors.amberAccent, size: 16),
-              title: "Gyms",
+              title: "Pokémon League",
               subtitle: "$badges/8 Badges",
               subtitleColor: Colors.amberAccent,
             ),
@@ -1995,15 +2004,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _executeStoneEvolution(
+  Future<void> _executeStoneEvolution(
     BuildContext parentContext,
     Trainer trainer,
     PokemonInstance mon,
     Item stoneItem,
     PokemonSpecies nextSpecies,
-  ) {
+  ) async {
     if (trainer.getItemCount(stoneItem.id) <= 0) return;
     trainer.adjustItemCount(stoneItem.id, -1);
+    final fromSpecies = mon.species;
     final oldName = mon.nickname;
     final evoMoves = mon.evolve(
       nextSpecies,
@@ -2011,88 +2021,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
     trainer.markPokemonCaught(nextSpecies.id);
     trainer.saveProgress();
-    HapticFeedback.heavyImpact();
 
-    showDialog(
-      context: parentContext,
-      builder: (evoCtx) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF23232E),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 8),
-              SizedBox(
-                width: 90,
-                height: 90,
-                child: Image.network(
-                  nextSpecies.spriteUrl,
-                  width: 90,
-                  height: 90,
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.none,
-                  errorBuilder: (_, __, ___) => Image.network(
-                    nextSpecies.staticSpriteUrl,
-                    width: 90,
-                    height: 90,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (_, __, ___) => const Icon(
-                      Icons.catching_pokemon,
-                      color: Colors.white54,
-                      size: 60,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 14),
-              const Text(
-                "CONGRATULATIONS!",
-                style: TextStyle(
-                  color: Colors.amberAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  letterSpacing: 1,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Your $oldName evolved into ${nextSpecies.name}!",
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
-              ),
-              if (evoMoves.isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Text(
-                  "Learned: ${evoMoves.join(', ')}!",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.cyanAccent,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(evoCtx);
-                setState(() {});
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amberAccent,
-                foregroundColor: Colors.black,
-              ),
-              child: const Text("Awesome!",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ],
-        );
-      },
+    await EvolutionScreen.show(
+      parentContext,
+      fromSpecies: fromSpecies,
+      toSpecies: nextSpecies,
+      oldNickname: oldName,
+      learnedMoves: evoMoves,
     );
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _useBagMedicineOnPartyPokemon(
