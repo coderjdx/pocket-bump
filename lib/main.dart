@@ -55,6 +55,7 @@ class _PocketBumpAppState extends State<PocketBumpApp> {
       'assets/images/battle_bg_gym_ground.png',
       'assets/images/home_bg.png',
       'assets/images/bg_pokemon_center.png',
+      'assets/images/nurse_joy.png',
       'assets/images/bg_poke_mart.png',
       'assets/images/bg_pokemon_lab.png',
       'assets/images/bg_pokemon_league.png',

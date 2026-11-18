@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
-import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
 import 'poke_mart_screen.dart';
 
@@ -92,23 +91,6 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
         duration: Duration(seconds: 2),
       ),
     );
-  }
-
-  Color _statusColor(StatusCondition status) {
-    switch (status) {
-      case StatusCondition.burn:
-        return Colors.deepOrange;
-      case StatusCondition.poison:
-        return Colors.purple;
-      case StatusCondition.paralysis:
-        return Colors.amber.shade700;
-      case StatusCondition.sleep:
-        return Colors.blueGrey;
-      case StatusCondition.freeze:
-        return Colors.cyan;
-      case StatusCondition.none:
-        return Colors.transparent;
-    }
   }
 
   @override
@@ -210,245 +192,9 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
 
                   const SizedBox(height: 10),
 
-                  // ─── PARTY CONDITION MONITOR ──────────────────────────────
+                  // ─── NURSE JOY CHARACTER STAGE ────────────────────────────
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(11),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xE0161826), Color(0xE80E101B)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                            color: Colors.white.withOpacity(0.14), width: 1.2),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Row(
-                                children: [
-                                  Icon(Icons.monitor_heart_rounded,
-                                      color: Colors.pinkAccent, size: 14),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    "PARTY VITAL MONITOR",
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 10.5,
-                                      letterSpacing: 0.9,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: (_isHealing
-                                          ? Colors.amberAccent
-                                          : (needsHeal
-                                              ? Colors.orangeAccent
-                                              : Colors.greenAccent))
-                                      .withOpacity(0.16),
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: (_isHealing
-                                            ? Colors.amberAccent
-                                            : (needsHeal
-                                                ? Colors.orangeAccent
-                                                : Colors.greenAccent))
-                                        .withOpacity(0.5),
-                                  ),
-                                ),
-                                child: Text(
-                                  _isHealing
-                                      ? "RECOVERING..."
-                                      : (needsHeal ? "NEEDS CARE" : "FULL HEALTH"),
-                                  style: TextStyle(
-                                    color: _isHealing
-                                        ? Colors.amberAccent
-                                        : (needsHeal
-                                            ? Colors.orangeAccent
-                                            : Colors.greenAccent),
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: trainer.party.length,
-                              separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 6),
-                              itemBuilder: (_, idx) {
-                                final mon = trainer.party[idx];
-                                final curPp = mon.moves
-                                    .fold<int>(0, (s, m) => s + m.currentPp);
-                                final maxPp = mon.moves
-                                    .fold<int>(0, (s, m) => s + m.maxPp);
-
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF1A1E2F),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: mon.isFainted
-                                          ? Colors.redAccent.withOpacity(0.55)
-                                          : Colors.white.withOpacity(0.1),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Opacity(
-                                        opacity: mon.isFainted ? 0.45 : 1.0,
-                                        child: Image.network(
-                                          mon.species.spriteUrl,
-                                          width: 36,
-                                          height: 36,
-                                          fit: BoxFit.contain,
-                                          filterQuality: FilterQuality.none,
-                                          errorBuilder: (_, __, ___) =>
-                                              Image.network(
-                                            mon.species.staticSpriteUrl,
-                                            width: 36,
-                                            height: 36,
-                                            fit: BoxFit.contain,
-                                            filterQuality: FilterQuality.none,
-                                            errorBuilder: (_, __, ___) =>
-                                                const Icon(
-                                              Icons.catching_pokemon,
-                                              color: Colors.white54,
-                                              size: 26,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 9),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Text(
-                                                    mon.nickname,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12.5,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 6),
-                                                Text(
-                                                  "Lv.${mon.level}",
-                                                  style: const TextStyle(
-                                                    color: Colors.amberAccent,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 10.5,
-                                                  ),
-                                                ),
-                                                if (mon.isFainted) ...[
-                                                  const SizedBox(width: 6),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 1),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.redAccent
-                                                          .withOpacity(0.22),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                    ),
-                                                    child: const Text(
-                                                      "FAINTED",
-                                                      style: TextStyle(
-                                                        color: Colors.redAccent,
-                                                        fontSize: 8,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ] else if (mon.status !=
-                                                    StatusCondition.none) ...[
-                                                  const SizedBox(width: 6),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 5,
-                                                        vertical: 1),
-                                                    decoration: BoxDecoration(
-                                                      color: _statusColor(
-                                                          mon.status),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                    ),
-                                                    child: Text(
-                                                      mon.status.shortLabel,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 8,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ],
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: HpBar(
-                                                    currentHp: mon.currentHp,
-                                                    maxHp: mon.maxHp,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  "${mon.currentHp}/${mon.maxHp} • PP $curPp/$maxPp",
-                                                  style: const TextStyle(
-                                                    color: Colors.white60,
-                                                    fontSize: 9.5,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: _buildNurseJoyStage(trainer, needsHeal),
                   ),
 
                   const SizedBox(height: 10),
@@ -539,6 +285,167 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                   ),
                 ],
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNurseJoyStage(Trainer trainer, bool needsHeal) {
+    final bool glowing = _isHealing && _pulseLit;
+    final Color statusColor = _isHealing
+        ? Colors.amberAccent
+        : (needsHeal ? Colors.orangeAccent : Colors.greenAccent);
+
+    return Container(
+      padding: const EdgeInsets.all(11),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xE0161826), Color(0xE80E101B)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: glowing
+              ? const Color(0xFFFFEE58).withOpacity(0.75)
+              : Colors.pinkAccent.withOpacity(0.32),
+          width: 1.2,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.medical_services_rounded,
+                      color: Colors.pinkAccent, size: 14),
+                  SizedBox(width: 6),
+                  Text(
+                    "POKÉMON CENTER • NURSE JOY",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 10.5,
+                      letterSpacing: 0.9,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.16),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: statusColor.withOpacity(0.5)),
+                ),
+                child: Text(
+                  _isHealing
+                      ? "RECOVERING..."
+                      : (needsHeal ? "NEEDS CARE" : "FULL HEALTH"),
+                  style: TextStyle(
+                    color: statusColor,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 160),
+                  width: glowing ? 190 : 160,
+                  height: glowing ? 190 : 160,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: glowing
+                          ? [
+                              const Color(0xFFFFEE58).withOpacity(0.34),
+                              Colors.pinkAccent.withOpacity(0.16),
+                              Colors.transparent,
+                            ]
+                          : [
+                              Colors.pinkAccent.withOpacity(0.22),
+                              Colors.transparent,
+                            ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: AnimatedScale(
+                    scale: glowing ? 1.04 : 1.0,
+                    duration: const Duration(milliseconds: 140),
+                    child: Image.asset(
+                      'assets/images/nurse_joy.png',
+                      fit: BoxFit.contain,
+                      filterQuality: FilterQuality.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A1E2F),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: glowing
+                    ? const Color(0xFFFFEE58).withOpacity(0.55)
+                    : Colors.pinkAccent.withOpacity(0.35),
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.pinkAccent.withOpacity(0.18),
+                    borderRadius: BorderRadius.circular(6),
+                    border:
+                        Border.all(color: Colors.pinkAccent.withOpacity(0.5)),
+                  ),
+                  child: const Text(
+                    "NURSE JOY",
+                    style: TextStyle(
+                      color: Colors.pinkAccent,
+                      fontSize: 8.5,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    _nurseMessage,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      height: 1.25,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
