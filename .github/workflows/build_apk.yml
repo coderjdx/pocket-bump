@@ -33,6 +33,7 @@ jobs:
         run: |
           flutter create --platforms=android --org com.coderjdx --project-name pocket_bump .
           python3 -c '
+          import os, re, shutil
           path = "android/app/src/main/AndroidManifest.xml"
           with open(path, "r") as f:
               content = f.read()
@@ -44,8 +45,23 @@ jobs:
           """
           if "ACTIVITY_RECOGNITION" not in content:
               content = content.replace("<application", perms + "    <application", 1)
+          content = re.sub(r"android:label=\"[^\"]*\"", "android:label=\"Pocket Bump\"", content, count=1)
           with open(path, "w") as f:
               f.write(content)
+          shutil.rmtree("android/app/src/main/res/mipmap-anydpi-v26", ignore_errors=True)
+          icon_map = {
+              "assets/icons/ic_launcher_mdpi.png": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+              "assets/icons/ic_launcher_hdpi.png": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+              "assets/icons/ic_launcher_xhdpi.png": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+              "assets/icons/ic_launcher_xxhdpi.png": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+              "assets/icons/ic_launcher_xxxhdpi.png": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          }
+          for src, dst in icon_map.items():
+              os.makedirs(os.path.dirname(dst), exist_ok=True)
+              shutil.copyfile(src, dst)
+              dst_round = os.path.join(os.path.dirname(dst), "ic_launcher_round.png")
+              if os.path.exists(dst_round):
+                  shutil.copyfile(src, dst_round)
           gradle_path = "android/app/build.gradle.kts"
           with open(gradle_path, "r") as f:
               g = f.read()
@@ -116,11 +132,20 @@ jobs:
       - name: Build Flutter Web
         run: |
           flutter create --platforms=web .
+          mkdir -p web/icons
+          cp assets/icons/favicon.png web/favicon.png
+          cp assets/icons/ic_launcher_xxxhdpi.png web/icons/Icon-192.png
+          cp assets/icons/ic_launcher_xxxhdpi.png web/icons/Icon-maskable-192.png
+          cp assets/icons/app_icon_512.png web/icons/Icon-512.png
+          cp assets/icons/app_icon_512.png web/icons/Icon-maskable-512.png
           flutter pub get
           flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none
           python3 -c '
+          import json
           with open("build/web/index.html", "r") as f:
               html = f.read()
+          html = html.replace("<title>pocket_bump</title>", "<title>Pocket Bump</title>")
+          html = html.replace("content=\"pocket_bump\"", "content=\"Pocket Bump\"")
           patch = """<script>
           if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(sw){sw.unregister();});});}
           (function(){
@@ -214,6 +239,12 @@ jobs:
               html = html.replace("</head>", patch + "\n</head>", 1)
           with open("build/web/index.html", "w") as f:
               f.write(html)
+          with open("build/web/manifest.json", "r") as f:
+              manifest = json.load(f)
+          manifest["name"] = "Pocket Bump"
+          manifest["short_name"] = "Pocket Bump"
+          with open("build/web/manifest.json", "w") as f:
+              json.dump(manifest, f, indent=2)
           '
 
       - name: Deploy to GitHub Pages
