@@ -179,6 +179,61 @@ class PokemonSpecies {
   /// Distant (opponent) Pokémon size in logical pixels (~0.56x foreground size for perspective depth)
   double get battleOpponentSize => (90.0 * speciesScale).roundToDouble();
 
+  /// Habitat-appropriate pixel-art battle arena background for wild encounters
+  String get battleBackgroundAsset {
+    // 1. Cave / Subterranean Ruins (Zubat, Clefairy, Paras, Diglett, Geodude, Onix, Cubone, etc.)
+    const caveIds = {
+      35, 36, 39, 40, 41, 42, 46, 47, 50, 51, 66, 67, 68, 74, 75, 76,
+      95, 104, 105, 106, 107, 111, 112, 138, 139, 140, 141, 142, 150,
+    };
+    if (caveIds.contains(id) || types.contains(PokemonType.rock)) {
+      return 'assets/images/battle_bg_cave.png';
+    }
+
+    // 2. Coastal Beach / Sea (Staryu, Squirtle, Psyduck, Poliwag, Tentacool, Seel, Shellder, Krabby, etc.)
+    const beachIds = {
+      7, 8, 9, 54, 55, 60, 61, 62, 72, 73, 79, 80, 86, 87, 90, 91,
+      98, 99, 116, 117, 118, 119, 120, 121, 129, 130, 131, 134, 144, 147, 148, 149,
+    };
+    if (beachIds.contains(id) ||
+        types.contains(PokemonType.water) ||
+        types.contains(PokemonType.ice)) {
+      return 'assets/images/battle_bg_beach.png';
+    }
+
+    // 3. Volcanic Caldera / Magma Cavern (Charmander, Vulpix, Growlithe, Ponyta, Magmar, etc.)
+    const volcanoIds = {4, 5, 6, 37, 38, 58, 59, 77, 78, 126, 136, 146};
+    if (volcanoIds.contains(id) || types.contains(PokemonType.fire)) {
+      return 'assets/images/battle_bg_volcano.png';
+    }
+
+    // 4. Forest Canopy (Bulbasaur, Caterpie, Weedle, Pikachu, Oddish, Bellsprout, Scyther, Pinsir, etc.)
+    const forestIds = {
+      1, 2, 3, 10, 11, 12, 13, 14, 15, 25, 26, 43, 44, 45, 48, 49,
+      69, 70, 71, 102, 103, 113, 114, 123, 127, 151,
+    };
+    if (forestIds.contains(id) ||
+        types.contains(PokemonType.bug) ||
+        types.contains(PokemonType.grass)) {
+      return 'assets/images/battle_bg_forest.png';
+    }
+
+    // 5. Power Plant / Urban Facility / Tower (Magnemite, Voltorb, Gastly, Abra, Meowth, Porygon, etc.)
+    const urbanIds = {
+      52, 53, 63, 64, 65, 81, 82, 88, 89, 92, 93, 94, 96, 97,
+      100, 101, 109, 110, 122, 124, 125, 132, 135, 137, 145,
+    };
+    if (urbanIds.contains(id) ||
+        types.contains(PokemonType.ghost) ||
+        types.contains(PokemonType.electric) ||
+        types.contains(PokemonType.psychic)) {
+      return 'assets/images/battle_bg_urban.png';
+    }
+
+    // 6. Default Grassy Kanto Route
+    return 'assets/images/battle_bg_route.png';
+  }
+
   String get spriteUrl =>
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/$id.gif';
 

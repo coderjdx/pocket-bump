@@ -663,6 +663,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           opponentSpriteId: currentOpponent.spriteId,
           prizeMoney: currentOpponent.prizeMoney,
           preservePartyHpOnExit: true,
+          battleBackgroundAsset: _activeGym!.backgroundAsset,
         ),
       ),
     );

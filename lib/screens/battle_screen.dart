@@ -34,6 +34,7 @@ class BattleScreen extends StatefulWidget {
   final int prizeMoney;
   final bool preservePartyHpOnExit;
   final List<PokemonInstance>? opponentTeam;
+  final String? battleBackgroundAsset;
 
   const BattleScreen({
     super.key,
@@ -45,6 +46,7 @@ class BattleScreen extends StatefulWidget {
     this.prizeMoney = 0,
     this.preservePartyHpOnExit = false,
     this.opponentTeam,
+    this.battleBackgroundAsset,
   });
 
   @override
@@ -58,8 +60,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late List<PokemonInstance> _opponentParty;
   late List<PokemonInstance> _opponentFullTeam;
   final List<PokemonInstance> _participatedPokemon = [];
-  final Map<PokemonInstance, int> _pendingExpByPokemon = {};
   bool _playerWon = false;
+
+  String get _resolvedBattleBackgroundAsset {
+    if (widget.battleBackgroundAsset != null) {
+      return widget.battleBackgroundAsset!;
+    }
+    if (widget.isWild) {
+      return _opponentPokemon.species.battleBackgroundAsset;
+    }
+    return 'assets/images/battle_bg_route.png';
+  }
 
   void _recordParticipant(PokemonInstance mon) {
     if (!_participatedPokemon.contains(mon)) {
@@ -946,7 +957,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     // 1. All party Pokémon fainted -> player immediately loses and gains nothing
     if (!_trainer.hasConsciousPokemon) {
-      _pendingExpByPokemon.clear();
       _playerWon = false;
       setState(() {
         _displayedPlayerHp = 0;
@@ -966,20 +976,61 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         isTrainerBattle: !widget.isWild,
       );
 
-      // Only conscious participants (or those revived prior to knockout) earn EXP
+      // Award EXP immediately upon defeating this Pokémon (split equally among conscious participants)
       final List<PokemonInstance> consciousParticipants =
           _participatedPokemon.where((p) => !p.isFainted).toList();
       if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
         consciousParticipants.add(_playerPokemon);
       }
+
       if (consciousParticipants.isNotEmpty) {
         final int share = max(1, expGained ~/ consciousParticipants.length);
-        for (final mon in consciousParticipants) {
-          _pendingExpByPokemon[mon] = (_pendingExpByPokemon[mon] ?? 0) + share;
+        setState(() {
+          if (consciousParticipants.length == 1) {
+            _currentMessage =
+                "${consciousParticipants.first.nickname} gained $share EXP!";
+          } else {
+            _currentMessage =
+                "${consciousParticipants.map((p) => p.nickname).join(', ')} each gained $share EXP!";
+          }
+        });
+        await Future.delayed(const Duration(milliseconds: 950));
+        if (!mounted) return;
+
+        for (final participant in consciousParticipants) {
+          final levelResult = participant.gainExpWithLearnset(
+            share,
+            PokedexDatabase.movesUnlockedAtExactLevel,
+          );
+          if (levelResult.leveledUp) {
+            setState(() {
+              if (participant == _playerPokemon) {
+                _displayedPlayerHp = _playerPokemon.currentHp;
+              }
+              _currentMessage =
+                  "${participant.nickname} grew to Level ${participant.level}!";
+            });
+            await Future.delayed(const Duration(milliseconds: 1000));
+            if (!mounted) return;
+
+            for (final moveName in levelResult.learnedMoves) {
+              setState(() {
+                _currentMessage = "${participant.nickname} learned $moveName!";
+              });
+              await Future.delayed(const Duration(milliseconds: 950));
+              if (!mounted) return;
+            }
+
+            if (participant.checkCanEvolve()) {
+              await _handleEvolution(participant);
+              if (!mounted) return;
+            }
+          }
         }
+        _trainer.saveProgress();
       }
 
-      // If trainer has more Pokémon in reserve, hold EXP & summon next Pokémon
+      // If trainer has more Pokémon in reserve, summon next Pokémon
       if (_opponentParty.isNotEmpty) {
         final nextMon = _opponentParty.removeAt(0);
         setState(() {
@@ -1019,75 +1070,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           });
         }
         return;
-      }
-
-      // All opponent Pokémon defeated -> award accumulated EXP
-      if (_pendingExpByPokemon.isNotEmpty) {
-        final values = _pendingExpByPokemon.values.toList();
-        final int firstVal = values.first;
-        final bool allEqual = values.every((v) => v == firstVal);
-
-        if (_pendingExpByPokemon.length == 1) {
-          setState(() {
-            _currentMessage =
-                "${_pendingExpByPokemon.keys.first.nickname} gained $firstVal EXP!";
-          });
-          await Future.delayed(const Duration(milliseconds: 950));
-          if (!mounted) return;
-        } else if (allEqual) {
-          setState(() {
-            _currentMessage =
-                "${_pendingExpByPokemon.keys.map((p) => p.nickname).join(', ')} each gained $firstVal EXP!";
-          });
-          await Future.delayed(const Duration(milliseconds: 950));
-          if (!mounted) return;
-        }
-
-        for (final entry in _pendingExpByPokemon.entries) {
-          final participant = entry.key;
-          final earnedExp = entry.value;
-          if (_pendingExpByPokemon.length > 1 && !allEqual) {
-            setState(() {
-              _currentMessage = "${participant.nickname} gained $earnedExp EXP!";
-            });
-            await Future.delayed(const Duration(milliseconds: 800));
-            if (!mounted) return;
-          }
-
-          final bool wasFainted = participant.isFainted;
-          final levelResult = participant.gainExpWithLearnset(
-            earnedExp,
-            PokedexDatabase.movesUnlockedAtExactLevel,
-          );
-          if (wasFainted) {
-            participant.currentHp = 0;
-          }
-          if (levelResult.leveledUp) {
-            setState(() {
-              if (participant == _playerPokemon) {
-                _displayedPlayerHp = _playerPokemon.currentHp;
-              }
-              _currentMessage =
-                  "${participant.nickname} grew to Level ${participant.level}!";
-            });
-            await Future.delayed(const Duration(milliseconds: 1000));
-            if (!mounted) return;
-
-            for (final moveName in levelResult.learnedMoves) {
-              setState(() {
-                _currentMessage = "${participant.nickname} learned $moveName!";
-              });
-              await Future.delayed(const Duration(milliseconds: 950));
-              if (!mounted) return;
-            }
-
-            if (participant.checkCanEvolve()) {
-              await _handleEvolution(participant);
-              if (!mounted) return;
-            }
-          }
-        }
-        _trainer.saveProgress();
       }
 
       if (widget.isWild) {
@@ -1492,11 +1474,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         return Stack(
                           fit: StackFit.expand,
                           children: [
-                            // Generated Pixel-Art Kanto Route Battle Background
+                            // Habitat / Gym Pixel-Art Battle Background
                             Image.asset(
-                              'assets/images/battle_bg_route.png',
+                              _resolvedBattleBackgroundAsset,
                               fit: BoxFit.cover,
                               filterQuality: FilterQuality.none,
+                              errorBuilder: (_, __, ___) => Image.asset(
+                                'assets/images/battle_bg_route.png',
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.none,
+                              ),
                             ),
 
                             // Atmospheric Arena Tint Overlay for dramatic moves
@@ -3375,6 +3362,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   void _openSwitchModal({bool forced = false}) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       isDismissible: !forced,
       enableDrag: !forced,
       backgroundColor: const Color(0xFF2A2A35),
@@ -3382,53 +3370,252 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "SWITCH POKÉMON",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              const SizedBox(height: 12),
-              ..._trainer.party.map((mon) {
-                final isCurrent = mon == _playerPokemon;
-                return ListTile(
-                  leading: Image.network(
-                    mon.species.spriteUrl,
-                    width: 44,
-                    height: 44,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (c, e, s) =>
-                        const Icon(Icons.catching_pokemon, color: Colors.white),
-                  ),
-                  title: Text(
-                    mon.nickname,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    "Lv.${mon.level} • HP ${mon.currentHp}/${mon.maxHp}",
-                    style: const TextStyle(color: Colors.white60),
-                  ),
-                  trailing: isCurrent
-                      ? const Text(
-                          "ACTIVE",
-                          style: TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.bold),
-                        )
-                      : ElevatedButton(
-                          onPressed: mon.isFainted
-                              ? null
-                              : () {
-                                  Navigator.pop(ctx);
-                                  _performPokemonSwitch(mon, forced: forced);
-                                },
-                          child: const Text("SWITCH"),
+        final maxSheetHeight = MediaQuery.of(ctx).size.height * 0.78;
+        return SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxSheetHeight),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "SWITCH POKÉMON",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.4,
                         ),
-                );
-              }),
-            ],
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 7, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "${_trainer.party.length}/6",
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      if (!forced)
+                        IconButton(
+                          icon: const Icon(Icons.close,
+                              color: Colors.white60, size: 20),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () => Navigator.pop(ctx),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Flexible(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: _trainer.party.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 6),
+                      itemBuilder: (_, idx) {
+                        final mon = _trainer.party[idx];
+                        final bool isCurrent = mon == _playerPokemon;
+                        final bool canSwitch = !isCurrent && !mon.isFainted;
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: isCurrent
+                                ? const Color(0xFF283044)
+                                : const Color(0xFF1F1F2B),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isCurrent
+                                  ? Colors.amberAccent.withOpacity(0.6)
+                                  : mon.isFainted
+                                      ? Colors.redAccent.withOpacity(0.28)
+                                      : Colors.white12,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Opacity(
+                                opacity: mon.isFainted ? 0.45 : 1.0,
+                                child: Image.network(
+                                  mon.species.spriteUrl,
+                                  width: 38,
+                                  height: 38,
+                                  fit: BoxFit.contain,
+                                  filterQuality: FilterQuality.none,
+                                  errorBuilder: (c, e, s) => Image.network(
+                                    mon.species.staticSpriteUrl,
+                                    width: 38,
+                                    height: 38,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.none,
+                                    errorBuilder: (c2, e2, s2) => const Icon(
+                                      Icons.catching_pokemon,
+                                      color: Colors.white54,
+                                      size: 28,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            mon.nickname,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          "Lv.${mon.level}",
+                                          style: const TextStyle(
+                                            color: Colors.amberAccent,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        if (mon.isFainted) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: Colors.redAccent
+                                                  .withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: const Text(
+                                              "FAINTED",
+                                              style: TextStyle(
+                                                color: Colors.redAccent,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ] else if (mon.status !=
+                                            StatusCondition.none) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: _statusColor(mon.status),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              mon.status.shortLabel,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: HpBar(
+                                            currentHp: mon.currentHp,
+                                            maxHp: mon.maxHp,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          "${mon.currentHp}/${mon.maxHp}",
+                                          style: const TextStyle(
+                                            color: Colors.white60,
+                                            fontSize: 10.5,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              isCurrent
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amberAccent
+                                            .withOpacity(0.16),
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: Colors.amberAccent
+                                                .withOpacity(0.5)),
+                                      ),
+                                      child: const Text(
+                                        "ACTIVE",
+                                        style: TextStyle(
+                                          color: Colors.amberAccent,
+                                          fontSize: 10.5,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: canSwitch
+                                          ? () {
+                                              Navigator.pop(ctx);
+                                              _performPokemonSwitch(mon,
+                                                  forced: forced);
+                                            }
+                                          : null,
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 6),
+                                        minimumSize: const Size(0, 32),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      child: const Text(
+                                        "SWITCH",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },

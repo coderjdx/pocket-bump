@@ -63,6 +63,7 @@ class GymDefinition {
   final String badgeDescription;
   final String element;
   final Color elementColor;
+  final String backgroundAsset;
   final int requiredCaught;
   final int requiredSteps;
   final String signatureHeldItemDrop;
@@ -80,6 +81,7 @@ class GymDefinition {
     required this.badgeDescription,
     required this.element,
     required this.elementColor,
+    required this.backgroundAsset,
     required this.requiredCaught,
     required this.requiredSteps,
     required this.signatureHeldItemDrop,
@@ -104,6 +106,7 @@ class GymDatabase {
       badgeDescription: "+10% Phys ATK • Commands Pokémon up to Lv. 25",
       element: "Rock",
       elementColor: const Color(0xFFBCAAA4),
+      backgroundAsset: 'assets/images/battle_bg_gym_rock.png',
       requiredCaught: 10,
       requiredSteps: 2000,
       signatureHeldItemDrop: 'hard_stone',
@@ -174,6 +177,7 @@ class GymDatabase {
       badgeDescription: "+10% Spec ATK • Commands Pokémon up to Lv. 34",
       element: "Water",
       elementColor: const Color(0xFF4FC3F7),
+      backgroundAsset: 'assets/images/battle_bg_gym_water.png',
       requiredCaught: 18,
       requiredSteps: 4000,
       signatureHeldItemDrop: 'mystic_water',
@@ -247,6 +251,7 @@ class GymDatabase {
       badgeDescription: "+10% Speed • Commands Pokémon up to Lv. 42",
       element: "Electric",
       elementColor: const Color(0xFFFFD54F),
+      backgroundAsset: 'assets/images/battle_bg_gym_electric.png',
       requiredCaught: 28,
       requiredSteps: 6000,
       signatureHeldItemDrop: 'magnet',
@@ -321,6 +326,7 @@ class GymDatabase {
       badgeDescription: "+10% Spec DEF • Commands Pokémon up to Lv. 50",
       element: "Grass",
       elementColor: const Color(0xFF81C784),
+      backgroundAsset: 'assets/images/battle_bg_gym_grass.png',
       requiredCaught: 40,
       requiredSteps: 8000,
       signatureHeldItemDrop: 'miracle_seed',
@@ -401,6 +407,7 @@ class GymDatabase {
       badgeDescription: "+10% Phys DEF • Commands Pokémon up to Lv. 60",
       element: "Poison",
       elementColor: const Color(0xFFBA68C8),
+      backgroundAsset: 'assets/images/battle_bg_gym_poison.png',
       requiredCaught: 55,
       requiredSteps: 10000,
       signatureHeldItemDrop: 'poison_barb',
@@ -482,6 +489,7 @@ class GymDatabase {
       badgeDescription: "+10% Max HP • Commands Pokémon up to Lv. 70",
       element: "Psychic",
       elementColor: const Color(0xFFFF80AB),
+      backgroundAsset: 'assets/images/battle_bg_gym_psychic.png',
       requiredCaught: 70,
       requiredSteps: 12000,
       signatureHeldItemDrop: 'twisted_spoon',
@@ -563,6 +571,7 @@ class GymDatabase {
       badgeDescription: "+10% Critical Hit Rate • Commands Pokémon up to Lv. 82",
       element: "Fire",
       elementColor: const Color(0xFFFF7043),
+      backgroundAsset: 'assets/images/battle_bg_gym_fire.png',
       requiredCaught: 85,
       requiredSteps: 15000,
       signatureHeldItemDrop: 'charcoal',
@@ -644,6 +653,7 @@ class GymDatabase {
       badgeDescription: "Master Boost (+5% All Stats) • Commands Lv. 100 • Unlocks Legendaries",
       element: "Ground",
       elementColor: const Color(0xFFFFB300),
+      backgroundAsset: 'assets/images/battle_bg_gym_ground.png',
       requiredCaught: 100,
       requiredSteps: 20000,
       signatureHeldItemDrop: 'soft_sand',

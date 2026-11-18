@@ -84,47 +84,71 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         trainer.party.isNotEmpty ? trainer.party.first : null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1E24),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          child: Column(
-            children: [
-              // ─── 1. COMPACT TRAINER PROFILE BAR ──────────────────────────
-              _buildTrainerHeader(trainer),
-              const SizedBox(height: 10),
-
-              // ─── MAIN HOME DASHBOARD (NO SCROLLING ON STANDARD PHONES) ──
-              Expanded(
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // ─── 2. SPOT #1 LEAD POKÉMON SHOWCASE ────────────────
-                      if (leadPokemon != null)
-                        _buildLeadPokemonCard(trainer, leadPokemon),
-                      const SizedBox(height: 10),
-
-                      // ─── 3. POKÉWALKER STEP COUNTER ───────────────────────
-                      _buildStepCounterCard(trainer),
-                      const SizedBox(height: 10),
-
-                      // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ─────────────
-                      _buildHubRow(trainer),
-                      const SizedBox(height: 4),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // ─── 5. CHALLENGE ANOTHER TRAINER (FIST-BUMP BATTLE) ─────────
-              _buildChallengeTrainerButton(),
-            ],
+      backgroundColor: const Color(0xFF14141C),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/home_bg.png',
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+            filterQuality: FilterQuality.none,
           ),
-        ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF0E111B).withOpacity(0.55),
+                  const Color(0xFF14141C).withOpacity(0.42),
+                  const Color(0xFF10121A).withOpacity(0.68),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Column(
+                children: [
+                  // ─── 1. COMPACT TRAINER PROFILE BAR ──────────────────────
+                  _buildTrainerHeader(trainer),
+                  const SizedBox(height: 10),
+
+                  // ─── MAIN HOME DASHBOARD (NO SCROLLING ON STANDARD PHONES)
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // ─── 2. SPOT #1 LEAD POKÉMON SHOWCASE ────────────
+                          if (leadPokemon != null)
+                            _buildLeadPokemonCard(trainer, leadPokemon),
+                          const SizedBox(height: 10),
+
+                          // ─── 3. POKÉWALKER STEP COUNTER ───────────────────
+                          _buildStepCounterCard(trainer),
+                          const SizedBox(height: 10),
+
+                          // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ─────────
+                          _buildHubRow(trainer),
+                          const SizedBox(height: 4),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // ─── 5. CHALLENGE ANOTHER TRAINER (FIST-BUMP BATTLE) ─────
+                  _buildChallengeTrainerButton(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -136,9 +160,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2A2A35),
+          color: const Color(0xD8242430),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white10),
+          border: Border.all(color: Colors.white12),
         ),
         child: Row(
           children: [
@@ -277,8 +301,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            primaryColor.withOpacity(0.22),
-            const Color(0xFF2A2A35),
+            primaryColor.withOpacity(0.24),
+            const Color(0xD822222E),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -568,7 +592,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.indigo.shade900.withOpacity(0.55), const Color(0xFF2A2A35)],
+          colors: [Colors.indigo.shade900.withOpacity(0.65), const Color(0xD822222E)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -683,9 +707,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: const Color(0xFF2A2A35),
+            color: const Color(0xD8242430),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: accentColor.withOpacity(0.35)),
+            border: Border.all(color: accentColor.withOpacity(0.4)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
