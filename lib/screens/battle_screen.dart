@@ -2264,36 +2264,139 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF1E1E24),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 44,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, size: 20),
-            padding: EdgeInsets.zero,
-            onPressed: _finishAndExit,
-          ),
-          title: Text(
-            widget.isWild
-                ? "WILD ENCOUNTER"
-                : (widget.pvpSession != null
-                    ? "VS LINK • ${(widget.trainerName ?? 'TRAINER').toUpperCase()}"
-                    : (widget.trainerTitle?.toUpperCase() ?? "RIVAL FIST-BUMP DUEL")),
-            style: const TextStyle(
-              fontSize: 12.5,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
-          ),
-          centerTitle: true,
-        ),
+        backgroundColor: const Color(0xFF0C1018),
         body: SafeArea(
           child: Column(
             children: [
+              // ─── COMPACT BATTLE HEADER ───────────────────────────────────
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                child: SizedBox(
+                  height: 34,
+                  child: Row(
+                    children: [
+                      Material(
+                        color: const Color(0xFF171E2E),
+                        borderRadius: BorderRadius.circular(10),
+                        child: InkWell(
+                          onTap: _finishAndExit,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            width: 34,
+                            height: 34,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.14),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: 15,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Container(
+                          height: 32,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF151C2B),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: (widget.isWild
+                                      ? Colors.greenAccent
+                                      : (widget.pvpSession != null
+                                          ? Colors.cyanAccent
+                                          : Colors.amberAccent))
+                                  .withOpacity(0.28),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 7,
+                                height: 7,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: widget.isWild
+                                      ? Colors.greenAccent
+                                      : (widget.pvpSession != null
+                                          ? Colors.cyanAccent
+                                          : Colors.amberAccent),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: (widget.isWild
+                                              ? Colors.greenAccent
+                                              : (widget.pvpSession != null
+                                                  ? Colors.cyanAccent
+                                                  : Colors.amberAccent))
+                                          .withOpacity(0.6),
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: Text(
+                                  widget.isWild
+                                      ? "WILD ENCOUNTER"
+                                      : (widget.pvpSession != null
+                                          ? "VS LINK • ${(widget.trainerName ?? 'TRAINER').toUpperCase()}"
+                                          : (widget.trainerTitle?.toUpperCase() ??
+                                              "RIVAL FIST-BUMP DUEL")),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                    letterSpacing: 1.1,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 34,
+                        height: 34,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF171E2E),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.14),
+                          ),
+                        ),
+                        child: Icon(
+                          widget.isWild
+                              ? Icons.explore_rounded
+                              : (widget.pvpSession != null
+                                  ? Icons.wifi_tethering_rounded
+                                  : Icons.military_tech_rounded),
+                          size: 16,
+                          color: widget.isWild
+                              ? Colors.greenAccent
+                              : (widget.pvpSession != null
+                                  ? Colors.cyanAccent
+                                  : Colors.amberAccent),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
               // ─── ARENA / COMBATANTS VIEW ─────────────────────────────────
               Expanded(
-                flex: 5,
+                flex: 60,
                 child: AnimatedBuilder(
                   animation: _arenaShakeController,
                   builder: (context, child) {
@@ -2306,10 +2409,20 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 12),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white24, width: 1.5),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.18),
+                        width: 1.4,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.45),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: LayoutBuilder(
@@ -2653,79 +2766,203 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 ),
               ),
 
-              // ─── BATTLE LOG BOX ──────────────────────────────────────────
+              // ─── RPG BATTLE DIALOGUE STRIP ──────────────────────────────
               Container(
-                height: 54,
+                height: 52,
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                margin: const EdgeInsets.fromLTRB(10, 7, 10, 7),
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2A2A35),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white12, width: 1.2),
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    _currentMessage,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      height: 1.25,
-                    ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF1A2234),
+                      Color(0xFF111723),
+                    ],
                   ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: _isProcessingTurn && !_battleEnded
+                        ? Colors.cyanAccent.withOpacity(0.35)
+                        : Colors.white.withOpacity(0.16),
+                    width: 1.2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.35),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 3.5,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                        color: _battleEnded
+                            ? (_playerWon
+                                ? Colors.amberAccent
+                                : Colors.redAccent)
+                            : (_isProcessingTurn
+                                ? Colors.cyanAccent
+                                : Colors.white38),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        _currentMessage,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12.5,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          height: 1.28,
+                        ),
+                      ),
+                    ),
+                    if (_isProcessingTurn && !_battleEnded) ...[
+                      const SizedBox(width: 8),
+                      const SizedBox(
+                        width: 14,
+                        height: 14,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.cyanAccent,
+                        ),
+                      ),
+                    ] else if (!_battleEnded) ...[
+                      const SizedBox(width: 6),
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        size: 18,
+                        color: Colors.white30,
+                      ),
+                    ],
+                  ],
                 ),
               ),
 
-              // ─── ACTION MENUS / MOVE SELECTION ───────────────────────────
+              // ─── COMMAND DECK ────────────────────────────────────────────
               Expanded(
-                flex: 3,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+                flex: 40,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: _battleEnded
                       ? Center(
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 46,
-                            child: ElevatedButton.icon(
-                              onPressed: () => _finishAndExit(_playerWon),
-                              icon: Icon(
-                                widget.preservePartyHpOnExit
-                                    ? (_playerWon ? Icons.arrow_forward : Icons.close)
-                                    : (_playerWon
-                                        ? Icons.check_circle_outline
-                                        : Icons.exit_to_app),
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                              label: Text(
-                                widget.preservePartyHpOnExit
-                                    ? (_playerWon ? "CONTINUE GAUNTLET" : "RETREAT FROM GYM")
-                                    : (_playerWon ? "CONTINUE" : "RETURN"),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  letterSpacing: 0.5,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 360),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF151C2C),
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(
+                                      color: (_playerWon
+                                              ? Colors.amberAccent
+                                              : Colors.redAccent)
+                                          .withOpacity(0.32),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        _playerWon
+                                            ? Icons.emoji_events_rounded
+                                            : Icons.shield_outlined,
+                                        color: _playerWon
+                                            ? Colors.amberAccent
+                                            : Colors.redAccent,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          _playerWon
+                                              ? "Battle Complete! Ready to proceed."
+                                              : "Return and regroup your team.",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 12.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: widget.preservePartyHpOnExit
-                                    ? (_playerWon ? Colors.indigo.shade700 : Colors.blueGrey.shade800)
-                                    : Colors.red.shade700,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () => _finishAndExit(_playerWon),
+                                    icon: Icon(
+                                      widget.preservePartyHpOnExit
+                                          ? (_playerWon
+                                              ? Icons.arrow_forward_rounded
+                                              : Icons.close_rounded)
+                                          : (_playerWon
+                                              ? Icons.check_circle_outline_rounded
+                                              : Icons.exit_to_app_rounded),
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    label: Text(
+                                      widget.preservePartyHpOnExit
+                                          ? (_playerWon
+                                              ? "CONTINUE GAUNTLET"
+                                              : "RETREAT FROM GYM")
+                                          : (_playerWon
+                                              ? "CONTINUE"
+                                              : "RETURN"),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 13.5,
+                                        letterSpacing: 0.9,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: widget.preservePartyHpOnExit
+                                          ? (_playerWon
+                                              ? Colors.indigo.shade600
+                                              : Colors.blueGrey.shade700)
+                                          : (_playerWon
+                                              ? const Color(0xFFD32F2F)
+                                              : const Color(0xFF334155)),
+                                      foregroundColor: Colors.white,
+                                      elevation: 4,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         )
-                      : (_isSelectingMove
-                          ? _buildMoveSelection()
-                          : _buildMainActionMenu()),
+                      : AnimatedOpacity(
+                          opacity: _isProcessingTurn ? 0.52 : 1.0,
+                          duration: const Duration(milliseconds: 160),
+                          child: _isSelectingMove
+                              ? _buildMoveSelection()
+                              : _buildMainActionMenu(),
+                        ),
                 ),
               ),
             ],
@@ -3408,174 +3645,446 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildMainActionMenu() {
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildActionButton(
-                  "FIGHT",
-                  Colors.red.shade700,
-                  Icons.flash_on,
-                  () => setState(() => _isSelectingMove = true),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _buildActionButton(
-                  "BAG",
-                  Colors.amber.shade800,
-                  Icons.backpack,
-                  _openBagModal,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: _buildActionButton(
-                  "POKÉMON",
-                  Colors.green.shade700,
-                  Icons.catching_pokemon,
-                  () => _openSwitchModal(),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: _buildActionButton(
-                  "RUN",
-                  Colors.blueGrey.shade700,
-                  Icons.directions_run,
-                  () {
-                    if (!widget.isWild) {
-                      setState(() {
-                        _currentMessage = "No! There's no running from a Trainer battle!";
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("No! There's no running from a Trainer battle!"),
-                          duration: Duration(seconds: 2),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool compact = constraints.maxHeight < 168;
+        final double gap = compact ? 8 : 10;
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 204),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildActionButton(
+                          "FIGHT",
+                          "Use a move",
+                          const Color(0xFFE53935),
+                          const Color(0xFF991B1B),
+                          Icons.flash_on_rounded,
+                          () => setState(() => _isSelectingMove = true),
+                          compact: compact,
                         ),
-                      );
-                      return;
-                    }
-                    _finishAndExit(false);
-                  },
+                      ),
+                      SizedBox(width: gap),
+                      Expanded(
+                        child: _buildActionButton(
+                          "BAG",
+                          "Items & Balls",
+                          const Color(0xFFF59E0B),
+                          const Color(0xFF9A4D05),
+                          Icons.backpack_rounded,
+                          _openBagModal,
+                          compact: compact,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: gap),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildActionButton(
+                          "POKÉMON",
+                          "Switch party",
+                          const Color(0xFF22C55E),
+                          const Color(0xFF0E6E33),
+                          Icons.catching_pokemon,
+                          () => _openSwitchModal(),
+                          compact: compact,
+                        ),
+                      ),
+                      SizedBox(width: gap),
+                      Expanded(
+                        child: _buildActionButton(
+                          "RUN",
+                          widget.isWild ? "Escape battle" : "Trainer duel",
+                          const Color(0xFF64748B),
+                          const Color(0xFF334155),
+                          Icons.directions_run_rounded,
+                          () {
+                            if (!widget.isWild) {
+                              setState(() {
+                                _currentMessage =
+                                    "No! There's no running from a Trainer battle!";
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      "No! There's no running from a Trainer battle!"),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+                            _finishAndExit(false);
+                          },
+                          compact: compact,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 
   Widget _buildMoveSelection() {
     final moves = _playerPokemon.moves;
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "SELECT A MOVE",
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white60),
-            ),
-            IconButton(
-              icon: const Icon(Icons.close, color: Colors.white60, size: 18),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () => setState(() => _isSelectingMove = false),
-            ),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    if (moves.isNotEmpty)
-                      Expanded(child: _buildMoveButton(moves[0]))
-                    else
-                      const Spacer(),
-                    const SizedBox(width: 8),
-                    if (moves.length > 1)
-                      Expanded(child: _buildMoveButton(moves[1]))
-                    else
-                      const Spacer(),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: Row(
-                  children: [
-                    if (moves.length > 2)
-                      Expanded(child: _buildMoveButton(moves[2]))
-                    else
-                      const Spacer(),
-                    const SizedBox(width: 8),
-                    if (moves.length > 3)
-                      Expanded(child: _buildMoveButton(moves[3]))
-                    else
-                      const Spacer(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool compact = constraints.maxHeight < 176;
+        final double rowGap = compact ? 7 : 9;
+        final double colGap = compact ? 8 : 10;
 
-  Widget _buildMoveButton(Move move) {
-    return ElevatedButton(
-      onPressed: _isProcessingTurn ? null : () => _onMoveSelected(move),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: move.type.color.withOpacity(0.9),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        elevation: 2,
-      ),
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              move.name,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-            const SizedBox(height: 2),
-            Row(
-              mainAxisSize: MainAxisSize.min,
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 214),
+            child: Column(
               children: [
-                Text(
-                  move.type.displayName.toUpperCase(),
-                  style: const TextStyle(fontSize: 8.5, color: Colors.white70),
+                SizedBox(
+                  height: compact ? 24 : 28,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.bolt_rounded,
+                            size: 14,
+                            color: Colors.amberAccent.shade200,
+                          ),
+                          const SizedBox(width: 4),
+                          const Text(
+                            "CHOOSE MOVE",
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.0,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Material(
+                        color: const Color(0xFF1A2234),
+                        borderRadius: BorderRadius.circular(20),
+                        child: InkWell(
+                          onTap: _isProcessingTurn
+                              ? null
+                              : () => setState(() => _isSelectingMove = false),
+                          borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.18),
+                              ),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  size: 10,
+                                  color: Colors.white70,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  "BACK",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0.7,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 6),
-                Text(
-                  "PP ${move.currentPp}/${move.maxPp}",
-                  style: const TextStyle(
-                    fontSize: 8.5,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                SizedBox(height: compact ? 5 : 7),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: moves.isNotEmpty
+                                  ? _buildMoveButton(moves[0], compact: compact)
+                                  : _buildEmptyMoveSlot(),
+                            ),
+                            SizedBox(width: colGap),
+                            Expanded(
+                              child: moves.length > 1
+                                  ? _buildMoveButton(moves[1], compact: compact)
+                                  : _buildEmptyMoveSlot(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: rowGap),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: moves.length > 2
+                                  ? _buildMoveButton(moves[2], compact: compact)
+                                  : _buildEmptyMoveSlot(),
+                            ),
+                            SizedBox(width: colGap),
+                            Expanded(
+                              child: moves.length > 3
+                                  ? _buildMoveButton(moves[3], compact: compact)
+                                  : _buildEmptyMoveSlot(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyMoveSlot() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF131823),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.07),
+        ),
+      ),
+      child: const Center(
+        child: Text(
+          "—",
+          style: TextStyle(
+            color: Colors.white12,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMoveButton(Move move, {bool compact = false}) {
+    final Color typeColor = move.type.color;
+    final bool noPp = move.currentPp <= 0;
+    final double eff = move.power > 0
+        ? PokemonTypeExtension.getEffectiveness(
+            move.type,
+            _opponentPokemon.species.types,
+          )
+        : 1.0;
+
+    String? effLabel;
+    Color? effColor;
+    if (move.power > 0) {
+      if (eff >= 4.0) {
+        effLabel = "4×";
+        effColor = Colors.amberAccent;
+      } else if (eff >= 2.0) {
+        effLabel = "2×";
+        effColor = Colors.greenAccent;
+      } else if (eff == 0.0) {
+        effLabel = "0×";
+        effColor = Colors.redAccent;
+      } else if (eff < 1.0) {
+        effLabel = eff <= 0.25 ? "¼×" : "½×";
+        effColor = Colors.orangeAccent;
+      }
+    }
+
+    final Color ppColor = noPp
+        ? Colors.redAccent
+        : (move.currentPp <= (move.maxPp / 4).ceil()
+            ? Colors.amberAccent
+            : Colors.white);
+
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(14),
+      clipBehavior: Clip.antiAlias,
+      child: Ink(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.lerp(const Color(0xFF182032), typeColor, noPp ? 0.08 : 0.26)!,
+              Color.lerp(const Color(0xFF121723), typeColor, noPp ? 0.05 : 0.14)!,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: noPp ? Colors.white24 : typeColor.withOpacity(0.75),
+            width: 1.3,
+          ),
+          boxShadow: [
+            if (!noPp)
+              BoxShadow(
+                color: typeColor.withOpacity(0.18),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
           ],
+        ),
+        child: InkWell(
+          onTap: _isProcessingTurn ? null : () => _onMoveSelected(move),
+          borderRadius: BorderRadius.circular(14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                width: 4.5,
+                color: noPp ? Colors.white24 : typeColor,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    9,
+                    compact ? 6 : 8,
+                    9,
+                    compact ? 6 : 8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              move.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: compact ? 12.5 : 13.5,
+                                color: noPp ? Colors.white54 : Colors.white,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                          ),
+                          if (effLabel != null && effColor != null) ...[
+                            const SizedBox(width: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 1.5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: effColor.withOpacity(0.18),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                  color: effColor.withOpacity(0.75),
+                                  width: 0.9,
+                                ),
+                              ),
+                              child: Text(
+                                effLabel,
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w900,
+                                  color: effColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: typeColor.withOpacity(0.28),
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        color: typeColor.withOpacity(0.85),
+                                        width: 0.9,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      move.type.displayName.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontSize: 8.5,
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    move.power > 0
+                                        ? "PWR ${move.power}"
+                                        : (move.category == MoveCategory.status
+                                            ? "STATUS"
+                                            : "—"),
+                                    style: const TextStyle(
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "${move.currentPp}/${move.maxPp}",
+                            style: TextStyle(
+                              fontSize: compact ? 10 : 10.5,
+                              color: ppColor,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -4476,20 +4985,112 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildActionButton(
-      String title, Color color, IconData icon, VoidCallback onPressed) {
-    return ElevatedButton.icon(
-      onPressed: _isProcessingTurn ? null : onPressed,
-      icon: Icon(icon, size: 16),
-      label: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.6, fontSize: 12),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 2,
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+    String title,
+    String subtitle,
+    Color topColor,
+    Color bottomColor,
+    IconData icon,
+    VoidCallback onPressed, {
+    bool compact = false,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
+      child: Ink(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [topColor, bottomColor],
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.24),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: bottomColor.withOpacity(0.45),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: InkWell(
+          onTap: _isProcessingTurn ? null : onPressed,
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              Positioned(
+                right: -8,
+                bottom: -10,
+                child: Icon(
+                  icon,
+                  size: compact ? 46 : 56,
+                  color: Colors.white.withOpacity(0.11),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: compact ? 10 : 12,
+                  vertical: compact ? 8 : 10,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: compact ? 34 : 40,
+                      height: compact ? 34 : 40,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.22),
+                        borderRadius: BorderRadius.circular(11),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.18),
+                        ),
+                      ),
+                      child: Icon(
+                        icon,
+                        size: compact ? 19 : 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(width: compact ? 9 : 11),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.9,
+                              fontSize: compact ? 13.5 : 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            subtitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: compact ? 9.5 : 10.5,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white.withOpacity(0.84),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
