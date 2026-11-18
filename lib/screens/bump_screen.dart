@@ -396,7 +396,7 @@ class _BumpScreenState extends State<BumpScreen>
 
   Widget _buildModeSelector() {
     final bool locked = _linkState == _BumpLinkState.linking ||
-        _linkState == _BumpLinkMode.matched;
+        _linkState == _BumpLinkState.matched;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(

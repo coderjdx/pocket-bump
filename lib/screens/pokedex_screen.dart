@@ -635,9 +635,6 @@ class _PokedexScreenState extends State<PokedexScreen> {
   }) {
     final primaryColor = spec.types.first.color;
     final dexNum = "#${spec.id.toString().padLeft(3, '0')}";
-    final PokemonSpecies? evoTarget = spec.evolutionSpeciesId != null
-        ? PokedexDatabase.species[spec.evolutionSpeciesId!]
-        : null;
     bool showShiny = isShinyCaught;
 
     showModalBottomSheet(
