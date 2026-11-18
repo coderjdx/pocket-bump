@@ -56,13 +56,13 @@ class Trainer extends ChangeNotifier {
     List<PokemonInstance>? party,
     List<List<PokemonInstance>>? pcBoxes,
     this.activePcBoxIndex = 0,
-    this.pokeBalls = 10,
+    this.pokeBalls = 20,
     this.greatBalls = 0,
     this.ultraBalls = 0,
     this.potions = 10,
     this.superPotions = 0,
     this.hyperPotions = 0,
-    this.revives = 0,
+    this.revives = 5,
     this.antidotes = 0,
     this.paralyzeHeals = 0,
     this.awakenings = 0,
@@ -772,6 +772,13 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  void grantWelcomeGift() {
+    pokeBalls = 20;
+    potions = 10;
+    revives = 5;
+    notifyListeners();
+  }
+
   void claimSupplyDrop() {
     pokeBalls = (pokeBalls + 5).clamp(0, 99);
     greatBalls = (greatBalls + 2).clamp(0, 99);
@@ -835,13 +842,13 @@ class Trainer extends ChangeNotifier {
       (a) => a.id == avatarId,
       orElse: () => TrainerAvatar.presets.first,
     );
-    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 10).clamp(0, 99);
+    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 20).clamp(0, 99);
     greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     potions = ((json['potions'] as num?)?.toInt() ?? 10).clamp(0, 99);
     superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    revives = ((json['revives'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    revives = ((json['revives'] as num?)?.toInt() ?? 5).clamp(0, 99);
     antidotes = ((json['antidotes'] as num?)?.toInt() ?? 0).clamp(0, 99);
     paralyzeHeals = ((json['paralyzeHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
     awakenings = ((json['awakenings'] as num?)?.toInt() ?? 0).clamp(0, 99);
@@ -990,13 +997,13 @@ class Trainer extends ChangeNotifier {
     party = [];
     pcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
     activePcBoxIndex = 0;
-    pokeBalls = 10;
+    pokeBalls = 20;
     greatBalls = 0;
     ultraBalls = 0;
     potions = 10;
     superPotions = 0;
     hyperPotions = 0;
-    revives = 0;
+    revives = 5;
     antidotes = 0;
     paralyzeHeals = 0;
     awakenings = 0;

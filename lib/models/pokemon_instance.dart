@@ -96,7 +96,7 @@ class PokemonInstance {
     return (((2 * base + 31) * lvl) ~/ 100) + 5;
   }
 
-  /// Scaled Gen 5/7 EXP formula based on defeated Pokémon's baseExp, level, and winnerLevel
+  /// Scaled Gen 5/7 EXP formula boosted for brisk progression without under-level penalty
   static int calculateBattleExp({
     required PokemonInstance defeated,
     required int winnerLevel,
@@ -104,12 +104,14 @@ class PokemonInstance {
   }) {
     final double trainerMultiplier = isTrainerBattle ? 1.5 : 1.0;
     final double baseYield =
-        (trainerMultiplier * defeated.species.baseExp * defeated.level) / 5.0;
-    final double levelFactor = pow(
+        (trainerMultiplier * defeated.species.baseExp * defeated.level) / 2.2;
+    final double levelCurveScale = 1.0 + (defeated.level * 0.045);
+    final double rawLevelFactor = pow(
       (2.0 * defeated.level + 10.0) / (defeated.level + winnerLevel + 10.0),
-      2.5,
+      2.0,
     ).toDouble();
-    return max(1, (baseYield * levelFactor).floor() + 1);
+    final double levelFactor = max(1.0, rawLevelFactor);
+    return max(10, (baseYield * levelCurveScale * levelFactor).round());
   }
 
   static double _stageMultiplier(int stage) {

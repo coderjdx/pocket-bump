@@ -548,7 +548,44 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
+
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFD54F).withOpacity(0.10),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color(0xFFFFD54F).withOpacity(0.35),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.card_giftcard_rounded,
+                size: 14,
+                color: Color(0xFFFFD54F),
+              ),
+              SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  "WELCOME GIFT: 20 Poké Balls • 10 Potions • 5 Revives",
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFFFFE082),
+                    letterSpacing: 0.25,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 8),
 
         SizedBox(
           width: double.infinity,
@@ -560,6 +597,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 newName: _nameController.text,
                 newAvatar: _selectedAvatar,
               );
+              trainer.grantWelcomeGift();
               trainer.addPokemon(selectedMon);
               Navigator.of(context).popUntil((r) => r.isFirst);
             },

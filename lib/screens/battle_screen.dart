@@ -1006,71 +1006,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     if (_opponentPokemon.isFainted) {
-      final int expGained = PokemonInstance.calculateBattleExp(
-        defeated: _opponentPokemon,
-        winnerLevel: _playerPokemon.level,
-        isTrainerBattle: !widget.isWild,
-      );
-
-      // Award EXP immediately upon defeating this Pokémon (split equally among all conscious
-      // party Pokémon when EXP Share is ON, or conscious battle participants when OFF)
-      final List<PokemonInstance> consciousParticipants = _trainer.expShareEnabled
-          ? _trainer.party.where((p) => !p.isFainted).toList()
-          : _participatedPokemon.where((p) => !p.isFainted).toList();
-      if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
-        consciousParticipants.add(_playerPokemon);
-      }
-
-      if (consciousParticipants.isNotEmpty) {
-        final int share = max(1, expGained ~/ consciousParticipants.length);
-        setState(() {
-          if (consciousParticipants.length == 1) {
-            _currentMessage =
-                "${consciousParticipants.first.nickname} gained $share EXP!";
-          } else if (_trainer.expShareEnabled &&
-              consciousParticipants.length > 3) {
-            _currentMessage =
-                "All conscious party Pokémon each gained $share EXP (EXP Share)!";
-          } else {
-            _currentMessage =
-                "${consciousParticipants.map((p) => p.nickname).join(', ')} each gained $share EXP!";
-          }
-        });
-        await Future.delayed(const Duration(milliseconds: 950));
-        if (!mounted) return;
-
-        for (final participant in consciousParticipants) {
-          final levelResult = participant.gainExpWithLearnset(
-            share,
-            PokedexDatabase.movesUnlockedAtExactLevel,
-          );
-          if (levelResult.leveledUp) {
-            setState(() {
-              if (participant == _playerPokemon) {
-                _displayedPlayerHp = _playerPokemon.currentHp;
-              }
-              _currentMessage =
-                  "${participant.nickname} grew to Level ${participant.level}!";
-            });
-            await Future.delayed(const Duration(milliseconds: 1000));
-            if (!mounted) return;
-
-            for (final moveName in levelResult.learnedMoves) {
-              setState(() {
-                _currentMessage = "${participant.nickname} learned $moveName!";
-              });
-              await Future.delayed(const Duration(milliseconds: 950));
-              if (!mounted) return;
-            }
-
-            if (participant.checkCanEvolve()) {
-              await _handleEvolution(participant);
-              if (!mounted) return;
-            }
-          }
-        }
-        _trainer.saveProgress();
-      }
+      await _awardExpForOpponent();
+      if (!mounted) return;
 
       // If trainer has more Pokémon in reserve, summon next Pokémon
       if (_opponentParty.isNotEmpty) {
@@ -1352,6 +1289,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
 
     if (caught) {
+      // Snapshot eligible EXP recipients before adding the newly caught Pokémon
+      // so it does not take a share of its own capture EXP when EXP Share is ON.
+      final List<PokemonInstance> captureExpRecipients = _resolveExpRecipients();
+
       // Phase 5a: Capture Lock & Golden Stars
       _opponentPokemon.caughtBall = ballType;
       final int? sentToBox = _trainer.addPokemon(_opponentPokemon);
@@ -1372,18 +1313,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _ballButtonGlowColor = Colors.amberAccent;
         _showCaptureLockBurst = true;
         _currentMessage =
-            "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
-        _battleEnded = true;
-        _isProcessingTurn = false;
+            "Gotcha! ${_opponentPokemon.species.name} was caught!";
       });
       _ballPhaseController.duration = const Duration(milliseconds: 520);
       _ballPhaseController.forward(from: 0);
 
-      await Future.delayed(const Duration(milliseconds: 520));
+      await Future.delayed(const Duration(milliseconds: 950));
       if (!mounted) return;
       setState(() {
         _ballButtonGlowColor = null;
         _showCaptureLockBurst = false;
+      });
+
+      await _awardExpForOpponent(explicitRecipients: captureExpRecipients);
+      if (!mounted) return;
+
+      _playerWon = true;
+      setState(() {
+        _currentMessage =
+            "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
+        _battleEnded = true;
+        _isProcessingTurn = false;
       });
     } else {
       // Phase 5b: Break-Free Open Capsule Burst
@@ -1436,6 +1386,77 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
       await _checkPostTurnConditions();
     }
+  }
+
+  List<PokemonInstance> _resolveExpRecipients() {
+    final List<PokemonInstance> consciousParticipants = _trainer.expShareEnabled
+        ? _trainer.party.where((p) => !p.isFainted).toList()
+        : _participatedPokemon.where((p) => !p.isFainted).toList();
+    if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
+      consciousParticipants.add(_playerPokemon);
+    }
+    return consciousParticipants;
+  }
+
+  Future<void> _awardExpForOpponent({
+    List<PokemonInstance>? explicitRecipients,
+  }) async {
+    final List<PokemonInstance> recipients =
+        explicitRecipients ?? _resolveExpRecipients();
+    if (recipients.isEmpty) return;
+
+    final int expGained = PokemonInstance.calculateBattleExp(
+      defeated: _opponentPokemon,
+      winnerLevel: _playerPokemon.level,
+      isTrainerBattle: !widget.isWild,
+    );
+
+    final int share = max(1, expGained ~/ recipients.length);
+    setState(() {
+      if (recipients.length == 1) {
+        _currentMessage = "${recipients.first.nickname} gained $share EXP!";
+      } else if (_trainer.expShareEnabled && recipients.length > 3) {
+        _currentMessage =
+            "All conscious party Pokémon each gained $share EXP (EXP Share)!";
+      } else {
+        _currentMessage =
+            "${recipients.map((p) => p.nickname).join(', ')} each gained $share EXP!";
+      }
+    });
+    await Future.delayed(const Duration(milliseconds: 950));
+    if (!mounted) return;
+
+    for (final participant in recipients) {
+      final levelResult = participant.gainExpWithLearnset(
+        share,
+        PokedexDatabase.movesUnlockedAtExactLevel,
+      );
+      if (levelResult.leveledUp) {
+        setState(() {
+          if (participant == _playerPokemon) {
+            _displayedPlayerHp = _playerPokemon.currentHp;
+          }
+          _currentMessage =
+              "${participant.nickname} grew to Level ${participant.level}!";
+        });
+        await Future.delayed(const Duration(milliseconds: 1000));
+        if (!mounted) return;
+
+        for (final moveName in levelResult.learnedMoves) {
+          setState(() {
+            _currentMessage = "${participant.nickname} learned $moveName!";
+          });
+          await Future.delayed(const Duration(milliseconds: 950));
+          if (!mounted) return;
+        }
+
+        if (participant.checkCanEvolve()) {
+          await _handleEvolution(participant);
+          if (!mounted) return;
+        }
+      }
+    }
+    _trainer.saveProgress();
   }
 
   @override
