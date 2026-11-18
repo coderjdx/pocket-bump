@@ -1084,7 +1084,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
 
         const SizedBox(height: 12),
         Text(
-          "REMEMBERED MOVES (${reserveMoves.length})",
+          "REMEMBERED & LEARNABLE MOVES (${reserveMoves.length})",
           style: const TextStyle(
             color: Colors.cyanAccent,
             fontSize: 10.5,
@@ -1093,9 +1093,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
           ),
         ),
         const SizedBox(height: 3),
-        const Text(
-          "Swap freely between any moves this Pokémon has already learned.",
-          style: TextStyle(color: Colors.white54, fontSize: 10.5),
+        Text(
+          "Includes all level-up moves up to Lv. ${mon.level}, pre-evolution moves, and TMs — swap freely anytime.",
+          style: const TextStyle(color: Colors.white54, fontSize: 10.5),
         ),
         const SizedBox(height: 8),
         if (reserveMoves.isEmpty)
@@ -1106,10 +1106,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: Colors.white10),
             ),
-            child: const Text(
-              "No reserve moves yet. As this Pokémon levels up or learns TMs, replaced or earlier moves appear here so you can swap them in anytime.",
+            child: Text(
+              "All moves unlocked up to Lv. ${mon.level} are already equipped above. New moves will appear here as this Pokémon levels up or learns TMs.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white54, fontSize: 11),
+              style: const TextStyle(color: Colors.white54, fontSize: 11),
             ),
           )
         else

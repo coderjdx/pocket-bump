@@ -269,11 +269,30 @@ class PokemonInstance {
     }
   }
 
-  /// Remembered moves this Pokémon has previously learned that are not currently active.
+  /// All moves this Pokémon can remember or swap in: every level-up move in
+  /// its evolutionary line up to its current level plus any TMs or replaced
+  /// moves recorded on this instance, excluding its currently active 4 moves.
   List<Move> get rememberedReserveMoves {
     final activeIds = moves.map((m) => m.id).toSet();
-    final List<Move> reserve = [];
+    final List<String> poolIds = [];
+    void addUnique(String id) {
+      if (id.isEmpty || !PokedexDatabase.moves.containsKey(id)) return;
+      if (!poolIds.contains(id)) {
+        poolIds.add(id);
+      }
+    }
+
+    for (final id
+        in PokedexDatabase.learnedMoveIdsUpToLevel(species, level)) {
+      recordLearnedMoveId(id);
+      addUnique(id);
+    }
     for (final id in learnedMoveIds) {
+      addUnique(id);
+    }
+
+    final List<Move> reserve = [];
+    for (final id in poolIds) {
       if (activeIds.contains(id)) continue;
       final template = PokedexDatabase.moves[id];
       if (template != null) {
