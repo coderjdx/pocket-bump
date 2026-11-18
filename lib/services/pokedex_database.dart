@@ -5494,12 +5494,19 @@ class PokedexDatabase {
   }
 
   static const List<int> firstStageFossilSpeciesIds = [138, 140, 142];
+  static const int shinyOddsDenominator = 4096;
+
+  static bool rollShiny(PokemonSpecies species) {
+    if (!species.isShinyEligible) return false;
+    return _rng.nextInt(shinyOddsDenominator) == 0;
+  }
 
   static PokemonInstance createPokemon(
     int speciesId, {
     int level = 5,
     String? nickname,
     bool respectMinEncounterLevel = true,
+    bool isShiny = false,
   }) {
     final spec = species[speciesId]!;
     final effectiveLevel =
@@ -5511,6 +5518,7 @@ class PokedexDatabase {
       nickname: nickname,
       level: effectiveLevel,
       moves: movesForSpeciesAtLevel(spec, effectiveLevel),
+      isShiny: isShiny && spec.isShinyEligible,
     );
   }
 
@@ -5561,7 +5569,8 @@ class PokedexDatabase {
     final minLvl = max(baseMin, chosen.minEncounterLevel).clamp(2, 100);
     final maxLvl = max(baseMax, minLvl).clamp(minLvl, 100);
     final level = minLvl + _rng.nextInt(maxLvl - minLvl + 1);
-    return createPokemon(chosen.id, level: level);
+    final bool isShiny = rollShiny(chosen);
+    return createPokemon(chosen.id, level: level, isShiny: isShiny);
   }
 
   // ─── RIVAL POKÉMON GENERATOR ──────────────────────────────────────────

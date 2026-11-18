@@ -80,16 +80,20 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     }
   }
 
-  Widget _buildPokemonSprite(PokemonSpecies species, {double size = 40}) {
+  Widget _buildPokemonSprite(
+    PokemonSpecies species, {
+    double size = 40,
+    bool isShiny = false,
+  }) {
     final fallbackColor = species.types.first.color;
     return Image.network(
-      species.spriteUrl,
+      isShiny ? species.shinySpriteUrl : species.spriteUrl,
       width: size,
       height: size,
       fit: BoxFit.contain,
       filterQuality: FilterQuality.none,
       errorBuilder: (_, __, ___) => Image.network(
-        species.staticSpriteUrl,
+        isShiny ? species.staticShinySpriteUrl : species.staticSpriteUrl,
         width: size,
         height: size,
         fit: BoxFit.contain,
@@ -432,7 +436,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   child: Center(
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: _buildPokemonSprite(mon.species, size: 36),
+                      child: _buildPokemonSprite(mon.species,
+                          size: 36, isShiny: mon.isShiny),
                     ),
                   ),
                 ),
@@ -447,6 +452,16 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ),
               ],
             ),
+            if (mon.isShiny)
+              const Positioned(
+                top: 2,
+                left: 2,
+                child: Icon(
+                  Icons.auto_awesome_rounded,
+                  color: Colors.amberAccent,
+                  size: 11,
+                ),
+              ),
             if (mon.hasHeldItem)
               const Positioned(
                 top: 2,
@@ -537,7 +552,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
           // Top info row
           Row(
             children: [
-              _buildPokemonSprite(selectedMon.species, size: 46),
+              _buildPokemonSprite(selectedMon.species,
+                  size: 46, isShiny: selectedMon.isShiny),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -963,7 +979,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   child: Center(
                     child: FittedBox(
                       fit: BoxFit.contain,
-                      child: _buildPokemonSprite(mon.species, size: 32),
+                      child: _buildPokemonSprite(mon.species,
+                          size: 32, isShiny: mon.isShiny),
                     ),
                   ),
                 ),
@@ -977,6 +994,16 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ),
               ],
             ),
+            if (mon.isShiny)
+              const Positioned(
+                top: 2,
+                right: 2,
+                child: Icon(
+                  Icons.auto_awesome_rounded,
+                  color: Colors.amberAccent,
+                  size: 10,
+                ),
+              ),
             if (idx == 0)
               Positioned(
                 top: 2,
@@ -1074,7 +1101,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     ),
                     child: Row(
                       children: [
-                        _buildPokemonSprite(partyMon.species, size: 38),
+                        _buildPokemonSprite(partyMon.species,
+                            size: 38, isShiny: partyMon.isShiny),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Column(

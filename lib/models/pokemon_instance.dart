@@ -60,6 +60,7 @@ class PokemonInstance {
   StatusCondition status;
   String? heldItemId;
   String caughtBall;
+  final bool isShiny;
 
   // In-battle stat stages (-6 to +6)
   int atkStage = 0;
@@ -79,7 +80,9 @@ class PokemonInstance {
     this.status = StatusCondition.none,
     this.heldItemId,
     this.caughtBall = 'poke_ball',
-  })  : nickname = nickname ?? species.name,
+    bool isShiny = false,
+  })  : isShiny = isShiny && species.isShinyEligible,
+        nickname = nickname ?? species.name,
         moves = (moves ?? []).take(4).toList(),
         learnedMoveIds = <String>[],
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
@@ -360,6 +363,16 @@ class PokemonInstance {
 
   bool get hasHeldItem => heldItemId != null && heldItemId!.isNotEmpty;
 
+  String get spriteUrl => isShiny ? species.shinySpriteUrl : species.spriteUrl;
+  String get backSpriteUrl =>
+      isShiny ? species.shinyBackSpriteUrl : species.backSpriteUrl;
+  String get staticSpriteUrl =>
+      isShiny ? species.staticShinySpriteUrl : species.staticSpriteUrl;
+  String get staticBackSpriteUrl =>
+      isShiny ? species.staticShinyBackSpriteUrl : species.staticBackSpriteUrl;
+  String get artworkUrl =>
+      isShiny ? species.shinyArtworkUrl : species.artworkUrl;
+
   void equipHeldItem(String id) {
     heldItemId = id;
   }
@@ -380,6 +393,7 @@ class PokemonInstance {
       'status': status.name,
       'heldItemId': heldItemId,
       'caughtBall': caughtBall,
+      'isShiny': isShiny,
       'learnedMoveIds': learnedMoveIds,
       'moves': moves
           .map((m) => {
@@ -429,6 +443,7 @@ class PokemonInstance {
     final rawNickname = json['nickname'] as String?;
     final String? heldItem = json['heldItemId'] as String?;
     final String caughtBall = (json['caughtBall'] as String?) ?? 'poke_ball';
+    final bool isShiny = json['isShiny'] == true;
     final rawLearned = json['learnedMoveIds'] as List<dynamic>?;
     final List<String>? savedLearnedIds =
         rawLearned?.whereType<String>().toList();
@@ -445,6 +460,7 @@ class PokemonInstance {
       status: restoredStatus,
       heldItemId: heldItem,
       caughtBall: caughtBall,
+      isShiny: isShiny,
     );
   }
 }

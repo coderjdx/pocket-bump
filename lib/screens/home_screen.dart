@@ -508,24 +508,50 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             },
                             child: Opacity(
                               opacity: lead.isFainted ? 0.5 : 1.0,
-                              child: Image.network(
-                                lead.species.spriteUrl,
-                                width: 92,
-                                height: 92,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                                errorBuilder: (c, e, s) => Image.network(
-                                  lead.species.staticSpriteUrl,
-                                  width: 92,
-                                  height: 92,
-                                  fit: BoxFit.contain,
-                                  filterQuality: FilterQuality.none,
-                                  errorBuilder: (c2, e2, s2) => Icon(
-                                    Icons.catching_pokemon,
-                                    color: accentColor,
-                                    size: 56,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Image.network(
+                                    lead.spriteUrl,
+                                    width: 92,
+                                    height: 92,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.none,
+                                    errorBuilder: (c, e, s) => Image.network(
+                                      lead.staticSpriteUrl,
+                                      width: 92,
+                                      height: 92,
+                                      fit: BoxFit.contain,
+                                      filterQuality: FilterQuality.none,
+                                      errorBuilder: (c2, e2, s2) => Icon(
+                                        Icons.catching_pokemon,
+                                        color: accentColor,
+                                        size: 56,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  if (lead.isShiny)
+                                    Positioned(
+                                      top: 0,
+                                      right: -2,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xCC151824),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.amberAccent
+                                                .withOpacity(0.8),
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.auto_awesome_rounded,
+                                          color: Colors.amberAccent,
+                                          size: 13,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
@@ -1416,23 +1442,39 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               children: [
                                 Row(
                                   children: [
-                                    Image.network(
-                                      mon.species.spriteUrl,
-                                      width: 54,
-                                      height: 54,
-                                      fit: BoxFit.contain,
-                                      filterQuality: FilterQuality.none,
-                                      errorBuilder: (_, __, ___) => Image.network(
-                                        mon.species.staticSpriteUrl,
-                                        width: 54,
-                                        height: 54,
-                                        filterQuality: FilterQuality.none,
-                                        errorBuilder: (_, __, ___) => Icon(
-                                          Icons.catching_pokemon,
-                                          color: typeColor,
-                                          size: 40,
+                                    Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Image.network(
+                                          mon.spriteUrl,
+                                          width: 54,
+                                          height: 54,
+                                          fit: BoxFit.contain,
+                                          filterQuality: FilterQuality.none,
+                                          errorBuilder: (_, __, ___) =>
+                                              Image.network(
+                                            mon.staticSpriteUrl,
+                                            width: 54,
+                                            height: 54,
+                                            filterQuality: FilterQuality.none,
+                                            errorBuilder: (_, __, ___) => Icon(
+                                              Icons.catching_pokemon,
+                                              color: typeColor,
+                                              size: 40,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        if (mon.isShiny)
+                                          const Positioned(
+                                            top: -2,
+                                            right: -2,
+                                            child: Icon(
+                                              Icons.auto_awesome_rounded,
+                                              color: Colors.amberAccent,
+                                              size: 13,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
@@ -2020,13 +2062,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           width: 42,
                           height: 42,
                           child: Image.network(
-                            mon.species.spriteUrl,
+                            mon.spriteUrl,
                             width: 42,
                             height: 42,
                             fit: BoxFit.contain,
                             filterQuality: FilterQuality.none,
                             errorBuilder: (_, __, ___) => Image.network(
-                              mon.species.staticSpriteUrl,
+                              mon.staticSpriteUrl,
                               width: 42,
                               height: 42,
                               filterQuality: FilterQuality.none,
@@ -2105,7 +2147,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       PokedexDatabase.movesUnlockedAtExactLevel(nextSpecies, mon.level),
       pendingMovesOut: pendingEvoMoves,
     );
-    trainer.markPokemonCaught(nextSpecies.id);
+    trainer.markPokemonCaught(nextSpecies.id, isShiny: mon.isShiny);
     trainer.saveProgress();
 
     await EvolutionScreen.show(
@@ -2114,6 +2156,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       toSpecies: nextSpecies,
       oldNickname: oldName,
       learnedMoves: evoMoves,
+      isShiny: mon.isShiny,
     );
     if (mounted && pendingEvoMoves.isNotEmpty) {
       for (final newMove in pendingEvoMoves) {
@@ -2258,7 +2301,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       child: Row(
                         children: [
                           Image.network(
-                            mon.species.spriteUrl,
+                            mon.spriteUrl,
                             width: 38,
                             height: 38,
                             fit: BoxFit.contain,
@@ -2794,7 +2837,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       child: Row(
                         children: [
                           Image.network(
-                            mon.species.spriteUrl,
+                            mon.spriteUrl,
                             width: 36,
                             height: 36,
                             fit: BoxFit.contain,

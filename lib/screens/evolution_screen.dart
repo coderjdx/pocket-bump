@@ -9,6 +9,7 @@ class EvolutionScreen extends StatefulWidget {
   final PokemonSpecies toSpecies;
   final String oldNickname;
   final List<String> learnedMoves;
+  final bool isShiny;
 
   const EvolutionScreen({
     super.key,
@@ -16,6 +17,7 @@ class EvolutionScreen extends StatefulWidget {
     required this.toSpecies,
     required this.oldNickname,
     this.learnedMoves = const [],
+    this.isShiny = false,
   });
 
   static Future<void> show(
@@ -24,6 +26,7 @@ class EvolutionScreen extends StatefulWidget {
     required PokemonSpecies toSpecies,
     required String oldNickname,
     List<String> learnedMoves = const [],
+    bool isShiny = false,
   }) {
     return Navigator.of(context).push<void>(
       PageRouteBuilder(
@@ -35,6 +38,7 @@ class EvolutionScreen extends StatefulWidget {
           toSpecies: toSpecies,
           oldNickname: oldNickname,
           learnedMoves: learnedMoves,
+          isShiny: isShiny,
         ),
         transitionsBuilder: (_, animation, __, child) {
           return FadeTransition(opacity: animation, child: child);
@@ -91,13 +95,19 @@ class _EvolutionScreenState extends State<EvolutionScreen>
     });
   }
 
+  String _spriteFor(PokemonSpecies species) =>
+      widget.isShiny ? species.shinySpriteUrl : species.spriteUrl;
+
+  String _staticSpriteFor(PokemonSpecies species) =>
+      widget.isShiny ? species.staticShinySpriteUrl : species.staticSpriteUrl;
+
   Future<void> _runEvolutionSequence() async {
     if (!mounted) return;
     // Preload pre-evolution and evolved sprites so there's zero pop-in mid-morph
     await Future.wait([
-      precacheImage(NetworkImage(widget.fromSpecies.spriteUrl), context)
+      precacheImage(NetworkImage(_spriteFor(widget.fromSpecies)), context)
           .catchError((_) {}),
-      precacheImage(NetworkImage(widget.toSpecies.spriteUrl), context)
+      precacheImage(NetworkImage(_spriteFor(widget.toSpecies)), context)
           .catchError((_) {}),
     ]).timeout(const Duration(milliseconds: 1200), onTimeout: () => const []);
     if (!mounted) return;
@@ -139,13 +149,13 @@ class _EvolutionScreenState extends State<EvolutionScreen>
     required bool whiteSilhouette,
   }) {
     final Widget raw = Image.network(
-      species.spriteUrl,
+      _spriteFor(species),
       width: size,
       height: size,
       fit: BoxFit.contain,
       filterQuality: FilterQuality.none,
       errorBuilder: (_, __, ___) => Image.network(
-        species.staticSpriteUrl,
+        _staticSpriteFor(species),
         width: size,
         height: size,
         fit: BoxFit.contain,

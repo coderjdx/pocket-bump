@@ -141,6 +141,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   double _opponentSummonScale = 1.0;
   bool _showOpponentSummonBallArc = false;
   bool _showOpponentSummonBurst = false;
+  bool _showOpponentShinySparkle = false;
+  bool _showPlayerShinySparkle = false;
   String _opponentHeldBallType = 'poke_ball';
 
   // Active full-arena VFX overlay state
@@ -195,7 +197,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _displayedOpponentHp = _opponentPokemon.currentHp;
 
     _currentMessage = widget.isWild
-        ? "A wild ${_opponentPokemon.species.name} appeared!"
+        ? (_opponentPokemon.isShiny
+            ? "A shiny wild ${_opponentPokemon.species.name} appeared!"
+            : "A wild ${_opponentPokemon.species.name} appeared!")
         : "${widget.trainerName ?? 'Rival Blue'} wants to battle!";
 
     _idleController = AnimationController(
@@ -322,10 +326,36 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     return Offset(xOffset + bgX * scale, yOffset + bgY * scale);
   }
 
+  Future<void> _playShinySparkle({required bool isPlayer}) async {
+    if (!mounted) return;
+    HapticFeedback.heavyImpact();
+    setState(() {
+      if (isPlayer) {
+        _showPlayerShinySparkle = true;
+      } else {
+        _showOpponentShinySparkle = true;
+      }
+    });
+    await Future.delayed(const Duration(milliseconds: 880));
+    if (!mounted) return;
+    setState(() {
+      if (isPlayer) {
+        _showPlayerShinySparkle = false;
+      } else {
+        _showOpponentShinySparkle = false;
+      }
+    });
+  }
+
   Future<void> _playBattleIntroSummon() async {
     if (!mounted) return;
     await Future.delayed(const Duration(milliseconds: 650));
     if (!mounted) return;
+
+    if (widget.isWild && _opponentPokemon.isShiny) {
+      await _playShinySparkle(isPlayer: false);
+      if (!mounted) return;
+    }
 
     if (!widget.isWild) {
       setState(() {
@@ -399,6 +429,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     setState(() {
       _showOpponentSummonBurst = false;
     });
+    if (mon.isShiny) {
+      await _playShinySparkle(isPlayer: false);
+    }
   }
 
   Future<void> _animateTrainerSummonThrow(PokemonInstance mon) async {
@@ -453,6 +486,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     setState(() {
       _showSummonBurst = false;
     });
+    if (mon.isShiny) {
+      await _playShinySparkle(isPlayer: true);
+    }
   }
 
   Future<void> _performPokemonSwitch(
@@ -1033,7 +1069,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (wasFainted) {
       participant.currentHp = 0;
     }
-    _trainer.markPokemonCaught(nextSpecies.id);
+    _trainer.markPokemonCaught(nextSpecies.id, isShiny: participant.isShiny);
     _trainer.saveProgress();
 
     await EvolutionScreen.show(
@@ -1042,6 +1078,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       toSpecies: nextSpecies,
       oldNickname: oldName,
       learnedMoves: evoMoves,
+      isShiny: participant.isShiny,
     );
     if (!mounted) return;
 
@@ -2549,9 +2586,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         curve: Curves.easeOutBack,
                                         alignment: Alignment.bottomCenter,
                                         child: _buildAnimatedCombatant(
-                                          url: _opponentPokemon.species.spriteUrl,
-                                          fallbackUrl: _opponentPokemon
-                                              .species.staticSpriteUrl,
+                                          url: _opponentPokemon.spriteUrl,
+                                          fallbackUrl:
+                                              _opponentPokemon.staticSpriteUrl,
                                           size: oppSize,
                                           isFainted: _visualOpponentFainted,
                                           isSubmerged: _opponentSubmerged,
@@ -2573,6 +2610,20 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             painter: _SummonBurstPainter(progress: t),
                                           );
                                         },
+                                      ),
+                                    if (_showOpponentShinySparkle)
+                                      IgnorePointer(
+                                        child: TweenAnimationBuilder<double>(
+                                          tween: Tween<double>(begin: 0.0, end: 1.0),
+                                          duration: const Duration(milliseconds: 880),
+                                          builder: (context, t, _) {
+                                            return CustomPaint(
+                                              size: const Size(156, 156),
+                                              painter:
+                                                  _ShinySparklePainter(progress: t),
+                                            );
+                                          },
+                                        ),
                                       ),
                                     AnimatedBuilder(
                                       animation: _opponentKoController,
@@ -2641,9 +2692,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         duration: const Duration(milliseconds: 280),
                                         curve: Curves.easeOutBack,
                                         child: _buildAnimatedCombatant(
-                                          url: _playerPokemon.species.backSpriteUrl,
+                                          url: _playerPokemon.backSpriteUrl,
                                           fallbackUrl:
-                                              _playerPokemon.species.staticBackSpriteUrl,
+                                              _playerPokemon.staticBackSpriteUrl,
                                           size: playerSize,
                                           isFainted: _visualPlayerFainted,
                                           isSubmerged: _playerSubmerged,
@@ -2684,6 +2735,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             painter: _SummonBurstPainter(progress: t),
                                           );
                                         },
+                                      ),
+
+                                    if (_showPlayerShinySparkle)
+                                      IgnorePointer(
+                                        child: TweenAnimationBuilder<double>(
+                                          tween: Tween<double>(begin: 0.0, end: 1.0),
+                                          duration: const Duration(milliseconds: 880),
+                                          builder: (context, t, _) {
+                                            return CustomPaint(
+                                              size: const Size(184, 184),
+                                              painter:
+                                                  _ShinySparklePainter(progress: t),
+                                            );
+                                          },
+                                        ),
                                       ),
 
                                     if (_floatingCallout != null && !_calloutOnOpponent)
@@ -3490,10 +3556,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       decoration: BoxDecoration(
         color: const Color(0xFF23232E).withOpacity(0.92),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white24, width: 1.2),
+        border: Border.all(
+          color: mon.isShiny
+              ? Colors.amberAccent.withOpacity(0.75)
+              : Colors.white24,
+          width: mon.isShiny ? 1.4 : 1.2,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.35),
+            color: (mon.isShiny ? Colors.amberAccent : Colors.black)
+                .withOpacity(mon.isShiny ? 0.25 : 0.35),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -3560,6 +3632,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         size: 13,
                       ),
                       const SizedBox(width: 4),
+                    ],
+                    if (mon.isShiny) ...[
+                      const Icon(
+                        Icons.auto_awesome_rounded,
+                        color: Colors.amberAccent,
+                        size: 13,
+                      ),
+                      const SizedBox(width: 3),
                     ],
                     Flexible(
                       child: Text(
@@ -4197,13 +4277,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                           child: Row(
                             children: [
                               Image.network(
-                                mon.species.spriteUrl,
+                                mon.spriteUrl,
                                 width: 42,
                                 height: 42,
                                 fit: BoxFit.contain,
                                 filterQuality: FilterQuality.none,
                                 errorBuilder: (_, __, ___) => Image.network(
-                                  mon.species.staticSpriteUrl,
+                                  mon.staticSpriteUrl,
                                   width: 42,
                                   height: 42,
                                   filterQuality: FilterQuality.none,
@@ -4221,6 +4301,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                   children: [
                                     Row(
                                       children: [
+                                        if (mon.isShiny) ...[
+                                          const Icon(
+                                            Icons.auto_awesome_rounded,
+                                            color: Colors.amberAccent,
+                                            size: 13,
+                                          ),
+                                          const SizedBox(width: 4),
+                                        ],
                                         Text(
                                           mon.nickname,
                                           style: const TextStyle(
@@ -4812,13 +4900,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               Opacity(
                                 opacity: mon.isFainted ? 0.45 : 1.0,
                                 child: Image.network(
-                                  mon.species.spriteUrl,
+                                  mon.spriteUrl,
                                   width: 38,
                                   height: 38,
                                   fit: BoxFit.contain,
                                   filterQuality: FilterQuality.none,
                                   errorBuilder: (c, e, s) => Image.network(
-                                    mon.species.staticSpriteUrl,
+                                    mon.staticSpriteUrl,
                                     width: 38,
                                     height: 38,
                                     fit: BoxFit.contain,
@@ -4839,6 +4927,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                   children: [
                                     Row(
                                       children: [
+                                        if (mon.isShiny) ...[
+                                          const Icon(
+                                            Icons.auto_awesome_rounded,
+                                            color: Colors.amberAccent,
+                                            size: 13,
+                                          ),
+                                          const SizedBox(width: 4),
+                                        ],
                                         Flexible(
                                           child: Text(
                                             mon.nickname,
@@ -5138,6 +5234,74 @@ class _SummonBurstPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _SummonBurstPainter oldDelegate) =>
+      oldDelegate.progress != progress;
+}
+
+class _ShinySparklePainter extends CustomPainter {
+  final double progress;
+
+  _ShinySparklePainter({required this.progress});
+
+  void _drawFourPointStar(Canvas canvas, Offset center, double r, Paint paint) {
+    final path = Path()
+      ..moveTo(center.dx, center.dy - r)
+      ..quadraticBezierTo(
+          center.dx + r * 0.16, center.dy - r * 0.16, center.dx + r, center.dy)
+      ..quadraticBezierTo(
+          center.dx + r * 0.16, center.dy + r * 0.16, center.dx, center.dy + r)
+      ..quadraticBezierTo(
+          center.dx - r * 0.16, center.dy + r * 0.16, center.dx - r, center.dy)
+      ..quadraticBezierTo(
+          center.dx - r * 0.16, center.dy - r * 0.16, center.dx, center.dy - r)
+      ..close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final t = progress.clamp(0.0, 1.0);
+    final center = Offset(size.width / 2, size.height * 0.52);
+    final fade = t < 0.2 ? (t / 0.2) : (1.0 - ((t - 0.2) / 0.8)).clamp(0.0, 1.0);
+
+    // Subtle expanding prismatic golden aura ring
+    final ringRadius = size.width * (0.18 + t * 0.34);
+    canvas.drawCircle(
+      center,
+      ringRadius,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3.5 * fade
+        ..color = Colors.amberAccent.withOpacity(0.65 * fade),
+    );
+
+    const colors = [
+      Colors.amberAccent,
+      Colors.white,
+      Colors.cyanAccent,
+      Color(0xFFFFD54F),
+    ];
+
+    // Orbiting 4-point diamond stars bursting outward cleanly
+    for (int i = 0; i < 8; i++) {
+      final baseAngle = (i / 8) * pi * 2 + t * 1.4;
+      final dist = size.width * (0.14 + Curves.easeOut.transform(t) * 0.36);
+      final starCenter =
+          center + Offset(cos(baseAngle) * dist, sin(baseAngle) * dist * 0.82);
+      final starScale = sin(t * pi).clamp(0.0, 1.0);
+      final starRadius = ((i.isEven ? 12.0 : 8.5) * starScale).clamp(0.0, 16.0);
+      if (starRadius > 0.5) {
+        _drawFourPointStar(
+          canvas,
+          starCenter,
+          starRadius,
+          Paint()..color = colors[i % colors.length].withOpacity(0.95 * fade),
+        );
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ShinySparklePainter oldDelegate) =>
       oldDelegate.progress != progress;
 }
 

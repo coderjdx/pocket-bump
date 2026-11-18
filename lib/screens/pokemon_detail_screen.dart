@@ -357,34 +357,54 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           color: const Color(0xFF0A0D18),
                           borderRadius: BorderRadius.circular(18),
                           border: Border.all(
-                              color: typeColor.withOpacity(0.65), width: 1.5),
+                              color: mon.isShiny
+                                  ? Colors.amberAccent.withOpacity(0.85)
+                                  : typeColor.withOpacity(0.65),
+                              width: mon.isShiny ? 2.0 : 1.5),
                           boxShadow: [
                             BoxShadow(
-                              color: typeColor.withOpacity(0.22),
+                              color: (mon.isShiny
+                                      ? Colors.amberAccent
+                                      : typeColor)
+                                  .withOpacity(0.28),
                               blurRadius: 14,
                             ),
                           ],
                         ),
-                        child: Center(
-                          child: Image.network(
-                            mon.species.spriteUrl,
-                            width: 68,
-                            height: 68,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => Image.network(
-                              mon.species.staticSpriteUrl,
-                              width: 68,
-                              height: 68,
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.none,
-                              errorBuilder: (_, __, ___) => Icon(
-                                Icons.catching_pokemon,
-                                color: typeColor,
-                                size: 42,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image.network(
+                                mon.spriteUrl,
+                                width: 68,
+                                height: 68,
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.none,
+                                errorBuilder: (_, __, ___) => Image.network(
+                                  mon.staticSpriteUrl,
+                                  width: 68,
+                                  height: 68,
+                                  fit: BoxFit.contain,
+                                  filterQuality: FilterQuality.none,
+                                  errorBuilder: (_, __, ___) => Icon(
+                                    Icons.catching_pokemon,
+                                    color: typeColor,
+                                    size: 42,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            if (mon.isShiny)
+                              const Positioned(
+                                top: 4,
+                                right: 4,
+                                child: Icon(
+                                  Icons.auto_awesome_rounded,
+                                  color: Colors.amberAccent,
+                                  size: 14,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -397,6 +417,42 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 PokeBallSpriteWidget(
                                     ballType: mon.caughtBall, size: 16),
                                 const SizedBox(width: 6),
+                                if (mon.isShiny) ...[
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 1.5),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Colors.amberAccent.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(6),
+                                      border: Border.all(
+                                        color:
+                                            Colors.amberAccent.withOpacity(0.8),
+                                      ),
+                                    ),
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.auto_awesome_rounded,
+                                          color: Colors.amberAccent,
+                                          size: 10,
+                                        ),
+                                        SizedBox(width: 2),
+                                        Text(
+                                          "SHINY",
+                                          style: TextStyle(
+                                            color: Colors.amberAccent,
+                                            fontSize: 8.5,
+                                            fontWeight: FontWeight.w900,
+                                            letterSpacing: 0.4,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                                 Expanded(
                                   child: Text(
                                     mon.nickname,

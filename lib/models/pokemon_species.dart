@@ -255,5 +255,26 @@ class PokemonSpecies {
   String get artworkUrl =>
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png';
 
+  String get shinySpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/shiny/$id.gif';
+
+  String get shinyBackSpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/shiny/$id.gif';
+
+  String get staticShinySpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/$id.png';
+
+  String get staticShinyBackSpriteUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/$id.png';
+
+  String get shinyArtworkUrl =>
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/$id.png';
+
+  /// Only the base 146 non-Legendary / non-Mythical Kanto roster can be shiny.
+  bool get isShinyEligible =>
+      !isLegendary &&
+      !isMythical &&
+      !const {144, 145, 146, 150, 151}.contains(id);
+
   bool get isDualType => types.length > 1;
 }

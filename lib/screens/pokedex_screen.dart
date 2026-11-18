@@ -314,8 +314,14 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               final spec = PokedexDatabase.species[id]!;
                               final bool isCaught = trainer.isSpeciesCaught(id);
                               final bool isSeen = trainer.isSpeciesSeen(id);
-                              return _buildDexCard(spec,
-                                  isSeen: isSeen, isCaught: isCaught);
+                              final bool isShinyCaught =
+                                  trainer.isSpeciesShinyCaught(id);
+                              return _buildDexCard(
+                                spec,
+                                isSeen: isSeen,
+                                isCaught: isCaught,
+                                isShinyCaught: isShinyCaught,
+                              );
                             },
                           ),
                   ),
@@ -366,6 +372,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
     PokemonSpecies spec, {
     required bool isSeen,
     required bool isCaught,
+    bool isShinyCaught = false,
   }) {
     final Color primaryColor = spec.types.first.color;
     final String dexNum = "#${spec.id.toString().padLeft(3, '0')}";
@@ -381,7 +388,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
           );
           return;
         }
-        _openEntryDetail(spec, isCaught: isCaught);
+        _openEntryDetail(spec, isCaught: isCaught, isShinyCaught: isShinyCaught);
       },
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -412,13 +419,26 @@ class _PokedexScreenState extends State<PokedexScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  dexNum,
-                  style: TextStyle(
-                    color: isSeen ? Colors.white70 : Colors.white30,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 10.5,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      dexNum,
+                      style: TextStyle(
+                        color: isSeen ? Colors.white70 : Colors.white30,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 10.5,
+                      ),
+                    ),
+                    if (isShinyCaught) ...[
+                      const SizedBox(width: 3),
+                      const Icon(
+                        Icons.auto_awesome_rounded,
+                        color: Colors.amberAccent,
+                        size: 11,
+                      ),
+                    ],
+                  ],
                 ),
                 if (isCaught)
                   Container(
@@ -608,12 +628,17 @@ class _PokedexScreenState extends State<PokedexScreen> {
     );
   }
 
-  void _openEntryDetail(PokemonSpecies spec, {required bool isCaught}) {
+  void _openEntryDetail(
+    PokemonSpecies spec, {
+    required bool isCaught,
+    bool isShinyCaught = false,
+  }) {
     final primaryColor = spec.types.first.color;
     final dexNum = "#${spec.id.toString().padLeft(3, '0')}";
     final PokemonSpecies? evoTarget = spec.evolutionSpeciesId != null
         ? PokedexDatabase.species[spec.evolutionSpeciesId!]
         : null;
+    bool showShiny = isShinyCaught;
 
     showModalBottomSheet(
       context: context,
@@ -623,104 +648,170 @@ class _PokedexScreenState extends State<PokedexScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) {
-        return SizedBox(
-          height: MediaQuery.of(ctx).size.height * 0.78,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return StatefulBuilder(
+          builder: (ctx, setModalState) {
+            return SizedBox(
+              height: MediaQuery.of(ctx).size.height * 0.78,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Header
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "$dexNum  ${spec.name}",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              "$dexNum  ${spec.name}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close, color: Colors.white60),
+                          onPressed: () => Navigator.pop(ctx),
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white60),
-                      onPressed: () => Navigator.pop(ctx),
-                    ),
-                  ],
-                ),
 
-                // Status badge (Caught vs Encountered Only)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: isCaught
-                        ? Colors.greenAccent.withOpacity(0.14)
-                        : Colors.amberAccent.withOpacity(0.14),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: isCaught
-                          ? Colors.greenAccent.withOpacity(0.5)
-                          : Colors.amberAccent.withOpacity(0.5),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (isCaught)
-                        const PokeBallSymbol(size: 16, isCaught: true)
-                      else
-                        const Icon(Icons.visibility, color: Colors.amberAccent, size: 16),
-                      const SizedBox(width: 7),
-                      Text(
-                        isCaught
-                            ? "CAUGHT & REGISTERED"
-                            : "ENCOUNTERED ONLY (NOT YET CAUGHT)",
-                        style: TextStyle(
-                          color: isCaught ? Colors.greenAccent : Colors.amberAccent,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Hero Sprite + Types + Height
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 130,
-                        height: 130,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0A0B14),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(color: primaryColor.withOpacity(0.5)),
-                        ),
-                        child: Center(
-                          child: Image.network(
-                            spec.spriteUrl,
-                            width: 102,
-                            height: 102,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => Image.network(
-                              spec.staticSpriteUrl,
-                              width: 102,
-                              height: 102,
-                              filterQuality: FilterQuality.none,
-                              errorBuilder: (_, __, ___) =>
-                                  Icon(Icons.catching_pokemon, size: 64, color: primaryColor),
+                    // Status badge + optional Shiny toggle
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: isCaught
+                                ? Colors.greenAccent.withOpacity(0.14)
+                                : Colors.amberAccent.withOpacity(0.14),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isCaught
+                                  ? Colors.greenAccent.withOpacity(0.5)
+                                  : Colors.amberAccent.withOpacity(0.5),
                             ),
                           ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (isCaught)
+                                const PokeBallSymbol(size: 16, isCaught: true)
+                              else
+                                const Icon(Icons.visibility,
+                                    color: Colors.amberAccent, size: 16),
+                              const SizedBox(width: 7),
+                              Text(
+                                isCaught
+                                    ? "CAUGHT & REGISTERED"
+                                    : "ENCOUNTERED ONLY (NOT YET CAUGHT)",
+                                style: TextStyle(
+                                  color: isCaught
+                                      ? Colors.greenAccent
+                                      : Colors.amberAccent,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        if (isShinyCaught)
+                          InkWell(
+                            onTap: () =>
+                                setModalState(() => showShiny = !showShiny),
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: BoxDecoration(
+                                color: showShiny
+                                    ? Colors.amberAccent.withOpacity(0.22)
+                                    : Colors.white10,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: showShiny
+                                      ? Colors.amberAccent
+                                      : Colors.white24,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.auto_awesome_rounded,
+                                    size: 14,
+                                    color: showShiny
+                                        ? Colors.amberAccent
+                                        : Colors.white54,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    showShiny ? "SHINY FORM" : "NORMAL FORM",
+                                    style: TextStyle(
+                                      color: showShiny
+                                          ? Colors.amberAccent
+                                          : Colors.white70,
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Hero Sprite + Types + Height
+                    Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 130,
+                            height: 130,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF0A0B14),
+                              borderRadius: BorderRadius.circular(22),
+                              border: Border.all(
+                                color: showShiny
+                                    ? Colors.amberAccent.withOpacity(0.75)
+                                    : primaryColor.withOpacity(0.5),
+                              ),
+                            ),
+                            child: Center(
+                              child: Image.network(
+                                showShiny ? spec.shinySpriteUrl : spec.spriteUrl,
+                                width: 102,
+                                height: 102,
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.none,
+                                errorBuilder: (_, __, ___) => Image.network(
+                                  showShiny
+                                      ? spec.staticShinySpriteUrl
+                                      : spec.staticSpriteUrl,
+                                  width: 102,
+                                  height: 102,
+                                  filterQuality: FilterQuality.none,
+                                  errorBuilder: (_, __, ___) => Icon(
+                                    Icons.catching_pokemon,
+                                    size: 64,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                       const SizedBox(height: 10),
                       Wrap(
                         spacing: 6,
@@ -858,6 +949,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
               ],
             ),
           ),
+        );
+          },
         );
       },
     );

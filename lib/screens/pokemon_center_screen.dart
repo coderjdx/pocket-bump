@@ -823,13 +823,13 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
               width: 90,
               height: 90,
               child: Image.network(
-                restoredMon.species.spriteUrl,
+                restoredMon.spriteUrl,
                 width: 90,
                 height: 90,
                 fit: BoxFit.contain,
                 filterQuality: FilterQuality.none,
                 errorBuilder: (_, __, ___) => Image.network(
-                  restoredMon.species.staticSpriteUrl,
+                  restoredMon.staticSpriteUrl,
                   width: 90,
                   height: 90,
                   fit: BoxFit.contain,

@@ -42,6 +42,7 @@ class Trainer extends ChangeNotifier {
   int badges;
   Set<int> seenSpeciesIds;
   Set<int> caughtSpeciesIds;
+  Set<int> shinyCaughtSpeciesIds;
   Set<int> unlockedGymIds;
   Set<int> clearedGymIds;
   Set<int> completedGymStepIds;
@@ -78,6 +79,7 @@ class Trainer extends ChangeNotifier {
     this.badges = 0,
     Set<int>? seenSpeciesIds,
     Set<int>? caughtSpeciesIds,
+    Set<int>? shinyCaughtSpeciesIds,
     Set<int>? unlockedGymIds,
     Set<int>? clearedGymIds,
     Set<int>? completedGymStepIds,
@@ -90,6 +92,7 @@ class Trainer extends ChangeNotifier {
         lastStepDate = lastStepDate ?? todayDateKey(),
         seenSpeciesIds = seenSpeciesIds ?? {},
         caughtSpeciesIds = caughtSpeciesIds ?? {},
+        shinyCaughtSpeciesIds = shinyCaughtSpeciesIds ?? {},
         unlockedGymIds = unlockedGymIds ?? {1},
         clearedGymIds = clearedGymIds ?? {},
         completedGymStepIds = completedGymStepIds ?? {},
@@ -107,11 +110,17 @@ class Trainer extends ChangeNotifier {
     for (final mon in this.party) {
       this.seenSpeciesIds.add(mon.species.id);
       this.caughtSpeciesIds.add(mon.species.id);
+      if (mon.isShiny) {
+        this.shinyCaughtSpeciesIds.add(mon.species.id);
+      }
     }
     for (final box in this.pcBoxes) {
       for (final mon in box) {
         this.seenSpeciesIds.add(mon.species.id);
         this.caughtSpeciesIds.add(mon.species.id);
+        if (mon.isShiny) {
+          this.shinyCaughtSpeciesIds.add(mon.species.id);
+        }
       }
     }
   }
@@ -162,6 +171,12 @@ class Trainer extends ChangeNotifier {
       party.any((p) => p.species.id == speciesId) ||
       pcBoxes.any((box) => box.any((p) => p.species.id == speciesId));
 
+  bool isSpeciesShinyCaught(int speciesId) =>
+      shinyCaughtSpeciesIds.contains(speciesId) ||
+      party.any((p) => p.species.id == speciesId && p.isShiny) ||
+      pcBoxes.any(
+          (box) => box.any((p) => p.species.id == speciesId && p.isShiny));
+
   bool isSpeciesSeen(int speciesId) =>
       seenSpeciesIds.contains(speciesId) || isSpeciesCaught(speciesId);
 
@@ -183,10 +198,11 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  void markPokemonCaught(int speciesId) {
+  void markPokemonCaught(int speciesId, {bool isShiny = false}) {
     final addedSeen = seenSpeciesIds.add(speciesId);
     final addedCaught = caughtSpeciesIds.add(speciesId);
-    if ((addedSeen || addedCaught) && party.isNotEmpty) {
+    final addedShiny = isShiny && shinyCaughtSpeciesIds.add(speciesId);
+    if ((addedSeen || addedCaught || addedShiny) && party.isNotEmpty) {
       notifyListeners();
     }
   }
@@ -215,6 +231,9 @@ class Trainer extends ChangeNotifier {
     mon.resetBattleStateAndHeal();
     seenSpeciesIds.add(mon.species.id);
     caughtSpeciesIds.add(mon.species.id);
+    if (mon.isShiny) {
+      shinyCaughtSpeciesIds.add(mon.species.id);
+    }
     if (party.length < 6) {
       party.add(mon);
       notifyListeners();
@@ -819,6 +838,7 @@ class Trainer extends ChangeNotifier {
       'badges': badges,
       'seenSpeciesIds': seenSpeciesIds.toList()..sort(),
       'caughtSpeciesIds': caughtSpeciesIds.toList()..sort(),
+      'shinyCaughtSpeciesIds': shinyCaughtSpeciesIds.toList()..sort(),
       'unlockedGymIds': unlockedGymIds.toList()..sort(),
       'clearedGymIds': clearedGymIds.toList()..sort(),
       'completedGymStepIds': completedGymStepIds.toList()..sort(),
@@ -922,9 +942,17 @@ class Trainer extends ChangeNotifier {
         .whereType<num>()
         .map((n) => n.toInt())
         .toSet();
+    shinyCaughtSpeciesIds =
+        (json['shinyCaughtSpeciesIds'] as List<dynamic>? ?? const [])
+            .whereType<num>()
+            .map((n) => n.toInt())
+            .toSet();
     for (final mon in party) {
       seenSpeciesIds.add(mon.species.id);
       caughtSpeciesIds.add(mon.species.id);
+      if (mon.isShiny) {
+        shinyCaughtSpeciesIds.add(mon.species.id);
+      }
     }
 
     activePcBoxIndex = ((json['activePcBoxIndex'] as num?)?.toInt() ?? 0)
@@ -942,6 +970,9 @@ class Trainer extends ChangeNotifier {
           loadedBox.add(mon);
           seenSpeciesIds.add(mon.species.id);
           caughtSpeciesIds.add(mon.species.id);
+          if (mon.isShiny) {
+            shinyCaughtSpeciesIds.add(mon.species.id);
+          }
         }
         if (loadedBox.length >= maxPokemonPerBox) break;
       }
@@ -1019,6 +1050,7 @@ class Trainer extends ChangeNotifier {
     badges = 0;
     seenSpeciesIds = {};
     caughtSpeciesIds = {};
+    shinyCaughtSpeciesIds = {};
     unlockedGymIds = {1};
     clearedGymIds = {};
     completedGymStepIds = {};

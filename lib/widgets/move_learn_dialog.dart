@@ -78,13 +78,13 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                 Row(
                   children: [
                     Image.network(
-                      pokemon.species.spriteUrl,
+                      pokemon.spriteUrl,
                       width: 44,
                       height: 44,
                       fit: BoxFit.contain,
                       filterQuality: FilterQuality.none,
                       errorBuilder: (_, __, ___) => Image.network(
-                        pokemon.species.staticSpriteUrl,
+                        pokemon.staticSpriteUrl,
                         width: 44,
                         height: 44,
                         fit: BoxFit.contain,
@@ -101,14 +101,29 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${pokemon.nickname.toUpperCase()} • Lv.${pokemon.level}",
-                            style: const TextStyle(
-                              color: Colors.amberAccent,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 0.7,
-                            ),
+                          Row(
+                            children: [
+                              if (pokemon.isShiny) ...[
+                                const Icon(
+                                  Icons.auto_awesome_rounded,
+                                  color: Colors.amberAccent,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 3),
+                              ],
+                              Flexible(
+                                child: Text(
+                                  "${pokemon.nickname.toUpperCase()} • Lv.${pokemon.level}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.amberAccent,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 0.7,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 2),
                           Text(
