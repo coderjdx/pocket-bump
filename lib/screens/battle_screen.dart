@@ -649,14 +649,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
       // 3. Impact flash, shake, floating callout & HP animation
       final bool calloutOnOpp = isSelfBuff ? !isPlayer : isPlayer;
+      final bool isNoEffectHit =
+          event.effectiveness == 0.0 && event.moveCategory != MoveCategory.status;
       if (event.damageDealt > 0 ||
+          isNoEffectHit ||
           event.statChangedLabel != null ||
           event.statusInflictedLabel != null) {
         String? callout;
         Color calloutCol = Colors.white;
-        if (event.effectiveness >= 2.0) {
-          callout = "SUPER EFFECTIVE! -${event.damageDealt}";
+        if (isNoEffectHit) {
+          callout = "NO EFFECT!";
+          calloutCol = Colors.white70;
+        } else if (event.effectiveness >= 2.0) {
+          callout = event.isCrit
+              ? "CRIT! SUPER EFFECTIVE! -${event.damageDealt}"
+              : "SUPER EFFECTIVE! -${event.damageDealt}";
           calloutCol = Colors.amberAccent;
+        } else if (event.effectiveness > 0.0 && event.effectiveness < 1.0) {
+          callout = event.isCrit
+              ? "CRIT! NOT VERY EFFECTIVE -${event.damageDealt}"
+              : "NOT VERY EFFECTIVE -${event.damageDealt}";
+          calloutCol = const Color(0xFF90CAF9);
         } else if (event.isCrit) {
           callout = "CRITICAL HIT! -${event.damageDealt}";
           calloutCol = Colors.orangeAccent;
@@ -711,7 +724,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _playerSubmerged = false;
         _opponentSubmerged = false;
       });
-      await Future.delayed(const Duration(milliseconds: 520));
+      await Future.delayed(const Duration(milliseconds: 650));
       if (!mounted) return;
       setState(() {
         _activeMoveId = null;
@@ -2451,14 +2464,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  mon.nickname,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.5,
-                    color: Colors.white,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!isPlayer &&
+                        _trainer.caughtSpeciesIds.contains(mon.species.id)) ...[
+                      const PokeBallSpriteWidget(
+                        ballType: 'poke_ball',
+                        size: 13,
+                      ),
+                      const SizedBox(width: 4),
+                    ],
+                    Flexible(
+                      child: Text(
+                        mon.nickname,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.5,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Row(
