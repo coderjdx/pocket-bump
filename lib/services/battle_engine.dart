@@ -532,6 +532,54 @@ class BattleEngine {
       move.currentPp--;
     }
 
+    // 2.0 Metronome: waggle a finger and randomly execute almost any move
+    if (move.id == 'metronome') {
+      final eligibleIds = PokedexDatabase.moves.keys
+          .where((id) =>
+              id != 'metronome' &&
+              id != 'struggle' &&
+              id != 'mimic')
+          .toList()
+        ..sort();
+      if (eligibleIds.isNotEmpty) {
+        final rolledId = eligibleIds[random.nextInt(eligibleIds.length)];
+        final chosen = PokedexDatabase.moves[rolledId]!.copy();
+        events.add(BattleStepEvent(
+          message:
+              "$attackerName waggled a finger! It turned into ${chosen.name}!",
+          isPlayerActor: isPlayer,
+          moveId: 'metronome',
+          moveType: PokemonType.normal,
+          moveCategory: MoveCategory.status,
+          statTargetIsSelf: true,
+        ));
+        move = chosen;
+      }
+    }
+
+    void appendSelfKoEventsIfNeeded() {
+      if ((move.id == 'self_destruct' || move.id == 'explosion') &&
+          !attacker.isFainted) {
+        final int koDmg = attacker.currentHp;
+        attacker.currentHp = 0;
+        _clearMoveLocks(attacker);
+        events.add(BattleStepEvent(
+          message: "$attackerName fainted from ${move.name}!",
+          isPlayerActor: isPlayer,
+          damageDealt: koDmg,
+          targetHpAfter: 0,
+          targetFainted: true,
+          isSelfDamage: true,
+        ));
+        events.add(BattleStepEvent(
+          message: "$attackerName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+      }
+    }
+
     // 2a. Bide (Turn 1 store -> Turn 2 store -> Turn 3 unleash 2x damage)
     if (move.stageMechanic == MoveStageMechanic.bide) {
       if (!isContinuingBide) {
@@ -675,6 +723,7 @@ class BattleEngine {
         isMiss: true,
         surfaceActorOnAttack: surfacedThisTurn,
       ));
+      appendSelfKoEventsIfNeeded();
       return events;
     }
 
@@ -764,6 +813,7 @@ class BattleEngine {
         effectiveness: 0.0,
         surfaceActorOnAttack: surfacedThisTurn,
       ));
+      appendSelfKoEventsIfNeeded();
       return events;
     }
 
@@ -934,6 +984,7 @@ class BattleEngine {
       ));
     }
 
+    appendSelfKoEventsIfNeeded();
     return events;
   }
 

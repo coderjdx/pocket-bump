@@ -1243,7 +1243,8 @@ class PokedexDatabase {
       power: 250,
       accuracy: 100,
       maxPp: 5,
-      description: 'The user explodes to inflict massive damage on the target.',
+      description:
+          'The user explodes to inflict massive damage, causing it to faint.',
     ),
     'extreme_speed': Move(
       id: 'extreme_speed',
@@ -1800,21 +1801,23 @@ class PokedexDatabase {
       id: 'metronome',
       name: 'Metronome',
       type: PokemonType.normal,
-      category: MoveCategory.special,
-      power: 80,
-      accuracy: 95,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
       maxPp: 10,
-      description: 'Waggles a finger to summon an unpredictable burst of power.',
+      description:
+          'Waggles a finger to summon and perform almost any move at random.',
     ),
     'self_destruct': Move(
       id: 'self_destruct',
       name: 'Self-Destruct',
       type: PokemonType.normal,
       category: MoveCategory.physical,
-      power: 140,
+      power: 200,
       accuracy: 100,
       maxPp: 5,
-      description: 'Releases an explosive shockwave for massive physical damage.',
+      description:
+          'Causes a massive blast that damages the target and makes the user faint.',
     ),
     'skull_bash': Move(
       id: 'skull_bash',

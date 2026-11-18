@@ -767,6 +767,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       'hydro_pump',
       'solar_beam',
       'thunderbolt',
+      'self_destruct',
+      'explosion',
     };
     return heavyMoves.contains(moveId);
   }
@@ -809,7 +811,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (event.moveType != null && !event.isMiss) {
       final isPlayer = event.isPlayerActor;
       final isSelfBuff = event.statChangedLabel != null && event.statTargetIsSelf;
-      final bool isSelfEffect = isSelfBuff || event.isChargeTurn;
+      final bool isSelfEffect =
+          isSelfBuff || event.isChargeTurn || event.statTargetIsSelf;
       final moveId = event.moveId ?? event.moveType!.name;
       final isDig = moveId == 'dig';
       final bool isMultiHitStrike = event.hitNumber > 0;
