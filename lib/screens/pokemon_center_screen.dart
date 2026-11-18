@@ -213,7 +213,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                         size: 20,
                       ),
                       label: Text(
-                        _isHealing ? "HEALING PARTY..." : "HEAL POKÉMON",
+                        _isHealing ? "HEALING POKÉMON..." : "HEAL POKÉMON",
                         style: const TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 13.5,

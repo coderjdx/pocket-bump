@@ -556,7 +556,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                           ),
                           child: Text(
                             _selectedInParty
-                                ? "PARTY #${(_selectedPartyIndex ?? 0) + 1}"
+                                ? "POKÉMON #${(_selectedPartyIndex ?? 0) + 1}"
                                 : "BOX ${boxIdx + 1}",
                             style: TextStyle(
                               color: _selectedInParty
@@ -878,7 +878,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "CARRIED PARTY",
+                "CARRIED POKÉMON",
                 style: TextStyle(
                   color: Colors.redAccent,
                   fontSize: 10,
@@ -1027,7 +1027,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      "SWAP ${pcMon.nickname.toUpperCase()} WITH PARTY",
+                      "SWAP ${pcMon.nickname.toUpperCase()} WITH POKÉMON",
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

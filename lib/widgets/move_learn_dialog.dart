@@ -348,7 +348,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                   Padding(
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text(
-                      "Tip: Skipped level-up moves can still be swapped in later via Party → Moves.",
+                      "Tip: Skipped level-up moves can still be swapped in later via Pokémon → Moves.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.cyanAccent.withOpacity(0.75),

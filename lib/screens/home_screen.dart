@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
                 Text(
-                  "PARTY ${trainer.party.length}/6 • OBEY Lv.${trainer.maxObedienceLevel}",
+                  "POKÉMON ${trainer.party.length}/6 • OBEY Lv.${trainer.maxObedienceLevel}",
                   style: TextStyle(
                     color: Colors.cyanAccent.withOpacity(0.85),
                     fontSize: 9.5,
@@ -1075,8 +1075,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               accentColor: Colors.redAccent,
               iconWidget: const Icon(Icons.catching_pokemon,
                   color: Colors.redAccent, size: 15),
-              title: "Party",
-              subtitle: "${trainer.party.length}/6 Pokémon",
+              title: "Pokémon",
+              subtitle: "${trainer.party.length}/6 Carried",
             ),
             const SizedBox(width: 7),
             _buildHubTile(
@@ -1334,7 +1334,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "MANAGE PARTY",
+                                "MANAGE POKÉMON",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -2571,7 +2571,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                         borderRadius: BorderRadius.circular(8)),
                                                   ),
                                                   child: const Text(
-                                                    "Use on Party",
+                                                    "Use on Pokémon",
                                                     style: TextStyle(
                                                         fontSize: 11, fontWeight: FontWeight.bold),
                                                   ),
@@ -2652,8 +2652,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 ),
                                                 child: Text(
                                                   item.isBerry
-                                                      ? "Held item: auto-consumed in battle or equip via Party"
-                                                      : "Held item: equip via Party to boost battle power",
+                                                      ? "Held item: auto-consumed in battle or equip via Pokémon"
+                                                      : "Held item: equip via Pokémon to boost battle power",
                                                   style: const TextStyle(color: Colors.white54, fontSize: 9.5),
                                                 ),
                                               ),

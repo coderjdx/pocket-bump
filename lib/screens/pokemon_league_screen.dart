@@ -997,7 +997,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
                   // Party Status Header
                   const Text(
-                    "PARTY CONDITION",
+                    "POKÉMON CONDITION",
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 11,
@@ -1241,7 +1241,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "USE ITEMS ON PARTY",
+                        "USE ITEMS ON POKÉMON",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
