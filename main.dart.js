@@ -97551,7 +97551,7 @@ abl(){var s,r,q,p,o=this,n=null,m=o.e
 m===$&&A.a()
 s=m.z
 m=t.p
-r=A.a8(A.b([B.awh,A.cV(n,B.er,B.Z2,n,n,new A.aqi(o),B.ac,n,n)],m),B.m,B.aE,B.k,0)
+r=A.a8(A.b([B.awj,A.cV(n,B.er,B.Z2,n,n,new A.aqi(o),B.ac,n,n)],m),B.m,B.aE,B.k,0)
 q=A.b([],m)
 if(s.length!==0)q.push(A.aC(o.yQ(s[0]),1))
 else q.push(B.cv)
@@ -98866,7 +98866,7 @@ m=A.ae(r?h.e.b3(0.5):B.ah,1)
 l=A.d1(u.C+s.a.a+".gif",B.B,new A.arm(s),B.p,B.au,42,42)
 k=t.p
 j=A.b([A.E(s.b,g,g,g,g,B.dB,g,g),B.a5,A.E("Lv."+s.c,g,g,g,g,B.Kt,g,g)],k)
-if(s===q)B.b.M(j,A.b([B.a5,A.a_(g,B.axQ,B.l,g,g,new A.V(A.f(46,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),g,g,A.F(4),g,g,B.o),g,g,g,B.e_,g,g,g)],k))
+if(s===q)B.b.M(j,A.b([B.a5,A.a_(g,B.axR,B.l,g,g,new A.V(A.f(46,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),g,g,A.F(4),g,g,B.o),g,g,g,B.e_,g,g,g)],k))
 if(s.d<=0)B.b.M(j,A.b([B.a5,A.a_(g,B.KW,B.l,g,g,new A.V(A.f(51,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),g,g,A.F(4),g,g,B.o),g,g,g,B.e_,g,g,g)],k))
 else{q=s.at
 if(q!==B.ao){f=f.IB(q)
@@ -98919,7 +98919,7 @@ l=d[5]
 k=d[6]
 j=d[2]
 f.push(e.aaQ(d[0],"USE",o,n,m,new A.arh(e,a,q),k,"x"+p+" remaining ("+j+")",l))}e=A.bK(a,i,t.w).w
-d=A.a8(A.b([B.awn,A.cV(i,i,B.e1,i,i,new A.ari(a),i,i,i)],g),B.m,B.aE,B.k,0)
+d=A.a8(A.b([B.awp,A.cV(i,i,B.e1,i,i,new A.ari(a),i,i,i)],g),B.m,B.aE,B.k,0)
 return A.bH(new A.aZ(B.oU,A.as(A.b([d,B.aj,A.aC(f.length===0?A.dj(A.as(B.a8f,B.m,B.j,B.a4),i,i):A.wd(f,i,B.tC,B.aK),1)],g),B.L,B.j,B.k),i),e.a.b*0.72,i)},
 $S:246}
 A.ard.prototype={
@@ -98953,7 +98953,7 @@ A.arx.prototype={
 $1(a){var s,r=null,q=A.bK(a,r,t.w).w,p=A.F(8),o=this.a,n=o.d
 n===$&&A.a()
 s=t.p
-p=A.b([B.ax5,B.at,A.a_(r,A.E(""+n.d.length+"/6",r,r,r,r,B.KH,r,r),B.l,r,r,new A.V(B.bt,r,r,p,r,r,B.o),r,r,r,B.Uu,r,r,r),B.cv],s)
+p=A.b([B.ax4,B.at,A.a_(r,A.E(""+n.d.length+"/6",r,r,r,r,B.KH,r,r),B.l,r,r,new A.V(B.bt,r,r,p,r,r,B.o),r,r,r,B.Uu,r,r,r),B.cv],s)
 n=this.b
 if(!n)p.push(A.cV(r,B.er,B.ZN,r,r,new A.aru(a),B.ac,r,r))
 return A.fF(!0,new A.f_(new A.aq(0,1/0,0,q.a.b*0.78),new A.aZ(B.vF,A.as(A.b([A.a8(p,B.m,B.j,B.k,0),B.aG,new A.dg(1,B.aX,A.kf(new A.arv(o,a,n),o.d.d.length,r,new A.arw(),!0),r)],s),B.L,B.j,B.a4),r),r),B.ac,!0)},
@@ -98992,7 +98992,7 @@ j=s.e
 j=A.aC(A.as(A.b([l,B.cT,A.a8(A.b([A.aC(new A.ld(k,j,i),1),B.at,A.E(""+k+"/"+j,i,i,i,i,B.i7,i,i)],m),B.m,B.j,B.k,0)],m),B.L,B.j,B.a4),1)
 if(r){h=A.f(41,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255)
 l=A.F(8)
-l=A.a_(i,B.axU,B.l,i,i,new A.V(h,i,A.ae(A.f(B.c.B(127.5),B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),1),l,i,i,B.o),i,i,i,B.dH,i,i,i)
+l=A.a_(i,B.axV,B.l,i,i,new A.V(h,i,A.ae(A.f(B.c.B(127.5),B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),1),l,i,i,B.o),i,i,i,B.dH,i,i,i)
 h=l}else{h=q?new A.art(h,this.b,s,this.c):i
 h=A.hL(B.awu,h,A.df(i,i,i,i,i,i,i,i,i,i,i,B.aoi,B.iX,i,i,i,i,B.EB,i,i))}return A.a_(i,A.a8(A.b([n,B.bY,j,B.bY,h],m),B.m,B.j,B.k,0),B.l,i,i,new A.V(g,i,o,p,i,i,B.o),i,i,i,B.dH,i,i,i)},
 $S:73}
@@ -101373,7 +101373,7 @@ aoJ(){switch(this.r.a){case 2:return"Synchronizing Kanto Battle Stadium arena...
 case 1:return"Exchanging team rosters over VS Link (7s window)..."
 case 3:return"Make sure the second phone also has VS Link \u2022 Fist-Bump Radar open, then try again."
 case 0:return"Open this screen on both phones (App or Web), then fist-bump together to battle each other's team."}},
-O(a2){var s,r,q,p,o,n,m,l,k,j=this,i=null,h=j.aoF(),g=!j.x&&j.as!=="granted",f=A.kT(i,!0,B.kk,!0,0,A.cV(i,i,B.e0,i,i,new A.at9(a2),i,i,i),B.ayb,i),e=A.f3("assets/images/bg_bump_radar.png",B.B,i,B.p,B.d4,!1,i,i,i),d=t.O,c=A.fS(i,new A.V(i,i,i,i,i,new A.bQ(B.bj,B.an,B.U,A.b([A.f(194,B.h3.h()>>>16&255,B.h3.h()>>>8&255,B.h3.h()&255),A.f(148,B.nI.h()>>>16&255,B.nI.h()>>>8&255,B.nI.h()&255),A.f(235,B.nO.h()>>>16&255,B.nO.h()>>>8&255,B.nO.h()&255)],d),i,i),B.o),B.cb),b=A.F(20),a=A.ae(A.f(166,h.h()>>>16&255,h.h()>>>8&255,h.h()&255),1),a0=t.V,a1=t.p
+O(a2){var s,r,q,p,o,n,m,l,k,j=this,i=null,h=j.aoF(),g=!j.x&&j.as!=="granted",f=A.kT(i,!0,B.kk,!0,0,A.cV(i,i,B.e0,i,i,new A.at9(a2),i,i,i),B.ayc,i),e=A.f3("assets/images/bg_bump_radar.png",B.B,i,B.p,B.d4,!1,i,i,i),d=t.O,c=A.fS(i,new A.V(i,i,i,i,i,new A.bQ(B.bj,B.an,B.U,A.b([A.f(194,B.h3.h()>>>16&255,B.h3.h()>>>8&255,B.h3.h()&255),A.f(148,B.nI.h()>>>16&255,B.nI.h()>>>8&255,B.nI.h()&255),A.f(235,B.nO.h()>>>16&255,B.nO.h()>>>8&255,B.nO.h()&255)],d),i,i),B.o),B.cb),b=A.F(20),a=A.ae(A.f(166,h.h()>>>16&255,h.h()>>>8&255,h.h()&255),1),a0=t.V,a1=t.p
 b=A.a_(i,A.a8(A.b([A.a_(i,i,B.l,i,i,new A.V(h,i,i,i,A.b([new A.ck(0,B.aL,h,B.q,6)],a0),i,B.bZ),i,7,i,i,i,i,7),B.cu,new A.dg(1,B.aX,A.E(j.apa(),1,B.a7,i,i,A.bn(i,i,h,i,i,i,i,i,i,i,i,10,i,i,B.C,i,i,!0,i,0.9,i,i,i,i,i,i),i,i),i)],a1),B.m,B.j,B.a4,0),B.l,i,i,new A.V(B.O0,i,a,b,i,i,B.o),i,i,i,B.l0,i,i,i)
 s=!j.x&&j.as!=="granted"
 r=!j.x&&j.as==="denied"
@@ -101407,14 +101407,14 @@ d=A.b([b,B.aG,a,B.cv,d,B.aoz,A.a_(i,A.as(A.b([A.E(l,i,i,i,i,A.bn(i,i,h.k(0,B.x)?
 b=j.r
 if(b===B.Lh){b=A.bH(A.hg(B.Z3,B.awP,j.gXb(),A.df(i,i,B.c2,i,i,i,i,i,i,B.f,i,i,i,i,new A.bp(A.F(14),B.D),i,i,i,i,i)),46,1/0)
 a=A.f(115,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255)
-B.b.M(d,A.b([b,B.aj,A.bH(A.lr(B.Zm,B.awe,j.gU0(),A.fW(i,i,B.RG,i,i,i,i,i,i,i,i,i,i,i,new A.bp(A.F(12),B.D),new A.aJ(a,1,B.G,-1),i,i,i,i)),42,1/0)],a1))}else{a=b===B.ib
+B.b.M(d,A.b([b,B.aj,A.bH(A.lr(B.Zm,B.awf,j.gU0(),A.fW(i,i,B.RG,i,i,i,i,i,i,i,i,i,i,i,new A.bp(A.F(12),B.D),new A.aJ(a,1,B.G,-1),i,i,i,i)),42,1/0)],a1))}else{a=b===B.ib
 b=a||b===B.eo?i:j.gXb()
 a0=A.cc(a?B.YC:B.Yv,B.ap,i,18)
 b=A.bH(A.hg(a0,A.E(a?"SEARCHING FOR NEARBY TRAINER...":"BUMP / PAIR WITH NEARBY TRAINER",i,i,i,i,B.auA,i,i),b,A.df(i,i,B.T,A.f(89,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),B.J,i,i,i,i,B.ap,i,i,i,i,new A.bp(A.F(14),B.D),i,i,i,i,i)),46,1/0)
 a=j.r
 a=a===B.ib||a===B.eo?i:j.gU0()
 a0=A.f(46,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255)
-B.b.M(d,A.b([b,B.aj,A.bH(A.lr(B.Zl,B.awr,a,A.fW(i,i,B.QA,i,i,i,i,i,i,i,i,i,i,i,new A.bp(A.F(12),B.D),new A.aJ(a0,1,B.G,-1),i,i,i,i)),40,1/0)],a1))}return A.we(B.dL,A.i7(f,B.oe,A.cY(B.b3,A.b([e,c,A.fF(!0,new A.aZ(B.Ug,A.as(d,B.m,B.j,B.k),i),B.ac,!0)],a1),B.I,B.d3),!0),i,new A.atc(j),i,i,i)}}
+B.b.M(d,A.b([b,B.aj,A.bH(A.lr(B.Zl,B.aws,a,A.fW(i,i,B.QA,i,i,i,i,i,i,i,i,i,i,i,new A.bp(A.F(12),B.D),new A.aJ(a0,1,B.G,-1),i,i,i,i)),40,1/0)],a1))}return A.we(B.dL,A.i7(f,B.oe,A.cY(B.b3,A.b([e,c,A.fF(!0,new A.aZ(B.Ug,A.as(d,B.m,B.j,B.k),i),B.ac,!0)],a1),B.I,B.d3),!0),i,new A.atc(j),i,i,i)}}
 A.atf.prototype={
 $2(a,b){var s,r=this.a
 if(r.c==null)return
@@ -101632,7 +101632,7 @@ m=A.b([A.E(i.w,h,h,h,h,B.au_,h,h)],n)
 if(i.r==="reveal"&&i.a.f.length!==0){l=A.f(36,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
 k=A.F(10)
 j=A.ae(A.f(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),1)
-B.b.M(m,A.b([B.aj,A.a_(h,A.E("Learned "+B.b.bj(i.a.f,", ")+"!",h,h,h,h,B.avQ,h,h),B.l,h,h,new A.V(l,h,j,k,h,h,B.o),h,h,h,B.dH,h,h,h)],n))}if(i.x)B.b.M(m,A.b([B.bI,A.bH(A.hg(B.ZA,B.axa,new A.av9(a),A.df(h,h,e,h,h,h,h,h,h,B.t,h,h,h,h,new A.bp(A.F(12),B.D),h,h,h,h,h)),44,h)],n))
+B.b.M(m,A.b([B.aj,A.a_(h,A.E("Learned "+B.b.bj(i.a.f,", ")+"!",h,h,h,h,B.avQ,h,h),B.l,h,h,new A.V(l,h,j,k,h,h,B.o),h,h,h,B.dH,h,h,h)],n))}if(i.x)B.b.M(m,A.b([B.bI,A.bH(A.hg(B.ZA,B.ax9,new A.av9(a),A.df(h,h,e,h,h,h,h,h,h,B.t,h,h,h,h,new A.bp(A.F(12),B.D),h,h,h,h,h)),44,h)],n))
 f=A.fF(!0,new A.aZ(B.oT,A.as(A.b([q,r,A.a_(h,A.as(m,B.de,B.j,B.a4),B.l,h,h,new A.V(B.Qe,h,f,p,o,h,B.o),h,h,h,B.oS,h,h,1/0)],n),B.m,B.j,B.k),h),B.ac,!0)
 r=i.e
 r===$&&A.a()
@@ -101833,10 +101833,10 @@ return A.i7(r,B.Pk,A.cY(B.b3,A.b([A.f3("assets/images/home_bg.png",B.an,r,B.p,B.
 abB(a){var s,r,q,p,o=null,n=A.F(14),m=A.ae(A.f(166,B.nK.h()>>>16&255,B.nK.h()>>>8&255,B.nK.h()&255),1.2),l=A.b([new A.ck(0,B.aL,A.f(115,B.t.h()>>>16&255,B.t.h()>>>8&255,B.t.h()&255),B.hM,10)],t.V),k=A.b([A.f(B.c.B(229.5),B.kG.h()>>>16&255,B.kG.h()>>>8&255,B.kG.h()&255),B.cm],t.O),j=A.F(7),i=A.ae(A.f(64,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),1)
 k=A.a_(o,A.E(a.c.b.toUpperCase(),o,o,o,o,B.auO,o,o),B.l,o,o,new A.V(o,o,i,j,o,new A.bQ(B.bk,B.cy,B.U,k,o,o),B.o),o,o,o,B.vI,o,o,o)
 j=t.p
-i=A.aC(A.as(A.b([A.E(a.b.toUpperCase(),1,B.a7,o,o,B.aq7,o,o),A.E("PARTY "+a.d.length+"/6 \u2022 OBEY Lv."+a.gx6(),o,o,o,o,A.bn(o,o,A.f(217,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),o,o,o,o,o,o,o,o,9.5,o,o,B.E,o,o,!0,o,0.4,o,o,o,o,o,o),o,o)],j),B.L,B.j,B.k),1)
+i=A.aC(A.as(A.b([A.E(a.b.toUpperCase(),1,B.a7,o,o,B.aq7,o,o),A.E("POK\xc9MON "+a.d.length+"/6 \u2022 OBEY Lv."+a.gx6(),o,o,o,o,A.bn(o,o,A.f(217,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),o,o,o,o,o,o,o,o,9.5,o,o,B.E,o,o,!0,o,0.4,o,o,o,o,o,o),o,o)],j),B.L,B.j,B.k),1)
 s=A.F(10)
 r=A.ae(A.f(102,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1)
-s=A.a_(o,A.a8(A.b([B.Zx,B.rv,A.E(""+a.k2.a+"/8",o,o,o,o,B.KP,o,o),A.a_(o,o,B.l,B.ah,o,o,o,12,B.fk,o,o,o,1),B.awp,B.JQ,A.E(""+a.db,o,o,o,o,B.KO,o,o)],j),B.m,B.j,B.a4,0),B.l,o,o,new A.V(B.dX,o,r,s,o,o,B.o),o,o,o,B.vL,o,o,o)
+s=A.a_(o,A.a8(A.b([B.Zx,B.rv,A.E(""+a.k2.a+"/8",o,o,o,o,B.KP,o,o),A.a_(o,o,B.l,B.ah,o,o,o,12,B.fk,o,o,o,1),B.awq,B.JQ,A.E(""+a.db,o,o,o,o,B.KO,o,o)],j),B.m,B.j,B.a4,0),B.l,o,o,new A.V(B.dX,o,r,s,o,o,B.o),o,o,o,B.vL,o,o,o)
 r=A.F(10)
 q=A.f(82,B.cm.h()>>>16&255,B.cm.h()>>>8&255,B.cm.h()&255)
 p=A.F(10)
@@ -101883,7 +101883,7 @@ B.b.M(g,new A.a2(l,new A.awg(),A.a4(l).j("a2<1,i>")))
 g=A.a8(g,B.m,B.j,B.k,0)
 l=b.d
 j=b.e
-s.push(A.a_(e,A.as(A.b([g,B.bg,A.a8(A.b([B.axe,B.a5,A.aC(new A.ld(l,j,e),1),B.at,A.E(""+l+"/"+j,e,e,e,e,B.auz,e,e)],h),B.m,B.j,B.k,0),B.cT,A.a8(A.b([B.awf,B.a5,A.aC(A.k3(A.F(3),A.oV(B.ak,4,p,B.tr)),1)],h),B.m,B.j,B.k,0)],h),B.m,B.j,B.k),B.l,e,e,new A.V(B.Pj,e,d,B.M9,e,e,B.o),e,e,e,B.U_,e,e,e))}return A.a_(e,A.as(s,B.m,B.j,B.k),B.l,e,e,new A.V(e,e,m,n,k,new A.bQ(B.bj,B.an,B.U,o,e,e),B.o),e,e,e,e,e,e,e)},
+s.push(A.a_(e,A.as(A.b([g,B.bg,A.a8(A.b([B.axe,B.a5,A.aC(new A.ld(l,j,e),1),B.at,A.E(""+l+"/"+j,e,e,e,e,B.auz,e,e)],h),B.m,B.j,B.k,0),B.cT,A.a8(A.b([B.awg,B.a5,A.aC(A.k3(A.F(3),A.oV(B.ak,4,p,B.tr)),1)],h),B.m,B.j,B.k,0)],h),B.m,B.j,B.k),B.l,e,e,new A.V(B.Pj,e,d,B.M9,e,e,B.o),e,e,e,B.U_,e,e,e))}return A.a_(e,A.as(s,B.m,B.j,B.k),B.l,e,e,new A.V(e,e,m,n,k,new A.bQ(B.bj,B.an,B.U,o,e,e),B.o),e,e,e,e,e,e,e)},
 abw(a){var s,r,q,p,o,n,m,l,k=this,j=null
 a.IG()
 s=a.dy
@@ -101896,11 +101896,11 @@ n=A.a_(j,B.ZT,B.l,j,j,new A.V(o,j,A.ae(A.f(B.c.B(127.5),B.cd.h()>>>16&255,B.cd.h
 o=A.F(8)
 m=A.ae(A.f(89,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),1)
 l=t.p
-o=A.a8(A.b([n,B.cu,B.axJ,B.cv,A.a_(j,A.E(""+s+" STEPS",j,j,j,j,B.aqS,j,j),B.l,j,j,new A.V(B.Sl,j,m,o,j,j,B.o),j,j,j,B.TO,j,j,j)],l),B.m,B.j,B.k,0)
+o=A.a8(A.b([n,B.cu,B.axK,B.cv,A.a_(j,A.E(""+s+" STEPS",j,j,j,j,B.aqS,j,j),B.l,j,j,new A.V(B.Sl,j,m,o,j,j,B.o),j,j,j,B.TO,j,j,j)],l),B.m,B.j,B.k,0)
 m=A.f(153,B.cd.h()>>>16&255,B.cd.h()>>>8&255,B.cd.h()&255)
-m=A.aC(A.lr(B.YO,B.ayg,new A.awr(k,a),A.fW(j,j,B.da,j,j,j,j,j,j,B.f,j,j,B.oY,j,new A.bp(A.F(10),B.D),new A.aJ(m,1,B.G,-1),j,j,j,j)),1)
+m=A.aC(A.lr(B.YO,B.ayh,new A.awr(k,a),A.fW(j,j,B.da,j,j,j,j,j,j,B.f,j,j,B.oY,j,new A.bp(A.F(10),B.D),new A.aJ(m,1,B.G,-1),j,j,j,j)),1)
 n=A.f(153,B.cd.h()>>>16&255,B.cd.h()>>>8&255,B.cd.h()&255)
-return A.a_(j,A.as(A.b([o,B.aj,A.a8(A.b([m,B.a5,A.aC(A.lr(B.Zn,B.axG,new A.aws(k,a),A.fW(j,j,B.da,j,j,j,j,j,j,B.f,j,j,B.oY,j,new A.bp(A.F(10),B.D),new A.aJ(n,1,B.G,-1),j,j,j,j)),1),B.a5,A.aC(A.hg(B.YU,B.awl,k.gajo(),A.df(j,j,B.h7,j,j,j,2,j,j,B.ap,j,j,B.oY,j,new A.bp(A.F(10),B.D),j,j,j,j,j)),1)],l),B.m,B.j,B.k,0),B.bg,k.Qp(a)],l),B.L,B.j,B.k),B.l,j,j,new A.V(j,j,q,r,p,B.a5G,B.o),j,j,j,B.vx,j,j,j)},
+return A.a_(j,A.as(A.b([o,B.aj,A.a8(A.b([m,B.a5,A.aC(A.lr(B.Zn,B.axH,new A.aws(k,a),A.fW(j,j,B.da,j,j,j,j,j,j,B.f,j,j,B.oY,j,new A.bp(A.F(10),B.D),new A.aJ(n,1,B.G,-1),j,j,j,j)),1),B.a5,A.aC(A.hg(B.YU,B.awn,k.gajo(),A.df(j,j,B.h7,j,j,j,2,j,j,B.ap,j,j,B.oY,j,new A.bp(A.F(10),B.D),j,j,j,j,j)),1)],l),B.m,B.j,B.k,0),B.bg,k.Qp(a)],l),B.L,B.j,B.k),B.l,j,j,new A.V(j,j,q,r,p,B.a5G,B.o),j,j,j,B.vx,j,j,j)},
 Qp(a){var s,r=new A.aww(),q=a.p1,p=q?"EXP SHARE ON":"EXP SHARE OFF"
 p=r.$5$active$activeColor$icon$label$onTap(q,B.A,B.Yz,p,new A.awu(a))
 q=a.p2
@@ -101910,7 +101910,7 @@ yP(a,b,c,d,e,f){var s=null,r=A.F(14),q=A.b([A.f(46,a.h()>>>16&255,a.h()>>>8&255,
 return A.aC(A.dN(!1,r,!0,A.a_(s,A.as(A.b([A.a8(A.b([A.a_(s,b,B.l,s,s,new A.V(B.dX,s,A.ae(A.f(B.c.B(127.5),a.h()>>>16&255,a.h()>>>8&255,a.h()&255),1),m,s,s,B.o),s,s,s,B.Us,s,s,s),A.cc(B.pL,A.f(B.c.B(178.5),a.h()>>>16&255,a.h()>>>8&255,a.h()&255),s,16)],l),B.m,B.aE,B.k,0),B.eR,A.a8T(B.bk,A.E(f,1,s,s,s,B.aq3,s,s),B.ka),B.JU,A.E(d,1,B.a7,s,s,A.bn(s,s,e,s,s,s,s,s,s,s,s,9.5,s,s,B.E,s,s,!0,s,s,s,s,s,s,s,s),s,s)],l),B.L,B.j,B.k),B.l,s,s,new A.V(s,s,o,p,n,new A.bQ(B.bl,B.ck,B.U,q,s,s),B.o),s,s,s,B.Uz,s,s,s),s,!0,s,s,s,s,s,s,s,s,c,s,s,s,s),1)},
 FK(a,b,c,d,e){return this.yP(a,b,c,d,B.aS,e)},
 abd(a){var s=this,r=$.fN().a,q=a.gBp(),p=a.k2.a,o=t.p
-return A.as(A.b([A.a8(A.b([s.FK(B.x,B.YZ,new A.awl(s,a),""+a.d.length+"/6 Pok\xe9mon","Party"),B.cu,s.FK(B.n,B.YT,new A.awm(s,a),""+a.gMX()+" Items","Bag"),B.cu,s.FK(B.iK,B.aic,new A.awn(s),""+q+"/"+r+" Caught","Pok\xe9dex")],o),B.m,B.j,B.k,0),B.jQ,A.a8(A.b([s.yP(B.T,B.ZE,new A.awo(s),""+p+"/8 Badges",B.T,"Pok\xe9mon League"),B.cu,s.yP(B.N,B.YY,new A.awp(s),"Heal \u2022 Mart \u2022 Lab",B.dd,"Pok\xe9 Center"),B.cu,s.yP(B.M,B.Zk,new A.awq(s),""+a.gE2()+"/320",B.eu,"PC Boxes")],o),B.m,B.j,B.k,0)],o),B.m,B.j,B.k)},
+return A.as(A.b([A.a8(A.b([s.FK(B.x,B.YZ,new A.awl(s,a),""+a.d.length+"/6 Carried","Pok\xe9mon"),B.cu,s.FK(B.n,B.YT,new A.awm(s,a),""+a.gMX()+" Items","Bag"),B.cu,s.FK(B.iK,B.aic,new A.awn(s),""+q+"/"+r+" Caught","Pok\xe9dex")],o),B.m,B.j,B.k,0),B.jQ,A.a8(A.b([s.yP(B.T,B.ZE,new A.awo(s),""+p+"/8 Badges",B.T,"Pok\xe9mon League"),B.cu,s.yP(B.N,B.YY,new A.awp(s),"Heal \u2022 Mart \u2022 Lab",B.dd,"Pok\xe9 Center"),B.cu,s.yP(B.M,B.Zk,new A.awq(s),""+a.gE2()+"/320",B.eu,"PC Boxes")],o),B.m,B.j,B.k,0)],o),B.m,B.j,B.k)},
 ab5(){var s=null,r=A.F(14),q=A.F(14),p=A.ae(A.f(140,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),1.2),o=A.b([new A.ck(0,B.aL,A.f(140,B.kB.h()>>>16&255,B.kB.h()>>>8&255,B.kB.h()&255),B.hM,12)],t.V)
 return A.bH(A.lm(!1,B.al,!0,s,A.dN(!1,r,!0,A.aP5(new A.aZ(B.U3,A.a8(A.b([A.a_(s,B.ZR,B.l,s,s,new A.V(A.f(61,B.t.h()>>>16&255,B.t.h()>>>8&255,B.t.h()&255),s,s,A.F(9),s,s,B.o),s,s,s,B.l2,s,s,s),B.bY,B.UT,B.Zg],t.p),B.m,B.j,B.k,0),s),new A.V(s,s,p,q,o,B.a5J,B.o)),s,!0,s,s,s,s,s,s,s,s,new A.awb(this),s,s,s,s),B.l,B.a0,0,s,s,s,s,s,B.eM),48,1/0)},
 acB(a){var s=this.c
@@ -102082,7 +102082,7 @@ $1(a){return B.Mt},
 $S:635}
 A.awz.prototype={
 $1(a){var s=null,r=A.F(18),q=this.b,p=A.E("This will permanently erase your local save for "+q.b+" ("+q.d.length+" Pok\xe9mon, "+q.dx+" steps, and "+q.gMX()+" items) and return to the start screen.",s,s,s,s,B.rL,s,s)
-return A.kS(A.b([A.lL(B.axq,new A.awx(a),s),A.hL(B.awi,new A.awy(this.a,a,this.c,q),A.df(s,s,B.c2,s,s,s,s,s,s,B.f,s,s,s,s,s,s,s,s,s,s))],t.p),B.ix,p,new A.bp(r,B.D),B.alu)},
+return A.kS(A.b([A.lL(B.axq,new A.awx(a),s),A.hL(B.awk,new A.awy(this.a,a,this.c,q),A.df(s,s,B.c2,s,s,s,s,s,s,B.f,s,s,s,s,s,s,s,s,s,s))],t.p),B.ix,p,new A.bp(r,B.D),B.alu)},
 $S:34}
 A.awx.prototype={
 $0(){A.bf(this.a,!1).br(null)
@@ -102103,7 +102103,7 @@ A.axi.prototype={
 $1(a){return A.ME(new A.axh(this.a,a),t.Q)},
 $S:252}
 A.axh.prototype={
-$3(a,b,c){var s=null,r=this.b,q=A.bK(r,s,t.w).w,p=t.p,o=A.aC(A.as(A.b([B.awX,A.E("Tap a Pok\xe9mon for Stats, Moves & Held Item \u2022 Lead #1 ("+b.d.length+"/6)",s,s,s,s,B.i7,s,s)],p),B.L,B.j,B.k),1),n=this.a,m=A.f(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
+$3(a,b,c){var s=null,r=this.b,q=A.bK(r,s,t.w).w,p=t.p,o=A.aC(A.as(A.b([B.ay7,A.E("Tap a Pok\xe9mon for Stats, Moves & Held Item \u2022 Lead #1 ("+b.d.length+"/6)",s,s,s,s,B.i7,s,s)],p),B.L,B.j,B.k),1),n=this.a,m=A.f(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
 return A.bH(new A.aZ(B.oT,A.as(A.b([A.a8(A.b([o,A.lr(B.ZX,B.axp,new A.axd(n,r),A.fW(s,s,s,s,s,s,s,s,s,B.eu,s,B.Y,B.oP,s,new A.bp(A.F(10),B.D),new A.aJ(m,1,B.G,-1),s,s,s,s)),A.cV(s,s,B.e1,s,s,new A.axe(r),s,s,s)],p),B.m,B.aE,B.k,0),B.bI,A.aC(A.kf(new A.axf(n,b,r),b.d.length,s,new A.axg(),!1),1)],p),B.L,B.j,B.k),s),q.a.b*0.78,s)},
 $S:253}
 A.axd.prototype={
@@ -102156,7 +102156,7 @@ if(j!=null&&j.length!==0)l.push(A.dN(!1,e,!0,B.ahj,e,!0,e,e,e,e,e,e,e,e,new A.ax
 else l.push(A.dN(!1,e,!0,B.ahg,e,!0,e,e,e,e,e,e,e,e,new A.ax5(a0,f.c,d,c),e,e,e,e))
 s=A.a8(A.b([s,B.ee,A.aC(A.as(A.b([q,B.bg,new A.ld(r,p,e),B.cT,n,B.eR,A.a_(e,A.a8(l,B.m,B.j,B.k,0),B.l,e,e,new A.V(B.kp,e,k,m,e,e,B.o),e,e,e,B.vI,e,e,e)],o),B.L,B.j,B.k),1)],o),B.m,B.j,B.k,0)
 r=A.b([],o)
-if(!b)r.push(A.hg(B.wR,B.ax6,new A.ax6(d,a5),A.df(e,e,B.fb,e,e,e,e,e,e,B.t,e,B.Y,B.dH,e,new A.bp(A.F(10),B.D),e,e,e,e,e)))
+if(!b)r.push(A.hg(B.wR,B.ax5,new A.ax6(d,a5),A.df(e,e,B.fb,e,e,e,e,e,e,B.t,e,B.Y,B.dH,e,new A.bp(A.F(10),B.D),e,e,e,e,e)))
 else{q=A.f(36,B.ar.h()>>>16&255,B.ar.h()>>>8&255,B.ar.h()&255)
 p=A.F(10)
 r.push(A.a_(e,B.awK,B.l,e,e,new A.V(q,e,A.ae(A.f(102,B.ar.h()>>>16&255,B.ar.h()>>>8&255,B.ar.h()&255),1),p,e,e,B.o),e,e,e,B.vw,e,e,e))}r.push(B.cv)
@@ -102290,10 +102290,10 @@ A.axv.prototype={
 $1(a){return A.aP9(this.a.a,a.a.a)!=null},
 $S:25}
 A.axw.prototype={
-$1(a){var s=this,r=null,q=A.F(20),p=s.b,o=t.p,n=A.a8(A.b([A.cc(p.x,p.w,r,24),B.at,A.aC(A.E("Use "+p.b,r,r,r,r,B.mA,r,r),1)],o),B.m,B.j,B.k,0),m=A.b([B.axN,B.bI],o),l=s.c
+$1(a){var s=this,r=null,q=A.F(20),p=s.b,o=t.p,n=A.a8(A.b([A.cc(p.x,p.w,r,24),B.at,A.aC(A.E("Use "+p.b,r,r,r,r,B.mA,r,r),1)],o),B.m,B.j,B.k,0),m=A.b([B.axO,B.bI],o),l=s.c
 B.b.M(m,new A.a2(l,new A.axt(s.a,p,a,s.d,s.e),A.a4(l).j("a2<1,i>")))
 m=A.as(m,B.L,B.j,B.a4)
-return A.kS(A.b([A.lL(B.axM,new A.axu(a),r)],o),B.iv,m,new A.bp(q,B.D),n)},
+return A.kS(A.b([A.lL(B.axN,new A.axu(a),r)],o),B.iv,m,new A.bp(q,B.D),n)},
 $S:34}
 A.axt.prototype={
 $1(a){var s,r,q,p,o,n,m,l,k=this,j=null,i=k.b,h=A.aP9(i.a,a.a.a)
@@ -102413,12 +102413,12 @@ $3(a,b,c){var s,r,q,p,o,n,m=null,l=B.bv.gdI(B.bv),k=A.r(l).j("aF<p.E>"),j=A.a0(n
 l=this.b
 k=A.bK(l,m,t.w).w
 s=t.p
-r=A.a8(A.b([A.as(A.b([B.axZ,A.E(""+b.gMX()+" total items in Trainer Bag",m,m,m,m,B.jT,m,m)],s),B.L,B.j,B.k),A.cV(m,m,B.e1,m,m,new A.awT(l),m,m,m)],s),B.m,B.aE,B.k,0)
+r=A.a8(A.b([A.as(A.b([B.ay_,A.E(""+b.gMX()+" total items in Trainer Bag",m,m,m,m,B.jT,m,m)],s),B.L,B.j,B.k),A.cV(m,m,B.e1,m,m,new A.awT(l),m,m,m)],s),B.m,B.aE,B.k,0)
 q=this.a
 p=q.Qp(b)
-o=A.bH(A.hg(B.ZB,B.awZ,new A.awU(q,b),A.df(m,m,B.cd,m,m,m,m,m,m,B.f,m,m,B.TJ,m,new A.bp(A.F(14),B.D),m,m,m,m,m)),m,1/0)
+o=A.bH(A.hg(B.ZB,B.awY,new A.awU(q,b),A.df(m,m,B.cd,m,m,m,m,m,m,B.f,m,m,B.TJ,m,new A.bp(A.F(14),B.D),m,m,m,m,m)),m,1/0)
 n=j.length
-return A.bH(new A.aZ(B.oT,A.as(A.b([r,B.aG,p,B.aG,o,B.bI,A.aC(n===0?A.dj(A.as(A.b([B.Zw,B.bI,B.awa,B.bg,B.ay9],s),B.m,B.j,B.a4),m,m):A.kf(new A.awV(q,j,b,l),n,m,new A.awW(),!1),1)],s),B.L,B.j,B.k),m),k.a.b*0.78,m)},
+return A.bH(new A.aZ(B.oT,A.as(A.b([r,B.aG,p,B.aG,o,B.bI,A.aC(n===0?A.dj(A.as(A.b([B.Zw,B.bI,B.awa,B.bg,B.aya],s),B.m,B.j,B.a4),m,m):A.kf(new A.awV(q,j,b,l),n,m,new A.awW(),!1),1)],s),B.L,B.j,B.k),m),k.a.b*0.78,m)},
 $S:253}
 A.awS.prototype={
 $1(a){return a.d!==B.pM&&this.a.eN(a.a)>0},
@@ -102457,7 +102457,7 @@ q=t.p
 r=A.b([A.a8(A.b([new A.dg(1,B.aX,g,o),B.a5,s,B.a5,A.a_(o,A.E("x"+k,o,o,o,o,A.bn(o,o,f?i:B.bc,o,o,o,o,o,o,o,o,11,o,o,B.E,o,o,!0,o,o,o,o,o,o,o,o),o,o),B.l,o,o,new A.V(B.iE,o,o,r,o,o,B.o),o,o,o,B.j_,o,o,o)],q),B.m,B.j,B.k,0),B.c6,A.E(n.c,o,o,o,o,B.jT,o,o)],q)
 if(e===B.cM){g=f?new A.awN(p.a,p.d,m,n):o
 e=A.f(153,i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
-B.b.M(r,A.b([B.bg,A.bH(A.De(B.aws,g,A.fW(o,o,o,o,o,o,o,o,o,i,o,o,B.l_,o,new A.bp(A.F(8),B.D),new A.aJ(e,1,B.G,-1),o,o,o,o)),28,o)],q))}else if(e===B.eH){g=f?new A.awO(p.a,p.d,m,n):o
+B.b.M(r,A.b([B.bg,A.bH(A.De(B.awd,g,A.fW(o,o,o,o,o,o,o,o,o,i,o,o,B.l_,o,new A.bp(A.F(8),B.D),new A.aJ(e,1,B.G,-1),o,o,o,o)),28,o)],q))}else if(e===B.eH){g=f?new A.awO(p.a,p.d,m,n):o
 e=A.f(64,i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 s=A.f(B.c.B(178.5),i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 B.b.M(r,A.b([B.bg,A.bH(A.hg(B.ZU,B.axy,g,A.df(o,o,e,o,o,o,o,o,o,i,o,o,B.l_,o,new A.bp(A.F(8),B.D),new A.aJ(s,1,B.G,-1),o,o,o,o)),28,o)],q))}else if(e===B.a_){g=f?new A.awP(p.a,p.d,m,n):o
@@ -102465,7 +102465,7 @@ e=A.f(61,i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 s=A.f(B.c.B(178.5),i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 B.b.M(r,A.b([B.bg,A.bH(A.hg(B.Zt,B.axg,g,A.df(o,o,e,o,o,o,o,o,o,i,o,o,B.l_,o,new A.bp(A.F(8),B.D),new A.aJ(s,1,B.G,-1),o,o,o,o)),28,o)],q))}else if(e===B.dh||e===B.cX){i=A.f(15,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255)
 g=A.F(6)
-B.b.M(r,A.b([B.bg,A.a_(o,A.E(e===B.cX?"Held item: auto-consumed in battle or equip via Party":"Held item: equip via Party to boost battle power",o,o,o,o,B.KV,o,o),B.l,o,o,new A.V(i,o,o,g,o,o,B.o),o,o,o,B.eF,o,o,o)],q))}i=A.aC(A.as(r,B.L,B.j,B.k),1)
+B.b.M(r,A.b([B.bg,A.a_(o,A.E(e===B.cX?"Held item: auto-consumed in battle or equip via Pok\xe9mon":"Held item: equip via Pok\xe9mon to boost battle power",o,o,o,o,B.KV,o,o),B.l,o,o,new A.V(i,o,o,g,o,o,B.o),o,o,o,B.eF,o,o,o)],q))}i=A.aC(A.as(r,B.L,B.j,B.k),1)
 g=A.cV(o,B.er,B.Z_,o,o,new A.awQ(m,n),B.oX,o,"Add 1")
 m=f?new A.awR(m,n):o
 return A.a_(o,A.a8(A.b([l,B.ee,i,B.at,A.as(A.b([g,A.cV(o,B.er,A.cc(B.ww,f?B.x:B.cK,o,20),o,o,m,B.oX,o,"Discard 1")],q),B.m,B.j,B.k)],q),B.m,B.j,B.k,0),B.l,o,o,new A.V(B.fe,o,h,j,o,o,B.o),o,o,o,B.hl,o,o,o)},
@@ -102624,7 +102624,7 @@ m=h.d?A.f(56,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255):A.f(56,B.M.h()>>>16&2
 l=A.F(5)
 k=h.d
 if(k){j=h.r
-j="PARTY #"+((j==null?0:j)+1)}else j="BOX "+(b+1)
+j="POK\xc9MON #"+((j==null?0:j)+1)}else j="BOX "+(b+1)
 i=t.p
 l=A.a8(A.b([A.a_(g,A.E(j,g,g,g,g,A.bn(g,g,k?B.uf:B.eu,g,g,g,g,g,g,g,g,8.5,g,g,B.E,g,g,!0,g,g,g,g,g,g,g,g),g,g),B.l,g,g,new A.V(m,g,g,l,g,g,B.o),g,g,g,B.e_,g,g,g),B.a5,new A.dg(1,B.aX,A.E(d.b,g,B.a7,g,g,B.mD,g,g),g),B.a5,A.E("Lv."+d.c,g,g,g,g,B.asZ,g,g)],i),B.m,B.j,B.k,0)
 m=A.E("HP "+d.e+" \u2022 ATK "+d.f+" \u2022 DEF "+d.r+" \u2022 SPA "+d.w+" \u2022 SPD "+d.x+" \u2022 SPE "+d.y,1,B.a7,g,g,B.at7,g,g)
@@ -102639,7 +102639,7 @@ n.push(h.abt(a,b,m,d))}return A.a_(g,A.as(n,B.m,B.j,B.a4),B.l,g,B.tE,new A.V(g,g
 abt(a,b,c,d){var s,r,q,p=this,o=null,n=a.d.length<6,m=n?new A.azJ(p,a,b,c,d):o
 m=A.aC(A.bH(A.hg(B.YP,A.E(n?"Withdraw":"Party Full",o,o,o,o,B.eU,o,o),m,A.df(o,o,B.uh,B.bt,B.bc,o,o,o,o,B.t,o,o,B.fk,o,new A.bp(A.F(8),B.D),o,o,o,o,o)),30,o),1)
 s=A.f(140,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
-s=A.aC(A.bH(A.lr(B.YW,B.aya,new A.azK(p,a,b,c,d),A.fW(o,o,o,o,o,o,o,o,o,B.A,o,o,B.fk,o,new A.bp(A.F(8),B.D),new A.aJ(s,1,B.G,-1),o,o,o,o)),30,o),1)
+s=A.aC(A.bH(A.lr(B.YW,B.ayb,new A.azK(p,a,b,c,d),A.fW(o,o,o,o,o,o,o,o,o,B.A,o,o,B.fk,o,new A.bp(A.F(8),B.D),new A.aJ(s,1,B.G,-1),o,o,o,o)),30,o),1)
 r=A.f(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
 r=A.aC(A.bH(A.lr(B.ZV,B.awU,new A.azL(p,a,b,c,d),A.fW(o,o,o,o,o,o,o,o,o,B.eu,o,o,B.fk,o,new A.bp(A.F(8),B.D),new A.aJ(r,1,B.G,-1),o,o,o,o)),30,o),1)
 q=A.f(140,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255)
@@ -102654,7 +102654,7 @@ p.push(A.aC(A.bH(A.lr(B.wR,B.axC,new A.azE(this,a,d,e),A.fW(r,r,r,r,r,r,r,r,r,B.
 if(a.d.length>1){q=A.f(140,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255)
 p.push(A.bH(A.De(B.wU,new A.azF(this,e,a,d),A.fW(r,r,r,r,r,r,r,r,r,B.x,r,r,B.ac,r,new A.bp(A.F(8),B.D),new A.aJ(q,1,B.G,-1),r,r,r,r)),30,36))}return A.a8(p,B.m,B.j,B.k,0)},
 abr(a){var s=null,r=A.F(14),q=A.ae(A.f(82,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1),p=t.p
-return A.a_(s,A.as(A.b([A.a8(A.b([B.ay2,A.E(""+a.d.length+"/6 Pok\xe9mon",s,s,s,s,B.atV,s,s)],p),B.m,B.aE,B.k,0),B.eR,A.a8(A.ll(6,new A.azH(this,a),!0,t.l7),B.m,B.j,B.k,0)],p),B.L,B.j,B.k),B.l,s,s,new A.V(B.uc,s,q,r,s,s,B.o),s,s,s,B.Uw,s,s,s)},
+return A.a_(s,A.as(A.b([A.a8(A.b([B.axD,A.E(""+a.d.length+"/6 Pok\xe9mon",s,s,s,s,B.atV,s,s)],p),B.m,B.aE,B.k,0),B.eR,A.a8(A.ll(6,new A.azH(this,a),!0,t.l7),B.m,B.j,B.k,0)],p),B.L,B.j,B.k),B.l,s,s,new A.V(B.uc,s,q,r,s,s,B.o),s,s,s,B.Uw,s,s,s)},
 abs(a,b,c){var s,r,q,p,o,n,m=null
 if(b==null){s=A.F(10)
 return A.a_(m,B.NJ,B.l,m,m,new A.V(B.Po,m,A.ae(B.bt,1),s,m,m,B.o),m,54,m,m,m,m,m)}r=A.cL(B.b.gS(b.a.c))
@@ -102721,7 +102721,7 @@ d=this.a
 r=d.amX(b)
 q=A.cV(f,f,B.e0,f,f,new A.aA3(a),f,f,f)
 p=t.p
-o=A.as(A.b([B.ax1,A.E(""+b.gE2()+"/320 Stored \u2022 16 Boxes \xd7 20 Slots",f,f,f,f,A.bn(f,f,B.eu,f,f,f,f,f,f,f,f,10,f,f,B.du,f,f,!0,f,f,f,f,f,f,f,f),f,f)],p),B.L,B.j,B.k)
+o=A.as(A.b([B.ax0,A.E(""+b.gE2()+"/320 Stored \u2022 16 Boxes \xd7 20 Slots",f,f,f,f,A.bn(f,f,B.eu,f,f,f,f,f,f,f,f,10,f,f,B.du,f,f,!0,f,f,f,f,f,f,f,f),f,f)],p),B.L,B.j,B.k)
 n=A.f(153,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
 o=A.kT(A.b([new A.aZ(B.TN,A.lr(B.Z6,B.awy,new A.aA4(d,b),A.fW(f,f,B.uD,f,f,f,f,f,f,B.eu,f,f,B.l_,f,new A.bp(A.F(10),B.D),new A.aJ(n,1,B.G,-1),f,f,f,f)),f)],p),!0,B.PC,f,0,q,o,f)
 q=A.f3("assets/images/bg_pc_storage.png",B.B,f,B.p,B.d4,!1,f,f,f)
@@ -102825,7 +102825,7 @@ $0(){return this.a.W2(this.b)},
 $S:0}
 A.aA_.prototype={
 $1(a){var s,r=this,q=null,p=r.b,o=t.p
-o=A.b([A.a8(A.b([A.aC(A.E("SWAP "+p.b.toUpperCase()+" WITH PARTY",q,q,q,q,B.rN,q,q),1),A.cV(q,q,B.e1,q,q,new A.azY(a),q,q,q)],o),B.m,B.aE,B.k,0),B.aj],o)
+o=A.b([A.a8(A.b([A.aC(A.E("SWAP "+p.b.toUpperCase()+" WITH POK\xc9MON",q,q,q,q,B.rN,q,q),1),A.cV(q,q,B.e1,q,q,new A.azY(a),q,q,q)],o),B.m,B.aE,B.k,0),B.aj],o)
 s=r.c
 B.b.M(o,A.ll(s.d.length,new A.azZ(r.a,s,r.d,r.e,a,p),!0,t.l7))
 return new A.aZ(B.vG,A.as(o,B.L,B.j,B.a4),q)},
@@ -102907,7 +102907,7 @@ r=A.a0(new A.aF(d,new A.aB5(s),q),q.j("p.E"))}q=A.cV(g,g,B.e0,g,g,new A.aB6(a),g
 p=A.F(12)
 o=A.ae(A.f(140,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1)
 n=t.p
-q=A.kT(A.b([A.a_(g,A.a8(A.b([B.awg,B.dm,A.E(""+f.db,g,g,g,g,B.rE,g,g)],n),B.m,B.j,B.a4,0),B.l,g,g,new A.V(B.Pc,g,o,p,g,g,B.o),g,g,B.oN,B.TV,g,g,g)],n),!0,B.R2,!0,0,q,B.ay5,g)
+q=A.kT(A.b([A.a_(g,A.a8(A.b([B.awi,B.dm,A.E(""+f.db,g,g,g,g,B.rE,g,g)],n),B.m,B.j,B.a4,0),B.l,g,g,new A.V(B.Pc,g,o,p,g,g,B.o),g,g,B.oN,B.TV,g,g,g)],n),!0,B.R2,!0,0,q,B.ay5,g)
 p=A.f3("assets/images/bg_poke_mart.png",B.B,g,B.p,B.d4,!1,g,g,g)
 o=A.fS(g,new A.V(g,g,g,g,g,new A.bQ(B.bj,B.an,B.U,A.b([A.f(184,B.nx.h()>>>16&255,B.nx.h()>>>8&255,B.nx.h()&255),A.f(153,B.oc.h()>>>16&255,B.oc.h()>>>8&255,B.oc.h()&255),A.f(224,B.nP.h()>>>16&255,B.nP.h()>>>8&255,B.nP.h()&255)],t.O),g,g),B.o),B.cb)
 m=A.F(16)
@@ -102916,7 +102916,7 @@ k=A.F(11)
 k=A.a_(g,B.Zv,B.l,g,g,new A.V(B.Pp,g,A.ae(A.f(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),1),k,g,g,B.o),g,g,g,B.hm,g,g,g)
 j=e>=8
 i=j?"Earth Badge rank: Full Pok\xe9 Mart & Evolution Stones stocked!":""+e+" Badges: Higher-tier goods unlock as you earn more Badges."
-m=A.a_(g,A.a8(A.b([k,B.JO,A.aC(A.as(A.b([B.ay7,B.dA,A.E(i,g,g,g,g,A.bn(g,g,j?B.n:B.J,g,g,g,g,g,g,g,g,11,g,g,B.du,g,g,!0,g,g,g,g,g,g,g,g),g,g)],n),B.L,B.j,B.k),1)],n),B.m,B.j,B.k,0),B.l,g,g,new A.V(g,g,l,m,g,B.a5L,B.o),g,g,g,B.U7,g,g,g)
+m=A.a_(g,A.a8(A.b([k,B.JO,A.aC(A.as(A.b([B.ay8,B.dA,A.E(i,g,g,g,g,A.bn(g,g,j?B.n:B.J,g,g,g,g,g,g,g,g,11,g,g,B.du,g,g,!0,g,g,g,g,g,g,g,g),g,g)],n),B.L,B.j,B.k),1)],n),B.m,B.j,B.k,0),B.l,g,g,new A.V(g,g,l,m,g,B.a5L,B.o),g,g,g,B.U7,g,g,g)
 l=A.b([h.yN("All Goods",g,s),B.cu,h.yN("Pok\xe9 Balls",B.fo,s),B.cu,h.yN("Medicine",B.cM,s)],n)
 if(j)B.b.M(l,A.b([B.cu,h.yN("Evolution Stones",B.eH,s)],n))
 return A.i7(q,B.R4,A.cY(B.b3,A.b([p,o,A.fF(!0,A.as(A.b([new A.aZ(B.Ua,m,g),A.a_(g,A.wd(l,g,g,B.aA),B.l,g,g,g,g,44,g,B.l0,g,g,g),A.aC(A.kf(new A.aB7(h,r,f,a),r.length,B.U8,new A.aB8(),!1),1)],n),B.m,B.j,B.k),B.ac,!0)],n),B.I,B.d3),!0)},
@@ -102979,10 +102979,10 @@ o=A.cV(k,k,B.YR,k,k,r>1?new A.aAY(j,b):k,k,k,k)
 n=A.E(""+r,k,k,k,k,B.rK,k,k)
 m=l.e
 o=A.b([o,n,A.cV(k,k,B.ZD,k,k,r<m&&r<99?new A.aAZ(j,b):k,k,k,k)],p)
-if(m>1)B.b.M(o,A.b([A.lL(B.axP,new A.aB_(j,b,m),k)],p))
-i=A.a_(k,A.a8(A.b([B.axH,A.a8(o,B.m,B.j,B.k,0)],p),B.m,B.aE,B.k,0),B.l,k,k,new A.V(B.Sh,k,q,i,k,k,B.o),k,k,k,B.vC,k,k,k)
+if(m>1)B.b.M(o,A.b([A.lL(B.axQ,new A.aB_(j,b,m),k)],p))
+i=A.a_(k,A.a8(A.b([B.axI,A.a8(o,B.m,B.j,B.k,0)],p),B.m,B.aE,B.k,0),B.l,k,k,new A.V(B.Sh,k,q,i,k,k,B.o),k,k,k,B.vC,k,k,k)
 r=""+g
-q=A.a8(A.b([B.axE,A.E("\u20bd"+r,k,k,k,k,A.bn(k,k,e?B.T:B.x,k,k,k,k,k,k,k,k,17,k,k,B.C,k,k,!0,k,k,k,k,k,k,k,k),k,k)],p),B.m,B.aE,B.k,0)
+q=A.a8(A.b([B.axF,A.E("\u20bd"+r,k,k,k,k,A.bn(k,k,e?B.T:B.x,k,k,k,k,k,k,k,k,17,k,k,B.C,k,k,!0,k,k,k,k,k,k,k,k),k,k)],p),B.m,B.aE,B.k,0)
 j=e?new A.aB0(j,f,g,s,a,l.f):k
 f=A.df(k,k,B.uL,B.bt,k,k,k,k,k,B.f,k,k,k,k,new A.bp(A.F(13),B.D),k,k,k,k,k)
 return new A.aZ(B.oU,A.as(A.b([h,B.i4,i,B.bI,q,B.i4,A.bH(A.hL(A.E(e?"CONFIRM PURCHASE (\u20bd"+r+")":"INSUFFICIENT FUNDS",k,k,k,k,B.atO,k,k),j,f),48,1/0)],p),B.L,B.j,B.a4),k)},
@@ -103092,7 +103092,7 @@ o=A.f(41,o.h()>>>16&255,o.h()>>>8&255,o.h()&255)
 n=A.F(6)
 m=A.Dv(a.gib())
 m=A.ae(A.f(166,m.h()>>>16&255,m.h()>>>8&255,m.h()&255),1)
-B.b.M(h,A.b([j,B.cT,A.a_(k,A.E(A.aKO(a.gib()).toUpperCase(),k,k,k,k,A.bn(k,k,A.Dv(a.gib()),k,k,k,k,k,k,k,k,7.5,k,k,B.C,k,k,!0,k,0.5,k,k,k,k,k,k),k,k),B.l,k,k,new A.V(o,k,m,n,k,k,B.o),k,k,k,B.UB,k,k,k)],p))}else h.push(A.a_(k,B.aye,B.l,k,k,new A.V(A.f(13,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),k,k,A.F(6),k,k,B.o),k,k,k,B.iZ,k,k,k))
+B.b.M(h,A.b([j,B.cT,A.a_(k,A.E(A.aKO(a.gib()).toUpperCase(),k,k,k,k,A.bn(k,k,A.Dv(a.gib()),k,k,k,k,k,k,k,k,7.5,k,k,B.C,k,k,!0,k,0.5,k,k,k,k,k,k),k,k),B.l,k,k,new A.V(o,k,m,n,k,k,B.o),k,k,k,B.UB,k,k,k)],p))}else h.push(A.a_(k,B.ayf,B.l,k,k,new A.V(A.f(13,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),k,k,A.F(6),k,k,B.o),k,k,k,B.iZ,k,k,k))
 return A.dN(!1,f,!0,A.a_(k,A.as(h,B.m,B.j,B.k),B.l,k,k,new A.V(k,k,q,r,k,new A.bQ(B.bl,B.ck,B.U,s,k,k),B.o),k,k,k,B.iW,k,k,k),k,!0,k,k,k,k,k,k,k,k,new A.aBb(this,c,g,a,b),k,k,k,k)},
 al9(a,b){var s=A.cL(B.b.gS(a.c)),r=B.h.iU(B.i.l(a.a),3,"0"),q=a.dx,p=q!=null?$.fN().i(0,q):null
 q=this.c
@@ -103313,7 +103313,7 @@ p.c.ad(t.q).f.dg(B.aoR)
 case 1:return A.O(q,r)}})
 return A.P($async$oM,r)},
 O(a3){var s,r,q,p,o,n,m,l,k,j,i,h,g=this,f=null,e=A.iS(a3,!0,t.Q),d=e.eN("unknown_fossil"),c=e.eN("fossil_restoration_voucher"),b=B.b.c5(e.d,new A.aBD()),a=A.cV(f,f,B.e0,f,f,g.d?f:new A.aBE(a3),f,f,f),a0=A.F(12),a1=A.ae(A.f(140,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1),a2=t.p
-a=A.kT(A.b([A.a_(f,A.a8(A.b([B.axc,B.rv,A.E(""+e.db,f,f,f,f,B.atc,f,f)],a2),B.m,B.j,B.a4,0),B.l,f,f,new A.V(B.nJ,f,a1,a0,f,f,B.o),f,f,B.oN,B.oP,f,f,f)],a2),!0,B.kk,!0,0,a,B.axX,f)
+a=A.kT(A.b([A.a_(f,A.a8(A.b([B.axb,B.rv,A.E(""+e.db,f,f,f,f,B.atc,f,f)],a2),B.m,B.j,B.a4,0),B.l,f,f,new A.V(B.nJ,f,a1,a0,f,f,B.o),f,f,B.oN,B.oP,f,f,f)],a2),!0,B.kk,!0,0,a,B.axY,f)
 a0=A.f3("assets/images/bg_pokemon_center.png",B.B,f,B.p,B.d4,!1,f,f,f)
 a1=t.O
 s=A.fS(f,new A.V(f,f,f,f,f,new A.bQ(B.bj,B.an,B.U,A.b([A.f(194,B.o1.h()>>>16&255,B.o1.h()>>>8&255,B.o1.h()&255),A.f(158,B.nB.h()>>>16&255,B.nB.h()>>>8&255,B.nB.h()&255),A.f(224,B.nD.h()>>>16&255,B.nD.h()>>>8&255,B.nD.h()&255)],a1),f,f),B.o),B.cb)
@@ -103344,7 +103344,7 @@ q=A.aC(A.a_(f,A.as(A.b([l,B.bg,m,B.bg,A.a_(f,A.a8(A.b([A.a_(f,B.awc,B.l,f,f,new 
 a1=g.d
 n=a1?f:new A.aBF(g,e)
 m=A.cc(a1?B.j4:B.Yr,f,f,20)
-n=A.bH(A.hg(m,A.E(a1?"HEALING PARTY...":"HEAL POK\xc9MON",f,f,f,f,B.KE,f,f),n,A.df(f,f,B.uI,A.f(89,B.N.h()>>>16&255,B.N.h()>>>8&255,B.N.h()&255),B.J,f,4,f,f,B.f,f,f,f,f,new A.bp(A.F(14),new A.aJ(A.f(71,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),1,B.G,-1)),f,f,f,f,f)),48,f)
+n=A.bH(A.hg(m,A.E(a1?"HEALING POK\xc9MON...":"HEAL POK\xc9MON",f,f,f,f,B.KE,f,f),n,A.df(f,f,B.uI,A.f(89,B.N.h()>>>16&255,B.N.h()>>>8&255,B.N.h()&255),B.J,f,4,f,f,B.f,f,f,f,f,new A.bp(A.F(14),new A.aJ(A.f(71,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),1,B.G,-1)),f,f,f,f,f)),48,f)
 a1=A.aC(g.Qi(B.A,B.wN,g.d?f:new A.aBG(a3),"Items & Medicine","Pok\xe9 Mart"),1)
 m=g.d?f:new A.aBH(a3)
 return A.i7(a,B.PD,A.cY(B.b3,A.b([a0,s,A.fF(!0,new A.aZ(B.TZ,A.as(A.b([r,B.aG,q,B.aG,n,B.aG,A.a8(A.b([a1,B.bY,A.aC(g.Qi(B.bn,B.wK,m,""+d+" Fossil \u2022 "+c+" Voucher","Pok\xe9mon Lab"),1)],a2),B.m,B.j,B.k,0)],a2),B.de,B.j,B.k),f),B.ac,!0)],a2),B.I,B.d3),!0)},
@@ -103473,7 +103473,7 @@ r=t.te
 r=A.a0(new A.a2(B.z7,new A.aCg(),r),r.j("aL.E"))
 r=A.a8(r,B.m,B.lW,B.k,0)
 q=A.F(10)
-f=A.aC(A.a_(p,A.as(A.b([B.ayj,B.i3,r,B.i4,A.a_(p,B.axV,B.l,p,p,new A.V(B.kp,p,A.ae(B.bt,1),q,p,p,B.o),p,p,p,B.iY,p,p,p)],e),B.m,B.cc,B.k),B.l,p,p,new A.V(p,p,s,f,p,B.a5N,B.o),p,p,p,B.df,p,p,p),1)
+f=A.aC(A.a_(p,A.as(A.b([B.ayj,B.i3,r,B.i4,A.a_(p,B.axW,B.l,p,p,new A.V(B.kp,p,A.ae(B.bt,1),q,p,p,B.o),p,p,p,B.iY,p,p,p)],e),B.m,B.cc,B.k),B.l,p,p,new A.V(p,p,s,f,p,B.a5N,B.o),p,p,p,B.df,p,p,p),1)
 s=l?new A.aCh(this,o):p
 if(l)r="RESTORE FOSSIL (1 FOSSIL + 1 VOUCHER)"
 else r=o.gCV()?"STORAGE FULL (320/320)":"NEED 1 FOSSIL & 1 VOUCHER"
@@ -103511,7 +103511,7 @@ $1(a){var s,r,q=null,p=$.fN().i(0,a)
 p.toString
 s=A.F(16)
 r=A.ae(A.f(140,B.bn.h()>>>16&255,B.bn.h()>>>8&255,B.bn.h()&255),1.3)
-return A.as(A.b([A.a_(q,A.dj(A.d1(u.C+p.a+".gif",B.B,new A.aCe(p),B.p,B.au,54,54),q,q),B.l,q,q,new A.V(q,q,r,s,q,B.akH,B.o),q,72,q,q,q,q,72),B.jQ,A.E(p.b,q,q,q,q,B.rE,q,q),B.ayc],t.p),B.m,B.j,B.a4)},
+return A.as(A.b([A.a_(q,A.dj(A.d1(u.C+p.a+".gif",B.B,new A.aCe(p),B.p,B.au,54,54),q,q),B.l,q,q,new A.V(q,q,r,s,q,B.akH,B.o),q,72,q,q,q,q,72),B.jQ,A.E(p.b,q,q,q,q,B.rE,q,q),B.ayd],t.p),B.m,B.j,B.a4)},
 $S:652}
 A.aCe.prototype={
 $3(a,b,c){return A.d1(u.Z+this.a.a+".png",B.B,new A.aCd(),B.p,B.au,54,54)},
@@ -103622,14 +103622,14 @@ if(!s){q=j.w
 q=A.f(153,q.h()>>>16&255,q.h()>>>8&255,q.h()&255)}else q=B.ah
 q=A.ae(q,1)
 p=t.p
-o=A.b([B.axI,B.aG],p)
+o=A.b([B.axJ,B.aG],p)
 if(s)o.push(B.awJ)
 else{s=j.w
 n=A.f(46,s.h()>>>16&255,s.h()>>>8&255,s.h()&255)
 m=A.F(12)
-o.push(A.a8(A.b([A.a_(l,A.cc(j.x,s,l,24),B.l,l,l,new A.V(n,l,l,m,l,l,B.o),l,l,l,B.vN,l,l,l),B.bY,A.aC(A.as(A.b([A.E(j.b,l,l,l,l,B.rN,l,l),A.E(j.c,l,l,l,l,B.jT,l,l)],p),B.L,B.j,B.k),1),B.at,A.De(B.axL,new A.aBK(b,a),A.fW(l,l,l,l,l,l,l,l,l,B.x,l,l,B.dH,l,l,new A.aJ(A.f(153,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1,B.G,-1),l,l,l,l))],p),B.m,B.j,B.k,0))}k=A.b([A.a_(l,A.as(o,B.L,B.j,B.k),B.l,l,l,new A.V(B.da,l,q,k,l,l,B.o),l,l,l,B.df,l,l,l),B.i3,B.awN,B.aj],p)
+o.push(A.a8(A.b([A.a_(l,A.cc(j.x,s,l,24),B.l,l,l,new A.V(n,l,l,m,l,l,B.o),l,l,l,B.vN,l,l,l),B.bY,A.aC(A.as(A.b([A.E(j.b,l,l,l,l,B.rN,l,l),A.E(j.c,l,l,l,l,B.jT,l,l)],p),B.L,B.j,B.k),1),B.at,A.De(B.axM,new A.aBK(b,a),A.fW(l,l,l,l,l,l,l,l,l,B.x,l,l,B.dH,l,l,new A.aJ(A.f(153,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1,B.G,-1),l,l,l,l))],p),B.m,B.j,B.k,0))}k=A.b([A.a_(l,A.as(o,B.L,B.j,B.k),B.l,l,l,new A.V(B.da,l,q,k,l,l,B.o),l,l,l,B.df,l,l,l),B.i3,B.awN,B.aj],p)
 if(r.length===0){s=A.F(14)
-k.push(A.a_(l,B.ax4,B.l,l,l,new A.V(B.da,l,A.ae(B.bt,1),s,l,l,B.o),l,l,l,B.Uj,l,l,l))}else B.b.M(k,new A.a2(r,new A.aBL(this,a,b),A.a4(r).j("a2<1,i>")))
+k.push(A.a_(l,B.ax3,B.l,l,l,new A.V(B.da,l,A.ae(B.bt,1),s,l,l,B.o),l,l,l,B.Uj,l,l,l))}else B.b.M(k,new A.a2(r,new A.aBL(this,a,b),A.a4(r).j("a2<1,i>")))
 return A.wd(k,B.df,l,B.aK)},
 abm(a,b){var s=null,r=b.gazH(),q=A.b3k(),p=A.a4(q).j("aF<1>"),o=A.a0(new A.aF(q,new A.aBR(a),p),p.j("p.E"))
 q=b.z
@@ -103639,7 +103639,7 @@ B.b.M(p,A.ll(q.length,new A.aBS(this,b,a),!0,t.l7))
 p.push(B.bI)
 p.push(A.E("REMEMBERED MOVES ("+r.length+")",s,s,s,s,B.KU,s,s))
 p.push(B.c6)
-p.push(B.axD)
+p.push(B.axE)
 p.push(B.aj)
 if(r.length===0){q=A.F(14)
 p.push(A.a_(s,B.axl,B.l,s,s,new A.V(B.da,s,A.ae(B.bt,1),q,s,s,B.o),s,s,s,B.df,s,s,s))}else B.b.M(p,new A.a2(r,new A.aBT(this,a,b),A.a4(r).j("a2<1,i>")))
@@ -103647,7 +103647,7 @@ p.push(B.i3)
 p.push(A.E("TEACH GEN 1 TM FROM BAG ("+o.length+")",s,s,s,s,B.ate,s,s))
 p.push(B.aj)
 if(o.length===0){q=A.F(14)
-p.push(A.a_(s,B.awj,B.l,s,s,new A.V(B.da,s,A.ae(B.bt,1),q,s,s,B.o),s,s,s,B.df,s,s,s))}else B.b.M(p,new A.a2(o,new A.aBU(this,a,b),A.a4(o).j("a2<1,i>")))
+p.push(A.a_(s,B.awl,B.l,s,s,new A.V(B.da,s,A.ae(B.bt,1),q,s,s,B.o),s,s,s,B.df,s,s,s))}else B.b.M(p,new A.a2(o,new A.aBU(this,a,b),A.a4(o).j("a2<1,i>")))
 return A.wd(p,B.df,s,B.aK)}}
 A.aC0.prototype={
 $1(a){var s,r,q,p=null,o=A.F(18),n=this.a,m=A.cL(n.c)
@@ -103695,7 +103695,7 @@ m=s.a
 m=A.E("#"+B.h.iU(B.i.l(m.a),3,"0")+" \u2022 "+m.b.toUpperCase(),c,c,c,c,B.KE,c,c)
 l=t.p
 k=A.b([],l)
-if(b.a.c!==0)k.push(new A.aZ(B.TG,A.aRc(B.ZK,B.ayd,new A.aC4(b,a1,a0,s)),c))
+if(b.a.c!==0)k.push(new A.aZ(B.TG,A.aRc(B.ZK,B.aye,new A.aC4(b,a1,a0,s)),c))
 a=A.kT(k,!0,B.ux,!0,0,a,m,c)
 m=A.b([A.f(61,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),B.PA],t.O)
 k=A.f(B.c.B(25.5),B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255)
@@ -103878,7 +103878,7 @@ s=A.kT(A.b([A.a_(b,A.a8(A.b([B.YS,B.dm,A.E(""+a.k2.a+"/8 BADGES",b,b,b,b,B.asI,b
 r=A.f3("assets/images/bg_pokemon_league.png",B.B,b,B.p,B.d4,!1,b,b,b)
 q=t.O
 o=A.fS(b,new A.V(b,b,b,b,b,new A.bQ(B.bj,B.an,B.U,A.b([A.f(194,B.h5.h()>>>16&255,B.h5.h()>>>8&255,B.h5.h()&255),A.f(158,B.hf.h()>>>16&255,B.hf.h()>>>8&255,B.hf.h()&255),A.f(224,B.h4.h()>>>16&255,B.h4.h()>>>8&255,B.h4.h()&255)],q),b,b),B.o),B.cb)
-n=A.b([c.ab1(a),B.i4,A.a8(A.b([B.ZI,B.cu,B.axS,B.cv,A.E("WALK & CATCH TO UNLOCK",b,b,b,b,A.bn(b,b,A.f(B.c.B(127.5),B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),b,b,b,b,b,b,b,b,9.5,b,b,B.E,b,b,!0,b,0.5,b,b,b,b,b,b),b,b)],p),B.m,B.j,B.k,0),B.aG],p)
+n=A.b([c.ab1(a),B.i4,A.a8(A.b([B.ZI,B.cu,B.axT,B.cv,A.E("WALK & CATCH TO UNLOCK",b,b,b,b,A.bn(b,b,A.f(B.c.B(127.5),B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),b,b,b,b,b,b,b,b,9.5,b,b,B.E,b,b,!0,b,0.5,b,b,b,b,b,b),b,b)],p),B.m,B.j,B.k,0),B.aG],p)
 for(m=$.aJ1(),l=0;l<8;++l)B.b.M(n,A.b([c.aba(a0,a,m[l]),B.JT],p))
 n.push(B.bg)
 k=a.k2.a>=8
@@ -103892,7 +103892,7 @@ g=k?A.f(56,B.cP.h()>>>16&255,B.cP.h()>>>8&255,B.cP.h()&255):A.f(15,B.f.h()>>>16&
 f=A.F(8)
 e=A.ae(k?B.n:B.ah,1)
 d=k?"READY":"LOCKED (8 BADGES)"
-n.push(A.a_(b,A.as(A.b([A.a8(A.b([i,B.ee,h,A.a_(b,A.E(d,b,b,b,b,A.bn(b,b,k?B.n:B.bc,b,b,b,b,b,b,b,b,8.5,b,b,B.C,b,b,!0,b,b,b,b,b,b,b,b),b,b),B.l,b,b,new A.V(g,b,e,f,b,b,B.o),b,b,b,B.p_,b,b,b)],p),B.m,B.j,B.k,0),B.aG,B.ax9],p),B.L,B.j,B.k),B.l,b,b,new A.V(b,b,j,m,b,new A.bQ(B.bk,B.cy,B.U,q,b,b),B.o),b,b,b,B.Ub,b,b,b))
+n.push(A.a_(b,A.as(A.b([A.a8(A.b([i,B.ee,h,A.a_(b,A.E(d,b,b,b,b,A.bn(b,b,k?B.n:B.bc,b,b,b,b,b,b,b,b,8.5,b,b,B.C,b,b,!0,b,b,b,b,b,b,b,b),b,b),B.l,b,b,new A.V(g,b,e,f,b,b,B.o),b,b,b,B.p_,b,b,b)],p),B.m,B.j,B.k,0),B.aG,B.ax8],p),B.L,B.j,B.k),B.l,b,b,new A.V(b,b,j,m,b,new A.bQ(B.bk,B.cy,B.U,q,b,b),B.o),b,b,b,B.Ub,b,b,b))
 return A.i7(s,B.oe,A.cY(B.b3,A.b([r,o,A.fF(!0,A.wd(n,B.U6,b,B.aK),B.ac,!0)],p),B.I,B.d3),!0)},
 ab1(a0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=null,d=A.F(18),c=B.c.B(127.5),b=A.ae(A.f(c,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1.3),a=t.V
 c=A.b([new A.ck(0,B.aL,A.f(c,B.t.h()>>>16&255,B.t.h()>>>8&255,B.t.h()&255),B.hM,12)],a)
@@ -104037,7 +104037,7 @@ r=""+r.length
 a=A.a_(c,A.as(A.b([f,B.bg,A.E(p?"NEXT: FINAL BATTLE WITH LEADER "+a.d.toUpperCase()+" ("+r+b+e+")!":"NEXT: "+q.b.toUpperCase()+" ("+q.c+" \u2022 "+r+b+e+")",c,c,c,c,B.avv,c,c),B.cT,B.awT],g),B.L,B.j,B.k),B.l,c,c,new A.V(c,c,h,i,c,new A.bQ(B.bk,B.cy,B.U,l,c,c),B.o),c,c,c,B.df,c,c,1/0)
 r=A.aC(A.kf(new A.aCl(a0),a0.d.length,c,new A.aCm(),!1),1)
 l=A.aC(A.lr(B.ZG,B.axk,new A.aCn(d,a0),A.fW(c,c,B.OZ,c,c,c,c,c,c,B.f,c,c,B.oO,c,new A.bp(A.F(12),B.D),B.Mf,c,c,c,c)),1)
-return A.i7(n,B.oe,A.cY(B.b3,A.b([m,k,A.fF(!0,new A.aZ(B.df,A.as(A.b([a,B.i3,B.awo,B.aj,r,B.bI,A.a8(A.b([l,B.bY,A.aC(A.hg(B.ZP,A.E(p?"FACE LEADER":"CONTINUE",c,c,c,c,B.Ko,c,c),new A.aCo(d,a0),A.df(c,c,j,c,c,c,c,c,c,B.t,c,c,B.oO,c,new A.bp(A.F(12),B.D),c,c,c,c,c)),1)],g),B.m,B.j,B.k,0),B.bg,A.dj(A.aRc(B.Zq,B.ayf,new A.aCp(d,a0)),c,c)],g),B.L,B.j,B.k),c),B.ac,!0)],g),B.I,B.d3),!0)},
+return A.i7(n,B.oe,A.cY(B.b3,A.b([m,k,A.fF(!0,new A.aZ(B.df,A.as(A.b([a,B.i3,B.awh,B.aj,r,B.bI,A.a8(A.b([l,B.bY,A.aC(A.hg(B.ZP,A.E(p?"FACE LEADER":"CONTINUE",c,c,c,c,B.Ko,c,c),new A.aCo(d,a0),A.df(c,c,j,c,c,c,c,c,c,B.t,c,c,B.oO,c,new A.bp(A.F(12),B.D),c,c,c,c,c)),1)],g),B.m,B.j,B.k,0),B.bg,A.dj(A.aRc(B.Zq,B.ayg,new A.aCp(d,a0)),c,c)],g),B.L,B.j,B.k),c),B.ac,!0)],g),B.I,B.d3),!0)},
 am7(a,b){A.m6(B.ky,new A.aCK(this,b,a),a,!0,!0,!0,B.ma,t.z)},
 anQ(a,b,c,d){A.kM(!0,new A.aCO(c,b,d,a),a,t.z)},
 Ur(a,b){var s,r,q,p,o,n,m={},l=b.a,k=a.k2.q(0,l),j=!k
@@ -104115,7 +104115,7 @@ s.e=B.qq
 s.f=0},
 $S:0}
 A.aCx.prototype={
-$1(a){return A.kS(A.b([A.lL(B.axh,new A.aCr(a),null)],t.p),B.ky,B.awm,null,B.axY)},
+$1(a){return A.kS(A.b([A.lL(B.axh,new A.aCr(a),null)],t.p),B.ky,B.awo,null,B.axZ)},
 $S:34}
 A.aCr.prototype={
 $0(){A.bf(this.a,!1).br(null)
@@ -104178,7 +104178,7 @@ $2(a,b){var s,r,q,p,o=null,n=this.b,m=t.Hd,l=A.a0(new A.aF(A.b(["potion","super_
 m=this.c
 s=A.bK(m,o,t.w).w
 r=t.p
-q=A.b([A.a8(A.b([B.ayh,A.cV(o,o,B.e1,o,o,new A.aCG(a),o,o,o)],r),B.m,B.aE,B.k,0),B.aj],r)
+q=A.b([A.a8(A.b([B.axd,A.cV(o,o,B.e1,o,o,new A.aCG(a),o,o,o)],r),B.m,B.aE,B.k,0),B.aj],r)
 p=l.length
 if(p===0)B.b.M(q,A.b([B.US],r))
 else B.b.M(q,A.b([A.aC(A.kf(new A.aCH(this.a,l,n,m,b),p,o,new A.aCI(),!1),1)],r))
@@ -104203,7 +104203,7 @@ s=j?p:n.b
 s=A.E((s==null?o:s)+" (x"+l+")",p,p,p,p,B.dB,p,p)
 j=j?p:n.c
 r=t.p
-return A.a_(p,A.a8(A.b([i,B.bY,A.aC(A.as(A.b([s,A.E(j==null?"":j,p,p,p,p,B.Ku,p,p)],r),B.L,B.j,B.k),1),A.hL(B.axb,new A.aCE(q.a,q.d,m,o,q.e),A.df(p,p,B.dk,p,p,p,p,p,p,B.t,p,p,B.iX,p,p,p,p,p,p,p))],r),B.m,B.j,B.k,0),B.l,p,p,new A.V(B.uE,p,p,k,p,p,B.o),p,p,p,B.iW,p,p,p)},
+return A.a_(p,A.a8(A.b([i,B.bY,A.aC(A.as(A.b([s,A.E(j==null?"":j,p,p,p,p,B.Ku,p,p)],r),B.L,B.j,B.k),1),A.hL(B.axa,new A.aCE(q.a,q.d,m,o,q.e),A.df(p,p,B.dk,p,p,p,p,p,p,B.t,p,p,B.iX,p,p,p,p,p,p,p))],r),B.m,B.j,B.k,0),B.l,p,p,new A.V(B.uE,p,p,k,p,p,B.o),p,p,p,B.iW,p,p,p)},
 $S:73}
 A.aCE.prototype={
 $0(){var s=this,r=s.a
@@ -104333,7 +104333,7 @@ W0(a){this.H(new A.aF6(this,a,A.aRy(a)))},
 O(a){var s=null,r=A.f3("assets/images/bg_starter_select.png",B.an,s,B.p,B.d4,!1,s,s,s),q=A.fS(s,new A.V(s,s,s,s,s,new A.bQ(B.bj,B.an,B.U,A.b([A.f(189,B.nS.h()>>>16&255,B.nS.h()>>>8&255,B.nS.h()&255),A.f(148,B.nF.h()>>>16&255,B.nF.h()>>>8&255,B.nF.h()&255),A.f(224,B.nG.h()>>>16&255,B.nG.h()>>>8&255,B.nG.h()&255)],t.O),s,s),B.o),B.cb)
 return A.i7(s,B.kq,A.cY(B.b3,A.b([r,q,A.fF(!0,new A.aZ(B.vz,this.d===0?this.abC():this.abu(),s),B.ac,!0)],t.p),B.I,B.d3),!1)},
 abC(){var s,r,q,p,o,n,m,l=this,k=null,j=A.aRy(l.e),i=A.b([B.c2,B.cm],t.O),h=A.F(18)
-i=A.a_(k,B.ay_,B.l,k,k,new A.V(k,k,A.ae(A.f(140,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),1),h,k,new A.bQ(B.bk,B.cy,B.U,i,k,k),B.o),k,k,k,B.vB,k,k,k)
+i=A.a_(k,B.ay0,B.l,k,k,new A.V(k,k,A.ae(A.f(140,B.n.h()>>>16&255,B.n.h()>>>8&255,B.n.h()&255),1),h,k,new A.bQ(B.bk,B.cy,B.U,i,k,k),B.o),k,k,k,B.vB,k,k,k)
 h=A.F(13)
 s=A.ae(B.ah,1)
 r=t.p
@@ -104349,7 +104349,7 @@ n=l.f
 m=n.c?"Female":"Male"
 m=A.E(n.b+" ("+m+")",k,k,k,k,B.KN,k,k)
 n=A.aP8(k,new A.i2(4,A.F(12),B.Md),k,B.vx,k,k,"",k,!0,new A.i2(4,A.F(12),B.Mh),k,k,k,k,k,B.dX,!0,k,k,k,k,new A.i2(4,A.F(12),B.Mg),k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,B.aq_,"TRAINER NAME",!0,!0,!1,k,k,k,k,k,k,k,k,k,k,k,k,k,k)
-return A.as(A.b([B.cT,i,B.aj,B.ax7,B.aG,h,B.bI,s,B.bI,A.aC(A.a_(k,A.as(A.b([o,B.aj,m,B.aG,new A.Fr(l.r,n,B.apO,B.KF,B.aoD,B.aoE,14,!0,k)],r),B.m,B.cc,B.k),B.l,k,k,new A.V(k,k,p,q,k,B.a5O,B.o),k,k,k,B.vE,k,k,1/0),1),B.bI,A.bH(A.hL(B.awb,new A.aF5(l),A.df(k,k,B.c2,k,k,k,4,k,k,B.f,k,k,k,k,new A.bp(A.F(14),new A.aJ(A.f(56,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),1,B.G,-1)),k,k,k,k,k)),48,1/0)],r),B.m,B.j,B.k)},
+return A.as(A.b([B.cT,i,B.aj,B.ax6,B.aG,h,B.bI,s,B.bI,A.aC(A.a_(k,A.as(A.b([o,B.aj,m,B.aG,new A.Fr(l.r,n,B.apO,B.KF,B.aoD,B.aoE,14,!0,k)],r),B.m,B.cc,B.k),B.l,k,k,new A.V(k,k,p,q,k,B.a5O,B.o),k,k,k,B.vE,k,k,1/0),1),B.bI,A.bH(A.hL(B.awb,new A.aF5(l),A.df(k,k,B.c2,k,k,k,4,k,k,B.f,k,k,k,k,new A.bp(A.F(14),new A.aJ(A.f(56,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),1,B.G,-1)),k,k,k,k,k)),48,1/0)],r),B.m,B.j,B.k)},
 Sn(a,b,c,d){var s=null,r=c?new A.bQ(B.bk,B.cy,B.U,A.b([B.dc,B.o4],t.O),s,s):s,q=c?s:B.a0,p=A.F(10),o=A.cc(b,c?B.f:B.aS,s,16)
 return A.kb(s,A.mc(A.a8(A.b([o,B.a5,A.E(a,s,s,s,s,A.bn(s,s,c?B.f:B.aS,s,s,s,s,s,s,s,s,11.5,s,s,B.C,s,s,!0,s,s,s,s,s,s,s,s),s,s)],t.p),B.m,B.j,B.k,0),B.ab,new A.V(q,s,s,p,s,r,B.o),B.eC,s,s,B.Um,s,s,s),B.aT,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,d,s,s,s,s,s,s)},
 abu(){var s,r,q,p,o,n,m,l,k,j,i,h,g=this,f=null,e=A.agq(g.w,5,f,!0),d=A.cL(B.b.gS(e.a.c)),c=A.cV(f,B.er,B.e0,f,f,new A.aEU(g),B.ac,f,f),b=t.O,a=A.b([B.c2,B.cm],b),a0=A.F(18),a1=t.p
@@ -105166,7 +105166,7 @@ $1(a){return a.b===this.a.y},
 $S:118}
 A.ld.prototype={
 O(a){var s=null,r=this.d,q=r>0?B.c.K(this.c/r,0,1):0,p=A.F(5),o=A.ae(B.t,1.5),n=t.Y,m=t.i,l=t.p
-return A.as(A.b([A.a8(A.b([B.axT,B.dm,A.aC(A.a_(s,A.k3(A.F(3.5),A.cY(B.b3,A.b([A.FU(new A.aaf(),s,B.ff,B.eD,new A.aQ(s,q,n),m),A.FU(new A.aag(),s,B.ff,B.oM,new A.aQ(s,q,n),m)],l),B.I,B.bA)),B.l,s,s,new A.V(B.nw,s,o,p,s,s,B.o),s,10,s,s,s,s,s),1)],l),B.m,B.j,B.k,0),B.dA,A.E(""+this.c+" / "+r,s,s,s,s,B.avf,s,s)],l),B.ew,B.j,B.k)}}
+return A.as(A.b([A.a8(A.b([B.axU,B.dm,A.aC(A.a_(s,A.k3(A.F(3.5),A.cY(B.b3,A.b([A.FU(new A.aaf(),s,B.ff,B.eD,new A.aQ(s,q,n),m),A.FU(new A.aag(),s,B.ff,B.oM,new A.aQ(s,q,n),m)],l),B.I,B.bA)),B.l,s,s,new A.V(B.nw,s,o,p,s,s,B.o),s,10,s,s,s,s,s),1)],l),B.m,B.j,B.k,0),B.dA,A.E(""+this.c+" / "+r,s,s,s,s,B.avf,s,s)],l),B.ew,B.j,B.k)}}
 A.aaf.prototype={
 $3(a,b,c){var s=null
 return A.a9o(B.bk,A.a_(s,s,B.l,A.f(191,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255),s,s,s,s,s,s,s,s,s),b)},
@@ -105203,8 +105203,8 @@ i=A.f(46,i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 h=A.F(5)
 h=A.a_(f,A.E(A.aTk(j),f,f,f,f,A.bn(f,f,A.aM3(j),f,f,f,f,f,f,f,f,9,f,f,B.E,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.l,f,f,new A.V(i,f,f,h,f,f,B.o),f,f,f,B.eE,f,f,f)
 j=d.e
-d=A.b([o,B.aj,n,B.aG,A.a_(f,A.as(A.b([c,B.eR,A.a8(A.b([h,B.at,A.E("PWR "+A.o(j>0?j:"\u2014")+" \u2022 ACC "+d.f+"% \u2022 PP "+d.r,f,f,f,f,B.as5,f,f)],p),B.m,B.j,B.k,0),B.cT,A.E(d.y,f,f,f,f,B.i7,f,f)],p),B.L,B.j,B.k),B.l,f,f,new A.V(f,f,k,l,f,new A.bQ(B.bk,B.cy,B.U,m,f,f),B.o),f,f,f,B.iW,f,f,f),B.aG,B.axK,B.bg,new A.dg(1,B.aX,A.kf(new A.aIO(r,a),r.z.length,f,new A.aIP(),!0),f),B.aG],p)
-if(g.d)d.push(new A.aZ(B.TE,A.E("Tip: Skipped level-up moves can still be swapped in later via Party \u2192 Moves.",f,f,f,f,A.bn(f,f,A.f(191,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),f,f,f,f,f,f,f,f,9.5,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),B.bJ,f),f))
+d=A.b([o,B.aj,n,B.aG,A.a_(f,A.as(A.b([c,B.eR,A.a8(A.b([h,B.at,A.E("PWR "+A.o(j>0?j:"\u2014")+" \u2022 ACC "+d.f+"% \u2022 PP "+d.r,f,f,f,f,B.as5,f,f)],p),B.m,B.j,B.k,0),B.cT,A.E(d.y,f,f,f,f,B.i7,f,f)],p),B.L,B.j,B.k),B.l,f,f,new A.V(f,f,k,l,f,new A.bQ(B.bk,B.cy,B.U,m,f,f),B.o),f,f,f,B.iW,f,f,f),B.aG,B.axL,B.bg,new A.dg(1,B.aX,A.kf(new A.aIO(r,a),r.z.length,f,new A.aIP(),!0),f),B.aG],p)
+if(g.d)d.push(new A.aZ(B.TE,A.E("Tip: Skipped level-up moves can still be swapped in later via Pok\xe9mon \u2192 Moves.",f,f,f,f,A.bn(f,f,A.f(191,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),f,f,f,f,f,f,f,f,9.5,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),B.bJ,f),f))
 c=A.f(56,B.f.h()>>>16&255,B.f.h()>>>8&255,B.f.h()&255)
 c=A.fW(f,f,f,f,f,f,f,f,f,B.J,f,f,f,f,new A.bp(A.F(12),B.D),new A.aJ(c,1,B.G,-1),f,f,f,f)
 d.push(A.bH(A.De(A.E("DO NOT LEARN "+q.toUpperCase(),f,f,f,f,B.eV,f,f),new A.aIQ(a),c),40,f))
@@ -105230,7 +105230,7 @@ l=o.e
 l=A.aC(A.as(A.b([s,B.c6,A.E("PWR "+A.o(l>0?l:"\u2014")+" \u2022 ACC "+o.f+"% \u2022 PP "+o.w+"/"+o.r,p,p,p,p,B.ei,p,p),A.E(o.y,1,B.a7,p,p,B.KS,p,p)],r),B.L,B.j,B.k),1)
 s=A.f(46,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255)
 q=A.F(8)
-return A.dN(!1,n,!0,A.a_(p,A.a8(A.b([l,B.at,A.a_(p,B.axd,B.l,p,p,new A.V(s,p,A.ae(A.f(153,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1),q,p,p,B.o),p,p,p,B.vM,p,p,p)],r),B.m,B.j,B.k,0),B.l,p,p,new A.V(B.fe,p,k,m,p,p,B.o),p,p,p,B.fj,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.aIL(this.b,o),p,p,p,p)},
+return A.dN(!1,n,!0,A.a_(p,A.a8(A.b([l,B.at,A.a_(p,B.axc,B.l,p,p,new A.V(s,p,A.ae(A.f(153,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1),q,p,p,B.o),p,p,p,B.vM,p,p,p)],r),B.m,B.j,B.k,0),B.l,p,p,new A.V(B.fe,p,k,m,p,p,B.o),p,p,p,B.fj,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.aIL(this.b,o),p,p,p,p)},
 $S:55}
 A.aIL.prototype={
 $0(){A.bf(this.a,!1).br(this.b)
@@ -109308,8 +109308,8 @@ B.NG=new A.Ai(null,null,null,null,null,null)
 B.c3=new A.h(0.5411764705882353,1,1,1,B.e)
 B.Kp=new A.k(!0,B.c3,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bJ=new A.ny(2,"center")
-B.ax_=new A.ab("No Berries or Held Items in your Bag!\nFind berries on wild Pok\xe9mon or earn rare held items by re-challenging Gym Leaders.",null,B.Kp,B.bJ,null,null,null,null,null,null)
-B.NH=new A.hb(B.B,null,null,B.ax_,null)
+B.awZ=new A.ab("No Berries or Held Items in your Bag!\nFind berries on wild Pok\xe9mon or earn rare held items by re-challenging Gym Leaders.",null,B.Kp,B.bJ,null,null,null,null,null,null)
+B.NH=new A.hb(B.B,null,null,B.awZ,null)
 B.bo=new A.ay(57671,"MaterialIcons",!1)
 B.Z9=new A.b1(B.bo,16,B.ah,null,null)
 B.NJ=new A.hb(B.B,null,null,B.Z9,null)
@@ -110066,20 +110066,20 @@ B.k=new A.Pe(1,"max")
 B.b9=new A.aoc(1,"down")
 B.C=new A.hO(900)
 B.auk=new A.k(!0,B.bn,null,null,null,null,12,B.C,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax3=new A.ab("FOSSIL RESTORATION CHAMBER",null,B.auk,null,null,null,null,null,null,null)
+B.ax2=new A.ab("FOSSIL RESTORATION CHAMBER",null,B.auk,null,null,null,null,null,null,null)
 B.c6=new A.cm(null,3,null,null)
 B.auP=new A.k(!0,B.J,null,null,null,null,10.8,null,null,null,null,null,1.35,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awO=new A.ab("Combine 1 Unknown Fossil and 1 Fossil Restoration Voucher to revive a random Lv. 10 first-stage Fossil Pok\xe9mon!",null,B.auP,null,null,null,null,null,null,null)
-B.a62=s([B.ax3,B.c6,B.awO],t.p)
+B.a62=s([B.ax2,B.c6,B.awO],t.p)
 B.So=new A.l2(B.aK,B.j,B.k,B.L,null,B.b9,null,0,B.a62,null)
 B.UP=new A.fx(1,B.dI,B.So,null)
 B.E=new A.hO(700)
 B.mA=new A.k(!0,B.f,null,null,null,null,16,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay1=new A.ab("GAUNTLET CONQUERED!",null,B.mA,null,null,null,null,null,null,null)
-B.UQ=new A.fx(1,B.dI,B.ay1,null)
+B.ay2=new A.ab("GAUNTLET CONQUERED!",null,B.mA,null,null,null,null,null,null,null)
+B.UQ=new A.fx(1,B.dI,B.ay2,null)
 B.aqE=new A.k(!0,B.bc,null,null,null,null,13,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awk=new A.ab("You don't have any healing items in your Bag!",null,B.aqE,null,null,null,null,null,null,null)
-B.NI=new A.hb(B.B,null,null,B.awk,null)
+B.awm=new A.ab("You don't have any healing items in your Bag!",null,B.aqE,null,null,null,null,null,null,null)
+B.NI=new A.hb(B.B,null,null,B.awm,null)
 B.US=new A.fx(1,B.dI,B.NI,null)
 B.cc=new A.oZ(2,"center")
 B.aun=new A.k(!0,B.f,null,null,null,null,12,B.C,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -112369,8 +112369,8 @@ B.ahd=new A.PU(1,"end")
 B.ahe=new A.PV(0,"nearestOverlay")
 B.ahf=new A.PV(1,"rootOverlay")
 B.KA=new A.k(!0,B.A,null,null,null,null,9.5,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay0=new A.ab("GIVE",null,B.KA,null,null,null,null,null,null,null)
-B.ahg=new A.aZ(B.oW,B.ay0,null)
+B.ay1=new A.ab("GIVE",null,B.KA,null,null,null,null,null,null,null)
+B.ahg=new A.aZ(B.oW,B.ay1,null)
 B.Yu=new A.ay(63534,"MaterialIcons",!1)
 B.Zz=new A.b1(B.Yu,18,B.J,null,null)
 B.ahh=new A.aZ(B.oV,B.Zz,null)
@@ -113292,13 +113292,13 @@ B.jB=new A.iU(null,null)
 B.IA=new A.n7(12,!0,null)
 B.dm=new A.cm(4,null,null,null)
 B.KM=new A.k(!0,B.f,null,null,null,null,8,B.C,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axR=new A.ab("CAUGHT",null,B.KM,null,null,null,null,null,null,null)
-B.abe=s([B.IA,B.dm,B.axR],t.p)
+B.axS=new A.ab("CAUGHT",null,B.KM,null,null,null,null,null,null,null)
+B.abe=s([B.IA,B.dm,B.axS],t.p)
 B.alq=new A.fZ(B.aA,B.j,B.a4,B.m,null,B.b9,null,0,B.abe,null)
 B.ZF=new A.b1(B.wI,14,B.N,null,null)
 B.mB=new A.k(!0,B.J,null,null,null,null,10.5,B.C,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax2=new A.ab("POK\xc9MON CENTER \u2022 NURSE JOY",null,B.mB,null,null,null,null,null,null,null)
-B.aaD=s([B.ZF,B.a5,B.ax2],t.p)
+B.ax1=new A.ab("POK\xc9MON CENTER \u2022 NURSE JOY",null,B.mB,null,null,null,null,null,null,null)
+B.aaD=s([B.ZF,B.a5,B.ax1],t.p)
 B.als=new A.fZ(B.aA,B.j,B.k,B.m,null,B.b9,null,0,B.aaD,null)
 B.Yk=new A.ay(63030,"MaterialIcons",!1)
 B.Zj=new A.b1(B.Yk,12,B.T,null,null)
@@ -113315,8 +113315,8 @@ B.a7h=s([B.Zr,B.at,B.axm],t.p)
 B.alu=new A.fZ(B.aA,B.j,B.k,B.m,null,B.b9,null,0,B.a7h,null)
 B.YV=new A.b1(B.wx,24,B.bn,null,null)
 B.asL=new A.k(!0,B.bn,null,null,null,null,14.5,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axF=new A.ab("FOSSIL RESTORATION COMPLETE!",null,B.asL,null,null,null,null,null,null,null)
-B.UR=new A.fx(1,B.dI,B.axF,null)
+B.axG=new A.ab("FOSSIL RESTORATION COMPLETE!",null,B.asL,null,null,null,null,null,null,null)
+B.UR=new A.fx(1,B.dI,B.axG,null)
 B.a6l=s([B.YV,B.at,B.UR],t.p)
 B.alv=new A.fZ(B.aA,B.j,B.k,B.m,null,B.b9,null,0,B.a6l,null)
 B.Zo=new A.b1(B.wO,13,B.A,null,null)
@@ -113325,8 +113325,8 @@ B.aww=new A.ab("SWAP LEAD",null,B.avj,null,null,null,null,null,null,null)
 B.a8I=s([B.Zo,B.dm,B.aww],t.p)
 B.alw=new A.fZ(B.aA,B.j,B.a4,B.m,null,B.b9,null,0,B.a8I,null)
 B.ei=new A.k(!0,B.aS,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay8=new A.ab("= Caught Pok\xe9mon",null,B.ei,null,null,null,null,null,null,null)
-B.a8J=s([B.IA,B.dm,B.ay8],t.p)
+B.ay9=new A.ab("= Caught Pok\xe9mon",null,B.ei,null,null,null,null,null,null,null)
+B.a8J=s([B.IA,B.dm,B.ay9],t.p)
 B.alr=new A.fZ(B.aA,B.j,B.k,B.m,null,B.b9,null,0,B.a8J,null)
 B.aib=new A.n7(12,!1,null)
 B.awC=new A.ab("= Encountered Only",null,B.ei,null,null,null,null,null,null,null)
@@ -113343,16 +113343,16 @@ B.YI=new A.ay(984e3,"MaterialIcons",!1)
 B.Zs=new A.b1(B.YI,14,B.T,null,null)
 B.eQ=new A.cm(5,null,null,null)
 B.asE=new A.k(!0,B.T,null,null,null,null,10.5,B.C,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awY=new A.ab("KANTO BADGE CASE",null,B.asE,null,null,null,null,null,null,null)
-B.aa5=s([B.Zs,B.eQ,B.awY],t.p)
+B.awX=new A.ab("KANTO BADGE CASE",null,B.asE,null,null,null,null,null,null,null)
+B.aa5=s([B.Zs,B.eQ,B.awX],t.p)
 B.alA=new A.fZ(B.aA,B.j,B.k,B.m,null,B.b9,null,0,B.aa5,null)
 B.Zc=new A.b1(B.wD,28,B.M,null,null)
 B.ee=new A.cm(12,null,null,null)
 B.Kn=new A.k(!0,B.f,null,null,null,null,12.5,B.C,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax8=new A.ab("PC TERMINAL READY",null,B.Kn,null,null,null,null,null,null,null)
+B.ax7=new A.ab("PC TERMINAL READY",null,B.Kn,null,null,null,null,null,null,null)
 B.i7=new A.k(!0,B.aS,null,null,null,null,10.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awD=new A.ab("Tap any Pok\xe9mon in the Box above or your Party below to withdraw, deposit, swap, move between boxes, or release.",null,B.i7,null,null,null,null,null,null,null)
-B.acn=s([B.ax8,B.c6,B.awD],t.p)
+B.acn=s([B.ax7,B.c6,B.awD],t.p)
 B.Sq=new A.l2(B.aK,B.cc,B.a4,B.L,null,B.b9,null,0,B.acn,null)
 B.UU=new A.fx(1,B.dI,B.Sq,null)
 B.a9k=s([B.Zc,B.ee,B.UU],t.p)
@@ -113645,12 +113645,12 @@ B.aoK=new A.lF(5,"timeout")
 B.aoL=new A.xh(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awt=new A.ab(u.l,null,null,null,null,null,null,null,null,null)
 B.aoM=new A.fG(B.awt,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
-B.axW=new A.ab("Saved progress deleted. Starting a new adventure!",null,null,null,null,null,null,null,null,null)
-B.aoN=new A.fG(B.axW,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
-B.ax0=new A.ab("Repel is active! Toggle Repel off to encounter wild Pok\xe9mon.",null,null,null,null,null,null,null,null,null)
-B.aoO=new A.fG(B.ax0,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
-B.axO=new A.ab("Claimed Supply Drop: +5 Pok\xe9 Balls, +2 Great Balls, +1 Ultra Ball, +3 Potions, +1 Revive!",null,null,null,null,null,null,null,null,null)
-B.aoP=new A.fG(B.axO,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
+B.axX=new A.ab("Saved progress deleted. Starting a new adventure!",null,null,null,null,null,null,null,null,null)
+B.aoN=new A.fG(B.axX,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
+B.ax_=new A.ab("Repel is active! Toggle Repel off to encounter wild Pok\xe9mon.",null,null,null,null,null,null,null,null,null)
+B.aoO=new A.fG(B.ax_,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
+B.axP=new A.ab("Claimed Supply Drop: +5 Pok\xe9 Balls, +2 Great Balls, +1 Ultra Ball, +3 Potions, +1 Revive!",null,null,null,null,null,null,null,null,null)
+B.aoP=new A.fG(B.axP,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
 B.awF=new A.ab("Both your Party and all 16 PC Boxes are full! Release a Pok\xe9mon first.",null,null,null,null,null,null,null,null,null)
 B.aoQ=new A.fG(B.awF,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
 B.awM=new A.ab("Your entire party was restored to perfect condition! Full HP, PP, and status cured.",null,null,null,null,null,null,null,null,null)
@@ -113659,12 +113659,12 @@ B.awB=new A.ab(u.s,null,null,null,null,null,null,null,null,null)
 B.aoS=new A.fG(B.awB,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
 B.axr=new A.ab("All Pok\xe9mon in your party are fainted! Heal first.",null,null,null,null,null,null,null,null,null)
 B.aoT=new A.fG(B.axr,null,null,null,null,null,null,null,null,null,null,null,null,B.oL,!1,null,null,null,B.I,null)
-B.awq=new A.ab("All Pok\xe9mon in your party have fainted! Visit the Pok\xe9mon Center to heal your party.",null,null,null,null,null,null,null,null,null)
-B.rx=new A.fG(B.awq,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
+B.awr=new A.ab("All Pok\xe9mon in your party have fainted! Visit the Pok\xe9mon Center to heal your party.",null,null,null,null,null,null,null,null,null)
+B.rx=new A.fG(B.awr,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
 B.awV=new A.ab("You need 1 Unknown Fossil and 1 Fossil Restoration Voucher to restore a fossil.",null,null,null,null,null,null,null,null,null)
 B.aoU=new A.fG(B.awV,null,null,null,null,null,null,null,null,null,null,null,null,B.aO,!1,null,null,null,B.I,null)
-B.awd=new A.ab("It won't have any effect!",null,null,null,null,null,null,null,null,null)
-B.aoV=new A.fG(B.awd,null,null,null,null,null,null,null,null,null,null,null,null,B.ey,!1,null,null,null,B.I,null)
+B.awe=new A.ab("It won't have any effect!",null,null,null,null,null,null,null,null,null)
+B.aoV=new A.fG(B.awe,null,null,null,null,null,null,null,null,null,null,null,null,B.ey,!1,null,null,null,B.I,null)
 B.JX=new A.EY(0,"permissive")
 B.aoW=new A.EY(1,"normal")
 B.aoX=new A.EY(2,"forced")
@@ -114155,24 +114155,24 @@ B.awa=new A.ab("Your Bag is empty!",null,B.aqG,null,null,null,null,null,null,nul
 B.awb=new A.ab("NEXT: CHOOSE PARTNER \u2192",null,B.KT,null,null,null,null,null,null,null)
 B.auJ=new A.k(!0,B.N,null,null,null,null,8.5,B.C,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awc=new A.ab("NURSE JOY",null,B.auJ,null,null,null,null,null,null,null)
+B.awd=new A.ab("Use on Pok\xe9mon",null,B.eV,null,null,null,null,null,null,null)
 B.arZ=new A.k(!0,B.f,null,null,null,null,11,B.li,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awe=new A.ab("PRACTICE VS RIVAL BLUE (SOLO AI)",null,B.arZ,null,null,null,null,null,null,null)
+B.awf=new A.ab("PRACTICE VS RIVAL BLUE (SOLO AI)",null,B.arZ,null,null,null,null,null,null,null)
 B.as7=new A.k(!0,B.aq,null,null,null,null,8.5,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awf=new A.ab("EXP",null,B.as7,null,null,null,null,null,null,null)
-B.awg=new A.ab("\u20bd",null,B.Kw,null,null,null,null,null,null,null)
-B.awh=new A.ab("SELECT A MOVE",null,B.Kx,null,null,null,null,null,null,null)
-B.awi=new A.ab("Delete Progress",null,B.fN,null,null,null,null,null,null,null)
-B.awj=new A.ab("No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pok\xe9mon League to earn rare TM drops!",null,B.rD,B.bJ,null,null,null,null,null,null)
-B.rF=new A.k(!0,null,null,null,null,null,10,B.C,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awl=new A.ab("TALL GRASS",null,B.rF,null,null,null,null,null,null,null)
-B.awm=new A.ab("Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",null,B.rL,null,null,null,null,null,null,null)
-B.awn=new A.ab("TRAINER BAG",null,B.mA,null,null,null,null,null,null,null)
+B.awg=new A.ab("EXP",null,B.as7,null,null,null,null,null,null,null)
 B.rJ=new A.k(!0,B.J,null,null,null,null,11,B.C,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awo=new A.ab("PARTY CONDITION",null,B.rJ,null,null,null,null,null,null,null)
-B.awp=new A.ab("\u20bd",null,B.KP,null,null,null,null,null,null,null)
+B.awh=new A.ab("POK\xc9MON CONDITION",null,B.rJ,null,null,null,null,null,null,null)
+B.awi=new A.ab("\u20bd",null,B.Kw,null,null,null,null,null,null,null)
+B.awj=new A.ab("SELECT A MOVE",null,B.Kx,null,null,null,null,null,null,null)
+B.awk=new A.ab("Delete Progress",null,B.fN,null,null,null,null,null,null,null)
+B.awl=new A.ab("No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pok\xe9mon League to earn rare TM drops!",null,B.rD,B.bJ,null,null,null,null,null,null)
+B.rF=new A.k(!0,null,null,null,null,null,10,B.C,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.awn=new A.ab("TALL GRASS",null,B.rF,null,null,null,null,null,null,null)
+B.awo=new A.ab("Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",null,B.rL,null,null,null,null,null,null,null)
+B.awp=new A.ab("TRAINER BAG",null,B.mA,null,null,null,null,null,null,null)
+B.awq=new A.ab("\u20bd",null,B.KP,null,null,null,null,null,null,null)
 B.asF=new A.k(!0,B.J,null,null,null,null,10.5,B.li,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awr=new A.ab("PRACTICE VS RIVAL BLUE (SOLO AI)",null,B.asF,null,null,null,null,null,null,null)
-B.aws=new A.ab("Use on Party",null,B.eV,null,null,null,null,null,null,null)
+B.aws=new A.ab("PRACTICE VS RIVAL BLUE (SOLO AI)",null,B.asF,null,null,null,null,null,null,null)
 B.awu=new A.ab("SWITCH",null,B.eV,null,null,null,null,null,null,null)
 B.arF=new A.k(!0,B.cK,null,null,null,null,8,B.C,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awv=new A.ab("UNSEEN",null,B.arF,null,null,null,null,null,null,null)
@@ -114200,25 +114200,24 @@ B.awT=new A.ab("HP, PP, and status do not auto-heal between gauntlet battles. Us
 B.awU=new A.ab("Move",null,B.eU,null,null,null,null,null,null,null)
 B.asp=new A.k(!0,null,null,null,null,null,15,B.C,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.awW=new A.ab("KANTO POK\xc9DEX",null,B.asp,null,null,null,null,null,null,null)
-B.Kz=new A.k(!0,B.f,null,null,null,null,16,B.E,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.awX=new A.ab("MANAGE PARTY",null,B.Kz,null,null,null,null,null,null,null)
-B.awZ=new A.ab("CLAIM POK\xc9 MART SUPPLY DROP (+ITEMS)",null,B.KG,null,null,null,null,null,null,null)
+B.awY=new A.ab("CLAIM POK\xc9 MART SUPPLY DROP (+ITEMS)",null,B.KG,null,null,null,null,null,null,null)
 B.asz=new A.k(!0,B.f,null,null,null,null,14.5,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax1=new A.ab("BILL'S PC STORAGE",null,B.asz,null,null,null,null,null,null,null)
-B.ax4=new A.ab("No Berries or Held Items in your Bag right now.\nDefeat or catch wild Pok\xe9mon for Berries, or re-challenge Gym Leaders for rare Held Items!",null,B.Kr,B.bJ,null,null,null,null,null,null)
+B.ax0=new A.ab("BILL'S PC STORAGE",null,B.asz,null,null,null,null,null,null,null)
+B.ax3=new A.ab("No Berries or Held Items in your Bag right now.\nDefeat or catch wild Pok\xe9mon for Berries, or re-challenge Gym Leaders for rare Held Items!",null,B.Kr,B.bJ,null,null,null,null,null,null)
 B.aqP=new A.k(!0,B.f,null,null,null,null,15,B.E,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax5=new A.ab("SWITCH POK\xc9MON",null,B.aqP,null,null,null,null,null,null,null)
-B.ax6=new A.ab("Put in 1st Spot",null,B.eV,null,null,null,null,null,null,null)
+B.ax4=new A.ab("SWITCH POK\xc9MON",null,B.aqP,null,null,null,null,null,null,null)
+B.ax5=new A.ab("Put in 1st Spot",null,B.eV,null,null,null,null,null,null,null)
 B.aum=new A.k(!0,B.f,null,null,null,null,18,B.C,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax7=new A.ab("Choose Your Trainer Identity",null,B.aum,B.bJ,null,null,null,null,null,null)
+B.ax6=new A.ab("Choose Your Trainer Identity",null,B.aum,B.bJ,null,null,null,null,null,null)
 B.atj=new A.k(!0,B.aS,null,null,null,null,11,null,null,null,null,null,1.4,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ax9=new A.ab("The Elite Four (Lorelei, Bruno, Agatha, Lance) and the Regional Champion await the master trainer who conquers all 8 Kanto Gyms. Keep training and collecting badges!",null,B.atj,null,null,null,null,null,null,null)
+B.ax8=new A.ab("The Elite Four (Lorelei, Bruno, Agatha, Lance) and the Regional Champion await the master trainer who conquers all 8 Kanto Gyms. Keep training and collecting badges!",null,B.atj,null,null,null,null,null,null,null)
 B.asa=new A.k(!0,null,null,null,null,null,13,B.E,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axa=new A.ab("CONTINUE",null,B.asa,null,null,null,null,null,null,null)
-B.axb=new A.ab("USE",null,B.fN,null,null,null,null,null,null,null)
-B.axc=new A.ab("\u20bd",null,B.KN,null,null,null,null,null,null,null)
+B.ax9=new A.ab("CONTINUE",null,B.asa,null,null,null,null,null,null,null)
+B.axa=new A.ab("USE",null,B.fN,null,null,null,null,null,null,null)
+B.axb=new A.ab("\u20bd",null,B.KN,null,null,null,null,null,null,null)
 B.avl=new A.k(!0,B.x,null,null,null,null,10,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axd=new A.ab("REPLACE",null,B.avl,null,null,null,null,null,null,null)
+B.axc=new A.ab("REPLACE",null,B.avl,null,null,null,null,null,null,null)
+B.axd=new A.ab("USE ITEMS ON POK\xc9MON",null,B.rN,null,null,null,null,null,null,null)
 B.atr=new A.k(!0,B.n,null,null,null,null,9.5,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.axe=new A.ab("HP",null,B.atr,null,null,null,null,null,null,null)
 B.axg=new A.ab("Teach Pok\xe9mon",null,B.eV,null,null,null,null,null,null,null)
@@ -114244,63 +114243,64 @@ B.avH=new A.k(!0,B.f,null,null,null,null,9.5,B.C,null,0.8,null,null,null,null,nu
 B.axA=new A.ab("LEAD PARTNER",null,B.avH,null,null,null,null,null,null,null)
 B.axB=new A.ab("Gauntlet: 4 Gym Trainers + Gym Leader",null,B.ei,null,null,null,null,null,null,null)
 B.axC=new A.ab("Lead",null,B.eU,null,null,null,null,null,null,null)
-B.axD=new A.ab("Swap freely between any moves this Pok\xe9mon has already learned.",null,B.Ku,null,null,null,null,null,null,null)
+B.asb=new A.k(!0,B.x,null,null,null,null,10,B.E,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.axD=new A.ab("CARRIED POK\xc9MON",null,B.asb,null,null,null,null,null,null,null)
+B.axE=new A.ab("Swap freely between any moves this Pok\xe9mon has already learned.",null,B.Ku,null,null,null,null,null,null,null)
 B.asS=new A.k(!0,B.J,null,null,null,null,11.5,B.C,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axE=new A.ab("TOTAL COST",null,B.asS,null,null,null,null,null,null,null)
-B.axG=new A.ab("+25 STEPS",null,B.rF,null,null,null,null,null,null,null)
+B.axF=new A.ab("TOTAL COST",null,B.asS,null,null,null,null,null,null,null)
+B.axH=new A.ab("+25 STEPS",null,B.rF,null,null,null,null,null,null,null)
 B.aqR=new A.k(!0,B.J,null,null,null,null,11,B.C,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axH=new A.ab("QUANTITY",null,B.aqR,null,null,null,null,null,null,null)
-B.axI=new A.ab("CURRENTLY HELD ITEM",null,B.mB,null,null,null,null,null,null,null)
+B.axI=new A.ab("QUANTITY",null,B.aqR,null,null,null,null,null,null,null)
+B.axJ=new A.ab("CURRENTLY HELD ITEM",null,B.mB,null,null,null,null,null,null,null)
 B.auW=new A.k(!0,B.A,null,null,null,null,10,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axJ=new A.ab("POK\xc9WALKER GEAR",null,B.auW,null,null,null,null,null,null,null)
+B.axK=new A.ab("POK\xc9WALKER GEAR",null,B.auW,null,null,null,null,null,null,null)
 B.ata=new A.k(!0,B.c3,null,null,null,null,10,B.C,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axK=new A.ab("SELECT A MOVE TO REPLACE",null,B.ata,null,null,null,null,null,null,null)
-B.axL=new A.ab("TAKE",null,B.eV,null,null,null,null,null,null,null)
+B.axL=new A.ab("SELECT A MOVE TO REPLACE",null,B.ata,null,null,null,null,null,null,null)
+B.axM=new A.ab("TAKE",null,B.eV,null,null,null,null,null,null,null)
 B.asK=new A.k(!0,B.c3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axM=new A.ab("Cancel",null,B.asK,null,null,null,null,null,null,null)
+B.axN=new A.ab("Cancel",null,B.asK,null,null,null,null,null,null,null)
 B.au7=new A.k(!0,B.J,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axN=new A.ab("Select a party Pok\xe9mon to evolve:",null,B.au7,null,null,null,null,null,null,null)
+B.axO=new A.ab("Select a party Pok\xe9mon to evolve:",null,B.au7,null,null,null,null,null,null,null)
 B.au9=new A.k(!0,B.A,null,null,null,null,null,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axP=new A.ab("MAX",null,B.au9,null,null,null,null,null,null,null)
+B.axQ=new A.ab("MAX",null,B.au9,null,null,null,null,null,null,null)
 B.aqq=new A.k(!0,B.A,null,null,null,null,8.5,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axQ=new A.ab("ACTIVE",null,B.aqq,null,null,null,null,null,null,null)
+B.axR=new A.ab("ACTIVE",null,B.aqq,null,null,null,null,null,null,null)
 B.atd=new A.k(!0,B.f,null,null,null,null,12,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axS=new A.ab("KANTO GYM GAUNTLETS",null,B.atd,null,null,null,null,null,null,null)
+B.axT=new A.ab("KANTO GYM GAUNTLETS",null,B.atd,null,null,null,null,null,null,null)
 B.atl=new A.k(!0,B.cP,null,null,null,null,10,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axT=new A.ab("HP",null,B.atl,null,null,null,null,null,null,null)
-B.axU=new A.ab("ACTIVE",null,B.Kq,null,null,null,null,null,null,null)
+B.axU=new A.ab("HP",null,B.atl,null,null,null,null,null,null,null)
+B.axV=new A.ab("ACTIVE",null,B.Kq,null,null,null,null,null,null,null)
 B.atx=new A.k(!0,B.aS,null,null,null,null,10.5,null,null,null,null,null,1.35,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axV=new A.ab("Unknown Fossils and Fossil Restoration Vouchers drop as rare rewards when re-challenging Kanto Gym Leaders.",null,B.atx,B.bJ,null,null,null,null,null,null)
-B.axX=new A.ab("POK\xc9MON CENTER",null,B.mz,null,null,null,null,null,null,null)
+B.axW=new A.ab("Unknown Fossils and Fossil Restoration Vouchers drop as rare rewards when re-challenging Kanto Gym Leaders.",null,B.atx,B.bJ,null,null,null,null,null,null)
+B.axY=new A.ab("POK\xc9MON CENTER",null,B.mz,null,null,null,null,null,null,null)
 B.atH=new A.k(!0,B.x,null,null,null,null,null,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.axY=new A.ab("GAUNTLET FAILED",null,B.atH,null,null,null,null,null,null,null)
-B.axZ=new A.ab("MANAGE ITEMS",null,B.Kz,null,null,null,null,null,null,null)
+B.axZ=new A.ab("GAUNTLET FAILED",null,B.atH,null,null,null,null,null,null,null)
+B.Kz=new A.k(!0,B.f,null,null,null,null,16,B.E,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.ay_=new A.ab("MANAGE ITEMS",null,B.Kz,null,null,null,null,null,null,null)
 B.asd=new A.k(!0,B.f,null,null,null,null,10.5,B.C,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay_=new A.ab("WELCOME TO KANTO",null,B.asd,null,null,null,null,null,null,null)
+B.ay0=new A.ab("WELCOME TO KANTO",null,B.asd,null,null,null,null,null,null,null)
 B.ats=new A.k(!0,B.aS,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.jU=new A.ab("Cancel",null,B.ats,null,null,null,null,null,null,null)
-B.asb=new A.k(!0,B.x,null,null,null,null,10,B.E,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay2=new A.ab("CARRIED PARTY",null,B.asb,null,null,null,null,null,null,null)
 B.auF=new A.k(!0,B.N,null,null,null,null,9.5,B.C,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.ay3=new A.ab("RECOVERY MACHINE",null,B.auF,null,null,null,null,null,null,null)
 B.KX=new A.ab("Release",null,null,null,null,null,null,null,null,null)
 B.ay4=new A.ab("POK\xc9MON SUMMARY",null,null,null,null,null,null,null,null,null)
 B.ay5=new A.ab("POK\xc9 MART",null,B.mz,null,null,null,null,null,null,null)
 B.ay6=new A.ab("GIVE",null,B.eV,null,null,null,null,null,null,null)
-B.ay7=new A.ab("KANTO DEPARTMENT COUNTER",null,B.KU,null,null,null,null,null,null,null)
+B.ay7=new A.ab("MANAGE POK\xc9MON",null,B.Kz,null,null,null,null,null,null,null)
+B.ay8=new A.ab("KANTO DEPARTMENT COUNTER",null,B.KU,null,null,null,null,null,null,null)
 B.ar_=new A.k(!0,B.bc,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ay9=new A.ab("Claim a Pok\xe9 Mart supply drop above, visit the Pok\xe9 Mart, or explore to get item drops from wild Pok\xe9mon encounters.",null,B.ar_,B.bJ,null,null,null,null,null,null)
-B.aya=new A.ab("Swap",null,B.eU,null,null,null,null,null,null,null)
+B.aya=new A.ab("Claim a Pok\xe9 Mart supply drop above, visit the Pok\xe9 Mart, or explore to get item drops from wild Pok\xe9mon encounters.",null,B.ar_,B.bJ,null,null,null,null,null,null)
+B.ayb=new A.ab("Swap",null,B.eU,null,null,null,null,null,null,null)
 B.aqU=new A.k(!0,null,null,null,null,null,13.5,B.C,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ayb=new A.ab("VS LINK \u2022 FIST-BUMP RADAR",null,B.aqU,null,null,null,null,null,null,null)
+B.ayc=new A.ab("VS LINK \u2022 FIST-BUMP RADAR",null,B.aqU,null,null,null,null,null,null,null)
 B.aqI=new A.k(!0,B.bn,null,null,null,null,10,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ayc=new A.ab("Lv. 10",null,B.aqI,null,null,null,null,null,null,null)
-B.ayd=new A.ab("LEAD",null,B.KI,null,null,null,null,null,null,null)
+B.ayd=new A.ab("Lv. 10",null,B.aqI,null,null,null,null,null,null,null)
+B.aye=new A.ab("LEAD",null,B.KI,null,null,null,null,null,null,null)
 B.aqF=new A.k(!0,B.cK,null,null,null,null,8,B.E,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.aye=new A.ab("???",null,B.aqF,null,null,null,null,null,null,null)
-B.ayf=new A.ab("RETREAT FROM GAUNTLET (RESETS PROGRESS)",null,B.rI,null,null,null,null,null,null,null)
-B.ayg=new A.ab("+1 STEP",null,B.rF,null,null,null,null,null,null,null)
-B.ayh=new A.ab("USE ITEMS ON PARTY",null,B.rN,null,null,null,null,null,null,null)
+B.ayf=new A.ab("???",null,B.aqF,null,null,null,null,null,null,null)
+B.ayg=new A.ab("RETREAT FROM GAUNTLET (RESETS PROGRESS)",null,B.rI,null,null,null,null,null,null,null)
+B.ayh=new A.ab("+1 STEP",null,B.rF,null,null,null,null,null,null,null)
 B.ayi=new A.ab("POK\xc9MON LAB",null,B.mz,null,null,null,null,null,null,null)
 B.ayj=new A.ab("PREHISTORIC REVIVAL SPECIMENS (LV. 10)",null,B.mB,null,null,null,null,null,null,null)
 B.arv=new A.k(!0,null,null,null,null,null,10,B.C,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
