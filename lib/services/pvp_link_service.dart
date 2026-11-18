@@ -22,11 +22,17 @@ class PvpDeviceIdentity {
   }
 }
 
+enum BumpLinkMode {
+  battle,
+  trade,
+}
+
 class NearbyRadarTrainer {
   final String deviceId;
   final String name;
   final String title;
   final int partyCount;
+  final BumpLinkMode mode;
   final int lastServerTime;
 
   const NearbyRadarTrainer({
@@ -34,6 +40,7 @@ class NearbyRadarTrainer {
     required this.name,
     required this.title,
     required this.partyCount,
+    this.mode = BumpLinkMode.battle,
     required this.lastServerTime,
   });
 }
@@ -97,6 +104,7 @@ class PvpMatchSession {
   final String opponentTitle;
   final String opponentSpriteId;
   final List<PokemonInstance> opponentTeam;
+  final BumpLinkMode mode;
 
   VoidCallback? onPeerForfeit;
 
@@ -126,6 +134,7 @@ class PvpMatchSession {
     required this.opponentTitle,
     required this.opponentSpriteId,
     required this.opponentTeam,
+    this.mode = BumpLinkMode.battle,
   }) {
     _topic = 'pocket_bump_match_${_sanitizeTopicToken(matchId)}';
   }
@@ -403,6 +412,336 @@ class PvpMatchSession {
   }
 }
 
+class PvpTradeSession {
+  static const String _baseHttp = 'https://ntfy.sh';
+  static const String _baseWss = 'wss://ntfy.sh';
+
+  final String matchId;
+  final String myDeviceId;
+  final String peerDeviceId;
+  final String partnerName;
+  final String partnerTitle;
+  final String partnerSpriteId;
+
+  VoidCallback? onStateChanged;
+  VoidCallback? onPeerLeft;
+  void Function(int partyIndex, PokemonInstance receivedMon)? onTradeExecute;
+
+  late final String _topic;
+  PvpWsChannel? _ws;
+  Timer? _wsReconnectTimer;
+  Timer? _pollTimer;
+  Timer? _confirmRetryTimer;
+  bool _listening = false;
+  bool _disposed = false;
+  bool _pollInFlight = false;
+  bool _peerLeft = false;
+
+  final Set<String> _seenMessageIds = {};
+
+  int _round = 1;
+  int _mySeq = 0;
+  int _peerSeq = 0;
+  int? _myPartyIndex;
+  PokemonInstance? _myOffer;
+  PokemonInstance? _peerOffer;
+
+  bool _myConfirmed = false;
+  bool _peerConfirmed = false;
+  int? _myConfirmedSelfSeq;
+  int? _myConfirmedPeerSeq;
+  int? _peerConfirmedSelfSeq;
+  int? _peerConfirmedTargetSeq;
+  bool _tradeExecuted = false;
+
+  // Buffer latest higher-round peer offer/confirm while local side finishes animations
+  final Map<int, Map<String, dynamic>> _pendingNextRoundOffers = {};
+
+  PvpTradeSession({
+    required this.matchId,
+    required this.myDeviceId,
+    required this.peerDeviceId,
+    required this.partnerName,
+    required this.partnerTitle,
+    required this.partnerSpriteId,
+  }) {
+    _topic = 'pocket_bump_trade_${_sanitizeTopicToken(matchId)}';
+  }
+
+  factory PvpTradeSession.fromMatch(PvpMatchSession match) {
+    return PvpTradeSession(
+      matchId: match.matchId,
+      myDeviceId: match.myDeviceId,
+      peerDeviceId: match.peerDeviceId,
+      partnerName: match.opponentName,
+      partnerTitle: match.opponentTitle,
+      partnerSpriteId: match.opponentSpriteId,
+    );
+  }
+
+  int get round => _round;
+  int? get myPartyIndex => _myPartyIndex;
+  PokemonInstance? get myOffer => _myOffer;
+  PokemonInstance? get peerOffer => _peerOffer;
+  bool get myConfirmed => _myConfirmed;
+  bool get peerConfirmed => _peerConfirmed;
+  bool get tradeExecuted => _tradeExecuted;
+  bool get isPeerLeft => _peerLeft;
+
+  void startListening() {
+    if (_listening || _disposed) return;
+    _listening = true;
+    _openWebSocket();
+    _pollTimer = Timer.periodic(const Duration(milliseconds: 1400), (_) {
+      if (!_disposed) _pollRoom();
+    });
+    unawaited(_pollRoom());
+  }
+
+  void _openWebSocket() {
+    if (_disposed) return;
+    _ws?.close();
+    _ws = connectWebSocket(
+      '$_baseWss/$_topic/ws',
+      onMessage: _handleRawEnvelope,
+      onClosed: () {
+        if (!_disposed && _listening) {
+          _wsReconnectTimer?.cancel();
+          _wsReconnectTimer = Timer(const Duration(seconds: 2), _openWebSocket);
+        }
+      },
+    );
+  }
+
+  void selectOffer(int partyIndex, PokemonInstance mon) {
+    if (_disposed || _tradeExecuted) return;
+    _mySeq++;
+    _myPartyIndex = partyIndex;
+    _myOffer = PokemonInstance.fromJson(mon.toJson());
+    _resetConfirmations();
+    onStateChanged?.call();
+
+    unawaited(_postRoom(<String, dynamic>{
+      'kind': 'TRADE_OFFER',
+      'senderId': myDeviceId,
+      'round': _round,
+      'seq': _mySeq,
+      'mon': _myOffer!.toJson(),
+    }));
+  }
+
+  void lockConfirmation() {
+    if (_disposed || _tradeExecuted) return;
+    if (_myOffer == null || _peerOffer == null) return;
+    _myConfirmed = true;
+    _myConfirmedSelfSeq = _mySeq;
+    _myConfirmedPeerSeq = _peerSeq;
+    onStateChanged?.call();
+    _sendConfirmPacket();
+    _confirmRetryTimer?.cancel();
+    _confirmRetryTimer = Timer.periodic(const Duration(milliseconds: 1500), (_) {
+      if (_disposed || _tradeExecuted || !_myConfirmed) {
+        _confirmRetryTimer?.cancel();
+        return;
+      }
+      _sendConfirmPacket();
+    });
+    _checkAndExecuteTrade();
+  }
+
+  void unlockConfirmation() {
+    if (_disposed || _tradeExecuted || !_myConfirmed) return;
+    _myConfirmed = false;
+    _myConfirmedSelfSeq = null;
+    _myConfirmedPeerSeq = null;
+    _confirmRetryTimer?.cancel();
+    onStateChanged?.call();
+    unawaited(_postRoom(<String, dynamic>{
+      'kind': 'TRADE_UNCONFIRM',
+      'senderId': myDeviceId,
+      'round': _round,
+    }));
+  }
+
+  void _sendConfirmPacket() {
+    if (_disposed || !_myConfirmed) return;
+    unawaited(_postRoom(<String, dynamic>{
+      'kind': 'TRADE_CONFIRM',
+      'senderId': myDeviceId,
+      'round': _round,
+      'senderSeq': _myConfirmedSelfSeq,
+      'targetSeq': _myConfirmedPeerSeq,
+    }));
+  }
+
+  void startNextTradeRound() {
+    if (_disposed) return;
+    _confirmRetryTimer?.cancel();
+    _round++;
+    _mySeq = 0;
+    _peerSeq = 0;
+    _myPartyIndex = null;
+    _myOffer = null;
+    _peerOffer = null;
+    _tradeExecuted = false;
+    _resetConfirmations();
+
+    final cached = _pendingNextRoundOffers.remove(_round);
+    if (cached != null) {
+      _applyPeerOfferPayload(cached);
+    }
+    onStateChanged?.call();
+  }
+
+  void sendLeave() {
+    if (_disposed) return;
+    unawaited(_postRoom(<String, dynamic>{
+      'kind': 'TRADE_LEAVE',
+      'senderId': myDeviceId,
+    }));
+  }
+
+  void _resetConfirmations() {
+    _confirmRetryTimer?.cancel();
+    _myConfirmed = false;
+    _peerConfirmed = false;
+    _myConfirmedSelfSeq = null;
+    _myConfirmedPeerSeq = null;
+    _peerConfirmedSelfSeq = null;
+    _peerConfirmedTargetSeq = null;
+  }
+
+  Future<void> _postRoom(Map<String, dynamic> payload) async {
+    if (_disposed) return;
+    final resp = await httpPostString(
+      '$_baseHttp/$_topic',
+      jsonEncode(payload),
+    );
+    if (resp != null && resp.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(resp);
+        if (decoded is Map && decoded['id'] is String) {
+          _seenMessageIds.add(decoded['id'] as String);
+        }
+      } catch (_) {}
+    }
+  }
+
+  Future<void> _pollRoom() async {
+    if (_disposed || _pollInFlight) return;
+    _pollInFlight = true;
+    try {
+      final body = await httpGetString('$_baseHttp/$_topic/json?poll=1&since=all');
+      if (body == null || body.isEmpty || _disposed) return;
+      for (final line in LineSplitter.split(body)) {
+        final trimmed = line.trim();
+        if (trimmed.isEmpty) continue;
+        _handleRawEnvelope(trimmed);
+      }
+    } catch (_) {
+    } finally {
+      _pollInFlight = false;
+    }
+  }
+
+  void _handleRawEnvelope(String raw) {
+    if (_disposed) return;
+    try {
+      final env = jsonDecode(raw);
+      if (env is! Map || env['event'] != 'message') return;
+      final id = env['id'] as String?;
+      if (id != null && !_seenMessageIds.add(id)) return;
+
+      final msgStr = env['message'] as String?;
+      if (msgStr == null || msgStr.isEmpty) return;
+      final rawPayload = jsonDecode(msgStr);
+      if (rawPayload is! Map) return;
+      final payload = Map<String, dynamic>.from(rawPayload);
+
+      final String? senderId = payload['senderId'] as String?;
+      if (senderId == null || senderId == myDeviceId) return;
+
+      final String? kind = payload['kind'] as String?;
+      if (kind == 'TRADE_LEAVE') {
+        _peerLeft = true;
+        onPeerLeft?.call();
+        return;
+      }
+
+      final int msgRound = (payload['round'] as num?)?.toInt() ?? 1;
+      if (msgRound < _round) return;
+      if (msgRound > _round) {
+        if (kind == 'TRADE_OFFER') {
+          _pendingNextRoundOffers[msgRound] = payload;
+        }
+        return;
+      }
+      if (_tradeExecuted) return;
+
+      if (kind == 'TRADE_OFFER') {
+        _applyPeerOfferPayload(payload);
+        onStateChanged?.call();
+      } else if (kind == 'TRADE_UNCONFIRM') {
+        _peerConfirmed = false;
+        _peerConfirmedSelfSeq = null;
+        _peerConfirmedTargetSeq = null;
+        onStateChanged?.call();
+      } else if (kind == 'TRADE_CONFIRM') {
+        final int pSelfSeq = (payload['senderSeq'] as num?)?.toInt() ?? -1;
+        final int pTargetSeq = (payload['targetSeq'] as num?)?.toInt() ?? -1;
+        if (pSelfSeq == _peerSeq && pTargetSeq == _mySeq) {
+          _peerConfirmed = true;
+          _peerConfirmedSelfSeq = pSelfSeq;
+          _peerConfirmedTargetSeq = pTargetSeq;
+          onStateChanged?.call();
+          _checkAndExecuteTrade();
+        }
+      }
+    } catch (_) {}
+  }
+
+  void _applyPeerOfferPayload(Map<String, dynamic> payload) {
+    final int seq = (payload['seq'] as num?)?.toInt() ?? 0;
+    if (seq <= _peerSeq) return;
+    final rawMon = payload['mon'];
+    if (rawMon is! Map) return;
+    final mon = PokemonInstance.fromJson(Map<String, dynamic>.from(rawMon));
+    _peerSeq = seq;
+    _peerOffer = mon;
+    _resetConfirmations();
+  }
+
+  void _checkAndExecuteTrade() {
+    if (_tradeExecuted ||
+        !_myConfirmed ||
+        !_peerConfirmed ||
+        _myPartyIndex == null ||
+        _myOffer == null ||
+        _peerOffer == null) {
+      return;
+    }
+    final bool seqsAligned = _myConfirmedSelfSeq == _mySeq &&
+        _myConfirmedPeerSeq == _peerSeq &&
+        _peerConfirmedSelfSeq == _peerSeq &&
+        _peerConfirmedTargetSeq == _mySeq;
+    if (!seqsAligned) return;
+
+    _tradeExecuted = true;
+    _confirmRetryTimer?.cancel();
+    onTradeExecute?.call(_myPartyIndex!, _peerOffer!);
+  }
+
+  void dispose() {
+    if (_disposed) return;
+    _disposed = true;
+    _confirmRetryTimer?.cancel();
+    _pollTimer?.cancel();
+    _wsReconnectTimer?.cancel();
+    _ws?.close();
+    _ws = null;
+  }
+}
+
 class PvpLobbyMatchmaker {
   static const String _baseHttp = 'https://ntfy.sh';
   static const String _baseWss = 'wss://ntfy.sh';
@@ -412,6 +751,7 @@ class PvpLobbyMatchmaker {
   final void Function(PvpMatchSession session) onMatched;
   final void Function(List<NearbyRadarTrainer> nearby)? onNearbyChanged;
   final VoidCallback? onOfferTimeout;
+  BumpLinkMode mode;
 
   late final String myDeviceId;
   PvpWsChannel? _ws;
@@ -439,8 +779,18 @@ class PvpLobbyMatchmaker {
     required this.onMatched,
     this.onNearbyChanged,
     this.onOfferTimeout,
+    this.mode = BumpLinkMode.battle,
   }) {
     myDeviceId = PvpDeviceIdentity.id;
+  }
+
+  void setMode(BumpLinkMode newMode) {
+    if (mode == newMode || _disposed || _matched) return;
+    mode = newMode;
+    cancelBumpOffer();
+    if (_started) {
+      unawaited(_sendPresence());
+    }
   }
 
   bool get isSearchingBump => _searchingBump;
@@ -494,6 +844,7 @@ class PvpLobbyMatchmaker {
     await _postLobby({
       'kind': 'RADAR_PRESENCE',
       'senderId': myDeviceId,
+      'mode': mode.name,
       'trainerName': trainer.name,
       'trainerTitle': trainer.avatar.title,
       'avatarId': trainer.avatar.id,
@@ -562,6 +913,7 @@ class PvpLobbyMatchmaker {
     return <String, dynamic>{
       'kind': kind,
       'senderId': myDeviceId,
+      'mode': mode.name,
       'offerNonce': offerNonce,
       if (targetId != null) 'targetId': targetId,
       if (matchId != null) 'matchId': matchId,
@@ -670,12 +1022,15 @@ class PvpLobbyMatchmaker {
     if (senderId == null || senderId == myDeviceId) return;
 
     final String? kind = payload['kind'] as String?;
+    final BumpLinkMode payloadMode =
+        (payload['mode'] == 'trade') ? BumpLinkMode.trade : BumpLinkMode.battle;
     if (kind == 'RADAR_PRESENCE') {
       _nearbyTrainers[senderId] = NearbyRadarTrainer(
         deviceId: senderId,
         name: (payload['trainerName'] as String?) ?? 'Trainer',
         title: (payload['trainerTitle'] as String?) ?? 'Trainer',
         partyCount: (payload['partyCount'] as num?)?.toInt() ?? 1,
+        mode: payloadMode,
         lastServerTime: msgTime > 0 ? msgTime : newest,
       );
       _pruneStaleNearby();
@@ -689,6 +1044,7 @@ class PvpLobbyMatchmaker {
     }
 
     if (kind == 'BUMP_OFFER') {
+      if (payloadMode != mode) return;
       final peerTeam = _parsePeerParty(payload['party']);
       if (peerTeam.isEmpty) return;
 
@@ -746,6 +1102,7 @@ class PvpLobbyMatchmaker {
     }
 
     if (kind == 'BUMP_ACCEPT') {
+      if (payloadMode != mode) return;
       final String? targetId = payload['targetId'] as String?;
       if (targetId != myDeviceId || !_searchingBump) return;
 
@@ -806,8 +1163,11 @@ class PvpLobbyMatchmaker {
       opponentTitle: opponentTitle,
       opponentSpriteId: opponentSpriteId,
       opponentTeam: opponentTeam,
+      mode: mode,
     );
-    session.startListening();
+    if (mode == BumpLinkMode.battle) {
+      session.startListening();
+    }
     onMatched(session);
   }
 

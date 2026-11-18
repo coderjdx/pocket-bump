@@ -9,6 +9,7 @@ import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../services/pvp_transport.dart';
 import 'battle_screen.dart';
+import 'trade_screen.dart';
 
 enum _BumpLinkState {
   scanning,
@@ -31,6 +32,7 @@ class _BumpScreenState extends State<BumpScreen>
   PvpMatchSession? _matchedSession;
 
   _BumpLinkState _linkState = _BumpLinkState.scanning;
+  BumpLinkMode _selectedMode = BumpLinkMode.battle;
   List<NearbyRadarTrainer> _nearbyTrainers = const [];
 
   bool _sensorReceivingData = false;
@@ -92,12 +94,13 @@ class _BumpScreenState extends State<BumpScreen>
 
   void _initMatchmaker() {
     final trainer = Provider.of<Trainer>(context, listen: false);
-    if (!trainer.hasConsciousPokemon) {
+    if (trainer.party.isEmpty) {
       return;
     }
 
     _matchmaker = PvpLobbyMatchmaker(
       trainer: trainer,
+      mode: _selectedMode,
       onNearbyChanged: (nearby) {
         if (!mounted) return;
         setState(() {
@@ -118,13 +121,37 @@ class _BumpScreenState extends State<BumpScreen>
     )..start();
   }
 
+  void _selectMode(BumpLinkMode newMode) {
+    if (_selectedMode == newMode ||
+        _linkState == _BumpLinkState.linking ||
+        _linkState == _BumpLinkState.matched) {
+      return;
+    }
+    setState(() {
+      _selectedMode = newMode;
+      if (_linkState == _BumpLinkState.timedOut) {
+        _linkState = _BumpLinkState.scanning;
+      }
+    });
+    _matchmaker?.setMode(newMode);
+  }
+
   void _triggerBumpLink() {
     if (_linkState == _BumpLinkState.linking ||
         _linkState == _BumpLinkState.matched) {
       return;
     }
     final trainer = Provider.of<Trainer>(context, listen: false);
-    if (!trainer.hasConsciousPokemon) {
+    if (trainer.party.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("You need at least one Pokémon in your party!"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    if (_selectedMode == BumpLinkMode.battle && !trainer.hasConsciousPokemon) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -162,6 +189,25 @@ class _BumpScreenState extends State<BumpScreen>
     });
 
     HapticFeedback.heavyImpact();
+
+    if (session.mode == BumpLinkMode.trade) {
+      final tradeSession = PvpTradeSession.fromMatch(session);
+      _matchedSession = null;
+      session.dispose();
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (!mounted) {
+          tradeSession.dispose();
+          return;
+        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TradeScreen(session: tradeSession),
+          ),
+        );
+      });
+      return;
+    }
 
     Future.wait([
       Future.delayed(const Duration(milliseconds: 950)),
@@ -269,54 +315,164 @@ class _BumpScreenState extends State<BumpScreen>
       case _BumpLinkState.timedOut:
         return Colors.orangeAccent;
       case _BumpLinkState.scanning:
-        return _nearbyTrainers.isNotEmpty ? Colors.cyanAccent : Colors.redAccent;
+        final hasMatchingNearby =
+            _nearbyTrainers.any((t) => t.mode == _selectedMode);
+        if (hasMatchingNearby) return Colors.cyanAccent;
+        return _selectedMode == BumpLinkMode.trade
+            ? Colors.tealAccent
+            : Colors.redAccent;
     }
   }
 
   String _topBadgeText() {
     switch (_linkState) {
       case _BumpLinkState.matched:
-        return "LINK ESTABLISHED • VS ${_matchedSession?.opponentName.toUpperCase() ?? 'TRAINER'}";
+        final verb = _selectedMode == BumpLinkMode.trade ? "TRADING WITH" : "VS";
+        return "LINK ESTABLISHED • $verb ${_matchedSession?.opponentName.toUpperCase() ?? 'TRAINER'}";
       case _BumpLinkState.linking:
-        return "BUMP DETECTED • PAIRING DEVICES";
+        return "FIST-BUMP DETECTED • PAIRING DEVICES";
       case _BumpLinkState.timedOut:
         return "NO PARTNER RESPONDED";
       case _BumpLinkState.scanning:
         if (_nearbyTrainers.isNotEmpty) {
-          final names = _nearbyTrainers.map((t) => t.name).join(', ');
-          return "NEARBY TRAINER: ${names.toUpperCase()}";
+          final matching = _nearbyTrainers.where((t) => t.mode == _selectedMode);
+          if (matching.isNotEmpty) {
+            final names = matching.map((t) => t.name).join(', ');
+            return "NEARBY ${_selectedMode.name.toUpperCase()} TRAINER: ${names.toUpperCase()}";
+          }
+          final first = _nearbyTrainers.first;
+          return "NEARBY: ${first.name.toUpperCase()} (${first.mode.name.toUpperCase()} MODE)";
         }
-        return "SCANNING NEARBY TRAINERS";
+        return _selectedMode == BumpLinkMode.trade
+            ? "TRADE LINK • SCANNING NEARBY"
+            : "BATTLE LINK • SCANNING NEARBY";
     }
   }
 
   String _headlineText() {
     switch (_linkState) {
       case _BumpLinkState.matched:
-        return "LINK ESTABLISHED! VS ${_matchedSession?.opponentName.toUpperCase() ?? 'TRAINER'}";
+        return "LINK ESTABLISHED!";
       case _BumpLinkState.linking:
-        return "BUMP DETECTED! LINKING WITH NEARBY TRAINER...";
+        return _selectedMode == BumpLinkMode.trade
+            ? "BUMP DETECTED! OPENING TRADE LINK..."
+            : "BUMP DETECTED! LINKING WITH NEARBY TRAINER...";
       case _BumpLinkState.timedOut:
-        return "No other trainer phone responded on VS Link";
+        return "No partner in ${_selectedMode == BumpLinkMode.trade ? 'Trade' : 'Battle'} mode responded";
       case _BumpLinkState.scanning:
-        if (_nearbyTrainers.isNotEmpty) {
-          return "NEARBY TRAINER ON RADAR: ${_nearbyTrainers.first.name.toUpperCase()} — FIST-BUMP NOW!";
+        final matching =
+            _nearbyTrainers.where((t) => t.mode == _selectedMode).toList();
+        if (matching.isNotEmpty) {
+          return "${matching.first.name.toUpperCase()} READY — FIST-BUMP NOW!";
         }
-        return "HOLD PHONES & FIST-BUMP!";
+        if (_nearbyTrainers.isNotEmpty) {
+          final other = _nearbyTrainers.first;
+          return "${other.name.toUpperCase()} IS IN ${other.mode.name.toUpperCase()} MODE";
+        }
+        return _selectedMode == BumpLinkMode.trade
+            ? "FIST-BUMP TO TRADE POKÉMON!"
+            : "HOLD PHONES & FIST-BUMP!";
     }
   }
 
   String _sublineText() {
     switch (_linkState) {
       case _BumpLinkState.matched:
-        return "Synchronizing Kanto Battle Stadium arena...";
+        return _selectedMode == BumpLinkMode.trade
+            ? "Opening secure Fist-Bump Link Trade room..."
+            : "Synchronizing Kanto Battle Stadium arena...";
       case _BumpLinkState.linking:
-        return "Exchanging team rosters over VS Link (7s window)...";
+        return _selectedMode == BumpLinkMode.trade
+            ? "Pairing trainers for 1-for-1 Link Trade (7s window)..."
+            : "Exchanging team rosters over VS Link (7s window)...";
       case _BumpLinkState.timedOut:
-        return "Make sure the second phone also has VS Link • Fist-Bump Radar open, then try again.";
+        return "Make sure both phones have ${_selectedMode == BumpLinkMode.trade ? 'Trade' : 'Battle'} mode selected, then give a firm fist bump.";
       case _BumpLinkState.scanning:
-        return "Open this screen on both phones (App or Web), then fist-bump together to battle each other's team.";
+        return _selectedMode == BumpLinkMode.trade
+            ? "Select TRADE on both phones, then give a firm fist bump to swap Pokémon and trigger Link Trade evolutions!"
+            : "Select BATTLE on both phones, then give a firm fist bump to battle each other's team.";
     }
+  }
+
+  Widget _buildModeSelector() {
+    final bool locked = _linkState == _BumpLinkState.linking ||
+        _linkState == _BumpLinkMode.matched;
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xE00C101C),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withOpacity(0.14)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildModeTab(
+              mode: BumpLinkMode.battle,
+              label: "BATTLE",
+              icon: Icons.sports_mma_rounded,
+              activeColor: const Color(0xFFE53935),
+              locked: locked,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Expanded(
+            child: _buildModeTab(
+              mode: BumpLinkMode.trade,
+              label: "TRADE",
+              icon: Icons.swap_horiz_rounded,
+              activeColor: const Color(0xFF00ACC1),
+              locked: locked,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModeTab({
+    required BumpLinkMode mode,
+    required String label,
+    required IconData icon,
+    required Color activeColor,
+    required bool locked,
+  }) {
+    final bool selected = _selectedMode == mode;
+    return GestureDetector(
+      onTap: locked ? null : () => _selectMode(mode),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? activeColor.withOpacity(0.24) : Colors.transparent,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: selected ? activeColor : Colors.transparent,
+            width: 1.3,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: selected ? Colors.white : Colors.white54,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: selected ? Colors.white : Colors.white54,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.9,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildMotionMeterBanner() {
@@ -429,7 +585,7 @@ class _BumpScreenState extends State<BumpScreen>
             onPressed: () => Navigator.pop(context),
           ),
           title: const Text(
-            "VS LINK • FIST-BUMP RADAR",
+            "LINK RADAR • FIST-BUMP",
             style: TextStyle(
               fontSize: 13.5,
               fontWeight: FontWeight.w900,
@@ -461,9 +617,12 @@ class _BumpScreenState extends State<BumpScreen>
             ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(18, 12, 18, 14),
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
                 child: Column(
                   children: [
+                    _buildModeSelector(),
+                    const SizedBox(height: 8),
+
                     // Top VS Link Status Badge
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -576,7 +735,9 @@ class _BumpScreenState extends State<BumpScreen>
                                     ? Icons.check_circle_outline_rounded
                                     : (_linkState == _BumpLinkState.linking
                                         ? Icons.wifi_tethering_rounded
-                                        : Icons.sports_mma_rounded),
+                                        : (_selectedMode == BumpLinkMode.trade
+                                            ? Icons.swap_horiz_rounded
+                                            : Icons.sports_mma_rounded)),
                                 size: 68,
                                 color: Colors.white,
                               ),
@@ -695,7 +856,9 @@ class _BumpScreenState extends State<BumpScreen>
                           label: Text(
                             _linkState == _BumpLinkState.linking
                                 ? "SEARCHING FOR NEARBY TRAINER..."
-                                : "BUMP / PAIR WITH NEARBY TRAINER",
+                                : (_selectedMode == BumpLinkMode.trade
+                                    ? "BUMP / PAIR FOR LINK TRADE"
+                                    : "BUMP / PAIR FOR LINK BATTLE"),
                             style: const TextStyle(
                               fontWeight: FontWeight.w900,
                               fontSize: 11.5,

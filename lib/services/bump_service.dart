@@ -6,10 +6,16 @@ import 'pvp_transport.dart';
 
 class _MotionTracker {
   double? baselineMag;
+  double? prevX;
+  double? prevY;
+  double? prevZ;
   int sampleCount = 0;
 
   void reset() {
     baselineMag = null;
+    prevX = null;
+    prevY = null;
+    prevZ = null;
     sampleCount = 0;
   }
 }
@@ -21,10 +27,13 @@ class BumpService {
   static final _MotionTracker _accelTracker = _MotionTracker();
   static final _MotionTracker _webTracker = _MotionTracker();
 
-  /// Peak 3D acceleration threshold (in m/s^2) and high-pass jerk threshold.
-  static const double bumpThreshold = 15.2;
-  static const double jerkThreshold = 5.5;
-  static const int debounceDurationMs = 1200;
+  /// Deliberate fist-bump impact thresholds (in m/s^2).
+  /// Requires a sharp collision spike rather than ordinary phone movement.
+  static const double bumpThreshold = 23.5;
+  static const double jerkThreshold = 12.0;
+  static const double vectorJerkThreshold = 12.0;
+  static const int settleSamples = 8;
+  static const int debounceDurationMs = 1400;
 
   static void startListening({
     required Function(DateTime timestamp) onBump,
@@ -45,19 +54,38 @@ class BumpService {
       final double magnitude = sqrt(x * x + y * y + z * z);
       tracker.sampleCount++;
 
-      if (tracker.baselineMag == null) {
+      if (tracker.baselineMag == null ||
+          tracker.prevX == null ||
+          tracker.prevY == null ||
+          tracker.prevZ == null) {
         tracker.baselineMag = magnitude;
+        tracker.prevX = x;
+        tracker.prevY = y;
+        tracker.prevZ = z;
         onMotionUpdate?.call(magnitude, 0.0);
         return;
       }
 
+      final double dx = x - tracker.prevX!;
+      final double dy = y - tracker.prevY!;
+      final double dz = z - tracker.prevZ!;
+      final double vectorJerk = sqrt(dx * dx + dy * dy + dz * dz);
+      tracker.prevX = x;
+      tracker.prevY = y;
+      tracker.prevZ = z;
+
       final double delta = (magnitude - tracker.baselineMag!).abs();
-      tracker.baselineMag = tracker.baselineMag! * 0.85 + magnitude * 0.15;
+      // Only adapt gravity/holding baseline when not mid-spike so impact delta stays crisp
+      if (delta < 7.0) {
+        tracker.baselineMag = tracker.baselineMag! * 0.90 + magnitude * 0.10;
+      }
 
       onMotionUpdate?.call(magnitude, delta);
 
-      final bool triggered = tracker.sampleCount >= 2 &&
-          (magnitude >= bumpThreshold || delta >= jerkThreshold);
+      final bool triggered = tracker.sampleCount >= settleSamples &&
+          ((delta >= jerkThreshold && vectorJerk >= vectorJerkThreshold) ||
+              (magnitude >= bumpThreshold && vectorJerk >= 10.5) ||
+              delta >= 16.5);
       if (triggered) {
         final now = DateTime.now();
         if (_lastBumpTime == null ||

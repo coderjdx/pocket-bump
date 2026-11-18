@@ -49,30 +49,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   }
 
   String _evolutionSummary(PokemonSpecies spec) {
-    if (spec.evolutionSpeciesId != null && spec.evolutionLevel != null) {
-      final next = PokedexDatabase.species[spec.evolutionSpeciesId!];
-      return "Evolves into ${next?.name ?? 'next form'} at Lv. ${spec.evolutionLevel}";
-    }
-    const stoneHints = {
-      25: 'Thunder Stone → Raichu',
-      30: 'Moon Stone → Nidoqueen',
-      33: 'Moon Stone → Nidoking',
-      35: 'Moon Stone → Clefable',
-      37: 'Fire Stone → Ninetales',
-      39: 'Moon Stone → Wigglytuff',
-      44: 'Leaf Stone → Vileplume',
-      58: 'Fire Stone → Arcanine',
-      61: 'Water Stone → Poliwrath',
-      70: 'Leaf Stone → Victreebel',
-      90: 'Water Stone → Cloyster',
-      102: 'Leaf Stone → Exeggutor',
-      120: 'Water Stone → Starmie',
-      133: 'Water / Thunder / Fire Stone',
-    };
-    if (stoneHints.containsKey(spec.id)) {
-      return "Evolution Stone: ${stoneHints[spec.id]}";
-    }
-    return "Final Form";
+    return PokedexDatabase.evolutionRequirementLabel(spec) ?? "Final Form";
   }
 
   Future<void> _promptSwapRememberedMove(

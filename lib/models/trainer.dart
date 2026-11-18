@@ -250,6 +250,21 @@ class Trainer extends ChangeNotifier {
     return -1;
   }
 
+  /// Replaces the traded Pokémon at [partyIndex] with [receivedMon], heals it,
+  /// and registers its species (and shiny status if applicable) in Pokédex data.
+  bool completeTradeSwap(int partyIndex, PokemonInstance receivedMon) {
+    if (partyIndex < 0 || partyIndex >= party.length) return false;
+    receivedMon.resetBattleStateAndHeal();
+    party[partyIndex] = receivedMon;
+    seenSpeciesIds.add(receivedMon.species.id);
+    caughtSpeciesIds.add(receivedMon.species.id);
+    if (receivedMon.isShiny) {
+      shinyCaughtSpeciesIds.add(receivedMon.species.id);
+    }
+    notifyListeners();
+    return true;
+  }
+
   bool depositPokemonToPc(int partyIndex, {int? targetBoxIndex}) {
     if (party.length <= 1 || partyIndex < 0 || partyIndex >= party.length) {
       return false;

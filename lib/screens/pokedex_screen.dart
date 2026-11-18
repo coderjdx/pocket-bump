@@ -880,7 +880,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 _buildBaseStatRow("SPD", spec.baseSpD, Colors.tealAccent),
                 _buildBaseStatRow("SPE", spec.baseSpe, Colors.amberAccent),
 
-                if (evoTarget != null && spec.evolutionLevel != null) ...[
+                if (PokedexDatabase.evolutionRequirementLabel(spec) != null) ...[
                   const SizedBox(height: 14),
                   Container(
                     width: double.infinity,
@@ -896,7 +896,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            "Evolves into ${evoTarget.name} at Level ${spec.evolutionLevel}",
+                            PokedexDatabase.evolutionRequirementLabel(spec)!,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

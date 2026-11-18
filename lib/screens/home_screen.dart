@@ -1245,22 +1245,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "CHALLENGE ANOTHER TRAINER",
+                          "FIST-BUMP LINK • BATTLE & TRADE",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
                             fontSize: 12,
-                            letterSpacing: 0.8,
+                            letterSpacing: 0.7,
                           ),
                         ),
                         SizedBox(height: 1),
                         Text(
-                          "VS LINK • FIST-BUMP DUEL",
+                          "PAIR PHONES TO DUEL OR TRADE POKÉMON",
                           style: TextStyle(
                             color: Colors.amberAccent,
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
-                            letterSpacing: 0.8,
+                            letterSpacing: 0.7,
                           ),
                         ),
                       ],

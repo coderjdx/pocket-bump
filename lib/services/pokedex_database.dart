@@ -2361,7 +2361,6 @@ class PokedexDatabase {
       baseCatchRate: 190,
       baseExp: 112,
       heightMeters: 0.4,
-      evolutionLevel: 22,
       evolutionSpeciesId: 26,
       learnset: [
         LearnedMove(1, 'thunder_shock'),
@@ -2588,7 +2587,6 @@ class PokedexDatabase {
       heightMeters: 0.8,
       evolutionStage: 2,
       minEncounterLevel: 16,
-      evolutionLevel: 36,
       evolutionSpeciesId: 31,
       learnset: [
         LearnedMove(1, 'scratch'),
@@ -2663,7 +2661,6 @@ class PokedexDatabase {
       heightMeters: 0.9,
       evolutionStage: 2,
       minEncounterLevel: 16,
-      evolutionLevel: 36,
       evolutionSpeciesId: 34,
       learnset: [
         LearnedMove(1, 'peck'),
@@ -2711,7 +2708,6 @@ class PokedexDatabase {
       baseCatchRate: 150,
       baseExp: 113,
       heightMeters: 0.6,
-      evolutionLevel: 26,
       evolutionSpeciesId: 36,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -2759,7 +2755,6 @@ class PokedexDatabase {
       baseCatchRate: 190,
       baseExp: 60,
       heightMeters: 0.6,
-      evolutionLevel: 22,
       evolutionSpeciesId: 38,
       learnset: [
         LearnedMove(1, 'ember'),
@@ -2810,7 +2805,6 @@ class PokedexDatabase {
       baseCatchRate: 170,
       baseExp: 95,
       heightMeters: 0.5,
-      evolutionLevel: 24,
       evolutionSpeciesId: 40,
       learnset: [
         LearnedMove(1, 'sing'),
@@ -2883,7 +2877,6 @@ class PokedexDatabase {
       heightMeters: 0.8,
       evolutionStage: 2,
       minEncounterLevel: 21,
-      evolutionLevel: 36,
       evolutionSpeciesId: 45,
       learnset: [
         LearnedMove(1, 'absorb'),
@@ -2955,7 +2948,6 @@ class PokedexDatabase {
       heightMeters: 1.3,
       evolutionStage: 2,
       minEncounterLevel: 16,
-      evolutionLevel: 36,
       evolutionSpeciesId: 65,
       learnset: [
         LearnedMove(1, 'confusion'),
@@ -3027,7 +3019,6 @@ class PokedexDatabase {
       heightMeters: 1.0,
       evolutionStage: 2,
       minEncounterLevel: 21,
-      evolutionLevel: 36,
       evolutionSpeciesId: 71,
       learnset: [
         LearnedMove(1, 'vine_whip'),
@@ -3153,7 +3144,6 @@ class PokedexDatabase {
       heightMeters: 1.0,
       evolutionStage: 2,
       minEncounterLevel: 25,
-      evolutionLevel: 38,
       evolutionSpeciesId: 76,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -3378,7 +3368,6 @@ class PokedexDatabase {
       baseCatchRate: 225,
       baseExp: 68,
       heightMeters: 0.8,
-      evolutionLevel: 26,
       evolutionSpeciesId: 121,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -3521,7 +3510,6 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 65,
       heightMeters: 0.3,
-      evolutionLevel: 25,
       evolutionSpeciesId: 134,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -4229,7 +4217,6 @@ class PokedexDatabase {
       baseCatchRate: 190,
       baseExp: 70,
       heightMeters: 0.7,
-      evolutionLevel: 24,
       evolutionSpeciesId: 59,
       learnset: [
         LearnedMove(1, 'bite'),
@@ -4305,7 +4292,6 @@ class PokedexDatabase {
       heightMeters: 1.0,
       evolutionStage: 2,
       minEncounterLevel: 25,
-      evolutionLevel: 36,
       evolutionSpeciesId: 62,
       learnset: [
         LearnedMove(1, 'water_gun'),
@@ -4378,7 +4364,6 @@ class PokedexDatabase {
       heightMeters: 1.5,
       evolutionStage: 2,
       minEncounterLevel: 28,
-      evolutionLevel: 38,
       evolutionSpeciesId: 68,
       learnset: [
         LearnedMove(1, 'karate_chop'),
@@ -4598,7 +4583,6 @@ class PokedexDatabase {
       baseCatchRate: 190,
       baseExp: 61,
       heightMeters: 0.3,
-      evolutionLevel: 28,
       evolutionSpeciesId: 91,
       learnset: [
         LearnedMove(1, 'tackle'),
@@ -4672,7 +4656,6 @@ class PokedexDatabase {
       heightMeters: 1.6,
       evolutionStage: 2,
       minEncounterLevel: 25,
-      evolutionLevel: 38,
       evolutionSpeciesId: 94,
       learnset: [
         LearnedMove(1, 'lick'),
@@ -4864,7 +4847,6 @@ class PokedexDatabase {
       baseCatchRate: 90,
       baseExp: 65,
       heightMeters: 0.4,
-      evolutionLevel: 26,
       evolutionSpeciesId: 103,
       learnset: [
         LearnedMove(1, 'hypnosis'),
@@ -5495,6 +5477,44 @@ class PokedexDatabase {
 
   static const List<int> firstStageFossilSpeciesIds = [138, 140, 142];
   static const int shinyOddsDenominator = 4096;
+
+  static const Map<int, int> tradeEvolutionTargets = {
+    64: 65, // Kadabra -> Alakazam
+    67: 68, // Machoke -> Machamp
+    75: 76, // Graveler -> Golem
+    93: 94, // Haunter -> Gengar
+  };
+
+  static int? getTradeEvolutionTarget(int speciesId) =>
+      tradeEvolutionTargets[speciesId];
+
+  static String? evolutionRequirementLabel(PokemonSpecies spec) {
+    if (spec.evolutionSpeciesId != null && spec.evolutionLevel != null) {
+      final next = species[spec.evolutionSpeciesId!];
+      return "Evolves into ${next?.name ?? 'next form'} at Level ${spec.evolutionLevel}";
+    }
+    const specialHints = {
+      25: 'Evolves into Raichu via Thunder Stone',
+      30: 'Evolves into Nidoqueen via Moon Stone',
+      33: 'Evolves into Nidoking via Moon Stone',
+      35: 'Evolves into Clefable via Moon Stone',
+      37: 'Evolves into Ninetales via Fire Stone',
+      39: 'Evolves into Wigglytuff via Moon Stone',
+      44: 'Evolves into Vileplume via Leaf Stone',
+      58: 'Evolves into Arcanine via Fire Stone',
+      61: 'Evolves into Poliwrath via Water Stone',
+      64: 'Evolves into Alakazam via Link Trade (Fist Bump)',
+      67: 'Evolves into Machamp via Link Trade (Fist Bump)',
+      70: 'Evolves into Victreebel via Leaf Stone',
+      75: 'Evolves into Golem via Link Trade (Fist Bump)',
+      90: 'Evolves into Cloyster via Water Stone',
+      93: 'Evolves into Gengar via Link Trade (Fist Bump)',
+      102: 'Evolves into Exeggutor via Leaf Stone',
+      120: 'Evolves into Starmie via Water Stone',
+      133: 'Evolves into Vaporeon / Jolteon / Flareon via Evolution Stone',
+    };
+    return specialHints[spec.id];
+  }
 
   static bool rollShiny(PokemonSpecies species) {
     if (!species.isShinyEligible) return false;
