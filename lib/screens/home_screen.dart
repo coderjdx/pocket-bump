@@ -7,7 +7,6 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
-import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../services/step_counter_service.dart';
 import '../widgets/hp_bar.dart';
@@ -110,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         trainer.party.isNotEmpty ? trainer.party.first : null;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF14141C),
+      backgroundColor: const Color(0xFF0E111B),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -125,40 +124,41 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
+                stops: const [0.0, 0.42, 0.78, 1.0],
                 colors: [
-                  const Color(0xFF0E111B).withOpacity(0.55),
-                  const Color(0xFF14141C).withOpacity(0.42),
-                  const Color(0xFF10121A).withOpacity(0.68),
+                  const Color(0xFF0A0D16).withOpacity(0.68),
+                  const Color(0xFF0F1320).withOpacity(0.18),
+                  const Color(0xFF0C101B).withOpacity(0.55),
+                  const Color(0xFF090B12).withOpacity(0.86),
                 ],
               ),
             ),
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
               child: Column(
                 children: [
-                  // ─── 1. COMPACT TRAINER PROFILE BAR ──────────────────────
-                  _buildTrainerHeader(trainer),
-                  const SizedBox(height: 10),
+                  // ─── 1. GAME HUD BAR ─────────────────────────────────────
+                  _buildTopHudBar(trainer),
+                  const SizedBox(height: 8),
 
-                  // ─── MAIN HOME DASHBOARD (NO SCROLLING ON STANDARD PHONES)
+                  // ─── MAIN OVERWORLD VIEW & COMMAND DECK ──────────────────
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const ClampingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // ─── 2. SPOT #1 LEAD POKÉMON SHOWCASE ────────────
-                          if (leadPokemon != null)
-                            _buildLeadPokemonCard(trainer, leadPokemon),
-                          const SizedBox(height: 10),
+                          // ─── 2. SCENIC TRAINER + LEAD PARTNER STAGE ─────
+                          _buildCompanionStage(trainer, leadPokemon),
+                          const SizedBox(height: 8),
 
-                          // ─── 3. POKÉWALKER STEP COUNTER ───────────────────
+                          // ─── 3. POKÉWALKER FIELD GEAR CONSOLE ────────────
                           _buildStepCounterCard(trainer),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
 
-                          // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ─────────
+                          // ─── 4. COMMAND DECK (6 GAME TILES) ──────────────
                           _buildHubRow(trainer),
                           const SizedBox(height: 4),
                         ],
@@ -166,9 +166,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
 
-                  // ─── 5. CHALLENGE ANOTHER TRAINER (FIST-BUMP BATTLE) ─────
+                  // ─── 5. VERSUS LINK / FIST-BUMP DUEL BANNER ───────────────
                   _buildChallengeTrainerButton(),
                 ],
               ),
@@ -179,165 +179,567 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 1. TRAINER IDENTITY HEADER ───────────────────────────────────────────
-  Widget _buildTrainerHeader(Trainer trainer) {
-    return GestureDetector(
-      onTap: () => _openTrainerIdentityPicker(trainer),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xD8242430),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white12),
+  // ─── 1. GAME HUD BAR (NON-EDITABLE TRAINER IDENTITY + RESOURCES) ─────────
+  Widget _buildTopHudBar(Trainer trainer) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xE8161B2B), Color(0xE80F1320)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 46,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1E24),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white12),
-              ),
-              child: Center(
-                child: TrainerSpriteWidget(
-                  avatar: trainer.avatar,
-                  isBackView: false,
-                  size: 42,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          trainer.name,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.edit, size: 12, color: Colors.white38),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    "${trainer.avatar.title} • ${trainer.party.length}/6 Pokémon",
-                    style: const TextStyle(color: Colors.white60, fontSize: 11),
-                  ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF4C597D).withOpacity(0.65), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.45),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Trainer Emblem & Identity (Static — chosen at adventure start)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.redAccent.shade700.withOpacity(0.9),
+                  Colors.red.shade900,
                 ],
               ),
+              borderRadius: BorderRadius.circular(7),
+              border: Border.all(color: Colors.white.withOpacity(0.25)),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.white10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.stars, color: Color(0xFFFFD54F), size: 12),
-                      const SizedBox(width: 3),
-                      Text(
-                        "${trainer.clearedGymIds.length}/8",
-                        style: const TextStyle(
-                          color: Color(0xFFFFD54F),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "₽",
-                        style: TextStyle(
-                          color: Color(0xFFFFD54F),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      Text(
-                        "${trainer.money}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+            child: Text(
+              trainer.avatar.title.toUpperCase(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: 9,
+                letterSpacing: 0.7,
               ),
             ),
-            const SizedBox(width: 6),
-            Tooltip(
-              message: "Delete Saved Progress",
-              child: InkWell(
-                onTap: () => _confirmDeleteProgress(trainer),
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade900.withOpacity(0.28),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  trainer.name.toUpperCase(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                    letterSpacing: 0.8,
                   ),
-                  child: const Icon(Icons.delete_forever, color: Colors.redAccent, size: 16),
                 ),
+                Text(
+                  "PARTY ${trainer.party.length}/6 • OBEY Lv.${trainer.maxObedienceLevel}",
+                  style: TextStyle(
+                    color: Colors.cyanAccent.withOpacity(0.85),
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Badges & Currency Pills
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0A0D16),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFFFD54F).withOpacity(0.4)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.stars_rounded, color: Color(0xFFFFD54F), size: 13),
+                const SizedBox(width: 3),
+                Text(
+                  "${trainer.clearedGymIds.length}/8",
+                  style: const TextStyle(
+                    color: Color(0xFFFFD54F),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 12,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  color: Colors.white12,
+                ),
+                const Text(
+                  "₽",
+                  style: TextStyle(
+                    color: Color(0xFFFFD54F),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
+                ),
+                const SizedBox(width: 2),
+                Text(
+                  "${trainer.money}",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: 6),
+          Tooltip(
+            message: "Delete Saved Progress",
+            child: InkWell(
+              onTap: () => _confirmDeleteProgress(trainer),
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: const EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade900.withOpacity(0.32),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.redAccent.withOpacity(0.45)),
+                ),
+                child: const Icon(Icons.delete_forever_rounded,
+                    color: Colors.redAccent, size: 16),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  // ─── 2. SPOT #1 LEAD POKÉMON CARD ─────────────────────────────────────────
-  Widget _buildLeadPokemonCard(Trainer trainer, PokemonInstance lead) {
-    final Color primaryColor = lead.species.types.first.color;
-    final int prevLvlExp = (lead.level - 1) * (lead.level - 1) * (lead.level - 1);
-    final int nextLvlExp = lead.expForNextLevel;
-    final double expProgress = nextLvlExp > prevLvlExp
-        ? ((lead.currentExp - prevLvlExp) / (nextLvlExp - prevLvlExp)).clamp(0.0, 1.0)
+  // ─── 2. SCENIC OVERWORLD COMPANION STAGE (TRAINER + LEAD POKÉMON) ───────
+  Widget _buildCompanionStage(Trainer trainer, PokemonInstance? lead) {
+    final Color accentColor =
+        lead != null ? lead.species.types.first.color : Colors.cyanAccent;
+    final int prevLvlExp = lead != null
+        ? (lead.level - 1) * (lead.level - 1) * (lead.level - 1)
+        : 0;
+    final int nextLvlExp = lead != null ? lead.expForNextLevel : 1;
+    final double expProgress = (lead != null && nextLvlExp > prevLvlExp)
+        ? ((lead.currentExp - prevLvlExp) / (nextLvlExp - prevLvlExp))
+            .clamp(0.0, 1.0)
         : 0.0;
-    final int expRemaining = max(0, nextLvlExp - lead.currentExp);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [
-            primaryColor.withOpacity(0.24),
-            const Color(0xD822222E),
+            const Color(0x550C101E),
+            accentColor.withOpacity(0.14),
+            const Color(0xDF101422),
           ],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: accentColor.withOpacity(0.55),
+          width: 1.4,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withOpacity(0.18),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Top stage bar: Lead Pill & Swap Lead Trigger
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 10, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xCC0B0E18),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: accentColor.withOpacity(0.65)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: accentColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(color: accentColor, blurRadius: 5),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "LEAD PARTNER",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () => _openPartyManagerModal(trainer),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF28324C), Color(0xFF1B2235)],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white24),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.swap_horiz_rounded,
+                            color: Colors.cyanAccent, size: 13),
+                        SizedBox(width: 4),
+                        Text(
+                          "SWAP LEAD",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Hero Character Stage: Trainer Portrait next to Lead Pokémon
+          SizedBox(
+            height: 114,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                // Subtle Horizon Glow Band
+                Positioned(
+                  left: 24,
+                  right: 24,
+                  bottom: 6,
+                  child: Container(
+                    height: 18,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: RadialGradient(
+                        radius: 2.2,
+                        colors: [
+                          accentColor.withOpacity(0.28),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Trainer Full Portrait
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TrainerSpriteWidget(
+                          avatar: trainer.avatar,
+                          isBackView: false,
+                          size: 92,
+                        ),
+                        Container(
+                          width: 58,
+                          height: 7,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.48),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 14),
+                    // Animated Lead Pokémon Standing Next to Trainer
+                    if (lead != null)
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AnimatedBuilder(
+                            animation: _leadBobController,
+                            builder: (context, child) {
+                              final dy = -sin(_leadBobController.value * pi) * 3.5;
+                              return Transform.translate(
+                                offset: Offset(0, dy),
+                                child: child,
+                              );
+                            },
+                            child: Opacity(
+                              opacity: lead.isFainted ? 0.5 : 1.0,
+                              child: Image.network(
+                                lead.species.spriteUrl,
+                                width: 92,
+                                height: 92,
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.none,
+                                errorBuilder: (c, e, s) => Image.network(
+                                  lead.species.staticSpriteUrl,
+                                  width: 92,
+                                  height: 92,
+                                  fit: BoxFit.contain,
+                                  filterQuality: FilterQuality.none,
+                                  errorBuilder: (c2, e2, s2) => Icon(
+                                    Icons.catching_pokemon,
+                                    color: accentColor,
+                                    size: 56,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 62,
+                            height: 7,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.48),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 6),
+
+          // Compact Partner Nameplate (No Raw Stats or Move Clutter)
+          if (lead != null)
+            Container(
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 9),
+              decoration: BoxDecoration(
+                color: const Color(0xEB101422),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(16.5),
+                ),
+                border: Border(
+                  top: BorderSide(color: accentColor.withOpacity(0.35)),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      PokeBallSpriteWidget(ballType: lead.caughtBall, size: 15),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          lead.nickname,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14.5,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 1.5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD54F).withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                              color: const Color(0xFFFFD54F).withOpacity(0.45)),
+                        ),
+                        child: Text(
+                          "Lv.${lead.level}",
+                          style: const TextStyle(
+                            color: Color(0xFFFFD54F),
+                            fontWeight: FontWeight.w900,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                      if (lead.isFainted) ...[
+                        const SizedBox(width: 5),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 1.5),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent.withOpacity(0.24),
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.redAccent),
+                          ),
+                          child: const Text(
+                            "FNT",
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ] else if (lead.status != StatusCondition.none) ...[
+                        const SizedBox(width: 5),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 1.5),
+                          decoration: BoxDecoration(
+                            color: Colors.purpleAccent.withOpacity(0.25),
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.purpleAccent),
+                          ),
+                          child: Text(
+                            lead.status.shortLabel,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                      const Spacer(),
+                      ...lead.species.types.map((t) {
+                        return Container(
+                          margin: const EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 1.5),
+                          decoration: BoxDecoration(
+                            color: t.color.withOpacity(0.26),
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: t.color.withOpacity(0.85)),
+                          ),
+                          child: Text(
+                            t.displayName.toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 8,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.4,
+                            ),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Text(
+                        "HP",
+                        style: TextStyle(
+                          color: Colors.amberAccent,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: HpBar(
+                          currentHp: lead.currentHp,
+                          maxHp: lead.maxHp,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "${lead.currentHp}/${lead.maxHp}",
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Text(
+                        "EXP",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(3),
+                          child: LinearProgressIndicator(
+                            value: expProgress,
+                            minHeight: 4,
+                            backgroundColor: Colors.black54,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.lightBlueAccent,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // ─── 3. POKÉWALKER FIELD GEAR CONSOLE ─────────────────────────────────────
+  Widget _buildStepCounterCard(Trainer trainer) {
+    final int stepsToday = trainer.todaySteps;
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 9, 12, 9),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xEA1A2138), Color(0xEA101526)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: primaryColor.withOpacity(0.55), width: 1.2),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFF4E67B0).withOpacity(0.55),
+          width: 1.2,
+        ),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.12),
+            color: Colors.black.withOpacity(0.4),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -346,312 +748,47 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top header badge + Swap Lead CTA
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.amber.shade700.withOpacity(0.22),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.amberAccent.withOpacity(0.5)),
+                  color: Colors.indigoAccent.withOpacity(0.22),
+                  borderRadius: BorderRadius.circular(7),
+                  border:
+                      Border.all(color: Colors.indigoAccent.withOpacity(0.5)),
                 ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.bolt, color: Colors.amberAccent, size: 12),
-                    SizedBox(width: 3),
-                    Text(
-                      "LEAD POKÉMON • SPOT #1",
-                      style: TextStyle(
-                        color: Colors.amberAccent,
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.6,
-                      ),
-                    ),
-                  ],
+                child: const Icon(Icons.directions_walk_rounded,
+                    color: Colors.cyanAccent, size: 14),
+              ),
+              const SizedBox(width: 7),
+              const Text(
+                "POKÉWALKER GEAR",
+                style: TextStyle(
+                  color: Colors.cyanAccent,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 10,
+                  letterSpacing: 1.0,
                 ),
               ),
-              InkWell(
-                onTap: () => _openPartyManagerModal(trainer),
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.white24),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.swap_vert, color: Colors.white, size: 13),
-                      SizedBox(width: 3),
-                      Text(
-                        "Swap Lead",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 8),
-
-          // Sprite + Name/Level/Types/HP/EXP
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+              const Spacer(),
               Container(
-                width: 68,
-                height: 68,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1B1B23),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: primaryColor.withOpacity(0.45)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primaryColor.withOpacity(0.2),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: AnimatedBuilder(
-                    animation: _leadBobController,
-                    builder: (context, child) {
-                      final dy = -sin(_leadBobController.value * pi) * 2.5;
-                      return Transform.translate(offset: Offset(0, dy), child: child);
-                    },
-                    child: Image.network(
-                      lead.species.spriteUrl,
-                      width: 56,
-                      height: 56,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.none,
-                      errorBuilder: (c, e, s) => Image.network(
-                        lead.species.staticSpriteUrl,
-                        width: 56,
-                        height: 56,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                        errorBuilder: (c2, e2, s2) =>
-                            Icon(Icons.catching_pokemon, color: primaryColor, size: 42),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            lead.nickname,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
-                          decoration: BoxDecoration(
-                            color: Colors.amberAccent.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            "Lv.${lead.level}",
-                            style: const TextStyle(
-                              color: Colors.amberAccent,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 11,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    Wrap(
-                      spacing: 4,
-                      runSpacing: 2,
-                      children: lead.species.types.map((t) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: t.color.withOpacity(0.28),
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: t.color.withOpacity(0.8)),
-                          ),
-                          child: Text(
-                            t.displayName.toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 8.5,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.4,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(height: 5),
-                    HpBar(currentHp: lead.currentHp, maxHp: lead.maxHp),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          lead.level >= 100
-                              ? "MAX LEVEL"
-                              : "EXP • $expRemaining to Lv.${lead.level + 1}",
-                          style: const TextStyle(fontSize: 9.5, color: Colors.lightBlueAccent),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(2),
-                      child: LinearProgressIndicator(
-                        value: expProgress,
-                        minHeight: 3,
-                        backgroundColor: Colors.black38,
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 8),
-
-          // Stat Strip
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              "ATK ${lead.atk} • DEF ${lead.def} • SPA ${lead.spa} • SPD ${lead.spd} • SPE ${lead.spe}",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 6),
-
-          // Known Moves Pills
-          Wrap(
-            spacing: 5,
-            runSpacing: 4,
-            children: lead.moves.map((m) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E24),
+                  color: const Color(0xFF0A0E18),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: m.type.color.withOpacity(0.55)),
+                  border: Border.all(
+                      color: Colors.cyanAccent.withOpacity(0.35)),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: m.type.color,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      m.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "${m.currentPp}/${m.maxPp}",
-                      style: const TextStyle(color: Colors.white54, fontSize: 9),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ─── 3. DAILY STEP COUNTER CARD ───────────────────────────────────────────
-  Widget _buildStepCounterCard(Trainer trainer) {
-    final int stepsToday = trainer.todaySteps;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.indigo.shade900.withOpacity(0.65), const Color(0xD822222E)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.indigoAccent.withOpacity(0.35)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.directions_walk, color: Colors.indigoAccent, size: 17),
-                  SizedBox(width: 5),
-                  Text(
-                    "DAILY STEP COUNTER",
-                    style: TextStyle(
-                      color: Colors.indigoAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10.5,
-                      letterSpacing: 0.8,
-                    ),
+                child: Text(
+                  "$stepsToday STEPS",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                    letterSpacing: 0.5,
                   ),
-                ],
-              ),
-              Text(
-                "$stepsToday Steps Today",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
                 ),
               ),
             ],
@@ -662,16 +799,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _simulateSteps(trainer, 1),
-                  icon: const Icon(Icons.directions_walk, size: 13),
+                  icon: const Icon(Icons.directions_walk_rounded, size: 13),
                   label: const Text(
-                    "+1 Step",
-                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
+                    "+1 STEP",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
+                    ),
                   ),
                   style: OutlinedButton.styleFrom(
+                    backgroundColor: const Color(0xFF141A2E),
                     foregroundColor: Colors.white,
-                    side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                    side: BorderSide(
+                        color: Colors.indigoAccent.withOpacity(0.6)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   ),
                 ),
               ),
@@ -681,14 +826,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   onPressed: () => _simulateSteps(trainer, 25),
                   icon: const Icon(Icons.add_circle_outline, size: 13),
                   label: const Text(
-                    "+25 Steps",
-                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
+                    "+25 STEPS",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
+                    ),
                   ),
                   style: OutlinedButton.styleFrom(
+                    backgroundColor: const Color(0xFF141A2E),
                     foregroundColor: Colors.white,
-                    side: BorderSide(color: Colors.indigoAccent.withOpacity(0.5)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                    side: BorderSide(
+                        color: Colors.indigoAccent.withOpacity(0.6)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   ),
                 ),
               ),
@@ -696,17 +849,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: _launchWildEncounter,
-                  icon: const Icon(Icons.explore, size: 13, color: Colors.black87),
+                  icon: const Icon(Icons.explore_rounded,
+                      size: 13, color: Colors.black87),
                   label: const Text(
-                    "Tall Grass",
-                    style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
+                    "TALL GRASS",
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent.shade400,
+                    backgroundColor: const Color(0xFF34EB8C),
                     foregroundColor: Colors.black87,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                    elevation: 2,
                   ),
                 ),
               ),
@@ -730,38 +890,52 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       return Expanded(
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
+          borderRadius: BorderRadius.circular(9),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 160),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               color: active
                   ? activeColor.withOpacity(0.18)
-                  : Colors.black26,
-              borderRadius: BorderRadius.circular(10),
+                  : const Color(0xFF0C101C),
+              borderRadius: BorderRadius.circular(9),
               border: Border.all(
                 color: active
-                    ? activeColor.withOpacity(0.7)
-                    : Colors.white12,
+                    ? activeColor.withOpacity(0.8)
+                    : Colors.white.withOpacity(0.1),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  icon,
-                  size: 13,
-                  color: active ? activeColor : Colors.white54,
+                Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: active ? activeColor : Colors.white24,
+                    boxShadow: active
+                        ? [BoxShadow(color: activeColor, blurRadius: 5)]
+                        : null,
+                  ),
                 ),
                 const SizedBox(width: 5),
+                Icon(
+                  icon,
+                  size: 12,
+                  color: active ? activeColor : Colors.white54,
+                ),
+                const SizedBox(width: 4),
                 Flexible(
                   child: Text(
                     label,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: active ? activeColor : Colors.white70,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+                      color: active ? activeColor : Colors.white60,
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
                     ),
                   ),
                 ),
@@ -776,16 +950,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       children: [
         pill(
           active: trainer.expShareEnabled,
-          icon: Icons.share,
-          label: trainer.expShareEnabled ? "EXP Share: ON" : "EXP Share: OFF",
+          icon: Icons.share_rounded,
+          label: trainer.expShareEnabled ? "EXP SHARE ON" : "EXP SHARE OFF",
           activeColor: Colors.cyanAccent,
           onTap: () => trainer.toggleExpShare(),
         ),
         const SizedBox(width: 6),
         pill(
           active: trainer.repelEnabled,
-          icon: Icons.shield,
-          label: trainer.repelEnabled ? "Repel: ON" : "Repel: OFF",
+          icon: Icons.shield_rounded,
+          label: trainer.repelEnabled ? "REPEL ON" : "REPEL OFF",
           activeColor: Colors.orangeAccent,
           onTap: () => trainer.toggleRepel(),
         ),
@@ -793,7 +967,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX, GYMS, MART, PC BOXES) ──────────
+  // ─── 4. GAME COMMAND PLATES (PARTY, BAG, POKÉDEX, LEAGUE, CENTER, PC) ────
   Widget _buildHubTile({
     required VoidCallback onTap,
     required Color accentColor,
@@ -805,13 +979,31 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return Expanded(
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          padding: const EdgeInsets.fromLTRB(9, 8, 8, 8),
           decoration: BoxDecoration(
-            color: const Color(0xD8242430),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: accentColor.withOpacity(0.4)),
+            gradient: LinearGradient(
+              colors: [
+                accentColor.withOpacity(0.18),
+                const Color(0xE8161A29),
+                const Color(0xEE0F1320),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: accentColor.withOpacity(0.55),
+              width: 1.15,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.35),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -822,12 +1014,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: accentColor.withOpacity(0.18),
+                      color: const Color(0xFF0A0D16),
                       borderRadius: BorderRadius.circular(8),
+                      border:
+                          Border.all(color: accentColor.withOpacity(0.5)),
                     ),
                     child: iconWidget,
                   ),
-                  const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                  Icon(Icons.chevron_right_rounded,
+                      color: accentColor.withOpacity(0.7), size: 16),
                 ],
               ),
               const SizedBox(height: 5),
@@ -839,8 +1034,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   maxLines: 1,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.5,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                    letterSpacing: 0.3,
                   ),
                 ),
               ),
@@ -851,10 +1047,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: subtitleColor,
-                  fontSize: 10,
-                  fontWeight: subtitleColor == Colors.white60
-                      ? FontWeight.normal
-                      : FontWeight.bold,
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
@@ -878,20 +1072,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               onTap: () => _openPartyManagerModal(trainer),
               accentColor: Colors.redAccent,
               iconWidget: const Icon(Icons.catching_pokemon,
-                  color: Colors.redAccent, size: 16),
+                  color: Colors.redAccent, size: 15),
               title: "Party",
               subtitle: "${trainer.party.length}/6 Pokémon",
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 7),
             _buildHubTile(
               onTap: () => _openItemsManagerModal(trainer),
               accentColor: Colors.amberAccent,
-              iconWidget: const Icon(Icons.backpack,
-                  color: Colors.amberAccent, size: 16),
+              iconWidget: const Icon(Icons.backpack_rounded,
+                  color: Colors.amberAccent, size: 15),
               title: "Bag",
               subtitle: "${trainer.totalItems} Items",
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 7),
             _buildHubTile(
               onTap: () {
                 Navigator.push(
@@ -899,16 +1093,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   MaterialPageRoute(builder: (context) => const PokedexScreen()),
                 );
               },
-              accentColor: Colors.redAccent,
-              iconWidget: const PokeBallSymbol(size: 16, isCaught: true),
+              accentColor: const Color(0xFFFF5252),
+              iconWidget: const PokeBallSymbol(size: 15, isCaught: true),
               title: "Pokédex",
-              subtitle: "$caught/$totalSpecies",
+              subtitle: "$caught/$totalSpecies Caught",
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 7),
 
-        // Row 2: Gyms & League, Pokémon Center, PC Boxes
+        // Row 2: Pokémon League, Poké Center, PC Boxes
         Row(
           children: [
             _buildHubTile(
@@ -919,14 +1113,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       builder: (context) => const PokemonLeagueScreen()),
                 );
               },
-              accentColor: Colors.amberAccent,
-              iconWidget: const Icon(Icons.military_tech,
-                  color: Colors.amberAccent, size: 16),
+              accentColor: const Color(0xFFFFD54F),
+              iconWidget: const Icon(Icons.military_tech_rounded,
+                  color: Color(0xFFFFD54F), size: 15),
               title: "Pokémon League",
               subtitle: "$badges/8 Badges",
-              subtitleColor: Colors.amberAccent,
+              subtitleColor: const Color(0xFFFFD54F),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 7),
             _buildHubTile(
               onTap: () {
                 Navigator.push(
@@ -936,13 +1130,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 );
               },
               accentColor: Colors.pinkAccent,
-              iconWidget: const Icon(Icons.local_hospital,
-                  color: Colors.pinkAccent, size: 16),
+              iconWidget: const Icon(Icons.local_hospital_rounded,
+                  color: Colors.pinkAccent, size: 15),
               title: "Poké Center",
               subtitle: "Heal • Mart • Lab",
               subtitleColor: Colors.pinkAccent.shade100,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 7),
             _buildHubTile(
               onTap: () {
                 Navigator.push(
@@ -952,8 +1146,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 );
               },
               accentColor: Colors.purpleAccent,
-              iconWidget: const Icon(Icons.computer,
-                  color: Colors.purpleAccent, size: 16),
+              iconWidget: const Icon(Icons.computer_rounded,
+                  color: Colors.purpleAccent, size: 15),
               title: "PC Boxes",
               subtitle: "${trainer.totalPcPokemon}/${trainer.maxPcCapacity}",
               subtitleColor: Colors.purpleAccent.shade100,
@@ -964,7 +1158,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 5. PRIMARY FIST-BUMP CHALLENGE CTA ───────────────────────────────────
+  // ─── 5. VERSUS LINK / FIST-BUMP DUEL BANNER ───────────────────────────────
   Widget _buildChallengeTrainerButton() {
     return SizedBox(
       width: double.infinity,
@@ -981,27 +1175,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           borderRadius: BorderRadius.circular(14),
           child: Ink(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.red.shade700, Colors.deepOrange.shade600],
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFFD32F2F),
+                  Color(0xFFE64A19),
+                  Color(0xFFFF6D00),
+                ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
               borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: Colors.amberAccent.withOpacity(0.55),
+                width: 1.2,
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.red.shade900.withOpacity(0.4),
-                  blurRadius: 10,
+                  color: Colors.deepOrange.shade900.withOpacity(0.55),
+                  blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  Icon(Icons.sports_mma, color: Colors.white, size: 22),
-                  SizedBox(width: 10),
-                  Expanded(
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.24),
+                      borderRadius: BorderRadius.circular(9),
+                    ),
+                    child: const Icon(Icons.sports_mma_rounded,
+                        color: Colors.amberAccent, size: 20),
+                  ),
+                  const SizedBox(width: 10),
+                  const Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1010,25 +1220,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           "CHALLENGE ANOTHER TRAINER",
                           style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.5,
-                            letterSpacing: 0.6,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 12,
+                            letterSpacing: 0.8,
                           ),
                         ),
                         SizedBox(height: 1),
                         Text(
-                          "FIST-BUMP BATTLE • DUEL A RIVAL",
+                          "VS LINK • FIST-BUMP DUEL",
                           style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 0.6,
+                            color: Colors.amberAccent,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.8,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 14),
+                  const Icon(Icons.double_arrow_rounded,
+                      color: Colors.white, size: 18),
                 ],
               ),
             ),
@@ -1038,182 +1249,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── TRAINER AVATAR & NAME PICKER MODAL ───────────────────────────────────
-  void _openTrainerIdentityPicker(Trainer trainer) {
-    final nameController = TextEditingController(text: trainer.name);
-    TrainerAvatar chosenAvatar = trainer.avatar;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFF2A2A35),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-      ),
-      builder: (ctx) {
-        return StatefulBuilder(
-          builder: (ctx, setModalState) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                20,
-                18,
-                20,
-                MediaQuery.of(ctx).viewInsets.bottom + 20,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "TRAINER PROFILE & SETTINGS",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: nameController,
-                    maxLength: 14,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      labelText: "Trainer Name",
-                      labelStyle: const TextStyle(color: Colors.white60, fontSize: 12),
-                      counterText: "",
-                      filled: true,
-                      fillColor: const Color(0xFF1E1E24),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.white24),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.9,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: TrainerAvatar.presets.length,
-                    itemBuilder: (c, idx) {
-                      final av = TrainerAvatar.presets[idx];
-                      final selected = av.id == chosenAvatar.id;
-                      return GestureDetector(
-                        onTap: () => setModalState(() => chosenAvatar = av),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: selected
-                                ? Colors.red.shade900.withOpacity(0.45)
-                                : const Color(0xFF1E1E24),
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: selected ? Colors.redAccent : Colors.white12,
-                              width: selected ? 2 : 1,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TrainerSpriteWidget(
-                                avatar: av,
-                                isBackView: false,
-                                size: 60,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                av.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 14),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 46,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        trainer.setIdentity(
-                          newName: nameController.text,
-                          newAvatar: chosenAvatar,
-                        );
-                        Navigator.pop(ctx);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red.shade700,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      ),
-                      child: const Text(
-                        "SAVE PROFILE",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const Divider(color: Colors.white12),
-                  const SizedBox(height: 8),
-                  const Row(
-                    children: [
-                      Icon(Icons.save, size: 15, color: Colors.greenAccent),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "Local Save Active (Retained Across Updates)",
-                          style: TextStyle(
-                            color: Colors.greenAccent,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44,
-                    child: OutlinedButton.icon(
-                      onPressed: () => _confirmDeleteProgress(trainer, modalContext: ctx),
-                      icon: const Icon(Icons.delete_forever, size: 18, color: Colors.redAccent),
-                      label: const Text(
-                        "DELETE SAVED PROGRESS",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.redAccent,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.redAccent.withOpacity(0.6)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    ).whenComplete(nameController.dispose);
-  }
-
   void _confirmDeleteProgress(
     Trainer trainer, {
     BuildContext? modalContext,
@@ -1221,7 +1256,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF2A2A35),
+        backgroundColor: const Color(0xFF141828),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         title: const Row(
           children: [
@@ -1275,7 +1310,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF121624),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1357,7 +1392,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           return Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF2E2E3B),
+                              color: const Color(0xFF1A2033),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isLead ? Colors.amberAccent : Colors.white12,
@@ -1633,7 +1668,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     showDialog(
       context: modalContext,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF2A2A35),
+        backgroundColor: const Color(0xFF141828),
         title: Text(
           "Release ${mon.nickname}?",
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -1676,7 +1711,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
     showModalBottomSheet(
       context: parentContext,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF121624),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1772,7 +1807,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 10),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF2E2E3B),
+                                color: const Color(0xFF1A2033),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                     color: item.color.withOpacity(0.35)),
@@ -1882,7 +1917,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       context: parentContext,
       builder: (dlgCtx) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF23232E),
+          backgroundColor: const Color(0xFF121624),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Row(
@@ -1925,7 +1960,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2E2E3B),
+                      color: const Color(0xFF1A2033),
                       borderRadius: BorderRadius.circular(12),
                       border:
                           Border.all(color: stoneItem.color.withOpacity(0.4)),
@@ -2043,7 +2078,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       context: parentContext,
       builder: (dlgCtx) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF23232E),
+          backgroundColor: const Color(0xFF121624),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Row(
             children: [
@@ -2147,7 +2182,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2E2E3B),
+                        color: const Color(0xFF1A2033),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: usable
@@ -2233,7 +2268,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF121624),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -2350,7 +2385,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 return Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF2E2E3B),
+                                    color: const Color(0xFF1A2033),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                         color: item.color.withOpacity(0.35)),

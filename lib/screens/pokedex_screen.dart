@@ -46,20 +46,37 @@ class _PokedexScreenState extends State<PokedexScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1E24),
+      backgroundColor: const Color(0xFF100E16),
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xCC160B10),
         elevation: 0,
-        title: const Row(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: Colors.white70, size: 18),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PokeBallSymbol(size: 20, isCaught: true),
-            SizedBox(width: 8),
-            Text(
+            Container(
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.cyanAccent,
+                border: Border.all(color: Colors.white, width: 1.5),
+                boxShadow: const [
+                  BoxShadow(color: Colors.cyanAccent, blurRadius: 8),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Text(
               "KANTO POKÉDEX",
               style: TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
                 letterSpacing: 1.3,
               ),
             ),
@@ -81,198 +98,231 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(0xFF1A0E12).withOpacity(0.66),
-                  const Color(0xFF181016).withOpacity(0.56),
-                  const Color(0xFF120C10).withOpacity(0.80),
+                  const Color(0xFF1C0C12).withOpacity(0.76),
+                  const Color(0xFF140E18).withOpacity(0.60),
+                  const Color(0xFF0C0A12).withOpacity(0.88),
                 ],
               ),
             ),
           ),
           SafeArea(
             child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 4, 16, 14),
-          child: Column(
-            children: [
-              // ─── SUMMARY PROGRESS BANNER ─────────────────────────────────
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.red.shade900.withOpacity(0.45),
-                      const Color(0xFF2A2A35),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+              child: Column(
+                children: [
+                  // ─── DEXTER SCANNER SUMMARY BANNER ───────────────────────
+                  Container(
+                    padding: const EdgeInsets.all(13),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.red.shade900.withOpacity(0.55),
+                          const Color(0xEA161322),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Colors.redAccent.withOpacity(0.55),
+                        width: 1.3,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.45),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const PokeBallSymbol(size: 18, isCaught: true),
-                            const SizedBox(width: 6),
-                            Text(
-                              "$caughtTotal Caught",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                            Row(
+                              children: [
+                                const PokeBallSymbol(size: 18, isCaught: true),
+                                const SizedBox(width: 6),
+                                Text(
+                                  "$caughtTotal Caught",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 13.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.visibility_rounded,
+                                    color: Colors.amberAccent, size: 16),
+                                const SizedBox(width: 5),
+                                Text(
+                                  "$seenTotal Seen",
+                                  style: const TextStyle(
+                                    color: Colors.amberAccent,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF0A0910),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.white12),
+                              ),
+                              child: Text(
+                                "$total TOTAL",
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 10.5,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            const Icon(Icons.visibility, color: Colors.amberAccent, size: 17),
-                            const SizedBox(width: 5),
-                            Text(
-                              "$seenTotal Encountered",
-                              style: const TextStyle(
-                                color: Colors.amberAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
+                        const SizedBox(height: 10),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: SizedBox(
+                            height: 8,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Container(color: const Color(0xFF09080E)),
+                                FractionallySizedBox(
+                                  alignment: Alignment.centerLeft,
+                                  widthFactor: total > 0
+                                      ? (seenTotal / total).clamp(0.0, 1.0)
+                                      : 0.0,
+                                  child: Container(
+                                      color: Colors.amberAccent.withOpacity(0.55)),
+                                ),
+                                FractionallySizedBox(
+                                  alignment: Alignment.centerLeft,
+                                  widthFactor: total > 0
+                                      ? (caughtTotal / total).clamp(0.0, 1.0)
+                                      : 0.0,
+                                  child: Container(color: Colors.redAccent),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Text(
-                          "/ $total Total",
-                          style: const TextStyle(
-                            color: Colors.white60,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: SizedBox(
-                        height: 8,
-                        child: Stack(
-                          fit: StackFit.expand,
+                        const SizedBox(height: 8),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(color: Colors.black38),
-                            FractionallySizedBox(
-                              alignment: Alignment.centerLeft,
-                              widthFactor: total > 0 ? (seenTotal / total).clamp(0.0, 1.0) : 0.0,
-                              child: Container(color: Colors.amberAccent.withOpacity(0.55)),
+                            Row(
+                              children: [
+                                PokeBallSymbol(size: 12, isCaught: true),
+                                SizedBox(width: 4),
+                                Text(
+                                  "= Caught Pokémon",
+                                  style: TextStyle(
+                                      color: Colors.white60, fontSize: 10),
+                                ),
+                              ],
                             ),
-                            FractionallySizedBox(
-                              alignment: Alignment.centerLeft,
-                              widthFactor: total > 0 ? (caughtTotal / total).clamp(0.0, 1.0) : 0.0,
-                              child: Container(color: Colors.redAccent),
+                            Row(
+                              children: [
+                                PokeBallSymbol(size: 12, isCaught: false),
+                                SizedBox(width: 4),
+                                Text(
+                                  "= Encountered Only",
+                                  style: TextStyle(
+                                      color: Colors.white60, fontSize: 10),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // ─── FILTER CHIPS ────────────────────────────────────────
+                  SizedBox(
+                    height: 36,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
                       children: [
-                        Row(
-                          children: [
-                            PokeBallSymbol(size: 12, isCaught: true),
-                            SizedBox(width: 4),
-                            Text(
-                              "= Caught Pokémon",
-                              style: TextStyle(color: Colors.white60, fontSize: 10),
-                            ),
-                          ],
+                        _buildFilterChip(
+                          label: "All ($total)",
+                          selected: _filter == _PokedexFilter.all,
+                          onTap: () => setState(() => _filter = _PokedexFilter.all),
                         ),
-                        Row(
-                          children: [
-                            PokeBallSymbol(size: 12, isCaught: false),
-                            SizedBox(width: 4),
-                            Text(
-                              "= Encountered Only",
-                              style: TextStyle(color: Colors.white60, fontSize: 10),
-                            ),
-                          ],
+                        const SizedBox(width: 7),
+                        _buildFilterChip(
+                          label: "Caught ($caughtTotal)",
+                          selected: _filter == _PokedexFilter.caught,
+                          onTap: () =>
+                              setState(() => _filter = _PokedexFilter.caught),
+                        ),
+                        const SizedBox(width: 7),
+                        _buildFilterChip(
+                          label: "Encountered ($seenTotal)",
+                          selected: _filter == _PokedexFilter.encountered,
+                          onTap: () => setState(
+                              () => _filter = _PokedexFilter.encountered),
+                        ),
+                        const SizedBox(width: 7),
+                        _buildFilterChip(
+                          label: "Unseen ($unseenTotal)",
+                          selected: _filter == _PokedexFilter.unseen,
+                          onTap: () =>
+                              setState(() => _filter = _PokedexFilter.unseen),
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // ─── POKÉDEX GRID ────────────────────────────────────────
+                  Expanded(
+                    child: filteredIds.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No Pokémon in this filter yet.\nWalk or battle to discover more!",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  color: Colors.white54, fontSize: 13),
+                            ),
+                          )
+                        : GridView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.84,
+                              crossAxisSpacing: 9,
+                              mainAxisSpacing: 9,
+                            ),
+                            itemCount: filteredIds.length,
+                            itemBuilder: (context, idx) {
+                              final id = filteredIds[idx];
+                              final spec = PokedexDatabase.species[id]!;
+                              final bool isCaught = trainer.isSpeciesCaught(id);
+                              final bool isSeen = trainer.isSpeciesSeen(id);
+                              return _buildDexCard(spec,
+                                  isSeen: isSeen, isCaught: isCaught);
+                            },
+                          ),
+                  ),
+                ],
               ),
-
-              const SizedBox(height: 10),
-
-              // ─── FILTER CHIPS ────────────────────────────────────────────
-              SizedBox(
-                height: 36,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildFilterChip(
-                      label: "All ($total)",
-                      selected: _filter == _PokedexFilter.all,
-                      onTap: () => setState(() => _filter = _PokedexFilter.all),
-                    ),
-                    const SizedBox(width: 8),
-                    _buildFilterChip(
-                      label: "Caught ($caughtTotal)",
-                      selected: _filter == _PokedexFilter.caught,
-                      onTap: () => setState(() => _filter = _PokedexFilter.caught),
-                    ),
-                    const SizedBox(width: 8),
-                    _buildFilterChip(
-                      label: "Encountered ($seenTotal)",
-                      selected: _filter == _PokedexFilter.encountered,
-                      onTap: () => setState(() => _filter = _PokedexFilter.encountered),
-                    ),
-                    const SizedBox(width: 8),
-                    _buildFilterChip(
-                      label: "Unseen ($unseenTotal)",
-                      selected: _filter == _PokedexFilter.unseen,
-                      onTap: () => setState(() => _filter = _PokedexFilter.unseen),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              // ─── POKÉDEX GRID ────────────────────────────────────────────
-              Expanded(
-                child: filteredIds.isEmpty
-                    ? Center(
-                        child: Text(
-                          "No Pokémon in this filter yet.\nWalk or battle to discover more!",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white54, fontSize: 13),
-                        ),
-                      )
-                    : GridView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.84,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: filteredIds.length,
-                        itemBuilder: (context, idx) {
-                          final id = filteredIds[idx];
-                          final spec = PokedexDatabase.species[id]!;
-                          final bool isCaught = trainer.isSpeciesCaught(id);
-                          final bool isSeen = trainer.isSpeciesSeen(id);
-                          return _buildDexCard(spec, isSeen: isSeen, isCaught: isCaught);
-                        },
-                      ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
         ],
       ),
     );
@@ -287,9 +337,14 @@ class _PokedexScreenState extends State<PokedexScreen> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
         decoration: BoxDecoration(
-          color: selected ? Colors.red.shade700 : const Color(0xFF2A2A35),
+          gradient: selected
+              ? LinearGradient(
+                  colors: [Colors.red.shade600, Colors.red.shade800],
+                )
+              : null,
+          color: selected ? null : const Color(0xDD171320),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: selected ? Colors.redAccent : Colors.white12,
@@ -299,8 +354,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
           label,
           style: TextStyle(
             color: selected ? Colors.white : Colors.white70,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
+            fontSize: 10.5,
+            fontWeight: FontWeight.w900,
           ),
         ),
       ),
@@ -328,24 +383,26 @@ class _PokedexScreenState extends State<PokedexScreen> {
         }
         _openEntryDetail(spec, isCaught: isCaught);
       },
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(11),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isCaught
-                ? [primaryColor.withOpacity(0.24), const Color(0xFF2A2A35)]
+                ? [primaryColor.withOpacity(0.24), const Color(0xEA141624)]
                 : (isSeen
-                    ? [const Color(0xFF2E2E3B), const Color(0xFF23232D)]
-                    : [const Color(0xFF1F1F28), const Color(0xFF191920)]),
+                    ? [const Color(0xEA1D1D2B), const Color(0xEA13131E)]
+                    : [const Color(0xDD13121A), const Color(0xDD0D0C12)]),
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isCaught
-                ? primaryColor.withOpacity(0.65)
-                : (isSeen ? Colors.amberAccent.withOpacity(0.32) : Colors.white10),
+                ? primaryColor.withOpacity(0.7)
+                : (isSeen
+                    ? Colors.amberAccent.withOpacity(0.38)
+                    : Colors.white10),
             width: isCaught ? 1.5 : 1.0,
           ),
         ),
@@ -359,29 +416,31 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   dexNum,
                   style: TextStyle(
                     color: isSeen ? Colors.white70 : Colors.white30,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 10.5,
                   ),
                 ),
                 if (isCaught)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.redAccent.withOpacity(0.2),
+                      color: const Color(0xFF0A0810),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.redAccent.withOpacity(0.6)),
+                      border:
+                          Border.all(color: Colors.redAccent.withOpacity(0.7)),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        PokeBallSymbol(size: 13, isCaught: true),
+                        PokeBallSymbol(size: 12, isCaught: true),
                         SizedBox(width: 4),
                         Text(
                           "CAUGHT",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 8.5,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
                             letterSpacing: 0.4,
                           ),
                         ),
@@ -390,23 +449,25 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   )
                 else if (isSeen)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.amberAccent.withOpacity(0.14),
+                      color: const Color(0xFF0A0810),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.amberAccent.withOpacity(0.45)),
+                      border: Border.all(
+                          color: Colors.amberAccent.withOpacity(0.55)),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        PokeBallSymbol(size: 12, isCaught: false),
+                        PokeBallSymbol(size: 11, isCaught: false),
                         SizedBox(width: 4),
                         Text(
                           "SEEN",
                           style: TextStyle(
                             color: Colors.amberAccent,
-                            fontSize: 8.5,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
                             letterSpacing: 0.4,
                           ),
                         ),
@@ -418,8 +479,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     "UNSEEN",
                     style: TextStyle(
                       color: Colors.white24,
-                      fontSize: 8.5,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 8,
+                      fontWeight: FontWeight.w900,
                       letterSpacing: 0.5,
                     ),
                   ),
@@ -428,16 +489,27 @@ class _PokedexScreenState extends State<PokedexScreen> {
 
             const Spacer(),
 
-            // Sprite (Full color if Caught, Muted tint if Seen only, Silhouette if Unseen)
-            SizedBox(
+            // Specimen Scanner Chamber
+            Container(
               width: 78,
               height: 78,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: isCaught
+                      ? [primaryColor.withOpacity(0.26), Colors.transparent]
+                      : [Colors.white.withOpacity(0.05), Colors.transparent],
+                ),
+              ),
               child: ColorFiltered(
                 colorFilter: !isSeen
                     ? const ColorFilter.mode(Colors.black, BlendMode.srcIn)
                     : (isCaught
-                        ? const ColorFilter.mode(Colors.transparent, BlendMode.dst)
-                        : ColorFilter.mode(Colors.grey.shade800.withOpacity(0.35), BlendMode.srcATop)),
+                        ? const ColorFilter.mode(
+                            Colors.transparent, BlendMode.dst)
+                        : ColorFilter.mode(
+                            Colors.grey.shade800.withOpacity(0.35),
+                            BlendMode.srcATop)),
                 child: Opacity(
                   opacity: isSeen ? (isCaught ? 1.0 : 0.85) : 0.45,
                   child: Image.network(
@@ -463,8 +535,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: isSeen ? Colors.white : Colors.white38,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontWeight: FontWeight.w900,
+                fontSize: 13.5,
               ),
             ),
 
@@ -478,18 +550,19 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 alignment: WrapAlignment.center,
                 children: spec.types.map((t) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: t.color.withOpacity(0.25),
+                      color: t.color.withOpacity(0.28),
                       borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: t.color.withOpacity(0.75)),
+                      border: Border.all(color: t.color.withOpacity(0.8)),
                     ),
                     child: Text(
                       t.displayName.toUpperCase(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 7.5,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   );
@@ -497,7 +570,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
               ),
               const SizedBox(height: 4),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 1.5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 7, vertical: 1.5),
                 decoration: BoxDecoration(
                   color: spec.rarity.color.withOpacity(0.16),
                   borderRadius: BorderRadius.circular(6),
@@ -508,7 +582,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   style: TextStyle(
                     color: spec.rarity.color,
                     fontSize: 7.5,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -522,7 +596,10 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 ),
                 child: const Text(
                   "???",
-                  style: TextStyle(color: Colors.white24, fontSize: 8, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white24,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
           ],
@@ -541,7 +618,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF12121E),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -622,7 +699,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         width: 130,
                         height: 130,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1A1A22),
+                          color: const Color(0xFF0A0B14),
                           borderRadius: BorderRadius.circular(22),
                           border: Border.all(color: primaryColor.withOpacity(0.5)),
                         ),

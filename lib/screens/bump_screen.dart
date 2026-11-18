@@ -87,13 +87,28 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final Color statusColor =
+        _bumpDetected ? const Color(0xFF34EB8C) : Colors.redAccent;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1E24),
+      backgroundColor: const Color(0xFF0C0E18),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.35),
+        backgroundColor: const Color(0xCC0D0E18),
         elevation: 0,
-        title: const Text("FIST-BUMP RADAR", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: Colors.white70, size: 18),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "VS LINK • FIST-BUMP RADAR",
+          style: TextStyle(
+            fontSize: 13.5,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.2,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Stack(
@@ -110,22 +125,61 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  const Color(0xFF14141E).withOpacity(0.65),
-                  const Color(0xFF14141E).withOpacity(0.55),
-                  const Color(0xFF14141E).withOpacity(0.78),
+                  const Color(0xFF0A0D18).withOpacity(0.76),
+                  const Color(0xFF0D101E).withOpacity(0.58),
+                  const Color(0xFF080A12).withOpacity(0.90),
                 ],
               ),
             ),
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Top VS Link Status Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xE00C101C),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: statusColor.withOpacity(0.65)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 7,
+                          height: 7,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: statusColor,
+                            boxShadow: [
+                              BoxShadow(color: statusColor, blurRadius: 6),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 7),
+                        Text(
+                          _bumpDetected
+                              ? "LINK ESTABLISHED"
+                              : "SCANNING NEARBY TRAINERS",
+                          style: TextStyle(
+                            color: statusColor,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.9,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const Spacer(),
 
-                  // Animated Pulsing Radar
+                  // Animated Pulsing VS Link Radar
                   Center(
                     child: Stack(
                       alignment: Alignment.center,
@@ -134,33 +188,54 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
                           animation: _pulseController,
                           builder: (context, child) {
                             return Container(
-                              width: 220 + (_pulseController.value * 40),
-                              height: 220 + (_pulseController.value * 40),
+                              width: 210 + (_pulseController.value * 55),
+                              height: 210 + (_pulseController.value * 55),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.redAccent.withOpacity(0.15 * (1 - _pulseController.value)),
+                                border: Border.all(
+                                  color: statusColor.withOpacity(
+                                      0.35 * (1 - _pulseController.value)),
+                                  width: 2,
+                                ),
+                                color: statusColor.withOpacity(
+                                    0.12 * (1 - _pulseController.value)),
                               ),
                             );
                           },
                         ),
                         Container(
-                          width: 180,
-                          height: 180,
+                          width: 176,
+                          height: 176,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: _bumpDetected ? Colors.green.shade700 : const Color(0xDD2A2A35),
-                            border: Border.all(color: _bumpDetected ? Colors.greenAccent : Colors.redAccent, width: 3),
+                            gradient: RadialGradient(
+                              colors: _bumpDetected
+                                  ? [
+                                      const Color(0xFF1D6B42),
+                                      const Color(0xFF0E291C),
+                                    ]
+                                  : [
+                                      const Color(0xFF281825),
+                                      const Color(0xFF101220),
+                                    ],
+                            ),
+                            border: Border.all(
+                              color: statusColor,
+                              width: 3,
+                            ),
                             boxShadow: [
                               BoxShadow(
-                                color: (_bumpDetected ? Colors.greenAccent : Colors.redAccent).withOpacity(0.3),
-                                blurRadius: 20,
+                                color: statusColor.withOpacity(0.42),
+                                blurRadius: 24,
                                 spreadRadius: 4,
                               ),
                             ],
                           ),
                           child: Icon(
-                            _bumpDetected ? Icons.check_circle_outline : Icons.sports_mma,
-                            size: 80,
+                            _bumpDetected
+                                ? Icons.check_circle_outline_rounded
+                                : Icons.sports_mma_rounded,
+                            size: 76,
                             color: Colors.white,
                           ),
                         ),
@@ -168,45 +243,77 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
                     ),
                   ),
 
-                  const SizedBox(height: 36),
+                  const SizedBox(height: 32),
 
-                  Text(
-                    _bumpDetected ? "BUMP DETECTED! ⚡" : "HOLD PHONES & FIST-BUMP!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: _bumpDetected ? Colors.greenAccent : Colors.white,
-                      letterSpacing: 1.2,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xE6111422),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.white12),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _bumpDetected
-                      ? "Connecting with nearby Trainer..."
-                      : "Both players hold phones and physically bump fists to initiate the duel.",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 13, color: Colors.white70, height: 1.4),
+                    child: Column(
+                      children: [
+                        Text(
+                          _bumpDetected
+                              ? "BUMP DETECTED!"
+                              : "HOLD PHONES & FIST-BUMP!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            color: _bumpDetected
+                                ? const Color(0xFF34EB8C)
+                                : Colors.white,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          _bumpDetected
+                              ? "Synchronizing Battle Stadium arena..."
+                              : "Both players hold phones and physically fist-bump to initiate a Kanto Stadium duel.",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white70,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
 
                   const Spacer(),
 
                   // Test Button (Simulate Bump for testing without physically bumping)
-                  OutlinedButton.icon(
-                    onPressed: _triggerMatch,
-                    icon: const Icon(Icons.touch_app, color: Colors.white70),
-                    label: const Text(
-                      "SIMULATE BUMP (TEST MODE)",
-                      style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.black26,
-                      side: const BorderSide(color: Colors.white24),
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: OutlinedButton.icon(
+                      onPressed: _triggerMatch,
+                      icon: const Icon(Icons.bolt_rounded,
+                          color: Colors.amberAccent, size: 18),
+                      label: const Text(
+                        "SIMULATE FIST-BUMP (TEST DUEL)",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 12,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: const Color(0xDD141828),
+                        side: BorderSide(
+                            color: Colors.amberAccent.withOpacity(0.5)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14)),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                 ],
               ),
             ),

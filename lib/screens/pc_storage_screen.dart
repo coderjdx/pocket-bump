@@ -112,12 +112,14 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
         final PokemonInstance? selectedMon = _resolveSelectedPokemon(trainer);
 
         return Scaffold(
-          backgroundColor: const Color(0xFF16161E),
+          backgroundColor: const Color(0xFF0B0C18),
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
-            backgroundColor: const Color(0xFF1E1E2C),
+            backgroundColor: const Color(0xCC0D0E1B),
             elevation: 0,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white70),
+              icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white70, size: 18),
               onPressed: () => Navigator.pop(context),
             ),
             title: Column(
@@ -126,17 +128,18 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 const Text(
                   "BILL'S PC STORAGE",
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.8,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.0,
                     color: Colors.white,
                   ),
                 ),
                 Text(
                   "${trainer.totalPcPokemon}/${trainer.maxPcCapacity} Stored • 16 Boxes × 20 Slots",
-                  style: const TextStyle(
-                    fontSize: 10.5,
-                    color: Colors.white60,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.purpleAccent.shade100,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -146,15 +149,20 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
                 child: OutlinedButton.icon(
                   onPressed: () => _openBoxGridModal(trainer),
-                  icon: const Icon(Icons.grid_view, size: 15),
+                  icon: const Icon(Icons.grid_view_rounded, size: 14),
                   label: const Text(
-                    "Boxes",
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    "BOXES",
+                    style: TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                   style: OutlinedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0A0B14),
                     foregroundColor: Colors.purpleAccent.shade100,
                     side: BorderSide(
-                      color: Colors.purpleAccent.withOpacity(0.55),
+                      color: Colors.purpleAccent.withOpacity(0.6),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shape: RoundedRectangleBorder(
@@ -179,85 +187,91 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color(0xFF12101E).withOpacity(0.66),
-                      const Color(0xFF141222).withOpacity(0.56),
-                      const Color(0xFF0E0C18).withOpacity(0.80),
+                      const Color(0xFF0E0C1D).withOpacity(0.74),
+                      const Color(0xFF100E22).withOpacity(0.60),
+                      const Color(0xFF090814).withOpacity(0.88),
                     ],
                   ),
                 ),
               ),
               SafeArea(
                 child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-              child: Column(
-                children: [
-                  // 1. Box Switcher Bar
-                  _buildBoxHeaderBar(trainer, boxIdx, currentBox.length),
-                  const SizedBox(height: 8),
+                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                  child: Column(
+                    children: [
+                      // 1. Box Switcher Bar
+                      _buildBoxHeaderBar(trainer, boxIdx, currentBox.length),
+                      const SizedBox(height: 8),
 
-                  // 2. 5x4 (20-slot) PC Box Grid (scales cleanly to viewport)
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1F1F2B),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.purpleAccent.withOpacity(0.28),
+                      // 2. 5x4 (20-slot) Holographic PC Box Grid
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xE8131426), Color(0xE80C0E1B)],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.purpleAccent.withOpacity(0.45),
+                              width: 1.2,
+                            ),
+                          ),
+                          child: Column(
+                            children: List.generate(4, (row) {
+                              return Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: row < 3 ? 5 : 0,
+                                  ),
+                                  child: Row(
+                                    children: List.generate(5, (col) {
+                                      final slotIdx = row * 5 + col;
+                                      final mon = slotIdx < currentBox.length
+                                          ? currentBox[slotIdx]
+                                          : null;
+                                      final isSelected = !_selectedInParty &&
+                                          _selectedBoxIndex == boxIdx &&
+                                          _selectedSlotIndex == slotIdx;
+                                      return Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            right: col < 4 ? 5 : 0,
+                                          ),
+                                          child: _buildBoxSlotTile(
+                                            boxIdx: boxIdx,
+                                            slotIdx: slotIdx,
+                                            mon: mon,
+                                            isSelected: isSelected,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
                         ),
                       ),
-                      child: Column(
-                        children: List.generate(4, (row) {
-                          return Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                bottom: row < 3 ? 5 : 0,
-                              ),
-                              child: Row(
-                                children: List.generate(5, (col) {
-                                  final slotIdx = row * 5 + col;
-                                  final mon = slotIdx < currentBox.length
-                                      ? currentBox[slotIdx]
-                                      : null;
-                                  final isSelected = !_selectedInParty &&
-                                      _selectedBoxIndex == boxIdx &&
-                                      _selectedSlotIndex == slotIdx;
-                                  return Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        right: col < 4 ? 5 : 0,
-                                      ),
-                                      child: _buildBoxSlotTile(
-                                        boxIdx: boxIdx,
-                                        slotIdx: slotIdx,
-                                        mon: mon,
-                                        isSelected: isSelected,
-                                      ),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
+
+                      const SizedBox(height: 8),
+
+                      // 3. Inspector & Actions Card
+                      _buildInspectorCard(
+                          trainer, boxIdx, currentBox.length, selectedMon),
+
+                      const SizedBox(height: 8),
+
+                      // 4. Bottom 6-Slot Party Strip
+                      _buildPartyStrip(trainer),
+                    ],
                   ),
-
-                  const SizedBox(height: 8),
-
-                  // 3. Inspector & Actions Card
-                  _buildInspectorCard(trainer, boxIdx, currentBox.length, selectedMon),
-
-                  const SizedBox(height: 8),
-
-                  // 4. Bottom 6-Slot Party Strip
-                  _buildPartyStrip(trainer),
-                ],
+                ),
               ),
-            ),
-          ),
             ],
           ),
         );
@@ -273,18 +287,18 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.deepPurple.shade900.withOpacity(0.55),
-            const Color(0xFF262636),
+            Colors.deepPurple.shade900.withOpacity(0.68),
+            const Color(0xEA141628),
           ],
         ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.purpleAccent.withOpacity(0.4)),
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(color: Colors.purpleAccent.withOpacity(0.55)),
       ),
       child: Row(
         children: [
           IconButton(
             onPressed: () => _switchBox(trainer, boxIdx - 1),
-            icon: const Icon(Icons.chevron_left, color: Colors.white),
+            icon: const Icon(Icons.chevron_left_rounded, color: Colors.white),
             tooltip: "Previous Box",
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
@@ -298,18 +312,20 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 children: [
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                     decoration: BoxDecoration(
-                      color: Colors.purpleAccent.withOpacity(0.22),
-                      borderRadius: BorderRadius.circular(6),
+                      color: const Color(0xFF0A0B16),
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(
+                          color: Colors.purpleAccent.withOpacity(0.55)),
                     ),
                     child: Text(
                       "BOX ${boxIdx + 1}",
                       style: const TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        letterSpacing: 0.6,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12.5,
+                        letterSpacing: 0.7,
                       ),
                     ),
                   ),
@@ -318,27 +334,28 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     "$count/${Trainer.maxPokemonPerBox}",
                     style: TextStyle(
                       color: isFull ? Colors.amberAccent : Colors.white70,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
                       fontSize: 12,
                     ),
                   ),
                   const SizedBox(width: 6),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.greenAccent.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
-                        color: Colors.greenAccent.withOpacity(0.45),
+                        color: Colors.greenAccent.withOpacity(0.55),
                       ),
                     ),
                     child: const Text(
                       "ACTIVE",
                       style: TextStyle(
                         color: Colors.greenAccent,
-                        fontSize: 8.5,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 8,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -348,7 +365,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
           ),
           IconButton(
             onPressed: () => _switchBox(trainer, boxIdx + 1),
-            icon: const Icon(Icons.chevron_right, color: Colors.white),
+            icon: const Icon(Icons.chevron_right_rounded, color: Colors.white),
             tooltip: "Next Box",
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
@@ -367,9 +384,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     if (mon == null) {
       return Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF171720),
+          color: const Color(0xFF0B0C16),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white10),
+          border: Border.all(color: Colors.white.withOpacity(0.08)),
         ),
         child: Center(
           child: Text(
@@ -391,14 +408,18 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
         decoration: BoxDecoration(
-          color: isSelected
-              ? typeColor.withOpacity(0.24)
-              : const Color(0xFF282836),
+          gradient: LinearGradient(
+            colors: isSelected
+                ? [typeColor.withOpacity(0.32), const Color(0xFF15182B)]
+                : [typeColor.withOpacity(0.12), const Color(0xFF141626)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
                 ? Colors.amberAccent
-                : typeColor.withOpacity(0.4),
+                : typeColor.withOpacity(0.55),
             width: isSelected ? 1.8 : 1.0,
           ),
         ),
@@ -419,9 +440,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   "Lv${mon.level}",
                   maxLines: 1,
                   style: const TextStyle(
-                    color: Colors.amberAccent,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFFD54F),
+                    fontSize: 8.5,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ],
@@ -453,13 +474,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
         constraints: const BoxConstraints(minHeight: 104),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF23232E),
-          borderRadius: BorderRadius.circular(14),
+          gradient: const LinearGradient(
+            colors: [Color(0xE816172A), Color(0xE80E101D)],
+          ),
+          borderRadius: BorderRadius.circular(15),
           border: Border.all(color: Colors.white12),
         ),
         child: const Row(
           children: [
-            Icon(Icons.computer, color: Colors.purpleAccent, size: 28),
+            Icon(Icons.computer_rounded, color: Colors.purpleAccent, size: 28),
             SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -468,17 +491,18 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Select a Pokémon",
+                    "PC TERMINAL READY",
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 12.5,
+                      letterSpacing: 0.7,
                     ),
                   ),
                   SizedBox(height: 3),
                   Text(
                     "Tap any Pokémon in the Box above or your Party below to withdraw, deposit, swap, move between boxes, or release.",
-                    style: TextStyle(color: Colors.white60, fontSize: 11),
+                    style: TextStyle(color: Colors.white60, fontSize: 10.5),
                   ),
                 ],
               ),
@@ -500,12 +524,12 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            primaryColor.withOpacity(0.18),
-            const Color(0xFF242432),
+            primaryColor.withOpacity(0.22),
+            const Color(0xEA121423),
           ],
         ),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: primaryColor.withOpacity(0.5)),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: primaryColor.withOpacity(0.65), width: 1.2),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -843,7 +867,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F1F2B),
+        color: const Color(0xE8131426),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.redAccent.withOpacity(0.32)),
       ),
@@ -899,7 +923,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       return Container(
         height: 54,
         decoration: BoxDecoration(
-          color: const Color(0xFF16161E),
+          color: const Color(0xFF0A0B15),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.white10),
         ),
@@ -919,7 +943,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
         decoration: BoxDecoration(
           color: isSelected
               ? typeColor.withOpacity(0.24)
-              : const Color(0xFF2A2A38),
+              : const Color(0xFF16192C),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
@@ -987,7 +1011,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
   ) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF121423),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1099,7 +1123,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF23232E),
+      backgroundColor: const Color(0xFF121423),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
