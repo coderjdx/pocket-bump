@@ -56,6 +56,7 @@ class PokemonInstance {
   int currentExp;
   StatusCondition status;
   String? heldItemId;
+  String caughtBall;
 
   // In-battle stat stages (-6 to +6)
   int atkStage = 0;
@@ -73,6 +74,7 @@ class PokemonInstance {
     int? currentExp,
     this.status = StatusCondition.none,
     this.heldItemId,
+    this.caughtBall = 'poke_ball',
   })  : nickname = nickname ?? species.name,
         moves = (moves ?? []).take(4).toList(),
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
@@ -281,6 +283,7 @@ class PokemonInstance {
       'currentExp': currentExp,
       'status': status.name,
       'heldItemId': heldItemId,
+      'caughtBall': caughtBall,
       'moves': moves
           .map((m) => {
                 'id': m.id,
@@ -328,6 +331,7 @@ class PokemonInstance {
 
     final rawNickname = json['nickname'] as String?;
     final String? heldItem = json['heldItemId'] as String?;
+    final String caughtBall = (json['caughtBall'] as String?) ?? 'poke_ball';
     return PokemonInstance(
       species: spec,
       nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
@@ -339,6 +343,7 @@ class PokemonInstance {
       currentExp: exp,
       status: restoredStatus,
       heldItemId: heldItem,
+      caughtBall: caughtBall,
     );
   }
 }

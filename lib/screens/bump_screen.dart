@@ -53,6 +53,8 @@ class _BumpScreenState extends State<BumpScreen> with SingleTickerProviderStateM
           builder: (context) => BattleScreen(
             opponentPokemon: rivalMon,
             isWild: false,
+            trainerName: 'Rival Blue',
+            opponentSpriteId: 'male_blue',
           ),
         ),
       );

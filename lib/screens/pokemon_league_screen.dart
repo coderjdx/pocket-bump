@@ -660,6 +660,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           isWild: false,
           trainerName: currentOpponent.name,
           trainerTitle: currentOpponent.title,
+          opponentSpriteId: currentOpponent.spriteId,
           prizeMoney: currentOpponent.prizeMoney,
           preservePartyHpOnExit: true,
         ),

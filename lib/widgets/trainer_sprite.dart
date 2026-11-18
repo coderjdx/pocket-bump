@@ -2,37 +2,44 @@ import 'package:flutter/material.dart';
 import '../models/trainer_avatar.dart';
 
 class TrainerSpriteWidget extends StatelessWidget {
-  final TrainerAvatar avatar;
+  final TrainerAvatar? avatar;
+  final String? spriteId;
   final bool isBackView;
-  final int pose; // 0 = ready, 1 = windup, 2 = throw (used in back view)
+  final int pose; // 0 = ready, 1 = windup, 2 = throw
   final Color ballColor;
   final double size;
 
   const TrainerSpriteWidget({
     super.key,
-    required this.avatar,
+    this.avatar,
+    this.spriteId,
     this.isBackView = false,
     this.pose = 0,
     this.ballColor = const Color(0xFFE53935),
     this.size = 140,
-  });
+  }) : assert(avatar != null || spriteId != null, 'Provide avatar or spriteId');
+
+  String get _resolvedId => spriteId ?? avatar?.id ?? 'male_red';
+
+  String get _fallbackFrontPath => 'assets/images/trainers/${_resolvedId}_front.png';
 
   String get _assetPath {
-    if (!isBackView) {
-      return 'assets/images/trainers/${avatar.id}_front.png';
-    }
     final clampedPose = pose.clamp(0, 2);
-    return 'assets/images/trainers/${avatar.id}_back_$clampedPose.png';
+    if (!isBackView) {
+      if (clampedPose == 0) {
+        return _fallbackFrontPath;
+      }
+      return 'assets/images/trainers/${_resolvedId}_front_$clampedPose.png';
+    }
+    return 'assets/images/trainers/${_resolvedId}_back_$clampedPose.png';
   }
 
   @override
   Widget build(BuildContext context) {
-    final double stepOffsetX = !isBackView
-        ? 0.0
-        : (pose == 1 ? -6.0 : (pose == 2 ? 12.0 : 0.0));
-    final double stepScale = !isBackView
-        ? 1.0
-        : (pose == 2 ? 1.06 : 1.0);
+    final double stepOffsetX = isBackView
+        ? (pose == 1 ? -6.0 : (pose == 2 ? 12.0 : 0.0))
+        : (pose == 1 ? 6.0 : (pose == 2 ? -12.0 : 0.0));
+    final double stepScale = pose == 2 ? 1.06 : 1.0;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 140),
@@ -54,6 +61,20 @@ class TrainerSpriteWidget extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           filterQuality: FilterQuality.none,
           gaplessPlayback: true,
+          errorBuilder: (_, __, ___) => Image.asset(
+            _fallbackFrontPath,
+            width: size,
+            height: size,
+            fit: BoxFit.contain,
+            alignment: Alignment.bottomCenter,
+            filterQuality: FilterQuality.none,
+            gaplessPlayback: true,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.person,
+              size: size * 0.65,
+              color: Colors.white70,
+            ),
+          ),
         ),
       ),
     );

@@ -22,10 +22,13 @@ class GymPokemonSpec {
             .whereType<Move>()
             .toList()
         : PokedexDatabase.movesForSpeciesAtLevel(species, level);
+    final String ballId =
+        level >= 35 ? 'ultra_ball' : (level >= 20 ? 'great_ball' : 'poke_ball');
     return PokemonInstance(
       species: species,
       level: level,
       moves: moves,
+      caughtBall: ballId,
     );
   }
 }
@@ -34,6 +37,7 @@ class GymTrainer {
   final String id;
   final String name;
   final String title;
+  final String spriteId;
   final int prizeMoney;
   final String introDialogue;
   final List<GymPokemonSpec> team;
@@ -42,6 +46,7 @@ class GymTrainer {
     required this.id,
     required this.name,
     required this.title,
+    this.spriteId = 'npc_camper',
     required this.prizeMoney,
     required this.introDialogue,
     required this.team,
@@ -106,6 +111,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'pewter_t1',
+          spriteId: 'npc_camper',
           name: 'Camper Liam',
           title: 'Gym Junior Trainer',
           prizeMoney: 250,
@@ -114,6 +120,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'pewter_t2',
+          spriteId: 'npc_hiker',
           name: 'Hiker Anthony',
           title: 'Mountain Man',
           prizeMoney: 300,
@@ -122,6 +129,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'pewter_t3',
+          spriteId: 'npc_lass',
           name: 'Picnicker Diana',
           title: 'Gym Trainer',
           prizeMoney: 350,
@@ -130,6 +138,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'pewter_t4',
+          spriteId: 'npc_camper',
           name: 'Jr. Trainer Jerry',
           title: 'Brock\'s Apprentice',
           prizeMoney: 400,
@@ -142,6 +151,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'brock',
+        spriteId: 'leader_brock',
         name: 'Brock',
         title: 'Pewter Gym Leader',
         prizeMoney: 1400,
@@ -171,6 +181,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'cerulean_t1',
+          spriteId: 'npc_swimmer',
           name: 'Swimmer Luis',
           title: 'Poolside Athlete',
           prizeMoney: 450,
@@ -179,6 +190,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cerulean_t2',
+          spriteId: 'npc_swimmer',
           name: 'Sailor Trevor',
           title: 'Ocean Sailor',
           prizeMoney: 500,
@@ -190,6 +202,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cerulean_t3',
+          spriteId: 'npc_lass',
           name: 'Picnicker Diana',
           title: 'Cerulean Swimmer',
           prizeMoney: 550,
@@ -198,6 +211,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cerulean_t4',
+          spriteId: 'npc_beauty',
           name: 'Beauty Violet',
           title: 'Gym Sensational Sister',
           prizeMoney: 600,
@@ -210,6 +224,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'misty',
+        spriteId: 'leader_misty',
         name: 'Misty',
         title: 'Cerulean Gym Leader',
         prizeMoney: 2100,
@@ -239,6 +254,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'vermilion_t1',
+          spriteId: 'npc_swimmer',
           name: 'Sailor Dwayne',
           title: 'Naval Recruit',
           prizeMoney: 650,
@@ -247,6 +263,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'vermilion_t2',
+          spriteId: 'npc_engineer',
           name: 'Engineer Baily',
           title: 'Power Plant Tech',
           prizeMoney: 700,
@@ -255,6 +272,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'vermilion_t3',
+          spriteId: 'npc_engineer',
           name: 'Gentleman Tucker',
           title: 'Army Veteran',
           prizeMoney: 800,
@@ -266,6 +284,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'vermilion_t4',
+          spriteId: 'npc_camper',
           name: 'Rocker Gene',
           title: 'Sound & Surge',
           prizeMoney: 850,
@@ -278,6 +297,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'lt_surge',
+        spriteId: 'leader_surge',
         name: 'Lt. Surge',
         title: 'Vermilion Gym Leader',
         prizeMoney: 2400,
@@ -308,6 +328,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'celadon_t1',
+          spriteId: 'npc_lass',
           name: 'Lass Kay',
           title: 'Flower Arranger',
           prizeMoney: 850,
@@ -319,6 +340,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'celadon_t2',
+          spriteId: 'npc_beauty',
           name: 'Beauty Tamia',
           title: 'Floral Designer',
           prizeMoney: 900,
@@ -330,6 +352,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'celadon_t3',
+          spriteId: 'npc_lass',
           name: 'Picnicker Tina',
           title: 'Nature Scout',
           prizeMoney: 950,
@@ -341,6 +364,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'celadon_t4',
+          spriteId: 'npc_beauty',
           name: 'Cooltrainer Mary',
           title: 'Celadon Elite',
           prizeMoney: 1050,
@@ -353,6 +377,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'erika',
+        spriteId: 'leader_erika',
         name: 'Erika',
         title: 'Celadon Gym Leader',
         prizeMoney: 2900,
@@ -383,6 +408,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'fuchsia_t1',
+          spriteId: 'npc_ninja',
           name: 'Juggler Kirk',
           title: 'Ninja Illusionist',
           prizeMoney: 1100,
@@ -394,6 +420,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'fuchsia_t2',
+          spriteId: 'npc_ninja',
           name: 'Tamer Edgar',
           title: 'Beast Ninja',
           prizeMoney: 1200,
@@ -405,6 +432,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'fuchsia_t3',
+          spriteId: 'npc_psychic',
           name: 'Juggler Shawn',
           title: 'Hypnotic Master',
           prizeMoney: 1300,
@@ -416,6 +444,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'fuchsia_t4',
+          spriteId: 'npc_ninja',
           name: 'Ninja Boy Lao',
           title: 'Shadow Disciple',
           prizeMoney: 1400,
@@ -428,6 +457,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'koga',
+        spriteId: 'leader_koga',
         name: 'Koga',
         title: 'Fuchsia Gym Leader',
         prizeMoney: 4300,
@@ -459,6 +489,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'saffron_t1',
+          spriteId: 'npc_psychic',
           name: 'Psychic Johan',
           title: 'Telekinetic Adept',
           prizeMoney: 1400,
@@ -470,6 +501,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'saffron_t2',
+          spriteId: 'npc_beauty',
           name: 'Channeler Stacy',
           title: 'Medium of Spirits',
           prizeMoney: 1450,
@@ -481,6 +513,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'saffron_t3',
+          spriteId: 'npc_psychic',
           name: 'Psychic Cameron',
           title: 'Mind Bender',
           prizeMoney: 1500,
@@ -492,6 +525,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'saffron_t4',
+          spriteId: 'npc_psychic',
           name: 'Psychic Preston',
           title: 'High Esper',
           prizeMoney: 1600,
@@ -504,6 +538,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'sabrina',
+        spriteId: 'leader_sabrina',
         name: 'Sabrina',
         title: 'Saffron Gym Leader',
         prizeMoney: 4300,
@@ -535,6 +570,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'cinnabar_t1',
+          spriteId: 'npc_ninja',
           name: 'Burglar Quinn',
           title: 'Torchbearer',
           prizeMoney: 1600,
@@ -546,6 +582,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cinnabar_t2',
+          spriteId: 'npc_engineer',
           name: 'Super Nerd Erik',
           title: 'Thermodynamics Researcher',
           prizeMoney: 1700,
@@ -557,6 +594,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cinnabar_t3',
+          spriteId: 'npc_hiker',
           name: 'Burglar Ramon',
           title: 'Fire Thief',
           prizeMoney: 1800,
@@ -568,6 +606,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'cinnabar_t4',
+          spriteId: 'npc_engineer',
           name: 'Super Nerd Avery',
           title: 'Volcano Expert',
           prizeMoney: 1900,
@@ -580,6 +619,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'blaine',
+        spriteId: 'leader_blaine',
         name: 'Blaine',
         title: 'Cinnabar Gym Leader',
         prizeMoney: 4700,
@@ -611,6 +651,7 @@ class GymDatabase {
       trainers: [
         const GymTrainer(
           id: 'viridian_t1',
+          spriteId: 'npc_hiker',
           name: 'Tamer Cole',
           title: 'Beast Master',
           prizeMoney: 2000,
@@ -622,6 +663,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'viridian_t2',
+          spriteId: 'npc_ninja',
           name: 'Black Belt Takashi',
           title: 'Dojo Champion',
           prizeMoney: 2100,
@@ -633,6 +675,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'viridian_t3',
+          spriteId: 'npc_psychic',
           name: 'Cooltrainer Samuel',
           title: 'Gym Enforcer',
           prizeMoney: 2200,
@@ -644,6 +687,7 @@ class GymDatabase {
         ),
         const GymTrainer(
           id: 'viridian_t4',
+          spriteId: 'npc_psychic',
           name: 'Cooltrainer Yuji',
           title: 'Giovanni\'s Right Hand',
           prizeMoney: 2300,
@@ -656,6 +700,7 @@ class GymDatabase {
       ],
       leader: const GymTrainer(
         id: 'giovanni',
+        spriteId: 'leader_giovanni',
         name: 'Giovanni',
         title: 'Viridian Gym Leader',
         prizeMoney: 5000,

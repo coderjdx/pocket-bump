@@ -22,6 +22,7 @@ enum _BallAnimPhase {
   wobble,
   locked,
   breakout,
+  blocked,
 }
 
 class BattleScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class BattleScreen extends StatefulWidget {
   final bool isWild;
   final String? trainerName;
   final String? trainerTitle;
+  final String? opponentSpriteId;
   final int prizeMoney;
   final bool preservePartyHpOnExit;
   final List<PokemonInstance>? opponentTeam;
@@ -39,6 +41,7 @@ class BattleScreen extends StatefulWidget {
     this.isWild = true,
     this.trainerName,
     this.trainerTitle,
+    this.opponentSpriteId,
     this.prizeMoney = 0,
     this.preservePartyHpOnExit = false,
     this.opponentTeam,
@@ -53,8 +56,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late PokemonInstance _playerPokemon;
   late PokemonInstance _opponentPokemon;
   late List<PokemonInstance> _opponentParty;
+  late List<PokemonInstance> _opponentFullTeam;
   final List<PokemonInstance> _participatedPokemon = [];
-  int _pendingBattleExp = 0;
+  final Map<PokemonInstance, int> _pendingExpByPokemon = {};
   bool _playerWon = false;
 
   void _recordParticipant(PokemonInstance mon) {
@@ -100,7 +104,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _showEvolutionGlow = false;
   String _throwingBallType = 'poke_ball';
 
-  // Trainer & summon throw states
+  // Player Trainer & summon throw states
   bool _showTrainerSprite = true;
   int _trainerPose = 0; // 0 = ready, 1 = windup, 2 = throw
   double _trainerSlideX = 0.0;
@@ -109,6 +113,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _showSummonBallArc = false;
   bool _showSummonBurst = false;
   String _trainerHeldBallType = 'poke_ball';
+
+  // Opposing Trainer & summon throw states
+  bool _showOpponentTrainerSprite = false;
+  int _opponentTrainerPose = 0;
+  double _opponentTrainerSlideX = 0.0;
+  bool _showOpponentPokemon = true;
+  double _opponentSummonScale = 1.0;
+  bool _showOpponentSummonBallArc = false;
+  bool _showOpponentSummonBurst = false;
+  String _opponentHeldBallType = 'poke_ball';
 
   // Active full-arena VFX overlay state
   String? _activeMoveId;
@@ -124,19 +138,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     super.initState();
     _trainer = Provider.of<Trainer>(context, listen: false);
     _playerPokemon = _trainer.leadPokemon!;
+    _trainerHeldBallType = _playerPokemon.caughtBall;
     _recordParticipant(_playerPokemon);
-    _opponentParty = widget.opponentTeam != null ? List.from(widget.opponentTeam!) : [];
-    if (_opponentParty.isNotEmpty) {
-      _opponentPokemon = _opponentParty.removeAt(0);
-    } else {
-      _opponentPokemon = widget.opponentPokemon;
+
+    _opponentFullTeam =
+        (widget.opponentTeam != null && widget.opponentTeam!.isNotEmpty)
+            ? List<PokemonInstance>.from(widget.opponentTeam!)
+            : [widget.opponentPokemon];
+    _opponentParty = List<PokemonInstance>.from(_opponentFullTeam);
+    _opponentPokemon = _opponentParty.removeAt(0);
+    _opponentHeldBallType = _opponentPokemon.caughtBall;
+
+    if (!widget.isWild) {
+      _showOpponentTrainerSprite = true;
+      _showOpponentPokemon = false;
+      _opponentSummonScale = 0.05;
     }
+
     _displayedPlayerHp = _playerPokemon.currentHp;
     _displayedOpponentHp = _opponentPokemon.currentHp;
 
     _currentMessage = widget.isWild
         ? "A wild ${_opponentPokemon.species.name} appeared!"
-        : "${widget.trainerName ?? 'Rival'} sent out ${_opponentPokemon.species.name}!";
+        : "${widget.trainerName ?? 'Rival Blue'} wants to battle!";
 
     _idleController = AnimationController(
       vsync: this,
@@ -239,6 +263,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await Future.delayed(const Duration(milliseconds: 650));
     if (!mounted) return;
 
+    if (!widget.isWild) {
+      setState(() {
+        _currentMessage =
+            "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.species.name}!";
+      });
+      await _animateOpponentSummonThrow(_opponentPokemon);
+      if (!mounted) return;
+      await Future.delayed(const Duration(milliseconds: 220));
+      if (!mounted) return;
+    }
+
     setState(() {
       _currentMessage = "${_trainer.name}: Go! ${_playerPokemon.nickname}!";
     });
@@ -251,10 +286,61 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     });
   }
 
+  Future<void> _animateOpponentSummonThrow(PokemonInstance mon) async {
+    if (!mounted) return;
+    setState(() {
+      _opponentHeldBallType = mon.caughtBall;
+      _showOpponentTrainerSprite = true;
+      _opponentTrainerPose = 0;
+      _opponentTrainerSlideX = 0.0;
+      _showOpponentPokemon = false;
+      _opponentSummonScale = 0.05;
+      _showOpponentSummonBallArc = false;
+      _showOpponentSummonBurst = false;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 180));
+    if (!mounted) return;
+
+    setState(() {
+      _opponentTrainerPose = 1;
+    });
+    await Future.delayed(const Duration(milliseconds: 210));
+    if (!mounted) return;
+
+    setState(() {
+      _opponentTrainerPose = 2;
+      _showOpponentSummonBallArc = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 150));
+    if (!mounted) return;
+
+    setState(() {
+      _opponentTrainerSlideX = 1.2;
+    });
+    await Future.delayed(const Duration(milliseconds: 370));
+    if (!mounted) return;
+
+    HapticFeedback.mediumImpact();
+    setState(() {
+      _showOpponentSummonBallArc = false;
+      _showOpponentTrainerSprite = false;
+      _showOpponentSummonBurst = true;
+      _showOpponentPokemon = true;
+      _opponentSummonScale = 1.0;
+    });
+    await Future.delayed(const Duration(milliseconds: 280));
+    if (!mounted) return;
+
+    setState(() {
+      _showOpponentSummonBurst = false;
+    });
+  }
+
   Future<void> _animateTrainerSummonThrow(PokemonInstance mon) async {
     if (!mounted) return;
     setState(() {
-      _trainerHeldBallType = 'poke_ball';
+      _trainerHeldBallType = mon.caughtBall;
       _showTrainerSprite = true;
       _trainerPose = 0;
       _trainerSlideX = 0.0;
@@ -860,7 +946,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     // 1. All party Pokémon fainted -> player immediately loses and gains nothing
     if (!_trainer.hasConsciousPokemon) {
-      _pendingBattleExp = 0;
+      _pendingExpByPokemon.clear();
       _playerWon = false;
       setState(() {
         _displayedPlayerHp = 0;
@@ -879,17 +965,30 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         winnerLevel: _playerPokemon.level,
         isTrainerBattle: !widget.isWild,
       );
-      _pendingBattleExp += expGained;
 
-      // If trainer has more Pokémon in reserve, hold EXP & send out next Pokémon
+      // Only conscious participants (or those revived prior to knockout) earn EXP
+      final List<PokemonInstance> consciousParticipants =
+          _participatedPokemon.where((p) => !p.isFainted).toList();
+      if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
+        consciousParticipants.add(_playerPokemon);
+      }
+      if (consciousParticipants.isNotEmpty) {
+        final int share = max(1, expGained ~/ consciousParticipants.length);
+        for (final mon in consciousParticipants) {
+          _pendingExpByPokemon[mon] = (_pendingExpByPokemon[mon] ?? 0) + share;
+        }
+      }
+
+      // If trainer has more Pokémon in reserve, hold EXP & summon next Pokémon
       if (_opponentParty.isNotEmpty) {
         final nextMon = _opponentParty.removeAt(0);
         setState(() {
           _currentMessage =
               "${widget.trainerName ?? 'Trainer'} is about to send out ${nextMon.nickname}!";
         });
-        await Future.delayed(const Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 900));
         if (!mounted) return;
+
         setState(() {
           _opponentPokemon = nextMon;
           _displayedOpponentHp = _opponentPokemon.currentHp;
@@ -899,9 +998,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
               "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.nickname}!";
         });
         _trainer.markPokemonSeen(_opponentPokemon.species.id);
+        await _animateOpponentSummonThrow(_opponentPokemon);
+        if (!mounted) return;
+
+        _participatedPokemon.clear();
+        if (!_playerPokemon.isFainted) {
+          _recordParticipant(_playerPokemon);
+        }
+
         if (_playerPokemon.isFainted) {
-          await Future.delayed(const Duration(milliseconds: 800));
-          if (!mounted) return;
           setState(() {
             _isProcessingTurn = false;
             _currentMessage =
@@ -916,55 +1021,74 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         return;
       }
 
-      // All opponent Pokémon defeated -> divide EXP equally among all participants
-      final List<PokemonInstance> participants = _participatedPokemon.isNotEmpty
-          ? List<PokemonInstance>.from(_participatedPokemon)
-          : <PokemonInstance>[_playerPokemon];
-      final int sharedExp = max(1, _pendingBattleExp ~/ participants.length);
+      // All opponent Pokémon defeated -> award accumulated EXP
+      if (_pendingExpByPokemon.isNotEmpty) {
+        final values = _pendingExpByPokemon.values.toList();
+        final int firstVal = values.first;
+        final bool allEqual = values.every((v) => v == firstVal);
 
-      setState(() {
-        _currentMessage = participants.length == 1
-            ? "${participants.first.nickname} gained $sharedExp EXP!"
-            : "${participants.map((p) => p.nickname).join(', ')} each gained $sharedExp EXP!";
-      });
-      await Future.delayed(const Duration(milliseconds: 950));
-      if (!mounted) return;
-
-      for (final participant in participants) {
-        final bool wasFainted = participant.isFainted;
-        final levelResult = participant.gainExpWithLearnset(
-          sharedExp,
-          PokedexDatabase.movesUnlockedAtExactLevel,
-        );
-        if (wasFainted) {
-          participant.currentHp = 0;
-        }
-        if (levelResult.leveledUp) {
+        if (_pendingExpByPokemon.length == 1) {
           setState(() {
-            if (participant == _playerPokemon) {
-              _displayedPlayerHp = _playerPokemon.currentHp;
-            }
             _currentMessage =
-                "${participant.nickname} grew to Level ${participant.level}!";
+                "${_pendingExpByPokemon.keys.first.nickname} gained $firstVal EXP!";
           });
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 950));
           if (!mounted) return;
+        } else if (allEqual) {
+          setState(() {
+            _currentMessage =
+                "${_pendingExpByPokemon.keys.map((p) => p.nickname).join(', ')} each gained $firstVal EXP!";
+          });
+          await Future.delayed(const Duration(milliseconds: 950));
+          if (!mounted) return;
+        }
 
-          for (final moveName in levelResult.learnedMoves) {
+        for (final entry in _pendingExpByPokemon.entries) {
+          final participant = entry.key;
+          final earnedExp = entry.value;
+          if (_pendingExpByPokemon.length > 1 && !allEqual) {
             setState(() {
-              _currentMessage = "${participant.nickname} learned $moveName!";
+              _currentMessage = "${participant.nickname} gained $earnedExp EXP!";
             });
-            await Future.delayed(const Duration(milliseconds: 950));
+            await Future.delayed(const Duration(milliseconds: 800));
             if (!mounted) return;
           }
 
-          if (participant.checkCanEvolve()) {
-            await _handleEvolution(participant);
+          final bool wasFainted = participant.isFainted;
+          final levelResult = participant.gainExpWithLearnset(
+            earnedExp,
+            PokedexDatabase.movesUnlockedAtExactLevel,
+          );
+          if (wasFainted) {
+            participant.currentHp = 0;
+          }
+          if (levelResult.leveledUp) {
+            setState(() {
+              if (participant == _playerPokemon) {
+                _displayedPlayerHp = _playerPokemon.currentHp;
+              }
+              _currentMessage =
+                  "${participant.nickname} grew to Level ${participant.level}!";
+            });
+            await Future.delayed(const Duration(milliseconds: 1000));
             if (!mounted) return;
+
+            for (final moveName in levelResult.learnedMoves) {
+              setState(() {
+                _currentMessage = "${participant.nickname} learned $moveName!";
+              });
+              await Future.delayed(const Duration(milliseconds: 950));
+              if (!mounted) return;
+            }
+
+            if (participant.checkCanEvolve()) {
+              await _handleEvolution(participant);
+              if (!mounted) return;
+            }
           }
         }
+        _trainer.saveProgress();
       }
-      _trainer.saveProgress();
 
       if (widget.isWild) {
         // Roll chance for Pokémon item drop based on its rarity
@@ -1022,20 +1146,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Future<void> _onThrowPokeBall(String ballType) async {
-    if (!widget.isWild) {
-      setState(() {
-        _currentMessage = "The Trainer blocked the Poké Ball! Don't be a thief!";
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("The Trainer blocked the Poké Ball! Don't be a thief!"),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    if (_trainer.isStorageFull) {
+    if (widget.isWild && _trainer.isStorageFull) {
       setState(() {
         _currentMessage =
             "Both your Party and all 16 PC Boxes are full (320/320)! Release a Pokémon first.";
@@ -1103,6 +1214,62 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await Future.delayed(const Duration(milliseconds: 220));
     if (!mounted) return;
 
+    if (!widget.isWild) {
+      HapticFeedback.heavyImpact();
+      setState(() {
+        _showTrainerSprite = false;
+        _showOpponentTrainerSprite = true;
+        _opponentTrainerSlideX = 0.0;
+        _opponentTrainerPose = 2;
+        _catchBallPhase = _BallAnimPhase.blocked;
+        _floatingCallout = "BLOCKED!";
+        _calloutOnOpponent = true;
+        _calloutColor = Colors.redAccent;
+        _currentMessage =
+            "${widget.trainerName ?? 'The Trainer'} blocked the Poké Ball! Don't be a thief!";
+      });
+      _arenaShakeController.forward(from: 0);
+      _ballPhaseController.duration = const Duration(milliseconds: 420);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 1100));
+      if (!mounted) return;
+
+      setState(() {
+        _opponentTrainerSlideX = 1.2;
+        _showPokeBallThrow = false;
+        _catchBallPhase = _BallAnimPhase.none;
+        _floatingCallout = null;
+        _showPlayerPokemon = true;
+        _playerSummonScale = 1.0;
+      });
+      await Future.delayed(const Duration(milliseconds: 260));
+      if (!mounted) return;
+
+      setState(() {
+        _showOpponentTrainerSprite = false;
+      });
+
+      if (_opponentPokemon.moves.isNotEmpty) {
+        final oppMove =
+            _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
+        final events = BattleEngine.executeSingleAttack(
+          _opponentPokemon,
+          oppMove,
+          _playerPokemon,
+          isPlayer: false,
+          isWild: widget.isWild,
+          playerTrainer: _trainer,
+        );
+        for (final ev in events) {
+          await _playStepEvent(ev);
+          if (!mounted) return;
+        }
+      }
+      await _checkPostTurnConditions();
+      return;
+    }
+
     // Phase 2: Open Capsule & Laser Absorption (wild Pokémon shrinks into beam)
     HapticFeedback.lightImpact();
     setState(() {
@@ -1162,6 +1329,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     if (caught) {
       // Phase 5a: Capture Lock & Golden Stars
+      _opponentPokemon.caughtBall = ballType;
       final int? sentToBox = _trainer.addPokemon(_opponentPokemon);
       final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
       if (itemDrop != null) {
@@ -1271,7 +1439,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             onPressed: _finishAndExit,
           ),
           title: Text(
-            widget.isWild ? "WILD ENCOUNTER" : "RIVAL FIST-BUMP DUEL",
+            widget.isWild
+                ? "WILD ENCOUNTER"
+                : (widget.trainerTitle?.toUpperCase() ?? "RIVAL FIST-BUMP DUEL"),
             style: const TextStyle(
               fontSize: 12.5,
               fontWeight: FontWeight.bold,
@@ -1380,24 +1550,43 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               ),
                             ),
 
-                            // Opponent Animated Sprite (Centered & bottom-anchored on distant top-right platform)
+                            // Opponent Animated Sprite / Opposing Trainer Throw Sprite (Bottom-anchored on distant platform)
                             Positioned(
-                              left: oppPlatform.dx - 75,
-                              top: oppPlatform.dy - 140,
+                              left: oppPlatform.dx - 85,
+                              top: oppPlatform.dy - 165,
                               child: SizedBox(
-                                width: 150,
-                                height: 140,
+                                width: 170,
+                                height: 165,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
                                   children: [
-                                    AnimatedOpacity(
-                                      opacity: _opponentInBall ? 0.0 : 1.0,
-                                      duration: const Duration(milliseconds: 110),
-                                      child: AnimatedScale(
-                                        scale: _opponentCaptureScale,
-                                        duration: const Duration(milliseconds: 220),
+                                    if (_showOpponentTrainerSprite)
+                                      AnimatedSlide(
+                                        offset: Offset(_opponentTrainerSlideX, 0),
+                                        duration: const Duration(milliseconds: 260),
                                         curve: Curves.easeInOutCubic,
+                                        child: AnimatedOpacity(
+                                          opacity: _showOpponentTrainerSprite ? 1.0 : 0.0,
+                                          duration: const Duration(milliseconds: 220),
+                                          child: TrainerSpriteWidget(
+                                            spriteId: widget.opponentSpriteId ?? 'male_blue',
+                                            isBackView: false,
+                                            pose: _opponentTrainerPose,
+                                            ballColor: _ballTopColor(_opponentHeldBallType),
+                                            size: 138,
+                                          ),
+                                        ),
+                                      ),
+                                    AnimatedOpacity(
+                                      opacity: (_opponentInBall || !_showOpponentPokemon) ? 0.0 : 1.0,
+                                      duration: const Duration(milliseconds: 140),
+                                      child: AnimatedScale(
+                                        scale: _showOpponentPokemon
+                                            ? (_opponentCaptureScale * _opponentSummonScale)
+                                            : 0.05,
+                                        duration: const Duration(milliseconds: 260),
+                                        curve: Curves.easeOutBack,
                                         alignment: Alignment.bottomCenter,
                                         child: _buildAnimatedCombatant(
                                           url: _opponentPokemon.species.spriteUrl,
@@ -1414,6 +1603,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         ),
                                       ),
                                     ),
+                                    if (_showOpponentSummonBurst)
+                                      TweenAnimationBuilder<double>(
+                                        tween: Tween<double>(begin: 0.0, end: 1.0),
+                                        duration: const Duration(milliseconds: 280),
+                                        builder: (context, t, _) {
+                                          return CustomPaint(
+                                            size: const Size(140, 140),
+                                            painter: _SummonBurstPainter(progress: t),
+                                          );
+                                        },
+                                      ),
                                     AnimatedBuilder(
                                       animation: _opponentKoController,
                                       builder: (context, _) {
@@ -1566,10 +1766,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                 ),
                               ),
 
-                            // Summon Poké Ball arc & ground bounce (Trainer hand -> Player platform)
+                            // Summon Poké Ball arc & ground bounce (Trainer hand -> platform)
                             if (_showSummonBallArc)
                               _buildSummonBallOverlay(
-                                playerPlatform: playerPlatform,
+                                platform: playerPlatform,
+                                ballType: _trainerHeldBallType,
+                                isOpponent: false,
+                              ),
+                            if (_showOpponentSummonBallArc)
+                              _buildSummonBallOverlay(
+                                platform: oppPlatform,
+                                ballType: _opponentHeldBallType,
+                                isOpponent: true,
                               ),
 
                             // Multi-phase Catching Poké Ball throw, beam, bounce, wobble & lock
@@ -1705,11 +1913,19 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
-  Widget _buildSummonBallOverlay({required Offset playerPlatform}) {
-    final Offset start = playerPlatform + const Offset(36, -116);
-    final Offset end = playerPlatform + const Offset(0, -14);
-    final Offset startFloor = playerPlatform + const Offset(30, -2);
-    final Offset endFloor = playerPlatform + const Offset(0, -2);
+  Widget _buildSummonBallOverlay({
+    required Offset platform,
+    required String ballType,
+    bool isOpponent = false,
+  }) {
+    final Offset start =
+        platform + (isOpponent ? const Offset(-26, -88) : const Offset(36, -116));
+    final Offset end = platform + Offset(0, isOpponent ? -11 : -14);
+    final Offset startFloor =
+        platform + (isOpponent ? const Offset(-22, -2) : const Offset(30, -2));
+    final Offset endFloor = platform + const Offset(0, -2);
+    final double arcHeight = isOpponent ? 36.0 : 48.0;
+    final double ballSize = isOpponent ? 24.0 : 30.0;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
@@ -1726,7 +1942,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         if (t < 0.72) {
           final u = Curves.easeOutCubic.transform(t / 0.72);
           x = start.dx + (end.dx - start.dx) * u;
-          y = start.dy + (end.dy - start.dy) * u - sin(u * pi) * 48;
+          y = start.dy + (end.dy - start.dy) * u - sin(u * pi) * arcHeight;
           floorPos = Offset(
             startFloor.dx + (endFloor.dx - startFloor.dx) * u,
             startFloor.dy + (endFloor.dy - startFloor.dy) * u,
@@ -1750,14 +1966,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
         final double heightAboveFloor = (floorPos.dy - y).clamp(0.0, 140.0);
         final double shadowFactor = (1.0 - heightAboveFloor / 160.0).clamp(0.45, 1.0);
-        const double ballSize = 30.0;
 
         return Stack(
           clipBehavior: Clip.none,
           children: [
             _buildBallShadow(
               floorPos: floorPos,
-              width: 24.0 * shadowFactor,
+              width: (ballSize * 0.8) * shadowFactor,
               opacity: 0.36 * shadowFactor,
             ),
             Positioned(
@@ -1769,7 +1984,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 child: Transform.rotate(
                   angle: spinAngle,
                   child: PokeBallSpriteWidget(
-                    ballType: 'poke_ball',
+                    ballType: ballType,
                     size: ballSize,
                     isOpen: isOpen,
                   ),
@@ -1909,6 +2124,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 child: CustomPaint(
                   painter: _CaptureLockBurstPainter(
                     center: groundPos,
+                    progress: t,
+                    isBreakout: true,
+                  ),
+                ),
+              ),
+            );
+            break;
+
+          case _BallAnimPhase.blocked:
+            final t = _ballPhaseController.value;
+            ballPos = impactPos + Offset(-t * 95, -sin(t * pi) * 48 + t * 55);
+            shadowFloor = oppFloor + Offset(-t * 85, t * 18);
+            ballSize = 26.0 * (1.0 - t * 0.25);
+            angle = -t * pi * 6;
+            phaseFx = Positioned.fill(
+              child: IgnorePointer(
+                child: CustomPaint(
+                  painter: _CaptureLockBurstPainter(
+                    center: impactPos,
                     progress: t,
                     isBreakout: true,
                   ),
@@ -2088,6 +2322,71 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
+  static const List<double> _grayscaleMatrix = <double>[
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0, 0, 0, 1, 0,
+  ];
+
+  Widget _buildPartySlotsRow(List<PokemonInstance> team) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(6, (idx) {
+        final bool hasMon = idx < team.length;
+        final bool isFainted = hasMon && team[idx].isFainted;
+        final String ballId = hasMon ? team[idx].caughtBall : 'poke_ball';
+
+        return Container(
+          width: 13,
+          height: 13,
+          margin: EdgeInsets.only(right: idx < 5 ? 2.5 : 0),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: hasMon
+                ? (isFainted ? Colors.black54 : Colors.black26)
+                : Colors.black38,
+            border: Border.all(
+              color: hasMon
+                  ? (isFainted ? Colors.white24 : Colors.white54)
+                  : Colors.white12,
+              width: 0.9,
+            ),
+          ),
+          child: !hasMon
+              ? null
+              : Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Opacity(
+                      opacity: isFainted ? 0.35 : 1.0,
+                      child: isFainted
+                          ? ColorFiltered(
+                              colorFilter:
+                                  const ColorFilter.matrix(_grayscaleMatrix),
+                              child: PokeBallSpriteWidget(
+                                ballType: ballId,
+                                size: 10.5,
+                              ),
+                            )
+                          : PokeBallSpriteWidget(
+                              ballType: ballId,
+                              size: 10.5,
+                            ),
+                    ),
+                    if (isFainted)
+                      const Icon(
+                        Icons.close,
+                        size: 11.5,
+                        color: Colors.redAccent,
+                      ),
+                  ],
+                ),
+        );
+      }),
+    );
+  }
+
   Widget _buildPokemonInfoCard(
     PokemonInstance mon, {
     required int displayedHp,
@@ -2100,8 +2399,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         : 0.0;
 
     return Container(
-      width: 172,
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
+      width: 184,
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
       decoration: BoxDecoration(
         color: const Color(0xFF23232E).withOpacity(0.92),
         borderRadius: BorderRadius.circular(12),
@@ -2118,6 +2417,49 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (!isPlayer && !widget.isWild) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    widget.trainerName ?? 'Trainer',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.amberAccent,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                _buildPartySlotsRow(_opponentFullTeam),
+              ],
+            ),
+            const SizedBox(height: 3),
+          ] else if (isPlayer) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    _trainer.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.cyanAccent,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                _buildPartySlotsRow(_trainer.party),
+              ],
+            ),
+            const SizedBox(height: 3),
+          ],
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -2375,109 +2717,330 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
-  Future<void> _useHealingItem(
-    String itemId,
-    int healAmount,
-    String itemName,
-  ) async {
-    _trainer.adjustItemCount(itemId, -1);
-    _playerPokemon.currentHp =
-        (_playerPokemon.currentHp + healAmount).clamp(0, _playerPokemon.maxHp);
-    Navigator.pop(context);
-    setState(() {
-      _isProcessingTurn = true;
-      _displayedPlayerHp = _playerPokemon.currentHp;
-      _currentMessage =
-          "${_trainer.name} used a $itemName! ${_playerPokemon.nickname} healed $healAmount HP.";
-    });
-    await Future.delayed(const Duration(milliseconds: 900));
-    if (!mounted) return;
-    if (_opponentPokemon.moves.isNotEmpty) {
-      final oppMove = _opponentPokemon
-          .moves[Random().nextInt(_opponentPokemon.moves.length)];
-      final events = BattleEngine.executeSingleAttack(
-        _opponentPokemon,
-        oppMove,
-        _playerPokemon,
-        isPlayer: false,
-        isWild: widget.isWild,
-      );
-      for (final ev in events) {
-        await _playStepEvent(ev);
-        if (!mounted) return;
-      }
+  bool _canUseBattleItemOn(String itemId, PokemonInstance mon) {
+    switch (itemId) {
+      case 'revive':
+        return mon.isFainted;
+      case 'potion':
+      case 'super_potion':
+      case 'hyper_potion':
+      case 'max_potion':
+        return !mon.isFainted && mon.currentHp < mon.maxHp;
+      case 'antidote':
+        return !mon.isFainted && mon.status == StatusCondition.poison;
+      case 'paralyze_heal':
+        return !mon.isFainted && mon.status == StatusCondition.paralysis;
+      case 'awakening':
+        return !mon.isFainted && mon.status == StatusCondition.sleep;
+      case 'burn_heal':
+        return !mon.isFainted && mon.status == StatusCondition.burn;
+      case 'ice_heal':
+        return !mon.isFainted && mon.status == StatusCondition.freeze;
+      case 'full_heal':
+        return !mon.isFainted && mon.status != StatusCondition.none;
+      case 'full_restore':
+        return !mon.isFainted &&
+            (mon.currentHp < mon.maxHp || mon.status != StatusCondition.none);
+      default:
+        return false;
     }
-    await _checkPostTurnConditions();
   }
 
-  Future<void> _useReviveItem() async {
-    final faintedMon = _trainer.party.firstWhere((p) => p.isFainted);
-    _trainer.adjustItemCount('revive', -1);
-    faintedMon.currentHp = (faintedMon.maxHp / 2).ceil();
-    Navigator.pop(context);
-    setState(() {
-      _isProcessingTurn = true;
-      _currentMessage =
-          "${_trainer.name} used a Revive! ${faintedMon.nickname} was revived to half HP!";
-    });
-    await Future.delayed(const Duration(milliseconds: 900));
-    if (!mounted) return;
-    if (_opponentPokemon.moves.isNotEmpty) {
-      final oppMove = _opponentPokemon
-          .moves[Random().nextInt(_opponentPokemon.moves.length)];
-      final events = BattleEngine.executeSingleAttack(
-        _opponentPokemon,
-        oppMove,
-        _playerPokemon,
-        isPlayer: false,
-        isWild: widget.isWild,
-      );
-      for (final ev in events) {
-        await _playStepEvent(ev);
-        if (!mounted) return;
-      }
-    }
-    await _checkPostTurnConditions();
+  void _openBattleItemTargetModal({
+    required String itemId,
+    required String itemName,
+    required Color itemColor,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2A2A35),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (dlgCtx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(18, 16, 18, 22),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "USE ${itemName.toUpperCase()} ON WHICH POKÉMON?",
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white60),
+                    onPressed: () => Navigator.pop(dlgCtx),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: _trainer.party.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (_, idx) {
+                    final mon = _trainer.party[idx];
+                    final bool usable = _canUseBattleItemOn(itemId, mon);
+                    final bool isActive = mon == _playerPokemon;
+                    return InkWell(
+                      onTap: usable
+                          ? () {
+                              Navigator.pop(dlgCtx);
+                              _applyBattleItemOnPokemon(
+                                itemId: itemId,
+                                itemName: itemName,
+                                targetMon: mon,
+                              );
+                            }
+                          : null,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Opacity(
+                        opacity: usable ? 1.0 : 0.48,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1F1F2B),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: usable
+                                  ? itemColor.withOpacity(0.5)
+                                  : Colors.white12,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.network(
+                                mon.species.spriteUrl,
+                                width: 42,
+                                height: 42,
+                                fit: BoxFit.contain,
+                                filterQuality: FilterQuality.none,
+                                errorBuilder: (_, __, ___) => Image.network(
+                                  mon.species.staticSpriteUrl,
+                                  width: 42,
+                                  height: 42,
+                                  filterQuality: FilterQuality.none,
+                                  errorBuilder: (_, __, ___) => const Icon(
+                                    Icons.catching_pokemon,
+                                    color: Colors.white54,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          mon.nickname,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          "Lv.${mon.level}",
+                                          style: const TextStyle(
+                                            color: Colors.amberAccent,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        if (isActive) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: Colors.cyanAccent
+                                                  .withOpacity(0.18),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: const Text(
+                                              "ACTIVE",
+                                              style: TextStyle(
+                                                color: Colors.cyanAccent,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                        if (mon.isFainted) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: Colors.redAccent
+                                                  .withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: const Text(
+                                              "FAINTED",
+                                              style: TextStyle(
+                                                color: Colors.redAccent,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ] else if (mon.status !=
+                                            StatusCondition.none) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: _statusColor(mon.status),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              mon.status.shortLabel,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    HpBar(
+                                      currentHp: mon.currentHp,
+                                      maxHp: mon.maxHp,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: usable ? itemColor : Colors.white10,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  usable ? "SELECT" : "N/A",
+                                  style: TextStyle(
+                                    color: usable ? Colors.white : Colors.white38,
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  Future<void> _useStatusHealingItem(
-    String itemId,
-    String itemName, {
-    StatusCondition? specificCondition,
-    bool fullRestore = false,
+  Future<void> _applyBattleItemOnPokemon({
+    required String itemId,
+    required String itemName,
+    required PokemonInstance targetMon,
   }) async {
     _trainer.adjustItemCount(itemId, -1);
-    if (fullRestore) {
-      _playerPokemon.currentHp = _playerPokemon.maxHp;
-      _playerPokemon.status = StatusCondition.none;
-    } else if (specificCondition != null) {
-      if (_playerPokemon.status == specificCondition) {
-        _playerPokemon.status = StatusCondition.none;
-      }
-    } else {
-      _playerPokemon.status = StatusCondition.none;
+    String effectMsg;
+    switch (itemId) {
+      case 'revive':
+        targetMon.currentHp = (targetMon.maxHp / 2).ceil();
+        effectMsg =
+            "${_trainer.name} used Revive! ${targetMon.nickname} was revived to half HP!";
+        break;
+      case 'potion':
+        final heal = min(20, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        effectMsg =
+            "${_trainer.name} used Potion! ${targetMon.nickname} restored $heal HP.";
+        break;
+      case 'super_potion':
+        final heal = min(50, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        effectMsg =
+            "${_trainer.name} used Super Potion! ${targetMon.nickname} restored $heal HP.";
+        break;
+      case 'hyper_potion':
+        final heal = min(200, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        effectMsg =
+            "${_trainer.name} used Hyper Potion! ${targetMon.nickname} restored $heal HP.";
+        break;
+      case 'max_potion':
+        targetMon.currentHp = targetMon.maxHp;
+        effectMsg =
+            "${_trainer.name} used Max Potion! ${targetMon.nickname}'s HP was fully restored!";
+        break;
+      case 'full_restore':
+        targetMon.currentHp = targetMon.maxHp;
+        targetMon.status = StatusCondition.none;
+        effectMsg =
+            "${_trainer.name} used Full Restore! ${targetMon.nickname} fully restored HP and cured status!";
+        break;
+      default:
+        targetMon.status = StatusCondition.none;
+        effectMsg =
+            "${_trainer.name} used $itemName! ${targetMon.nickname}'s status condition was cured!";
+        break;
     }
+    _trainer.saveProgress();
 
-    Navigator.pop(context);
     setState(() {
+      _isSelectingMove = false;
       _isProcessingTurn = true;
-      _displayedPlayerHp = _playerPokemon.currentHp;
-      _currentMessage = fullRestore
-          ? "${_trainer.name} used a $itemName! ${_playerPokemon.nickname} fully restored HP and cured status!"
-          : "${_trainer.name} used an $itemName! ${_playerPokemon.nickname}'s status condition was healed!";
+      if (targetMon == _playerPokemon) {
+        _displayedPlayerHp = _playerPokemon.currentHp;
+        _visualPlayerFainted = _playerPokemon.isFainted;
+      }
+      _currentMessage = effectMsg;
     });
 
     await Future.delayed(const Duration(milliseconds: 900));
     if (!mounted) return;
     if (_opponentPokemon.moves.isNotEmpty) {
-      final oppMove = _opponentPokemon
-          .moves[Random().nextInt(_opponentPokemon.moves.length)];
+      final oppMove =
+          _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
       final events = BattleEngine.executeSingleAttack(
         _opponentPokemon,
         oppMove,
         _playerPokemon,
         isPlayer: false,
         isWild: widget.isWild,
+        playerTrainer: _trainer,
       );
       for (final ev in events) {
         await _playStepEvent(ev);
@@ -2498,216 +3061,196 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       builder: (ctx) {
         final rows = <Widget>[];
 
-        // Balls (wild battles only, only if count > 0)
-        if (widget.isWild) {
-          if (_trainer.pokeBalls > 0) {
-            rows.add(_bagRow(
-              icon: Icons.catching_pokemon,
-              iconColor: Colors.redAccent,
-              leadingWidget: const PokeBallSpriteWidget(
-                  ballType: 'poke_ball', size: 28),
-              title: "Poké Ball",
-              rarity: "Common",
-              subtitle: "x${_trainer.pokeBalls} remaining",
-              btnLabel: "THROW",
-              btnColor: Colors.redAccent,
-              enabled: true,
-              onTap: () {
-                Navigator.pop(ctx);
-                _onThrowPokeBall('poke_ball');
-              },
-            ));
-          }
-          if (_trainer.greatBalls > 0) {
-            rows.add(_bagRow(
-              icon: Icons.catching_pokemon,
-              iconColor: Colors.blueAccent,
-              leadingWidget: const PokeBallSpriteWidget(
-                  ballType: 'great_ball', size: 28),
-              title: "Great Ball (1.5x)",
-              rarity: "Uncommon",
-              subtitle: "x${_trainer.greatBalls} remaining",
-              btnLabel: "THROW",
-              btnColor: Colors.blueAccent,
-              enabled: true,
-              onTap: () {
-                Navigator.pop(ctx);
-                _onThrowPokeBall('great_ball');
-              },
-            ));
-          }
-          if (_trainer.ultraBalls > 0) {
-            rows.add(_bagRow(
-              icon: Icons.catching_pokemon,
-              iconColor: Colors.amberAccent,
-              leadingWidget: const PokeBallSpriteWidget(
-                  ballType: 'ultra_ball', size: 28),
-              title: "Ultra Ball (2.0x)",
-              rarity: "Rare",
-              subtitle: "x${_trainer.ultraBalls} remaining",
-              btnLabel: "THROW",
-              btnColor: Colors.amber.shade800,
-              enabled: true,
-              onTap: () {
-                Navigator.pop(ctx);
-                _onThrowPokeBall('ultra_ball');
-              },
-            ));
-          }
-        }
-
-        // HP Medicines (only if count > 0)
-        if (_trainer.potions > 0) {
+        // Balls (available in both wild & trainer battles; trainers block throws)
+        if (_trainer.pokeBalls > 0) {
           rows.add(_bagRow(
-            icon: Icons.medical_services,
-            iconColor: Colors.greenAccent,
-            title: "Potion",
+            icon: Icons.catching_pokemon,
+            iconColor: Colors.redAccent,
+            leadingWidget:
+                const PokeBallSpriteWidget(ballType: 'poke_ball', size: 28),
+            title: "Poké Ball",
             rarity: "Common",
-            subtitle: "x${_trainer.potions} remaining (+20 HP)",
-            btnLabel: "USE",
-            btnColor: Colors.green,
-            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
-            onTap: () => _useHealingItem('potion', 20, "Potion"),
+            subtitle: "x${_trainer.pokeBalls} remaining",
+            btnLabel: "THROW",
+            btnColor: Colors.redAccent,
+            enabled: true,
+            onTap: () {
+              Navigator.pop(ctx);
+              _onThrowPokeBall('poke_ball');
+            },
           ));
         }
-        if (_trainer.superPotions > 0) {
+        if (_trainer.greatBalls > 0) {
           rows.add(_bagRow(
-            icon: Icons.medical_services,
-            iconColor: Colors.tealAccent,
-            title: "Super Potion",
+            icon: Icons.catching_pokemon,
+            iconColor: Colors.blueAccent,
+            leadingWidget:
+                const PokeBallSpriteWidget(ballType: 'great_ball', size: 28),
+            title: "Great Ball (1.5x)",
             rarity: "Uncommon",
-            subtitle: "x${_trainer.superPotions} remaining (+50 HP)",
-            btnLabel: "USE",
-            btnColor: Colors.teal.shade700,
-            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
-            onTap: () => _useHealingItem('super_potion', 50, "Super Potion"),
+            subtitle: "x${_trainer.greatBalls} remaining",
+            btnLabel: "THROW",
+            btnColor: Colors.blueAccent,
+            enabled: true,
+            onTap: () {
+              Navigator.pop(ctx);
+              _onThrowPokeBall('great_ball');
+            },
           ));
         }
-        if (_trainer.hyperPotions > 0) {
+        if (_trainer.ultraBalls > 0) {
           rows.add(_bagRow(
-            icon: Icons.medical_services,
-            iconColor: Colors.pinkAccent,
-            title: "Hyper Potion",
-            rarity: "Rare",
-            subtitle: "x${_trainer.hyperPotions} remaining (+200 HP)",
-            btnLabel: "USE",
-            btnColor: Colors.pink.shade700,
-            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp,
-            onTap: () => _useHealingItem('hyper_potion', 200, "Hyper Potion"),
-          ));
-        }
-        if (_trainer.revives > 0) {
-          rows.add(_bagRow(
-            icon: Icons.favorite,
-            iconColor: Colors.orangeAccent,
-            title: "Revive",
-            rarity: "Rare",
-            subtitle: "x${_trainer.revives} remaining (+50% HP)",
-            btnLabel: "USE",
-            btnColor: Colors.orange.shade800,
-            enabled: _trainer.party.any((p) => p.isFainted),
-            onTap: _useReviveItem,
-          ));
-        }
-
-        // Status Remedies (only if count > 0)
-        if (_trainer.antidotes > 0) {
-          rows.add(_bagRow(
-            icon: Icons.healing,
-            iconColor: Colors.purpleAccent,
-            title: "Antidote",
-            rarity: "Common",
-            subtitle: "x${_trainer.antidotes} remaining (Cures Poison)",
-            btnLabel: "USE",
-            btnColor: Colors.purple,
-            enabled: _playerPokemon.status == StatusCondition.poison,
-            onTap: () => _useStatusHealingItem('antidote', 'Antidote',
-                specificCondition: StatusCondition.poison),
-          ));
-        }
-        if (_trainer.paralyzeHeals > 0) {
-          rows.add(_bagRow(
-            icon: Icons.bolt,
+            icon: Icons.catching_pokemon,
             iconColor: Colors.amberAccent,
-            title: "Paralyze Heal",
-            rarity: "Common",
-            subtitle: "x${_trainer.paralyzeHeals} remaining (Cures Paralysis)",
-            btnLabel: "USE",
-            btnColor: Colors.amber.shade800,
-            enabled: _playerPokemon.status == StatusCondition.paralysis,
-            onTap: () => _useStatusHealingItem('paralyze_heal', 'Paralyze Heal',
-                specificCondition: StatusCondition.paralysis),
-          ));
-        }
-        if (_trainer.awakenings > 0) {
-          rows.add(_bagRow(
-            icon: Icons.alarm,
-            iconColor: Colors.lightBlueAccent,
-            title: "Awakening",
-            rarity: "Common",
-            subtitle: "x${_trainer.awakenings} remaining (Cures Sleep)",
-            btnLabel: "USE",
-            btnColor: Colors.lightBlue.shade700,
-            enabled: _playerPokemon.status == StatusCondition.sleep,
-            onTap: () => _useStatusHealingItem('awakening', 'Awakening',
-                specificCondition: StatusCondition.sleep),
-          ));
-        }
-        if (_trainer.burnHeals > 0) {
-          rows.add(_bagRow(
-            icon: Icons.local_fire_department,
-            iconColor: Colors.deepOrangeAccent,
-            title: "Burn Heal",
-            rarity: "Common",
-            subtitle: "x${_trainer.burnHeals} remaining (Cures Burn)",
-            btnLabel: "USE",
-            btnColor: Colors.deepOrange,
-            enabled: _playerPokemon.status == StatusCondition.burn,
-            onTap: () => _useStatusHealingItem('burn_heal', 'Burn Heal',
-                specificCondition: StatusCondition.burn),
-          ));
-        }
-        if (_trainer.iceHeals > 0) {
-          rows.add(_bagRow(
-            icon: Icons.ac_unit,
-            iconColor: Colors.cyanAccent,
-            title: "Ice Heal",
-            rarity: "Common",
-            subtitle: "x${_trainer.iceHeals} remaining (Cures Freeze)",
-            btnLabel: "USE",
-            btnColor: Colors.cyan.shade700,
-            enabled: _playerPokemon.status == StatusCondition.freeze,
-            onTap: () => _useStatusHealingItem('ice_heal', 'Ice Heal',
-                specificCondition: StatusCondition.freeze),
-          ));
-        }
-        if (_trainer.fullHeals > 0) {
-          rows.add(_bagRow(
-            icon: Icons.auto_fix_high,
-            iconColor: Colors.tealAccent,
-            title: "Full Heal",
-            rarity: "Uncommon",
-            subtitle: "x${_trainer.fullHeals} remaining (Cures all status)",
-            btnLabel: "USE",
-            btnColor: Colors.teal.shade700,
-            enabled: _playerPokemon.status != StatusCondition.none,
-            onTap: () => _useStatusHealingItem('full_heal', 'Full Heal'),
-          ));
-        }
-        if (_trainer.fullRestores > 0) {
-          rows.add(_bagRow(
-            icon: Icons.stars,
-            iconColor: const Color(0xFFFF80AB),
-            title: "Full Restore",
+            leadingWidget:
+                const PokeBallSpriteWidget(ballType: 'ultra_ball', size: 28),
+            title: "Ultra Ball (2.0x)",
             rarity: "Rare",
-            subtitle:
-                "x${_trainer.fullRestores} remaining (100% HP + Cures status)",
-            btnLabel: "USE",
+            subtitle: "x${_trainer.ultraBalls} remaining",
+            btnLabel: "THROW",
+            btnColor: Colors.amber.shade800,
+            enabled: true,
+            onTap: () {
+              Navigator.pop(ctx);
+              _onThrowPokeBall('ultra_ball');
+            },
+          ));
+        }
+
+        // Medicines (only if count > 0; prompts player to pick target Pokémon)
+        final medicineDefs = [
+          (
+            id: 'potion',
+            name: 'Potion',
+            effect: '+20 HP',
+            rarity: 'Common',
+            color: Colors.greenAccent,
+            btnColor: Colors.green,
+            icon: Icons.medical_services,
+          ),
+          (
+            id: 'super_potion',
+            name: 'Super Potion',
+            effect: '+50 HP',
+            rarity: 'Uncommon',
+            color: Colors.tealAccent,
+            btnColor: Colors.teal.shade700,
+            icon: Icons.medical_services,
+          ),
+          (
+            id: 'hyper_potion',
+            name: 'Hyper Potion',
+            effect: '+200 HP',
+            rarity: 'Rare',
+            color: Colors.pinkAccent,
             btnColor: Colors.pink.shade700,
-            enabled: _playerPokemon.currentHp < _playerPokemon.maxHp ||
-                _playerPokemon.status != StatusCondition.none,
-            onTap: () => _useStatusHealingItem('full_restore', 'Full Restore',
-                fullRestore: true),
+            icon: Icons.medical_services,
+          ),
+          (
+            id: 'max_potion',
+            name: 'Max Potion',
+            effect: 'Full HP',
+            rarity: 'Rare',
+            color: Colors.lightBlueAccent,
+            btnColor: Colors.lightBlue.shade700,
+            icon: Icons.medical_services,
+          ),
+          (
+            id: 'revive',
+            name: 'Revive',
+            effect: 'Revives +50% HP',
+            rarity: 'Rare',
+            color: Colors.orangeAccent,
+            btnColor: Colors.orange.shade800,
+            icon: Icons.favorite,
+          ),
+          (
+            id: 'antidote',
+            name: 'Antidote',
+            effect: 'Cures Poison',
+            rarity: 'Common',
+            color: Colors.purpleAccent,
+            btnColor: Colors.purple,
+            icon: Icons.healing,
+          ),
+          (
+            id: 'paralyze_heal',
+            name: 'Paralyze Heal',
+            effect: 'Cures Paralysis',
+            rarity: 'Common',
+            color: Colors.amberAccent,
+            btnColor: Colors.amber.shade800,
+            icon: Icons.bolt,
+          ),
+          (
+            id: 'awakening',
+            name: 'Awakening',
+            effect: 'Cures Sleep',
+            rarity: 'Common',
+            color: Colors.lightBlueAccent,
+            btnColor: Colors.lightBlue.shade700,
+            icon: Icons.alarm,
+          ),
+          (
+            id: 'burn_heal',
+            name: 'Burn Heal',
+            effect: 'Cures Burn',
+            rarity: 'Common',
+            color: Colors.deepOrangeAccent,
+            btnColor: Colors.deepOrange,
+            icon: Icons.local_fire_department,
+          ),
+          (
+            id: 'ice_heal',
+            name: 'Ice Heal',
+            effect: 'Cures Freeze',
+            rarity: 'Common',
+            color: Colors.cyanAccent,
+            btnColor: Colors.cyan.shade700,
+            icon: Icons.ac_unit,
+          ),
+          (
+            id: 'full_heal',
+            name: 'Full Heal',
+            effect: 'Cures all status',
+            rarity: 'Uncommon',
+            color: Colors.tealAccent,
+            btnColor: Colors.teal.shade700,
+            icon: Icons.auto_fix_high,
+          ),
+          (
+            id: 'full_restore',
+            name: 'Full Restore',
+            effect: '100% HP + Cures status',
+            rarity: 'Rare',
+            color: const Color(0xFFFF80AB),
+            btnColor: Colors.pink.shade700,
+            icon: Icons.stars,
+          ),
+        ];
+
+        for (final med in medicineDefs) {
+          final count = _trainer.getItemCount(med.id);
+          if (count <= 0) continue;
+          final bool anyEligible =
+              _trainer.party.any((p) => _canUseBattleItemOn(med.id, p));
+          rows.add(_bagRow(
+            icon: med.icon,
+            iconColor: med.color,
+            title: med.name,
+            rarity: med.rarity,
+            subtitle: "x$count remaining (${med.effect})",
+            btnLabel: "USE",
+            btnColor: med.btnColor,
+            enabled: anyEligible,
+            onTap: () {
+              Navigator.pop(ctx);
+              _openBattleItemTargetModal(
+                itemId: med.id,
+                itemName: med.name,
+                itemColor: med.btnColor,
+              );
+            },
           ));
         }
 
