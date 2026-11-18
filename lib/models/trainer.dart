@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pokemon_instance.dart';
+import 'rival.dart';
 import 'trainer_avatar.dart';
 
 class Trainer extends ChangeNotifier {
@@ -50,6 +51,7 @@ class Trainer extends ChangeNotifier {
   Map<String, int> customItems;
   bool expShareEnabled;
   bool repelEnabled;
+  List<RivalRecord> rivals;
 
   Trainer({
     required this.name,
@@ -87,6 +89,7 @@ class Trainer extends ChangeNotifier {
     Map<String, int>? customItems,
     this.expShareEnabled = false,
     this.repelEnabled = false,
+    List<RivalRecord>? rivals,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
         lastStepDate = lastStepDate ?? todayDateKey(),
@@ -97,7 +100,8 @@ class Trainer extends ChangeNotifier {
         clearedGymIds = clearedGymIds ?? {},
         completedGymStepIds = completedGymStepIds ?? {},
         gymTodaySteps = gymTodaySteps ?? {},
-        customItems = customItems ?? {} {
+        customItems = customItems ?? {},
+        rivals = rivals ?? [] {
     activePcBoxIndex = activePcBoxIndex.clamp(0, numPcBoxes - 1);
     this.pcBoxes = List.generate(numPcBoxes, (boxIdx) {
       if (pcBoxes != null && boxIdx < pcBoxes.length) {
@@ -813,6 +817,75 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  int get friendCount => rivals.where((r) => r.isFriend).length;
+  int get totalPvpMatches => rivals.fold(0, (sum, r) => sum + r.matches);
+  int get totalPvpWins => rivals.fold(0, (sum, r) => sum + r.wins);
+
+  void recordPvpMatch({
+    required String peerId,
+    required String peerName,
+    required String peerTitle,
+    required String peerSpriteId,
+    required bool playerWon,
+  }) {
+    final cleanId = peerId.trim();
+    final cleanName = peerName.trim().isEmpty ? 'Trainer' : peerName.trim();
+    final cleanTitle =
+        peerTitle.trim().isEmpty ? 'Trainer' : peerTitle.trim();
+    final cleanSprite =
+        peerSpriteId.trim().isEmpty ? 'male_red' : peerSpriteId.trim();
+
+    int existingIdx = rivals.indexWhere((r) =>
+        cleanId.isNotEmpty &&
+        r.id == cleanId);
+    if (existingIdx < 0) {
+      existingIdx = rivals.indexWhere(
+          (r) => r.name.toLowerCase() == cleanName.toLowerCase());
+    }
+
+    final now = DateTime.now();
+    if (existingIdx >= 0) {
+      final existing = rivals[existingIdx];
+      existing.name = cleanName;
+      existing.title = cleanTitle;
+      existing.spriteId = cleanSprite;
+      existing.matches += 1;
+      if (playerWon) {
+        existing.wins += 1;
+      }
+      existing.lastOutcome = playerWon ? 'win' : 'loss';
+      existing.lastBattledAt = now;
+      if (existingIdx > 0) {
+        rivals.removeAt(existingIdx);
+        rivals.insert(0, existing);
+      }
+    } else {
+      rivals.insert(
+        0,
+        RivalRecord(
+          id: cleanId.isNotEmpty ? cleanId : 'rival_${cleanName.toLowerCase()}',
+          name: cleanName,
+          title: cleanTitle,
+          spriteId: cleanSprite,
+          matches: 1,
+          wins: playerWon ? 1 : 0,
+          isFriend: false,
+          lastOutcome: playerWon ? 'win' : 'loss',
+          lastBattledAt: now,
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
+  bool toggleRivalFriend(String rivalId) {
+    final idx = rivals.indexWhere((r) => r.id == rivalId);
+    if (idx < 0) return false;
+    rivals[idx].isFriend = !rivals[idx].isFriend;
+    notifyListeners();
+    return rivals[idx].isFriend;
+  }
+
   void claimSupplyDrop() {
     pokeBalls = (pokeBalls + 5).clamp(0, 99);
     greatBalls = (greatBalls + 2).clamp(0, 99);
@@ -861,6 +934,7 @@ class Trainer extends ChangeNotifier {
       'customItems': customItems,
       'expShareEnabled': expShareEnabled,
       'repelEnabled': repelEnabled,
+      'rivals': rivals.map((r) => r.toJson()).toList(),
       'party': party.map((mon) => mon.toJson()).toList(),
       'activePcBoxIndex': activePcBoxIndex,
       'pcBoxes': pcBoxes
@@ -936,6 +1010,16 @@ class Trainer extends ChangeNotifier {
     });
     expShareEnabled = json['expShareEnabled'] == true;
     repelEnabled = json['repelEnabled'] == true;
+
+    final rawRivals = json['rivals'] as List<dynamic>? ?? const [];
+    final loadedRivals = <RivalRecord>[];
+    for (final item in rawRivals) {
+      if (item is Map) {
+        loadedRivals.add(RivalRecord.fromJson(Map<String, dynamic>.from(item)));
+      }
+    }
+    loadedRivals.sort((a, b) => b.lastBattledAt.compareTo(a.lastBattledAt));
+    rivals = loadedRivals;
 
     final rawParty = json['party'] as List<dynamic>? ?? const [];
     final loadedParty = <PokemonInstance>[];
@@ -1073,6 +1157,7 @@ class Trainer extends ChangeNotifier {
     customItems = {};
     expShareEnabled = false;
     repelEnabled = false;
+    rivals = [];
     _suppressAutoSave = false;
     super.notifyListeners();
   }

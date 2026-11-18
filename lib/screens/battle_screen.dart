@@ -67,7 +67,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late List<PokemonInstance> _opponentFullTeam;
   final List<PokemonInstance> _participatedPokemon = [];
   bool _playerWon = false;
+  bool _didRecordPvpResult = false;
   int _pvpTurnIndex = 0;
+
+  void _recordPvpBattleOutcomeIfNeeded({required bool playerWon}) {
+    final session = widget.pvpSession;
+    if (session == null || _didRecordPvpResult) return;
+    _didRecordPvpResult = true;
+    _trainer.recordPvpMatch(
+      peerId: session.peerDeviceId,
+      peerName: session.opponentName,
+      peerTitle: session.opponentTitle,
+      peerSpriteId: session.opponentSpriteId,
+      playerWon: playerWon,
+    );
+  }
 
   String get _resolvedBattleBackgroundAsset {
     if (widget.battleBackgroundAsset != null) {
@@ -182,6 +196,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       widget.pvpSession!.startListening();
       widget.pvpSession!.onPeerForfeit = () {
         if (!mounted || _battleEnded) return;
+        _recordPvpBattleOutcomeIfNeeded(playerWon: true);
         setState(() {
           _playerWon = true;
           _battleEnded = true;
@@ -295,10 +310,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      if (!_battleEnded && widget.pvpSession != null) {
+      final bool exitedMidPvp = !_battleEnded && widget.pvpSession != null;
+      if (exitedMidPvp) {
         widget.pvpSession!.sendForfeit();
       }
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (exitedMidPvp) {
+          _recordPvpBattleOutcomeIfNeeded(playerWon: false);
+        }
         _trainer.resetAllPartyStatStages();
         _trainer.saveProgress();
       });
@@ -313,6 +332,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _didHealOnExit = true;
       if (!_battleEnded && widget.pvpSession != null) {
         widget.pvpSession!.sendForfeit();
+        _recordPvpBattleOutcomeIfNeeded(playerWon: false);
       }
       _trainer.resetAllPartyStatStages();
       _trainer.saveProgress();
@@ -1244,6 +1264,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     // 1. All party Pokémon fainted -> player immediately loses and gains nothing
     if (!_trainer.hasConsciousPokemon) {
       _playerWon = false;
+      _recordPvpBattleOutcomeIfNeeded(playerWon: false);
       setState(() {
         _displayedPlayerHp = 0;
         _visualPlayerFainted = true;
@@ -1364,6 +1385,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       }
 
       _playerWon = true;
+      _recordPvpBattleOutcomeIfNeeded(playerWon: true);
       if (!mounted) return;
       setState(() {
         _battleEnded = true;

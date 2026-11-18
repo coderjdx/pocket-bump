@@ -9,6 +9,7 @@ import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../services/pvp_transport.dart';
 import 'battle_screen.dart';
+import 'rivals_screen.dart';
 import 'trade_screen.dart';
 
 enum _BumpLinkState {
@@ -593,6 +594,19 @@ class _BumpScreenState extends State<BumpScreen>
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              tooltip: "Rivals & Friends",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RivalsScreen()),
+                );
+              },
+              icon: const Icon(Icons.people_alt_rounded,
+                  color: Colors.cyanAccent, size: 20),
+            ),
+          ],
         ),
         body: Stack(
           fit: StackFit.expand,

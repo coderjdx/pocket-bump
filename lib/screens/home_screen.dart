@@ -23,6 +23,7 @@ import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
 import 'pokemon_detail_screen.dart';
 import 'pokemon_league_screen.dart';
+import 'rivals_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -172,8 +173,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
                   const SizedBox(height: 8),
 
-                  // ─── 5. VERSUS LINK / FIST-BUMP DUEL BANNER ───────────────
-                  _buildChallengeTrainerButton(),
+                  // ─── 5. VERSUS LINK / FIST-BUMP DUEL + RIVALS BAR ─────────
+                  Row(
+                    children: [
+                      Expanded(child: _buildChallengeTrainerButton()),
+                      const SizedBox(width: 8),
+                      _buildRivalsButton(trainer),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -1226,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 11),
               child: Row(
                 children: [
                   Container(
@@ -1236,40 +1243,123 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       borderRadius: BorderRadius.circular(9),
                     ),
                     child: const Icon(Icons.sports_mma_rounded,
-                        color: Colors.amberAccent, size: 20),
+                        color: Colors.amberAccent, size: 19),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 9),
                   const Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "FIST-BUMP LINK • BATTLE & TRADE",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 12,
-                            letterSpacing: 0.7,
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "FIST-BUMP LINK",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 12,
+                              letterSpacing: 0.7,
+                            ),
                           ),
                         ),
                         SizedBox(height: 1),
-                        Text(
-                          "PAIR PHONES TO DUEL OR TRADE POKÉMON",
-                          style: TextStyle(
-                            color: Colors.amberAccent,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.7,
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "BATTLE OR TRADE POKÉMON",
+                            style: TextStyle(
+                              color: Colors.amberAccent,
+                              fontSize: 8.8,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.6,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(width: 4),
                   const Icon(Icons.double_arrow_rounded,
-                      color: Colors.white, size: 18),
+                      color: Colors.white, size: 17),
                 ],
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRivalsButton(Trainer trainer) {
+    final int rivalCount = trainer.rivals.length;
+    final int friends = trainer.friendCount;
+    return SizedBox(
+      width: 94,
+      height: 48,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RivalsScreen()),
+            );
+          },
+          borderRadius: BorderRadius.circular(14),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF1A2542), Color(0xFF10172B)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: Colors.cyanAccent.withOpacity(0.55),
+                width: 1.2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.people_alt_rounded,
+                        color: Colors.cyanAccent, size: 15),
+                    const SizedBox(width: 4),
+                    const Text(
+                      "RIVALS",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 10.5,
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  "$rivalCount • $friends ★",
+                  maxLines: 1,
+                  style: const TextStyle(
+                    color: Colors.cyanAccent,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

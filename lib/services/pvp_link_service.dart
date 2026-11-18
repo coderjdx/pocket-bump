@@ -2,22 +2,44 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import 'pvp_transport.dart';
 
 class PvpDeviceIdentity {
+  static const String _prefsKey = 'pocket_bump_device_id';
   static String? _deviceId;
 
-  static String get id {
-    if (_deviceId != null) return _deviceId!;
+  static Future<void> loadOrInit() async {
+    if (_deviceId != null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final saved = prefs.getString(_prefsKey)?.trim();
+      if (saved != null && saved.isNotEmpty) {
+        _deviceId = saved;
+        return;
+      }
+      final generated = _generate();
+      _deviceId = generated;
+      await prefs.setString(_prefsKey, generated);
+    } catch (_) {
+      _deviceId ??= _generate();
+    }
+  }
+
+  static String _generate() {
     final rng = Random();
     const chars = '0123456789abcdefghijklmnopqrstuvwxyz';
     final buf = StringBuffer('d');
     for (int i = 0; i < 10; i++) {
       buf.write(chars[rng.nextInt(chars.length)]);
     }
-    _deviceId = buf.toString();
+    return buf.toString();
+  }
+
+  static String get id {
+    _deviceId ??= _generate();
     return _deviceId!;
   }
 }

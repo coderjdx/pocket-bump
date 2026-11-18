@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
 import 'screens/home_screen.dart';
+import 'services/pvp_link_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +12,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await PvpDeviceIdentity.loadOrInit();
   final savedTrainer = await Trainer.loadOrCreate();
   runApp(PocketBumpApp(initialTrainer: savedTrainer));
 }
