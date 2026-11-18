@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/item.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../models/trainer_avatar.dart';
@@ -13,6 +16,8 @@ import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'pokedex_screen.dart';
+import 'pokemon_league_screen.dart';
+import 'poke_mart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -195,14 +200,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 13),
+                      const Icon(Icons.stars, color: Color(0xFFFFD54F), size: 12),
                       const SizedBox(width: 3),
                       Text(
-                        "${trainer.pokeBalls + trainer.greatBalls + trainer.ultraBalls}",
+                        "${trainer.clearedGymIds.length}/8",
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFFFFD54F),
                           fontWeight: FontWeight.bold,
-                          fontSize: 11.5,
+                          fontSize: 11,
                         ),
                       ),
                     ],
@@ -211,14 +216,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.medical_services, color: Colors.greenAccent, size: 13),
-                      const SizedBox(width: 3),
+                      const Text(
+                        "₽",
+                        style: TextStyle(
+                          color: Color(0xFFFFD54F),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
                       Text(
-                        "${trainer.totalMedicine}",
+                        "${trainer.money}",
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 11.5,
+                          fontSize: 11,
                         ),
                       ),
                     ],
@@ -654,153 +666,274 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX) ──────────────────────────────────
+  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX, LEAGUE, MART) ───────────────────
   Widget _buildHubRow(Trainer trainer) {
     final int totalSpecies = PokedexDatabase.species.length;
     final int caught = trainer.caughtCount;
+    final int badges = trainer.clearedGymIds.length;
 
-    return Row(
+    return Column(
       children: [
-        // 1. Party
-        Expanded(
-          child: InkWell(
-            onTap: () => _openPartyManagerModal(trainer),
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A2A35),
+        // Row 1: Party, Bag, Pokédex
+        Row(
+          children: [
+            // 1. Party
+            Expanded(
+              child: InkWell(
+                onTap: () => _openPartyManagerModal(trainer),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.redAccent.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
+                          ),
+                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                        ],
                       ),
-                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                      const SizedBox(height: 6),
+                      const Text(
+                        "Party",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        "${trainer.party.length}/6 Pokémon",
+                        style: const TextStyle(color: Colors.white60, fontSize: 10),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    "Party",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "${trainer.party.length}/6 Pokémon",
-                    style: const TextStyle(color: Colors.white60, fontSize: 10),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        const SizedBox(width: 8),
+            const SizedBox(width: 8),
 
-        // 2. Bag
-        Expanded(
-          child: InkWell(
-            onTap: () => _openItemsManagerModal(trainer),
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A2A35),
+            // 2. Bag
+            Expanded(
+              child: InkWell(
+                onTap: () => _openItemsManagerModal(trainer),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.amberAccent.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.backpack, color: Colors.amberAccent, size: 16),
+                          ),
+                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        "Bag",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        "${trainer.totalItems} Items",
+                        style: const TextStyle(color: Colors.white60, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            const SizedBox(width: 8),
+
+            // 3. Pokédex
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PokedexScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const PokeBallSymbol(size: 16, isCaught: true),
+                          ),
+                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        "Pokédex",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        "$caught/$totalSpecies",
+                        style: const TextStyle(color: Colors.white60, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+
+        // Row 2: Pokémon League & Poké Mart
+        Row(
+          children: [
+            // 4. Pokémon League
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PokemonLeagueScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
+                  ),
+                  child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: Colors.amberAccent.withOpacity(0.18),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(Icons.backpack, color: Colors.amberAccent, size: 16),
+                        child: const Icon(Icons.military_tech, color: Colors.amberAccent, size: 18),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Gyms & League",
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                            Text(
+                              "$badges/8 Badges",
+                              style: const TextStyle(
+                                color: Colors.amberAccent,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    "Bag",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "${trainer.totalItems} Items",
-                    style: const TextStyle(color: Colors.white60, fontSize: 10),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        const SizedBox(width: 8),
+            const SizedBox(width: 8),
 
-        // 3. Pokédex
-        Expanded(
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PokedexScreen()),
-              );
-            },
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A2A35),
+            // 5. Poké Mart
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PokeMartScreen()),
+                  );
+                },
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A35),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.cyanAccent.withOpacity(0.35)),
+                  ),
+                  child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: Colors.redAccent.withOpacity(0.18),
+                          color: Colors.cyanAccent.withOpacity(0.18),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const PokeBallSymbol(size: 16, isCaught: true),
+                        child: const Icon(Icons.storefront, color: Colors.cyanAccent, size: 18),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Poké Mart",
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                            ),
+                            Text(
+                              "₽${trainer.money}",
+                              style: const TextStyle(
+                                color: Color(0xFFFFD54F),
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    "Pokédex",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "$caught/$totalSpecies",
-                    style: const TextStyle(color: Colors.white60, fontSize: 10),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -1260,6 +1393,77 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                             style: const TextStyle(
                                                 color: Colors.white60, fontSize: 10),
                                           ),
+                                          const SizedBox(height: 5),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black26,
+                                              borderRadius: BorderRadius.circular(6),
+                                              border: Border.all(
+                                                color: mon.hasHeldItem
+                                                    ? Colors.amberAccent.withOpacity(0.4)
+                                                    : Colors.white12,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  mon.hasHeldItem ? Icons.shopping_bag : Icons.shopping_bag_outlined,
+                                                  size: 13,
+                                                  color: mon.hasHeldItem ? Colors.amberAccent : Colors.white38,
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Expanded(
+                                                  child: Text(
+                                                    mon.hasHeldItem
+                                                        ? "Held: ${ItemDatabase.byId(mon.heldItemId!)?.name ?? mon.heldItemId}"
+                                                        : "No held item",
+                                                    style: TextStyle(
+                                                      color: mon.hasHeldItem ? Colors.amberAccent : Colors.white38,
+                                                      fontSize: 10,
+                                                      fontWeight: mon.hasHeldItem ? FontWeight.bold : FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ),
+                                                if (mon.hasHeldItem)
+                                                  InkWell(
+                                                    onTap: () {
+                                                      final unequipped = mon.unequipHeldItem();
+                                                      if (unequipped != null) {
+                                                        trainer.adjustItemCount(unequipped, 1);
+                                                        trainer.saveProgress();
+                                                      }
+                                                    },
+                                                    child: const Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                                      child: Text(
+                                                        "TAKE",
+                                                        style: TextStyle(
+                                                          color: Colors.redAccent,
+                                                          fontSize: 9.5,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                else
+                                                  InkWell(
+                                                    onTap: () => _openGiveHeldItemModal(ctx, trainer, mon),
+                                                    child: const Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                                      child: Text(
+                                                        "GIVE",
+                                                        style: TextStyle(
+                                                          color: Colors.cyanAccent,
+                                                          fontSize: 9.5,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -1386,6 +1590,448 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
+  void _openGiveHeldItemModal(
+    BuildContext parentContext,
+    Trainer trainer,
+    PokemonInstance mon,
+  ) {
+    final eligibleItems = ItemDatabase.allItems.values
+        .where((item) =>
+            (item.isBerry || item.isHeldItem) &&
+            trainer.getItemCount(item.id) > 0)
+        .toList();
+
+    showModalBottomSheet(
+      context: parentContext,
+      backgroundColor: const Color(0xFF23232E),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (dlgCtx) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "GIVE ITEM TO ${mon.nickname.toUpperCase()}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.6,
+                            ),
+                          ),
+                          Text(
+                            mon.hasHeldItem
+                                ? "Current item: ${ItemDatabase.allItems[mon.heldItemId]?.name ?? mon.heldItemId} (will return to bag)"
+                                : "No item currently held",
+                            style: const TextStyle(
+                                color: Colors.white54, fontSize: 11),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white60),
+                        onPressed: () => Navigator.pop(dlgCtx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  if (eligibleItems.isEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.04),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "No Berries or Held Items in your Bag!
+Find berries on wild Pokémon or earn rare held items by re-challenging Gym Leaders.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white54, fontSize: 12),
+                        ),
+                      ),
+                    )
+                  else
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.45,
+                      ),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: eligibleItems.length,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox(height: 8),
+                        itemBuilder: (_, idx) {
+                          final item = eligibleItems[idx];
+                          final count = trainer.getItemCount(item.id);
+                          return InkWell(
+                            onTap: () {
+                              final oldItem = mon.unequipHeldItem();
+                              if (oldItem != null) {
+                                trainer.adjustItemCount(oldItem, 1);
+                              }
+                              mon.equipHeldItem(item.id);
+                              trainer.adjustItemCount(item.id, -1);
+                              trainer.saveProgress();
+                              Navigator.pop(dlgCtx);
+                              ScaffoldMessenger.of(parentContext).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "${mon.nickname} is now holding ${item.name}!",
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF2E2E3B),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: item.color.withOpacity(0.35)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(item.icon, color: item.color, size: 22),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              item.name,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 1),
+                                              decoration: BoxDecoration(
+                                                color: item.color
+                                                    .withOpacity(0.2),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              child: Text(
+                                                item.isBerry
+                                                    ? "BERRY"
+                                                    : "HELD ITEM",
+                                                style: TextStyle(
+                                                  color: item.color,
+                                                  fontSize: 8.5,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          item.description,
+                                          style: const TextStyle(
+                                              color: Colors.white60,
+                                              fontSize: 10.5),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "x$count",
+                                    style: TextStyle(
+                                      color: item.color,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _useEvolutionStone(
+    BuildContext parentContext,
+    Trainer trainer,
+    Item stoneItem,
+  ) {
+    final compatible = trainer.party
+        .where((p) =>
+            ItemDatabase.getStoneEvolutionTarget(stoneItem.id, p.species.id) !=
+            null)
+        .toList();
+
+    if (compatible.isEmpty) {
+      ScaffoldMessenger.of(parentContext).showSnackBar(
+        SnackBar(
+          content: Text(
+              "No Pokémon in your party can evolve using ${stoneItem.name}."),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: parentContext,
+      builder: (dlgCtx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF23232E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Icon(stoneItem.icon, color: stoneItem.color, size: 24),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "Use ${stoneItem.name}",
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Select a party Pokémon to evolve:",
+                style: TextStyle(color: Colors.white70, fontSize: 12),
+              ),
+              const SizedBox(height: 12),
+              ...compatible.map((mon) {
+                final targetId = ItemDatabase.getStoneEvolutionTarget(
+                    stoneItem.id, mon.species.id)!;
+                final targetSpecies = PokedexDatabase.getPokemon(targetId);
+                return InkWell(
+                  onTap: () {
+                    Navigator.pop(dlgCtx);
+                    if (targetSpecies == null) return;
+                    _executeStoneEvolution(
+                        parentContext, trainer, mon, stoneItem, targetSpecies);
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2E2E3B),
+                      borderRadius: BorderRadius.circular(12),
+                      border:
+                          Border.all(color: stoneItem.color.withOpacity(0.4)),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 42,
+                          height: 42,
+                          child: Image.network(
+                            mon.species.spriteUrl,
+                            width: 42,
+                            height: 42,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (_, __, ___) => Image.network(
+                              mon.species.staticSpriteUrl,
+                              width: 42,
+                              height: 42,
+                              filterQuality: FilterQuality.none,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                Icons.catching_pokemon,
+                                color: Colors.white54,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                mon.nickname,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13),
+                              ),
+                              Text(
+                                "Lv. ${mon.level}",
+                                style: const TextStyle(
+                                    color: Colors.white60, fontSize: 11),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.arrow_forward,
+                            color: Colors.white38, size: 16),
+                        const SizedBox(width: 8),
+                        Text(
+                          targetSpecies?.name ?? "???",
+                          style: TextStyle(
+                            color: stoneItem.color,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dlgCtx),
+              child:
+                  const Text("Cancel", style: TextStyle(color: Colors.white54)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _executeStoneEvolution(
+    BuildContext parentContext,
+    Trainer trainer,
+    PokemonInstance mon,
+    Item stoneItem,
+    PokemonSpecies nextSpecies,
+  ) {
+    if (trainer.getItemCount(stoneItem.id) <= 0) return;
+    trainer.adjustItemCount(stoneItem.id, -1);
+    final oldName = mon.nickname;
+    final evoMoves = mon.evolve(
+      nextSpecies,
+      PokedexDatabase.movesUnlockedAtExactLevel(nextSpecies, mon.level),
+    );
+    trainer.markPokemonCaught(nextSpecies.id);
+    trainer.saveProgress();
+    HapticFeedback.heavyImpact();
+
+    showDialog(
+      context: parentContext,
+      builder: (evoCtx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF23232E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              SizedBox(
+                width: 90,
+                height: 90,
+                child: Image.network(
+                  nextSpecies.spriteUrl,
+                  width: 90,
+                  height: 90,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.none,
+                  errorBuilder: (_, __, ___) => Image.network(
+                    nextSpecies.staticSpriteUrl,
+                    width: 90,
+                    height: 90,
+                    filterQuality: FilterQuality.none,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.catching_pokemon,
+                      color: Colors.white54,
+                      size: 60,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
+              const Text(
+                "CONGRATULATIONS!",
+                style: TextStyle(
+                  color: Colors.amberAccent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  letterSpacing: 1,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Your $oldName evolved into ${nextSpecies.name}!",
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+              ),
+              if (evoMoves.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                Text(
+                  "Learned: ${evoMoves.join(', ')}!",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.cyanAccent,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(evoCtx);
+                setState(() {});
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.amberAccent,
+                foregroundColor: Colors.black,
+              ),
+              child: const Text("Awesome!",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // ─── ITEMS MANAGER MODAL ──────────────────────────────────────────────────
   void _openItemsManagerModal(Trainer rootTrainer) {
     showModalBottomSheet(
@@ -1398,150 +2044,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (ctx) {
         return Consumer<Trainer>(
           builder: (context, trainer, _) {
-            final itemDefs = [
-              _ItemMeta(
-                id: 'poke_ball',
-                name: 'Poké Ball',
-                description: 'Standard capsule for catching wild Pokémon.',
-                count: trainer.pokeBalls,
-                color: Colors.redAccent,
-                icon: Icons.catching_pokemon,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'great_ball',
-                name: 'Great Ball',
-                description: 'High-performance capsule with 1.5x catch rate.',
-                count: trainer.greatBalls,
-                color: Colors.blueAccent,
-                icon: Icons.catching_pokemon,
-                rarity: 'Uncommon',
-              ),
-              _ItemMeta(
-                id: 'ultra_ball',
-                name: 'Ultra Ball',
-                description: 'Ultra-grade capsule with 2.0x catch rate.',
-                count: trainer.ultraBalls,
-                color: Colors.amberAccent,
-                icon: Icons.catching_pokemon,
-                rarity: 'Rare',
-              ),
-              _ItemMeta(
-                id: 'potion',
-                name: 'Potion',
-                description: 'Restores 20 HP for a party Pokémon.',
-                count: trainer.potions,
-                color: Colors.greenAccent,
-                icon: Icons.medical_services,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'super_potion',
-                name: 'Super Potion',
-                description: 'Restores 50 HP for a party Pokémon.',
-                count: trainer.superPotions,
-                color: Colors.tealAccent,
-                icon: Icons.medical_services,
-                isHealing: true,
-                rarity: 'Uncommon',
-              ),
-              _ItemMeta(
-                id: 'hyper_potion',
-                name: 'Hyper Potion',
-                description: 'Restores 200 HP for a party Pokémon.',
-                count: trainer.hyperPotions,
-                color: Colors.pinkAccent,
-                icon: Icons.medical_services,
-                isHealing: true,
-                rarity: 'Rare',
-              ),
-              _ItemMeta(
-                id: 'revive',
-                name: 'Revive',
-                description: 'Revives fainted Pokémon back to battle condition.',
-                count: trainer.revives,
-                color: Colors.orangeAccent,
-                icon: Icons.favorite,
-                isHealing: true,
-                rarity: 'Rare',
-              ),
-              _ItemMeta(
-                id: 'antidote',
-                name: 'Antidote',
-                description: 'Cures Poison for party Pokémon.',
-                count: trainer.antidotes,
-                color: Colors.purpleAccent,
-                icon: Icons.healing,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'paralyze_heal',
-                name: 'Paralyze Heal',
-                description: 'Cures Paralysis for party Pokémon.',
-                count: trainer.paralyzeHeals,
-                color: Colors.amberAccent,
-                icon: Icons.bolt,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'awakening',
-                name: 'Awakening',
-                description: 'Awakens sleeping party Pokémon.',
-                count: trainer.awakenings,
-                color: Colors.lightBlueAccent,
-                icon: Icons.alarm,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'burn_heal',
-                name: 'Burn Heal',
-                description: 'Heals Burns for party Pokémon.',
-                count: trainer.burnHeals,
-                color: Colors.deepOrangeAccent,
-                icon: Icons.local_fire_department,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'ice_heal',
-                name: 'Ice Heal',
-                description: 'Thaws frozen party Pokémon.',
-                count: trainer.iceHeals,
-                color: Colors.cyanAccent,
-                icon: Icons.ac_unit,
-                isHealing: true,
-                rarity: 'Common',
-              ),
-              _ItemMeta(
-                id: 'full_heal',
-                name: 'Full Heal',
-                description: 'Heals all status conditions for party Pokémon.',
-                count: trainer.fullHeals,
-                color: Colors.tealAccent,
-                icon: Icons.auto_fix_high,
-                isHealing: true,
-                rarity: 'Uncommon',
-              ),
-              _ItemMeta(
-                id: 'full_restore',
-                name: 'Full Restore',
-                description:
-                    'Fully restores HP and cures all status ailments for party Pokémon.',
-                count: trainer.fullRestores,
-                color: const Color(0xFFFF80AB),
-                icon: Icons.stars,
-                isHealing: true,
-                rarity: 'Rare',
-              ),
-            ];
-
             // Only display items the player actually possesses (count > 0)
-            final availableItems =
-                itemDefs.where((item) => item.count > 0).toList();
+            final availableItems = ItemDatabase.allItems.values
+                .where((item) => trainer.getItemCount(item.id) > 0)
+                .toList();
 
             return SizedBox(
               height: MediaQuery.of(ctx).size.height * 0.78,
@@ -1625,7 +2131,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                   const SizedBox(height: 6),
                                   const Text(
-                                    "Claim a Poké Mart supply drop above or explore to get item drops from wild Pokémon encounters.",
+                                    "Claim a Poké Mart supply drop above, visit the Poké Mart, or explore to get item drops from wild Pokémon encounters.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white38,
@@ -1641,6 +2147,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   const SizedBox(height: 10),
                               itemBuilder: (c, idx) {
                                 final item = availableItems[idx];
+                                final count = trainer.getItemCount(item.id);
                                 return Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
@@ -1660,7 +2167,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                               BorderRadius.circular(12),
                                         ),
                                         child: Center(
-                                          child: item.id.endsWith('_ball')
+                                          child: item.isBall
                                               ? PokeBallSpriteWidget(
                                                   ballType: item.id, size: 30)
                                               : Icon(item.icon,
@@ -1675,19 +2182,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           children: [
                                             Row(
                                               children: [
-                                                Text(
-                                                  item.name,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
+                                                Flexible(
+                                                  child: Text(
+                                                    item.name,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 13.5,
+                                                    ),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 8),
+                                                const SizedBox(width: 6),
                                                 Container(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 6,
+                                                      horizontal: 5,
                                                       vertical: 1.5),
                                                   decoration: BoxDecoration(
                                                     color: item.color
@@ -1701,10 +2210,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                     ),
                                                   ),
                                                   child: Text(
-                                                    item.rarity.toUpperCase(),
+                                                    item.rarity.name.toUpperCase(),
                                                     style: TextStyle(
                                                       color: item.color,
-                                                      fontSize: 8,
+                                                      fontSize: 7.5,
                                                       fontWeight: FontWeight.bold,
                                                       letterSpacing: 0.4,
                                                     ),
@@ -1714,17 +2223,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 Container(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 7,
-                                                      vertical: 2),
+                                                      horizontal: 6,
+                                                      vertical: 1.5),
                                                   decoration: BoxDecoration(
                                                     color: Colors.black38,
                                                     borderRadius:
                                                         BorderRadius.circular(8),
                                                   ),
                                                   child: Text(
-                                                    "x${item.count}",
+                                                    "x$count",
                                                     style: TextStyle(
-                                                      color: item.count > 0
+                                                      color: count > 0
                                                           ? item.color
                                                           : Colors.white38,
                                                       fontSize: 11,
@@ -1742,12 +2251,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   color: Colors.white60,
                                                   fontSize: 11),
                                             ),
-                                            if (item.isHealing) ...[
+                                            if (item.isMedicine) ...[
                                               const SizedBox(height: 6),
                                               SizedBox(
                                                 height: 28,
                                                 child: OutlinedButton(
-                                                  onPressed: item.count > 0
+                                                  onPressed: count > 0
                                                       ? () {
                                                           trainer.adjustItemCount(
                                                               item.id, -1);
@@ -1886,55 +2395,93 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                           }
                                                         }
                                                       : null,
-                                            style: OutlinedButton.styleFrom(
-                                              foregroundColor: item.color,
-                                              side: BorderSide(color: item.color.withOpacity(0.6)),
-                                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(8)),
-                                            ),
-                                            child: const Text(
-                                              "Use on Party",
-                                              style: TextStyle(
-                                                  fontSize: 11, fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
+                                                  style: OutlinedButton.styleFrom(
+                                                    foregroundColor: item.color,
+                                                    side: BorderSide(color: item.color.withOpacity(0.6)),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8)),
+                                                  ),
+                                                  child: const Text(
+                                                    "Use on Party",
+                                                    style: TextStyle(
+                                                        fontSize: 11, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ] else if (item.isEvolutionStone) ...[
+                                              const SizedBox(height: 6),
+                                              SizedBox(
+                                                height: 28,
+                                                child: ElevatedButton.icon(
+                                                  onPressed: count > 0
+                                                      ? () => _useEvolutionStone(ctx, trainer, item)
+                                                      : null,
+                                                  icon: const Icon(Icons.auto_awesome, size: 14),
+                                                  label: const Text(
+                                                    "Evolve Pokémon",
+                                                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: item.color.withOpacity(0.25),
+                                                    foregroundColor: item.color,
+                                                    side: BorderSide(color: item.color.withOpacity(0.7)),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(8)),
+                                                  ),
+                                                ),
+                                              ),
+                                            ] else if (item.isHeldItem || item.isBerry) ...[
+                                              const SizedBox(height: 6),
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white.withOpacity(0.06),
+                                                  borderRadius: BorderRadius.circular(6),
+                                                ),
+                                                child: Text(
+                                                  item.isBerry
+                                                      ? "Held item: auto-consumed in battle or equip via Party"
+                                                      : "Held item: equip via Party to boost battle power",
+                                                  style: const TextStyle(color: Colors.white54, fontSize: 9.5),
+                                                ),
+                                              ),
+                                            ],
+                                          ],
                                         ),
-                                      ],
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            tooltip: "Add 1",
+                                            onPressed: () => trainer.adjustItemCount(item.id, 1),
+                                            icon: const Icon(Icons.add_circle_outline,
+                                                color: Colors.white70, size: 20),
+                                            constraints: const BoxConstraints(),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                          IconButton(
+                                            tooltip: "Discard 1",
+                                            onPressed: count > 0
+                                                ? () => trainer.adjustItemCount(item.id, -1)
+                                                : null,
+                                            icon: Icon(
+                                              Icons.remove_circle_outline,
+                                              color: count > 0 ? Colors.redAccent : Colors.white24,
+                                              size: 20,
+                                            ),
+                                            constraints: const BoxConstraints(),
+                                            padding: const EdgeInsets.all(4),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                Column(
-                                  children: [
-                                    IconButton(
-                                      tooltip: "Add 1",
-                                      onPressed: () => trainer.adjustItemCount(item.id, 1),
-                                      icon: const Icon(Icons.add_circle_outline,
-                                          color: Colors.white70, size: 20),
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.all(4),
-                                    ),
-                                    IconButton(
-                                      tooltip: "Discard 1",
-                                      onPressed: item.count > 0
-                                          ? () => trainer.adjustItemCount(item.id, -1)
-                                          : null,
-                                      icon: Icon(
-                                        Icons.remove_circle_outline,
-                                        color: item.count > 0 ? Colors.redAccent : Colors.white24,
-                                        size: 20,
-                                      ),
-                                      constraints: const BoxConstraints(),
-                                      padding: const EdgeInsets.all(4),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 ),
@@ -1945,26 +2492,4 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       },
     );
   }
-}
-
-class _ItemMeta {
-  final String id;
-  final String name;
-  final String description;
-  final int count;
-  final Color color;
-  final IconData icon;
-  final bool isHealing;
-  final String rarity;
-
-  const _ItemMeta({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.count,
-    required this.color,
-    required this.icon,
-    this.isHealing = false,
-    this.rarity = 'Common',
-  });
 }

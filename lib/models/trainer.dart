@@ -30,6 +30,7 @@ class Trainer extends ChangeNotifier {
   int iceHeals;
   int fullHeals;
   int fullRestores;
+  int money;
   int totalSteps;
   int dailySteps;
   String lastStepDate;
@@ -37,6 +38,11 @@ class Trainer extends ChangeNotifier {
   int badges;
   Set<int> seenSpeciesIds;
   Set<int> caughtSpeciesIds;
+  Set<int> unlockedGymIds;
+  Set<int> clearedGymIds;
+  Set<int> completedGymStepIds;
+  Map<int, int> gymTodaySteps;
+  Map<String, int> customItems;
 
   Trainer({
     required this.name,
@@ -56,6 +62,7 @@ class Trainer extends ChangeNotifier {
     this.iceHeals = 0,
     this.fullHeals = 0,
     this.fullRestores = 0,
+    this.money = 3000,
     this.totalSteps = 0,
     this.dailySteps = 0,
     String? lastStepDate,
@@ -63,11 +70,21 @@ class Trainer extends ChangeNotifier {
     this.badges = 0,
     Set<int>? seenSpeciesIds,
     Set<int>? caughtSpeciesIds,
+    Set<int>? unlockedGymIds,
+    Set<int>? clearedGymIds,
+    Set<int>? completedGymStepIds,
+    Map<int, int>? gymTodaySteps,
+    Map<String, int>? customItems,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
         lastStepDate = lastStepDate ?? todayDateKey(),
         seenSpeciesIds = seenSpeciesIds ?? {},
-        caughtSpeciesIds = caughtSpeciesIds ?? {} {
+        caughtSpeciesIds = caughtSpeciesIds ?? {},
+        unlockedGymIds = unlockedGymIds ?? {1},
+        clearedGymIds = clearedGymIds ?? {},
+        completedGymStepIds = completedGymStepIds ?? {},
+        gymTodaySteps = gymTodaySteps ?? {},
+        customItems = customItems ?? {} {
     for (final mon in this.party) {
       this.seenSpeciesIds.add(mon.species.id);
       this.caughtSpeciesIds.add(mon.species.id);
@@ -193,21 +210,26 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  int get totalItems =>
-      pokeBalls +
-      greatBalls +
-      ultraBalls +
-      potions +
-      superPotions +
-      hyperPotions +
-      revives +
-      antidotes +
-      paralyzeHeals +
-      awakenings +
-      burnHeals +
-      iceHeals +
-      fullHeals +
-      fullRestores;
+  int get totalItems {
+    int total = pokeBalls +
+        greatBalls +
+        ultraBalls +
+        potions +
+        superPotions +
+        hyperPotions +
+        revives +
+        antidotes +
+        paralyzeHeals +
+        awakenings +
+        burnHeals +
+        iceHeals +
+        fullHeals +
+        fullRestores;
+    for (final count in customItems.values) {
+      total += count;
+    }
+    return total;
+  }
 
   int get totalMedicine =>
       potions +
@@ -221,6 +243,154 @@ class Trainer extends ChangeNotifier {
       iceHeals +
       fullHeals +
       fullRestores;
+
+  void addMoney(int amount) {
+    if (amount <= 0) return;
+    money += amount;
+    notifyListeners();
+  }
+
+  bool spendMoney(int amount) {
+    if (amount <= 0) return true;
+    if (money < amount) return false;
+    money -= amount;
+    notifyListeners();
+    return true;
+  }
+
+  static int getGymStepRequirement(int gymId) {
+    switch (gymId) {
+      case 1:
+        return 2000;
+      case 2:
+        return 4000;
+      case 3:
+        return 6000;
+      case 4:
+        return 8000;
+      case 5:
+        return 10000;
+      case 6:
+        return 12000;
+      case 7:
+        return 15000;
+      case 8:
+        return 20000;
+      default:
+        return 20000;
+    }
+  }
+
+  static int getGymCaughtRequirement(int gymId) {
+    switch (gymId) {
+      case 1:
+        return 10;
+      case 2:
+        return 18;
+      case 3:
+        return 28;
+      case 4:
+        return 40;
+      case 5:
+        return 55;
+      case 6:
+        return 70;
+      case 7:
+        return 85;
+      case 8:
+        return 100;
+      default:
+        return 100;
+    }
+  }
+
+  bool isGymUnlocked(int gymId) => unlockedGymIds.contains(gymId);
+  bool isGymCleared(int gymId) => clearedGymIds.contains(gymId);
+  bool isGymStepCompleted(int gymId) => completedGymStepIds.contains(gymId);
+  int getGymTodaySteps(int gymId) => gymTodaySteps[gymId] ?? 0;
+  bool hasBadge(int gymId) => clearedGymIds.contains(gymId);
+
+  bool canChallengeGym(int gymId) {
+    if (!unlockedGymIds.contains(gymId)) return false;
+    if (caughtCount < getGymCaughtRequirement(gymId)) return false;
+    if (!completedGymStepIds.contains(gymId)) {
+      if ((gymTodaySteps[gymId] ?? 0) < getGymStepRequirement(gymId)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void unlockGym(int gymId) {
+    unlockedGymIds.add(gymId);
+    notifyListeners();
+  }
+
+  void clearGym(int gymId) {
+    clearedGymIds.add(gymId);
+    badges = clearedGymIds.length;
+    if (gymId < 8) {
+      unlockedGymIds.add(gymId + 1);
+    }
+    notifyListeners();
+  }
+
+  int get maxObedienceLevel {
+    final count = clearedGymIds.length;
+    if (count >= 8) return 100;
+    if (count >= 7) return 82;
+    if (count >= 6) return 70;
+    if (count >= 5) return 60;
+    if (count >= 4) return 50;
+    if (count >= 3) return 42;
+    if (count >= 2) return 34;
+    if (count >= 1) return 25;
+    return 20;
+  }
+
+  static int getBadgesRequiredForLevel(int lvl) {
+    if (lvl <= 20) return 0;
+    if (lvl <= 25) return 1;
+    if (lvl <= 34) return 2;
+    if (lvl <= 42) return 3;
+    if (lvl <= 50) return 4;
+    if (lvl <= 60) return 5;
+    if (lvl <= 70) return 6;
+    if (lvl <= 82) return 7;
+    return 8;
+  }
+
+  double getDisobedienceChance(int pokemonLevel) {
+    final requiredBadges = getBadgesRequiredForLevel(pokemonLevel);
+    final currentBadges = clearedGymIds.length;
+    if (currentBadges >= requiredBadges) return 0.0;
+    final missingBadges = (requiredBadges - currentBadges).clamp(1, 8);
+    // Scales smoothly from 0.35 (missing 1 badge) to 0.60 (missing 8 badges)
+    return 0.35 + (missingBadges - 1) * ((0.60 - 0.35) / 7.0);
+  }
+
+  bool get hasEarthBadge => clearedGymIds.contains(8);
+
+  double get atkBadgeMultiplier =>
+      (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get spaBadgeMultiplier =>
+      (clearedGymIds.contains(2) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get speBadgeMultiplier =>
+      (clearedGymIds.contains(3) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get spdBadgeMultiplier =>
+      (clearedGymIds.contains(4) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get defBadgeMultiplier =>
+      (clearedGymIds.contains(5) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get hpBadgeMultiplier =>
+      (clearedGymIds.contains(6) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+
+  double get critBadgeBonus =>
+      (clearedGymIds.contains(7) ? 0.10 : 0.0);
 
   void setLeadPokemon(int index) {
     if (index <= 0 || index >= party.length) return;
@@ -263,7 +433,21 @@ class Trainer extends ChangeNotifier {
     final today = todayDateKey();
     if (lastStepDate != today) {
       dailySteps = 0;
+      gymTodaySteps.clear();
       lastStepDate = today;
+    }
+  }
+
+  void _accumulateGymSteps(int delta) {
+    if (delta <= 0) return;
+    for (final gymId in unlockedGymIds) {
+      if (!completedGymStepIds.contains(gymId)) {
+        final current = (gymTodaySteps[gymId] ?? 0) + delta;
+        gymTodaySteps[gymId] = current;
+        if (current >= getGymStepRequirement(gymId)) {
+          completedGymStepIds.add(gymId);
+        }
+      }
     }
   }
 
@@ -272,6 +456,7 @@ class Trainer extends ChangeNotifier {
   bool recordStepsAndCheckEncounter(int delta) {
     if (delta <= 0) return false;
     _syncDailyRollover();
+    _accumulateGymSteps(delta);
     bool triggered = false;
     for (int i = 0; i < delta; i++) {
       dailySteps++;
@@ -298,9 +483,45 @@ class Trainer extends ChangeNotifier {
   void addSteps(int delta) {
     if (delta <= 0) return;
     _syncDailyRollover();
+    _accumulateGymSteps(delta);
     dailySteps += delta;
     totalSteps += delta;
     notifyListeners();
+  }
+
+  int getItemCount(String itemId) {
+    switch (itemId) {
+      case 'poke_ball':
+        return pokeBalls;
+      case 'great_ball':
+        return greatBalls;
+      case 'ultra_ball':
+        return ultraBalls;
+      case 'potion':
+        return potions;
+      case 'super_potion':
+        return superPotions;
+      case 'hyper_potion':
+        return hyperPotions;
+      case 'revive':
+        return revives;
+      case 'antidote':
+        return antidotes;
+      case 'paralyze_heal':
+        return paralyzeHeals;
+      case 'awakening':
+        return awakenings;
+      case 'burn_heal':
+        return burnHeals;
+      case 'ice_heal':
+        return iceHeals;
+      case 'full_heal':
+        return fullHeals;
+      case 'full_restore':
+        return fullRestores;
+      default:
+        return customItems[itemId] ?? 0;
+    }
   }
 
   void adjustItemCount(String itemId, int delta) {
@@ -348,7 +569,14 @@ class Trainer extends ChangeNotifier {
         fullRestores = (fullRestores + delta).clamp(0, 99);
         break;
       default:
-        return;
+        final current = customItems[itemId] ?? 0;
+        final updated = (current + delta).clamp(0, 99);
+        if (updated <= 0) {
+          customItems.remove(itemId);
+        } else {
+          customItems[itemId] = updated;
+        }
+        break;
     }
     notifyListeners();
   }
@@ -385,6 +613,7 @@ class Trainer extends ChangeNotifier {
       'iceHeals': iceHeals,
       'fullHeals': fullHeals,
       'fullRestores': fullRestores,
+      'money': money,
       'totalSteps': totalSteps,
       'dailySteps': dailySteps,
       'lastStepDate': lastStepDate,
@@ -392,6 +621,11 @@ class Trainer extends ChangeNotifier {
       'badges': badges,
       'seenSpeciesIds': seenSpeciesIds.toList()..sort(),
       'caughtSpeciesIds': caughtSpeciesIds.toList()..sort(),
+      'unlockedGymIds': unlockedGymIds.toList()..sort(),
+      'clearedGymIds': clearedGymIds.toList()..sort(),
+      'completedGymStepIds': completedGymStepIds.toList()..sort(),
+      'gymTodaySteps': gymTodaySteps.map((k, v) => MapEntry(k.toString(), v)),
+      'customItems': customItems,
       'party': party.map((mon) => mon.toJson()).toList(),
     };
   }
@@ -418,6 +652,7 @@ class Trainer extends ChangeNotifier {
     iceHeals = ((json['iceHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
     fullHeals = ((json['fullHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
     fullRestores = ((json['fullRestores'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    money = (json['money'] as num?)?.toInt() ?? 3000;
     totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
     dailySteps = max(0, (json['dailySteps'] as num?)?.toInt() ?? 0);
     lastStepDate = (json['lastStepDate'] as String?) ?? todayDateKey();
@@ -425,6 +660,41 @@ class Trainer extends ChangeNotifier {
         .clamp(0, maxEncounterSteps);
     _syncDailyRollover();
     badges = max(0, (json['badges'] as num?)?.toInt() ?? 0);
+
+    unlockedGymIds = (json['unlockedGymIds'] as List<dynamic>? ?? [1])
+        .whereType<num>()
+        .map((n) => n.toInt())
+        .toSet();
+    if (unlockedGymIds.isEmpty) unlockedGymIds.add(1);
+
+    clearedGymIds = (json['clearedGymIds'] as List<dynamic>? ?? const [])
+        .whereType<num>()
+        .map((n) => n.toInt())
+        .toSet();
+    badges = clearedGymIds.length;
+
+    completedGymStepIds =
+        (json['completedGymStepIds'] as List<dynamic>? ?? const [])
+            .whereType<num>()
+            .map((n) => n.toInt())
+            .toSet();
+
+    gymTodaySteps = {};
+    final rawGymSteps = json['gymTodaySteps'] as Map<String, dynamic>? ?? {};
+    rawGymSteps.forEach((k, v) {
+      final gid = int.tryParse(k);
+      if (gid != null && v is num) {
+        gymTodaySteps[gid] = v.toInt();
+      }
+    });
+
+    customItems = {};
+    final rawCustom = json['customItems'] as Map<String, dynamic>? ?? {};
+    rawCustom.forEach((k, v) {
+      if (v is num && v.toInt() > 0) {
+        customItems[k] = v.toInt().clamp(0, 99);
+      }
+    });
 
     final rawParty = json['party'] as List<dynamic>? ?? const [];
     final loadedParty = <PokemonInstance>[];
@@ -512,6 +782,7 @@ class Trainer extends ChangeNotifier {
     iceHeals = 0;
     fullHeals = 0;
     fullRestores = 0;
+    money = 3000;
     totalSteps = 0;
     dailySteps = 0;
     lastStepDate = todayDateKey();
@@ -519,6 +790,11 @@ class Trainer extends ChangeNotifier {
     badges = 0;
     seenSpeciesIds = {};
     caughtSpeciesIds = {};
+    unlockedGymIds = {1};
+    clearedGymIds = {};
+    completedGymStepIds = {};
+    gymTodaySteps = {};
+    customItems = {};
     _suppressAutoSave = false;
     super.notifyListeners();
   }

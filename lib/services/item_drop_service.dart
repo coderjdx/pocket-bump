@@ -22,20 +22,22 @@ class ItemDropService {
   ///
   /// Drop rules:
   /// - Common Pokémon (50% drop chance):
-  ///   - 35% Poké Ball (Common)
-  ///   - 35% Potion (Common)
-  ///   - 30% Status Remedies (Common - single condition cure):
-  ///     Antidote, Paralyze Heal, Awakening, Burn Heal, Ice Heal
+  ///   - 25% Poké Ball (Common)
+  ///   - 25% Potion (Common)
+  ///   - 25% Status Remedies (Antidote, Paralyze Heal, Awakening, Burn Heal, Ice Heal)
+  ///   - 25% Berries (Oran, Pecha, Cheri, Chesto, Rawst, Aspear)
   /// - Uncommon Pokémon (65% drop chance):
-  ///   - 35% Great Ball (Uncommon)
-  ///   - 35% Super Potion (Uncommon)
-  ///   - 20% Full Heal (Uncommon - cures any status condition)
+  ///   - 25% Great Ball (Uncommon)
+  ///   - 25% Super Potion (Uncommon)
+  ///   - 15% Full Heal (Uncommon)
   ///   - 10% Revive (Rare)
+  ///   - 25% Berries (Sitrus Berry, Lum Berry)
   /// - Rare Pokémon (80% drop chance):
-  ///   - 35% Ultra Ball (Rare)
-  ///   - 30% Hyper Potion (Rare)
-  ///   - 20% Full Restore (Rare - 100% HP + cures any status condition)
+  ///   - 25% Ultra Ball (Rare)
+  ///   - 25% Hyper Potion (Rare)
+  ///   - 15% Full Restore (Rare)
   ///   - 15% Revive (Rare)
+  ///   - 20% Berries (Lum Berry, Sitrus Berry x2)
   /// - Special Pokémon (100% drop chance - Legendary/Mythical event encounters):
   ///   - 35% Ultra Ball x2
   ///   - 35% Hyper Potion x2
@@ -46,20 +48,20 @@ class ItemDropService {
       case PokemonRarity.common:
         if (dropRoll > 0.50) return null;
         final subRoll = _rng.nextDouble();
-        if (subRoll < 0.35) {
+        if (subRoll < 0.25) {
           return const ItemDrop(
             itemId: 'poke_ball',
             itemName: 'Poké Ball',
             rarity: PokemonRarity.common,
           );
-        } else if (subRoll < 0.70) {
+        } else if (subRoll < 0.50) {
           return const ItemDrop(
             itemId: 'potion',
             itemName: 'Potion',
             rarity: PokemonRarity.common,
           );
-        } else {
-          // Status healing items: Common (specific condition remedies)
+        } else if (subRoll < 0.75) {
+          // Status remedies
           const statusItems = [
             ItemDrop(
               itemId: 'antidote',
@@ -88,66 +90,129 @@ class ItemDropService {
             ),
           ];
           return statusItems[_rng.nextInt(statusItems.length)];
+        } else {
+          // Common Berries
+          const berryItems = [
+            ItemDrop(
+              itemId: 'oran_berry',
+              itemName: 'Oran Berry',
+              rarity: PokemonRarity.common,
+            ),
+            ItemDrop(
+              itemId: 'pecha_berry',
+              itemName: 'Pecha Berry',
+              rarity: PokemonRarity.common,
+            ),
+            ItemDrop(
+              itemId: 'cheri_berry',
+              itemName: 'Cheri Berry',
+              rarity: PokemonRarity.common,
+            ),
+            ItemDrop(
+              itemId: 'chesto_berry',
+              itemName: 'Chesto Berry',
+              rarity: PokemonRarity.common,
+            ),
+            ItemDrop(
+              itemId: 'rawst_berry',
+              itemName: 'Rawst Berry',
+              rarity: PokemonRarity.common,
+            ),
+            ItemDrop(
+              itemId: 'aspear_berry',
+              itemName: 'Aspear Berry',
+              rarity: PokemonRarity.common,
+            ),
+          ];
+          return berryItems[_rng.nextInt(berryItems.length)];
         }
 
       case PokemonRarity.uncommon:
         if (dropRoll > 0.65) return null;
         final subRoll = _rng.nextDouble();
-        if (subRoll < 0.35) {
+        if (subRoll < 0.25) {
           return const ItemDrop(
             itemId: 'great_ball',
             itemName: 'Great Ball',
             rarity: PokemonRarity.uncommon,
           );
-        } else if (subRoll < 0.70) {
+        } else if (subRoll < 0.50) {
           return const ItemDrop(
             itemId: 'super_potion',
             itemName: 'Super Potion',
             rarity: PokemonRarity.uncommon,
           );
-        } else if (subRoll < 0.90) {
-          // Status healing item: Uncommon (Universal all-status cure)
+        } else if (subRoll < 0.65) {
           return const ItemDrop(
             itemId: 'full_heal',
             itemName: 'Full Heal',
             rarity: PokemonRarity.uncommon,
           );
-        } else {
+        } else if (subRoll < 0.75) {
           return const ItemDrop(
             itemId: 'revive',
             itemName: 'Revive',
             rarity: PokemonRarity.rare,
           );
+        } else {
+          // Uncommon Berries
+          const berryItems = [
+            ItemDrop(
+              itemId: 'sitrus_berry',
+              itemName: 'Sitrus Berry',
+              rarity: PokemonRarity.uncommon,
+            ),
+            ItemDrop(
+              itemId: 'lum_berry',
+              itemName: 'Lum Berry',
+              rarity: PokemonRarity.rare,
+            ),
+          ];
+          return berryItems[_rng.nextInt(berryItems.length)];
         }
 
       case PokemonRarity.rare:
         if (dropRoll > 0.80) return null;
         final subRoll = _rng.nextDouble();
-        if (subRoll < 0.35) {
+        if (subRoll < 0.25) {
           return const ItemDrop(
             itemId: 'ultra_ball',
             itemName: 'Ultra Ball',
             rarity: PokemonRarity.rare,
           );
-        } else if (subRoll < 0.65) {
+        } else if (subRoll < 0.50) {
           return const ItemDrop(
             itemId: 'hyper_potion',
             itemName: 'Hyper Potion',
             rarity: PokemonRarity.rare,
           );
-        } else if (subRoll < 0.85) {
-          // Status + HP healing item: Rare (100% HP + all status cure)
+        } else if (subRoll < 0.65) {
           return const ItemDrop(
             itemId: 'full_restore',
             itemName: 'Full Restore',
             rarity: PokemonRarity.rare,
           );
-        } else {
+        } else if (subRoll < 0.80) {
           return const ItemDrop(
             itemId: 'revive',
             itemName: 'Revive',
             rarity: PokemonRarity.rare,
           );
+        } else {
+          // Rare Berries
+          final isLum = _rng.nextBool();
+          return isLum
+              ? const ItemDrop(
+                  itemId: 'lum_berry',
+                  itemName: 'Lum Berry',
+                  rarity: PokemonRarity.rare,
+                )
+              : const ItemDrop(
+                  itemId: 'sitrus_berry',
+                  itemName: 'Sitrus Berry',
+                  count: 2,
+                  rarity: PokemonRarity.uncommon,
+                );
         }
 
       case PokemonRarity.special:

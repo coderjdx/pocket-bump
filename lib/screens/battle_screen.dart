@@ -27,11 +27,21 @@ enum _BallAnimPhase {
 class BattleScreen extends StatefulWidget {
   final PokemonInstance opponentPokemon;
   final bool isWild;
+  final String? trainerName;
+  final String? trainerTitle;
+  final int prizeMoney;
+  final bool preservePartyHpOnExit;
+  final List<PokemonInstance>? opponentTeam;
 
   const BattleScreen({
     super.key,
     required this.opponentPokemon,
     this.isWild = true,
+    this.trainerName,
+    this.trainerTitle,
+    this.prizeMoney = 0,
+    this.preservePartyHpOnExit = false,
+    this.opponentTeam,
   });
 
   @override
@@ -42,6 +52,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late Trainer _trainer;
   late PokemonInstance _playerPokemon;
   late PokemonInstance _opponentPokemon;
+  late List<PokemonInstance> _opponentParty;
+  bool _playerWon = false;
 
   late int _displayedPlayerHp;
   late int _displayedOpponentHp;
@@ -104,13 +116,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     super.initState();
     _trainer = Provider.of<Trainer>(context, listen: false);
     _playerPokemon = _trainer.leadPokemon!;
-    _opponentPokemon = widget.opponentPokemon;
+    _opponentParty = widget.opponentTeam != null ? List.from(widget.opponentTeam!) : [];
+    if (_opponentParty.isNotEmpty) {
+      _opponentPokemon = _opponentParty.removeAt(0);
+    } else {
+      _opponentPokemon = widget.opponentPokemon;
+    }
     _displayedPlayerHp = _playerPokemon.currentHp;
     _displayedOpponentHp = _opponentPokemon.currentHp;
 
     _currentMessage = widget.isWild
         ? "A wild ${_opponentPokemon.species.name} appeared!"
-        : "Rival sent out ${_opponentPokemon.species.name}!";
+        : "${widget.trainerName ?? 'Rival'} sent out ${_opponentPokemon.species.name}!";
 
     _idleController = AnimationController(
       vsync: this,
@@ -176,20 +193,24 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _trainer.healAndResetAllParty();
-      });
+      if (!widget.preservePartyHpOnExit) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _trainer.healAndResetAllParty();
+        });
+      }
     }
     super.dispose();
   }
 
-  void _finishAndExit() {
+  void _finishAndExit([bool? playerWon]) {
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      _trainer.healAndResetAllParty();
+      if (!widget.preservePartyHpOnExit) {
+        _trainer.healAndResetAllParty();
+      }
     }
     if (mounted) {
-      Navigator.pop(context);
+      Navigator.pop(context, playerWon ?? _playerWon);
     }
   }
 
@@ -603,6 +624,142 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
+    // Scaling Disobedience Check
+    final double disobeyChance = _trainer.getDisobedienceChance(_playerPokemon.level);
+    if (disobeyChance > 0 && Random().nextDouble() < disobeyChance) {
+      final roll = Random().nextInt(100);
+      if (roll < 30) {
+        // 1. Loafing around (skip turn)
+        setState(() {
+          _isSelectingMove = false;
+          _isProcessingTurn = true;
+          _currentMessage = "${_playerPokemon.nickname} is loafing around!";
+        });
+        await Future.delayed(const Duration(milliseconds: 1100));
+        if (!mounted) return;
+        final opponentMove = _opponentPokemon.moves.isNotEmpty
+            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
+            : null;
+        if (opponentMove != null) {
+          final events = BattleEngine.executeSingleAttack(
+            _opponentPokemon,
+            opponentMove,
+            _playerPokemon,
+            isPlayer: false,
+            isWild: widget.isWild,
+            playerTrainer: _trainer,
+          );
+          for (final event in events) {
+            await _playStepEvent(event);
+            if (!mounted) return;
+          }
+        }
+        await _checkPostTurnConditions();
+        return;
+      } else if (roll < 55) {
+        // 2. Ignoring commands (skip turn)
+        setState(() {
+          _isSelectingMove = false;
+          _isProcessingTurn = true;
+          _currentMessage = "${_playerPokemon.nickname} turned away and pretended not to hear!";
+        });
+        await Future.delayed(const Duration(milliseconds: 1100));
+        if (!mounted) return;
+        final opponentMove = _opponentPokemon.moves.isNotEmpty
+            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
+            : null;
+        if (opponentMove != null) {
+          final events = BattleEngine.executeSingleAttack(
+            _opponentPokemon,
+            opponentMove,
+            _playerPokemon,
+            isPlayer: false,
+            isWild: widget.isWild,
+            playerTrainer: _trainer,
+          );
+          for (final event in events) {
+            await _playStepEvent(event);
+            if (!mounted) return;
+          }
+        }
+        await _checkPostTurnConditions();
+        return;
+      } else if (roll < 75) {
+        // 3. Napping (inflicts sleep)
+        _playerPokemon.status = StatusCondition.sleep;
+        setState(() {
+          _isSelectingMove = false;
+          _isProcessingTurn = true;
+          _currentMessage = "${_playerPokemon.nickname} began to nap!";
+        });
+        await Future.delayed(const Duration(milliseconds: 1100));
+        if (!mounted) return;
+        final opponentMove = _opponentPokemon.moves.isNotEmpty
+            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
+            : null;
+        if (opponentMove != null) {
+          final events = BattleEngine.executeSingleAttack(
+            _opponentPokemon,
+            opponentMove,
+            _playerPokemon,
+            isPlayer: false,
+            isWild: widget.isWild,
+            playerTrainer: _trainer,
+          );
+          for (final event in events) {
+            await _playStepEvent(event);
+            if (!mounted) return;
+          }
+        }
+        await _checkPostTurnConditions();
+        return;
+      } else if (roll < 90) {
+        // 4. Random move
+        final randomMove = _playerPokemon.moves[Random().nextInt(_playerPokemon.moves.length)];
+        setState(() {
+          _currentMessage = "${_playerPokemon.nickname} ignored orders and used ${randomMove.name} instead!";
+        });
+        await Future.delayed(const Duration(milliseconds: 900));
+        if (!mounted) return;
+        move = randomMove;
+      } else {
+        // 5. Confusion self-harm
+        final selfDmg = max(1, _playerPokemon.maxHp ~/ 8);
+        _playerPokemon.currentHp = (_playerPokemon.currentHp - selfDmg).clamp(0, _playerPokemon.maxHp);
+        setState(() {
+          _displayedPlayerHp = _playerPokemon.currentHp;
+          _isSelectingMove = false;
+          _isProcessingTurn = true;
+          _currentMessage = "${_playerPokemon.nickname} won't obey and hurt itself in confusion!";
+        });
+        await Future.delayed(const Duration(milliseconds: 1100));
+        if (!mounted) return;
+        if (_playerPokemon.isFainted) {
+          await _checkPostTurnConditions();
+          return;
+        }
+        final opponentMove = _opponentPokemon.moves.isNotEmpty
+            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
+            : null;
+        if (opponentMove != null) {
+          final events = BattleEngine.executeSingleAttack(
+            _opponentPokemon,
+            opponentMove,
+            _playerPokemon,
+            isPlayer: false,
+            isWild: widget.isWild,
+            playerTrainer: _trainer,
+          );
+          for (final event in events) {
+            await _playStepEvent(event);
+            if (!mounted) return;
+          }
+        }
+        await _checkPostTurnConditions();
+        return;
+      }
+    }
+
     setState(() {
       _isSelectingMove = false;
       _isProcessingTurn = true;
@@ -619,6 +776,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       opponentAction:
           opponentMove != null ? BattleAction.fight(opponentMove) : BattleAction.run(),
       isWild: widget.isWild,
+      playerTrainer: _trainer,
     );
 
     for (final event in events) {
@@ -711,19 +869,61 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
       }
 
-      // Roll chance for Pokémon item drop based on its rarity
-      final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
-      if (itemDrop != null) {
-        _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
-        _trainer.saveProgress();
+      // If trainer has more Pokémon in reserve, send out next Pokémon!
+      if (_opponentParty.isNotEmpty) {
+        final nextMon = _opponentParty.removeAt(0);
         setState(() {
-          _currentMessage =
-              "${_opponentPokemon.nickname} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!";
+          _currentMessage = "${widget.trainerName ?? 'Trainer'} is about to send out ${nextMon.nickname}!";
         });
-        await Future.delayed(const Duration(milliseconds: 1100));
+        await Future.delayed(const Duration(milliseconds: 1000));
         if (!mounted) return;
+        setState(() {
+          _opponentPokemon = nextMon;
+          _displayedOpponentHp = _opponentPokemon.currentHp;
+          _visualOpponentFainted = false;
+          _opponentKoController.reset();
+          _currentMessage = "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.nickname}!";
+          _isProcessingTurn = false;
+        });
+        _trainer.markPokemonSeen(_opponentPokemon.species.id);
+        return;
       }
 
+      if (widget.isWild) {
+        // Roll chance for Pokémon item drop based on its rarity
+        final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
+        if (itemDrop != null) {
+          _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
+          _trainer.saveProgress();
+          setState(() {
+            _currentMessage =
+                "${_opponentPokemon.nickname} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!";
+          });
+          await Future.delayed(const Duration(milliseconds: 1100));
+          if (!mounted) return;
+        }
+      } else {
+        // Trainer defeated! Award prize money
+        final purse = widget.prizeMoney;
+        if (purse > 0) {
+          _trainer.addMoney(purse);
+          _trainer.saveProgress();
+          setState(() {
+            _currentMessage =
+                "You defeated ${widget.trainerName ?? 'the Trainer'}! Received ₽$purse for winning!";
+          });
+          await Future.delayed(const Duration(milliseconds: 1400));
+          if (!mounted) return;
+        } else {
+          setState(() {
+            _currentMessage = "You defeated ${widget.trainerName ?? 'the Trainer'}!";
+          });
+          await Future.delayed(const Duration(milliseconds: 1100));
+          if (!mounted) return;
+        }
+      }
+
+      _playerWon = true;
       if (!mounted) return;
       setState(() {
         _battleEnded = true;
@@ -741,6 +941,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _currentMessage =
               "${_playerPokemon.nickname} fainted! Your party is resting at the Pokémon Center...";
           _battleEnded = true;
+          _playerWon = false;
           _isProcessingTurn = false;
         });
       }
@@ -753,8 +954,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   Future<void> _onThrowPokeBall(String ballType) async {
     if (!widget.isWild) {
+      setState(() {
+        _currentMessage = "The Trainer blocked the Poké Ball! Don't be a thief!";
+      });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("You can't catch another Trainer's Pokémon!")),
+        const SnackBar(
+          content: Text("The Trainer blocked the Poké Ball! Don't be a thief!"),
+          duration: Duration(seconds: 2),
+        ),
       );
       return;
     }
@@ -1338,18 +1545,28 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                             width: double.infinity,
                             height: 46,
                             child: ElevatedButton.icon(
-                              onPressed: _finishAndExit,
-                              icon: const Icon(Icons.favorite, color: Colors.white, size: 18),
-                              label: const Text(
-                                "FINISH & RESTORE PARTY",
-                                style: TextStyle(
+                              onPressed: () => _finishAndExit(_playerWon),
+                              icon: Icon(
+                                widget.preservePartyHpOnExit
+                                    ? (_playerWon ? Icons.arrow_forward : Icons.close)
+                                    : Icons.favorite,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                              label: Text(
+                                widget.preservePartyHpOnExit
+                                    ? (_playerWon ? "CONTINUE GAUNTLET" : "RETREAT FROM GYM")
+                                    : "FINISH & RESTORE PARTY",
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                   letterSpacing: 0.5,
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red.shade700,
+                                backgroundColor: widget.preservePartyHpOnExit
+                                    ? (_playerWon ? Colors.indigo.shade700 : Colors.blueGrey.shade800)
+                                    : Colors.red.shade700,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14),
@@ -1958,7 +2175,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                   "RUN",
                   Colors.blueGrey.shade700,
                   Icons.directions_run,
-                  _finishAndExit,
+                  () {
+                    if (!widget.isWild) {
+                      setState(() {
+                        _currentMessage = "No! There's no running from a Trainer battle!";
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("No! There's no running from a Trainer battle!"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+                    _finishAndExit(false);
+                  },
                 ),
               ),
             ],

@@ -55,6 +55,7 @@ class PokemonInstance {
   List<Move> moves;
   int currentExp;
   StatusCondition status;
+  String? heldItemId;
 
   // In-battle stat stages (-6 to +6)
   int atkStage = 0;
@@ -71,6 +72,7 @@ class PokemonInstance {
     List<Move>? moves,
     int? currentExp,
     this.status = StatusCondition.none,
+    this.heldItemId,
   })  : nickname = nickname ?? species.name,
         moves = (moves ?? []).take(4).toList(),
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
@@ -258,6 +260,18 @@ class PokemonInstance {
 
   void healFull() => resetBattleStateAndHeal();
 
+  bool get hasHeldItem => heldItemId != null && heldItemId!.isNotEmpty;
+
+  void equipHeldItem(String id) {
+    heldItemId = id;
+  }
+
+  String? unequipHeldItem() {
+    final old = heldItemId;
+    heldItemId = null;
+    return old;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'speciesId': species.id,
@@ -266,6 +280,7 @@ class PokemonInstance {
       'currentHp': currentHp,
       'currentExp': currentExp,
       'status': status.name,
+      'heldItemId': heldItemId,
       'moves': moves
           .map((m) => {
                 'id': m.id,
@@ -312,6 +327,7 @@ class PokemonInstance {
     );
 
     final rawNickname = json['nickname'] as String?;
+    final String? heldItem = json['heldItemId'] as String?;
     return PokemonInstance(
       species: spec,
       nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
@@ -322,6 +338,7 @@ class PokemonInstance {
       moves: restoredMoves,
       currentExp: exp,
       status: restoredStatus,
+      heldItemId: heldItem,
     );
   }
 }

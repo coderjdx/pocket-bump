@@ -2,6 +2,7 @@ import 'dart:math';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
+import '../models/trainer.dart';
 
 enum BattleActionType {
   fight,
@@ -84,8 +85,15 @@ class BattleEngine {
     required PokemonInstance opponentMon,
     required BattleAction opponentAction,
     bool isWild = true,
+    Trainer? playerTrainer,
   }) {
     final List<BattleStepEvent> events = [];
+
+    // Pre-turn held berry triggers (e.g. status cures)
+    final preBerryPlayer = checkAndConsumeHeldBerry(playerMon, isPlayer: true, isWild: isWild);
+    if (preBerryPlayer != null) events.add(preBerryPlayer);
+    final preBerryOpp = checkAndConsumeHeldBerry(opponentMon, isPlayer: false, isWild: isWild);
+    if (preBerryOpp != null) events.add(preBerryOpp);
 
     // Determine Move Execution Order (Priority -> Speed)
     bool playerGoesFirst = true;
@@ -98,7 +106,8 @@ class BattleEngine {
       if (pPriority != oPriority) {
         playerGoesFirst = pPriority > oPriority;
       } else {
-        final pSpe = playerMon.effectiveSpe;
+        final pSpeedMod = playerTrainer != null ? playerTrainer.speBadgeMultiplier : 1.0;
+        final pSpe = (playerMon.effectiveSpe * pSpeedMod).round();
         final oSpe = opponentMon.effectiveSpe;
         if (pSpe != oSpe) {
           playerGoesFirst = pSpe > oSpe;
@@ -116,6 +125,7 @@ class BattleEngine {
           opponentMon,
           isPlayer: true,
           isWild: isWild,
+          playerTrainer: playerTrainer,
         ));
       }
       if (!opponentMon.isFainted && opponentAction.type == BattleActionType.fight) {
@@ -125,6 +135,7 @@ class BattleEngine {
           playerMon,
           isPlayer: false,
           isWild: isWild,
+          playerTrainer: playerTrainer,
         ));
       }
     } else {
@@ -135,6 +146,7 @@ class BattleEngine {
           playerMon,
           isPlayer: false,
           isWild: isWild,
+          playerTrainer: playerTrainer,
         ));
       }
       if (!playerMon.isFainted && playerAction.type == BattleActionType.fight) {
@@ -144,11 +156,12 @@ class BattleEngine {
           opponentMon,
           isPlayer: true,
           isWild: isWild,
+          playerTrainer: playerTrainer,
         ));
       }
     }
 
-    // End-of-turn Burn / Poison tick damage
+    // End-of-turn Burn / Poison tick damage & Leftovers
     if (!playerMon.isFainted && !opponentMon.isFainted) {
       events.addAll(_processEndOfTurnStatus(playerMon, isPlayer: true, isWild: isWild));
       if (!playerMon.isFainted) {
@@ -159,12 +172,121 @@ class BattleEngine {
     return events;
   }
 
+  static double _getHeldItemDamageMultiplier(PokemonInstance attacker, PokemonType moveType) {
+    final held = attacker.heldItemId;
+    if (held == null) return 1.0;
+    switch (held) {
+      case 'hard_stone':
+        if (moveType == PokemonType.rock) return 1.20;
+        break;
+      case 'mystic_water':
+        if (moveType == PokemonType.water) return 1.20;
+        break;
+      case 'magnet':
+        if (moveType == PokemonType.electric) return 1.20;
+        break;
+      case 'miracle_seed':
+        if (moveType == PokemonType.grass) return 1.20;
+        break;
+      case 'poison_barb':
+        if (moveType == PokemonType.poison) return 1.20;
+        break;
+      case 'twisted_spoon':
+        if (moveType == PokemonType.psychic) return 1.20;
+        break;
+      case 'charcoal':
+        if (moveType == PokemonType.fire) return 1.20;
+        break;
+      case 'soft_sand':
+        if (moveType == PokemonType.ground) return 1.20;
+        break;
+    }
+    return 1.0;
+  }
+
+  static BattleStepEvent? checkAndConsumeHeldBerry(
+    PokemonInstance mon, {
+    required bool isPlayer,
+    bool isWild = true,
+  }) {
+    if (mon.isFainted || mon.heldItemId == null) return null;
+    final monName = isPlayer
+        ? mon.nickname
+        : (isWild ? "Wild ${mon.nickname}" : mon.nickname);
+    final held = mon.heldItemId;
+
+    // 1. HP recovery berries (trigger at <= 50% HP)
+    if (mon.currentHp <= (mon.maxHp / 2).ceil()) {
+      if (held == 'oran_berry') {
+        final heal = min(10, mon.maxHp - mon.currentHp);
+        mon.currentHp += heal;
+        mon.unequipHeldItem();
+        return BattleStepEvent(
+          message: "$monName ate its held Oran Berry and restored $heal HP!",
+          isPlayerActor: isPlayer,
+          targetHpAfter: mon.currentHp,
+          isStatusTick: true,
+        );
+      } else if (held == 'sitrus_berry') {
+        final heal = min(30, mon.maxHp - mon.currentHp);
+        mon.currentHp += heal;
+        mon.unequipHeldItem();
+        return BattleStepEvent(
+          message: "$monName ate its held Sitrus Berry and restored $heal HP!",
+          isPlayerActor: isPlayer,
+          targetHpAfter: mon.currentHp,
+          isStatusTick: true,
+        );
+      }
+    }
+
+    // 2. Status recovery berries
+    if (mon.status != StatusCondition.none) {
+      bool cured = false;
+      String berryName = "";
+      if (held == 'cheri_berry' && mon.status == StatusCondition.paralysis) {
+        cured = true;
+        berryName = "Cheri Berry";
+      } else if (held == 'chesto_berry' && mon.status == StatusCondition.sleep) {
+        cured = true;
+        berryName = "Chesto Berry";
+      } else if (held == 'pecha_berry' && mon.status == StatusCondition.poison) {
+        cured = true;
+        berryName = "Pecha Berry";
+      } else if (held == 'rawst_berry' && mon.status == StatusCondition.burn) {
+        cured = true;
+        berryName = "Rawst Berry";
+      } else if (held == 'aspear_berry' && mon.status == StatusCondition.freeze) {
+        cured = true;
+        berryName = "Aspear Berry";
+      } else if (held == 'lum_berry') {
+        cured = true;
+        berryName = "Lum Berry";
+      }
+
+      if (cured) {
+        final oldStatus = mon.status.name.toUpperCase();
+        mon.status = StatusCondition.none;
+        mon.unequipHeldItem();
+        return BattleStepEvent(
+          message: "$monName ate its held $berryName and was cured of $oldStatus!",
+          isPlayerActor: isPlayer,
+          targetHpAfter: mon.currentHp,
+          statusInflictedLabel: "CURED",
+          isStatusTick: true,
+        );
+      }
+    }
+    return null;
+  }
+
   static List<BattleStepEvent> executeSingleAttack(
     PokemonInstance attacker,
     Move move,
     PokemonInstance defender, {
     required bool isPlayer,
     bool isWild = true,
+    Trainer? playerTrainer,
   }) {
     final List<BattleStepEvent> events = [];
     final attackerName = isPlayer
@@ -267,20 +389,38 @@ class BattleEngine {
         statusInflictedLabel: statusLabel,
         targetHpAfter: defender.currentHp,
       ));
+
+      // Check if defender holds a berry that cures the newly inflicted status
+      final berryEvent = checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
+      if (berryEvent != null) {
+        events.add(berryEvent);
+      }
       return events;
     }
 
-    // 5. Damaging Move Calculation (Gen 4 Standard)
+    // 5. Damaging Move Calculation (Gen 4 Standard + Badge Boosts + Held Item Boosts)
     int attackStat = move.category == MoveCategory.physical
         ? attacker.effectiveAtk
         : attacker.effectiveSpa;
+    if (isPlayer && playerTrainer != null) {
+      final double badgeMult = move.category == MoveCategory.physical
+          ? playerTrainer.atkBadgeMultiplier
+          : playerTrainer.spaBadgeMultiplier;
+      attackStat = (attackStat * badgeMult).round();
+    }
     if (move.category == MoveCategory.physical && attacker.status == StatusCondition.burn) {
       attackStat = (attackStat * 0.5).round().clamp(1, 9999);
     }
 
-    final int defenseStat = move.category == MoveCategory.physical
+    int defenseStat = move.category == MoveCategory.physical
         ? defender.effectiveDef
         : defender.effectiveSpd;
+    if (!isPlayer && playerTrainer != null) {
+      final double badgeMult = move.category == MoveCategory.physical
+          ? playerTrainer.defBadgeMultiplier
+          : playerTrainer.spdBadgeMultiplier;
+      defenseStat = (defenseStat * badgeMult).round();
+    }
 
     final double base =
         (((2 * attacker.level / 5 + 2) * move.power * attackStat / defenseStat) / 50) + 2;
@@ -289,11 +429,14 @@ class BattleEngine {
     final double typeMultiplier =
         PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
 
-    final bool isCrit = typeMultiplier > 0 && _rng.nextInt(16) == 0;
+    final int critThreshold =
+        (isPlayer && playerTrainer != null && playerTrainer.critBadgeBonus > 0) ? 8 : 16;
+    final bool isCrit = typeMultiplier > 0 && _rng.nextInt(critThreshold) == 0;
     final double crit = isCrit ? 1.5 : 1.0;
     final double randomVariance = (85 + _rng.nextInt(16)) / 100.0;
+    final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, move.type);
 
-    int damage = (base * crit * randomVariance * stab * typeMultiplier).floor();
+    int damage = (base * crit * randomVariance * stab * typeMultiplier * heldItemMultiplier).floor();
     if (damage < 1 && typeMultiplier > 0) damage = 1;
     if (typeMultiplier == 0.0) damage = 0;
 
@@ -337,6 +480,14 @@ class BattleEngine {
       targetFainted: defender.isFainted,
     ));
 
+    // Check if defender's held berry triggers (e.g. Oran/Sitrus on <=50% HP or status cure)
+    if (!defender.isFainted) {
+      final berryEvent = checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
+      if (berryEvent != null) {
+        events.add(berryEvent);
+      }
+    }
+
     if (defender.isFainted) {
       events.add(BattleStepEvent(
         message: "$defenderName fainted!",
@@ -368,7 +519,7 @@ class BattleEngine {
         message: isBurn
             ? "$monName was hurt by its burn!"
             : "$monName was hurt by poison!",
-        isPlayerActor: !isPlayer, // Damage applies to this Pokémon as target
+        isPlayerActor: !isPlayer,
         moveType: isBurn ? PokemonType.fire : PokemonType.poison,
         damageDealt: tickDmg,
         targetHpAfter: mon.currentHp,
@@ -385,6 +536,19 @@ class BattleEngine {
         ));
       }
     }
+
+    // Leftovers healing at end of turn
+    if (!mon.isFainted && mon.heldItemId == 'leftovers' && mon.currentHp < mon.maxHp) {
+      final heal = max(1, mon.maxHp ~/ 16);
+      mon.currentHp = min(mon.maxHp, mon.currentHp + heal);
+      events.add(BattleStepEvent(
+        message: "$monName restored a little HP with its Leftovers!",
+        isPlayerActor: isPlayer,
+        targetHpAfter: mon.currentHp,
+        isStatusTick: true,
+      ));
+    }
+
     return events;
   }
 

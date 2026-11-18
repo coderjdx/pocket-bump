@@ -1,0 +1,1370 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../models/item.dart';
+import '../models/pokemon_instance.dart';
+import '../models/trainer.dart';
+import '../services/gym_database.dart';
+import '../widgets/hp_bar.dart';
+import 'battle_screen.dart';
+
+class PokemonLeagueScreen extends StatefulWidget {
+  const PokemonLeagueScreen({super.key});
+
+  @override
+  State<PokemonLeagueScreen> createState() => _PokemonLeagueScreenState();
+}
+
+class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
+  // === GAUNTLET RUNNER STATE ===
+  GymDefinition? _activeGym;
+  int _gauntletIndex = 0; // 0 to 4 (0-3: Gym Trainers, 4: Gym Leader)
+  bool _inGauntletCheckpoint = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final trainer = Provider.of<Trainer>(context);
+
+    // If currently in a rest checkpoint between gauntlet matches
+    if (_inGauntletCheckpoint && _activeGym != null) {
+      return _buildGauntletCheckpointScreen(trainer);
+    }
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF16161D),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E1E28),
+        elevation: 0,
+        title: const Text(
+          "POKÉMON LEAGUE",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.8,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white70),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 14, top: 12, bottom: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFD54F).withOpacity(0.18),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFFFD54F).withOpacity(0.5)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.stars, color: Color(0xFFFFD54F), size: 16),
+                const SizedBox(width: 4),
+                Text(
+                  "${trainer.clearedGymIds.length}/8 BADGES",
+                  style: const TextStyle(
+                    color: Color(0xFFFFD54F),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          children: [
+            // Badge Showcase Banner
+            _buildBadgeShowcase(trainer),
+            const SizedBox(height: 16),
+
+            // Section Header
+            Row(
+              children: [
+                const Icon(Icons.military_tech, color: Colors.amberAccent, size: 20),
+                const SizedBox(width: 8),
+                const Text(
+                  "KANTO GYM GAUNTLETS",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  "Walk & Catch to Unlock",
+                  style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 11),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // 8 Gym Cards
+            for (final gym in GymDatabase.gyms) ...[
+              _buildGymCard(context, trainer, gym),
+              const SizedBox(height: 12),
+            ],
+
+            const SizedBox(height: 8),
+
+            // Elite Four & Champion Challenge Teaser
+            _buildEliteFourTeaser(trainer),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // === BADGE SHOWCASE ROW ===
+  Widget _buildBadgeShowcase(Trainer trainer) {
+    const badgeNames = [
+      "Boulder",
+      "Cascade",
+      "Thunder",
+      "Rainbow",
+      "Soul",
+      "Marsh",
+      "Volcano",
+      "Earth",
+    ];
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E28),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.08)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "KANTO BADGE CASE",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.6,
+                ),
+              ),
+              Text(
+                "Obedience: Lv. ${trainer.maxObedienceLevel}",
+                style: const TextStyle(
+                  color: Colors.amberAccent,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              for (int id = 1; id <= 8; id++) ...[
+                _buildBadgeSlot(
+                  id: id,
+                  name: badgeNames[id - 1],
+                  isEarned: trainer.clearedGymIds.contains(id),
+                ),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBadgeSlot({
+    required int id,
+    required String name,
+    required bool isEarned,
+  }) {
+    final gym = GymDatabase.getGymById(id);
+    final color = gym?.elementColor ?? Colors.amber;
+
+    return Column(
+      children: [
+        Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isEarned ? color.withOpacity(0.25) : Colors.white.withOpacity(0.04),
+            border: Border.all(
+              color: isEarned ? color : Colors.white12,
+              width: isEarned ? 1.8 : 1.0,
+            ),
+            boxShadow: isEarned
+                ? [
+                    BoxShadow(
+                      color: color.withOpacity(0.35),
+                      blurRadius: 8,
+                      spreadRadius: 1,
+                    )
+                  ]
+                : null,
+          ),
+          child: Center(
+            child: Icon(
+              Icons.military_tech,
+              size: 20,
+              color: isEarned ? color : Colors.white24,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          name,
+          style: TextStyle(
+            fontSize: 8.5,
+            fontWeight: isEarned ? FontWeight.bold : FontWeight.normal,
+            color: isEarned ? Colors.white : Colors.white30,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // === INDIVIDUAL GYM CARD ===
+  Widget _buildGymCard(BuildContext context, Trainer trainer, GymDefinition gym) {
+    final isUnlocked = trainer.isGymUnlocked(gym.id);
+    final isCleared = trainer.isGymCleared(gym.id);
+    final isStepDone = trainer.isGymStepCompleted(gym.id);
+    final todaySteps = trainer.getGymTodaySteps(gym.id);
+    final caughtCount = trainer.caughtCount;
+    final canChallenge = trainer.canChallengeGym(gym.id);
+
+    final bool caughtMet = caughtCount >= gym.requiredCaught;
+    final bool stepsMet = isStepDone || (todaySteps >= gym.requiredSteps);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF22222E),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isCleared
+              ? gym.elementColor.withOpacity(0.5)
+              : (isUnlocked
+                  ? Colors.white.withOpacity(0.12)
+                  : Colors.white.withOpacity(0.04)),
+          width: isCleared ? 1.5 : 1.0,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Gym Header Row
+            Row(
+              children: [
+                // Gym element badge icon
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: gym.elementColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: gym.elementColor.withOpacity(0.6)),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.shield,
+                      color: gym.elementColor,
+                      size: 22,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            gym.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: gym.elementColor.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              gym.element.toUpperCase(),
+                              style: TextStyle(
+                                color: gym.elementColor,
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "${gym.city} • Leader ${gym.leaderName}",
+                        style: const TextStyle(
+                          color: Colors.white60,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (isCleared) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.amber.withOpacity(0.6)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(Icons.check, color: Colors.amber, size: 12),
+                        SizedBox(width: 3),
+                        Text(
+                          "CLEARED",
+                          style: TextStyle(
+                            color: Colors.amber,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // Badge & Reward Info
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.emoji_events, color: gym.elementColor, size: 14),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      "${gym.badgeName}: ${gym.badgeDescription}",
+                      style: const TextStyle(color: Colors.white70, fontSize: 10.5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Requirement Gates Row
+            if (!isUnlocked) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.lock, color: Colors.redAccent, size: 14),
+                    const SizedBox(width: 6),
+                    Text(
+                      "LOCKED: Clear Gym ${gym.id - 1} first to unlock entry permit.",
+                      style: const TextStyle(color: Colors.redAccent, fontSize: 10.5),
+                    ),
+                  ],
+                ),
+              ),
+            ] else ...[
+              Row(
+                children: [
+                  // Caught gate
+                  Expanded(
+                    child: _buildRequirementPill(
+                      label: "Pokédex Caught",
+                      current: caughtCount,
+                      target: gym.requiredCaught,
+                      unit: "species",
+                      isDone: caughtMet,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  // Step gate
+                  Expanded(
+                    child: _buildRequirementPill(
+                      label: "Single-Day Steps",
+                      current: isStepDone ? gym.requiredSteps : todaySteps,
+                      target: gym.requiredSteps,
+                      unit: "steps",
+                      isDone: stepsMet,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              // Gauntlet Info / Challenge Button
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Gauntlet: 4 Gym Trainers + Gym Leader",
+                          style: TextStyle(color: Colors.white54, fontSize: 10),
+                        ),
+                        if (isCleared) ...[
+                          Text(
+                            "Re-challenge: 25% drop for ${gym.signatureHeldItemDrop.replaceAll('_', ' ').toUpperCase()}",
+                            style: TextStyle(
+                              color: gym.elementColor,
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: canChallenge
+                        ? () => _startGymGauntlet(context, trainer, gym)
+                        : null,
+                    icon: Icon(
+                      canChallenge ? Icons.sports_martial_arts : Icons.lock,
+                      size: 16,
+                    ),
+                    label: Text(
+                      isCleared ? "RE-CHALLENGE" : "ENTER GAUNTLET",
+                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: gym.elementColor,
+                      foregroundColor: Colors.black,
+                      disabledBackgroundColor: Colors.white10,
+                      disabledForegroundColor: Colors.white24,
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRequirementPill({
+    required String label,
+    required int current,
+    required int target,
+    required String unit,
+    required bool isDone,
+  }) {
+    final double pct = (current / target).clamp(0.0, 1.0);
+    final color = isDone ? Colors.greenAccent : Colors.amberAccent;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(color: Colors.white54, fontSize: 9.5),
+              ),
+              Icon(
+                isDone ? Icons.check_circle : Icons.radio_button_unchecked,
+                size: 12,
+                color: color,
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "$current / $target $unit",
+            style: TextStyle(
+              color: isDone ? Colors.white : color,
+              fontSize: 10.5,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: pct,
+              minHeight: 3,
+              backgroundColor: Colors.white10,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // === ELITE FOUR TEASER CARD ===
+  Widget _buildEliteFourTeaser(Trainer trainer) {
+    final badges = trainer.clearedGymIds.length;
+    final bool unlocked = badges >= 8;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1B1B26),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: unlocked ? Colors.amberAccent.withOpacity(0.5) : Colors.white10,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.crown, color: Colors.amberAccent, size: 24),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "INDIGO PLATEAU",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                    Text(
+                      "Pokémon League Champion Road",
+                      style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: unlocked
+                      ? Colors.amber.withOpacity(0.2)
+                      : Colors.white.withOpacity(0.06),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  unlocked ? "READY" : "LOCKED (8 BADGES)",
+                  style: TextStyle(
+                    color: unlocked ? Colors.amberAccent : Colors.white38,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            "The Elite Four (Lorelei, Bruno, Agatha, Lance) and the Regional Champion await the master trainer who conquers all 8 Kanto Gyms. Keep training and collecting badges!",
+            style: TextStyle(color: Colors.white60, fontSize: 11, height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // === GAUNTLET RUNNER & BATTLE LOOP ===
+  Future<void> _startGymGauntlet(BuildContext context, Trainer trainer, GymDefinition gym) async {
+    if (!trainer.hasConsciousPokemon) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("All Pokémon in your party are fainted! Heal first.")),
+      );
+      return;
+    }
+
+    setState(() {
+      _activeGym = gym;
+      _gauntletIndex = 0;
+      _inGauntletCheckpoint = false;
+    });
+
+    await _launchNextGauntletBattle(trainer);
+  }
+
+  Future<void> _launchNextGauntletBattle(Trainer trainer) async {
+    if (_activeGym == null) return;
+
+    final gauntlet = _activeGym!.fullGauntlet;
+    if (_gauntletIndex >= gauntlet.length) {
+      // Completed all 5 battles!
+      _onGauntletVictorious(trainer, _activeGym!);
+      return;
+    }
+
+    final currentOpponent = gauntlet[_gauntletIndex];
+    final opponentTeamInstances = currentOpponent.team.map((spec) => spec.createInstance()).toList();
+    final firstMon = opponentTeamInstances.first;
+
+    final bool? won = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BattleScreen(
+          opponentPokemon: firstMon,
+          opponentTeam: opponentTeamInstances,
+          isWild: false,
+          trainerName: currentOpponent.name,
+          trainerTitle: currentOpponent.title,
+          prizeMoney: currentOpponent.prizeMoney,
+          preservePartyHpOnExit: true,
+        ),
+      ),
+    );
+
+    if (won == true) {
+      // Advance to checkpoint
+      setState(() {
+        _gauntletIndex++;
+        if (_gauntletIndex >= gauntlet.length) {
+          _inGauntletCheckpoint = false;
+          _onGauntletVictorious(trainer, _activeGym!);
+        } else {
+          _inGauntletCheckpoint = true;
+        }
+      });
+    } else {
+      // Lost or fled
+      setState(() {
+        _inGauntletCheckpoint = false;
+        _activeGym = null;
+        _gauntletIndex = 0;
+      });
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            backgroundColor: const Color(0xFF1E1E28),
+            title: const Text(
+              "GAUNTLET FAILED",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            ),
+            content: const Text(
+              "Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",
+              style: TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text("OK", style: TextStyle(color: Colors.amberAccent)),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  // === REST CHECKPOINT SCREEN (BETWEEN MATCHES) ===
+  Widget _buildGauntletCheckpointScreen(Trainer trainer) {
+    final gym = _activeGym!;
+    final nextOpponent = gym.fullGauntlet[_gauntletIndex];
+    final bool isLeaderNext = _gauntletIndex == 4;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF14141C),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E1E28),
+        title: Text(
+          "${gym.name.toUpperCase()} CHECKPOINT",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Checkpoint Status Banner
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: gym.elementColor.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: gym.elementColor.withOpacity(0.5)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.check_circle, color: gym.elementColor, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          "MATCH ${_gauntletIndex} OF 5 CLEARED",
+                          style: TextStyle(
+                            color: gym.elementColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      isLeaderNext
+                          ? "NEXT: FINAL BATTLE with Gym Leader ${gym.leaderName}!"
+                          : "NEXT: Battle with ${nextOpponent.name} (${nextOpponent.title})",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "HP, PP, and status do not auto-heal between gauntlet battles. Use items from your Bag to prepare!",
+                      style: TextStyle(color: Colors.white60, fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 14),
+
+              // Party Status Header
+              const Text(
+                "PARTY STATUS",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.6,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // Party Pokémon Cards
+              Expanded(
+                child: ListView.separated(
+                  itemCount: trainer.party.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (ctx, idx) {
+                    final mon = trainer.party[idx];
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF222230),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: mon.isFainted
+                              ? Colors.red.withOpacity(0.3)
+                              : Colors.white.withOpacity(0.08),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    mon.nickname,
+                                    style: TextStyle(
+                                      color: mon.isFainted ? Colors.white38 : Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    "Lv.${mon.level}",
+                                    style: const TextStyle(color: Colors.amberAccent, fontSize: 11),
+                                  ),
+                                  if (mon.status != StatusCondition.none) ...[
+                                    const SizedBox(width: 6),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.redAccent.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        mon.status.name.toUpperCase(),
+                                        style: const TextStyle(
+                                          color: Colors.redAccent,
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "HP: ${mon.currentHp} / ${mon.maxHp}",
+                                style: TextStyle(
+                                  color: mon.isFainted ? Colors.redAccent : Colors.white60,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            width: 100,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: LinearProgressIndicator(
+                                value: (mon.currentHp / mon.maxHp).clamp(0.0, 1.0),
+                                minHeight: 6,
+                                backgroundColor: Colors.white10,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  mon.isFainted
+                                      ? Colors.transparent
+                                      : (mon.currentHp <= mon.maxHp / 5
+                                          ? Colors.redAccent
+                                          : (mon.currentHp <= mon.maxHp / 2
+                                              ? Colors.amberAccent
+                                              : Colors.greenAccent)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Action Buttons
+              Row(
+                children: [
+                  // Open Bag Button
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _openBagModal(context, trainer),
+                      icon: const Icon(Icons.medical_services, size: 16),
+                      label: const Text(
+                        "USE BAG ITEMS",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.tealAccent),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  // Continue Gauntlet Button
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        setState(() => _inGauntletCheckpoint = false);
+                        _launchNextGauntletBattle(trainer);
+                      },
+                      icon: const Icon(Icons.play_arrow, size: 18),
+                      label: Text(
+                        isLeaderNext ? "FACE LEADER" : "CONTINUE",
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: gym.elementColor,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+
+              // Retreat Button
+              Center(
+                child: TextButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _inGauntletCheckpoint = false;
+                      _activeGym = null;
+                      _gauntletIndex = 0;
+                    });
+                  },
+                  icon: const Icon(Icons.exit_to_app, color: Colors.white38, size: 14),
+                  label: const Text(
+                    "RETREAT FROM GAUNTLET (RESETS PROGRESS)",
+                    style: TextStyle(color: Colors.white38, fontSize: 10.5),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // === BAG USE MODAL AT CHECKPOINT ===
+  void _openBagModal(BuildContext context, Trainer trainer) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: const Color(0xFF1E1E28),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (ctx, setModalState) {
+            final medicineItems = [
+              'potion',
+              'super_potion',
+              'hyper_potion',
+              'max_potion',
+              'full_restore',
+              'revive',
+              'antidote',
+              'paralyze_heal',
+              'awakening',
+              'burn_heal',
+              'ice_heal',
+              'full_heal',
+            ];
+
+            final available = medicineItems
+                .where((id) => trainer.getItemCount(id) > 0)
+                .toList();
+
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.75,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "USE ITEMS ON PARTY",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white60),
+                        onPressed: () => Navigator.pop(ctx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  if (available.isEmpty) ...[
+                    const Expanded(
+                      child: Center(
+                        child: Text(
+                          "You don't have any healing items in your Bag!",
+                          style: TextStyle(color: Colors.white38, fontSize: 13),
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: available.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (c, idx) {
+                          final itemId = available[idx];
+                          final itemDef = ItemDatabase.byId(itemId);
+                          final count = trainer.getItemCount(itemId);
+
+                          return Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF282836),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  itemDef?.icon ?? Icons.medical_services,
+                                  color: itemDef?.color ?? Colors.tealAccent,
+                                  size: 24,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${itemDef?.name ?? itemId} (x$count)",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      Text(
+                                        itemDef?.description ?? "",
+                                        style: const TextStyle(color: Colors.white54, fontSize: 10.5),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _selectPartyTargetAndApply(
+                                      context,
+                                      trainer,
+                                      itemId,
+                                      () {
+                                        setModalState(() {});
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.tealAccent,
+                                    foregroundColor: Colors.black,
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  ),
+                                  child: const Text("USE", style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _selectPartyTargetAndApply(
+    BuildContext context,
+    Trainer trainer,
+    String itemId,
+    VoidCallback onUpdated,
+  ) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF1E1E28),
+          title: Text(
+            "USE ${itemId.replaceAll('_', ' ').toUpperCase()} ON:",
+            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: trainer.party.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 6),
+              itemBuilder: (c, idx) {
+                final mon = trainer.party[idx];
+                return ListTile(
+                  tileColor: const Color(0xFF282836),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  title: Text(
+                    "${mon.nickname} (HP ${mon.currentHp}/${mon.maxHp})",
+                    style: TextStyle(
+                      color: mon.isFainted ? Colors.white38 : Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  subtitle: mon.status != StatusCondition.none
+                      ? Text(
+                          "Status: ${mon.status.name.toUpperCase()}",
+                          style: const TextStyle(color: Colors.redAccent, fontSize: 10),
+                        )
+                      : null,
+                  onTap: () {
+                    // Apply item effect
+                    bool applied = false;
+                    if (itemId == 'revive') {
+                      if (mon.isFainted) {
+                        mon.currentHp = max(1, mon.maxHp ~/ 2);
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      }
+                    } else if (!mon.isFainted) {
+                      if (itemId == 'potion') {
+                        if (mon.currentHp < mon.maxHp) {
+                          mon.currentHp = min(mon.maxHp, mon.currentHp + 20);
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'super_potion') {
+                        if (mon.currentHp < mon.maxHp) {
+                          mon.currentHp = min(mon.maxHp, mon.currentHp + 50);
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'hyper_potion') {
+                        if (mon.currentHp < mon.maxHp) {
+                          mon.currentHp = min(mon.maxHp, mon.currentHp + 200);
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'max_potion') {
+                        if (mon.currentHp < mon.maxHp) {
+                          mon.currentHp = mon.maxHp;
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'full_restore') {
+                        if (mon.currentHp < mon.maxHp || mon.status != StatusCondition.none) {
+                          mon.currentHp = mon.maxHp;
+                          mon.status = StatusCondition.none;
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'full_heal') {
+                        if (mon.status != StatusCondition.none) {
+                          mon.status = StatusCondition.none;
+                          trainer.adjustItemCount(itemId, -1);
+                          applied = true;
+                        }
+                      } else if (itemId == 'antidote' && mon.status == StatusCondition.poison) {
+                        mon.status = StatusCondition.none;
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      } else if (itemId == 'paralyze_heal' && mon.status == StatusCondition.paralysis) {
+                        mon.status = StatusCondition.none;
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      } else if (itemId == 'awakening' && mon.status == StatusCondition.sleep) {
+                        mon.status = StatusCondition.none;
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      } else if (itemId == 'burn_heal' && mon.status == StatusCondition.burn) {
+                        mon.status = StatusCondition.none;
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      } else if (itemId == 'ice_heal' && mon.status == StatusCondition.freeze) {
+                        mon.status = StatusCondition.none;
+                        trainer.adjustItemCount(itemId, -1);
+                        applied = true;
+                      }
+                    }
+
+                    if (applied) {
+                      trainer.saveProgress();
+                      onUpdated();
+                      Navigator.pop(ctx);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Used ${itemId.replaceAll('_', ' ')} on ${mon.nickname}!"),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("It won't have any effect!"),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // === GAUNTLET VICTORY CELEBRATION ===
+  void _onGauntletVictorious(Trainer trainer, GymDefinition gym) {
+    final bool firstClear = !trainer.isGymCleared(gym.id);
+    if (firstClear) {
+      trainer.clearGym(gym.id);
+      trainer.saveProgress();
+    }
+
+    // Rare drop roll on repeat clears
+    String? droppedItemName;
+    if (!firstClear) {
+      final roll = Random().nextDouble();
+      if (roll < 0.25) {
+        // Drop signature held item
+        trainer.adjustItemCount(gym.signatureHeldItemDrop, 1);
+        final itemDef = ItemDatabase.byId(gym.signatureHeldItemDrop);
+        droppedItemName = itemDef?.name ?? gym.signatureHeldItemDrop;
+      } else if (roll < 0.50) {
+        // Drop signature stone
+        trainer.adjustItemCount(gym.signatureStoneDrop, 1);
+        final itemDef = ItemDatabase.byId(gym.signatureStoneDrop);
+        droppedItemName = itemDef?.name ?? gym.signatureStoneDrop;
+      }
+      trainer.saveProgress();
+    }
+
+    HapticFeedback.heavyImpact();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E28),
+        title: Row(
+          children: [
+            Icon(Icons.emoji_events, color: gym.elementColor, size: 28),
+            const SizedBox(width: 8),
+            const Expanded(
+              child: Text(
+                "GAUNTLET CONQUERED!",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "You successfully defeated all 4 Gym Trainers and Gym Leader ${gym.leaderName} of ${gym.city}!",
+              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+            ),
+            const SizedBox(height: 12),
+            if (firstClear) ...[
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: gym.elementColor.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: gym.elementColor.withOpacity(0.6)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "AWARDED: ${gym.badgeName.toUpperCase()}!",
+                      style: TextStyle(
+                        color: gym.elementColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      gym.badgeDescription,
+                      style: const TextStyle(color: Colors.white, fontSize: 11),
+                    ),
+                  ],
+                ),
+              ),
+            ] else if (droppedItemName != null) ...[
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.amberAccent.withOpacity(0.6)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.card_giftcard, color: Colors.amberAccent, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        "Rare Gym Leader Drop: Received 1x $droppedItemName!",
+                        style: const TextStyle(
+                          color: Colors.amberAccent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              setState(() {
+                _activeGym = null;
+                _gauntletIndex = 0;
+                _inGauntletCheckpoint = false;
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: gym.elementColor,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text("CONTINUE", style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+}
