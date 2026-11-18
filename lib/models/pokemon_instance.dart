@@ -247,14 +247,18 @@ class PokemonInstance {
     return learned;
   }
 
-  void resetBattleStateAndHeal() {
-    currentHp = maxHp;
-    status = StatusCondition.none;
+  void resetStatStages() {
     atkStage = 0;
     defStage = 0;
     spaStage = 0;
     spdStage = 0;
     speStage = 0;
+  }
+
+  void resetBattleStateAndHeal() {
+    currentHp = maxHp;
+    status = StatusCondition.none;
+    resetStatStages();
     for (var m in moves) {
       m.currentPp = m.maxPp;
     }
@@ -321,7 +325,7 @@ class PokemonInstance {
 
     final int computedMaxHp = _calculateMaxHp(spec.baseHp, lvl);
     final int rawHp = (json['currentHp'] as num?)?.toInt() ?? computedMaxHp;
-    final int hp = rawHp.clamp(1, computedMaxHp);
+    final int hp = rawHp.clamp(0, computedMaxHp);
 
     final String? statusName = json['status'] as String?;
     final StatusCondition restoredStatus = StatusCondition.values.firstWhere(

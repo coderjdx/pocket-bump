@@ -313,6 +313,13 @@ class Trainer extends ChangeNotifier {
     return true;
   }
 
+  void resetAllPartyStatStages() {
+    for (final mon in party) {
+      mon.resetStatStages();
+    }
+    notifyListeners();
+  }
+
   void healAndResetAllParty() {
     for (final mon in party) {
       mon.resetBattleStateAndHeal();
@@ -381,8 +388,12 @@ class Trainer extends ChangeNotifier {
         iceHeals +
         fullHeals +
         fullRestores;
-    for (final count in customItems.values) {
-      total += count;
+    for (final entry in customItems.entries) {
+      if (entry.key == 'unknown_fossil' ||
+          entry.key == 'fossil_restoration_voucher') {
+        continue;
+      }
+      total += entry.value;
     }
     return total;
   }

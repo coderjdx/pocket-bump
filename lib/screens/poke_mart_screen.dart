@@ -83,8 +83,29 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/bg_poke_mart.png',
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF101624).withOpacity(0.65),
+                  const Color(0xFF121828).withOpacity(0.58),
+                  const Color(0xFF0E121E).withOpacity(0.80),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Column(
           children: [
             // Welcome & Badge Status Header
             Container(
@@ -300,7 +321,9 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
           ],
         ),
       ),
-    );
+    ],
+  ),
+);
   }
 
   Widget _buildFilterChip(String label, ItemCategory? category) {

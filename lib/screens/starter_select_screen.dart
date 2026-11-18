@@ -43,11 +43,35 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1E1E24),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-          child: _step == 0 ? _buildTrainerStep() : _buildStarterStep(),
-        ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/bg_starter_select.png',
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+            filterQuality: FilterQuality.none,
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF141824).withOpacity(0.62),
+                  const Color(0xFF161620).withOpacity(0.52),
+                  const Color(0xFF12121A).withOpacity(0.76),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: _step == 0 ? _buildTrainerStep() : _buildStarterStep(),
+            ),
+          ),
+        ],
       ),
     );
   }

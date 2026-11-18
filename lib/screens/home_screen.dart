@@ -17,8 +17,8 @@ import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
+import 'pokemon_center_screen.dart';
 import 'pokemon_league_screen.dart';
-import 'poke_mart_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,6 +59,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _launchWildEncounter() {
     final trainer = Provider.of<Trainer>(context, listen: false);
+    if (!trainer.hasConsciousPokemon) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "All Pokémon in your party have fainted! Visit the Pokémon Center to heal your party."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
     if (trainer.repelEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -889,7 +899,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ),
         const SizedBox(height: 8),
 
-        // Row 2: Gyms & League, Poké Mart, PC Boxes
+        // Row 2: Gyms & League, Pokémon Center, PC Boxes
         Row(
           children: [
             _buildHubTile(
@@ -913,15 +923,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const PokeMartScreen()),
+                      builder: (context) => const PokemonCenterScreen()),
                 );
               },
-              accentColor: Colors.cyanAccent,
-              iconWidget: const Icon(Icons.storefront,
-                  color: Colors.cyanAccent, size: 16),
-              title: "Poké Mart",
-              subtitle: "₽${trainer.money}",
-              subtitleColor: const Color(0xFFFFD54F),
+              accentColor: Colors.pinkAccent,
+              iconWidget: const Icon(Icons.local_hospital,
+                  color: Colors.pinkAccent, size: 16),
+              title: "Poké Center",
+              subtitle: "Heal • Mart • Lab",
+              subtitleColor: Colors.pinkAccent.shade100,
             ),
             const SizedBox(width: 8),
             _buildHubTile(
@@ -2085,171 +2095,197 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _useFossilRestorationVoucher(
+  void _useBagMedicineOnPartyPokemon(
     BuildContext parentContext,
     Trainer trainer,
+    Item medicineItem,
   ) {
-    if (trainer.getItemCount('fossil_restoration_voucher') <= 0) {
-      ScaffoldMessenger.of(parentContext).showSnackBar(
-        const SnackBar(
-          content: Text(
-              "You need a Fossil Restoration Voucher! Defeat Gym Leaders in rematches to find one."),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    if (trainer.getItemCount('unknown_fossil') <= 0) {
-      showDialog(
-        context: parentContext,
-        builder: (dlgCtx) => AlertDialog(
+    showDialog(
+      context: parentContext,
+      builder: (dlgCtx) {
+        return AlertDialog(
           backgroundColor: const Color(0xFF23232E),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Row(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
             children: [
-              Icon(Icons.science, color: Color(0xFF4DD0E1), size: 22),
-              SizedBox(width: 8),
+              Icon(medicineItem.icon, color: medicineItem.color, size: 22),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  "POKÉ LAB FOSSIL RESTORATION",
-                  style: TextStyle(
+                  "USE ${medicineItem.name.toUpperCase()} ON:",
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 13.5,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
           ),
-          content: const Text(
-            "You need an Unknown Fossil to restore a fossil Pokémon at a Poké Lab!",
-            style: TextStyle(color: Colors.white70, fontSize: 13),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.separated(
+              shrinkWrap: true,
+              itemCount: trainer.party.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 6),
+              itemBuilder: (_, idx) {
+                final mon = trainer.party[idx];
+                bool usable = false;
+                if (medicineItem.id == 'revive') {
+                  usable = mon.isFainted;
+                } else if (!mon.isFainted) {
+                  switch (medicineItem.id) {
+                    case 'potion':
+                    case 'super_potion':
+                    case 'hyper_potion':
+                    case 'max_potion':
+                      usable = mon.currentHp < mon.maxHp;
+                      break;
+                    case 'full_restore':
+                      usable = mon.currentHp < mon.maxHp ||
+                          mon.status != StatusCondition.none;
+                      break;
+                    case 'full_heal':
+                      usable = mon.status != StatusCondition.none;
+                      break;
+                    case 'antidote':
+                      usable = mon.status == StatusCondition.poison;
+                      break;
+                    case 'paralyze_heal':
+                      usable = mon.status == StatusCondition.paralysis;
+                      break;
+                    case 'awakening':
+                      usable = mon.status == StatusCondition.sleep;
+                      break;
+                    case 'burn_heal':
+                      usable = mon.status == StatusCondition.burn;
+                      break;
+                    case 'ice_heal':
+                      usable = mon.status == StatusCondition.freeze;
+                      break;
+                  }
+                }
+
+                return InkWell(
+                  onTap: usable
+                      ? () {
+                          String msg =
+                              "Used ${medicineItem.name} on ${mon.nickname}!";
+                          if (medicineItem.id == 'revive') {
+                            mon.currentHp = max(1, mon.maxHp ~/ 2);
+                            msg =
+                                "${mon.nickname} was revived to ${mon.currentHp} HP!";
+                          } else if (medicineItem.id == 'potion') {
+                            mon.currentHp = min(mon.maxHp, mon.currentHp + 20);
+                          } else if (medicineItem.id == 'super_potion') {
+                            mon.currentHp = min(mon.maxHp, mon.currentHp + 50);
+                          } else if (medicineItem.id == 'hyper_potion') {
+                            mon.currentHp = min(mon.maxHp, mon.currentHp + 200);
+                          } else if (medicineItem.id == 'max_potion') {
+                            mon.currentHp = mon.maxHp;
+                          } else if (medicineItem.id == 'full_restore') {
+                            mon.currentHp = mon.maxHp;
+                            mon.status = StatusCondition.none;
+                          } else {
+                            mon.status = StatusCondition.none;
+                          }
+                          trainer.adjustItemCount(medicineItem.id, -1);
+                          trainer.saveProgress();
+                          Navigator.pop(dlgCtx);
+                          setState(() {});
+                          ScaffoldMessenger.of(parentContext).showSnackBar(
+                            SnackBar(
+                              content: Text(msg),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      : null,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Opacity(
+                    opacity: usable ? 1.0 : 0.45,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2E2E3B),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: usable
+                              ? medicineItem.color.withOpacity(0.55)
+                              : Colors.white12,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            mon.species.spriteUrl,
+                            width: 38,
+                            height: 38,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (_, __, ___) => const Icon(
+                              Icons.catching_pokemon,
+                              color: Colors.white54,
+                              size: 28,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${mon.nickname} • Lv.${mon.level}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                HpBar(
+                                  currentHp: mon.currentHp,
+                                  maxHp: mon.maxHp,
+                                ),
+                                Text(
+                                  "HP ${mon.currentHp}/${mon.maxHp}${mon.status != StatusCondition.none ? ' • ${mon.status.shortLabel}' : ''}",
+                                  style: const TextStyle(
+                                    color: Colors.white60,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            usable ? "USE" : "N/A",
+                            style: TextStyle(
+                              color: usable
+                                  ? medicineItem.color
+                                  : Colors.white38,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dlgCtx),
-              child: const Text("OK", style: TextStyle(color: Colors.cyanAccent)),
+              child: const Text("Cancel",
+                  style: TextStyle(color: Colors.white60)),
             ),
           ],
-        ),
-      );
-      return;
-    }
-
-    if (trainer.isStorageFull) {
-      ScaffoldMessenger.of(parentContext).showSnackBar(
-        const SnackBar(
-          content: Text(
-              "Both your Party and all 16 PC Boxes are full (320/320)! Release a Pokémon first."),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    trainer.adjustItemCount('fossil_restoration_voucher', -1);
-    trainer.adjustItemCount('unknown_fossil', -1);
-
-    final fossilPool = PokedexDatabase.firstStageFossilSpeciesIds;
-    final chosenId = fossilPool[Random().nextInt(fossilPool.length)];
-    final restoredMon = PokedexDatabase.createPokemon(
-      chosenId,
-      level: 10,
-      respectMinEncounterLevel: false,
-    );
-    final boxNum = trainer.addPokemon(restoredMon);
-    trainer.saveProgress();
-    HapticFeedback.heavyImpact();
-
-    showDialog(
-      context: parentContext,
-      builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF23232E),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Row(
-          children: [
-            Icon(Icons.science, color: Color(0xFF4DD0E1), size: 24),
-            SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                "POKÉ LAB RESTORATION COMPLETE!",
-                style: TextStyle(
-                  color: Color(0xFF4DD0E1),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.5,
-                ),
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 88,
-              height: 88,
-              child: Image.network(
-                restoredMon.species.spriteUrl,
-                width: 88,
-                height: 88,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-                errorBuilder: (_, __, ___) => Image.network(
-                  restoredMon.species.staticSpriteUrl,
-                  width: 88,
-                  height: 88,
-                  filterQuality: FilterQuality.none,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.catching_pokemon,
-                    color: Colors.white54,
-                    size: 56,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "You went to a Poké Lab to get the fossil restored! The scientists revived a Lv. ${restoredMon.level} ${restoredMon.species.name}!",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13.5,
-                height: 1.4,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              boxNum == null
-                  ? "${restoredMon.species.name} joined your Party!"
-                  : "${restoredMon.species.name} was transferred to PC Box #$boxNum!",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.amberAccent,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(dlgCtx);
-              setState(() {});
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4DD0E1),
-              foregroundColor: Colors.black,
-            ),
-            child: const Text(
-              "AWESOME!",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -2265,9 +2301,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       builder: (ctx) {
         return Consumer<Trainer>(
           builder: (context, trainer, _) {
-            // Only display items the player actually possesses (count > 0)
+            // Only display Bag-usable items the player possesses (fossils live in Pokémon Lab)
             final availableItems = ItemDatabase.allItems.values
-                .where((item) => trainer.getItemCount(item.id) > 0)
+                .where((item) =>
+                    !item.isFossil && trainer.getItemCount(item.id) > 0)
                 .toList();
 
             return SizedBox(
@@ -2480,143 +2517,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 height: 28,
                                                 child: OutlinedButton(
                                                   onPressed: count > 0
-                                                      ? () {
-                                                          trainer.adjustItemCount(
-                                                              item.id, -1);
-                                                          if (item.id ==
-                                                              'antidote') {
-                                                            trainer.curePartyStatus(
-                                                                StatusCondition
-                                                                    .poison);
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Poison cured for party Pokémon."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'paralyze_heal') {
-                                                            trainer.curePartyStatus(
-                                                                StatusCondition
-                                                                    .paralysis);
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Paralysis cured for party Pokémon."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'awakening') {
-                                                            trainer.curePartyStatus(
-                                                                StatusCondition
-                                                                    .sleep);
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Sleeping party Pokémon awakened."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'burn_heal') {
-                                                            trainer.curePartyStatus(
-                                                                StatusCondition
-                                                                    .burn);
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Burns healed for party Pokémon."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'ice_heal') {
-                                                            trainer.curePartyStatus(
-                                                                StatusCondition
-                                                                    .freeze);
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Frozen party Pokémon thawed."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'full_heal') {
-                                                            trainer
-                                                                .cureAllPartyStatus();
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! All status ailments cured for party Pokémon."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else if (item.id ==
-                                                              'full_restore') {
-                                                            trainer
-                                                                .fullRestoreParty();
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Entire party restored to full HP and cured of all status ailments."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            trainer
-                                                                .healAndResetAllParty();
-                                                            ScaffoldMessenger.of(
-                                                                    this.context)
-                                                                .showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                    "Used ${item.name}! Entire party restored to full HP & PP."),
-                                                                duration:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            2),
-                                                              ),
-                                                            );
-                                                          }
-                                                        }
+                                                      ? () =>
+                                                          _useBagMedicineOnPartyPokemon(
+                                                            ctx,
+                                                            trainer,
+                                                            item,
+                                                          )
                                                       : null,
                                                   style: OutlinedButton.styleFrom(
                                                     foregroundColor: item.color,
@@ -2670,43 +2576,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   style: const TextStyle(color: Colors.white54, fontSize: 9.5),
                                                 ),
                                               ),
-                                            ] else if (item.isFossil) ...[
-                                              const SizedBox(height: 6),
-                                              if (item.id == 'fossil_restoration_voucher' ||
-                                                  trainer.getItemCount('fossil_restoration_voucher') > 0)
-                                                SizedBox(
-                                                  height: 28,
-                                                  child: ElevatedButton.icon(
-                                                    onPressed: count > 0
-                                                        ? () => _useFossilRestorationVoucher(ctx, trainer)
-                                                        : null,
-                                                    icon: const Icon(Icons.science, size: 14),
-                                                    label: const Text(
-                                                      "Restore at Poké Lab",
-                                                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-                                                    ),
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: const Color(0xFF4DD0E1).withOpacity(0.22),
-                                                      foregroundColor: const Color(0xFF4DD0E1),
-                                                      side: BorderSide(color: const Color(0xFF4DD0E1).withOpacity(0.7)),
-                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(8)),
-                                                    ),
-                                                  ),
-                                                )
-                                              else
-                                                Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white.withOpacity(0.06),
-                                                    borderRadius: BorderRadius.circular(6),
-                                                  ),
-                                                  child: const Text(
-                                                    "Requires a Fossil Restoration Voucher at a Poké Lab",
-                                                    style: TextStyle(color: Colors.white54, fontSize: 9.5),
-                                                  ),
-                                                ),
                                             ],
                                           ],
                                         ),

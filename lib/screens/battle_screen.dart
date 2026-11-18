@@ -69,7 +69,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (widget.isWild) {
       return _opponentPokemon.species.battleBackgroundAsset;
     }
-    return 'assets/images/battle_bg_route.png';
+    return 'assets/images/battle_bg_pvp_arena.png';
   }
 
   void _recordParticipant(PokemonInstance mon) {
@@ -237,11 +237,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      if (!widget.preservePartyHpOnExit || !_playerWon) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _trainer.healAndResetAllParty();
-        });
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _trainer.resetAllPartyStatStages();
+        _trainer.saveProgress();
+      });
     }
     super.dispose();
   }
@@ -250,9 +249,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     final bool won = playerWon ?? _playerWon;
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      if (!widget.preservePartyHpOnExit || !won) {
-        _trainer.healAndResetAllParty();
-      }
+      _trainer.resetAllPartyStatStages();
+      _trainer.saveProgress();
     }
     if (mounted) {
       Navigator.pop(context, won);
@@ -1421,11 +1419,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       onPopInvokedWithResult: (didPop, _) {
         if (didPop && !_didHealOnExit) {
           _didHealOnExit = true;
-          if (!widget.preservePartyHpOnExit || !_playerWon) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _trainer.healAndResetAllParty();
-            });
-          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _trainer.resetAllPartyStatStages();
+            _trainer.saveProgress();
+          });
         }
       },
       child: Scaffold(
@@ -1854,14 +1851,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               icon: Icon(
                                 widget.preservePartyHpOnExit
                                     ? (_playerWon ? Icons.arrow_forward : Icons.close)
-                                    : Icons.favorite,
+                                    : (_playerWon
+                                        ? Icons.check_circle_outline
+                                        : Icons.exit_to_app),
                                 color: Colors.white,
                                 size: 18,
                               ),
                               label: Text(
                                 widget.preservePartyHpOnExit
                                     ? (_playerWon ? "CONTINUE GAUNTLET" : "RETREAT FROM GYM")
-                                    : "FINISH & RESTORE PARTY",
+                                    : (_playerWon ? "CONTINUE" : "RETURN"),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,

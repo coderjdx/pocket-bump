@@ -165,8 +165,29 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
               ),
             ],
           ),
-          body: SafeArea(
-            child: Padding(
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                'assets/images/bg_pc_storage.png',
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.none,
+              ),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      const Color(0xFF12101E).withOpacity(0.66),
+                      const Color(0xFF141222).withOpacity(0.56),
+                      const Color(0xFF0E0C18).withOpacity(0.80),
+                    ],
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
               child: Column(
                 children: [
@@ -236,6 +257,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ],
               ),
             ),
+          ),
+            ],
           ),
         );
       },

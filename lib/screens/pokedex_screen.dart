@@ -67,8 +67,29 @@ class _PokedexScreenState extends State<PokedexScreen> {
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Padding(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/bg_pokedex.png',
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF1A0E12).withOpacity(0.66),
+                  const Color(0xFF181016).withOpacity(0.56),
+                  const Color(0xFF120C10).withOpacity(0.80),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 14),
           child: Column(
             children: [
@@ -251,6 +272,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
             ],
           ),
         ),
+      ),
+        ],
       ),
     );
   }

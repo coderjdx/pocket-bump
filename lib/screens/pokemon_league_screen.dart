@@ -77,8 +77,29 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: ListView(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/bg_pokemon_league.png',
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF1A0E12).withOpacity(0.68),
+                  const Color(0xFF161018).withOpacity(0.58),
+                  const Color(0xFF120C10).withOpacity(0.82),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
           children: [
             // Badge Showcase Banner
@@ -120,6 +141,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             _buildEliteFourTeaser(trainer),
           ],
         ),
+      ),
+        ],
       ),
     );
   }
@@ -680,8 +703,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         }
       });
     } else {
-      // Lost or fled — restore party back at Pokémon Center
-      trainer.healAndResetAllParty();
+      // Lost or fled — preserve party HP/PP/status (heal at Pokémon Center)
+      trainer.resetAllPartyStatStages();
+      trainer.saveProgress();
       setState(() {
         _inGauntletCheckpoint = false;
         _activeGym = null;
@@ -729,10 +753,31 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/bg_pokemon_league.png',
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF1A0E12).withOpacity(0.70),
+                  const Color(0xFF161018).withOpacity(0.60),
+                  const Color(0xFF120C10).withOpacity(0.84),
+                ],
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Checkpoint Status Banner
@@ -942,7 +987,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               Center(
                 child: TextButton.icon(
                   onPressed: () {
-                    trainer.healAndResetAllParty();
+                    trainer.resetAllPartyStatStages();
+                    trainer.saveProgress();
                     setState(() {
                       _inGauntletCheckpoint = false;
                       _activeGym = null;
@@ -959,6 +1005,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             ],
           ),
         ),
+      ),
+        ],
       ),
     );
   }
@@ -1248,7 +1296,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     if (firstClear) {
       trainer.clearGym(gym.id);
     }
-    trainer.healAndResetAllParty();
+    trainer.resetAllPartyStatStages();
     trainer.saveProgress();
 
     // Rare drop roll on repeat clears (held item, evolution stone, or fossil restoration item)
