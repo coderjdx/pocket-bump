@@ -53,7 +53,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late PokemonInstance _playerPokemon;
   late PokemonInstance _opponentPokemon;
   late List<PokemonInstance> _opponentParty;
+  final List<PokemonInstance> _participatedPokemon = [];
+  int _pendingBattleExp = 0;
   bool _playerWon = false;
+
+  void _recordParticipant(PokemonInstance mon) {
+    if (!_participatedPokemon.contains(mon)) {
+      _participatedPokemon.add(mon);
+    }
+  }
 
   late int _displayedPlayerHp;
   late int _displayedOpponentHp;
@@ -116,6 +124,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     super.initState();
     _trainer = Provider.of<Trainer>(context, listen: false);
     _playerPokemon = _trainer.leadPokemon!;
+    _recordParticipant(_playerPokemon);
     _opponentParty = widget.opponentTeam != null ? List.from(widget.opponentTeam!) : [];
     if (_opponentParty.isNotEmpty) {
       _opponentPokemon = _opponentParty.removeAt(0);
@@ -193,7 +202,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      if (!widget.preservePartyHpOnExit) {
+      if (!widget.preservePartyHpOnExit || !_playerWon) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _trainer.healAndResetAllParty();
         });
@@ -203,14 +212,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   void _finishAndExit([bool? playerWon]) {
+    final bool won = playerWon ?? _playerWon;
     if (!_didHealOnExit) {
       _didHealOnExit = true;
-      if (!widget.preservePartyHpOnExit) {
+      if (!widget.preservePartyHpOnExit || !won) {
         _trainer.healAndResetAllParty();
       }
     }
     if (mounted) {
-      Navigator.pop(context, playerWon ?? _playerWon);
+      Navigator.pop(context, won);
     }
   }
 
@@ -325,6 +335,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     _playerKoController.reset();
+    _recordParticipant(nextMon);
     setState(() {
       _visualPlayerFainted = false;
       _playerPokemon = nextMon;
@@ -735,6 +746,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         await Future.delayed(const Duration(milliseconds: 1100));
         if (!mounted) return;
         if (_playerPokemon.isFainted) {
+          setState(() {
+            _visualPlayerFainted = true;
+          });
+          await _playerKoController.forward(from: 0.0);
+          if (!mounted) return;
           await _checkPostTurnConditions();
           return;
         }
@@ -787,93 +803,90 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await _checkPostTurnConditions();
   }
 
+  Future<void> _handleEvolution(PokemonInstance participant) async {
+    int nextId = participant.species.evolutionSpeciesId!;
+    if (participant.species.id == 133) {
+      const eeveelutions = [134, 135, 136];
+      nextId = eeveelutions[Random().nextInt(eeveelutions.length)];
+    }
+    final nextSpecies = PokedexDatabase.species[nextId];
+    if (nextSpecies == null) return;
+
+    final bool isActiveOnField = participant == _playerPokemon;
+    final bool wasFainted = participant.isFainted;
+    setState(() {
+      if (isActiveOnField) _showEvolutionGlow = true;
+      _currentMessage = "What? ${participant.nickname} is evolving!";
+    });
+    await Future.delayed(const Duration(milliseconds: 1200));
+    if (!mounted) return;
+
+    final oldName = participant.nickname;
+    final evoMoves = participant.evolve(
+      nextSpecies,
+      PokedexDatabase.movesUnlockedAtExactLevel(
+        nextSpecies,
+        participant.level,
+      ),
+    );
+    if (wasFainted) {
+      participant.currentHp = 0;
+    }
+    _trainer.markPokemonCaught(nextSpecies.id);
+    _trainer.saveProgress();
+    HapticFeedback.heavyImpact();
+    setState(() {
+      if (isActiveOnField) {
+        _showEvolutionGlow = false;
+        _displayedPlayerHp = participant.currentHp;
+      }
+      _currentMessage =
+          "Congratulations! $oldName evolved into ${nextSpecies.name}!";
+    });
+    await Future.delayed(const Duration(milliseconds: 1200));
+    if (!mounted) return;
+
+    for (final moveName in evoMoves) {
+      setState(() {
+        _currentMessage = "${participant.nickname} learned $moveName!";
+      });
+      await Future.delayed(const Duration(milliseconds: 950));
+      if (!mounted) return;
+    }
+  }
+
   Future<void> _checkPostTurnConditions() async {
     if (!mounted) return;
+
+    // 1. All party Pokémon fainted -> player immediately loses and gains nothing
+    if (!_trainer.hasConsciousPokemon) {
+      _pendingBattleExp = 0;
+      _playerWon = false;
+      setState(() {
+        _displayedPlayerHp = 0;
+        _visualPlayerFainted = true;
+        _currentMessage =
+            "${_playerPokemon.nickname} fainted! All of your Pokémon have fainted! You lost the battle.";
+        _battleEnded = true;
+        _isProcessingTurn = false;
+      });
+      return;
+    }
+
     if (_opponentPokemon.isFainted) {
       final int expGained = PokemonInstance.calculateBattleExp(
         defeated: _opponentPokemon,
         winnerLevel: _playerPokemon.level,
         isTrainerBattle: !widget.isWild,
       );
-      final levelResult = _playerPokemon.gainExpWithLearnset(
-        expGained,
-        PokedexDatabase.movesUnlockedAtExactLevel,
-      );
-      _trainer.saveProgress();
+      _pendingBattleExp += expGained;
 
-      setState(() {
-        _currentMessage = "${_playerPokemon.nickname} gained $expGained EXP!";
-      });
-      await Future.delayed(const Duration(milliseconds: 950));
-      if (!mounted) return;
-
-      if (levelResult.leveledUp) {
-        setState(() {
-          _displayedPlayerHp = _playerPokemon.currentHp;
-          _currentMessage = "${_playerPokemon.nickname} grew to Level ${_playerPokemon.level}!";
-        });
-        await Future.delayed(const Duration(milliseconds: 1000));
-        if (!mounted) return;
-
-        for (final moveName in levelResult.learnedMoves) {
-          setState(() {
-            _currentMessage = "${_playerPokemon.nickname} learned $moveName!";
-          });
-          await Future.delayed(const Duration(milliseconds: 950));
-          if (!mounted) return;
-        }
-
-        if (_playerPokemon.checkCanEvolve()) {
-          int nextId = _playerPokemon.species.evolutionSpeciesId!;
-          if (_playerPokemon.species.id == 133) {
-            const eeveelutions = [134, 135, 136];
-            nextId = eeveelutions[Random().nextInt(eeveelutions.length)];
-          }
-          final nextSpecies = PokedexDatabase.species[nextId];
-          if (nextSpecies != null) {
-            setState(() {
-              _showEvolutionGlow = true;
-              _currentMessage = "What? ${_playerPokemon.nickname} is evolving!";
-            });
-            await Future.delayed(const Duration(milliseconds: 1200));
-            if (!mounted) return;
-
-            final oldName = _playerPokemon.nickname;
-            final evoMoves = _playerPokemon.evolve(
-              nextSpecies,
-              PokedexDatabase.movesUnlockedAtExactLevel(
-                nextSpecies,
-                _playerPokemon.level,
-              ),
-            );
-            _trainer.markPokemonCaught(nextSpecies.id);
-            _trainer.saveProgress();
-            HapticFeedback.heavyImpact();
-            setState(() {
-              _showEvolutionGlow = false;
-              _displayedPlayerHp = _playerPokemon.currentHp;
-              _currentMessage =
-                  "Congratulations! $oldName evolved into ${nextSpecies.name}!";
-            });
-            await Future.delayed(const Duration(milliseconds: 1200));
-            if (!mounted) return;
-
-            for (final moveName in evoMoves) {
-              setState(() {
-                _currentMessage = "${_playerPokemon.nickname} learned $moveName!";
-              });
-              await Future.delayed(const Duration(milliseconds: 950));
-              if (!mounted) return;
-            }
-          }
-        }
-      }
-
-      // If trainer has more Pokémon in reserve, send out next Pokémon!
+      // If trainer has more Pokémon in reserve, hold EXP & send out next Pokémon
       if (_opponentParty.isNotEmpty) {
         final nextMon = _opponentParty.removeAt(0);
         setState(() {
-          _currentMessage = "${widget.trainerName ?? 'Trainer'} is about to send out ${nextMon.nickname}!";
+          _currentMessage =
+              "${widget.trainerName ?? 'Trainer'} is about to send out ${nextMon.nickname}!";
         });
         await Future.delayed(const Duration(milliseconds: 1000));
         if (!mounted) return;
@@ -882,12 +895,76 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _displayedOpponentHp = _opponentPokemon.currentHp;
           _visualOpponentFainted = false;
           _opponentKoController.reset();
-          _currentMessage = "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.nickname}!";
-          _isProcessingTurn = false;
+          _currentMessage =
+              "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.nickname}!";
         });
         _trainer.markPokemonSeen(_opponentPokemon.species.id);
+        if (_playerPokemon.isFainted) {
+          await Future.delayed(const Duration(milliseconds: 800));
+          if (!mounted) return;
+          setState(() {
+            _isProcessingTurn = false;
+            _currentMessage =
+                "${_playerPokemon.nickname} fainted! Choose another Pokémon!";
+          });
+          _openSwitchModal(forced: true);
+        } else {
+          setState(() {
+            _isProcessingTurn = false;
+          });
+        }
         return;
       }
+
+      // All opponent Pokémon defeated -> divide EXP equally among all participants
+      final List<PokemonInstance> participants = _participatedPokemon.isNotEmpty
+          ? List<PokemonInstance>.from(_participatedPokemon)
+          : <PokemonInstance>[_playerPokemon];
+      final int sharedExp = max(1, _pendingBattleExp ~/ participants.length);
+
+      setState(() {
+        _currentMessage = participants.length == 1
+            ? "${participants.first.nickname} gained $sharedExp EXP!"
+            : "${participants.map((p) => p.nickname).join(', ')} each gained $sharedExp EXP!";
+      });
+      await Future.delayed(const Duration(milliseconds: 950));
+      if (!mounted) return;
+
+      for (final participant in participants) {
+        final bool wasFainted = participant.isFainted;
+        final levelResult = participant.gainExpWithLearnset(
+          sharedExp,
+          PokedexDatabase.movesUnlockedAtExactLevel,
+        );
+        if (wasFainted) {
+          participant.currentHp = 0;
+        }
+        if (levelResult.leveledUp) {
+          setState(() {
+            if (participant == _playerPokemon) {
+              _displayedPlayerHp = _playerPokemon.currentHp;
+            }
+            _currentMessage =
+                "${participant.nickname} grew to Level ${participant.level}!";
+          });
+          await Future.delayed(const Duration(milliseconds: 1000));
+          if (!mounted) return;
+
+          for (final moveName in levelResult.learnedMoves) {
+            setState(() {
+              _currentMessage = "${participant.nickname} learned $moveName!";
+            });
+            await Future.delayed(const Duration(milliseconds: 950));
+            if (!mounted) return;
+          }
+
+          if (participant.checkCanEvolve()) {
+            await _handleEvolution(participant);
+            if (!mounted) return;
+          }
+        }
+      }
+      _trainer.saveProgress();
 
       if (widget.isWild) {
         // Roll chance for Pokémon item drop based on its rarity
@@ -916,7 +993,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (!mounted) return;
         } else {
           setState(() {
-            _currentMessage = "You defeated ${widget.trainerName ?? 'the Trainer'}!";
+            _currentMessage =
+                "You defeated ${widget.trainerName ?? 'the Trainer'}!";
           });
           await Future.delayed(const Duration(milliseconds: 1100));
           if (!mounted) return;
@@ -930,21 +1008,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _isProcessingTurn = false;
       });
     } else if (_playerPokemon.isFainted) {
-      if (_trainer.hasConsciousPokemon) {
-        setState(() {
-          _isProcessingTurn = false;
-          _currentMessage = "${_playerPokemon.nickname} fainted! Choose another Pokémon!";
-        });
-        _openSwitchModal(forced: true);
-      } else {
-        setState(() {
-          _currentMessage =
-              "${_playerPokemon.nickname} fainted! Your party is resting at the Pokémon Center...";
-          _battleEnded = true;
-          _playerWon = false;
-          _isProcessingTurn = false;
-        });
-      }
+      setState(() {
+        _isProcessingTurn = false;
+        _currentMessage =
+            "${_playerPokemon.nickname} fainted! Choose another Pokémon!";
+      });
+      _openSwitchModal(forced: true);
     } else {
       setState(() {
         _isProcessingTurn = false;
@@ -1183,9 +1252,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       onPopInvokedWithResult: (didPop, _) {
         if (didPop && !_didHealOnExit) {
           _didHealOnExit = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _trainer.healAndResetAllParty();
-          });
+          if (!widget.preservePartyHpOnExit || !_playerWon) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _trainer.healAndResetAllParty();
+            });
+          }
         }
       },
       child: Scaffold(
@@ -2078,27 +2149,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 8,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  if (!isPlayer)
-                    Container(
-                      margin: const EdgeInsets.only(right: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: mon.species.rarity.color.withOpacity(0.18),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: mon.species.rarity.color.withOpacity(0.7),
-                          width: 0.8,
-                        ),
-                      ),
-                      child: Text(
-                        mon.species.rarity.displayName.toUpperCase(),
-                        style: TextStyle(
-                          color: mon.species.rarity.color,
-                          fontSize: 7.5,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

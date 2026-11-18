@@ -678,7 +678,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         }
       });
     } else {
-      // Lost or fled
+      // Lost or fled — restore party back at Pokémon Center
+      trainer.healAndResetAllParty();
       setState(() {
         _inGauntletCheckpoint = false;
         _activeGym = null;
@@ -939,6 +940,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               Center(
                 child: TextButton.icon(
                   onPressed: () {
+                    trainer.healAndResetAllParty();
                     setState(() {
                       _inGauntletCheckpoint = false;
                       _activeGym = null;
@@ -1243,8 +1245,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     final bool firstClear = !trainer.isGymCleared(gym.id);
     if (firstClear) {
       trainer.clearGym(gym.id);
-      trainer.saveProgress();
     }
+    trainer.healAndResetAllParty();
+    trainer.saveProgress();
 
     // Rare drop roll on repeat clears
     String? droppedItemName;
