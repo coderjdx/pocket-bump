@@ -1656,8 +1656,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                       child: const Center(
                         child: Text(
-                          "No Berries or Held Items in your Bag!
-Find berries on wild Pokémon or earn rare held items by re-challenging Gym Leaders.",
+                          "No Berries or Held Items in your Bag!\nFind berries on wild Pokémon or earn rare held items by re-challenging Gym Leaders.",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white54, fontSize: 12),
                         ),
@@ -1840,7 +1839,7 @@ Find berries on wild Pokémon or earn rare held items by re-challenging Gym Lead
               ...compatible.map((mon) {
                 final targetId = ItemDatabase.getStoneEvolutionTarget(
                     stoneItem.id, mon.species.id)!;
-                final targetSpecies = PokedexDatabase.getPokemon(targetId);
+                final targetSpecies = PokedexDatabase.species[targetId];
                 return InkWell(
                   onTap: () {
                     Navigator.pop(dlgCtx);

@@ -567,7 +567,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   color: Colors.amberAccent.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.crown, color: Colors.amberAccent, size: 24),
+                child: const Icon(Icons.emoji_events, color: Colors.amberAccent, size: 24),
               ),
               const SizedBox(width: 12),
               Expanded(
