@@ -552,9 +552,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(16.5),
                 ),
-                border: Border(
-                  top: BorderSide(color: accentColor.withOpacity(0.35)),
-                ),
+                border: Border.all(color: accentColor.withOpacity(0.28)),
               ),
               child: Column(
                 children: [
