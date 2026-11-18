@@ -966,6 +966,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
+    if (_trainer.isStorageFull) {
+      setState(() {
+        _currentMessage =
+            "Both your Party and all 16 PC Boxes are full (320/320)! Release a Pokémon first.";
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Both your Party and all 16 PC Boxes are full! Release a Pokémon first."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     if (ballType == 'poke_ball' && _trainer.pokeBalls <= 0) return;
     if (ballType == 'great_ball' && _trainer.greatBalls <= 0) return;
     if (ballType == 'ultra_ball' && _trainer.ultraBalls <= 0) return;
@@ -1078,20 +1093,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     if (caught) {
       // Phase 5a: Capture Lock & Golden Stars
-      _trainer.addPokemon(_opponentPokemon);
+      final int? sentToBox = _trainer.addPokemon(_opponentPokemon);
       final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
       if (itemDrop != null) {
         _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
         _trainer.saveProgress();
       }
+      final String boxNote = (sentToBox != null && sentToBox > 0)
+          ? "\n${_opponentPokemon.nickname} was sent to PC Box $sentToBox!"
+          : "";
+      final String dropNote = itemDrop != null
+          ? "\n${_opponentPokemon.species.name} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!"
+          : "";
       HapticFeedback.heavyImpact();
       setState(() {
         _catchBallPhase = _BallAnimPhase.locked;
         _ballButtonGlowColor = Colors.amberAccent;
         _showCaptureLockBurst = true;
-        _currentMessage = itemDrop != null
-            ? "Gotcha! ${_opponentPokemon.species.name} was caught!\n${_opponentPokemon.species.name} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!"
-            : "Gotcha! ${_opponentPokemon.species.name} was caught!";
+        _currentMessage =
+            "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
         _battleEnded = true;
         _isProcessingTurn = false;
       });

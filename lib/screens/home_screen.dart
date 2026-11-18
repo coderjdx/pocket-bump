@@ -15,6 +15,7 @@ import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
+import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
 import 'pokemon_league_screen.dart';
 import 'poke_mart_screen.dart';
@@ -666,7 +667,74 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX, LEAGUE, MART) ───────────────────
+  // ─── 4. HUB OPTIONS (PARTY, BAG, POKÉDEX, GYMS, MART, PC BOXES) ──────────
+  Widget _buildHubTile({
+    required VoidCallback onTap,
+    required Color accentColor,
+    required Widget iconWidget,
+    required String title,
+    required String subtitle,
+    Color subtitleColor = Colors.white60,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2A2A35),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: accentColor.withOpacity(0.35)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: accentColor.withOpacity(0.18),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: iconWidget,
+                  ),
+                  const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.5,
+                ),
+              ),
+              const SizedBox(height: 1),
+              Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: subtitleColor,
+                  fontSize: 10,
+                  fontWeight: subtitleColor == Colors.white60
+                      ? FontWeight.normal
+                      : FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildHubRow(Trainer trainer) {
     final int totalSpecies = PokedexDatabase.species.length;
     final int caught = trainer.caughtCount;
@@ -677,261 +745,89 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         // Row 1: Party, Bag, Pokédex
         Row(
           children: [
-            // 1. Party
-            Expanded(
-              child: InkWell(
-                onTap: () => _openPartyManagerModal(trainer),
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(Icons.catching_pokemon, color: Colors.redAccent, size: 16),
-                          ),
-                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        "Party",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        "${trainer.party.length}/6 Pokémon",
-                        style: const TextStyle(color: Colors.white60, fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            _buildHubTile(
+              onTap: () => _openPartyManagerModal(trainer),
+              accentColor: Colors.redAccent,
+              iconWidget: const Icon(Icons.catching_pokemon,
+                  color: Colors.redAccent, size: 16),
+              title: "Party",
+              subtitle: "${trainer.party.length}/6 Pokémon",
             ),
             const SizedBox(width: 8),
-
-            // 2. Bag
-            Expanded(
-              child: InkWell(
-                onTap: () => _openItemsManagerModal(trainer),
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.amberAccent.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(Icons.backpack, color: Colors.amberAccent, size: 16),
-                          ),
-                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        "Bag",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        "${trainer.totalItems} Items",
-                        style: const TextStyle(color: Colors.white60, fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            _buildHubTile(
+              onTap: () => _openItemsManagerModal(trainer),
+              accentColor: Colors.amberAccent,
+              iconWidget: const Icon(Icons.backpack,
+                  color: Colors.amberAccent, size: 16),
+              title: "Bag",
+              subtitle: "${trainer.totalItems} Items",
             ),
             const SizedBox(width: 8),
-
-            // 3. Pokédex
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PokedexScreen()),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const PokeBallSymbol(size: 16, isCaught: true),
-                          ),
-                          const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        "Pokédex",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
-                      const SizedBox(height: 1),
-                      Text(
-                        "$caught/$totalSpecies",
-                        style: const TextStyle(color: Colors.white60, fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            _buildHubTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PokedexScreen()),
+                );
+              },
+              accentColor: Colors.redAccent,
+              iconWidget: const PokeBallSymbol(size: 16, isCaught: true),
+              title: "Pokédex",
+              subtitle: "$caught/$totalSpecies",
             ),
           ],
         ),
         const SizedBox(height: 8),
 
-        // Row 2: Pokémon League & Poké Mart
+        // Row 2: Gyms & League, Poké Mart, PC Boxes
         Row(
           children: [
-            // 4. Pokémon League
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PokemonLeagueScreen()),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.amberAccent.withOpacity(0.35)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.amberAccent.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.military_tech, color: Colors.amberAccent, size: 18),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Gyms & League",
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                            Text(
-                              "$badges/8 Badges",
-                              style: const TextStyle(
-                                color: Colors.amberAccent,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
-                    ],
-                  ),
-                ),
-              ),
+            _buildHubTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PokemonLeagueScreen()),
+                );
+              },
+              accentColor: Colors.amberAccent,
+              iconWidget: const Icon(Icons.military_tech,
+                  color: Colors.amberAccent, size: 16),
+              title: "Gyms",
+              subtitle: "$badges/8 Badges",
+              subtitleColor: Colors.amberAccent,
             ),
             const SizedBox(width: 8),
-
-            // 5. Poké Mart
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PokeMartScreen()),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2A2A35),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.cyanAccent.withOpacity(0.35)),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.cyanAccent.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.storefront, color: Colors.cyanAccent, size: 18),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Poké Mart",
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                            Text(
-                              "₽${trainer.money}",
-                              style: const TextStyle(
-                                color: Color(0xFFFFD54F),
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.chevron_right, color: Colors.white38, size: 16),
-                    ],
-                  ),
-                ),
-              ),
+            _buildHubTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PokeMartScreen()),
+                );
+              },
+              accentColor: Colors.cyanAccent,
+              iconWidget: const Icon(Icons.storefront,
+                  color: Colors.cyanAccent, size: 16),
+              title: "Poké Mart",
+              subtitle: "₽${trainer.money}",
+              subtitleColor: const Color(0xFFFFD54F),
+            ),
+            const SizedBox(width: 8),
+            _buildHubTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PcStorageScreen()),
+                );
+              },
+              accentColor: Colors.purpleAccent,
+              iconWidget: const Icon(Icons.computer,
+                  color: Colors.purpleAccent, size: 16),
+              title: "PC Boxes",
+              subtitle: "${trainer.totalPcPokemon}/${trainer.maxPcCapacity}",
+              subtitleColor: Colors.purpleAccent.shade100,
             ),
           ],
         ),
@@ -1267,23 +1163,51 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "MANAGE PARTY",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.8,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "MANAGE PARTY",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.8,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "Slot #1 Pokémon is summoned first in every battle (${trainer.party.length}/6)",
-                              style: const TextStyle(color: Colors.white60, fontSize: 11),
-                            ),
-                          ],
+                              Text(
+                                "Slot #1 Pokémon is summoned first (${trainer.party.length}/6)",
+                                style: const TextStyle(color: Colors.white60, fontSize: 11),
+                              ),
+                            ],
+                          ),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            Navigator.push(
+                              this.context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PcStorageScreen()),
+                            );
+                          },
+                          icon: const Icon(Icons.computer, size: 14),
+                          label: const Text(
+                            "OPEN PC",
+                            style: TextStyle(
+                                fontSize: 10.5, fontWeight: FontWeight.bold),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.purpleAccent.shade100,
+                            side: BorderSide(
+                                color: Colors.purpleAccent.withOpacity(0.55)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            minimumSize: Size.zero,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.close, color: Colors.white60),
@@ -1526,13 +1450,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                             color: Colors.white70, size: 18),
                                         onPressed: () => trainer.swapPartySlots(idx, idx + 1),
                                       ),
-                                    if (trainer.party.length > 1)
+                                    if (trainer.party.length > 1) ...[
+                                      IconButton(
+                                        tooltip: "Deposit to PC Box",
+                                        icon: Icon(Icons.inventory_2_outlined,
+                                            color: Colors.purpleAccent.shade100,
+                                            size: 18),
+                                        onPressed: () {
+                                          final ok = trainer.depositPokemonToPc(idx);
+                                          ScaffoldMessenger.of(this.context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(ok
+                                                  ? "${mon.nickname} was deposited into Box ${trainer.activePcBoxIndex + 1}!"
+                                                  : "All 16 PC Boxes are full (320/320)!"),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                       IconButton(
                                         tooltip: "Release Pokémon",
                                         icon: const Icon(Icons.delete_outline,
                                             color: Colors.redAccent, size: 18),
                                         onPressed: () => _confirmReleasePokemon(ctx, trainer, idx, mon),
                                       ),
+                                    ],
                                   ],
                                 ),
                               ],

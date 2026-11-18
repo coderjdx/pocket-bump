@@ -10,12 +10,16 @@ class Trainer extends ChangeNotifier {
   static const String _backupSaveKey = 'pocket_bump_save_backup';
   static const int currentSchemaVersion = 1;
   static const int maxEncounterSteps = 400;
+  static const int numPcBoxes = 16;
+  static const int maxPokemonPerBox = 20;
   static final Random _rng = Random();
 
   bool _suppressAutoSave = false;
   String name;
   TrainerAvatar avatar;
   List<PokemonInstance> party;
+  late List<List<PokemonInstance>> pcBoxes;
+  int activePcBoxIndex;
   int pokeBalls;
   int greatBalls;
   int ultraBalls;
@@ -48,6 +52,8 @@ class Trainer extends ChangeNotifier {
     required this.name,
     TrainerAvatar? avatar,
     List<PokemonInstance>? party,
+    List<List<PokemonInstance>>? pcBoxes,
+    this.activePcBoxIndex = 0,
     this.pokeBalls = 10,
     this.greatBalls = 0,
     this.ultraBalls = 0,
@@ -85,9 +91,24 @@ class Trainer extends ChangeNotifier {
         completedGymStepIds = completedGymStepIds ?? {},
         gymTodaySteps = gymTodaySteps ?? {},
         customItems = customItems ?? {} {
+    activePcBoxIndex = activePcBoxIndex.clamp(0, numPcBoxes - 1);
+    this.pcBoxes = List.generate(numPcBoxes, (boxIdx) {
+      if (pcBoxes != null && boxIdx < pcBoxes.length) {
+        return List<PokemonInstance>.from(
+          pcBoxes[boxIdx].take(maxPokemonPerBox),
+        );
+      }
+      return <PokemonInstance>[];
+    });
     for (final mon in this.party) {
       this.seenSpeciesIds.add(mon.species.id);
       this.caughtSpeciesIds.add(mon.species.id);
+    }
+    for (final box in this.pcBoxes) {
+      for (final mon in box) {
+        this.seenSpeciesIds.add(mon.species.id);
+        this.caughtSpeciesIds.add(mon.species.id);
+      }
     }
   }
 
@@ -107,6 +128,22 @@ class Trainer extends ChangeNotifier {
     return party.any((p) => !p.isFainted);
   }
 
+  int get totalPcPokemon => pcBoxes.fold(0, (sum, box) => sum + box.length);
+  int get maxPcCapacity => numPcBoxes * maxPokemonPerBox;
+  bool get isStorageFull => party.length >= 6 && totalPcPokemon >= maxPcCapacity;
+  List<PokemonInstance> get activePcBox => pcBoxes[activePcBoxIndex];
+
+  Set<int> get _pcSpeciesIds =>
+      pcBoxes.expand((box) => box.map((p) => p.species.id)).toSet();
+
+  void setActivePcBox(int boxIndex) {
+    final clamped = boxIndex.clamp(0, numPcBoxes - 1);
+    if (activePcBoxIndex != clamped) {
+      activePcBoxIndex = clamped;
+      notifyListeners();
+    }
+  }
+
   void setIdentity({
     required String newName,
     required TrainerAvatar newAvatar,
@@ -118,18 +155,21 @@ class Trainer extends ChangeNotifier {
 
   bool isSpeciesCaught(int speciesId) =>
       caughtSpeciesIds.contains(speciesId) ||
-      party.any((p) => p.species.id == speciesId);
+      party.any((p) => p.species.id == speciesId) ||
+      pcBoxes.any((box) => box.any((p) => p.species.id == speciesId));
 
   bool isSpeciesSeen(int speciesId) =>
       seenSpeciesIds.contains(speciesId) || isSpeciesCaught(speciesId);
 
   int get caughtCount => caughtSpeciesIds
       .union(party.map((p) => p.species.id).toSet())
+      .union(_pcSpeciesIds)
       .length;
 
   int get seenCount => seenSpeciesIds
       .union(caughtSpeciesIds)
       .union(party.map((p) => p.species.id).toSet())
+      .union(_pcSpeciesIds)
       .length;
 
   void markPokemonSeen(int speciesId) {
@@ -147,14 +187,126 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  void addPokemon(PokemonInstance mon) {
+  int? _findAvailablePcBox([int? preferredIndex]) {
+    if (preferredIndex != null) {
+      if (preferredIndex < 0 || preferredIndex >= numPcBoxes) return null;
+      return pcBoxes[preferredIndex].length < maxPokemonPerBox
+          ? preferredIndex
+          : null;
+    }
+    if (pcBoxes[activePcBoxIndex].length < maxPokemonPerBox) {
+      return activePcBoxIndex;
+    }
+    for (int offset = 1; offset < numPcBoxes; offset++) {
+      final idx = (activePcBoxIndex + offset) % numPcBoxes;
+      if (pcBoxes[idx].length < maxPokemonPerBox) return idx;
+    }
+    return null;
+  }
+
+  /// Adds a newly captured Pokémon to the carried party (max 6) or stores it
+  /// into the first available PC Box (16 boxes × 20 slots). Returns `null` if
+  /// added to party, `1..16` if sent to a PC Box, or `-1` if all storage is full.
+  int? addPokemon(PokemonInstance mon) {
     mon.resetBattleStateAndHeal();
     seenSpeciesIds.add(mon.species.id);
     caughtSpeciesIds.add(mon.species.id);
     if (party.length < 6) {
       party.add(mon);
+      notifyListeners();
+      return null;
+    }
+    final boxIdx = _findAvailablePcBox();
+    if (boxIdx != null) {
+      pcBoxes[boxIdx].add(mon);
+      activePcBoxIndex = boxIdx;
+      notifyListeners();
+      return boxIdx + 1;
     }
     notifyListeners();
+    return -1;
+  }
+
+  bool depositPokemonToPc(int partyIndex, {int? targetBoxIndex}) {
+    if (party.length <= 1 || partyIndex < 0 || partyIndex >= party.length) {
+      return false;
+    }
+    final boxIdx = _findAvailablePcBox(targetBoxIndex);
+    if (boxIdx == null) return false;
+    final mon = party.removeAt(partyIndex);
+    mon.resetBattleStateAndHeal();
+    pcBoxes[boxIdx].add(mon);
+    if (targetBoxIndex == null) {
+      activePcBoxIndex = boxIdx;
+    }
+    notifyListeners();
+    return true;
+  }
+
+  bool withdrawPokemonFromPc(int boxIndex, int slotIndex) {
+    if (party.length >= 6 || boxIndex < 0 || boxIndex >= numPcBoxes) {
+      return false;
+    }
+    final box = pcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= box.length) return false;
+    final mon = box.removeAt(slotIndex);
+    mon.resetBattleStateAndHeal();
+    party.add(mon);
+    notifyListeners();
+    return true;
+  }
+
+  bool swapPartyAndPcPokemon(int partyIndex, int boxIndex, int slotIndex) {
+    if (partyIndex < 0 ||
+        partyIndex >= party.length ||
+        boxIndex < 0 ||
+        boxIndex >= numPcBoxes) {
+      return false;
+    }
+    final box = pcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= box.length) return false;
+    final partyMon = party[partyIndex];
+    final pcMon = box[slotIndex];
+    partyMon.resetBattleStateAndHeal();
+    pcMon.resetBattleStateAndHeal();
+    party[partyIndex] = pcMon;
+    box[slotIndex] = partyMon;
+    notifyListeners();
+    return true;
+  }
+
+  bool movePcPokemonToBox(int fromBoxIndex, int fromSlotIndex, int toBoxIndex) {
+    if (fromBoxIndex < 0 ||
+        fromBoxIndex >= numPcBoxes ||
+        toBoxIndex < 0 ||
+        toBoxIndex >= numPcBoxes ||
+        fromBoxIndex == toBoxIndex) {
+      return false;
+    }
+    final fromBox = pcBoxes[fromBoxIndex];
+    final toBox = pcBoxes[toBoxIndex];
+    if (fromSlotIndex < 0 ||
+        fromSlotIndex >= fromBox.length ||
+        toBox.length >= maxPokemonPerBox) {
+      return false;
+    }
+    final mon = fromBox.removeAt(fromSlotIndex);
+    toBox.add(mon);
+    notifyListeners();
+    return true;
+  }
+
+  bool releasePcPokemon(int boxIndex, int slotIndex) {
+    if (boxIndex < 0 || boxIndex >= numPcBoxes) return false;
+    final box = pcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= box.length) return false;
+    final mon = box.removeAt(slotIndex);
+    final held = mon.unequipHeldItem();
+    if (held != null) {
+      _applyItemDelta(held, 1);
+    }
+    notifyListeners();
+    return true;
   }
 
   void healAndResetAllParty() {
@@ -415,7 +567,11 @@ class Trainer extends ChangeNotifier {
 
   bool releasePokemon(int index) {
     if (party.length <= 1 || index < 0 || index >= party.length) return false;
-    party.removeAt(index);
+    final mon = party.removeAt(index);
+    final held = mon.unequipHeldItem();
+    if (held != null) {
+      _applyItemDelta(held, 1);
+    }
     notifyListeners();
     return true;
   }
@@ -524,7 +680,7 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  void adjustItemCount(String itemId, int delta) {
+  void _applyItemDelta(String itemId, int delta) {
     switch (itemId) {
       case 'poke_ball':
         pokeBalls = (pokeBalls + delta).clamp(0, 99);
@@ -578,6 +734,10 @@ class Trainer extends ChangeNotifier {
         }
         break;
     }
+  }
+
+  void adjustItemCount(String itemId, int delta) {
+    _applyItemDelta(itemId, delta);
     notifyListeners();
   }
 
@@ -627,6 +787,10 @@ class Trainer extends ChangeNotifier {
       'gymTodaySteps': gymTodaySteps.map((k, v) => MapEntry(k.toString(), v)),
       'customItems': customItems,
       'party': party.map((mon) => mon.toJson()).toList(),
+      'activePcBoxIndex': activePcBoxIndex,
+      'pcBoxes': pcBoxes
+          .map((box) => box.map((mon) => mon.toJson()).toList())
+          .toList(),
     };
   }
 
@@ -720,6 +884,27 @@ class Trainer extends ChangeNotifier {
       seenSpeciesIds.add(mon.species.id);
       caughtSpeciesIds.add(mon.species.id);
     }
+
+    activePcBoxIndex = ((json['activePcBoxIndex'] as num?)?.toInt() ?? 0)
+        .clamp(0, numPcBoxes - 1);
+    final rawBoxes = json['pcBoxes'] as List<dynamic>? ?? const [];
+    pcBoxes = List.generate(numPcBoxes, (boxIdx) {
+      if (boxIdx >= rawBoxes.length || rawBoxes[boxIdx] is! List) {
+        return <PokemonInstance>[];
+      }
+      final rawBox = rawBoxes[boxIdx] as List<dynamic>;
+      final loadedBox = <PokemonInstance>[];
+      for (final item in rawBox) {
+        if (item is Map) {
+          final mon = PokemonInstance.fromJson(Map<String, dynamic>.from(item));
+          loadedBox.add(mon);
+          seenSpeciesIds.add(mon.species.id);
+          caughtSpeciesIds.add(mon.species.id);
+        }
+        if (loadedBox.length >= maxPokemonPerBox) break;
+      }
+      return loadedBox;
+    });
   }
 
   Future<void> saveProgress() async {
@@ -768,6 +953,8 @@ class Trainer extends ChangeNotifier {
     name = 'Red';
     avatar = TrainerAvatar.presets.first;
     party = [];
+    pcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
+    activePcBoxIndex = 0;
     pokeBalls = 10;
     greatBalls = 0;
     ultraBalls = 0;
