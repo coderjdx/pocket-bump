@@ -3,6 +3,7 @@ import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import 'pokedex_database.dart';
 
 enum BattleActionType {
   fight,
@@ -55,6 +56,14 @@ class BattleStepEvent {
   final bool targetFainted;
   final bool isMiss;
   final bool isStatusTick;
+  final int hitNumber;
+  final int totalHits;
+  final bool isChargeTurn;
+  final bool submergeActorAfter;
+  final bool surfaceActorOnAttack;
+  final bool isMultiHitSummary;
+  final bool hideMoveVfx;
+  final bool isSelfDamage;
 
   const BattleStepEvent({
     required this.message,
@@ -72,11 +81,33 @@ class BattleStepEvent {
     this.targetFainted = false,
     this.isMiss = false,
     this.isStatusTick = false,
+    this.hitNumber = 0,
+    this.totalHits = 0,
+    this.isChargeTurn = false,
+    this.submergeActorAfter = false,
+    this.surfaceActorOnAttack = false,
+    this.isMultiHitSummary = false,
+    this.hideMoveVfx = false,
+    this.isSelfDamage = false,
   });
 }
 
 class BattleEngine {
   static final Random _rng = Random();
+
+  /// Resolves the move that [mon] will actually perform this turn, honoring
+  /// any in-progress multi-stage move (Dig, Solar Beam, Bide, Thrash, Rollout).
+  static Move? resolveEffectiveMove(PokemonInstance mon, Move? selectedMove) {
+    final String? forcedId = mon.forcedMoveId;
+    if (forcedId == null || forcedId == 'recharge') {
+      return selectedMove;
+    }
+    for (final m in mon.moves) {
+      if (m.id == forcedId) return m;
+    }
+    final dbMove = PokedexDatabase.moves[forcedId];
+    return dbMove?.copy() ?? selectedMove;
+  }
 
   /// Resolves a full combat turn into ordered, animatable [BattleStepEvent]s.
   static List<BattleStepEvent> resolveTurn({
@@ -95,13 +126,19 @@ class BattleEngine {
     final preBerryOpp = checkAndConsumeHeldBerry(opponentMon, isPlayer: false, isWild: isWild);
     if (preBerryOpp != null) events.add(preBerryOpp);
 
+    final Move? effectivePlayerMove = playerAction.type == BattleActionType.fight
+        ? resolveEffectiveMove(playerMon, playerAction.move)
+        : null;
+    final Move? effectiveOppMove = opponentAction.type == BattleActionType.fight
+        ? resolveEffectiveMove(opponentMon, opponentAction.move)
+        : null;
+
     // Determine Move Execution Order (Priority -> Speed)
     bool playerGoesFirst = true;
 
-    if (playerAction.type == BattleActionType.fight &&
-        opponentAction.type == BattleActionType.fight) {
-      final pPriority = playerAction.move!.priority;
-      final oPriority = opponentAction.move!.priority;
+    if (effectivePlayerMove != null && effectiveOppMove != null) {
+      final pPriority = playerMon.needsRecharge ? 0 : effectivePlayerMove.priority;
+      final oPriority = opponentMon.needsRecharge ? 0 : effectiveOppMove.priority;
 
       if (pPriority != oPriority) {
         playerGoesFirst = pPriority > oPriority;
@@ -115,23 +152,25 @@ class BattleEngine {
           playerGoesFirst = _rng.nextBool();
         }
       }
+    } else if (effectiveOppMove != null && effectivePlayerMove == null) {
+      playerGoesFirst = false;
     }
 
     if (playerGoesFirst) {
-      if (playerAction.type == BattleActionType.fight && !playerMon.isFainted) {
+      if (effectivePlayerMove != null && !playerMon.isFainted) {
         events.addAll(executeSingleAttack(
           playerMon,
-          playerAction.move!,
+          effectivePlayerMove,
           opponentMon,
           isPlayer: true,
           isWild: isWild,
           playerTrainer: playerTrainer,
         ));
       }
-      if (!opponentMon.isFainted && opponentAction.type == BattleActionType.fight) {
+      if (!opponentMon.isFainted && effectiveOppMove != null) {
         events.addAll(executeSingleAttack(
           opponentMon,
-          opponentAction.move!,
+          effectiveOppMove,
           playerMon,
           isPlayer: false,
           isWild: isWild,
@@ -139,20 +178,20 @@ class BattleEngine {
         ));
       }
     } else {
-      if (opponentAction.type == BattleActionType.fight && !opponentMon.isFainted) {
+      if (effectiveOppMove != null && !opponentMon.isFainted) {
         events.addAll(executeSingleAttack(
           opponentMon,
-          opponentAction.move!,
+          effectiveOppMove,
           playerMon,
           isPlayer: false,
           isWild: isWild,
           playerTrainer: playerTrainer,
         ));
       }
-      if (!playerMon.isFainted && playerAction.type == BattleActionType.fight) {
+      if (!playerMon.isFainted && effectivePlayerMove != null) {
         events.addAll(executeSingleAttack(
           playerMon,
-          playerAction.move!,
+          effectivePlayerMove,
           opponentMon,
           isPlayer: true,
           isWild: isWild,
@@ -280,6 +319,96 @@ class BattleEngine {
     return null;
   }
 
+  static void _clearMoveLocks(PokemonInstance mon) {
+    mon.chargingMoveId = null;
+    mon.isUnderground = false;
+    mon.bideTurnsRemaining = 0;
+    mon.bideDamageStored = 0;
+    mon.rampageMoveId = null;
+    mon.rampageTurnsRemaining = 0;
+    mon.rolloutTurnsRemaining = 0;
+    mon.rolloutHitCount = 0;
+  }
+
+  static int _rollHitCount(Move move, Random random) {
+    if (move.maxHits <= 1) return 1;
+    if (move.minHits >= move.maxHits) return move.maxHits;
+    if (move.minHits == 2 && move.maxHits == 5) {
+      // Standard Pokémon distribution: 2 hits (3/8), 3 hits (3/8), 4 hits (1/8), 5 hits (1/8)
+      final r = random.nextInt(8);
+      if (r < 3) return 2;
+      if (r < 6) return 3;
+      return r == 6 ? 4 : 5;
+    }
+    return move.minHits + random.nextInt(move.maxHits - move.minHits + 1);
+  }
+
+  static ({int damage, bool isCrit, double typeMultiplier}) _computeHitDamage({
+    required PokemonInstance attacker,
+    required Move move,
+    required PokemonInstance defender,
+    required bool isPlayer,
+    required Trainer? playerTrainer,
+    required Random random,
+    int? powerOverride,
+    double extraMultiplier = 1.0,
+  }) {
+    final int movePower = powerOverride ?? move.power;
+    int attackStat = move.category == MoveCategory.physical
+        ? attacker.effectiveAtk
+        : attacker.effectiveSpa;
+    if (isPlayer && playerTrainer != null) {
+      final double badgeMult = move.category == MoveCategory.physical
+          ? playerTrainer.atkBadgeMultiplier
+          : playerTrainer.spaBadgeMultiplier;
+      attackStat = (attackStat * badgeMult).round();
+    }
+    if (move.category == MoveCategory.physical &&
+        attacker.status == StatusCondition.burn) {
+      attackStat = (attackStat * 0.5).round().clamp(1, 9999);
+    }
+
+    int defenseStat = move.category == MoveCategory.physical
+        ? defender.effectiveDef
+        : defender.effectiveSpd;
+    if (!isPlayer && playerTrainer != null) {
+      final double badgeMult = move.category == MoveCategory.physical
+          ? playerTrainer.defBadgeMultiplier
+          : playerTrainer.spdBadgeMultiplier;
+      defenseStat = (defenseStat * badgeMult).round();
+    }
+
+    final double base =
+        (((2 * attacker.level / 5 + 2) * movePower * attackStat / defenseStat) / 50) +
+            2;
+    final double stab = attacker.species.types.contains(move.type) ? 1.5 : 1.0;
+    final double typeMultiplier =
+        PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
+
+    final int critThreshold =
+        (isPlayer && playerTrainer != null && playerTrainer.critBadgeBonus > 0)
+            ? 8
+            : 16;
+    final bool isCrit = typeMultiplier > 0 && random.nextInt(critThreshold) == 0;
+    final double crit = isCrit ? 1.5 : 1.0;
+    final double randomVariance = (85 + random.nextInt(16)) / 100.0;
+    final double heldItemMultiplier =
+        _getHeldItemDamageMultiplier(attacker, move.type);
+
+    int damage = (base *
+            crit *
+            randomVariance *
+            stab *
+            typeMultiplier *
+            heldItemMultiplier *
+            extraMultiplier)
+        .floor();
+    if (damage < 1 && typeMultiplier > 0) damage = 1;
+    if (typeMultiplier == 0.0) damage = 0;
+
+    return (damage: damage, isCrit: isCrit, typeMultiplier: typeMultiplier);
+  }
+
   static List<BattleStepEvent> executeSingleAttack(
     PokemonInstance attacker,
     Move move,
@@ -298,7 +427,18 @@ class BattleEngine {
         ? (isWild ? "Wild ${defender.nickname}" : defender.nickname)
         : defender.nickname;
 
-    // 1. Pre-move status check (Sleep / Paralysis)
+    // 0. Mandatory Recharge Turn (Hyper Beam)
+    if (attacker.needsRecharge) {
+      attacker.needsRecharge = false;
+      events.add(BattleStepEvent(
+        message: "$attackerName must recharge!",
+        isPlayerActor: isPlayer,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+
+    // 1. Pre-move status check (Sleep / Paralysis / Confusion)
     if (attacker.status == StatusCondition.sleep) {
       if (random.nextInt(3) == 0) {
         attacker.status = StatusCondition.none;
@@ -307,6 +447,7 @@ class BattleEngine {
           isPlayerActor: isPlayer,
         ));
       } else {
+        _clearMoveLocks(attacker);
         events.add(BattleStepEvent(
           message: "$attackerName is fast asleep!",
           isPlayerActor: isPlayer,
@@ -316,6 +457,7 @@ class BattleEngine {
       }
     } else if (attacker.status == StatusCondition.paralysis) {
       if (random.nextInt(4) == 0) {
+        _clearMoveLocks(attacker);
         events.add(BattleStepEvent(
           message: "$attackerName is paralyzed! It can't move!",
           isPlayerActor: isPlayer,
@@ -325,20 +467,213 @@ class BattleEngine {
       }
     }
 
-    // 2. Spend PP
-    if (move.currentPp > 0) {
+    if (attacker.isConfused) {
+      attacker.confusionTurnsRemaining--;
+      if (attacker.confusionTurnsRemaining <= 0) {
+        attacker.isConfused = false;
+        events.add(BattleStepEvent(
+          message: "$attackerName snapped out of its confusion!",
+          isPlayerActor: isPlayer,
+          hideMoveVfx: true,
+        ));
+      } else if (random.nextInt(3) == 0) {
+        _clearMoveLocks(attacker);
+        final double rawSelf =
+            (((2 * attacker.level / 5 + 2) * 40 * attacker.effectiveAtk / attacker.effectiveDef) /
+                    50) +
+                2;
+        final int selfDmg = max(1, rawSelf.floor());
+        attacker.currentHp = (attacker.currentHp - selfDmg).clamp(0, attacker.maxHp);
+        events.add(BattleStepEvent(
+          message: "$attackerName hurt itself in its confusion!",
+          isPlayerActor: isPlayer,
+          moveType: PokemonType.normal,
+          damageDealt: selfDmg,
+          targetHpAfter: attacker.currentHp,
+          targetFainted: attacker.isFainted,
+          isSelfDamage: true,
+          hideMoveVfx: true,
+        ));
+        if (attacker.isFainted) {
+          events.add(BattleStepEvent(
+            message: "$attackerName fainted!",
+            isPlayerActor: !isPlayer,
+            targetHpAfter: 0,
+            targetFainted: true,
+          ));
+        }
+        return events;
+      }
+    }
+
+    // 2. Determine whether this turn continues a multi-stage move or initiates one
+    final bool isContinuingCharge = attacker.chargingMoveId == move.id;
+    final bool isContinuingBide =
+        move.stageMechanic == MoveStageMechanic.bide && attacker.bideTurnsRemaining > 0;
+    final bool isContinuingRampage =
+        move.stageMechanic == MoveStageMechanic.rampage &&
+        attacker.rampageMoveId == move.id &&
+        attacker.rampageTurnsRemaining > 0;
+    final bool isContinuingRollout =
+        move.stageMechanic == MoveStageMechanic.escalatingRoll &&
+        attacker.rolloutTurnsRemaining > 0;
+    final bool isContinuation =
+        isContinuingCharge || isContinuingBide || isContinuingRampage || isContinuingRollout;
+
+    bool surfacedThisTurn = false;
+    if (isContinuingCharge) {
+      attacker.chargingMoveId = null;
+      surfacedThisTurn = attacker.isUnderground;
+      attacker.isUnderground = false;
+    }
+
+    // Spend PP only on Turn 1 of any move
+    if (!isContinuation && move.currentPp > 0) {
       move.currentPp--;
     }
 
-    // 3. Accuracy Check
-    final accRoll = random.nextInt(100) + 1;
-    if (accRoll > move.accuracy) {
+    // 2a. Bide (Turn 1 store -> Turn 2 store -> Turn 3 unleash 2x damage)
+    if (move.stageMechanic == MoveStageMechanic.bide) {
+      if (!isContinuingBide) {
+        attacker.bideTurnsRemaining = 2;
+        attacker.bideDamageStored = 0;
+        events.add(BattleStepEvent(
+          message: "$attackerName is storing energy!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          isChargeTurn: true,
+        ));
+        return events;
+      }
+
+      attacker.bideTurnsRemaining--;
+      if (attacker.bideTurnsRemaining > 0) {
+        events.add(BattleStepEvent(
+          message: "$attackerName is storing energy!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          isChargeTurn: true,
+        ));
+        return events;
+      }
+
+      final int unleashedDmg = attacker.bideDamageStored * 2;
+      attacker.bideDamageStored = 0;
+      if (unleashedDmg <= 0 || defender.isUnderground) {
+        events.add(BattleStepEvent(
+          message: "$attackerName unleashed energy, but it failed!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          isMiss: true,
+        ));
+        return events;
+      }
+
+      defender.currentHp = (defender.currentHp - unleashedDmg).clamp(0, defender.maxHp);
+      if (defender.bideTurnsRemaining > 0) {
+        defender.bideDamageStored += unleashedDmg;
+      }
+      events.add(BattleStepEvent(
+        message: "$attackerName unleashed energy!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        damageDealt: unleashedDmg,
+        targetHpAfter: defender.currentHp,
+        targetFainted: defender.isFainted,
+      ));
+      if (!defender.isFainted) {
+        final berryEvent =
+            checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
+        if (berryEvent != null) events.add(berryEvent);
+      } else {
+        events.add(BattleStepEvent(
+          message: "$defenderName fainted!",
+          isPlayerActor: isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+      }
+      return events;
+    }
+
+    // 2b. Two-Turn Charge / Semi-Invulnerable Turn 1 (Dig, Solar Beam, Sky Attack, Skull Bash, Razor Wind)
+    if (!isContinuingCharge && move.isTwoTurnCharge) {
+      attacker.chargingMoveId = move.id;
+      final bool goUnderground =
+          move.stageMechanic == MoveStageMechanic.semiInvulnerable;
+      if (goUnderground) {
+        attacker.isUnderground = true;
+      }
+
+      String? statLabel;
+      String chargeMsg =
+          "$attackerName ${move.chargeStatusMessage ?? 'is charging power!'}";
+      if (move.chargeSelfStatTarget != null && move.chargeSelfStatChange != 0) {
+        final delta = attacker.modifyStatStage(
+          move.chargeSelfStatTarget!,
+          move.chargeSelfStatChange,
+        );
+        final statName = _statDisplayName(move.chargeSelfStatTarget!);
+        final arrow = move.chargeSelfStatChange > 0 ? '▲' : '▼';
+        statLabel = "${move.chargeSelfStatTarget!.toUpperCase()} $arrow";
+        if (delta != 0) {
+          chargeMsg = "$chargeMsg $attackerName's $statName rose!";
+        }
+      }
+
+      events.add(BattleStepEvent(
+        message: chargeMsg,
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        statChangedLabel: statLabel,
+        statTargetIsSelf: true,
+        isChargeTurn: true,
+        submergeActorAfter: goUnderground,
+      ));
+      return events;
+    }
+
+    // Initialize rampage / rollout duration on Turn 1
+    if (!isContinuation) {
+      if (move.stageMechanic == MoveStageMechanic.rampage) {
+        attacker.rampageMoveId = move.id;
+        attacker.rampageTurnsRemaining = 1 + random.nextInt(2); // 2-3 turns total
+      } else if (move.stageMechanic == MoveStageMechanic.escalatingRoll) {
+        attacker.rolloutTurnsRemaining = 4; // up to 5 hits total
+        attacker.rolloutHitCount = 0;
+      }
+    }
+
+    // 3. Semi-Invulnerable & Accuracy Check
+    final bool hitsUnderground =
+        move.id == 'earthquake' || move.id == 'fissure';
+    final bool blockedByDig = defender.isUnderground && !hitsUnderground;
+    final int accRoll = random.nextInt(100) + 1;
+    if (blockedByDig || accRoll > move.accuracy) {
+      if (move.stageMechanic == MoveStageMechanic.escalatingRoll) {
+        attacker.rolloutTurnsRemaining = 0;
+        attacker.rolloutHitCount = 0;
+      } else if (move.stageMechanic == MoveStageMechanic.rampage) {
+        attacker.rampageMoveId = null;
+        attacker.rampageTurnsRemaining = 0;
+      }
       events.add(BattleStepEvent(
         message: "$attackerName used ${move.name}, but it missed!",
         isPlayerActor: isPlayer,
         moveType: move.type,
         moveCategory: move.category,
         isMiss: true,
+        surfaceActorOnAttack: surfacedThisTurn,
       ));
       return events;
     }
@@ -354,24 +689,30 @@ class BattleEngine {
         selfBuff = move.statChange > 0;
         final targetMon = selfBuff ? attacker : defender;
         final targetLabel = selfBuff ? attackerName : defenderName;
-        final actualDelta = targetMon.modifyStatStage(move.statTarget!, move.statChange);
+        final actualDelta =
+            targetMon.modifyStatStage(move.statTarget!, move.statChange);
         final statFullName = _statDisplayName(move.statTarget!);
         final arrow = move.statChange > 0 ? '▲' : '▼';
         statLabel = "${move.statTarget!.toUpperCase()} $arrow";
 
         if (actualDelta == 0) {
-          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName won't go any ${move.statChange > 0 ? 'higher' : 'lower'}!";
+          msg =
+              "$attackerName used ${move.name}! $targetLabel's $statFullName won't go any ${move.statChange > 0 ? 'higher' : 'lower'}!";
         } else if (move.statChange >= 2) {
-          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName rose sharply!";
+          msg =
+              "$attackerName used ${move.name}! $targetLabel's $statFullName rose sharply!";
         } else if (move.statChange > 0) {
-          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName rose!";
+          msg =
+              "$attackerName used ${move.name}! $targetLabel's $statFullName rose!";
         } else if (move.statChange <= -2) {
-          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName harshly fell!";
+          msg =
+              "$attackerName used ${move.name}! $targetLabel's $statFullName harshly fell!";
         } else {
-          msg = "$attackerName used ${move.name}! $targetLabel's $statFullName fell!";
+          msg =
+              "$attackerName used ${move.name}! $targetLabel's $statFullName fell!";
         }
       } else if (move.statusEffect != null) {
-        final inflicted = _tryInflictStatus(defender, move.statusEffect!);
+        final inflicted = _tryInflictStatus(defender, move.statusEffect!, random);
         if (inflicted != null) {
           statusLabel = inflicted;
           msg = "$attackerName used ${move.name}! $defenderName is $inflicted";
@@ -392,99 +733,193 @@ class BattleEngine {
         targetHpAfter: defender.currentHp,
       ));
 
-      // Check if defender holds a berry that cures the newly inflicted status
-      final berryEvent = checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
+      final berryEvent =
+          checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
       if (berryEvent != null) {
         events.add(berryEvent);
       }
       return events;
     }
 
-    // 5. Damaging Move Calculation (Gen 4 Standard + Badge Boosts + Held Item Boosts)
-    int attackStat = move.category == MoveCategory.physical
-        ? attacker.effectiveAtk
-        : attacker.effectiveSpa;
-    if (isPlayer && playerTrainer != null) {
-      final double badgeMult = move.category == MoveCategory.physical
-          ? playerTrainer.atkBadgeMultiplier
-          : playerTrainer.spaBadgeMultiplier;
-      attackStat = (attackStat * badgeMult).round();
-    }
-    if (move.category == MoveCategory.physical && attacker.status == StatusCondition.burn) {
-      attackStat = (attackStat * 0.5).round().clamp(1, 9999);
-    }
-
-    int defenseStat = move.category == MoveCategory.physical
-        ? defender.effectiveDef
-        : defender.effectiveSpd;
-    if (!isPlayer && playerTrainer != null) {
-      final double badgeMult = move.category == MoveCategory.physical
-          ? playerTrainer.defBadgeMultiplier
-          : playerTrainer.spdBadgeMultiplier;
-      defenseStat = (defenseStat * badgeMult).round();
-    }
-
-    final double base =
-        (((2 * attacker.level / 5 + 2) * move.power * attackStat / defenseStat) / 50) + 2;
-
-    final double stab = attacker.species.types.contains(move.type) ? 1.5 : 1.0;
-    final double typeMultiplier =
+    // 5. Damaging Move Calculation (Single-Hit or Multi-Hit)
+    final double previewEff =
         PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
-
-    final int critThreshold =
-        (isPlayer && playerTrainer != null && playerTrainer.critBadgeBonus > 0) ? 8 : 16;
-    final bool isCrit = typeMultiplier > 0 && random.nextInt(critThreshold) == 0;
-    final double crit = isCrit ? 1.5 : 1.0;
-    final double randomVariance = (85 + random.nextInt(16)) / 100.0;
-    final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, move.type);
-
-    int damage = (base * crit * randomVariance * stab * typeMultiplier * heldItemMultiplier).floor();
-    if (damage < 1 && typeMultiplier > 0) damage = 1;
-    if (typeMultiplier == 0.0) damage = 0;
-
-    defender.currentHp = (defender.currentHp - damage).clamp(0, defender.maxHp);
-
-    // Secondary status chance on damaging move
-    String? secondaryStatusLabel;
-    if (!defender.isFainted &&
-        typeMultiplier > 0 &&
-        move.statusEffect != null &&
-        move.statusChance > 0 &&
-        random.nextInt(100) < move.statusChance) {
-      secondaryStatusLabel = _tryInflictStatus(defender, move.statusEffect!);
+    if (previewEff == 0.0) {
+      if (move.stageMechanic == MoveStageMechanic.escalatingRoll) {
+        attacker.rolloutTurnsRemaining = 0;
+        attacker.rolloutHitCount = 0;
+      } else if (move.stageMechanic == MoveStageMechanic.rampage) {
+        attacker.rampageMoveId = null;
+        attacker.rampageTurnsRemaining = 0;
+      }
+      events.add(BattleStepEvent(
+        message:
+            "$attackerName used ${move.name}! It had no effect on $defenderName.",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        damageDealt: 0,
+        targetHpAfter: defender.currentHp,
+        effectiveness: 0.0,
+        surfaceActorOnAttack: surfacedThisTurn,
+      ));
+      return events;
     }
 
-    final StringBuffer msgBuffer = StringBuffer("$attackerName used ${move.name}!");
-    if (typeMultiplier == 0.0) {
-      msgBuffer.write(" It had no effect on $defenderName.");
-    } else {
-      if (isCrit) msgBuffer.write(" A critical hit!");
-      if (typeMultiplier >= 2.0) msgBuffer.write(" It's super effective!");
-      if (typeMultiplier > 0 && typeMultiplier <= 0.5) {
+    final int hitCount = _rollHitCount(move, random);
+    final int? powerOverride = move.stageMechanic == MoveStageMechanic.escalatingRoll
+        ? move.power * (1 << attacker.rolloutHitCount.clamp(0, 4))
+        : null;
+    final double extraMultiplier =
+        (move.id == 'earthquake' && defender.isUnderground) ? 2.0 : 1.0;
+
+    int actualHits = 0;
+    for (int hit = 1; hit <= hitCount; hit++) {
+      final hitResult = _computeHitDamage(
+        attacker: attacker,
+        move: move,
+        defender: defender,
+        isPlayer: isPlayer,
+        playerTrainer: playerTrainer,
+        random: random,
+        powerOverride: powerOverride,
+        extraMultiplier: extraMultiplier,
+      );
+
+      defender.currentHp =
+          (defender.currentHp - hitResult.damage).clamp(0, defender.maxHp);
+      actualHits = hit;
+
+      if (defender.bideTurnsRemaining > 0 && hitResult.damage > 0) {
+        defender.bideDamageStored += hitResult.damage;
+      }
+
+      String? secondaryStatusLabel;
+      if (!defender.isFainted &&
+          move.statusEffect != null &&
+          move.statusChance > 0 &&
+          random.nextInt(100) < move.statusChance) {
+        secondaryStatusLabel =
+            _tryInflictStatus(defender, move.statusEffect!, random);
+      }
+
+      final StringBuffer msgBuffer = StringBuffer(
+        hit == 1
+            ? "$attackerName used ${move.name}!"
+            : "$attackerName's ${move.name} hit #$hit!",
+      );
+      if (hitResult.isCrit) msgBuffer.write(" A critical hit!");
+      if (hit == 1 && hitResult.typeMultiplier >= 2.0) {
+        msgBuffer.write(" It's super effective!");
+      } else if (hit == 1 &&
+          hitResult.typeMultiplier > 0 &&
+          hitResult.typeMultiplier <= 0.5) {
         msgBuffer.write(" It's not very effective...");
       }
       if (secondaryStatusLabel != null) {
         msgBuffer.write(" $defenderName became $secondaryStatusLabel");
       }
+
+      events.add(BattleStepEvent(
+        message: msgBuffer.toString(),
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        damageDealt: hitResult.damage,
+        targetHpAfter: defender.currentHp,
+        isCrit: hitResult.isCrit,
+        effectiveness: hitResult.typeMultiplier,
+        statusInflictedLabel: secondaryStatusLabel,
+        targetFainted: defender.isFainted,
+        hitNumber: hitCount > 1 ? hit : 0,
+        totalHits: hitCount > 1 ? hitCount : 0,
+        surfaceActorOnAttack: hit == 1 && surfacedThisTurn,
+      ));
+
+      if (defender.isFainted) {
+        break;
+      }
     }
 
-    events.add(BattleStepEvent(
-      message: msgBuffer.toString(),
-      isPlayerActor: isPlayer,
-      moveId: move.id,
-      moveType: move.type,
-      moveCategory: move.category,
-      damageDealt: damage,
-      targetHpAfter: defender.currentHp,
-      isCrit: isCrit,
-      effectiveness: typeMultiplier,
-      statusInflictedLabel: secondaryStatusLabel,
-      targetFainted: defender.isFainted,
-    ));
+    if (hitCount > 1) {
+      events.add(BattleStepEvent(
+        message: "Hit $actualHits time${actualHits == 1 ? '' : 's'}!",
+        isPlayerActor: isPlayer,
+        targetHpAfter: defender.currentHp,
+        isMultiHitSummary: true,
+        hideMoveVfx: true,
+      ));
+    }
+
+    // 6. Post-hit multi-stage side effects
+    if (move.stageMechanic == MoveStageMechanic.rechargeAfterHit &&
+        !defender.isFainted) {
+      attacker.needsRecharge = true;
+    }
+
+    if (move.stageMechanic == MoveStageMechanic.trapDot &&
+        !defender.isFainted &&
+        defender.trappedTurnsRemaining == 0) {
+      defender.trappedTurnsRemaining = 4 + random.nextInt(2);
+      defender.trappedByMoveId = move.id;
+      defender.trappedByMoveName = move.name;
+      events.add(BattleStepEvent(
+        message: "$defenderName was trapped by ${move.name}!",
+        isPlayerActor: isPlayer,
+        targetHpAfter: defender.currentHp,
+        hideMoveVfx: true,
+      ));
+    }
+
+    if (move.stageMechanic == MoveStageMechanic.rampage &&
+        attacker.rampageMoveId == move.id) {
+      if (isContinuingRampage) {
+        attacker.rampageTurnsRemaining--;
+        if (attacker.rampageTurnsRemaining <= 0) {
+          attacker.rampageMoveId = null;
+          if (!attacker.isFainted && !attacker.isConfused) {
+            attacker.isConfused = true;
+            attacker.confusionTurnsRemaining = 2 + random.nextInt(3);
+            events.add(BattleStepEvent(
+              message: "$attackerName became confused due to fatigue!",
+              isPlayerActor: isPlayer,
+              statusInflictedLabel: 'CONFUSED!',
+              statTargetIsSelf: true,
+              targetHpAfter: attacker.currentHp,
+              hideMoveVfx: true,
+            ));
+          }
+        }
+      }
+    }
+
+    if (move.stageMechanic == MoveStageMechanic.escalatingRoll) {
+      if (defender.isFainted) {
+        // Keep streak if more turns remain, or advance count cleanly
+        if (isContinuingRollout) {
+          attacker.rolloutTurnsRemaining--;
+        }
+        attacker.rolloutHitCount++;
+        if (attacker.rolloutTurnsRemaining <= 0) {
+          attacker.rolloutHitCount = 0;
+        }
+      } else {
+        if (isContinuingRollout) {
+          attacker.rolloutTurnsRemaining--;
+        }
+        attacker.rolloutHitCount++;
+        if (attacker.rolloutTurnsRemaining <= 0) {
+          attacker.rolloutHitCount = 0;
+        }
+      }
+    }
 
     // Check if defender's held berry triggers (e.g. Oran/Sitrus on <=50% HP or status cure)
     if (!defender.isFainted) {
-      final berryEvent = checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
+      final berryEvent =
+          checkAndConsumeHeldBerry(defender, isPlayer: !isPlayer, isWild: isWild);
       if (berryEvent != null) {
         events.add(berryEvent);
       }
@@ -536,6 +971,49 @@ class BattleEngine {
           targetHpAfter: 0,
           targetFainted: true,
         ));
+        return events;
+      }
+    }
+
+    // Partial trapping chip damage (Fire Spin / Wrap)
+    if (!mon.isFainted && mon.trappedTurnsRemaining > 0) {
+      final trapDmg = max(1, mon.maxHp ~/ 8);
+      final trapName = mon.trappedByMoveName ?? 'the vortex';
+      final trapMoveId = mon.trappedByMoveId;
+      mon.currentHp = (mon.currentHp - trapDmg).clamp(0, mon.maxHp);
+      mon.trappedTurnsRemaining--;
+
+      events.add(BattleStepEvent(
+        message: "$monName is hurt by $trapName!",
+        isPlayerActor: !isPlayer,
+        moveId: trapMoveId,
+        moveType: trapMoveId == 'fire_spin' ? PokemonType.fire : PokemonType.normal,
+        damageDealt: trapDmg,
+        targetHpAfter: mon.currentHp,
+        targetFainted: mon.isFainted,
+        isStatusTick: true,
+      ));
+
+      if (mon.isFainted) {
+        mon.trappedTurnsRemaining = 0;
+        mon.trappedByMoveId = null;
+        mon.trappedByMoveName = null;
+        events.add(BattleStepEvent(
+          message: "$monName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+        return events;
+      } else if (mon.trappedTurnsRemaining == 0) {
+        mon.trappedByMoveId = null;
+        mon.trappedByMoveName = null;
+        events.add(BattleStepEvent(
+          message: "$monName was freed from $trapName!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: mon.currentHp,
+          hideMoveVfx: true,
+        ));
       }
     }
 
@@ -554,8 +1032,20 @@ class BattleEngine {
     return events;
   }
 
-  static String? _tryInflictStatus(PokemonInstance target, String effect) {
-    if (target.status != StatusCondition.none || target.isFainted) return null;
+  static String? _tryInflictStatus(
+    PokemonInstance target,
+    String effect, [
+    Random? rng,
+  ]) {
+    if (target.isFainted) return null;
+    if (effect == 'confusion') {
+      if (target.isConfused) return null;
+      final r = rng ?? _rng;
+      target.isConfused = true;
+      target.confusionTurnsRemaining = 2 + r.nextInt(4);
+      return 'CONFUSED!';
+    }
+    if (target.status != StatusCondition.none) return null;
 
     switch (effect) {
       case 'burn':

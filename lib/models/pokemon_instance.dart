@@ -69,6 +69,65 @@ class PokemonInstance {
   int spdStage = 0;
   int speStage = 0;
 
+  // Transient in-battle multi-stage & volatile state (reset on switch/KO/exit)
+  String? chargingMoveId;
+  bool isUnderground = false;
+  bool needsRecharge = false;
+  int bideTurnsRemaining = 0;
+  int bideDamageStored = 0;
+  String? rampageMoveId;
+  int rampageTurnsRemaining = 0;
+  int rolloutTurnsRemaining = 0;
+  int rolloutHitCount = 0;
+  int trappedTurnsRemaining = 0;
+  String? trappedByMoveId;
+  String? trappedByMoveName;
+  bool isConfused = false;
+  int confusionTurnsRemaining = 0;
+
+  bool get hasForcedTurnAction =>
+      needsRecharge ||
+      chargingMoveId != null ||
+      bideTurnsRemaining > 0 ||
+      (rampageMoveId != null && rampageTurnsRemaining > 0) ||
+      rolloutTurnsRemaining > 0;
+
+  String? get forcedMoveId {
+    if (needsRecharge) return 'recharge';
+    if (chargingMoveId != null) return chargingMoveId;
+    if (bideTurnsRemaining > 0) return 'bide';
+    if (rampageMoveId != null && rampageTurnsRemaining > 0) {
+      return rampageMoveId;
+    }
+    if (rolloutTurnsRemaining > 0) return 'rollout';
+    return null;
+  }
+
+  String get forcedActionLabel {
+    if (needsRecharge) return 'RECHARGE TURN';
+    if (chargingMoveId == 'dig') return 'DIG • STRIKE';
+    if (chargingMoveId != null) {
+      final matched = moves.where((m) => m.id == chargingMoveId).toList();
+      final moveTitle = matched.isNotEmpty
+          ? matched.first.name.toUpperCase()
+          : chargingMoveId!.replaceAll('_', ' ').toUpperCase();
+      return 'UNLEASH $moveTitle';
+    }
+    if (bideTurnsRemaining > 1) return 'BIDE • STORING';
+    if (bideTurnsRemaining == 1) return 'BIDE • UNLEASH';
+    if (rampageMoveId != null && rampageTurnsRemaining > 0) {
+      final matched = moves.where((m) => m.id == rampageMoveId).toList();
+      final moveTitle = matched.isNotEmpty
+          ? matched.first.name.toUpperCase()
+          : rampageMoveId!.toUpperCase();
+      return '$moveTitle ($rampageTurnsRemaining LEFT)';
+    }
+    if (rolloutTurnsRemaining > 0) {
+      return 'ROLLOUT ($rolloutTurnsRemaining LEFT)';
+    }
+    return 'CONTINUE';
+  }
+
   PokemonInstance({
     required this.species,
     String? nickname,
@@ -342,12 +401,30 @@ class PokemonInstance {
     return learned;
   }
 
+  void clearVolatileBattleState() {
+    chargingMoveId = null;
+    isUnderground = false;
+    needsRecharge = false;
+    bideTurnsRemaining = 0;
+    bideDamageStored = 0;
+    rampageMoveId = null;
+    rampageTurnsRemaining = 0;
+    rolloutTurnsRemaining = 0;
+    rolloutHitCount = 0;
+    trappedTurnsRemaining = 0;
+    trappedByMoveId = null;
+    trappedByMoveName = null;
+    isConfused = false;
+    confusionTurnsRemaining = 0;
+  }
+
   void resetStatStages() {
     atkStage = 0;
     defStage = 0;
     spaStage = 0;
     spdStage = 0;
     speStage = 0;
+    clearVolatileBattleState();
   }
 
   void resetBattleStateAndHeal() {

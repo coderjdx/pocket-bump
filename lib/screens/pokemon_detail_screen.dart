@@ -140,7 +140,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  "PWR ${cur.power > 0 ? cur.power : '—'} • ACC ${cur.accuracy}% • PP ${cur.currentPp}/${cur.maxPp}",
+                                  "PWR ${cur.powerLabel} • ACC ${cur.accuracy}% • PP ${cur.currentPp}/${cur.maxPp}",
                                   style: const TextStyle(
                                     color: Colors.white60,
                                     fontSize: 10,
@@ -1033,7 +1033,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          "PWR ${m.power > 0 ? m.power : '—'} • ACC ${m.accuracy}% • PP ${m.currentPp}/${m.maxPp}",
+                          "PWR ${m.powerLabel} • ACC ${m.accuracy}% • PP ${m.currentPp}/${m.maxPp}",
                           style: const TextStyle(
                               color: Colors.white70, fontSize: 10),
                         ),
@@ -1149,7 +1149,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            "PWR ${rm.power > 0 ? rm.power : '—'} • ACC ${rm.accuracy}% • PP ${rm.maxPp}",
+                            "PWR ${rm.powerLabel} • ACC ${rm.accuracy}% • PP ${rm.maxPp}",
                             style: const TextStyle(
                                 color: Colors.white60, fontSize: 10),
                           ),
@@ -1265,7 +1265,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                       ? "Already in active moveset"
                                       : (alreadyLearned
                                           ? "Already remembered — swap in above for free!"
-                                          : "PWR ${tmMove.power > 0 ? tmMove.power : '—'} • ACC ${tmMove.accuracy}% • PP ${tmMove.maxPp}"))
+                                          : "PWR ${tmMove.powerLabel} • ACC ${tmMove.accuracy}% • PP ${tmMove.maxPp}"))
                                   : "${mon.species.name} cannot learn ${tmMove.name}",
                               style: const TextStyle(
                                   color: Colors.white60, fontSize: 10),

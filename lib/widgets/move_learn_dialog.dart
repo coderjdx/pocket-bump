@@ -224,7 +224,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "PWR ${newMove.power > 0 ? newMove.power : '—'} • ACC ${newMove.accuracy}% • PP ${newMove.maxPp}",
+                            "PWR ${newMove.powerLabel} • ACC ${newMove.accuracy}% • PP ${newMove.maxPp}",
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 10.5,
@@ -312,7 +312,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                     ),
                                     const SizedBox(height: 3),
                                     Text(
-                                      "PWR ${existing.power > 0 ? existing.power : '—'} • ACC ${existing.accuracy}% • PP ${existing.currentPp}/${existing.maxPp}",
+                                      "PWR ${existing.powerLabel} • ACC ${existing.accuracy}% • PP ${existing.currentPp}/${existing.maxPp}",
                                       style: const TextStyle(
                                         color: Colors.white60,
                                         fontSize: 10,

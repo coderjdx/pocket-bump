@@ -158,6 +158,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     _trainer = Provider.of<Trainer>(context, listen: false);
+    for (final mon in _trainer.party) {
+      mon.clearVolatileBattleState();
+    }
     _playerPokemon = _trainer.leadPokemon!;
     _trainerHeldBallType = _playerPokemon.caughtBall;
     _recordParticipant(_playerPokemon);
@@ -166,6 +169,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         (widget.opponentTeam != null && widget.opponentTeam!.isNotEmpty)
             ? List<PokemonInstance>.from(widget.opponentTeam!)
             : [widget.opponentPokemon];
+    for (final mon in _opponentFullTeam) {
+      mon.clearVolatileBattleState();
+    }
     _opponentParty = List<PokemonInstance>.from(_opponentFullTeam);
     final int oppLeadIdx = _opponentParty.indexWhere((p) => !p.isFainted);
     _opponentPokemon =
@@ -530,9 +536,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     _playerPokemon.resetStatStages();
+    _opponentPokemon.trappedTurnsRemaining = 0;
+    _opponentPokemon.trappedByMoveId = null;
+    _opponentPokemon.trappedByMoveName = null;
     _playerKoController.reset();
     _recordParticipant(nextMon);
     setState(() {
+      _playerSubmerged = false;
       _visualPlayerFainted = false;
       _playerPokemon = nextMon;
       _displayedPlayerHp = nextMon.currentHp;
@@ -560,27 +570,37 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
-    if (!forced && _opponentPokemon.moves.isNotEmpty) {
-      await Future.delayed(const Duration(milliseconds: 320));
+    if (!forced) {
+      await _runOpponentFreeAttack();
       if (!mounted) return;
-      final oppMove =
-          _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
-      final events = BattleEngine.executeSingleAttack(
-        _opponentPokemon,
-        oppMove,
-        _playerPokemon,
-        isPlayer: false,
-        isWild: widget.isWild,
-      );
-      for (final ev in events) {
-        await _playStepEvent(ev);
-        if (!mounted) return;
-      }
       await _checkPostTurnConditions();
     } else {
       setState(() {
         _isProcessingTurn = false;
       });
+    }
+  }
+
+  Future<void> _runOpponentFreeAttack() async {
+    if (_opponentPokemon.isFainted || _opponentPokemon.moves.isEmpty) return;
+    await Future.delayed(const Duration(milliseconds: 260));
+    if (!mounted) return;
+    final rawOppMove =
+        _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
+    final effectiveOppMove =
+        BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove) ??
+            rawOppMove;
+    final events = BattleEngine.executeSingleAttack(
+      _opponentPokemon,
+      effectiveOppMove,
+      _playerPokemon,
+      isPlayer: false,
+      isWild: widget.isWild,
+      playerTrainer: _trainer,
+    );
+    for (final ev in events) {
+      await _playStepEvent(ev);
+      if (!mounted) return;
     }
   }
 
@@ -617,18 +637,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
-    // Status tick (Burn / Poison)
-    if (event.isStatusTick) {
-      final hurtPlayer = !event.isPlayerActor;
+    // Confusion self-damage event
+    if (event.isSelfDamage) {
+      final hurtPlayer = event.isPlayerActor;
+      HapticFeedback.mediumImpact();
       setState(() {
-        _activeMoveId =
-            event.moveType == PokemonType.fire ? 'status_burn' : 'status_poison';
-        _activeVfxType = event.moveType;
-        _vfxAttackerIsPlayer = hurtPlayer;
-        _vfxTargetIsSelf = true;
         _floatingCallout = "-${event.damageDealt}";
         _calloutOnOpponent = !hurtPlayer;
-        _calloutColor = event.moveType?.color ?? Colors.purpleAccent;
+        _calloutColor = Colors.amberAccent;
         if (hurtPlayer) {
           _playerFlash = true;
           _displayedPlayerHp = event.targetHpAfter;
@@ -637,25 +653,83 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _displayedOpponentHp = event.targetHpAfter;
         }
       });
-      _vfxController.forward(from: 0);
       if (hurtPlayer) {
         _playerShakeController.forward(from: 0);
       } else {
         _opponentShakeController.forward(from: 0);
       }
-      await Future.delayed(const Duration(milliseconds: 240));
+      await Future.delayed(const Duration(milliseconds: 220));
       if (!mounted) return;
       setState(() {
         _playerFlash = false;
         _opponentFlash = false;
       });
-      await Future.delayed(const Duration(milliseconds: 620));
+      await Future.delayed(const Duration(milliseconds: 560));
+      if (!mounted) return;
+      setState(() {
+        _floatingCallout = null;
+      });
+      return;
+    }
+
+    // Status tick (Burn / Poison / Partial Trap / Berry / Leftovers)
+    if (event.isStatusTick) {
+      final hurtPlayer = !event.isPlayerActor;
+      if (event.damageDealt > 0) {
+        setState(() {
+          _activeMoveId = event.moveId ??
+              (event.moveType == PokemonType.fire ? 'status_burn' : 'status_poison');
+          _activeVfxType = event.moveType ?? PokemonType.normal;
+          _vfxAttackerIsPlayer = hurtPlayer;
+          _vfxTargetIsSelf = true;
+          _floatingCallout = "-${event.damageDealt}";
+          _calloutOnOpponent = !hurtPlayer;
+          _calloutColor = event.moveType?.color ?? Colors.purpleAccent;
+          if (hurtPlayer) {
+            _playerFlash = true;
+            _displayedPlayerHp = event.targetHpAfter;
+          } else {
+            _opponentFlash = true;
+            _displayedOpponentHp = event.targetHpAfter;
+          }
+        });
+        _vfxController.forward(from: 0);
+        if (hurtPlayer) {
+          _playerShakeController.forward(from: 0);
+        } else {
+          _opponentShakeController.forward(from: 0);
+        }
+        await Future.delayed(const Duration(milliseconds: 240));
+        if (!mounted) return;
+        setState(() {
+          _playerFlash = false;
+          _opponentFlash = false;
+        });
+        await Future.delayed(const Duration(milliseconds: 520));
+      } else {
+        if (event.targetHpAfter > 0) {
+          setState(() {
+            if (event.isPlayerActor) {
+              _displayedPlayerHp = event.targetHpAfter;
+            } else {
+              _displayedOpponentHp = event.targetHpAfter;
+            }
+          });
+        }
+        await Future.delayed(const Duration(milliseconds: 680));
+      }
       if (!mounted) return;
       setState(() {
         _activeMoveId = null;
         _activeVfxType = null;
         _floatingCallout = null;
       });
+      return;
+    }
+
+    // Multi-hit summary toast, recharge message, trap-applied notice, etc.
+    if (event.hideMoveVfx || event.isMultiHitSummary) {
+      await Future.delayed(Duration(milliseconds: event.isMultiHitSummary ? 620 : 720));
       return;
     }
 
@@ -711,15 +785,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     return isPlayer ? const Offset(0.16, -0.08) : const Offset(-0.16, 0.08);
   }
 
-    // Standard attack / stat / status move
+    // Standard attack / charge turn / stat / status move
     if (event.moveType != null && !event.isMiss) {
       final isPlayer = event.isPlayerActor;
       final isSelfBuff = event.statChangedLabel != null && event.statTargetIsSelf;
+      final bool isSelfEffect = isSelfBuff || event.isChargeTurn;
       final moveId = event.moveId ?? event.moveType!.name;
       final isDig = moveId == 'dig';
+      final bool isMultiHitStrike = event.hitNumber > 0;
 
-      // 1. Move-specific attacker choreography (submerge for Dig, lunge/leap otherwise)
-      if (isDig) {
+      // Handle Dig Turn 1 submerge vs Turn 2 surface choreography
+      if (event.isChargeTurn && event.submergeActorAfter) {
         setState(() {
           if (isPlayer) {
             _playerSubmerged = true;
@@ -727,9 +803,38 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _opponentSubmerged = true;
           }
         });
-        await Future.delayed(const Duration(milliseconds: 180));
+        await Future.delayed(const Duration(milliseconds: 240));
         if (!mounted) return;
-      } else if (!isSelfBuff) {
+        setState(() {
+          _activeMoveId = moveId;
+          _activeVfxType = event.moveType;
+          _vfxAttackerIsPlayer = isPlayer;
+          _vfxTargetIsSelf = true;
+        });
+        _vfxController.forward(from: 0);
+        await Future.delayed(const Duration(milliseconds: 620));
+        if (!mounted) return;
+        setState(() {
+          _activeMoveId = null;
+          _activeVfxType = null;
+          _playerSubmerged = _playerPokemon.isUnderground;
+          _opponentSubmerged = _opponentPokemon.isUnderground;
+        });
+        return;
+      }
+
+      if (event.surfaceActorOnAttack) {
+        setState(() {
+          if (isPlayer) {
+            _playerSubmerged = false;
+          } else {
+            _opponentSubmerged = false;
+          }
+        });
+      }
+
+      // 1. Move-specific attacker choreography (lunge/leap)
+      if (!isSelfEffect) {
         final lunge = _lungeForMove(moveId, isPlayer);
         setState(() {
           if (isPlayer) {
@@ -738,7 +843,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _opponentLungeOffset = lunge;
           }
         });
-        await Future.delayed(const Duration(milliseconds: 140));
+        await Future.delayed(Duration(milliseconds: isMultiHitStrike ? 85 : 140));
         if (!mounted) return;
       }
 
@@ -749,20 +854,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _activeMoveId = moveId;
         _activeVfxType = event.moveType;
         _vfxAttackerIsPlayer = isPlayer;
-        _vfxTargetIsSelf = isSelfBuff;
+        _vfxTargetIsSelf = isSelfEffect;
       });
       _vfxController.forward(from: 0);
 
       // Pause briefly so projectile/beam/burrow reaches target before hit flash
-      await Future.delayed(Duration(milliseconds: isDig ? 280 : 220));
+      await Future.delayed(Duration(
+        milliseconds: isMultiHitStrike ? 150 : (isDig ? 240 : 220),
+      ));
       if (!mounted) return;
-
-      if (isDig) {
-        setState(() {
-          _playerSubmerged = false;
-          _opponentSubmerged = false;
-        });
-      }
 
       // 3. Impact flash, shake, floating callout & HP animation
       final bool calloutOnOpp = isSelfBuff ? !isPlayer : isPlayer;
@@ -777,6 +877,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         if (isNoEffectHit) {
           callout = "NO EFFECT!";
           calloutCol = Colors.white70;
+        } else if (isMultiHitStrike && event.damageDealt > 0) {
+          final String hitTag = "HIT ${event.hitNumber}/${event.totalHits}";
+          callout = event.isCrit
+              ? "CRIT! $hitTag • -${event.damageDealt}"
+              : "$hitTag • -${event.damageDealt}";
+          calloutCol = event.isCrit
+              ? Colors.orangeAccent
+              : (event.effectiveness >= 2.0 ? Colors.amberAccent : Colors.white);
         } else if (event.effectiveness >= 2.0) {
           callout = event.isCrit
               ? "CRIT! SUPER EFFECTIVE! -${event.damageDealt}"
@@ -833,15 +941,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
       }
 
-      await Future.delayed(const Duration(milliseconds: 200));
+      await Future.delayed(Duration(milliseconds: isMultiHitStrike ? 130 : 200));
       if (!mounted) return;
       setState(() {
         _playerFlash = false;
         _opponentFlash = false;
-        _playerSubmerged = false;
-        _opponentSubmerged = false;
+        _playerSubmerged = _playerPokemon.isUnderground;
+        _opponentSubmerged = _opponentPokemon.isUnderground;
       });
-      await Future.delayed(const Duration(milliseconds: 650));
+      await Future.delayed(Duration(
+        milliseconds: isMultiHitStrike ? 150 : (event.isChargeTurn ? 420 : 620),
+      ));
       if (!mounted) return;
       setState(() {
         _activeMoveId = null;
@@ -849,12 +959,76 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _floatingCallout = null;
       });
     } else {
-      await Future.delayed(const Duration(milliseconds: 800));
+      if (event.surfaceActorOnAttack) {
+        setState(() {
+          _playerSubmerged = _playerPokemon.isUnderground;
+          _opponentSubmerged = _opponentPokemon.isUnderground;
+        });
+      }
+      await Future.delayed(const Duration(milliseconds: 780));
     }
+  }
+
+  Future<void> _executeForcedPlayerTurn() async {
+    if (_isProcessingTurn ||
+        _battleEnded ||
+        !_playerPokemon.hasForcedTurnAction) {
+      return;
+    }
+    final String? forcedId = _playerPokemon.forcedMoveId;
+    if (widget.pvpSession != null) {
+      await _executePvpTurn(<String, dynamic>{
+        'type': 'fight',
+        'moveId': forcedId ??
+            (_playerPokemon.moves.isNotEmpty
+                ? _playerPokemon.moves.first.id
+                : 'tackle'),
+      });
+      return;
+    }
+
+    final Move? fallbackMove = _playerPokemon.moves.isNotEmpty
+        ? _playerPokemon.moves.first
+        : PokedexDatabase.moves['tackle']?.copy();
+    final Move? effectiveMove =
+        BattleEngine.resolveEffectiveMove(_playerPokemon, fallbackMove) ??
+            fallbackMove;
+    if (effectiveMove == null) return;
+
+    setState(() {
+      _isSelectingMove = false;
+      _isProcessingTurn = true;
+    });
+
+    final opponentMove = _opponentPokemon.moves.isNotEmpty
+        ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
+        : null;
+
+    final events = BattleEngine.resolveTurn(
+      playerMon: _playerPokemon,
+      playerAction: BattleAction.fight(effectiveMove),
+      opponentMon: _opponentPokemon,
+      opponentAction: opponentMove != null
+          ? BattleAction.fight(opponentMove)
+          : BattleAction.run(),
+      isWild: widget.isWild,
+      playerTrainer: _trainer,
+    );
+
+    for (final event in events) {
+      await _playStepEvent(event);
+      if (!mounted) return;
+    }
+
+    await _checkPostTurnConditions();
   }
 
   Future<void> _onMoveSelected(Move move) async {
     if (_isProcessingTurn || _battleEnded) return;
+    if (_playerPokemon.hasForcedTurnAction) {
+      await _executeForcedPlayerTurn();
+      return;
+    }
     if (move.currentPp <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("${move.name} has no PP left!")),
@@ -883,23 +1057,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         await Future.delayed(const Duration(milliseconds: 1100));
         if (!mounted) return;
-        final opponentMove = _opponentPokemon.moves.isNotEmpty
-            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-            : null;
-        if (opponentMove != null) {
-          final events = BattleEngine.executeSingleAttack(
-            _opponentPokemon,
-            opponentMove,
-            _playerPokemon,
-            isPlayer: false,
-            isWild: widget.isWild,
-            playerTrainer: _trainer,
-          );
-          for (final event in events) {
-            await _playStepEvent(event);
-            if (!mounted) return;
-          }
-        }
+        await _runOpponentFreeAttack();
+        if (!mounted) return;
         await _checkPostTurnConditions();
         return;
       } else if (roll < 55) {
@@ -911,23 +1070,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         await Future.delayed(const Duration(milliseconds: 1100));
         if (!mounted) return;
-        final opponentMove = _opponentPokemon.moves.isNotEmpty
-            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-            : null;
-        if (opponentMove != null) {
-          final events = BattleEngine.executeSingleAttack(
-            _opponentPokemon,
-            opponentMove,
-            _playerPokemon,
-            isPlayer: false,
-            isWild: widget.isWild,
-            playerTrainer: _trainer,
-          );
-          for (final event in events) {
-            await _playStepEvent(event);
-            if (!mounted) return;
-          }
-        }
+        await _runOpponentFreeAttack();
+        if (!mounted) return;
         await _checkPostTurnConditions();
         return;
       } else if (roll < 75) {
@@ -940,23 +1084,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         await Future.delayed(const Duration(milliseconds: 1100));
         if (!mounted) return;
-        final opponentMove = _opponentPokemon.moves.isNotEmpty
-            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-            : null;
-        if (opponentMove != null) {
-          final events = BattleEngine.executeSingleAttack(
-            _opponentPokemon,
-            opponentMove,
-            _playerPokemon,
-            isPlayer: false,
-            isWild: widget.isWild,
-            playerTrainer: _trainer,
-          );
-          for (final event in events) {
-            await _playStepEvent(event);
-            if (!mounted) return;
-          }
-        }
+        await _runOpponentFreeAttack();
+        if (!mounted) return;
         await _checkPostTurnConditions();
         return;
       } else if (roll < 90) {
@@ -989,23 +1118,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           await _checkPostTurnConditions();
           return;
         }
-        final opponentMove = _opponentPokemon.moves.isNotEmpty
-            ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-            : null;
-        if (opponentMove != null) {
-          final events = BattleEngine.executeSingleAttack(
-            _opponentPokemon,
-            opponentMove,
-            _playerPokemon,
-            isPlayer: false,
-            isWild: widget.isWild,
-            playerTrainer: _trainer,
-          );
-          for (final event in events) {
-            await _playStepEvent(event);
-            if (!mounted) return;
-          }
-        }
+        await _runOpponentFreeAttack();
+        if (!mounted) return;
         await _checkPostTurnConditions();
         return;
       }
@@ -1142,6 +1256,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     if (_opponentPokemon.isFainted) {
+      _opponentPokemon.clearVolatileBattleState();
+      _playerPokemon.trappedTurnsRemaining = 0;
+      _playerPokemon.trappedByMoveId = null;
+      _playerPokemon.trappedByMoveName = null;
+      _opponentSubmerged = false;
       await _awardExpForOpponent();
       if (!mounted) return;
 
@@ -1251,7 +1370,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _isProcessingTurn = false;
       });
     } else if (_playerPokemon.isFainted) {
+      _playerPokemon.clearVolatileBattleState();
+      _opponentPokemon.trappedTurnsRemaining = 0;
+      _opponentPokemon.trappedByMoveId = null;
+      _opponentPokemon.trappedByMoveName = null;
       setState(() {
+        _playerSubmerged = false;
         _isProcessingTurn = false;
         _currentMessage =
             "${_playerPokemon.nickname} fainted! Choose another Pokémon!";
@@ -1385,22 +1509,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _showOpponentTrainerSprite = false;
       });
 
-      if (_opponentPokemon.moves.isNotEmpty) {
-        final oppMove =
-            _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
-        final events = BattleEngine.executeSingleAttack(
-          _opponentPokemon,
-          oppMove,
-          _playerPokemon,
-          isPlayer: false,
-          isWild: widget.isWild,
-          playerTrainer: _trainer,
-        );
-        for (final ev in events) {
-          await _playStepEvent(ev);
-          if (!mounted) return;
-        }
-      }
+      await _runOpponentFreeAttack();
+      if (!mounted) return;
       await _checkPostTurnConditions();
       return;
     }
@@ -1542,21 +1652,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await Future.delayed(const Duration(milliseconds: 700));
       if (!mounted) return;
 
-      if (_opponentPokemon.moves.isNotEmpty) {
-        final oppMove =
-            _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
-        final events = BattleEngine.executeSingleAttack(
-          _opponentPokemon,
-          oppMove,
-          _playerPokemon,
-          isPlayer: false,
-          isWild: widget.isWild,
-        );
-        for (final ev in events) {
-          await _playStepEvent(ev);
-          if (!mounted) return;
-        }
-      }
+      await _runOpponentFreeAttack();
+      if (!mounted) return;
 
       await _checkPostTurnConditions();
     }
@@ -2033,9 +2130,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           await Future.delayed(const Duration(milliseconds: 320));
           if (!mounted) return;
           _playerPokemon.resetStatStages();
+          _opponentPokemon.trappedTurnsRemaining = 0;
+          _opponentPokemon.trappedByMoveId = null;
+          _opponentPokemon.trappedByMoveName = null;
           _playerKoController.reset();
           _recordParticipant(nextMon);
           setState(() {
+            _playerSubmerged = false;
             _playerFlash = false;
             _visualPlayerFainted = false;
             _playerPokemon = nextMon;
@@ -2069,12 +2170,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _opponentParty.add(_opponentPokemon);
           }
           _opponentPokemon.resetStatStages();
+          _playerPokemon.trappedTurnsRemaining = 0;
+          _playerPokemon.trappedByMoveId = null;
+          _playerPokemon.trappedByMoveName = null;
           _opponentParty.remove(nextOpp);
           if (monJson != null) {
             _syncPokemonStateFromJson(nextOpp, monJson);
           }
 
           setState(() {
+            _opponentSubmerged = false;
             _opponentFlash = false;
             _visualOpponentFainted = false;
             _opponentKoController.reset();
@@ -2165,14 +2270,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     // 4. Resolve Fight moves with deterministic order & seeds (flat PvP rules).
-    final Move? playerMove =
+    final Move? rawPlayerMove =
         (myAction['type'] == 'fight' && !_playerPokemon.isFainted)
             ? _resolveMoveForPokemon(
                 _playerPokemon,
                 myAction['moveId'] as String?,
               )
             : null;
-    final Move? oppMove =
+    final Move? rawOppMove =
         (peerPacket.action['type'] == 'fight' && !_opponentPokemon.isFainted)
             ? _resolveMoveForPokemon(
                 _opponentPokemon,
@@ -2180,10 +2285,19 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
               )
             : null;
 
+    final Move? playerMove = rawPlayerMove != null
+        ? BattleEngine.resolveEffectiveMove(_playerPokemon, rawPlayerMove)
+        : null;
+    final Move? oppMove = rawOppMove != null
+        ? BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove)
+        : null;
+
     bool playerGoesFirst = true;
     if (playerMove != null && oppMove != null) {
-      if (playerMove.priority != oppMove.priority) {
-        playerGoesFirst = playerMove.priority > oppMove.priority;
+      final int pPriority = _playerPokemon.needsRecharge ? 0 : playerMove.priority;
+      final int oPriority = _opponentPokemon.needsRecharge ? 0 : oppMove.priority;
+      if (pPriority != oPriority) {
+        playerGoesFirst = pPriority > oPriority;
       } else {
         final int pSpe = _playerPokemon.effectiveSpe;
         final int oSpe = _opponentPokemon.effectiveSpe;
@@ -3725,6 +3839,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildMainActionMenu() {
+    final bool hasLockedMove = _playerPokemon.hasForcedTurnAction;
+    final bool isTrapped = _playerPokemon.trappedTurnsRemaining > 0;
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool compact = constraints.maxHeight < 168;
@@ -3740,12 +3856,26 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     children: [
                       Expanded(
                         child: _buildActionButton(
-                          "FIGHT",
-                          "Use a move",
-                          const Color(0xFFE53935),
-                          const Color(0xFF991B1B),
-                          Icons.flash_on_rounded,
-                          () => setState(() => _isSelectingMove = true),
+                          hasLockedMove
+                              ? (_playerPokemon.needsRecharge
+                                  ? "RECHARGE"
+                                  : "CONTINUE")
+                              : "FIGHT",
+                          hasLockedMove
+                              ? _playerPokemon.forcedActionLabel
+                              : "Use a move",
+                          hasLockedMove
+                              ? const Color(0xFFF59E0B)
+                              : const Color(0xFFE53935),
+                          hasLockedMove
+                              ? const Color(0xFF9A4D05)
+                              : const Color(0xFF991B1B),
+                          hasLockedMove
+                              ? Icons.bolt_rounded
+                              : Icons.flash_on_rounded,
+                          hasLockedMove
+                              ? _executeForcedPlayerTurn
+                              : () => setState(() => _isSelectingMove = true),
                           compact: compact,
                         ),
                       ),
@@ -3753,11 +3883,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                       Expanded(
                         child: _buildActionButton(
                           "BAG",
-                          "Items & Balls",
+                          hasLockedMove ? "Locked in move" : "Items & Balls",
                           const Color(0xFFF59E0B),
                           const Color(0xFF9A4D05),
                           Icons.backpack_rounded,
-                          _openBagModal,
+                          hasLockedMove
+                              ? () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          "Finish ${_playerPokemon.forcedActionLabel} first!"),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              : _openBagModal,
                           compact: compact,
                         ),
                       ),
@@ -3771,11 +3911,28 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                       Expanded(
                         child: _buildActionButton(
                           "POKÉMON",
-                          "Switch party",
+                          hasLockedMove
+                              ? "Locked in move"
+                              : (isTrapped
+                                  ? "Trapped!"
+                                  : "Switch party"),
                           const Color(0xFF22C55E),
                           const Color(0xFF0E6E33),
                           Icons.catching_pokemon,
-                          () => _openSwitchModal(),
+                          (hasLockedMove || isTrapped)
+                              ? () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        hasLockedMove
+                                            ? "${_playerPokemon.nickname} is mid-move and cannot switch!"
+                                            : "${_playerPokemon.nickname} is trapped by ${_playerPokemon.trappedByMoveName ?? 'the vortex'}!",
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              : () => _openSwitchModal(),
                           compact: compact,
                         ),
                       ),
@@ -4134,7 +4291,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                   const SizedBox(width: 5),
                                   Text(
                                     move.power > 0
-                                        ? "PWR ${move.power}"
+                                        ? "PWR ${move.powerLabel}"
                                         : (move.category == MoveCategory.status
                                             ? "STATUS"
                                             : "—"),
@@ -4144,6 +4301,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       color: Colors.white70,
                                     ),
                                   ),
+                                  if (move.isTwoTurnCharge) ...[
+                                    const SizedBox(width: 4),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4, vertical: 1),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amberAccent.withOpacity(0.18),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: const Text(
+                                        "2T",
+                                        style: TextStyle(
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.amberAccent,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ],
                               ),
                             ),
@@ -4468,22 +4644,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     await Future.delayed(const Duration(milliseconds: 900));
     if (!mounted) return;
-    if (_opponentPokemon.moves.isNotEmpty) {
-      final oppMove =
-          _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
-      final events = BattleEngine.executeSingleAttack(
-        _opponentPokemon,
-        oppMove,
-        _playerPokemon,
-        isPlayer: false,
-        isWild: widget.isWild,
-        playerTrainer: _trainer,
-      );
-      for (final ev in events) {
-        await _playStepEvent(ev);
-        if (!mounted) return;
-      }
-    }
+    await _runOpponentFreeAttack();
+    if (!mounted) return;
     await _checkPostTurnConditions();
   }
 
@@ -5925,7 +6087,23 @@ class _MoveVfxPainter extends CustomPainter {
         break;
 
       case 'solar_beam':
-        if (t < 0.35) {
+        if (isSelfTarget) {
+          // Turn 1 charge: gathering golden sunlight rings around attacker
+          for (int r = 0; r < 3; r++) {
+            final ang = t * 10 + r * (pi * 2 / 3);
+            final orbit = 32 * (1.0 - t * 0.5);
+            canvas.drawCircle(
+              attackerCenter + Offset(cos(ang) * orbit, sin(ang) * orbit * 0.7),
+              6 * fade,
+              Paint()..color = Colors.yellowAccent.withOpacity(0.9 * fade),
+            );
+          }
+          canvas.drawCircle(
+            attackerCenter,
+            (18 + sin(t * pi) * 14) * fade,
+            Paint()..color = Colors.yellowAccent.withOpacity(0.45 * fade),
+          );
+        } else if (t < 0.35) {
           // Gathering sunlight on attacker
           final gt = t / 0.35;
           canvas.drawCircle(
@@ -6541,31 +6719,33 @@ class _MoveVfxPainter extends CustomPainter {
 
       case 'dig':
         {
-          if (t < 0.48) {
-            // Phase 1: Burrow mound at attacker + subterranean dirt trail toward defender
-            final bt = (t / 0.48).clamp(0.0, 1.0);
+          if (isSelfTarget || t < 0.48) {
+            // Burrow mound & dirt clods at attacker (+ tremor trail on strike turn)
+            final bt = isSelfTarget ? t : (t / 0.48).clamp(0.0, 1.0);
             for (int cl = 0; cl < 5; cl++) {
               final cx = (cl - 2.0) * 10.0;
               final cy = -sin(bt * pi * 2 + cl) * 12.0 + 18.0;
               canvas.drawCircle(
                 attackerCenter + Offset(cx, cy),
                 7.0 * (1.0 - bt * 0.4),
-                Paint()..color = const Color(0xFF795548).withOpacity(0.9),
+                Paint()..color = const Color(0xFF795548).withOpacity(0.9 * fade),
               );
             }
             canvas.drawOval(
               Rect.fromCenter(center: attackerCenter + const Offset(0, 20), width: 52, height: 18),
-              Paint()..color = const Color(0xFF4E342E).withOpacity(0.85),
+              Paint()..color = const Color(0xFF4E342E).withOpacity(0.85 * fade),
             );
-            // Moving subterranean tremor mounds along the path
-            final steps = (bt * 6).floor();
-            for (int s = 0; s <= steps; s++) {
-              final mp = Offset.lerp(attackerCenter + const Offset(0, 18),
-                  defenderCenter + const Offset(0, 18), s / 6.0)!;
-              canvas.drawOval(
-                Rect.fromCenter(center: mp, width: 20, height: 8),
-                Paint()..color = const Color(0xFF8D6E63).withOpacity(0.85),
-              );
+            if (!isSelfTarget) {
+              // Moving subterranean tremor mounds along the path on Turn 2
+              final steps = (bt * 6).floor();
+              for (int s = 0; s <= steps; s++) {
+                final mp = Offset.lerp(attackerCenter + const Offset(0, 18),
+                    defenderCenter + const Offset(0, 18), s / 6.0)!;
+                canvas.drawOval(
+                  Rect.fromCenter(center: mp, width: 20, height: 8),
+                  Paint()..color = const Color(0xFF8D6E63).withOpacity(0.85),
+                );
+              }
             }
           } else {
             // Phase 2: Ground fissure & earthen geyser eruption beneath defender
@@ -8423,7 +8603,7 @@ class _MoveVfxPainter extends CustomPainter {
             ..strokeWidth = 4.5 * fade
             ..color = Colors.redAccent.withOpacity(fade),
         );
-        if (t > 0.45) {
+        if (!isSelfTarget && t > 0.45) {
           final bt = (t - 0.45) / 0.55;
           canvas.drawLine(
             attackerCenter,
@@ -8649,21 +8829,38 @@ class _MoveVfxPainter extends CustomPainter {
         break;
 
       case 'razor_wind':
-        for (int i = 0; i < 2; i++) {
-          final lt = ((t - i * 0.2) / 0.55).clamp(0.0, 1.0);
-          if (lt <= 0) continue;
-          final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
-          canvas.drawArc(
-            Rect.fromCenter(center: pos, width: 54, height: 22),
-            -0.3,
-            pi + 0.6,
-            false,
-            Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 5 * fade
-              ..strokeCap = StrokeCap.round
-              ..color = (i == 0 ? Colors.white : Colors.cyanAccent).withOpacity(fade),
-          );
+        if (isSelfTarget) {
+          for (int i = 0; i < 3; i++) {
+            final ang = t * 10 + i * (pi * 2 / 3);
+            canvas.drawArc(
+              Rect.fromCenter(center: attackerCenter, width: 58, height: 34),
+              ang,
+              0.9,
+              false,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4 * fade
+                ..strokeCap = StrokeCap.round
+                ..color = (i.isEven ? Colors.white : Colors.cyanAccent).withOpacity(fade),
+            );
+          }
+        } else {
+          for (int i = 0; i < 2; i++) {
+            final lt = ((t - i * 0.2) / 0.55).clamp(0.0, 1.0);
+            if (lt <= 0) continue;
+            final pos = Offset.lerp(attackerCenter, defenderCenter, lt)!;
+            canvas.drawArc(
+              Rect.fromCenter(center: pos, width: 54, height: 22),
+              -0.3,
+              pi + 0.6,
+              false,
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 5 * fade
+                ..strokeCap = StrokeCap.round
+                ..color = (i == 0 ? Colors.white : Colors.cyanAccent).withOpacity(fade),
+            );
+          }
         }
         break;
 
@@ -8717,15 +8914,28 @@ class _MoveVfxPainter extends CustomPainter {
             ..strokeWidth = 4 * fade
             ..color = const Color(0xFFF5F5DC).withOpacity(fade),
         );
-        final sbPos = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.45))!;
-        canvas.drawCircle(sbPos, 20 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
-        if (t > 0.42) {
-          _drawStarPath(canvas, defenderCenter, 28 * fade, 11 * fade, Colors.amberAccent, fade);
+        if (!isSelfTarget) {
+          final sbPos = Offset.lerp(attackerCenter, defenderCenter, min(1.0, t * 1.45))!;
+          canvas.drawCircle(sbPos, 20 * fade, Paint()..color = const Color(0xFFF5F5DC).withOpacity(fade));
+          if (t > 0.42) {
+            _drawStarPath(canvas, defenderCenter, 28 * fade, 11 * fade, Colors.amberAccent, fade);
+          }
         }
         break;
 
       case 'sky_attack':
-        {
+        if (isSelfTarget) {
+          canvas.drawCircle(
+            attackerCenter,
+            (22 + sin(t * pi) * 14) * fade,
+            Paint()..color = Colors.amberAccent.withOpacity(0.45 * fade),
+          );
+          for (int f = 0; f < 5; f++) {
+            final ang = (f / 5) * pi * 2 + t * 6;
+            final fp = attackerCenter + Offset(cos(ang) * 28, sin(ang) * 22);
+            _drawStarPath(canvas, fp, 7 * fade, 2.5 * fade, Colors.white, fade, points: 4);
+          }
+        } else {
           final diveT = min(1.0, t * 1.4);
           final pos = Offset.lerp(attackerCenter, defenderCenter, diveT)!;
           canvas.drawLine(
