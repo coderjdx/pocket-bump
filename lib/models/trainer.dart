@@ -47,6 +47,8 @@ class Trainer extends ChangeNotifier {
   Set<int> completedGymStepIds;
   Map<int, int> gymTodaySteps;
   Map<String, int> customItems;
+  bool expShareEnabled;
+  bool repelEnabled;
 
   Trainer({
     required this.name,
@@ -81,6 +83,8 @@ class Trainer extends ChangeNotifier {
     Set<int>? completedGymStepIds,
     Map<int, int>? gymTodaySteps,
     Map<String, int>? customItems,
+    this.expShareEnabled = false,
+    this.repelEnabled = false,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
         lastStepDate = lastStepDate ?? todayDateKey(),
@@ -609,6 +613,7 @@ class Trainer extends ChangeNotifier {
 
   /// Processes each step individually: increments today's total & hidden 0..400 encounter counter
   /// and rolls probability `encounterSteps / 400.0` (1/400 at step 1, 2/400 at step 2, ..., 400/400 at 400).
+  /// When [repelEnabled] is true, wild encounters are suppressed.
   bool recordStepsAndCheckEncounter(int delta) {
     if (delta <= 0) return false;
     _syncDailyRollover();
@@ -617,16 +622,31 @@ class Trainer extends ChangeNotifier {
     for (int i = 0; i < delta; i++) {
       dailySteps++;
       totalSteps++;
-      encounterSteps = (encounterSteps + 1).clamp(0, maxEncounterSteps);
-      final double chance = encounterSteps / maxEncounterSteps;
-      if (encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance) {
-        encounterSteps = 0;
-        triggered = true;
-        break;
+      if (!repelEnabled) {
+        encounterSteps = (encounterSteps + 1).clamp(0, maxEncounterSteps);
+        final double chance = encounterSteps / maxEncounterSteps;
+        if (encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance) {
+          encounterSteps = 0;
+          triggered = true;
+          break;
+        }
       }
     }
     notifyListeners();
     return triggered;
+  }
+
+  void toggleExpShare([bool? value]) {
+    expShareEnabled = value ?? !expShareEnabled;
+    notifyListeners();
+  }
+
+  void toggleRepel([bool? value]) {
+    repelEnabled = value ?? !repelEnabled;
+    if (repelEnabled) {
+      encounterSteps = 0;
+    }
+    notifyListeners();
   }
 
   void resetEncounterSteps() {
@@ -786,6 +806,8 @@ class Trainer extends ChangeNotifier {
       'completedGymStepIds': completedGymStepIds.toList()..sort(),
       'gymTodaySteps': gymTodaySteps.map((k, v) => MapEntry(k.toString(), v)),
       'customItems': customItems,
+      'expShareEnabled': expShareEnabled,
+      'repelEnabled': repelEnabled,
       'party': party.map((mon) => mon.toJson()).toList(),
       'activePcBoxIndex': activePcBoxIndex,
       'pcBoxes': pcBoxes
@@ -859,6 +881,8 @@ class Trainer extends ChangeNotifier {
         customItems[k] = v.toInt().clamp(0, 99);
       }
     });
+    expShareEnabled = json['expShareEnabled'] == true;
+    repelEnabled = json['repelEnabled'] == true;
 
     final rawParty = json['party'] as List<dynamic>? ?? const [];
     final loadedParty = <PokemonInstance>[];
@@ -982,6 +1006,8 @@ class Trainer extends ChangeNotifier {
     completedGymStepIds = {};
     gymTodaySteps = {};
     customItems = {};
+    expShareEnabled = false;
+    repelEnabled = false;
     _suppressAutoSave = false;
     super.notifyListeners();
   }

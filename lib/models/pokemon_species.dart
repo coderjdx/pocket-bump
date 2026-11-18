@@ -71,6 +71,7 @@ class PokemonSpecies {
   final double heightMeters;
   final int evolutionStage;
   final bool isStarter;
+  final bool isFossil;
   final bool isPseudoLegendary;
   final bool isLegendary;
   final bool isMythical;
@@ -95,6 +96,7 @@ class PokemonSpecies {
     this.heightMeters = 0.7,
     this.evolutionStage = 1,
     this.isStarter = false,
+    this.isFossil = false,
     this.isPseudoLegendary = false,
     this.isLegendary = false,
     this.isMythical = false,
@@ -107,6 +109,8 @@ class PokemonSpecies {
 
   bool get isFinalStage => evolutionSpeciesId == null;
   bool get isSingleStage => evolutionStage == 1 && evolutionSpeciesId == null;
+  bool get isFossilPokemon =>
+      isFossil || const {138, 139, 140, 141, 142}.contains(id);
 
   PokemonRarity get rarity {
     if (rarityOverride != null) return rarityOverride!;
@@ -128,8 +132,10 @@ class PokemonSpecies {
 
   /// Whether this species can ever appear in wild encounters.
   /// Starter lines can only ever be encountered in the wild in their first stage.
+  /// Fossil Pokémon cannot be encountered in the wild (must be restored at a Poké Lab).
   bool get isWildEncounterable {
     if (rarity == PokemonRarity.special) return false;
+    if (isFossilPokemon) return false;
     if (isStarter && evolutionStage > 1) return false;
     return true;
   }

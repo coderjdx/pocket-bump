@@ -1251,20 +1251,31 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     trainer.healAndResetAllParty();
     trainer.saveProgress();
 
-    // Rare drop roll on repeat clears
+    // Rare drop roll on repeat clears (held item, evolution stone, or fossil restoration item)
     String? droppedItemName;
     if (!firstClear) {
       final roll = Random().nextDouble();
-      if (roll < 0.25) {
+      if (roll < 0.20) {
         // Drop signature held item
         trainer.adjustItemCount(gym.signatureHeldItemDrop, 1);
         final itemDef = ItemDatabase.byId(gym.signatureHeldItemDrop);
         droppedItemName = itemDef?.name ?? gym.signatureHeldItemDrop;
-      } else if (roll < 0.50) {
+      } else if (roll < 0.40) {
         // Drop signature stone
         trainer.adjustItemCount(gym.signatureStoneDrop, 1);
         final itemDef = ItemDatabase.byId(gym.signatureStoneDrop);
         droppedItemName = itemDef?.name ?? gym.signatureStoneDrop;
+      } else if (roll < 0.55) {
+        // Rare Unknown Fossil drop
+        trainer.adjustItemCount('unknown_fossil', 1);
+        droppedItemName =
+            ItemDatabase.byId('unknown_fossil')?.name ?? 'Unknown Fossil';
+      } else if (roll < 0.70) {
+        // Rare Fossil Restoration Voucher drop
+        trainer.adjustItemCount('fossil_restoration_voucher', 1);
+        droppedItemName =
+            ItemDatabase.byId('fossil_restoration_voucher')?.name ??
+                'Fossil Restoration Voucher';
       }
       trainer.saveProgress();
     }

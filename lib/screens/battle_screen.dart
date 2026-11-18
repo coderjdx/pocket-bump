@@ -989,9 +989,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         isTrainerBattle: !widget.isWild,
       );
 
-      // Award EXP immediately upon defeating this Pokémon (split equally among conscious participants)
-      final List<PokemonInstance> consciousParticipants =
-          _participatedPokemon.where((p) => !p.isFainted).toList();
+      // Award EXP immediately upon defeating this Pokémon (split equally among all conscious
+      // party Pokémon when EXP Share is ON, or conscious battle participants when OFF)
+      final List<PokemonInstance> consciousParticipants = _trainer.expShareEnabled
+          ? _trainer.party.where((p) => !p.isFainted).toList()
+          : _participatedPokemon.where((p) => !p.isFainted).toList();
       if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
         consciousParticipants.add(_playerPokemon);
       }
@@ -1002,6 +1004,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (consciousParticipants.length == 1) {
             _currentMessage =
                 "${consciousParticipants.first.nickname} gained $share EXP!";
+          } else if (_trainer.expShareEnabled &&
+              consciousParticipants.length > 3) {
+            _currentMessage =
+                "All conscious party Pokémon each gained $share EXP (EXP Share)!";
           } else {
             _currentMessage =
                 "${consciousParticipants.map((p) => p.nickname).join(', ')} each gained $share EXP!";

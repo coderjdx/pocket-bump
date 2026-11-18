@@ -7,6 +7,7 @@ enum ItemCategory {
   berry,
   heldItem,
   evolutionStone,
+  fossil,
 }
 
 class Item {
@@ -36,6 +37,7 @@ class Item {
   bool get isBerry => category == ItemCategory.berry;
   bool get isHeldItem => category == ItemCategory.heldItem;
   bool get isEvolutionStone => category == ItemCategory.evolutionStone;
+  bool get isFossil => category == ItemCategory.fossil;
   bool get isBall => category == ItemCategory.pokeball;
   bool get isMedicine => category == ItemCategory.medicine;
 }
@@ -459,6 +461,30 @@ class ItemDatabase {
       rarity: PokemonRarity.rare,
       color: Color(0xFF9FA8DA),
       icon: Icons.nightlight_round,
+    ),
+
+    // === FOSSIL RESTORATION ITEMS (Gym Leader Repeat Rare Drops) ===
+    'unknown_fossil': Item(
+      id: 'unknown_fossil',
+      name: 'Unknown Fossil',
+      description: 'A mysterious prehistoric fossil. Take it with a Fossil Restoration Voucher to a Poké Lab to restore it.',
+      category: ItemCategory.fossil,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFD7CCC8),
+      icon: Icons.album,
+    ),
+    'fossil_restoration_voucher': Item(
+      id: 'fossil_restoration_voucher',
+      name: 'Fossil Restoration Voucher',
+      description: 'Requires an Unknown Fossil. Redeem at a Poké Lab to restore a random Lv. 10 first-stage Fossil Pokémon.',
+      category: ItemCategory.fossil,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF4DD0E1),
+      icon: Icons.science,
     ),
   };
 

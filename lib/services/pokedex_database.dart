@@ -3449,6 +3449,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 71,
       heightMeters: 0.4,
+      isFossil: true,
       evolutionLevel: 40,
       evolutionSpeciesId: 139,
       learnset: [
@@ -3476,6 +3477,7 @@ class PokedexDatabase {
       baseExp: 173,
       heightMeters: 1.0,
       evolutionStage: 2,
+      isFossil: true,
       minEncounterLevel: 40,
       learnset: [
         LearnedMove(1, 'bite'),
@@ -3501,6 +3503,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 71,
       heightMeters: 0.5,
+      isFossil: true,
       evolutionLevel: 40,
       evolutionSpeciesId: 141,
       learnset: [
@@ -3527,6 +3530,7 @@ class PokedexDatabase {
       baseExp: 173,
       heightMeters: 1.3,
       evolutionStage: 2,
+      isFossil: true,
       minEncounterLevel: 40,
       learnset: [
         LearnedMove(1, 'scratch'),
@@ -3552,6 +3556,7 @@ class PokedexDatabase {
       baseCatchRate: 45,
       baseExp: 180,
       heightMeters: 1.8,
+      isFossil: true,
       minEncounterLevel: 25,
       learnset: [
         LearnedMove(1, 'wing_attack'),
@@ -5281,15 +5286,19 @@ class PokedexDatabase {
         .toList();
   }
 
+  static const List<int> firstStageFossilSpeciesIds = [138, 140, 142];
+
   static PokemonInstance createPokemon(
     int speciesId, {
     int level = 5,
     String? nickname,
+    bool respectMinEncounterLevel = true,
   }) {
     final spec = species[speciesId]!;
-    final effectiveLevel = level < spec.minEncounterLevel
-        ? spec.minEncounterLevel
-        : level;
+    final effectiveLevel =
+        (respectMinEncounterLevel && level < spec.minEncounterLevel)
+            ? spec.minEncounterLevel
+            : level;
     return PokemonInstance(
       species: spec,
       nickname: nickname,

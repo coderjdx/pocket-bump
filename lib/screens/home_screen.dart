@@ -59,6 +59,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _launchWildEncounter() {
     final trainer = Provider.of<Trainer>(context, listen: false);
+    if (trainer.repelEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Repel is active! Toggle Repel off to encounter wild Pokémon."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
     trainer.resetEncounterSteps();
     final playerLevel = trainer.leadPokemon?.level ?? 5;
     final wildMon = PokedexDatabase.generateWildEncounter(playerLevel: playerLevel);
@@ -686,8 +696,84 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ],
           ),
+          const SizedBox(height: 6),
+          _buildUtilityToggleRow(trainer),
         ],
       ),
+    );
+  }
+
+  Widget _buildUtilityToggleRow(Trainer trainer) {
+    Widget pill({
+      required bool active,
+      required IconData icon,
+      required String label,
+      required Color activeColor,
+      required VoidCallback onTap,
+    }) {
+      return Expanded(
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            decoration: BoxDecoration(
+              color: active
+                  ? activeColor.withOpacity(0.18)
+                  : Colors.black26,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: active
+                    ? activeColor.withOpacity(0.7)
+                    : Colors.white12,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 13,
+                  color: active ? activeColor : Colors.white54,
+                ),
+                const SizedBox(width: 5),
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: active ? activeColor : Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        pill(
+          active: trainer.expShareEnabled,
+          icon: Icons.share,
+          label: trainer.expShareEnabled ? "EXP Share: ON" : "EXP Share: OFF",
+          activeColor: Colors.cyanAccent,
+          onTap: () => trainer.toggleExpShare(),
+        ),
+        const SizedBox(width: 6),
+        pill(
+          active: trainer.repelEnabled,
+          icon: Icons.shield,
+          label: trainer.repelEnabled ? "Repel: ON" : "Repel: OFF",
+          activeColor: Colors.orangeAccent,
+          onTap: () => trainer.toggleRepel(),
+        ),
+      ],
     );
   }
 
@@ -1999,6 +2085,174 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
+  void _useFossilRestorationVoucher(
+    BuildContext parentContext,
+    Trainer trainer,
+  ) {
+    if (trainer.getItemCount('fossil_restoration_voucher') <= 0) {
+      ScaffoldMessenger.of(parentContext).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "You need a Fossil Restoration Voucher! Defeat Gym Leaders in rematches to find one."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    if (trainer.getItemCount('unknown_fossil') <= 0) {
+      showDialog(
+        context: parentContext,
+        builder: (dlgCtx) => AlertDialog(
+          backgroundColor: const Color(0xFF23232E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Row(
+            children: [
+              Icon(Icons.science, color: Color(0xFF4DD0E1), size: 22),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "POKÉ LAB FOSSIL RESTORATION",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            "You need an Unknown Fossil to restore a fossil Pokémon at a Poké Lab!",
+            style: TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dlgCtx),
+              child: const Text("OK", style: TextStyle(color: Colors.cyanAccent)),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (trainer.isStorageFull) {
+      ScaffoldMessenger.of(parentContext).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Both your Party and all 16 PC Boxes are full (320/320)! Release a Pokémon first."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    trainer.adjustItemCount('fossil_restoration_voucher', -1);
+    trainer.adjustItemCount('unknown_fossil', -1);
+
+    final fossilPool = PokedexDatabase.firstStageFossilSpeciesIds;
+    final chosenId = fossilPool[Random().nextInt(fossilPool.length)];
+    final restoredMon = PokedexDatabase.createPokemon(
+      chosenId,
+      level: 10,
+      respectMinEncounterLevel: false,
+    );
+    final boxNum = trainer.addPokemon(restoredMon);
+    trainer.saveProgress();
+    HapticFeedback.heavyImpact();
+
+    showDialog(
+      context: parentContext,
+      builder: (dlgCtx) => AlertDialog(
+        backgroundColor: const Color(0xFF23232E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Row(
+          children: [
+            Icon(Icons.science, color: Color(0xFF4DD0E1), size: 24),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                "POKÉ LAB RESTORATION COMPLETE!",
+                style: TextStyle(
+                  color: Color(0xFF4DD0E1),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 88,
+              height: 88,
+              child: Image.network(
+                restoredMon.species.spriteUrl,
+                width: 88,
+                height: 88,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.none,
+                errorBuilder: (_, __, ___) => Image.network(
+                  restoredMon.species.staticSpriteUrl,
+                  width: 88,
+                  height: 88,
+                  filterQuality: FilterQuality.none,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.catching_pokemon,
+                    color: Colors.white54,
+                    size: 56,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "You went to a Poké Lab to get the fossil restored! The scientists revived a Lv. ${restoredMon.level} ${restoredMon.species.name}!",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13.5,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              boxNum == null
+                  ? "${restoredMon.species.name} joined your Party!"
+                  : "${restoredMon.species.name} was transferred to PC Box #$boxNum!",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.amberAccent,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(dlgCtx);
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4DD0E1),
+              foregroundColor: Colors.black,
+            ),
+            child: const Text(
+              "AWESOME!",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // ─── ITEMS MANAGER MODAL ──────────────────────────────────────────────────
   void _openItemsManagerModal(Trainer rootTrainer) {
     showModalBottomSheet(
@@ -2050,6 +2304,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+                    _buildUtilityToggleRow(trainer),
                     const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
@@ -2414,6 +2670,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   style: const TextStyle(color: Colors.white54, fontSize: 9.5),
                                                 ),
                                               ),
+                                            ] else if (item.isFossil) ...[
+                                              const SizedBox(height: 6),
+                                              if (item.id == 'fossil_restoration_voucher' ||
+                                                  trainer.getItemCount('fossil_restoration_voucher') > 0)
+                                                SizedBox(
+                                                  height: 28,
+                                                  child: ElevatedButton.icon(
+                                                    onPressed: count > 0
+                                                        ? () => _useFossilRestorationVoucher(ctx, trainer)
+                                                        : null,
+                                                    icon: const Icon(Icons.science, size: 14),
+                                                    label: const Text(
+                                                      "Restore at Poké Lab",
+                                                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                                                    ),
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: const Color(0xFF4DD0E1).withOpacity(0.22),
+                                                      foregroundColor: const Color(0xFF4DD0E1),
+                                                      side: BorderSide(color: const Color(0xFF4DD0E1).withOpacity(0.7)),
+                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(8)),
+                                                    ),
+                                                  ),
+                                                )
+                                              else
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white.withOpacity(0.06),
+                                                    borderRadius: BorderRadius.circular(6),
+                                                  ),
+                                                  child: const Text(
+                                                    "Requires a Fossil Restoration Voucher at a Poké Lab",
+                                                    style: TextStyle(color: Colors.white54, fontSize: 9.5),
+                                                  ),
+                                                ),
                                             ],
                                           ],
                                         ),
