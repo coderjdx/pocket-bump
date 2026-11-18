@@ -163,9 +163,9 @@ class BattleEngine {
 
     // End-of-turn Burn / Poison tick damage & Leftovers
     if (!playerMon.isFainted && !opponentMon.isFainted) {
-      events.addAll(_processEndOfTurnStatus(playerMon, isPlayer: true, isWild: isWild));
+      events.addAll(processEndOfTurnStatus(playerMon, isPlayer: true, isWild: isWild));
       if (!playerMon.isFainted) {
-        events.addAll(_processEndOfTurnStatus(opponentMon, isPlayer: false, isWild: isWild));
+        events.addAll(processEndOfTurnStatus(opponentMon, isPlayer: false, isWild: isWild));
       }
     }
 
@@ -287,7 +287,9 @@ class BattleEngine {
     required bool isPlayer,
     bool isWild = true,
     Trainer? playerTrainer,
+    Random? rng,
   }) {
+    final random = rng ?? _rng;
     final List<BattleStepEvent> events = [];
     final attackerName = isPlayer
         ? attacker.nickname
@@ -298,7 +300,7 @@ class BattleEngine {
 
     // 1. Pre-move status check (Sleep / Paralysis)
     if (attacker.status == StatusCondition.sleep) {
-      if (_rng.nextInt(3) == 0) {
+      if (random.nextInt(3) == 0) {
         attacker.status = StatusCondition.none;
         events.add(BattleStepEvent(
           message: "$attackerName woke up!",
@@ -313,7 +315,7 @@ class BattleEngine {
         return events;
       }
     } else if (attacker.status == StatusCondition.paralysis) {
-      if (_rng.nextInt(4) == 0) {
+      if (random.nextInt(4) == 0) {
         events.add(BattleStepEvent(
           message: "$attackerName is paralyzed! It can't move!",
           isPlayerActor: isPlayer,
@@ -329,7 +331,7 @@ class BattleEngine {
     }
 
     // 3. Accuracy Check
-    final accRoll = _rng.nextInt(100) + 1;
+    final accRoll = random.nextInt(100) + 1;
     if (accRoll > move.accuracy) {
       events.add(BattleStepEvent(
         message: "$attackerName used ${move.name}, but it missed!",
@@ -431,9 +433,9 @@ class BattleEngine {
 
     final int critThreshold =
         (isPlayer && playerTrainer != null && playerTrainer.critBadgeBonus > 0) ? 8 : 16;
-    final bool isCrit = typeMultiplier > 0 && _rng.nextInt(critThreshold) == 0;
+    final bool isCrit = typeMultiplier > 0 && random.nextInt(critThreshold) == 0;
     final double crit = isCrit ? 1.5 : 1.0;
-    final double randomVariance = (85 + _rng.nextInt(16)) / 100.0;
+    final double randomVariance = (85 + random.nextInt(16)) / 100.0;
     final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, move.type);
 
     int damage = (base * crit * randomVariance * stab * typeMultiplier * heldItemMultiplier).floor();
@@ -448,7 +450,7 @@ class BattleEngine {
         typeMultiplier > 0 &&
         move.statusEffect != null &&
         move.statusChance > 0 &&
-        _rng.nextInt(100) < move.statusChance) {
+        random.nextInt(100) < move.statusChance) {
       secondaryStatusLabel = _tryInflictStatus(defender, move.statusEffect!);
     }
 
@@ -500,7 +502,7 @@ class BattleEngine {
     return events;
   }
 
-  static List<BattleStepEvent> _processEndOfTurnStatus(
+  static List<BattleStepEvent> processEndOfTurnStatus(
     PokemonInstance mon, {
     required bool isPlayer,
     required bool isWild,

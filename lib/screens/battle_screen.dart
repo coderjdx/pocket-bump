@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import '../models/trainer.dart';
 import '../services/battle_engine.dart';
 import '../services/item_drop_service.dart';
 import '../services/pokedex_database.dart';
+import '../services/pvp_link_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
@@ -36,6 +38,7 @@ class BattleScreen extends StatefulWidget {
   final bool preservePartyHpOnExit;
   final List<PokemonInstance>? opponentTeam;
   final String? battleBackgroundAsset;
+  final PvpMatchSession? pvpSession;
 
   const BattleScreen({
     super.key,
@@ -48,6 +51,7 @@ class BattleScreen extends StatefulWidget {
     this.preservePartyHpOnExit = false,
     this.opponentTeam,
     this.battleBackgroundAsset,
+    this.pvpSession,
   });
 
   @override
@@ -62,6 +66,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   late List<PokemonInstance> _opponentFullTeam;
   final List<PokemonInstance> _participatedPokemon = [];
   bool _playerWon = false;
+  int _pvpTurnIndex = 0;
 
   String get _resolvedBattleBackgroundAsset {
     if (widget.battleBackgroundAsset != null) {
@@ -159,8 +164,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             ? List<PokemonInstance>.from(widget.opponentTeam!)
             : [widget.opponentPokemon];
     _opponentParty = List<PokemonInstance>.from(_opponentFullTeam);
-    _opponentPokemon = _opponentParty.removeAt(0);
+    final int oppLeadIdx = _opponentParty.indexWhere((p) => !p.isFainted);
+    _opponentPokemon =
+        _opponentParty.removeAt(oppLeadIdx >= 0 ? oppLeadIdx : 0);
     _opponentHeldBallType = _opponentPokemon.caughtBall;
+
+    if (widget.pvpSession != null) {
+      widget.pvpSession!.startListening();
+      widget.pvpSession!.onPeerForfeit = () {
+        if (!mounted || _battleEnded) return;
+        setState(() {
+          _playerWon = true;
+          _battleEnded = true;
+          _isSelectingMove = false;
+          _isProcessingTurn = false;
+          _currentMessage =
+              "${widget.trainerName ?? 'Opponent'} forfeited the Link Battle! You win!";
+        });
+      };
+    }
 
     if (!widget.isWild) {
       _showOpponentTrainerSprite = true;
@@ -262,11 +284,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _ballPhaseController.dispose();
     if (!_didHealOnExit) {
       _didHealOnExit = true;
+      if (!_battleEnded && widget.pvpSession != null) {
+        widget.pvpSession!.sendForfeit();
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _trainer.resetAllPartyStatStages();
         _trainer.saveProgress();
       });
     }
+    widget.pvpSession?.dispose();
     super.dispose();
   }
 
@@ -274,6 +300,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     final bool won = playerWon ?? _playerWon;
     if (!_didHealOnExit) {
       _didHealOnExit = true;
+      if (!_battleEnded && widget.pvpSession != null) {
+        widget.pvpSession!.sendForfeit();
+      }
       _trainer.resetAllPartyStatStages();
       _trainer.saveProgress();
     }
@@ -430,6 +459,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required bool forced,
   }) async {
     if (!mounted) return;
+    if (widget.pvpSession != null && !forced) {
+      await _executePvpTurn(<String, dynamic>{
+        'type': 'switch',
+        'partyIndex': _trainer.party.indexOf(nextMon),
+        'activeMon': nextMon.toJson(),
+      });
+      return;
+    }
+
     setState(() {
       _isSelectingMove = false;
       _isProcessingTurn = true;
@@ -454,6 +492,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       });
     }
 
+    _playerPokemon.resetStatStages();
     _playerKoController.reset();
     _recordParticipant(nextMon);
     setState(() {
@@ -465,6 +504,24 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     await _animateTrainerSummonThrow(nextMon);
     if (!mounted) return;
+
+    if (widget.pvpSession != null && forced) {
+      await widget.pvpSession!.sendForcedSwitch(
+        turn: _pvpTurnIndex,
+        partyIndex: _trainer.party.indexOf(nextMon),
+        activeMon: nextMon.toJson(),
+      );
+      if (!mounted || _battleEnded) return;
+      if (_opponentPokemon.isFainted &&
+          _opponentParty.any((p) => !p.isFainted)) {
+        await _waitForAndSummonPeerForcedSwitch(_pvpTurnIndex);
+        if (!mounted || _battleEnded) return;
+      }
+      setState(() {
+        _isProcessingTurn = false;
+      });
+      return;
+    }
 
     if (!forced && _opponentPokemon.moves.isNotEmpty) {
       await Future.delayed(const Duration(milliseconds: 320));
@@ -768,6 +825,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
+    if (widget.pvpSession != null) {
+      await _executePvpTurn(<String, dynamic>{
+        'type': 'fight',
+        'moveId': move.id,
+      });
+      return;
+    }
+
     // Scaling Disobedience Check
     final double disobeyChance = _trainer.getDisobedienceChance(_playerPokemon.level);
     if (disobeyChance > 0 && Random().nextDouble() < disobeyChance) {
@@ -988,7 +1053,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (!mounted) return;
   }
 
-  Future<void> _checkPostTurnConditions() async {
+  Future<void> _checkPostTurnConditions({int? pvpTurn}) async {
     if (!mounted) return;
 
     // 1. All party Pokémon fainted -> player immediately loses and gains nothing
@@ -1009,8 +1074,30 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await _awardExpForOpponent();
       if (!mounted) return;
 
+      if (widget.pvpSession != null) {
+        final bool peerHasReserve = _opponentParty.any((p) => !p.isFainted);
+        if (peerHasReserve) {
+          if (_playerPokemon.isFainted) {
+            // Let local player pick and broadcast their replacement first to avoid deadlock.
+            setState(() {
+              _isProcessingTurn = false;
+              _currentMessage =
+                  "${_playerPokemon.nickname} fainted! Choose another Pokémon!";
+            });
+            _openSwitchModal(forced: true);
+          } else {
+            await _waitForAndSummonPeerForcedSwitch(pvpTurn ?? _pvpTurnIndex);
+            if (!mounted || _battleEnded) return;
+            setState(() {
+              _isProcessingTurn = false;
+            });
+          }
+          return;
+        }
+      }
+
       // If trainer has more Pokémon in reserve, summon next Pokémon
-      if (_opponentParty.isNotEmpty) {
+      if (widget.pvpSession == null && _opponentParty.isNotEmpty) {
         final nextMon = _opponentParty.removeAt(0);
         setState(() {
           _currentMessage =
@@ -1125,6 +1212,22 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (ballType == 'poke_ball' && _trainer.pokeBalls <= 0) return;
     if (ballType == 'great_ball' && _trainer.greatBalls <= 0) return;
     if (ballType == 'ultra_ball' && _trainer.ultraBalls <= 0) return;
+
+    if (widget.pvpSession != null) {
+      setState(() {
+        if (ballType == 'poke_ball') _trainer.pokeBalls--;
+        if (ballType == 'great_ball') _trainer.greatBalls--;
+        if (ballType == 'ultra_ball') _trainer.ultraBalls--;
+        _trainer.saveProgress();
+        _throwingBallType = ballType;
+        _trainerHeldBallType = ballType;
+      });
+      await _executePvpTurn(<String, dynamic>{
+        'type': 'ball',
+        'ballType': ballType,
+      });
+      return;
+    }
 
     setState(() {
       if (ballType == 'poke_ball') _trainer.pokeBalls--;
@@ -1459,12 +1562,636 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _trainer.saveProgress();
   }
 
+  String _applyItemEffectToPokemon({
+    required String itemId,
+    required String itemName,
+    required String actorName,
+    required PokemonInstance targetMon,
+  }) {
+    switch (itemId) {
+      case 'revive':
+        targetMon.currentHp = (targetMon.maxHp / 2).ceil();
+        targetMon.status = StatusCondition.none;
+        return "$actorName used Revive! ${targetMon.nickname} was revived to half HP!";
+      case 'potion':
+        final heal = min(20, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$actorName used Potion! ${targetMon.nickname} restored $heal HP.";
+      case 'super_potion':
+        final heal = min(50, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$actorName used Super Potion! ${targetMon.nickname} restored $heal HP.";
+      case 'hyper_potion':
+        final heal = min(200, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$actorName used Hyper Potion! ${targetMon.nickname} restored $heal HP.";
+      case 'max_potion':
+        targetMon.currentHp = targetMon.maxHp;
+        return "$actorName used Max Potion! ${targetMon.nickname}'s HP was fully restored!";
+      case 'full_restore':
+        targetMon.currentHp = targetMon.maxHp;
+        targetMon.status = StatusCondition.none;
+        return "$actorName used Full Restore! ${targetMon.nickname} fully restored HP and cured status!";
+      default:
+        targetMon.status = StatusCondition.none;
+        return "$actorName used $itemName! ${targetMon.nickname}'s status condition was cured!";
+    }
+  }
+
+  void _syncPokemonStateFromJson(
+    PokemonInstance target,
+    Map<String, dynamic> json,
+  ) {
+    if (json['currentHp'] is num) {
+      target.currentHp = (json['currentHp'] as num).toInt().clamp(0, target.maxHp);
+    }
+    if (json['status'] is String) {
+      final statusName = json['status'] as String;
+      target.status = StatusCondition.values.firstWhere(
+        (s) => s.name == statusName,
+        orElse: () => target.status,
+      );
+    }
+  }
+
+  PokemonInstance? _resolveOpponentSwitchTarget({
+    Map<String, dynamic>? monJson,
+    int? partyIndex,
+  }) {
+    if (_opponentParty.isEmpty) return null;
+    final int? speciesId = (monJson?['speciesId'] as num?)?.toInt();
+    final String? nick = monJson?['nickname'] as String?;
+    final int? level = (monJson?['level'] as num?)?.toInt();
+
+    if (partyIndex != null &&
+        partyIndex >= 0 &&
+        partyIndex < _opponentFullTeam.length) {
+      final candidate = _opponentFullTeam[partyIndex];
+      if (!candidate.isFainted &&
+          _opponentParty.contains(candidate) &&
+          (speciesId == null || candidate.species.id == speciesId)) {
+        return candidate;
+      }
+    }
+
+    for (final mon in _opponentParty) {
+      if (!mon.isFainted &&
+          (speciesId == null || mon.species.id == speciesId) &&
+          (nick == null || mon.nickname == nick) &&
+          (level == null || mon.level == level)) {
+        return mon;
+      }
+    }
+
+    for (final mon in _opponentParty) {
+      if (!mon.isFainted && (speciesId == null || mon.species.id == speciesId)) {
+        return mon;
+      }
+    }
+
+    return _opponentParty.firstWhere(
+      (p) => !p.isFainted,
+      orElse: () => _opponentParty.first,
+    );
+  }
+
+  PokemonInstance _resolveOpponentItemTarget(Map<String, dynamic> action) {
+    final String itemId = (action['itemId'] as String?) ?? '';
+    final int? targetIdx = (action['targetPartyIndex'] as num?)?.toInt();
+    final int? speciesId = (action['targetSpeciesId'] as num?)?.toInt();
+
+    if (itemId == 'revive') {
+      if (targetIdx != null &&
+          targetIdx >= 0 &&
+          targetIdx < _opponentFullTeam.length) {
+        final cand = _opponentFullTeam[targetIdx];
+        if (cand.isFainted &&
+            (speciesId == null || cand.species.id == speciesId)) {
+          return cand;
+        }
+      }
+      for (final mon in _opponentFullTeam) {
+        if (mon.isFainted &&
+            (speciesId == null || mon.species.id == speciesId)) {
+          return mon;
+        }
+      }
+      for (final mon in _opponentFullTeam) {
+        if (mon.isFainted) return mon;
+      }
+      return _opponentPokemon;
+    }
+
+    if (!_opponentPokemon.isFainted &&
+        (speciesId == null || _opponentPokemon.species.id == speciesId)) {
+      return _opponentPokemon;
+    }
+    if (targetIdx != null &&
+        targetIdx >= 0 &&
+        targetIdx < _opponentFullTeam.length) {
+      final cand = _opponentFullTeam[targetIdx];
+      if (!cand.isFainted &&
+          (speciesId == null || cand.species.id == speciesId)) {
+        return cand;
+      }
+    }
+    for (final mon in _opponentFullTeam) {
+      if (!mon.isFainted &&
+          (speciesId == null || mon.species.id == speciesId)) {
+        return mon;
+      }
+    }
+    return _opponentPokemon;
+  }
+
+  Move? _resolveMoveForPokemon(PokemonInstance mon, String? moveId) {
+    if (moveId != null) {
+      for (final m in mon.moves) {
+        if (m.id == moveId) return m;
+      }
+      final fallback = PokedexDatabase.moves[moveId];
+      if (fallback != null) return fallback.copy();
+    }
+    return mon.moves.isNotEmpty ? mon.moves.first : null;
+  }
+
+  Future<void> _waitForAndSummonPeerForcedSwitch(int turnNumber) async {
+    final session = widget.pvpSession;
+    if (session == null || !mounted || _battleEnded) return;
+    setState(() {
+      _currentMessage =
+          "Waiting for ${widget.trainerName ?? 'Opponent'} to send out their next Pokémon...";
+    });
+    late final Map<String, dynamic> packet;
+    try {
+      packet = await session.waitForPeerForcedSwitch(turn: turnNumber);
+    } catch (_) {
+      return;
+    }
+    if (!mounted || _battleEnded) return;
+
+    final int? partyIdx = (packet['partyIndex'] as num?)?.toInt();
+    final rawMon = packet['activeMon'];
+    final Map<String, dynamic>? monJson =
+        rawMon is Map ? Map<String, dynamic>.from(rawMon) : null;
+
+    final nextMon = _resolveOpponentSwitchTarget(
+      monJson: monJson,
+      partyIndex: partyIdx,
+    );
+    if (nextMon == null) return;
+
+    if (!_opponentParty.contains(_opponentPokemon)) {
+      _opponentParty.add(_opponentPokemon);
+    }
+    _opponentPokemon.resetStatStages();
+    _opponentParty.remove(nextMon);
+    if (monJson != null) {
+      _syncPokemonStateFromJson(nextMon, monJson);
+    }
+
+    setState(() {
+      _opponentPokemon = nextMon;
+      _displayedOpponentHp = _opponentPokemon.currentHp;
+      _visualOpponentFainted = false;
+      _opponentKoController.reset();
+      _currentMessage =
+          "${widget.trainerName ?? 'Opponent'} sent out ${_opponentPokemon.nickname}!";
+    });
+    _trainer.markPokemonSeen(_opponentPokemon.species.id);
+    await _animateOpponentSummonThrow(_opponentPokemon);
+    if (!mounted) return;
+
+    _participatedPokemon.clear();
+    if (!_playerPokemon.isFainted) {
+      _recordParticipant(_playerPokemon);
+    }
+  }
+
+  Future<void> _playBlockedBallThrow({
+    required String ballType,
+    required bool isPlayerActor,
+  }) async {
+    if (!mounted) return;
+    final String ballLabel = ballType.replaceAll('_', ' ').toUpperCase();
+    final String thrower =
+        isPlayerActor ? _trainer.name : (widget.trainerName ?? 'Opponent');
+    final String blocker =
+        isPlayerActor ? (widget.trainerName ?? 'The Trainer') : _trainer.name;
+
+    if (isPlayerActor) {
+      setState(() {
+        _throwingBallType = ballType;
+        _trainerHeldBallType = ballType;
+        _showPlayerPokemon = false;
+        _playerSummonScale = 0.05;
+        _showTrainerSprite = true;
+        _trainerPose = 0;
+        _trainerSlideX = 0.0;
+        _opponentInBall = false;
+        _opponentCaptureScale = 1.0;
+        _showCaptureLockBurst = false;
+        _ballButtonGlowColor = null;
+        _catchBallPhase = _BallAnimPhase.none;
+        _currentMessage = "$thrower threw a $ballLabel!";
+      });
+
+      await Future.delayed(const Duration(milliseconds: 160));
+      if (!mounted) return;
+      setState(() => _trainerPose = 1);
+      await Future.delayed(const Duration(milliseconds: 180));
+      if (!mounted) return;
+
+      setState(() {
+        _trainerPose = 2;
+        _showPokeBallThrow = true;
+        _catchBallPhase = _BallAnimPhase.flight;
+      });
+      _ballPhaseController.duration = const Duration(milliseconds: 340);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 140));
+      if (!mounted) return;
+      setState(() => _trainerSlideX = -1.2);
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (!mounted) return;
+
+      HapticFeedback.heavyImpact();
+      setState(() {
+        _showTrainerSprite = false;
+        _showOpponentTrainerSprite = true;
+        _opponentTrainerSlideX = 0.0;
+        _opponentTrainerPose = 2;
+        _catchBallPhase = _BallAnimPhase.blocked;
+        _floatingCallout = "BLOCKED!";
+        _calloutOnOpponent = true;
+        _calloutColor = Colors.redAccent;
+        _currentMessage = "$blocker blocked the Poké Ball! Don't be a thief!";
+      });
+      _arenaShakeController.forward(from: 0);
+      _ballPhaseController.duration = const Duration(milliseconds: 420);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (!mounted) return;
+
+      setState(() {
+        _opponentTrainerSlideX = 1.2;
+        _showPokeBallThrow = false;
+        _catchBallPhase = _BallAnimPhase.none;
+        _floatingCallout = null;
+        _showPlayerPokemon = true;
+        _playerSummonScale = 1.0;
+      });
+      await Future.delayed(const Duration(milliseconds: 250));
+      if (!mounted) return;
+      setState(() => _showOpponentTrainerSprite = false);
+    } else {
+      HapticFeedback.heavyImpact();
+      setState(() {
+        _floatingCallout = "BLOCKED!";
+        _calloutOnOpponent = false;
+        _calloutColor = Colors.redAccent;
+        _currentMessage =
+            "$thrower threw a $ballLabel! $blocker blocked it! Don't be a thief!";
+      });
+      _arenaShakeController.forward(from: 0);
+      await Future.delayed(const Duration(milliseconds: 1100));
+      if (!mounted) return;
+      setState(() {
+        _floatingCallout = null;
+      });
+    }
+  }
+
+  Future<void> _executePvpTurn(Map<String, dynamic> myAction) async {
+    final session = widget.pvpSession;
+    if (session == null || _battleEnded || !mounted) return;
+
+    final int turnNumber = ++_pvpTurnIndex;
+    final int mySeed = Random().nextInt(0x3FFFFFFF);
+
+    setState(() {
+      _isSelectingMove = false;
+      _isProcessingTurn = true;
+      _currentMessage =
+          "Waiting for ${widget.trainerName ?? 'Opponent'} to choose an action...";
+    });
+
+    late final PvpTurnPacket peerPacket;
+    try {
+      peerPacket = await session.exchangeTurnAction(
+        turn: turnNumber,
+        mySeed: mySeed,
+        action: myAction,
+        activeMon: _playerPokemon.toJson(),
+      );
+    } catch (_) {
+      return;
+    }
+    if (!mounted || _battleEnded) return;
+
+    final int hostSeed = session.isHost ? mySeed : peerPacket.seed;
+    final int guestSeed = session.isHost ? peerPacket.seed : mySeed;
+    final int sharedSeed =
+        (hostSeed ^ guestSeed ^ (turnNumber * 1000003)) & 0x7FFFFFFF;
+    final Random orderRng = Random(sharedSeed ^ 0x55AA55AA);
+    final Random hostAtkRng = Random(sharedSeed ^ 0x13579BDF);
+    final Random guestAtkRng = Random(sharedSeed ^ 0x2468ACE0);
+
+    final List<({bool isPlayer, bool isHost, Map<String, dynamic> action})>
+        hostFirstOrder = session.isHost
+            ? [
+                (isPlayer: true, isHost: true, action: myAction),
+                (isPlayer: false, isHost: false, action: peerPacket.action),
+              ]
+            : [
+                (isPlayer: false, isHost: true, action: peerPacket.action),
+                (isPlayer: true, isHost: false, action: myAction),
+              ];
+
+    // 1. Resolve switches in canonical Host -> Guest order.
+    for (final actor in hostFirstOrder) {
+      if (!mounted || _battleEnded) return;
+      if (actor.action['type'] != 'switch') continue;
+
+      if (actor.isPlayer) {
+        final int? idx = (actor.action['partyIndex'] as num?)?.toInt();
+        final PokemonInstance? nextMon =
+            (idx != null && idx >= 0 && idx < _trainer.party.length)
+                ? _trainer.party[idx]
+                : null;
+        if (nextMon != null && nextMon != _playerPokemon && !nextMon.isFainted) {
+          setState(() {
+            _currentMessage = "Come back, ${_playerPokemon.nickname}!";
+            _playerFlash = true;
+            _playerSummonScale = 0.05;
+            _showPlayerPokemon = false;
+          });
+          await Future.delayed(const Duration(milliseconds: 320));
+          if (!mounted) return;
+          _playerPokemon.resetStatStages();
+          _playerKoController.reset();
+          _recordParticipant(nextMon);
+          setState(() {
+            _playerFlash = false;
+            _visualPlayerFainted = false;
+            _playerPokemon = nextMon;
+            _displayedPlayerHp = nextMon.currentHp;
+            _currentMessage = "${_trainer.name}: Go! ${nextMon.nickname}!";
+          });
+          await _animateTrainerSummonThrow(nextMon);
+          if (!mounted) return;
+        }
+      } else {
+        final rawMon = actor.action['activeMon'];
+        final Map<String, dynamic>? monJson =
+            rawMon is Map ? Map<String, dynamic>.from(rawMon) : null;
+        final int? idx = (actor.action['partyIndex'] as num?)?.toInt();
+        final PokemonInstance? nextOpp = _resolveOpponentSwitchTarget(
+          monJson: monJson,
+          partyIndex: idx,
+        );
+        if (nextOpp != null && nextOpp != _opponentPokemon && !nextOpp.isFainted) {
+          setState(() {
+            _currentMessage =
+                "${widget.trainerName ?? 'Opponent'} withdrew ${_opponentPokemon.nickname}!";
+            _opponentFlash = true;
+            _opponentSummonScale = 0.05;
+            _showOpponentPokemon = false;
+          });
+          await Future.delayed(const Duration(milliseconds: 320));
+          if (!mounted) return;
+
+          if (!_opponentParty.contains(_opponentPokemon)) {
+            _opponentParty.add(_opponentPokemon);
+          }
+          _opponentPokemon.resetStatStages();
+          _opponentParty.remove(nextOpp);
+          if (monJson != null) {
+            _syncPokemonStateFromJson(nextOpp, monJson);
+          }
+
+          setState(() {
+            _opponentFlash = false;
+            _visualOpponentFainted = false;
+            _opponentKoController.reset();
+            _opponentPokemon = nextOpp;
+            _displayedOpponentHp = nextOpp.currentHp;
+            _currentMessage =
+                "${widget.trainerName ?? 'Opponent'} sent out ${nextOpp.nickname}!";
+          });
+          _trainer.markPokemonSeen(nextOpp.species.id);
+          await _animateOpponentSummonThrow(nextOpp);
+          if (!mounted) return;
+        }
+      }
+    }
+
+    // 2. Resolve bag items and blocked Poké Balls in canonical Host -> Guest order.
+    for (final actor in hostFirstOrder) {
+      if (!mounted || _battleEnded) return;
+      final kind = actor.action['type'];
+      if (kind == 'item') {
+        final String itemId = (actor.action['itemId'] as String?) ?? '';
+        final String itemName = (actor.action['itemName'] as String?) ?? itemId;
+        if (actor.isPlayer) {
+          final int? targetIdx =
+              (actor.action['targetPartyIndex'] as num?)?.toInt();
+          final PokemonInstance targetMon =
+              (targetIdx != null &&
+                      targetIdx >= 0 &&
+                      targetIdx < _trainer.party.length)
+                  ? _trainer.party[targetIdx]
+                  : _playerPokemon;
+          final msg = _applyItemEffectToPokemon(
+            itemId: itemId,
+            itemName: itemName,
+            actorName: _trainer.name,
+            targetMon: targetMon,
+          );
+          _trainer.saveProgress();
+          setState(() {
+            if (targetMon == _playerPokemon) {
+              _displayedPlayerHp = _playerPokemon.currentHp;
+              _visualPlayerFainted = _playerPokemon.isFainted;
+            }
+            _currentMessage = msg;
+          });
+        } else {
+          final targetMon = _resolveOpponentItemTarget(actor.action);
+          final msg = _applyItemEffectToPokemon(
+            itemId: itemId,
+            itemName: itemName,
+            actorName: widget.trainerName ?? 'Opponent',
+            targetMon: targetMon,
+          );
+          setState(() {
+            if (targetMon == _opponentPokemon) {
+              _displayedOpponentHp = _opponentPokemon.currentHp;
+              _visualOpponentFainted = _opponentPokemon.isFainted;
+            }
+            _currentMessage = msg;
+          });
+        }
+        await Future.delayed(const Duration(milliseconds: 900));
+        if (!mounted) return;
+      } else if (kind == 'ball') {
+        final String ballType =
+            (actor.action['ballType'] as String?) ?? 'poke_ball';
+        await _playBlockedBallThrow(
+          ballType: ballType,
+          isPlayerActor: actor.isPlayer,
+        );
+        if (!mounted) return;
+      }
+    }
+
+    // 3. Pre-turn held berries in canonical Host -> Guest order.
+    for (final actor in hostFirstOrder) {
+      if (!mounted || _battleEnded) return;
+      final mon = actor.isPlayer ? _playerPokemon : _opponentPokemon;
+      final berryEv = BattleEngine.checkAndConsumeHeldBerry(
+        mon,
+        isPlayer: actor.isPlayer,
+        isWild: false,
+      );
+      if (berryEv != null) {
+        await _playStepEvent(berryEv);
+        if (!mounted) return;
+      }
+    }
+
+    // 4. Resolve Fight moves with deterministic order & seeds (flat PvP rules).
+    final Move? playerMove =
+        (myAction['type'] == 'fight' && !_playerPokemon.isFainted)
+            ? _resolveMoveForPokemon(
+                _playerPokemon,
+                myAction['moveId'] as String?,
+              )
+            : null;
+    final Move? oppMove =
+        (peerPacket.action['type'] == 'fight' && !_opponentPokemon.isFainted)
+            ? _resolveMoveForPokemon(
+                _opponentPokemon,
+                peerPacket.action['moveId'] as String?,
+              )
+            : null;
+
+    bool playerGoesFirst = true;
+    if (playerMove != null && oppMove != null) {
+      if (playerMove.priority != oppMove.priority) {
+        playerGoesFirst = playerMove.priority > oppMove.priority;
+      } else {
+        final int pSpe = _playerPokemon.effectiveSpe;
+        final int oSpe = _opponentPokemon.effectiveSpe;
+        if (pSpe != oSpe) {
+          playerGoesFirst = pSpe > oSpe;
+        } else {
+          final bool hostFirst = orderRng.nextBool();
+          playerGoesFirst = session.isHost ? hostFirst : !hostFirst;
+        }
+      }
+    } else {
+      playerGoesFirst = playerMove != null;
+    }
+
+    final Random playerAtkRng = session.isHost ? hostAtkRng : guestAtkRng;
+    final Random oppAtkRng = session.isHost ? guestAtkRng : hostAtkRng;
+
+    Future<void> runPlayerAttack() async {
+      if (playerMove == null ||
+          _playerPokemon.isFainted ||
+          _opponentPokemon.isFainted) {
+        return;
+      }
+      final events = BattleEngine.executeSingleAttack(
+        _playerPokemon,
+        playerMove,
+        _opponentPokemon,
+        isPlayer: true,
+        isWild: false,
+        playerTrainer: null,
+        rng: playerAtkRng,
+      );
+      for (final ev in events) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+    }
+
+    Future<void> runOppAttack() async {
+      if (oppMove == null ||
+          _opponentPokemon.isFainted ||
+          _playerPokemon.isFainted) {
+        return;
+      }
+      final events = BattleEngine.executeSingleAttack(
+        _opponentPokemon,
+        oppMove,
+        _playerPokemon,
+        isPlayer: false,
+        isWild: false,
+        playerTrainer: null,
+        rng: oppAtkRng,
+      );
+      for (final ev in events) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+    }
+
+    if (playerGoesFirst) {
+      await runPlayerAttack();
+      if (!mounted) return;
+      await runOppAttack();
+    } else {
+      await runOppAttack();
+      if (!mounted) return;
+      await runPlayerAttack();
+    }
+    if (!mounted) return;
+
+    // 5. End-of-turn Burn / Poison / Leftovers in canonical Host -> Guest order.
+    if (!_playerPokemon.isFainted && !_opponentPokemon.isFainted) {
+      final first = hostFirstOrder.first;
+      final firstMon = first.isPlayer ? _playerPokemon : _opponentPokemon;
+      final second = hostFirstOrder.last;
+      final secondMon = second.isPlayer ? _playerPokemon : _opponentPokemon;
+
+      for (final ev in BattleEngine.processEndOfTurnStatus(
+        firstMon,
+        isPlayer: first.isPlayer,
+        isWild: false,
+      )) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+      if (!firstMon.isFainted) {
+        for (final ev in BattleEngine.processEndOfTurnStatus(
+          secondMon,
+          isPlayer: second.isPlayer,
+          isWild: false,
+        )) {
+          await _playStepEvent(ev);
+          if (!mounted) return;
+        }
+      }
+    }
+
+    // 6. Post-turn KO / Forced Switch / Victory check.
+    await _checkPostTurnConditions(pvpTurn: turnNumber);
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (didPop && !_didHealOnExit) {
           _didHealOnExit = true;
+          if (!_battleEnded && widget.pvpSession != null) {
+            widget.pvpSession!.sendForfeit();
+          }
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _trainer.resetAllPartyStatStages();
             _trainer.saveProgress();
@@ -1485,7 +2212,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           title: Text(
             widget.isWild
                 ? "WILD ENCOUNTER"
-                : (widget.trainerTitle?.toUpperCase() ?? "RIVAL FIST-BUMP DUEL"),
+                : (widget.pvpSession != null
+                    ? "VS LINK • ${(widget.trainerName ?? 'TRAINER').toUpperCase()}"
+                    : (widget.trainerTitle?.toUpperCase() ?? "RIVAL FIST-BUMP DUEL")),
             style: const TextStyle(
               fontSize: 12.5,
               fontWeight: FontWeight.bold,
@@ -3045,48 +3774,24 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required PokemonInstance targetMon,
   }) async {
     _trainer.adjustItemCount(itemId, -1);
-    String effectMsg;
-    switch (itemId) {
-      case 'revive':
-        targetMon.currentHp = (targetMon.maxHp / 2).ceil();
-        effectMsg =
-            "${_trainer.name} used Revive! ${targetMon.nickname} was revived to half HP!";
-        break;
-      case 'potion':
-        final heal = min(20, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        effectMsg =
-            "${_trainer.name} used Potion! ${targetMon.nickname} restored $heal HP.";
-        break;
-      case 'super_potion':
-        final heal = min(50, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        effectMsg =
-            "${_trainer.name} used Super Potion! ${targetMon.nickname} restored $heal HP.";
-        break;
-      case 'hyper_potion':
-        final heal = min(200, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        effectMsg =
-            "${_trainer.name} used Hyper Potion! ${targetMon.nickname} restored $heal HP.";
-        break;
-      case 'max_potion':
-        targetMon.currentHp = targetMon.maxHp;
-        effectMsg =
-            "${_trainer.name} used Max Potion! ${targetMon.nickname}'s HP was fully restored!";
-        break;
-      case 'full_restore':
-        targetMon.currentHp = targetMon.maxHp;
-        targetMon.status = StatusCondition.none;
-        effectMsg =
-            "${_trainer.name} used Full Restore! ${targetMon.nickname} fully restored HP and cured status!";
-        break;
-      default:
-        targetMon.status = StatusCondition.none;
-        effectMsg =
-            "${_trainer.name} used $itemName! ${targetMon.nickname}'s status condition was cured!";
-        break;
+    if (widget.pvpSession != null) {
+      _trainer.saveProgress();
+      await _executePvpTurn(<String, dynamic>{
+        'type': 'item',
+        'itemId': itemId,
+        'itemName': itemName,
+        'targetPartyIndex': _trainer.party.indexOf(targetMon),
+        'targetSpeciesId': targetMon.species.id,
+      });
+      return;
     }
+
+    final String effectMsg = _applyItemEffectToPokemon(
+      itemId: itemId,
+      itemName: itemName,
+      actorName: _trainer.name,
+      targetMon: targetMon,
+    );
     _trainer.saveProgress();
 
     setState(() {

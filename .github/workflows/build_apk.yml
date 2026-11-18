@@ -121,9 +121,97 @@ jobs:
           python3 -c '
           with open("build/web/index.html", "r") as f:
               html = f.read()
-          unreg = "<script>if(\"serviceWorker\" in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(sw=>sw.unregister()));}</script>"
-          if "serviceWorker.getRegistrations" not in html:
-              html = html.replace("</head>", unreg + "\n</head>", 1)
+          patch = """<script>
+          if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(sw){sw.unregister();});});}
+          (function(){
+            if(window.__pbMotionInit)return;
+            window.__pbMotionInit=true;
+            var needsReq=typeof DeviceMotionEvent!=="undefined"&&typeof DeviceMotionEvent.requestPermission==="function";
+            window.__pbMotionState=needsReq?"prompt":"granted";
+            window.__pbMotionListeners=[];
+            window.__pbMotionBound=false;
+            window.__pbStartDeviceMotion=function(){
+              if(window.__pbMotionBound)return;
+              if(typeof window.addEventListener!=="function")return;
+              window.__pbMotionBound=true;
+              window.addEventListener("devicemotion",function(e){
+                var a=e.accelerationIncludingGravity||e.acceleration;
+                if(!a)return;
+                if(a.x===null&&a.y===null&&a.z===null)return;
+                var x=Number(a.x||0),y=Number(a.y||0),z=Number(a.z||0);
+                window.__pbMotionState="granted";
+                window.__pbLastMotion={x:x,y:y,z:z,ts:Date.now()};
+                var list=window.__pbMotionListeners.slice();
+                for(var i=0;i<list.length;i++){
+                  var inst=list[i];
+                  if(inst&&inst._active){
+                    inst.x=x;inst.y=y;inst.z=z;
+                    if(typeof inst.onreading==="function"){try{inst.onreading();}catch(_){}}
+                  }
+                }
+              },false);
+            };
+            var pendingReq=null;
+            window.__pbRequestMotionPermission=function(){
+              if(!needsReq){
+                window.__pbMotionState="granted";
+                window.__pbStartDeviceMotion();
+                return Promise.resolve(true);
+              }
+              if(window.__pbMotionState==="granted"){
+                window.__pbStartDeviceMotion();
+                return Promise.resolve(true);
+              }
+              if(pendingReq)return pendingReq;
+              try{
+                pendingReq=Promise.resolve(DeviceMotionEvent.requestPermission()).then(function(res){
+                  pendingReq=null;
+                  window.__pbMotionState=res||"denied";
+                  if(res==="granted"){window.__pbStartDeviceMotion();return true;}
+                  return false;
+                }).catch(function(){
+                  pendingReq=null;
+                  return false;
+                });
+                return pendingReq;
+              }catch(_){
+                pendingReq=null;
+                return Promise.resolve(false);
+              }
+            };
+            if(typeof window.Accelerometer==="undefined"){
+              window.Accelerometer=function(opts){
+                this.x=0;this.y=0;this.z=0;
+                this.onreading=null;this.onerror=null;
+                this._active=false;
+              };
+              window.Accelerometer.prototype.start=function(){
+                this._active=true;
+                if(window.__pbMotionListeners.indexOf(this)===-1){
+                  window.__pbMotionListeners.push(this);
+                }
+                if(!needsReq||window.__pbMotionState==="granted"){
+                  window.__pbStartDeviceMotion();
+                }
+              };
+              window.Accelerometer.prototype.stop=function(){
+                this._active=false;
+                var idx=window.__pbMotionListeners.indexOf(this);
+                if(idx!==-1)window.__pbMotionListeners.splice(idx,1);
+              };
+            }
+            if(!needsReq){window.__pbStartDeviceMotion();}
+            var onGesture=function(){
+              if(needsReq&&window.__pbMotionState!=="granted"){
+                window.__pbRequestMotionPermission();
+              }
+            };
+            document.addEventListener("touchend",onGesture,{capture:true,passive:true});
+            document.addEventListener("click",onGesture,{capture:true,passive:true});
+          })();
+          </script>"""
+          if "__pbMotionInit" not in html:
+              html = html.replace("</head>", patch + "\n</head>", 1)
           with open("build/web/index.html", "w") as f:
               f.write(html)
           '
