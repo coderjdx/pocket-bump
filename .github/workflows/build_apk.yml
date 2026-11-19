@@ -139,7 +139,11 @@ jobs:
           cp assets/icons/app_icon_512.png web/icons/Icon-512.png
           cp assets/icons/app_icon_512.png web/icons/Icon-maskable-512.png
           flutter pub get
-          flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none --dart-define=APP_VERSION=1.0.${{ github.run_number }}
+          if ! flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none --dart-define=APP_VERSION=1.0.${{ github.run_number }} > /tmp/web_build.log 2>&1; then
+            cat /tmp/web_build.log
+            python3 -c 'import sys; log = open("/tmp/web_build.log", errors="replace").read().strip().splitlines(); print("::error::" + " | ".join(log[-25:])[:3500])'
+            exit 1
+          fi
           python3 -c '
           import json
           with open("build/web/index.html", "r") as f:
