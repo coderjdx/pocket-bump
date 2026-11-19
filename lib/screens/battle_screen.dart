@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/ability.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
@@ -173,6 +174,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   String? _floatingCallout;
   bool _calloutOnOpponent = true;
   Color _calloutColor = Colors.amberAccent;
+  final BattleFieldState _fieldState = BattleFieldState();
 
   @override
   void initState() {
@@ -341,6 +343,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         widget.pvpSession!.sendForfeit();
         _recordPvpBattleOutcomeIfNeeded(playerWon: false);
       }
+      for (final mon in _trainer.party) {
+        if (mon.abilityId == 'natural_cure' && mon.status != StatusCondition.none) {
+          mon.status = StatusCondition.none;
+          mon.isBadlyPoisoned = false;
+        }
+      }
       _trainer.resetAllPartyStatStages();
       _trainer.saveProgress();
     }
@@ -408,9 +416,73 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await _animateTrainerSummonThrow(_playerPokemon);
     if (!mounted) return;
 
+    await _playInitialEntryAbilities();
+    if (!mounted) return;
+
     setState(() {
       _isProcessingTurn = false;
     });
+  }
+
+  Future<void> _playInitialEntryAbilities() async {
+    final int pSpe = BattleEngine.effectiveCombatSpeed(
+      _playerPokemon,
+      _opponentPokemon,
+      _fieldState,
+      isPlayer: true,
+      playerTrainer: _trainer,
+    );
+    final int oSpe = BattleEngine.effectiveCombatSpeed(
+      _opponentPokemon,
+      _playerPokemon,
+      _fieldState,
+      isPlayer: false,
+    );
+    final bool playerFirst = widget.pvpSession != null
+        ? (widget.pvpSession!.isHost ? pSpe >= oSpe : oSpe > pSpe)
+        : pSpe >= oSpe;
+    if (playerFirst) {
+      await _playEntryAbility(_playerPokemon, _opponentPokemon, isPlayer: true);
+      if (!mounted) return;
+      await _playEntryAbility(_opponentPokemon, _playerPokemon, isPlayer: false);
+    } else {
+      await _playEntryAbility(_opponentPokemon, _playerPokemon, isPlayer: false);
+      if (!mounted) return;
+      await _playEntryAbility(_playerPokemon, _opponentPokemon, isPlayer: true);
+    }
+  }
+
+  Future<void> _playEntryAbility(
+    PokemonInstance mon,
+    PokemonInstance foe, {
+    required bool isPlayer,
+  }) async {
+    final events = BattleEngine.onPokemonEnterBattle(
+      mon,
+      foe,
+      isPlayer: isPlayer,
+      isWild: widget.isWild,
+      field: _fieldState,
+    );
+    for (final ev in events) {
+      await _playStepEvent(ev);
+      if (!mounted) return;
+    }
+  }
+
+  Future<void> _playLeaveAbility(
+    PokemonInstance mon, {
+    required bool isPlayer,
+  }) async {
+    final events = BattleEngine.onPokemonLeaveBattle(
+      mon,
+      isPlayer: isPlayer,
+      isWild: widget.isWild,
+    );
+    for (final ev in events) {
+      await _playStepEvent(ev);
+      if (!mounted) return;
+    }
   }
 
   Future<void> _animateOpponentSummonThrow(PokemonInstance mon) async {
@@ -562,7 +634,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       });
     }
 
-    _playerPokemon.resetStatStages();
+    await _playLeaveAbility(_playerPokemon, isPlayer: true);
+    if (!mounted) return;
     _opponentPokemon.trappedTurnsRemaining = 0;
     _opponentPokemon.trappedByMoveId = null;
     _opponentPokemon.trappedByMoveName = null;
@@ -577,6 +650,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     });
 
     await _animateTrainerSummonThrow(nextMon);
+    if (!mounted) return;
+    await _playEntryAbility(nextMon, _opponentPokemon, isPlayer: true);
     if (!mounted) return;
 
     if (widget.pvpSession != null && forced) {
@@ -627,6 +702,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       isPlayer: false,
       isWild: widget.isWild,
       playerTrainer: _trainer,
+      field: _fieldState,
     );
     for (final ev in events) {
       await _playStepEvent(ev);
@@ -768,9 +844,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
-    // Multi-hit summary toast, recharge message, trap-applied notice, etc.
+    // Multi-hit summary toast, recharge message, trap-applied notice, Ability callout, etc.
     if (event.hideMoveVfx || event.isMultiHitSummary) {
+      if (event.abilityTriggeredName != null) {
+        setState(() {
+          _floatingCallout = "⚡ ${event.abilityTriggeredName!.toUpperCase()}!";
+          _calloutOnOpponent = !event.isPlayerActor;
+          _calloutColor = const Color(0xFF4DD0E1);
+          if (event.healAmount > 0) {
+            if (event.isPlayerActor) {
+              _displayedPlayerHp = event.targetHpAfter;
+            } else {
+              _displayedOpponentHp = event.targetHpAfter;
+            }
+          }
+        });
+      }
       await Future.delayed(Duration(milliseconds: event.isMultiHitSummary ? 620 : 720));
+      if (!mounted) return;
+      if (event.abilityTriggeredName != null) {
+        setState(() => _floatingCallout = null);
+      }
       return;
     }
 
@@ -1073,6 +1167,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           : BattleAction.run(),
       isWild: widget.isWild,
       playerTrainer: _trainer,
+      field: _fieldState,
     );
 
     for (final event in events) {
@@ -1203,6 +1298,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           opponentMove != null ? BattleAction.fight(opponentMove) : BattleAction.run(),
       isWild: widget.isWild,
       playerTrainer: _trainer,
+      field: _fieldState,
     );
 
     for (final event in events) {
@@ -1380,6 +1476,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         _trainer.markPokemonSeen(_opponentPokemon.species.id);
         await _animateOpponentSummonThrow(_opponentPokemon);
+        if (!mounted) return;
+        await _playEntryAbility(_opponentPokemon, _playerPokemon, isPlayer: false);
         if (!mounted) return;
 
         _participatedPokemon.clear();
@@ -1991,6 +2089,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         orElse: () => target.status,
       );
     }
+    if (json['abilityId'] is String && (json['abilityId'] as String).isNotEmpty) {
+      target.abilityId = json['abilityId'] as String;
+      if (json['abilitySlot'] is num) {
+        target.abilitySlot = (json['abilitySlot'] as num).toInt();
+      }
+    }
   }
 
   PokemonInstance? _resolveOpponentSwitchTarget({
@@ -2139,6 +2243,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     });
     _trainer.markPokemonSeen(_opponentPokemon.species.id);
     await _animateOpponentSummonThrow(_opponentPokemon);
+    if (!mounted) return;
+    await _playEntryAbility(_opponentPokemon, _playerPokemon, isPlayer: false);
     if (!mounted) return;
 
     _participatedPokemon.clear();
@@ -2309,7 +2415,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           });
           await Future.delayed(const Duration(milliseconds: 320));
           if (!mounted) return;
-          _playerPokemon.resetStatStages();
+          await _playLeaveAbility(_playerPokemon, isPlayer: true);
+          if (!mounted) return;
           _opponentPokemon.trappedTurnsRemaining = 0;
           _opponentPokemon.trappedByMoveId = null;
           _opponentPokemon.trappedByMoveName = null;
@@ -2324,6 +2431,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _currentMessage = "${_trainer.name}: Go! ${nextMon.nickname}!";
           });
           await _animateTrainerSummonThrow(nextMon);
+          if (!mounted) return;
+          await _playEntryAbility(nextMon, _opponentPokemon, isPlayer: true);
           if (!mounted) return;
         }
       } else {
@@ -2349,7 +2458,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (!_opponentParty.contains(_opponentPokemon)) {
             _opponentParty.add(_opponentPokemon);
           }
-          _opponentPokemon.resetStatStages();
+          await _playLeaveAbility(_opponentPokemon, isPlayer: false);
+          if (!mounted) return;
           _playerPokemon.trappedTurnsRemaining = 0;
           _playerPokemon.trappedByMoveId = null;
           _playerPokemon.trappedByMoveName = null;
@@ -2370,6 +2480,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           });
           _trainer.markPokemonSeen(nextOpp.species.id);
           await _animateOpponentSummonThrow(nextOpp);
+          if (!mounted) return;
+          await _playEntryAbility(nextOpp, _playerPokemon, isPlayer: false);
           if (!mounted) return;
         }
       }
@@ -2472,6 +2584,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         ? BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove)
         : null;
 
+    _playerPokemon
+      ..isProtectedThisTurn = false
+      ..isEnduringThisTurn = false
+      ..actedFirstThisTurn = false
+      ..lastDamageTakenThisTurn = 0;
+    _opponentPokemon
+      ..isProtectedThisTurn = false
+      ..isEnduringThisTurn = false
+      ..actedFirstThisTurn = false
+      ..lastDamageTakenThisTurn = 0;
+
     bool playerGoesFirst = true;
     if (playerMove != null && oppMove != null) {
       final int pPriority = _playerPokemon.needsRecharge ? 0 : playerMove.priority;
@@ -2479,8 +2602,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (pPriority != oPriority) {
         playerGoesFirst = pPriority > oPriority;
       } else {
-        final int pSpe = _playerPokemon.effectiveSpe;
-        final int oSpe = _opponentPokemon.effectiveSpe;
+        final int pSpe = BattleEngine.effectiveCombatSpeed(
+          _playerPokemon,
+          _opponentPokemon,
+          _fieldState,
+          isPlayer: true,
+        );
+        final int oSpe = BattleEngine.effectiveCombatSpeed(
+          _opponentPokemon,
+          _playerPokemon,
+          _fieldState,
+          isPlayer: false,
+        );
         if (pSpe != oSpe) {
           playerGoesFirst = pSpe > oSpe;
         } else {
@@ -2490,6 +2623,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       }
     } else {
       playerGoesFirst = playerMove != null;
+    }
+
+    if (playerGoesFirst) {
+      _playerPokemon.actedFirstThisTurn = true;
+    } else {
+      _opponentPokemon.actedFirstThisTurn = true;
     }
 
     final Random playerAtkRng = session.isHost ? hostAtkRng : guestAtkRng;
@@ -2508,6 +2647,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         isPlayer: true,
         isWild: false,
         playerTrainer: null,
+        field: _fieldState,
+        defenderIntendedMove: oppMove,
         rng: playerAtkRng,
       );
       for (final ev in events) {
@@ -2529,6 +2670,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         isPlayer: false,
         isWild: false,
         playerTrainer: null,
+        field: _fieldState,
+        defenderIntendedMove: playerMove,
         rng: oppAtkRng,
       );
       for (final ev in events) {
@@ -2548,7 +2691,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
     if (!mounted) return;
 
-    // 5. End-of-turn Burn / Poison / Leftovers in canonical Host -> Guest order.
+    // 5. End-of-turn Burn / Poison / Weather / Leftovers in canonical Host -> Guest order.
     if (!_playerPokemon.isFainted && !_opponentPokemon.isFainted) {
       final first = hostFirstOrder.first;
       final firstMon = first.isPlayer ? _playerPokemon : _opponentPokemon;
@@ -2560,6 +2703,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         opponent: first.isPlayer ? _opponentPokemon : _playerPokemon,
         isPlayer: first.isPlayer,
         isWild: false,
+        field: _fieldState,
       )) {
         await _playStepEvent(ev);
         if (!mounted) return;
@@ -2570,10 +2714,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           opponent: second.isPlayer ? _opponentPokemon : _playerPokemon,
           isPlayer: second.isPlayer,
           isWild: false,
+          field: _fieldState,
         )) {
           await _playStepEvent(ev);
           if (!mounted) return;
         }
+      }
+      for (final ev in BattleEngine.processEndOfTurnField(
+          _fieldState, _playerPokemon, _opponentPokemon)) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
       }
     }
 
@@ -2842,6 +2992,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                 isPlayer: false,
                               ),
                             ),
+
+                            if (_fieldState.effectiveWeather(
+                                    _playerPokemon, _opponentPokemon) !=
+                                BattleWeather.none)
+                              Positioned(
+                                top: 10,
+                                right: 10,
+                                child: _buildWeatherBadge(
+                                  _fieldState.effectiveWeather(
+                                      _playerPokemon, _opponentPokemon),
+                                ),
+                              ),
 
                             // Opponent Animated Sprite / Opposing Trainer Throw Sprite (Bottom-anchored on distant platform)
                             Positioned(
@@ -4191,7 +4353,67 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
               ),
             ),
+            const SizedBox(height: 3),
+            Row(
+              children: [
+                Icon(
+                  Icons.bolt_rounded,
+                  size: 10.5,
+                  color: mon.isHiddenAbility
+                      ? const Color(0xFFFFD54F)
+                      : Colors.cyanAccent,
+                ),
+                const SizedBox(width: 2),
+                Flexible(
+                  child: Text(
+                    "${AbilityDatabase.nameOf(mon.effectiveAbilityId)}${mon.isHiddenAbility ? ' [HA]' : ''}",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: mon.isHiddenAbility
+                          ? const Color(0xFFFFD54F)
+                          : Colors.cyanAccent,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherBadge(BattleWeather weather) {
+    final (String label, IconData icon, Color color) = switch (weather) {
+      BattleWeather.sun => ('SUNNY', Icons.wb_sunny_rounded, const Color(0xFFFFB300)),
+      BattleWeather.rain => ('RAIN', Icons.water_drop_rounded, const Color(0xFF42A5F5)),
+      BattleWeather.sandstorm => ('SANDSTORM', Icons.grain_rounded, const Color(0xFFD7A86E)),
+      BattleWeather.hail => ('HAIL', Icons.ac_unit_rounded, const Color(0xFF80DEEA)),
+      BattleWeather.none => ('', Icons.circle, Colors.transparent),
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.65),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.7)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 9.5,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.5,
+            ),
+          ),
         ],
       ),
     );
@@ -4214,9 +4436,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
   }
 
+  bool get _isTrappedByOpponentAbility {
+    if (_opponentPokemon.isFainted) return false;
+    if (_playerPokemon.species.types.contains(PokemonType.ghost)) return false;
+    final oppAb = _opponentPokemon.effectiveAbilityId;
+    if (oppAb == 'arena_trap') {
+      final bool isGrounded = _fieldState.gravityTurns > 0 ||
+          (!_playerPokemon.species.types.contains(PokemonType.flying) &&
+              !_playerPokemon.hasMagnetRise &&
+              _playerPokemon.effectiveAbilityId != 'levitate');
+      return isGrounded;
+    }
+    if (oppAb == 'magnet_pull' &&
+        _playerPokemon.species.types.contains(PokemonType.steel)) {
+      return true;
+    }
+    return false;
+  }
+
   Widget _buildMainActionMenu() {
     final bool hasLockedMove = _playerPokemon.hasForcedTurnAction;
-    final bool isTrapped = _playerPokemon.trappedTurnsRemaining > 0;
+    final bool isMoveTrapped = _playerPokemon.trappedTurnsRemaining > 0;
+    final bool isAbilityTrapped = _isTrappedByOpponentAbility;
+    final bool isTrapped = isMoveTrapped || isAbilityTrapped;
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool compact = constraints.maxHeight < 168;
@@ -4302,7 +4544,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       content: Text(
                                         hasLockedMove
                                             ? "${_playerPokemon.nickname} is mid-move and cannot switch!"
-                                            : "${_playerPokemon.nickname} is trapped by ${_playerPokemon.trappedByMoveName ?? 'the vortex'}!",
+                                            : (isAbilityTrapped
+                                                ? "${_playerPokemon.nickname} is trapped by ${AbilityDatabase.nameOf(_opponentPokemon.effectiveAbilityId)}!"
+                                                : "${_playerPokemon.nickname} is trapped by ${_playerPokemon.trappedByMoveName ?? 'the vortex'}!"),
                                       ),
                                       duration: const Duration(seconds: 2),
                                     ),
@@ -4331,6 +4575,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                   content: Text(
                                       "No! There's no running from a Trainer battle!"),
                                   duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+                            if (isTrapped &&
+                                _playerPokemon.effectiveAbilityId != 'run_away') {
+                              final trapReason = isAbilityTrapped
+                                  ? AbilityDatabase.nameOf(
+                                      _opponentPokemon.effectiveAbilityId)
+                                  : (_playerPokemon.trappedByMoveName ?? 'the trap');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      "Can't escape! Trapped by $trapReason!"),
+                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                               return;

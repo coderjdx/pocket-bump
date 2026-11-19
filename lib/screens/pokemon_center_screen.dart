@@ -796,6 +796,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
       chosenId,
       level: 10,
       respectMinEncounterLevel: false,
+      hiddenAbilityChance: 0.08,
     );
     final boxNum = trainer.addPokemon(restoredMon);
     trainer.saveProgress();
@@ -856,6 +857,18 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                 color: Colors.white,
                 fontSize: 13.5,
                 height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              "Ability: ${restoredMon.abilityDefinition?.name ?? restoredMon.abilityId}${restoredMon.isHiddenAbility ? ' (Hidden Ability!)' : ''}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: restoredMon.isHiddenAbility
+                    ? const Color(0xFFFFD54F)
+                    : Colors.cyanAccent,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w800,
               ),
             ),
             const SizedBox(height: 8),

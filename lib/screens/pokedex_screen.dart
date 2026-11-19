@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/ability.dart';
 import '../models/game_version.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
@@ -889,6 +890,65 @@ class _PokedexScreenState extends State<PokedexScreen> {
                       ),
                     ],
                   ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Abilities
+                const Text(
+                  "ABILITIES",
+                  style: TextStyle(
+                    color: Colors.white60,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    ...spec.standardAbilityIds.map((abId) => Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 9, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.cyanAccent.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Colors.cyanAccent.withOpacity(0.4),
+                            ),
+                          ),
+                          child: Text(
+                            AbilityDatabase.nameOf(abId),
+                            style: const TextStyle(
+                              color: Colors.cyanAccent,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        )),
+                    if (spec.hiddenAbilityId != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 9, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFD54F).withOpacity(0.14),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFFFFD54F).withOpacity(0.55),
+                          ),
+                        ),
+                        child: Text(
+                          "${AbilityDatabase.nameOf(spec.hiddenAbilityId)} (Hidden)",
+                          style: const TextStyle(
+                            color: Color(0xFFFFE082),
+                            fontSize: 11,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
 
                 const SizedBox(height: 16),

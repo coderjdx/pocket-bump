@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'ability.dart';
 import 'pokemon_species.dart';
 import 'move.dart';
 import '../services/pokedex_database.dart';
@@ -61,6 +62,8 @@ class PokemonInstance {
   String? heldItemId;
   String caughtBall;
   final bool isShiny;
+  String abilityId;
+  int abilitySlot; // 1 = standard slot 1, 2 = standard slot 2, 3 = Hidden Ability
 
   // In-battle stat stages (-6 to +6)
   int atkStage = 0;
@@ -69,8 +72,30 @@ class PokemonInstance {
   int spdStage = 0;
   int speStage = 0;
   int accStage = 0;
+  int evaStage = 0;
 
   // Transient in-battle multi-stage & volatile state (reset on switch/KO/exit)
+  String? activeAbilityId;
+  bool flashFireBoosted = false;
+  bool consumedHeldItemForUnburden = false;
+  String? consumedBerryIdForHarvest;
+  bool isProtectedThisTurn = false;
+  bool isEnduringThisTurn = false;
+  int consecutiveProtectCount = 0;
+  bool isTaunted = false;
+  int tauntTurnsRemaining = 0;
+  bool isIngrained = false;
+  bool hasAquaRing = false;
+  bool hasMagnetRise = false;
+  int magnetRiseTurnsRemaining = 0;
+  bool isYawnDrowsy = false;
+  bool hasDestinyBond = false;
+  int perishTurnsRemaining = 0;
+  bool actedFirstThisTurn = false;
+  int lastDamageTakenThisTurn = 0;
+  String? lastMoveUsedId;
+  String? encoredMoveId;
+  int encoreTurnsRemaining = 0;
   String? chargingMoveId;
   bool isUnderground = false;
   bool needsRecharge = false;
@@ -133,6 +158,30 @@ class PokemonInstance {
     return 'CONTINUE';
   }
 
+  String get effectiveAbilityId => activeAbilityId ?? abilityId;
+  bool get isHiddenAbility =>
+      abilitySlot == 3 && species.hiddenAbilityId != null;
+  AbilityDefinition? get abilityDefinition => AbilityDatabase.byId(abilityId);
+  AbilityDefinition? get effectiveAbilityDefinition =>
+      AbilityDatabase.byId(effectiveAbilityId);
+
+  static ({int slot, String id}) rollAbilityForSpecies(
+    PokemonSpecies species, {
+    double hiddenChance = 0.02,
+    Random? rng,
+  }) {
+    final random = rng ?? Random();
+    if (species.hiddenAbilityId != null &&
+        hiddenChance > 0 &&
+        random.nextDouble() < hiddenChance) {
+      return (slot: 3, id: species.hiddenAbilityId!);
+    }
+    if (species.abilitySlot2Id != null && random.nextBool()) {
+      return (slot: 2, id: species.abilitySlot2Id!);
+    }
+    return (slot: 1, id: species.abilitySlot1Id);
+  }
+
   PokemonInstance({
     required this.species,
     String? nickname,
@@ -145,8 +194,15 @@ class PokemonInstance {
     this.heldItemId,
     this.caughtBall = 'poke_ball',
     bool isShiny = false,
+    String? abilityId,
+    int? abilitySlot,
   })  : isShiny = isShiny && species.isShinyEligible,
         nickname = nickname ?? species.name,
+        abilitySlot = abilitySlot ??
+            (abilityId != null
+                ? species.slotForAbility(abilityId)
+                : rollAbilityForSpecies(species).slot),
+        abilityId = '',
         moves = (moves ?? []).take(4).toList(),
         learnedMoveIds = <String>[],
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
@@ -157,6 +213,11 @@ class PokemonInstance {
         spa = _calculateStat(species.baseSpA, level),
         spd = _calculateStat(species.baseSpD, level),
         spe = _calculateStat(species.baseSpe, level) {
+    this.abilityId = abilityId ?? species.abilityForSlot(this.abilitySlot);
+    if (AbilityDatabase.byId(this.abilityId) == null) {
+      this.abilitySlot = 1;
+      this.abilityId = species.abilitySlot1Id;
+    }
     if (learnedMoveIds != null) {
       for (final id in learnedMoveIds) {
         recordLearnedMoveId(id);
@@ -209,8 +270,14 @@ class PokemonInstance {
   int get effectiveSpd => (spd * _stageMultiplier(spdStage)).round().clamp(1, 9999);
   int get effectiveSpe {
     double base = spe * _stageMultiplier(speStage);
-    if (status == StatusCondition.paralysis) {
+    if (status == StatusCondition.paralysis && effectiveAbilityId != 'quick_feet') {
       base *= 0.5;
+    }
+    if (status != StatusCondition.none && effectiveAbilityId == 'quick_feet') {
+      base *= 1.5;
+    }
+    if (consumedHeldItemForUnburden && effectiveAbilityId == 'unburden') {
+      base *= 2.0;
     }
     return base.round().clamp(1, 9999);
   }
@@ -218,6 +285,11 @@ class PokemonInstance {
   double get accuracyMultiplier {
     final s = accStage.clamp(-6, 6);
     return s >= 0 ? (3 + s) / 3.0 : 3.0 / (3 - s);
+  }
+
+  double get evasionMultiplier {
+    final s = evaStage.clamp(-6, 6);
+    return s >= 0 ? 3.0 / (3 + s) : (3 - s) / 3.0;
   }
 
   bool get isFainted => currentHp <= 0;
@@ -259,6 +331,11 @@ class PokemonInstance {
         before = accStage;
         accStage = (accStage + delta).clamp(-6, 6);
         after = accStage;
+        break;
+      case 'eva':
+        before = evaStage;
+        evaStage = (evaStage + delta).clamp(-6, 6);
+        after = evaStage;
         break;
       default:
         return 0;
@@ -436,6 +513,7 @@ class PokemonInstance {
       nickname = nextSpecies.name;
     }
     species = nextSpecies;
+    abilityId = nextSpecies.abilityForSlot(abilitySlot);
     recalculateStats();
 
     for (final id
@@ -461,6 +539,27 @@ class PokemonInstance {
   }
 
   void clearVolatileBattleState() {
+    activeAbilityId = null;
+    flashFireBoosted = false;
+    consumedHeldItemForUnburden = false;
+    consumedBerryIdForHarvest = null;
+    isProtectedThisTurn = false;
+    isEnduringThisTurn = false;
+    consecutiveProtectCount = 0;
+    isTaunted = false;
+    tauntTurnsRemaining = 0;
+    isIngrained = false;
+    hasAquaRing = false;
+    hasMagnetRise = false;
+    magnetRiseTurnsRemaining = 0;
+    isYawnDrowsy = false;
+    hasDestinyBond = false;
+    perishTurnsRemaining = 0;
+    actedFirstThisTurn = false;
+    lastDamageTakenThisTurn = 0;
+    lastMoveUsedId = null;
+    encoredMoveId = null;
+    encoreTurnsRemaining = 0;
     chargingMoveId = null;
     isUnderground = false;
     needsRecharge = false;
@@ -487,6 +586,7 @@ class PokemonInstance {
     spdStage = 0;
     speStage = 0;
     accStage = 0;
+    evaStage = 0;
     clearVolatileBattleState();
   }
 
@@ -535,6 +635,8 @@ class PokemonInstance {
       'heldItemId': heldItemId,
       'caughtBall': caughtBall,
       'isShiny': isShiny,
+      'abilityId': abilityId,
+      'abilitySlot': abilitySlot,
       'learnedMoveIds': learnedMoveIds,
       'moves': moves
           .map((m) => {
@@ -585,6 +687,23 @@ class PokemonInstance {
     final String? heldItem = json['heldItemId'] as String?;
     final String caughtBall = (json['caughtBall'] as String?) ?? 'poke_ball';
     final bool isShiny = json['isShiny'] == true;
+    final String? rawAbilityId = json['abilityId'] as String?;
+    final int? rawAbilitySlot = (json['abilitySlot'] as num?)?.toInt();
+    late final int resolvedSlot;
+    late final String resolvedAbilityId;
+    if (rawAbilityId != null &&
+        rawAbilityId.isNotEmpty &&
+        AbilityDatabase.byId(rawAbilityId) != null) {
+      resolvedAbilityId = rawAbilityId;
+      resolvedSlot = (rawAbilitySlot != null && rawAbilitySlot >= 1 && rawAbilitySlot <= 3)
+          ? rawAbilitySlot
+          : spec.slotForAbility(rawAbilityId);
+    } else {
+      // Backfill Ability for existing saved Pokémon (including ~2% Hidden Ability chance)
+      final rolled = rollAbilityForSpecies(spec, hiddenChance: 0.02);
+      resolvedSlot = rolled.slot;
+      resolvedAbilityId = rolled.id;
+    }
     final rawLearned = json['learnedMoveIds'] as List<dynamic>?;
     final List<String>? savedLearnedIds =
         rawLearned?.whereType<String>().toList();
@@ -602,6 +721,8 @@ class PokemonInstance {
       heldItemId: heldItem,
       caughtBall: caughtBall,
       isShiny: isShiny,
+      abilityId: resolvedAbilityId,
+      abilitySlot: resolvedSlot,
     );
   }
 }

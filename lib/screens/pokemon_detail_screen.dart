@@ -574,6 +574,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   Widget _buildStatsTab(
       Trainer trainer, PokemonInstance mon, int expRemaining) {
     final bool obeys = mon.level <= trainer.maxObedienceLevel;
+    final ability = mon.abilityDefinition;
     final stats = [
       ('HP', mon.maxHp, mon.species.baseHp, const Color(0xFF66BB6A)),
       ('Attack', mon.atk, mon.species.baseAtk, const Color(0xFFFF7043)),
@@ -586,6 +587,99 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     return ListView(
       padding: const EdgeInsets.all(14),
       children: [
+        Container(
+          padding: const EdgeInsets.all(13),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: mon.isHiddenAbility
+                  ? [
+                      const Color(0xFF2B2212),
+                      const Color(0xFF171C30),
+                    ]
+                  : [
+                      const Color(0xFF132234),
+                      const Color(0xFF141A2E),
+                    ],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: mon.isHiddenAbility
+                  ? const Color(0xFFFFD54F).withOpacity(0.55)
+                  : Colors.cyanAccent.withOpacity(0.32),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.bolt_rounded,
+                    size: 16,
+                    color: mon.isHiddenAbility
+                        ? const Color(0xFFFFD54F)
+                        : Colors.cyanAccent,
+                  ),
+                  const SizedBox(width: 5),
+                  const Text(
+                    "ABILITY",
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.9,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (mon.isHiddenAbility)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 7, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFD54F).withOpacity(0.20),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: const Color(0xFFFFD54F).withOpacity(0.7),
+                        ),
+                      ),
+                      child: const Text(
+                        "HIDDEN ABILITY",
+                        style: TextStyle(
+                          color: Color(0xFFFFE082),
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Text(
+                ability?.name ?? mon.abilityId,
+                style: TextStyle(
+                  color: mon.isHiddenAbility
+                      ? const Color(0xFFFFE082)
+                      : Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              if (ability != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  ability.description,
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 11.5,
+                    height: 1.35,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(

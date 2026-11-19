@@ -176,6 +176,7 @@ class ExpeditionDatabase {
             ids[i],
             level: levels[i],
             respectMinEncounterLevel: false,
+            hiddenAbilityChance: 0.10,
           ),
       ];
       return RocketChallenger(
@@ -198,6 +199,7 @@ class ExpeditionDatabase {
             ids[i],
             level: levels[i],
             respectMinEncounterLevel: false,
+            hiddenAbilityChance: 0.10,
           ),
       ];
       return RocketChallenger(
@@ -250,6 +252,7 @@ class ExpeditionDatabase {
         mewSpeciesId,
         level: 99,
         respectMinEncounterLevel: false,
+        hiddenAbilityChance: 0.15,
       );
     }
     if (!caughtDest && random.nextDouble() < 0.05) {
@@ -257,6 +260,7 @@ class ExpeditionDatabase {
         destination.legendarySpeciesId,
         level: 99,
         respectMinEncounterLevel: false,
+        hiddenAbilityChance: 0.15,
       );
     }
     return null;

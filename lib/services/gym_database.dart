@@ -17,7 +17,7 @@ class GymPokemonSpec {
     this.heldItemId,
   });
 
-  PokemonInstance createInstance() {
+  PokemonInstance createInstance({double hiddenAbilityChance = 0.05}) {
     final species = PokedexDatabase.species[speciesId] ?? PokedexDatabase.species[1]!;
     final moves = (moveIds != null && moveIds!.isNotEmpty)
         ? moveIds!
@@ -27,12 +27,18 @@ class GymPokemonSpec {
         : PokedexDatabase.movesForSpeciesAtLevel(species, level);
     final String ballId =
         level >= 35 ? 'ultra_ball' : (level >= 20 ? 'great_ball' : 'poke_ball');
+    final rolled = PokedexDatabase.rollAbility(
+      species,
+      hiddenAbilityChance: hiddenAbilityChance,
+    );
     return PokemonInstance(
       species: species,
       level: level,
       moves: moves,
       heldItemId: heldItemId,
       caughtBall: ballId,
+      abilityId: rolled.id,
+      abilitySlot: rolled.slot,
     );
   }
 }

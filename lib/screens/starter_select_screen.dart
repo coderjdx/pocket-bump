@@ -648,6 +648,47 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
                 Container(
                   width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0A0D16),
+                    borderRadius: BorderRadius.circular(9),
+                    border: Border.all(
+                      color: selectedMon.isHiddenAbility
+                          ? const Color(0xFFFFD54F).withOpacity(0.6)
+                          : Colors.cyanAccent.withOpacity(0.28),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.bolt_rounded,
+                        size: 13,
+                        color: selectedMon.isHiddenAbility
+                            ? const Color(0xFFFFD54F)
+                            : Colors.cyanAccent,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          "Ability: ${selectedMon.abilityDefinition?.name ?? selectedMon.abilityId}${selectedMon.isHiddenAbility ? ' (Hidden)' : ''}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: selectedMon.isHiddenAbility
+                                ? const Color(0xFFFFE082)
+                                : Colors.cyanAccent,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0A0D16),

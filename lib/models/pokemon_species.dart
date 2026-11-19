@@ -81,6 +81,9 @@ class PokemonSpecies {
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
   final List<LearnedMove> learnset;
+  final String abilitySlot1Id;
+  final String? abilitySlot2Id;
+  final String? hiddenAbilityId;
 
   const PokemonSpecies({
     required this.id,
@@ -106,7 +109,31 @@ class PokemonSpecies {
     this.evolutionLevel,
     this.evolutionSpeciesId,
     this.learnset = const [LearnedMove(1, 'tackle')],
+    this.abilitySlot1Id = 'run_away',
+    this.abilitySlot2Id,
+    this.hiddenAbilityId,
   });
+
+  String abilityForSlot(int slot) {
+    if (slot == 3 && hiddenAbilityId != null) return hiddenAbilityId!;
+    if (slot == 2 && abilitySlot2Id != null) return abilitySlot2Id!;
+    return abilitySlot1Id;
+  }
+
+  List<String> get standardAbilityIds => [
+        abilitySlot1Id,
+        if (abilitySlot2Id != null) abilitySlot2Id!,
+      ];
+
+  bool isHiddenAbility(String? abilityId) =>
+      abilityId != null && hiddenAbilityId != null && abilityId == hiddenAbilityId;
+
+  int slotForAbility(String? abilityId) {
+    if (abilityId == null) return 1;
+    if (hiddenAbilityId != null && abilityId == hiddenAbilityId) return 3;
+    if (abilitySlot2Id != null && abilityId == abilitySlot2Id) return 2;
+    return 1;
+  }
 
   bool get isFinalStage => evolutionSpeciesId == null;
   bool get isSingleStage => evolutionStage == 1 && evolutionSpeciesId == null;
