@@ -612,7 +612,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (_opponentPokemon.isFainted || _opponentPokemon.moves.isEmpty) return;
     await Future.delayed(const Duration(milliseconds: 260));
     if (!mounted) return;
-    final rawOppMove = BattleEngine.selectOpponentMove(_opponentPokemon);
+    final rawOppMove = BattleEngine.selectOpponentMove(
+      _opponentPokemon,
+      target: _playerPokemon,
+    );
     if (rawOppMove == null) return;
     final effectiveOppMove =
         BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove) ??
@@ -1056,7 +1059,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _isProcessingTurn = true;
     });
 
-    final opponentMove = BattleEngine.selectOpponentMove(_opponentPokemon);
+    final opponentMove = BattleEngine.selectOpponentMove(
+      _opponentPokemon,
+      target: _playerPokemon,
+    );
 
     final events = BattleEngine.resolveTurn(
       playerMon: _playerPokemon,
@@ -1184,7 +1190,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _isProcessingTurn = true;
     });
 
-    final opponentMove = BattleEngine.selectOpponentMove(_opponentPokemon);
+    final opponentMove = BattleEngine.selectOpponentMove(
+      _opponentPokemon,
+      target: _playerPokemon,
+    );
 
     final events = BattleEngine.resolveTurn(
       playerMon: _playerPokemon,

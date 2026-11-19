@@ -112,8 +112,13 @@ class BattleEngine {
   }
 
   /// Selects a move for an AI-controlled opponent.
-  /// Self-KO moves (`self_destruct`, `explosion`) are withheld until HP is in the red (<= 20%).
-  static Move? selectOpponentMove(PokemonInstance opponent, {Random? rng}) {
+  /// Self-KO moves (`self_destruct`, `explosion`) are withheld until HP is in the red (<= 20%),
+  /// and strictly conditional moves (`snore`, `dream_eater`) are avoided when their prerequisite isn't met.
+  static Move? selectOpponentMove(
+    PokemonInstance opponent, {
+    PokemonInstance? target,
+    Random? rng,
+  }) {
     if (opponent.moves.isEmpty) return null;
     final withPp = opponent.moves.where((m) => m.currentPp > 0).toList();
     final List<Move> available =
@@ -121,15 +126,21 @@ class BattleEngine {
 
     final bool inRedHp =
         opponent.maxHp > 0 && (opponent.currentHp / opponent.maxHp) <= 0.20;
-    final List<Move> pool;
-    if (inRedHp) {
-      pool = available;
-    } else {
-      final nonSelfKo = available
-          .where((m) => m.id != 'self_destruct' && m.id != 'explosion')
-          .toList();
-      pool = nonSelfKo.isNotEmpty ? nonSelfKo : available;
-    }
+    final filtered = available.where((m) {
+      if (!inRedHp && (m.id == 'self_destruct' || m.id == 'explosion')) {
+        return false;
+      }
+      if (m.id == 'snore' && opponent.status != StatusCondition.sleep) {
+        return false;
+      }
+      if (m.id == 'dream_eater' &&
+          target != null &&
+          target.status != StatusCondition.sleep) {
+        return false;
+      }
+      return true;
+    }).toList();
+    final pool = filtered.isNotEmpty ? filtered : available;
 
     final random = rng ?? _rng;
     return pool[random.nextInt(pool.length)];
@@ -743,10 +754,21 @@ class BattleEngine {
       }
     }
 
-    // 3. Semi-Invulnerable, Snore Condition & Accuracy Check
+    // 3. Semi-Invulnerable, Conditional Move Checks (Snore / Dream Eater) & Accuracy
     if (move.id == 'snore' && attacker.status != StatusCondition.sleep) {
       events.add(BattleStepEvent(
         message: "$attackerName used Snore, but it failed!",
+        isPlayerActor: isPlayer,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        surfaceActorOnAttack: surfacedThisTurn,
+      ));
+      return events;
+    }
+    if (move.id == 'dream_eater' && defender.status != StatusCondition.sleep) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used Dream Eater, but it failed!",
         isPlayerActor: isPlayer,
         moveType: move.type,
         moveCategory: move.category,
@@ -803,6 +825,18 @@ class BattleEngine {
         }
 
         final bool isRest = move.id == 'rest';
+        if (isRest && attacker.status == StatusCondition.sleep) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Rest, but it is already asleep!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statTargetIsSelf: true,
+            targetHpAfter: attacker.currentHp,
+          ));
+          return events;
+        }
         final int healAmt =
             isRest ? attacker.maxHp : max(1, (attacker.maxHp / 2).round());
         final int actualHeal = min(healAmt, attacker.maxHp - attacker.currentHp);

@@ -1853,7 +1853,7 @@ class PokedexDatabase {
       accuracy: 100,
       maxPp: 15,
       description:
-          'Devours mental energy with an eerie psychic wave. Half the damage dealt is restored as HP.',
+          'Devours the dreams of a sleeping target. Half the damage dealt is restored as HP.',
     ),
     'sky_attack': Move(
       id: 'sky_attack',
