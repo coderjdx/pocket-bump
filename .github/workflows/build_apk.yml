@@ -90,7 +90,7 @@ jobs:
             -noprompt
 
       - name: Build Release APK
-        run: flutter build apk --release --build-number=${{ github.run_number }}
+        run: flutter build apk --release --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }} --dart-define=APP_VERSION=1.0.${{ github.run_number }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -139,7 +139,7 @@ jobs:
           cp assets/icons/app_icon_512.png web/icons/Icon-512.png
           cp assets/icons/app_icon_512.png web/icons/Icon-maskable-512.png
           flutter pub get
-          flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none
+          flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none --dart-define=APP_VERSION=1.0.${{ github.run_number }}
           python3 -c '
           import json
           with open("build/web/index.html", "r") as f:

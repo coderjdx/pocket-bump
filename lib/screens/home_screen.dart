@@ -2,12 +2,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/item.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../services/app_update_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/step_counter_service.dart';
 import '../services/tm_service.dart';
@@ -53,6 +55,135 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           _launchWildEncounter();
         }
       },
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAppUpdate();
+    });
+  }
+
+  Future<void> _checkAppUpdate() async {
+    final update = await AppUpdateService.checkForUpdate();
+    if (!mounted || update == null) return;
+
+    await showDialog<void>(
+      context: context,
+      builder: (dlgCtx) => AlertDialog(
+        backgroundColor: const Color(0xFF141828),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: BorderSide(color: Colors.amberAccent.withOpacity(0.45)),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.system_update_alt_rounded,
+                color: Colors.amberAccent, size: 22),
+            SizedBox(width: 9),
+            Expanded(
+              child: Text(
+                "Update Available!",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "A new version of Pocket Bump (${update.latestVersion}) is available on GitHub.",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 13.5,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0B0E18),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Installed: v${update.currentVersion}",
+                    style: const TextStyle(
+                        color: Colors.white60,
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    "Latest: ${update.latestVersion}",
+                    style: const TextStyle(
+                        color: Color(0xFF34EB8C),
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w900),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await AppUpdateService.skipVersion(update.latestVersion);
+              if (dlgCtx.mounted) Navigator.pop(dlgCtx);
+            },
+            child: const Text("Skip", style: TextStyle(color: Colors.white38)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(dlgCtx),
+            child: const Text("Later", style: TextStyle(color: Colors.white70)),
+          ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              final uri = Uri.tryParse(update.downloadUrl);
+              Navigator.pop(dlgCtx);
+              bool opened = false;
+              if (uri != null) {
+                try {
+                  opened = await launchUrl(
+                    uri,
+                    mode: LaunchMode.externalApplication,
+                  );
+                } catch (_) {}
+              }
+              if (!opened) {
+                await Clipboard.setData(ClipboardData(text: update.downloadUrl));
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Copied APK download link to clipboard!"),
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.download_rounded, size: 17),
+            label: const Text(
+              "Download",
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amberAccent,
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

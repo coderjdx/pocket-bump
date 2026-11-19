@@ -94,6 +94,8 @@ Future<String?> httpGetString(String url) async {
   final client = HttpClient()..connectionTimeout = const Duration(seconds: 6);
   try {
     final req = await client.getUrl(Uri.parse(url));
+    req.headers.set(HttpHeaders.userAgentHeader, 'PocketBump');
+    req.headers.set(HttpHeaders.acceptHeader, 'application/vnd.github+json');
     final resp = await req.close().timeout(const Duration(seconds: 6));
     final text = await utf8.decoder.bind(resp).join();
     if (resp.statusCode >= 200 && resp.statusCode < 300) {

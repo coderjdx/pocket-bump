@@ -68,6 +68,7 @@ class PokemonInstance {
   int spaStage = 0;
   int spdStage = 0;
   int speStage = 0;
+  int accStage = 0;
 
   // Transient in-battle multi-stage & volatile state (reset on switch/KO/exit)
   String? chargingMoveId;
@@ -84,6 +85,10 @@ class PokemonInstance {
   String? trappedByMoveName;
   bool isConfused = false;
   int confusionTurnsRemaining = 0;
+  bool isSeeded = false;
+  bool isBadlyPoisoned = false;
+  int toxicCounter = 1;
+  int substituteHp = 0;
 
   bool get hasForcedTurnAction =>
       needsRecharge ||
@@ -210,6 +215,11 @@ class PokemonInstance {
     return base.round().clamp(1, 9999);
   }
 
+  double get accuracyMultiplier {
+    final s = accStage.clamp(-6, 6);
+    return s >= 0 ? (3 + s) / 3.0 : 3.0 / (3 - s);
+  }
+
   bool get isFainted => currentHp <= 0;
   double get hpPercent => maxHp > 0 ? (currentHp / maxHp).clamp(0.0, 1.0) : 0.0;
 
@@ -244,6 +254,11 @@ class PokemonInstance {
         before = speStage;
         speStage = (speStage + delta).clamp(-6, 6);
         after = speStage;
+        break;
+      case 'acc':
+        before = accStage;
+        accStage = (accStage + delta).clamp(-6, 6);
+        after = accStage;
         break;
       default:
         return 0;
@@ -435,6 +450,9 @@ class PokemonInstance {
     trappedByMoveName = null;
     isConfused = false;
     confusionTurnsRemaining = 0;
+    isSeeded = false;
+    toxicCounter = 1;
+    substituteHp = 0;
   }
 
   void resetStatStages() {
@@ -443,12 +461,14 @@ class PokemonInstance {
     spaStage = 0;
     spdStage = 0;
     speStage = 0;
+    accStage = 0;
     clearVolatileBattleState();
   }
 
   void resetBattleStateAndHeal() {
     currentHp = maxHp;
     status = StatusCondition.none;
+    isBadlyPoisoned = false;
     resetStatStages();
     for (var m in moves) {
       m.currentPp = m.maxPp;

@@ -2422,15 +2422,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
       for (final ev in BattleEngine.processEndOfTurnStatus(
         firstMon,
+        opponent: first.isPlayer ? _opponentPokemon : _playerPokemon,
         isPlayer: first.isPlayer,
         isWild: false,
       )) {
         await _playStepEvent(ev);
         if (!mounted) return;
       }
-      if (!firstMon.isFainted) {
+      if (!firstMon.isFainted && !secondMon.isFainted) {
         for (final ev in BattleEngine.processEndOfTurnStatus(
           secondMon,
+          opponent: second.isPlayer ? _opponentPokemon : _playerPokemon,
           isPlayer: second.isPlayer,
           isWild: false,
         )) {
@@ -6461,6 +6463,53 @@ class _MoveVfxPainter extends CustomPainter {
           }
           if (t > 0.42) {
             _drawStarPath(canvas, defenderCenter, 22.0 * fade, 7.0 * fade, Colors.lightGreenAccent, fade, points: 4);
+          }
+        }
+        break;
+
+      case 'leech_seed':
+        {
+          if (isSelfTarget) {
+            // End-of-turn Leech Seed tick: sprouting glowing tendrils & sapping spores
+            for (int i = 0; i < 6; i++) {
+              final ang = (i / 6.0) * pi * 2.0 + t * 2.5;
+              final sp = defenderCenter + Offset(cos(ang) * 20.0, 8.0 - t * 34.0 + sin(ang) * 8.0);
+              canvas.drawCircle(sp, 5.0 * fade,
+                  Paint()..color = Colors.lightGreenAccent.withOpacity(0.9 * fade));
+            }
+            canvas.drawOval(
+              Rect.fromCenter(center: defenderCenter + const Offset(0, 10), width: 52.0 * fade, height: 18.0 * fade),
+              Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 3.5 * fade
+                ..color = const Color(0xFF43A047).withOpacity(fade),
+            );
+          } else {
+            // Throw seed from launchOrigin onto defender, then sprout wrapping tendrils
+            final seedT = min(1.0, t / 0.52);
+            if (seedT < 1.0) {
+              final arc = sin(seedT * pi) * 44.0;
+              final sPos = Offset.lerp(attackerCenter, defenderCenter, seedT)! - Offset(0, arc);
+              canvas.drawCircle(sPos, 7.5 * fade,
+                  Paint()..color = const Color(0xFF2E7D32).withOpacity(fade));
+              canvas.drawCircle(sPos + const Offset(-2, -2), 3.0 * fade,
+                  Paint()..color = Colors.lightGreenAccent.withOpacity(fade));
+            } else {
+              final wrap = ((t - 0.52) / 0.48).clamp(0.0, 1.0);
+              for (int w = 0; w < 3; w++) {
+                canvas.drawOval(
+                  Rect.fromCenter(
+                    center: defenderCenter + Offset(0, (w - 1) * 10.0),
+                    width: (24.0 + wrap * 26.0) * fade,
+                    height: 12.0 * fade,
+                  ),
+                  Paint()
+                    ..style = PaintingStyle.stroke
+                    ..strokeWidth = 3.0 * fade
+                    ..color = Colors.lightGreenAccent.withOpacity(fade),
+                );
+              }
+            }
           }
         }
         break;

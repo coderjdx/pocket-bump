@@ -202,11 +202,21 @@ class BattleEngine {
       }
     }
 
-    // End-of-turn Burn / Poison tick damage & Leftovers
+    // End-of-turn Burn / Poison / Trap / Leech Seed / Leftovers
     if (!playerMon.isFainted && !opponentMon.isFainted) {
-      events.addAll(processEndOfTurnStatus(playerMon, isPlayer: true, isWild: isWild));
-      if (!playerMon.isFainted) {
-        events.addAll(processEndOfTurnStatus(opponentMon, isPlayer: false, isWild: isWild));
+      events.addAll(processEndOfTurnStatus(
+        playerMon,
+        opponent: opponentMon,
+        isPlayer: true,
+        isWild: isWild,
+      ));
+      if (!playerMon.isFainted && !opponentMon.isFainted) {
+        events.addAll(processEndOfTurnStatus(
+          opponentMon,
+          opponent: playerMon,
+          isPlayer: false,
+          isWild: isWild,
+        ));
       }
     }
 
@@ -448,7 +458,7 @@ class BattleEngine {
           message: "$attackerName woke up!",
           isPlayerActor: isPlayer,
         ));
-      } else {
+      } else if (move.id != 'snore') {
         _clearMoveLocks(attacker);
         events.add(BattleStepEvent(
           message: "$attackerName is fast asleep!",
@@ -704,12 +714,27 @@ class BattleEngine {
       }
     }
 
-    // 3. Semi-Invulnerable & Accuracy Check
+    // 3. Semi-Invulnerable, Snore Condition & Accuracy Check
+    if (move.id == 'snore' && attacker.status != StatusCondition.sleep) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used Snore, but it failed!",
+        isPlayerActor: isPlayer,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        surfaceActorOnAttack: surfacedThisTurn,
+      ));
+      return events;
+    }
+
     final bool hitsUnderground =
         move.id == 'earthquake' || move.id == 'fissure';
     final bool blockedByDig = defender.isUnderground && !hitsUnderground;
+    final int effectiveAccuracy = move.id == 'swift'
+        ? 100
+        : (move.accuracy * attacker.accuracyMultiplier).round().clamp(1, 100);
     final int accRoll = random.nextInt(100) + 1;
-    if (blockedByDig || accRoll > move.accuracy) {
+    if (blockedByDig || accRoll > effectiveAccuracy) {
       if (move.stageMechanic == MoveStageMechanic.escalatingRoll) {
         attacker.rolloutTurnsRemaining = 0;
         attacker.rolloutHitCount = 0;
@@ -773,6 +798,101 @@ class BattleEngine {
         return events;
       }
 
+      if (move.id == 'leech_seed') {
+        if (defender.species.types.contains(PokemonType.grass)) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Leech Seed! It doesn't affect $defenderName...",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            effectiveness: 0.0,
+            targetHpAfter: defender.currentHp,
+          ));
+        } else if (defender.substituteHp > 0) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Leech Seed! $defenderName's substitute blocked it!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'BLOCKED',
+            targetHpAfter: defender.currentHp,
+          ));
+        } else if (defender.isSeeded) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Leech Seed! $defenderName is already seeded!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            targetHpAfter: defender.currentHp,
+          ));
+        } else {
+          defender.isSeeded = true;
+          events.add(BattleStepEvent(
+            message: "$attackerName used Leech Seed! $defenderName was seeded!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'SEEDED!',
+            targetHpAfter: defender.currentHp,
+          ));
+        }
+        return events;
+      }
+
+      if (move.id == 'substitute') {
+        final int cost = max(1, attacker.maxHp ~/ 4);
+        if (attacker.substituteHp > 0) {
+          events.add(BattleStepEvent(
+            message: "$attackerName already has a substitute!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statTargetIsSelf: true,
+            targetHpAfter: attacker.currentHp,
+          ));
+        } else if (attacker.currentHp <= cost) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName tried Substitute, but it doesn't have enough HP!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statTargetIsSelf: true,
+            targetHpAfter: attacker.currentHp,
+          ));
+        } else {
+          attacker.currentHp -= cost;
+          attacker.substituteHp = cost;
+          events.add(BattleStepEvent(
+            message: "$attackerName put in a substitute!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statTargetIsSelf: true,
+            targetHpAfter: attacker.currentHp,
+          ));
+          events.add(BattleStepEvent(
+            message: "$attackerName gave up $cost HP to create a decoy!",
+            isPlayerActor: isPlayer,
+            damageDealt: cost,
+            targetHpAfter: attacker.currentHp,
+            isSelfDamage: true,
+            hideMoveVfx: true,
+          ));
+        }
+        return events;
+      }
+
       String? statLabel;
       String? statusLabel;
       bool selfBuff = false;
@@ -780,6 +900,19 @@ class BattleEngine {
 
       if (move.statTarget != null && move.statChange != 0) {
         selfBuff = move.statChange > 0;
+        if (!selfBuff && defender.substituteHp > 0) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used ${move.name}! The substitute protected $defenderName!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'BLOCKED',
+            targetHpAfter: defender.currentHp,
+          ));
+          return events;
+        }
         final targetMon = selfBuff ? attacker : defender;
         final targetLabel = selfBuff ? attackerName : defenderName;
         final actualDelta =
@@ -805,6 +938,19 @@ class BattleEngine {
               "$attackerName used ${move.name}! $targetLabel's $statFullName fell!";
         }
       } else if (move.statusEffect != null) {
+        if (defender.substituteHp > 0) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used ${move.name}! The substitute protected $defenderName!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'BLOCKED',
+            targetHpAfter: defender.currentHp,
+          ));
+          return events;
+        }
         final inflicted = _tryInflictStatus(defender, move.statusEffect!, random);
         if (inflicted != null) {
           statusLabel = inflicted;
@@ -881,6 +1027,31 @@ class BattleEngine {
         powerOverride: powerOverride,
         extraMultiplier: extraMultiplier,
       );
+
+      if (defender.substituteHp > 0) {
+        final int absorbed = min(defender.substituteHp, hitResult.damage);
+        defender.substituteHp -= absorbed;
+        actualHits = hit;
+        final bool broke = defender.substituteHp <= 0;
+        events.add(BattleStepEvent(
+          message: broke
+              ? "${hit == 1 ? '$attackerName used ${move.name}! ' : ''}$defenderName's substitute broke!"
+              : "${hit == 1 ? '$attackerName used ${move.name}! ' : ''}The substitute took the damage for $defenderName!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          damageDealt: 0,
+          targetHpAfter: defender.currentHp,
+          isCrit: hitResult.isCrit,
+          effectiveness: hitResult.typeMultiplier,
+          statusInflictedLabel: broke ? 'SUB BROKE!' : 'SUBSTITUTE!',
+          hitNumber: hitCount > 1 ? hit : 0,
+          totalHits: hitCount > 1 ? hitCount : 0,
+          surfaceActorOnAttack: hit == 1 && surfacedThisTurn,
+        ));
+        continue;
+      }
 
       final int prevDefenderHp = defender.currentHp;
       defender.currentHp =
@@ -1063,6 +1234,7 @@ class BattleEngine {
 
   static List<BattleStepEvent> processEndOfTurnStatus(
     PokemonInstance mon, {
+    PokemonInstance? opponent,
     required bool isPlayer,
     required bool isWild,
   }) {
@@ -1072,14 +1244,22 @@ class BattleEngine {
         : (isWild ? "Wild ${mon.nickname}" : mon.nickname);
 
     if (mon.status == StatusCondition.burn || mon.status == StatusCondition.poison) {
-      final tickDmg = max(1, mon.maxHp ~/ 8);
+      final bool isBurn = mon.status == StatusCondition.burn;
+      final bool isToxic = !isBurn && mon.isBadlyPoisoned;
+      final int tickDmg = isToxic
+          ? max(1, (mon.maxHp * mon.toxicCounter) ~/ 16)
+          : max(1, mon.maxHp ~/ 8);
+      if (isToxic) {
+        mon.toxicCounter = min(15, mon.toxicCounter + 1);
+      }
       mon.currentHp = (mon.currentHp - tickDmg).clamp(0, mon.maxHp);
-      final isBurn = mon.status == StatusCondition.burn;
 
       events.add(BattleStepEvent(
         message: isBurn
             ? "$monName was hurt by its burn!"
-            : "$monName was hurt by poison!",
+            : (isToxic
+                ? "$monName is hurt by toxin!"
+                : "$monName was hurt by poison!"),
         isPlayerActor: !isPlayer,
         moveType: isBurn ? PokemonType.fire : PokemonType.poison,
         damageDealt: tickDmg,
@@ -1087,6 +1267,54 @@ class BattleEngine {
         targetFainted: mon.isFainted,
         isStatusTick: true,
       ));
+
+      if (mon.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$monName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+        return events;
+      }
+    }
+
+    // Leech Seed sapping 1/8 max HP to heal the opposing active Pokémon
+    if (!mon.isFainted && mon.isSeeded) {
+      final int seedDmg = max(1, mon.maxHp ~/ 8);
+      final int prevHp = mon.currentHp;
+      mon.currentHp = (mon.currentHp - seedDmg).clamp(0, mon.maxHp);
+      final int drained = max(0, prevHp - mon.currentHp);
+
+      events.add(BattleStepEvent(
+        message: "$monName's health is sapped by Leech Seed!",
+        isPlayerActor: !isPlayer,
+        moveId: 'leech_seed',
+        moveType: PokemonType.grass,
+        damageDealt: drained,
+        targetHpAfter: mon.currentHp,
+        targetFainted: mon.isFainted,
+        isStatusTick: true,
+      ));
+
+      if (opponent != null &&
+          !opponent.isFainted &&
+          drained > 0 &&
+          opponent.currentHp < opponent.maxHp) {
+        final int actualHeal = min(drained, opponent.maxHp - opponent.currentHp);
+        opponent.currentHp += actualHeal;
+        final opponentLabel = !isPlayer
+            ? opponent.nickname
+            : (isWild ? "Wild ${opponent.nickname}" : opponent.nickname);
+        events.add(BattleStepEvent(
+          message: "$opponentLabel absorbed Leech Seed energy! (+$actualHeal HP)",
+          isPlayerActor: !isPlayer,
+          healAmount: actualHeal,
+          targetHpAfter: opponent.currentHp,
+          isStatusTick: true,
+          hideMoveVfx: true,
+        ));
+      }
 
       if (mon.isFainted) {
         events.add(BattleStepEvent(
@@ -1144,10 +1372,12 @@ class BattleEngine {
     // Leftovers healing at end of turn
     if (!mon.isFainted && mon.heldItemId == 'leftovers' && mon.currentHp < mon.maxHp) {
       final heal = max(1, mon.maxHp ~/ 16);
-      mon.currentHp = min(mon.maxHp, mon.currentHp + heal);
+      final actualHeal = min(heal, mon.maxHp - mon.currentHp);
+      mon.currentHp += actualHeal;
       events.add(BattleStepEvent(
         message: "$monName restored a little HP with its Leftovers!",
         isPlayerActor: isPlayer,
+        healAmount: actualHeal,
         targetHpAfter: mon.currentHp,
         isStatusTick: true,
       ));
@@ -1182,7 +1412,18 @@ class BattleEngine {
           return null;
         }
         target.status = StatusCondition.poison;
+        target.isBadlyPoisoned = false;
+        target.toxicCounter = 1;
         return 'POISONED!';
+      case 'badly_poison':
+        if (target.species.types.contains(PokemonType.poison) ||
+            target.species.types.contains(PokemonType.steel)) {
+          return null;
+        }
+        target.status = StatusCondition.poison;
+        target.isBadlyPoisoned = true;
+        target.toxicCounter = 1;
+        return 'BADLY POISONED!';
       case 'paralysis':
         if (target.species.types.contains(PokemonType.electric)) return null;
         target.status = StatusCondition.paralysis;
@@ -1207,6 +1448,8 @@ class BattleEngine {
         return 'Sp. Def';
       case 'spe':
         return 'Speed';
+      case 'acc':
+        return 'Accuracy';
       default:
         return stat.toUpperCase();
     }
