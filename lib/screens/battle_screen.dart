@@ -727,12 +727,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         await Future.delayed(const Duration(milliseconds: 520));
       } else {
-        if (event.targetHpAfter > 0) {
+        if (event.targetHpAfter > 0 || event.healAmount > 0) {
           setState(() {
             if (event.isPlayerActor) {
               _displayedPlayerHp = event.targetHpAfter;
             } else {
               _displayedOpponentHp = event.targetHpAfter;
+            }
+            if (event.healAmount > 0) {
+              _floatingCallout = "+${event.healAmount} HP";
+              _calloutOnOpponent = !event.isPlayerActor;
+              _calloutColor = const Color(0xFF34EB8C);
             }
           });
         }
@@ -892,6 +897,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       final bool isNoEffectHit =
           event.effectiveness == 0.0 && event.moveCategory != MoveCategory.status;
       if (event.damageDealt > 0 ||
+          event.healAmount > 0 ||
           isNoEffectHit ||
           event.statChangedLabel != null ||
           event.statusInflictedLabel != null) {
@@ -924,6 +930,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         } else if (event.damageDealt > 0) {
           callout = "-${event.damageDealt}";
           calloutCol = Colors.white;
+        } else if (event.healAmount > 0) {
+          callout = "+${event.healAmount} HP";
+          calloutCol = const Color(0xFF34EB8C);
         } else if (event.statChangedLabel != null) {
           callout = event.statChangedLabel;
           calloutCol = isSelfBuff ? Colors.cyanAccent : Colors.orangeAccent;
@@ -955,6 +964,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (event.isCrit || event.effectiveness >= 2.0 || _isHeavyMove(moveId)) {
             _arenaShakeController.forward(from: 0);
           }
+        } else if (event.healAmount > 0) {
+          setState(() {
+            if (isPlayer) {
+              _displayedPlayerHp = event.targetHpAfter;
+            } else {
+              _displayedOpponentHp = event.targetHpAfter;
+            }
+            _floatingCallout = callout;
+            _calloutOnOpponent = !isPlayer;
+            _calloutColor = calloutCol;
+          });
         } else {
           setState(() {
             _floatingCallout = callout;

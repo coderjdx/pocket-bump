@@ -64,6 +64,7 @@ class BattleStepEvent {
   final bool isMultiHitSummary;
   final bool hideMoveVfx;
   final bool isSelfDamage;
+  final int healAmount;
 
   const BattleStepEvent({
     required this.message,
@@ -89,6 +90,7 @@ class BattleStepEvent {
     this.isMultiHitSummary = false,
     this.hideMoveVfx = false,
     this.isSelfDamage = false,
+    this.healAmount = 0,
   });
 }
 
@@ -727,8 +729,50 @@ class BattleEngine {
       return events;
     }
 
-    // 4. Pure Status / Stat Moves
+    // 4. Pure Status / Stat / Direct Self-Healing Moves
     if (move.category == MoveCategory.status || move.power == 0) {
+      if (move.id == 'recover' ||
+          move.id == 'soft_boiled' ||
+          move.id == 'rest') {
+        if (attacker.currentHp >= attacker.maxHp) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used ${move.name}, but its HP is already full!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statTargetIsSelf: true,
+            targetHpAfter: attacker.currentHp,
+          ));
+          return events;
+        }
+
+        final bool isRest = move.id == 'rest';
+        final int healAmt =
+            isRest ? attacker.maxHp : max(1, (attacker.maxHp / 2).round());
+        final int actualHeal = min(healAmt, attacker.maxHp - attacker.currentHp);
+        attacker.currentHp += actualHeal;
+        if (isRest) {
+          attacker.status = StatusCondition.sleep;
+        }
+
+        events.add(BattleStepEvent(
+          message: isRest
+              ? "$attackerName went to sleep and restored full HP! (+$actualHeal HP)"
+              : "$attackerName restored its HP! (+$actualHeal HP)",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          healAmount: actualHeal,
+          statTargetIsSelf: true,
+          statusInflictedLabel: isRest ? 'ASLEEP!' : null,
+          targetHpAfter: attacker.currentHp,
+        ));
+        return events;
+      }
+
       String? statLabel;
       String? statusLabel;
       bool selfBuff = false;
@@ -825,6 +869,7 @@ class BattleEngine {
         (move.id == 'earthquake' && defender.isUnderground) ? 2.0 : 1.0;
 
     int actualHits = 0;
+    int totalDamageDealt = 0;
     for (int hit = 1; hit <= hitCount; hit++) {
       final hitResult = _computeHitDamage(
         attacker: attacker,
@@ -837,8 +882,10 @@ class BattleEngine {
         extraMultiplier: extraMultiplier,
       );
 
+      final int prevDefenderHp = defender.currentHp;
       defender.currentHp =
           (defender.currentHp - hitResult.damage).clamp(0, defender.maxHp);
+      totalDamageDealt += max(0, prevDefenderHp - defender.currentHp);
       actualHits = hit;
 
       if (defender.bideTurnsRemaining > 0 && hitResult.damage > 0) {
@@ -901,6 +948,32 @@ class BattleEngine {
         isMultiHitSummary: true,
         hideMoveVfx: true,
       ));
+    }
+
+    // 5b. HP-Draining Attacks (Absorb, Mega Drain, Giga Drain, Dream Eater)
+    const Set<String> drainMoveIds = {
+      'absorb',
+      'mega_drain',
+      'giga_drain',
+      'dream_eater',
+    };
+    if (drainMoveIds.contains(move.id) &&
+        totalDamageDealt > 0 &&
+        !attacker.isFainted &&
+        attacker.currentHp < attacker.maxHp) {
+      final int healAmt = max(1, totalDamageDealt ~/ 2);
+      final int actualHeal = min(healAmt, attacker.maxHp - attacker.currentHp);
+      attacker.currentHp += actualHeal;
+      if (actualHeal > 0) {
+        events.add(BattleStepEvent(
+          message: "$defenderName had its energy drained! (+$actualHeal HP)",
+          isPlayerActor: isPlayer,
+          healAmount: actualHeal,
+          targetHpAfter: attacker.currentHp,
+          isStatusTick: true,
+          hideMoveVfx: true,
+        ));
+      }
     }
 
     // 6. Post-hit multi-stage side effects

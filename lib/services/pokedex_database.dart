@@ -1189,9 +1189,8 @@ class PokedexDatabase {
       power: 0,
       accuracy: 100,
       maxPp: 10,
-      statTarget: 'def',
-      statChange: 1,
-      description: 'The user rests to recover energy and steady its defense.',
+      description:
+          'The user goes to sleep to fully restore its HP and cure status ailments.',
     ),
     'flash_cannon': Move(
       id: 'flash_cannon',
@@ -1408,9 +1407,7 @@ class PokedexDatabase {
       power: 0,
       accuracy: 100,
       maxPp: 10,
-      statTarget: 'def',
-      statChange: 1,
-      description: 'The user restores its own energy and defense.',
+      description: 'Restores the user\'s HP by up to half of its max HP.',
     ),
     'light_screen': Move(
       id: 'light_screen',
@@ -1548,9 +1545,8 @@ class PokedexDatabase {
       power: 0,
       accuracy: 100,
       maxPp: 10,
-      statTarget: 'def',
-      statChange: 1,
-      description: 'A self-healing move that restores vigor and defense.',
+      description:
+          'A self-healing move that restores up to half of the user\'s max HP.',
     ),
     'discharge': Move(
       id: 'discharge',
@@ -1841,7 +1837,8 @@ class PokedexDatabase {
       power: 100,
       accuracy: 100,
       maxPp: 15,
-      description: 'Devours mental energy with an eerie psychic wave.',
+      description:
+          'Devours mental energy with an eerie psychic wave. Half the damage dealt is restored as HP.',
     ),
     'sky_attack': Move(
       id: 'sky_attack',
