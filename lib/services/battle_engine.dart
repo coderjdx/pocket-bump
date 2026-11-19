@@ -111,6 +111,30 @@ class BattleEngine {
     return dbMove?.copy() ?? selectedMove;
   }
 
+  /// Selects a move for an AI-controlled opponent.
+  /// Self-KO moves (`self_destruct`, `explosion`) are withheld until HP is in the red (<= 20%).
+  static Move? selectOpponentMove(PokemonInstance opponent, {Random? rng}) {
+    if (opponent.moves.isEmpty) return null;
+    final withPp = opponent.moves.where((m) => m.currentPp > 0).toList();
+    final List<Move> available =
+        withPp.isNotEmpty ? withPp : List<Move>.from(opponent.moves);
+
+    final bool inRedHp =
+        opponent.maxHp > 0 && (opponent.currentHp / opponent.maxHp) <= 0.20;
+    final List<Move> pool;
+    if (inRedHp) {
+      pool = available;
+    } else {
+      final nonSelfKo = available
+          .where((m) => m.id != 'self_destruct' && m.id != 'explosion')
+          .toList();
+      pool = nonSelfKo.isNotEmpty ? nonSelfKo : available;
+    }
+
+    final random = rng ?? _rng;
+    return pool[random.nextInt(pool.length)];
+  }
+
   /// Resolves a full combat turn into ordered, animatable [BattleStepEvent]s.
   static List<BattleStepEvent> resolveTurn({
     required PokemonInstance playerMon,
@@ -169,7 +193,9 @@ class BattleEngine {
           playerTrainer: playerTrainer,
         ));
       }
-      if (!opponentMon.isFainted && effectiveOppMove != null) {
+      if (!playerMon.isFainted &&
+          !opponentMon.isFainted &&
+          effectiveOppMove != null) {
         events.addAll(executeSingleAttack(
           opponentMon,
           effectiveOppMove,
@@ -190,7 +216,9 @@ class BattleEngine {
           playerTrainer: playerTrainer,
         ));
       }
-      if (!playerMon.isFainted && effectivePlayerMove != null) {
+      if (!playerMon.isFainted &&
+          !opponentMon.isFainted &&
+          effectivePlayerMove != null) {
         events.addAll(executeSingleAttack(
           playerMon,
           effectivePlayerMove,
@@ -576,12 +604,13 @@ class BattleEngine {
         attacker.currentHp = 0;
         _clearMoveLocks(attacker);
         events.add(BattleStepEvent(
-          message: "$attackerName fainted from ${move.name}!",
+          message: "$attackerName collapsed from ${move.name}!",
           isPlayerActor: isPlayer,
           damageDealt: koDmg,
           targetHpAfter: 0,
           targetFainted: true,
           isSelfDamage: true,
+          hideMoveVfx: true,
         ));
         events.add(BattleStepEvent(
           message: "$attackerName fainted!",

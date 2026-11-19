@@ -605,8 +605,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (_opponentPokemon.isFainted || _opponentPokemon.moves.isEmpty) return;
     await Future.delayed(const Duration(milliseconds: 260));
     if (!mounted) return;
-    final rawOppMove =
-        _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)];
+    final rawOppMove = BattleEngine.selectOpponentMove(_opponentPokemon);
+    if (rawOppMove == null) return;
     final effectiveOppMove =
         BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove) ??
             rawOppMove;
@@ -630,34 +630,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _currentMessage = event.message;
     });
 
-    // Dedicated Knock-Out animation when a Pokémon faints AFTER the hit completes
-    if (event.targetFainted && event.moveType == null && !event.isStatusTick) {
-      HapticFeedback.heavyImpact();
-      final bool oppFainted = event.isPlayerActor;
-      setState(() {
-        _floatingCallout = "KNOCKED OUT!";
-        _calloutOnOpponent = oppFainted;
-        _calloutColor = Colors.redAccent;
-        if (oppFainted) {
-          _visualOpponentFainted = true;
-        } else {
-          _visualPlayerFainted = true;
-        }
-      });
-      if (oppFainted) {
-        await _opponentKoController.forward(from: 0.0);
-      } else {
-        await _playerKoController.forward(from: 0.0);
-      }
-      await Future.delayed(const Duration(milliseconds: 220));
-      if (!mounted) return;
-      setState(() {
-        _floatingCallout = null;
-      });
-      return;
-    }
-
-    // Confusion self-damage event
+    // Self-inflicted damage events (Confusion, Substitute cost, Self-Destruct/Explosion recoil KO)
+    // must run before the generic KO sprite-removal check so targetFainted does not misattribute the KO.
     if (event.isSelfDamage) {
       final hurtPlayer = event.isPlayerActor;
       HapticFeedback.mediumImpact();
@@ -685,6 +659,38 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _opponentFlash = false;
       });
       await Future.delayed(const Duration(milliseconds: 560));
+      if (!mounted) return;
+      setState(() {
+        _floatingCallout = null;
+      });
+      return;
+    }
+
+    // Dedicated Knock-Out animation when a Pokémon faints AFTER the hit completes
+    if (event.targetFainted &&
+        event.moveType == null &&
+        !event.isStatusTick &&
+        !event.isSelfDamage) {
+      HapticFeedback.heavyImpact();
+      final bool oppFainted = event.isPlayerActor;
+      setState(() {
+        _floatingCallout = "KNOCKED OUT!";
+        _calloutOnOpponent = oppFainted;
+        _calloutColor = Colors.redAccent;
+        if (oppFainted) {
+          _displayedOpponentHp = 0;
+          _visualOpponentFainted = true;
+        } else {
+          _displayedPlayerHp = 0;
+          _visualPlayerFainted = true;
+        }
+      });
+      if (oppFainted) {
+        await _opponentKoController.forward(from: 0.0);
+      } else {
+        await _playerKoController.forward(from: 0.0);
+      }
+      await Future.delayed(const Duration(milliseconds: 220));
       if (!mounted) return;
       setState(() {
         _floatingCallout = null;
@@ -1043,9 +1049,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _isProcessingTurn = true;
     });
 
-    final opponentMove = _opponentPokemon.moves.isNotEmpty
-        ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-        : null;
+    final opponentMove = BattleEngine.selectOpponentMove(_opponentPokemon);
 
     final events = BattleEngine.resolveTurn(
       playerMon: _playerPokemon,
@@ -1173,9 +1177,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _isProcessingTurn = true;
     });
 
-    final opponentMove = _opponentPokemon.moves.isNotEmpty
-        ? _opponentPokemon.moves[Random().nextInt(_opponentPokemon.moves.length)]
-        : null;
+    final opponentMove = BattleEngine.selectOpponentMove(_opponentPokemon);
 
     final events = BattleEngine.resolveTurn(
       playerMon: _playerPokemon,
