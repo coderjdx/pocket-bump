@@ -2917,12 +2917,22 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           : (_vfxAttackerIsPlayer
                                               ? oppSpriteCenter
                                               : playerSpriteCenter);
+                                      final double atkSize = _vfxAttackerIsPlayer
+                                          ? playerSize
+                                          : oppSize;
+                                      final double defSize = _vfxTargetIsSelf
+                                          ? atkSize
+                                          : (_vfxAttackerIsPlayer
+                                              ? oppSize
+                                              : playerSize);
                                       return CustomPaint(
                                         painter: _MoveVfxPainter(
                                           moveId: _activeMoveId!,
                                           moveType: _activeVfxType!,
                                           attackerCenter: atkCenter,
                                           defenderCenter: defCenter,
+                                          attackerSize: atkSize,
+                                          defenderSize: defSize,
                                           progress: _vfxController.value,
                                         ),
                                       );
@@ -5750,10 +5760,59 @@ class _CaptureLockBurstPainter extends CustomPainter {
 }
 
 class _MoveVfxPainter extends CustomPainter {
+  static const Set<String> _bodyAnchoredMoves = {
+    'swords_dance',
+    'harden',
+    'agility',
+    'tail_whip',
+    'splash',
+    'glare',
+    'dig',
+    'absorb',
+    'mega_drain',
+    'giga_drain',
+    'dream_eater',
+    'mimic',
+    'night_shade',
+    'discharge',
+    'acid_armor',
+    'ancient_power',
+    'flame_wheel',
+    'rest',
+    'rollout',
+    'explosion',
+    'self_destruct',
+    'transform',
+    'struggle',
+    'soft_boiled',
+    'light_screen',
+    'reflect',
+    'sharpen',
+    'withdraw',
+    'recover',
+    'counter',
+    'double_edge',
+    'double_team',
+    'metronome',
+    'rage',
+    'skull_bash',
+    'sky_attack',
+    'substitute',
+    'teleport',
+    'surf',
+    'outrage',
+    'quick_attack',
+    'extreme_speed',
+    'aqua_jet',
+    'take_down',
+  };
+
   final String moveId;
   final PokemonType moveType;
   final Offset attackerCenter;
   final Offset defenderCenter;
+  final double attackerSize;
+  final double defenderSize;
   final double progress;
 
   _MoveVfxPainter({
@@ -5761,6 +5820,8 @@ class _MoveVfxPainter extends CustomPainter {
     required this.moveType,
     required this.attackerCenter,
     required this.defenderCenter,
+    this.attackerSize = 140.0,
+    this.defenderSize = 140.0,
     required this.progress,
   });
 
@@ -5770,14 +5831,56 @@ class _MoveVfxPainter extends CustomPainter {
     final fade = (1.0 - max(0.0, (t - 0.72) / 0.28)).clamp(0.0, 1.0);
     final rawDir = defenderCenter - attackerCenter;
     final bool isSelfTarget = rawDir.distance < 2.0;
-    final Offset dir = isSelfTarget
+    final Offset baseDir = isSelfTarget
         ? ((attackerCenter.dy > size.height * 0.5)
             ? const Offset(150, -120)
             : const Offset(-150, 120))
         : rawDir;
-    final dist = max(1.0, dir.distance);
-    final unit = dir / dist;
-    final perp = Offset(-unit.dy, unit.dx);
+    final double baseDist = max(1.0, baseDir.distance);
+    final Offset baseUnit = baseDir / baseDist;
+
+    // Position ranged projectiles, beams, breath attacks, and strikes cleanly
+    // in front of the user rather than emerging from its torso center.
+    final bool useLaunchOrigin =
+        !isSelfTarget && !_bodyAnchoredMoves.contains(moveId);
+    final double leadDist =
+        min(baseDist * 0.28, max(28.0, attackerSize * 0.36));
+    final Offset mouthLift = Offset(0, -min(16.0, attackerSize * 0.08));
+    final Offset origin = useLaunchOrigin
+        ? (attackerCenter + baseUnit * leadDist + mouthLift)
+        : attackerCenter;
+
+    final Offset dir = isSelfTarget ? baseDir : (defenderCenter - origin);
+    final double dist = max(1.0, dir.distance);
+    final Offset unit = dir / dist;
+    final Offset perp = Offset(-unit.dy, unit.dx);
+
+    _paintMoveVfx(
+      canvas,
+      size,
+      t,
+      fade,
+      isSelfTarget,
+      origin,
+      dir,
+      dist,
+      unit,
+      perp,
+    );
+  }
+
+  void _paintMoveVfx(
+    Canvas canvas,
+    Size size,
+    double t,
+    double fade,
+    bool isSelfTarget,
+    Offset attackerCenter,
+    Offset dir,
+    double dist,
+    Offset unit,
+    Offset perp,
+  ) {
 
     switch (moveId) {
       // ─── FIRE MOVES ─────────────────────────────────────────────────────
@@ -10249,5 +10352,7 @@ class _MoveVfxPainter extends CustomPainter {
       oldDelegate.progress != progress ||
       oldDelegate.moveId != moveId ||
       oldDelegate.attackerCenter != attackerCenter ||
-      oldDelegate.defenderCenter != defenderCenter;
+      oldDelegate.defenderCenter != defenderCenter ||
+      oldDelegate.attackerSize != attackerSize ||
+      oldDelegate.defenderSize != defenderSize;
 }
