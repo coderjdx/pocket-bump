@@ -784,8 +784,14 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     trainer.adjustItemCount('unknown_fossil', -1);
     trainer.adjustItemCount('fossil_restoration_voucher', -1);
 
-    final fossilPool = PokedexDatabase.firstStageFossilSpeciesIds;
-    final chosenId = fossilPool[Random().nextInt(fossilPool.length)];
+    final fossilPool = PokedexDatabase.firstStageFossilSpeciesIds.where((id) {
+      final spec = PokedexDatabase.species[id];
+      return spec != null && spec.isAvailableInVersion(trainer.gameVersion);
+    }).toList();
+    final chosenPool = fossilPool.isNotEmpty
+        ? fossilPool
+        : PokedexDatabase.firstStageFossilSpeciesIds;
+    final chosenId = chosenPool[Random().nextInt(chosenPool.length)];
     final restoredMon = PokedexDatabase.createPokemon(
       chosenId,
       level: 10,

@@ -1,4 +1,5 @@
 import 'dart:math';
+import '../models/game_version.dart';
 import '../models/move.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
@@ -6295,11 +6296,14 @@ class PokedexDatabase {
   static List<PokemonSpecies> speciesForRarity(
     PokemonRarity rarity, {
     int? playerLevel,
+    GameVersion? gameVersion,
   }) {
     return species.values.where((s) {
       if (s.rarity != rarity) return false;
       if (!s.isWildEncounterable) return false;
-      if (playerLevel != null && !s.canEncounterAtPlayerLevel(playerLevel)) {
+      if (!s.isAvailableInVersion(gameVersion)) return false;
+      if (playerLevel != null &&
+          !s.canEncounterAtPlayerLevel(playerLevel, gameVersion: gameVersion)) {
         return false;
       }
       return true;
@@ -6307,19 +6311,31 @@ class PokedexDatabase {
   }
 
   // ─── WILD ENCOUNTER GENERATOR ─────────────────────────────────────────
-  static PokemonInstance generateWildEncounter({int playerLevel = 5}) {
+  static PokemonInstance generateWildEncounter({
+    int playerLevel = 5,
+    GameVersion? gameVersion,
+  }) {
     // 65% Common (1st stage), 30% Uncommon (2nd stage within 5 levels),
     // 5% Rare (1st stage starters, 3rd stage, final pseudo-legendary within 10 levels).
     final targetRarity = rollEncounterRarity();
-    final rarityPool = speciesForRarity(targetRarity, playerLevel: playerLevel);
+    final rarityPool = speciesForRarity(
+      targetRarity,
+      playerLevel: playerLevel,
+      gameVersion: gameVersion,
+    );
     final eligiblePool = species.values
-        .where((s) => s.canEncounterAtPlayerLevel(playerLevel))
+        .where((s) =>
+            s.canEncounterAtPlayerLevel(playerLevel, gameVersion: gameVersion))
         .toList();
     final pool = rarityPool.isNotEmpty
         ? rarityPool
         : (eligiblePool.isNotEmpty
             ? eligiblePool
-            : species.values.where((s) => s.isWildEncounterable).toList());
+            : species.values
+                .where((s) =>
+                    s.isWildEncounterable &&
+                    s.isAvailableInVersion(gameVersion))
+                .toList());
     final chosen = pool[_rng.nextInt(pool.length)];
 
     final baseMin = (playerLevel - 2).clamp(2, 99);

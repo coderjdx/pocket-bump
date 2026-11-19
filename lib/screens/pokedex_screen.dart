@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/game_version.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
@@ -861,6 +862,29 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               ),
                             ),
                           ),
+                          if (spec.exclusiveVersion != null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: spec.exclusiveVersion!.primaryColor
+                                    .withOpacity(0.18),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: spec.exclusiveVersion!.primaryColor
+                                      .withOpacity(0.7),
+                                ),
+                              ),
+                              child: Text(
+                                "${spec.exclusiveVersion!.shortLabel} EXCLUSIVE",
+                                style: TextStyle(
+                                  color: spec.exclusiveVersion!.primaryColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ],

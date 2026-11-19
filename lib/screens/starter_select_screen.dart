@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/game_version.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/type_badge.dart';
+import '../widgets/version_picker.dart';
 
 class StarterSelectScreen extends StatefulWidget {
   const StarterSelectScreen({super.key});
@@ -15,7 +17,8 @@ class StarterSelectScreen extends StatefulWidget {
 }
 
 class _StarterSelectScreenState extends State<StarterSelectScreen> {
-  int _step = 0; // 0 = Trainer Avatar, 1 = Starter Pokémon
+  int _step = 0; // 0 = Version, 1 = Trainer Avatar, 2 = Starter Pokémon
+  GameVersion _selectedVersion = GameVersion.red;
   bool _isFemale = false;
   TrainerAvatar _selectedAvatar = TrainerAvatar.presets.first;
   final TextEditingController _nameController = TextEditingController(text: 'Red');
@@ -69,11 +72,112 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
-              child: _step == 0 ? _buildTrainerStep() : _buildStarterStep(),
+              child: _step == 0
+                  ? _buildVersionStep()
+                  : (_step == 1 ? _buildTrainerStep() : _buildStarterStep()),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildVersionStep() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                _selectedVersion.primaryColor,
+                _selectedVersion.secondaryColor,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
+          ),
+          child: const Text(
+            "WELCOME TO POCKET BUMP",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.3,
+              fontSize: 10.5,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          "Choose Your Game Version",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 19,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            letterSpacing: 0.4,
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          "Wild encounters follow your chosen version. Trade with friends on the other version via Fist Bump to catch them all!",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 11.5,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                VersionChoiceCard(
+                  version: GameVersion.red,
+                  isSelected: _selectedVersion == GameVersion.red,
+                  onTap: () =>
+                      setState(() => _selectedVersion = GameVersion.red),
+                ),
+                const SizedBox(height: 12),
+                VersionChoiceCard(
+                  version: GameVersion.blueGreen,
+                  isSelected: _selectedVersion == GameVersion.blueGreen,
+                  onTap: () =>
+                      setState(() => _selectedVersion = GameVersion.blueGreen),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () => setState(() => _step = 1),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _selectedVersion.primaryColor,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+                side: BorderSide(color: Colors.white.withOpacity(0.22)),
+              ),
+              elevation: 4,
+            ),
+            child: const Text(
+              "NEXT: TRAINER IDENTITY →",
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.9,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -84,24 +188,40 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.red.shade700, Colors.red.shade900],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white70, size: 18),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onPressed: () => setState(() => _step = 0),
             ),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
-          ),
-          child: const Text(
-            "WELCOME TO KANTO",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.3,
-              fontSize: 10.5,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    _selectedVersion.primaryColor,
+                    _selectedVersion.secondaryColor,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
+              ),
+              child: Text(
+                "KANTO • ${_selectedVersion.shortLabel}",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.1,
+                  fontSize: 10.5,
+                ),
+              ),
             ),
-          ),
+            const SizedBox(width: 24),
+          ],
         ),
         const SizedBox(height: 8),
         const Text(
@@ -293,7 +413,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           width: double.infinity,
           height: 48,
           child: ElevatedButton(
-            onPressed: () => setState(() => _step = 1),
+            onPressed: () => setState(() => _step = 2),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFD32F2F),
               foregroundColor: Colors.white,
@@ -363,7 +483,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                   color: Colors.white70, size: 18),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
-              onPressed: () => setState(() => _step = 0),
+              onPressed: () => setState(() => _step = 1),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
@@ -593,6 +713,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           child: ElevatedButton(
             onPressed: () {
               final trainer = Provider.of<Trainer>(context, listen: false);
+              trainer.setGameVersion(_selectedVersion);
               trainer.setIdentity(
                 newName: _nameController.text,
                 newAvatar: _selectedAvatar,

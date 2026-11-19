@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'game_version.dart';
 import 'pokemon_instance.dart';
 import 'rival.dart';
 import 'trainer_avatar.dart';
@@ -18,6 +19,7 @@ class Trainer extends ChangeNotifier {
   bool _suppressAutoSave = false;
   String name;
   TrainerAvatar avatar;
+  GameVersion? gameVersion;
   List<PokemonInstance> party;
   late List<List<PokemonInstance>> pcBoxes;
   int activePcBoxIndex;
@@ -56,6 +58,7 @@ class Trainer extends ChangeNotifier {
   Trainer({
     required this.name,
     TrainerAvatar? avatar,
+    this.gameVersion,
     List<PokemonInstance>? party,
     List<List<PokemonInstance>>? pcBoxes,
     this.activePcBoxIndex = 0,
@@ -167,6 +170,12 @@ class Trainer extends ChangeNotifier {
   }) {
     name = newName.trim().isEmpty ? 'Red' : newName.trim();
     avatar = newAvatar;
+    notifyListeners();
+  }
+
+  void setGameVersion(GameVersion version) {
+    if (gameVersion == version) return;
+    gameVersion = version;
     notifyListeners();
   }
 
@@ -904,6 +913,7 @@ class Trainer extends ChangeNotifier {
       'savedAt': DateTime.now().toUtc().toIso8601String(),
       'name': name,
       'avatarId': avatar.id,
+      'gameVersion': gameVersion?.storageKey,
       'pokeBalls': pokeBalls,
       'greatBalls': greatBalls,
       'ultraBalls': ultraBalls,
@@ -950,6 +960,9 @@ class Trainer extends ChangeNotifier {
     avatar = TrainerAvatar.presets.firstWhere(
       (a) => a.id == avatarId,
       orElse: () => TrainerAvatar.presets.first,
+    );
+    gameVersion = GameVersionExtension.fromStorageKey(
+      json['gameVersion'] as String?,
     );
     pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 20).clamp(0, 99);
     greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
@@ -1124,6 +1137,7 @@ class Trainer extends ChangeNotifier {
     } catch (_) {}
     name = 'Red';
     avatar = TrainerAvatar.presets.first;
+    gameVersion = null;
     party = [];
     pcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
     activePcBoxIndex = 0;

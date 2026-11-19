@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../models/game_version.dart';
 import '../models/item.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
@@ -17,6 +18,7 @@ import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
+import '../widgets/version_picker.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'evolution_screen.dart';
@@ -50,16 +52,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         if (!mounted) return;
         final trainer = Provider.of<Trainer>(context, listen: false);
         final triggered = trainer.recordStepsAndCheckEncounter(diff);
-        if (triggered) {
+        if (triggered && trainer.gameVersion != null) {
           StepCounterService.triggerEncounterAlert();
           _launchWildEncounter();
         }
       },
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAppUpdate();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _promptVersionChoiceIfNeeded();
+      if (!mounted) return;
+      await _checkAppUpdate();
     });
+  }
+
+  Future<void> _promptVersionChoiceIfNeeded() async {
+    final trainer = Provider.of<Trainer>(context, listen: false);
+    if (trainer.gameVersion != null) return;
+    await showVersionMigrationDialog(context, trainer);
   }
 
   Future<void> _checkAppUpdate() async {
@@ -215,9 +225,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       );
       return;
     }
+    if (trainer.gameVersion == null) {
+      await _promptVersionChoiceIfNeeded();
+      if (!mounted || trainer.gameVersion == null) return;
+    }
     trainer.resetEncounterSteps();
     final playerLevel = trainer.leadPokemon?.level ?? 5;
-    final wildMon = PokedexDatabase.generateWildEncounter(playerLevel: playerLevel);
+    final wildMon = PokedexDatabase.generateWildEncounter(
+      playerLevel: playerLevel,
+      gameVersion: trainer.gameVersion,
+    );
     await precacheImage(
       AssetImage(wildMon.species.battleBackgroundAsset),
       context,
@@ -233,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   void _simulateSteps(Trainer trainer, int delta) {
     final triggered = trainer.recordStepsAndCheckEncounter(delta);
-    if (triggered) {
+    if (triggered && trainer.gameVersion != null) {
       _launchWildEncounter();
     }
   }
@@ -371,16 +388,47 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  trainer.name.toUpperCase(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 14,
-                    letterSpacing: 0.8,
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        trainer.name.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 14,
+                          letterSpacing: 0.8,
+                        ),
+                      ),
+                    ),
+                    if (trainer.gameVersion != null) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 1.5),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              trainer.gameVersion!.primaryColor,
+                              trainer.gameVersion!.secondaryColor,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          trainer.gameVersion!.shortLabel,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
                 Text(
                   "POKÉMON ${trainer.party.length}/6 • OBEY Lv.${trainer.maxObedienceLevel}",

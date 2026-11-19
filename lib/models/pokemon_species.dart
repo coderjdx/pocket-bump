@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'game_version.dart';
 import 'pokemon_type.dart';
 
 enum PokemonRarity {
@@ -158,8 +159,39 @@ class PokemonSpecies {
     return 1;
   }
 
-  bool canEncounterAtPlayerLevel(int playerLevel) {
+  static const Set<int> redExclusiveIds = {
+    23, 24, // Ekans, Arbok
+    43, 44, 45, // Oddish, Gloom, Vileplume
+    56, 57, // Mankey, Primeape
+    58, 59, // Growlithe, Arcanine
+    123, // Scyther
+    125, // Electabuzz
+  };
+
+  static const Set<int> blueGreenExclusiveIds = {
+    27, 28, // Sandshrew, Sandslash
+    37, 38, // Vulpix, Ninetales
+    52, 53, // Meowth, Persian
+    69, 70, 71, // Bellsprout, Weepinbell, Victreebel
+    126, // Magmar
+    127, // Pinsir
+  };
+
+  GameVersion? get exclusiveVersion {
+    if (redExclusiveIds.contains(id)) return GameVersion.red;
+    if (blueGreenExclusiveIds.contains(id)) return GameVersion.blueGreen;
+    return null;
+  }
+
+  bool isAvailableInVersion(GameVersion? version) {
+    final ex = exclusiveVersion;
+    if (ex == null || version == null) return true;
+    return ex == version;
+  }
+
+  bool canEncounterAtPlayerLevel(int playerLevel, {GameVersion? gameVersion}) {
     if (!isWildEncounterable) return false;
+    if (!isAvailableInVersion(gameVersion)) return false;
     return playerLevel >= requiredPlayerLevelForEncounter;
   }
 
