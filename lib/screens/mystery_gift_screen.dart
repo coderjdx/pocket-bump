@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../models/game_version.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
@@ -294,7 +293,6 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
     final int charCount =
         MysteryGiftService.normalizeCode(_codeController.text).length;
     final bool codeReady = charCount == 16;
-    final version = trainer.gameVersion;
 
     return Scaffold(
       backgroundColor: const Color(0xFF0E1322),
@@ -346,12 +344,12 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     children: [
-                      const Icon(Icons.wifi_tethering_rounded,
+                      Icon(Icons.wifi_tethering_rounded,
                           color: Colors.cyanAccent, size: 20),
-                      const SizedBox(width: 8),
-                      const Expanded(
+                      SizedBox(width: 8),
+                      Expanded(
                         child: Text(
                           "EVENT DISTRIBUTIONS",
                           style: TextStyle(
@@ -362,26 +360,6 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                           ),
                         ),
                       ),
-                      if (MysteryGiftService.unclaimedEvents(trainer)
-                          .isNotEmpty)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.greenAccent.withOpacity(0.18),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: Colors.greenAccent.withOpacity(0.6)),
-                          ),
-                          child: Text(
-                            "${MysteryGiftService.unclaimedEvents(trainer).length} AVAILABLE",
-                            style: const TextStyle(
-                              color: Colors.greenAccent,
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -422,9 +400,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                       ),
                     ),
                   ),
-                  if (_hasCheckedEvents ||
-                      MysteryGiftService.activeEventDistributions
-                          .any((e) => trainer.hasClaimedEventGift(e.id))) ...[
+                  if (_hasCheckedEvents) ...[
                     const SizedBox(height: 14),
                     ...MysteryGiftService.activeEventDistributions.map((event) {
                       final bool claimed =
@@ -569,7 +545,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                       fontSize: 15,
                     ),
                     decoration: InputDecoration(
-                      hintText: "SINNOH2026GIFT04",
+                      hintText: "ENTER 16-CHAR CODE",
                       hintStyle: const TextStyle(
                         color: Colors.white24,
                         letterSpacing: 1.8,
@@ -627,94 +603,25 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
 
             const SizedBox(height: 16),
 
-            // 3. Featured Event Code Card
+            // 3. External Distribution Info
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: const Color(0xFF101526),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: (version?.primaryColor ?? Colors.amberAccent)
-                      .withOpacity(0.45),
-                ),
+                border: Border.all(color: Colors.white12),
               ),
-              child: Column(
+              child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.campaign_rounded,
-                          color: Colors.amberAccent, size: 18),
-                      const SizedBox(width: 7),
-                      const Expanded(
-                        child: Text(
-                          "ACTIVE SINNOH STARTER CODE",
-                          style: TextStyle(
-                            color: Colors.amberAccent,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 0.7,
-                          ),
-                        ),
-                      ),
-                      if (trainer.hasRedeemedGiftCode(
-                          MysteryGiftService.sinnohStarterCode))
-                        const Text(
-                          "REDEEMED ✓",
-                          style: TextStyle(
-                            color: Colors.greenAccent,
-                            fontSize: 10.5,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    "Red Version players receive a Lv. 5 Chimchar • Blue/Green Version players receive a Lv. 5 Piplup.",
-                    style: const TextStyle(
-                        color: Colors.white70, fontSize: 11.5, height: 1.35),
-                  ),
-                  const SizedBox(height: 10),
-                  InkWell(
-                    onTap: () {
-                      SoundService.instance.playUiTap();
-                      _codeController.text =
-                          MysteryGiftService.sinnohStarterCode;
-                      setState(() {});
-                    },
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 9),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF090C16),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.white24),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            MysteryGiftService.sinnohStarterCode,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 1.6,
-                              fontSize: 13.5,
-                            ),
-                          ),
-                          Text(
-                            "TAP TO FILL",
-                            style: TextStyle(
-                              color: Colors.cyanAccent,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ],
-                      ),
+                  Icon(Icons.info_outline_rounded,
+                      color: Colors.white54, size: 18),
+                  SizedBox(width: 9),
+                  Expanded(
+                    child: Text(
+                      "Event items and 16-character Mystery Gift codes are announced through external channels and are not listed in-app.",
+                      style: TextStyle(
+                          color: Colors.white60, fontSize: 11.5, height: 1.4),
                     ),
                   ),
                 ],
