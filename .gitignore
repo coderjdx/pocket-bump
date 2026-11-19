@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+.web-preview/
 
 # IntelliJ related
 *.iml
