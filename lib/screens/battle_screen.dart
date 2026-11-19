@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/ability.dart';
+import '../models/item.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
@@ -16,6 +17,7 @@ import '../services/pvp_link_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
@@ -2112,35 +2114,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required String itemName,
     required String actorName,
     required PokemonInstance targetMon,
+    int? moveIndex,
   }) {
-    switch (itemId) {
-      case 'revive':
-        targetMon.currentHp = (targetMon.maxHp / 2).ceil();
-        targetMon.status = StatusCondition.none;
-        return "$actorName used Revive! ${targetMon.nickname} was revived to half HP!";
-      case 'potion':
-        final heal = min(20, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        return "$actorName used Potion! ${targetMon.nickname} restored $heal HP.";
-      case 'super_potion':
-        final heal = min(50, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        return "$actorName used Super Potion! ${targetMon.nickname} restored $heal HP.";
-      case 'hyper_potion':
-        final heal = min(200, targetMon.maxHp - targetMon.currentHp);
-        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
-        return "$actorName used Hyper Potion! ${targetMon.nickname} restored $heal HP.";
-      case 'max_potion':
-        targetMon.currentHp = targetMon.maxHp;
-        return "$actorName used Max Potion! ${targetMon.nickname}'s HP was fully restored!";
-      case 'full_restore':
-        targetMon.currentHp = targetMon.maxHp;
-        targetMon.status = StatusCondition.none;
-        return "$actorName used Full Restore! ${targetMon.nickname} fully restored HP and cured status!";
-      default:
-        targetMon.status = StatusCondition.none;
-        return "$actorName used $itemName! ${targetMon.nickname}'s status condition was cured!";
-    }
+    return ItemDatabase.applyMedicineToPokemon(
+      itemId: itemId,
+      targetMon: targetMon,
+      moveIndex: moveIndex,
+      actorName: actorName,
+      inBattle: true,
+    );
   }
 
   void _syncPokemonStateFromJson(
@@ -2562,6 +2544,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (kind == 'item') {
         final String itemId = (actor.action['itemId'] as String?) ?? '';
         final String itemName = (actor.action['itemName'] as String?) ?? itemId;
+        final int? moveIndex = (actor.action['moveIndex'] as num?)?.toInt();
         if (actor.isPlayer) {
           final int? targetIdx =
               (actor.action['targetPartyIndex'] as num?)?.toInt();
@@ -2576,6 +2559,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             itemName: itemName,
             actorName: _trainer.name,
             targetMon: targetMon,
+            moveIndex: moveIndex,
           );
           _trainer.saveProgress();
           setState(() {
@@ -2592,6 +2576,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             itemName: itemName,
             actorName: widget.trainerName ?? 'Opponent',
             targetMon: targetMon,
+            moveIndex: moveIndex,
           );
           setState(() {
             if (targetMon == _opponentPokemon) {
@@ -5057,34 +5042,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
-  bool _canUseBattleItemOn(String itemId, PokemonInstance mon) {
-    switch (itemId) {
-      case 'revive':
-        return mon.isFainted;
-      case 'potion':
-      case 'super_potion':
-      case 'hyper_potion':
-      case 'max_potion':
-        return !mon.isFainted && mon.currentHp < mon.maxHp;
-      case 'antidote':
-        return !mon.isFainted && mon.status == StatusCondition.poison;
-      case 'paralyze_heal':
-        return !mon.isFainted && mon.status == StatusCondition.paralysis;
-      case 'awakening':
-        return !mon.isFainted && mon.status == StatusCondition.sleep;
-      case 'burn_heal':
-        return !mon.isFainted && mon.status == StatusCondition.burn;
-      case 'ice_heal':
-        return !mon.isFainted && mon.status == StatusCondition.freeze;
-      case 'full_heal':
-        return !mon.isFainted && mon.status != StatusCondition.none;
-      case 'full_restore':
-        return !mon.isFainted &&
-            (mon.currentHp < mon.maxHp || mon.status != StatusCondition.none);
-      default:
-        return false;
-    }
-  }
+  bool _canUseBattleItemOn(String itemId, PokemonInstance mon) =>
+      ItemDatabase.canUseMedicineOn(itemId, mon);
 
   void _openBattleItemTargetModal({
     required String itemId,
@@ -5137,12 +5096,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                     final bool isActive = mon == _playerPokemon;
                     return InkWell(
                       onTap: usable
-                          ? () {
-                              Navigator.pop(dlgCtx);
+                          ? () async {
+                              int? moveIndex;
+                              if (ItemDatabase.isSingleMovePpItem(itemId)) {
+                                final itemDef = ItemDatabase.byId(itemId);
+                                if (itemDef != null) {
+                                  moveIndex = await showMovePpPickerDialog(
+                                    dlgCtx,
+                                    pokemon: mon,
+                                    item: itemDef,
+                                  );
+                                  if (moveIndex == null) return;
+                                }
+                              }
+                              if (dlgCtx.mounted) Navigator.pop(dlgCtx);
                               _applyBattleItemOnPokemon(
                                 itemId: itemId,
                                 itemName: itemName,
                                 targetMon: mon,
+                                moveIndex: moveIndex,
                               );
                             }
                           : null,
@@ -5282,6 +5254,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       currentHp: mon.currentHp,
                                       maxHp: mon.maxHp,
                                     ),
+                                    if (ItemDatabase.isPpRestoreItem(itemId)) ...[
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        "Total PP: ${mon.moves.fold<int>(0, (s, m) => s + m.currentPp)}/${mon.moves.fold<int>(0, (s, m) => s + m.maxPp)}",
+                                        style: const TextStyle(
+                                          color: Colors.amberAccent,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
@@ -5321,6 +5304,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required String itemId,
     required String itemName,
     required PokemonInstance targetMon,
+    int? moveIndex,
   }) async {
     _trainer.adjustItemCount(itemId, -1);
     if (widget.pvpSession != null) {
@@ -5331,6 +5315,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         'itemName': itemName,
         'targetPartyIndex': _trainer.party.indexOf(targetMon),
         'targetSpeciesId': targetMon.species.id,
+        if (moveIndex != null) 'moveIndex': moveIndex,
       });
       return;
     }
@@ -5340,6 +5325,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       itemName: itemName,
       actorName: _trainer.name,
       targetMon: targetMon,
+      moveIndex: moveIndex,
     );
     _trainer.saveProgress();
 
@@ -5554,6 +5540,51 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             color: const Color(0xFFFF80AB),
             btnColor: Colors.pink.shade700,
             icon: Icons.stars,
+          ),
+          (
+            id: 'ether',
+            name: 'Ether',
+            effect: '+10 PP (1 Move)',
+            rarity: 'Uncommon',
+            color: const Color(0xFF9575CD),
+            btnColor: Colors.deepPurple.shade600,
+            icon: Icons.bolt_rounded,
+          ),
+          (
+            id: 'max_ether',
+            name: 'Max Ether',
+            effect: 'Full PP (1 Move)',
+            rarity: 'Rare',
+            color: const Color(0xFF7E57C2),
+            btnColor: Colors.deepPurple.shade700,
+            icon: Icons.flash_on_rounded,
+          ),
+          (
+            id: 'elixir',
+            name: 'Elixir',
+            effect: '+10 PP (All Moves)',
+            rarity: 'Rare',
+            color: const Color(0xFF26A69A),
+            btnColor: Colors.teal.shade700,
+            icon: Icons.auto_awesome,
+          ),
+          (
+            id: 'max_elixir',
+            name: 'Max Elixir',
+            effect: 'Full PP (All Moves)',
+            rarity: 'Special',
+            color: Colors.cyanAccent,
+            btnColor: Colors.cyan.shade800,
+            icon: Icons.flare_rounded,
+          ),
+          (
+            id: 'leppa_berry',
+            name: 'Leppa Berry',
+            effect: '+10 PP (1 Move)',
+            rarity: 'Uncommon',
+            color: const Color(0xFFEF5350),
+            btnColor: Colors.red.shade700,
+            icon: Icons.eco,
           ),
         ];
 

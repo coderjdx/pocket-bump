@@ -959,6 +959,26 @@ class BattleEngine {
         );
       }
     }
+
+    if (held == 'leppa_berry') {
+      final depleted = mon.moves.where((m) => m.currentPp <= 0).toList();
+      if (depleted.isNotEmpty) {
+        final targetMove = depleted.first;
+        final int restored = min(10, targetMove.maxPp - targetMove.currentPp);
+        targetMove.currentPp = min(targetMove.maxPp, targetMove.currentPp + 10);
+        mon.consumedBerryIdForHarvest = held;
+        mon.consumedHeldItemForUnburden = true;
+        mon.unequipHeldItem();
+        return BattleStepEvent(
+          message:
+              "$monName ate its held Leppa Berry and restored $restored PP to ${targetMove.name}!",
+          isPlayerActor: isPlayer,
+          targetHpAfter: mon.currentHp,
+          isStatusTick: true,
+          hideMoveVfx: true,
+        );
+      }
+    }
     return null;
   }
 
@@ -2452,6 +2472,17 @@ class BattleEngine {
         isWild: isWild,
       );
       if (berryEvent != null) events.add(berryEvent);
+    }
+
+    // Attacker Leppa Berry trigger if a move just dropped to 0 PP
+    if (!attacker.isFainted && attacker.heldItemId == 'leppa_berry') {
+      final leppaEvent = checkAndConsumeHeldBerry(
+        attacker,
+        opponent: defender,
+        isPlayer: isPlayer,
+        isWild: isWild,
+      );
+      if (leppaEvent != null) events.add(leppaEvent);
     }
 
     if (defender.isFainted) {

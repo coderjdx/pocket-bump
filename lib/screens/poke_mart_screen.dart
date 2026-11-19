@@ -24,6 +24,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
     // Only list items currently unlocked for purchase at this badge tier
     final allBuyable = ItemDatabase.getMartItems(badgeCount)
       ..sort((a, b) => a.requiredBadges.compareTo(b.requiredBadges));
+    final allLocked = ItemDatabase.getLockedMartItems(badgeCount);
 
     final ItemCategory? activeCategory =
         (_selectedCategory == ItemCategory.evolutionStone && badgeCount < 8)
@@ -34,6 +35,9 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
     final filtered = activeCategory == null
         ? allBuyable
         : allBuyable.where((i) => i.category == activeCategory).toList();
+    final lockedFiltered = activeCategory == null
+        ? allLocked
+        : allLocked.where((i) => i.category == activeCategory).toList();
 
     return Scaffold(
       backgroundColor: const Color(0xFF0C121E),
@@ -206,164 +210,221 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                   ),
                 ),
 
-                // Unlocked Item Catalog
+                // Unlocked Item Catalog + Upcoming Badge Unlocks
                 Expanded(
-                  child: ListView.separated(
+                  child: ListView(
                     padding: const EdgeInsets.fromLTRB(14, 6, 14, 20),
-                    itemCount: filtered.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 9),
-                    itemBuilder: (ctx, idx) {
-                      final item = filtered[idx];
-                      final int userCount = trainer.getItemCount(item.id);
-
-                      return Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              item.color.withOpacity(0.14),
-                              const Color(0xEA141B2D),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: item.color.withOpacity(0.45),
-                            width: 1.2,
-                          ),
+                    children: [
+                      for (int idx = 0; idx < filtered.length; idx++) ...[
+                        if (idx > 0) const SizedBox(height: 9),
+                        _buildMartItemCard(
+                          context: context,
+                          trainer: trainer,
+                          item: filtered[idx],
+                          locked: false,
                         ),
-                        child: Row(
+                      ],
+                      if (lockedFiltered.isNotEmpty) ...[
+                        const SizedBox(height: 18),
+                        const Row(
                           children: [
-                            // Item Icon / Sprite Medallion
-                            Container(
-                              width: 46,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0A0F1A),
-                                borderRadius: BorderRadius.circular(11),
-                                border: Border.all(
-                                    color: item.color.withOpacity(0.5)),
+                            Icon(Icons.lock_outline_rounded,
+                                color: Colors.amberAccent, size: 15),
+                            SizedBox(width: 6),
+                            Text(
+                              "BADGE PROGRESSION UNLOCKS",
+                              style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.9,
                               ),
-                              child: Center(
-                                child: item.isBall
-                                    ? PokeBallSpriteWidget(
-                                        ballType: item.id, size: 28)
-                                    : Icon(
-                                        item.icon,
-                                        color: item.color,
-                                        size: 23,
-                                      ),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-
-                            // Item Details
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Flexible(
-                                        child: Text(
-                                          item.name,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900,
-                                            fontSize: 13.5,
-                                          ),
-                                        ),
-                                      ),
-                                      if (userCount > 0) ...[
-                                        const SizedBox(width: 6),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 6, vertical: 1.5),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xFF090D16),
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            border: Border.all(
-                                                color: Colors.white12),
-                                          ),
-                                          child: Text(
-                                            "BAG x$userCount",
-                                            style: const TextStyle(
-                                              color: Colors.cyanAccent,
-                                              fontSize: 8.5,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    item.description,
-                                    style: const TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 10.8,
-                                      height: 1.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-
-                            // Price Tag & Buy Action
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  "₽${item.price}",
-                                  style: const TextStyle(
-                                    color: Color(0xFFFFD54F),
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 13.5,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                ElevatedButton(
-                                  onPressed: () =>
-                                      _openBuyDialog(context, trainer, item),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF2E9E5B),
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 14, vertical: 6),
-                                    minimumSize: Size.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(9),
-                                      side: BorderSide(
-                                          color:
-                                              Colors.white.withOpacity(0.25)),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "BUY",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 11,
-                                      letterSpacing: 0.6,
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ],
                         ),
-                      );
-                    },
+                        const SizedBox(height: 8),
+                        for (int idx = 0;
+                            idx < lockedFiltered.length;
+                            idx++) ...[
+                          if (idx > 0) const SizedBox(height: 9),
+                          _buildMartItemCard(
+                            context: context,
+                            trainer: trainer,
+                            item: lockedFiltered[idx],
+                            locked: true,
+                          ),
+                        ],
+                      ],
+                    ],
                   ),
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMartItemCard({
+    required BuildContext context,
+    required Trainer trainer,
+    required Item item,
+    required bool locked,
+  }) {
+    final int userCount = trainer.getItemCount(item.id);
+    return Opacity(
+      opacity: locked ? 0.58 : 1.0,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              item.color.withOpacity(locked ? 0.06 : 0.14),
+              const Color(0xEA141B2D),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: locked ? Colors.white12 : item.color.withOpacity(0.45),
+            width: 1.2,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: const Color(0xFF0A0F1A),
+                borderRadius: BorderRadius.circular(11),
+                border: Border.all(
+                  color: locked ? Colors.white12 : item.color.withOpacity(0.5),
+                ),
+              ),
+              child: Center(
+                child: item.isBall
+                    ? PokeBallSpriteWidget(ballType: item.id, size: 28)
+                    : Icon(
+                        locked ? Icons.lock_rounded : item.icon,
+                        color: locked ? Colors.white38 : item.color,
+                        size: 23,
+                      ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          item.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 13.5,
+                          ),
+                        ),
+                      ),
+                      if (!locked && userCount > 0) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 1.5),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF090D16),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: Text(
+                            "BAG x$userCount",
+                            style: const TextStyle(
+                              color: Colors.cyanAccent,
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    item.description,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10.8,
+                      height: 1.3,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "₽${item.price}",
+                  style: TextStyle(
+                    color: locked ? Colors.white54 : const Color(0xFFFFD54F),
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                if (locked)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0A0E18),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: Colors.amberAccent.withOpacity(0.45)),
+                    ),
+                    child: Text(
+                      "${item.requiredBadges} BADGE${item.requiredBadges == 1 ? '' : 'S'}",
+                      style: const TextStyle(
+                        color: Colors.amberAccent,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 9.5,
+                      ),
+                    ),
+                  )
+                else
+                  ElevatedButton(
+                    onPressed: () => _openBuyDialog(context, trainer, item),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2E9E5B),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 6),
+                      minimumSize: Size.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(9),
+                        side: BorderSide(color: Colors.white.withOpacity(0.25)),
+                      ),
+                    ),
+                    child: const Text(
+                      "BUY",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 11,
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

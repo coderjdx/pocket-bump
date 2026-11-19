@@ -148,7 +148,13 @@ class ItemDropService {
             itemName: 'Full Heal',
             rarity: PokemonRarity.uncommon,
           );
-        } else if (subRoll < 0.75) {
+        } else if (subRoll < 0.72) {
+          return const ItemDrop(
+            itemId: 'ether',
+            itemName: 'Ether',
+            rarity: PokemonRarity.uncommon,
+          );
+        } else if (subRoll < 0.80) {
           return const ItemDrop(
             itemId: 'revive',
             itemName: 'Revive',
@@ -192,50 +198,75 @@ class ItemDropService {
             itemName: 'Full Restore',
             rarity: PokemonRarity.rare,
           );
-        } else if (subRoll < 0.80) {
+        } else if (subRoll < 0.75) {
           return const ItemDrop(
             itemId: 'revive',
             itemName: 'Revive',
             rarity: PokemonRarity.rare,
           );
+        } else if (subRoll < 0.84) {
+          return const ItemDrop(
+            itemId: 'max_ether',
+            itemName: 'Max Ether',
+            rarity: PokemonRarity.rare,
+          );
+        } else if (subRoll < 0.90) {
+          return const ItemDrop(
+            itemId: 'elixir',
+            itemName: 'Elixir',
+            rarity: PokemonRarity.rare,
+          );
         } else {
           // Rare Berries
-          final isLum = _rng.nextBool();
-          return isLum
-              ? const ItemDrop(
-                  itemId: 'lum_berry',
-                  itemName: 'Lum Berry',
-                  rarity: PokemonRarity.rare,
-                )
-              : const ItemDrop(
-                  itemId: 'sitrus_berry',
-                  itemName: 'Sitrus Berry',
-                  count: 2,
-                  rarity: PokemonRarity.uncommon,
-                );
+          final berryRoll = _rng.nextInt(3);
+          if (berryRoll == 0) {
+            return const ItemDrop(
+              itemId: 'lum_berry',
+              itemName: 'Lum Berry',
+              rarity: PokemonRarity.rare,
+            );
+          } else if (berryRoll == 1) {
+            return const ItemDrop(
+              itemId: 'leppa_berry',
+              itemName: 'Leppa Berry',
+              rarity: PokemonRarity.uncommon,
+            );
+          }
+          return const ItemDrop(
+            itemId: 'sitrus_berry',
+            itemName: 'Sitrus Berry',
+            count: 2,
+            rarity: PokemonRarity.uncommon,
+          );
         }
 
       case PokemonRarity.special:
         final subRoll = _rng.nextDouble();
-        if (subRoll < 0.35) {
+        if (subRoll < 0.30) {
           return const ItemDrop(
             itemId: 'ultra_ball',
             itemName: 'Ultra Ball',
             count: 2,
             rarity: PokemonRarity.special,
           );
-        } else if (subRoll < 0.70) {
+        } else if (subRoll < 0.60) {
           return const ItemDrop(
             itemId: 'hyper_potion',
             itemName: 'Hyper Potion',
             count: 2,
             rarity: PokemonRarity.special,
           );
-        } else {
+        } else if (subRoll < 0.85) {
           return const ItemDrop(
             itemId: 'full_restore',
             itemName: 'Full Restore',
             count: 2,
+            rarity: PokemonRarity.special,
+          );
+        } else {
+          return const ItemDrop(
+            itemId: 'max_elixir',
+            itemName: 'Max Elixir',
             rarity: PokemonRarity.special,
           );
         }

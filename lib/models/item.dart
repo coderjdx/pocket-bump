@@ -1,4 +1,6 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'pokemon_instance.dart';
 import 'pokemon_species.dart';
 
 enum ItemCategory {
@@ -229,6 +231,52 @@ class ItemDatabase {
       icon: Icons.auto_fix_high,
     ),
 
+    // === PP RESTORE ===
+    'ether': Item(
+      id: 'ether',
+      name: 'Ether',
+      description: 'Restores 10 PP to one selected move of a single Pokémon.',
+      category: ItemCategory.medicine,
+      price: 1200,
+      requiredBadges: 5,
+      rarity: PokemonRarity.uncommon,
+      color: Color(0xFF9575CD),
+      icon: Icons.bolt_rounded,
+    ),
+    'max_ether': Item(
+      id: 'max_ether',
+      name: 'Max Ether',
+      description: 'Fully restores the PP of one selected move of a single Pokémon.',
+      category: ItemCategory.medicine,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF7E57C2),
+      icon: Icons.flash_on_rounded,
+    ),
+    'elixir': Item(
+      id: 'elixir',
+      name: 'Elixir',
+      description: 'Restores 10 PP to all moves of a single Pokémon.',
+      category: ItemCategory.medicine,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF26A69A),
+      icon: Icons.auto_awesome,
+    ),
+    'max_elixir': Item(
+      id: 'max_elixir',
+      name: 'Max Elixir',
+      description: 'Fully restores the PP of all moves of a single Pokémon.',
+      category: ItemCategory.medicine,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.special,
+      color: Color(0xFF00E5FF),
+      icon: Icons.flare_rounded,
+    ),
+
     // === BERRIES (Wild Drops & Auto-Used when Held) ===
     'oran_berry': Item(
       id: 'oran_berry',
@@ -316,6 +364,17 @@ class ItemDatabase {
       requiredBadges: 0,
       rarity: PokemonRarity.rare,
       color: Color(0xFF80CBC4),
+      icon: Icons.eco,
+    ),
+    'leppa_berry': Item(
+      id: 'leppa_berry',
+      name: 'Leppa Berry',
+      description: 'Held Berry: Restores 10 PP when a move runs out of PP, or use from Bag on a move.',
+      category: ItemCategory.berry,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.uncommon,
+      color: Color(0xFFEF5350),
       icon: Icons.eco,
     ),
 
@@ -1012,6 +1071,147 @@ class ItemDatabase {
     return allItems.values
         .where((item) => item.isBuyable && badgeCount >= item.requiredBadges)
         .toList();
+  }
+
+  /// Buyable Poké Mart items locked behind higher gym badge tiers.
+  static List<Item> getLockedMartItems(int badgeCount) {
+    return allItems.values
+        .where((item) => item.isBuyable && badgeCount < item.requiredBadges)
+        .toList()
+      ..sort((a, b) {
+        final cmp = a.requiredBadges.compareTo(b.requiredBadges);
+        return cmp != 0 ? cmp : (a.price ?? 0).compareTo(b.price ?? 0);
+      });
+  }
+
+  static bool isSingleMovePpItem(String itemId) =>
+      itemId == 'ether' || itemId == 'max_ether' || itemId == 'leppa_berry';
+
+  static bool isAllMovesPpItem(String itemId) =>
+      itemId == 'elixir' || itemId == 'max_elixir';
+
+  static bool isPpRestoreItem(String itemId) =>
+      isSingleMovePpItem(itemId) || isAllMovesPpItem(itemId);
+
+  /// Shared usability check for medicine & PP-restoring items across Bag, League, and Battle.
+  static bool canUseMedicineOn(String itemId, PokemonInstance mon) {
+    if (isPpRestoreItem(itemId)) {
+      return mon.moves.any((m) => m.currentPp < m.maxPp);
+    }
+    switch (itemId) {
+      case 'revive':
+        return mon.isFainted;
+      case 'potion':
+      case 'super_potion':
+      case 'hyper_potion':
+      case 'max_potion':
+        return !mon.isFainted && mon.currentHp < mon.maxHp;
+      case 'antidote':
+        return !mon.isFainted && mon.status == StatusCondition.poison;
+      case 'paralyze_heal':
+        return !mon.isFainted && mon.status == StatusCondition.paralysis;
+      case 'awakening':
+        return !mon.isFainted && mon.status == StatusCondition.sleep;
+      case 'burn_heal':
+        return !mon.isFainted && mon.status == StatusCondition.burn;
+      case 'ice_heal':
+        return !mon.isFainted && mon.status == StatusCondition.freeze;
+      case 'full_heal':
+        return !mon.isFainted &&
+            (mon.status != StatusCondition.none || mon.isConfused);
+      case 'full_restore':
+        return !mon.isFainted &&
+            (mon.currentHp < mon.maxHp ||
+                mon.status != StatusCondition.none ||
+                mon.isConfused);
+      default:
+        return false;
+    }
+  }
+
+  /// Applies a medicine or PP-restoring item to [targetMon] and returns a user-facing summary message.
+  static String applyMedicineToPokemon({
+    required String itemId,
+    required PokemonInstance targetMon,
+    int? moveIndex,
+    String? actorName,
+    bool inBattle = false,
+  }) {
+    final String itemName = byId(itemId)?.name ?? itemId;
+    final String prefix = actorName != null ? "$actorName used $itemName! " : "";
+
+    if (isSingleMovePpItem(itemId)) {
+      if (targetMon.moves.isEmpty) {
+        return "${targetMon.nickname} has no moves!";
+      }
+      int resolvedIndex =
+          (moveIndex != null && moveIndex >= 0 && moveIndex < targetMon.moves.length)
+              ? moveIndex
+              : targetMon.moves.indexWhere((m) => m.currentPp < m.maxPp);
+      if (resolvedIndex < 0) resolvedIndex = 0;
+      final move = targetMon.moves[resolvedIndex];
+      final int missing = max(0, move.maxPp - move.currentPp);
+      final int gained = itemId == 'max_ether' ? missing : min(10, missing);
+      move.currentPp = (move.currentPp + gained).clamp(0, move.maxPp);
+      return itemId == 'max_ether'
+          ? "$prefix${targetMon.nickname}'s ${move.name} PP was fully restored!"
+          : "$prefix${targetMon.nickname}'s ${move.name} restored $gained PP!";
+    }
+
+    if (isAllMovesPpItem(itemId)) {
+      final bool isFull = itemId == 'max_elixir';
+      for (final move in targetMon.moves) {
+        move.currentPp = isFull ? move.maxPp : min(move.maxPp, move.currentPp + 10);
+      }
+      return isFull
+          ? "$prefix${targetMon.nickname}'s moves had all PP fully restored!"
+          : "$prefix${targetMon.nickname} restored 10 PP for all moves!";
+    }
+
+    switch (itemId) {
+      case 'revive':
+        targetMon.currentHp = max(1, (targetMon.maxHp / 2).ceil());
+        targetMon.status = StatusCondition.none;
+        targetMon.isBadlyPoisoned = false;
+        targetMon.toxicCounter = 1;
+        return "$prefix${targetMon.nickname} was revived to half HP!";
+      case 'potion':
+        final heal = min(20, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$prefix${targetMon.nickname} restored $heal HP.";
+      case 'super_potion':
+        final heal = min(50, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$prefix${targetMon.nickname} restored $heal HP.";
+      case 'hyper_potion':
+        final heal = min(200, targetMon.maxHp - targetMon.currentHp);
+        targetMon.currentHp = (targetMon.currentHp + heal).clamp(0, targetMon.maxHp);
+        return "$prefix${targetMon.nickname} restored $heal HP.";
+      case 'max_potion':
+        targetMon.currentHp = targetMon.maxHp;
+        return "$prefix${targetMon.nickname}'s HP was fully restored!";
+      case 'full_restore':
+        targetMon.currentHp = targetMon.maxHp;
+        targetMon.status = StatusCondition.none;
+        targetMon.isBadlyPoisoned = false;
+        targetMon.toxicCounter = 1;
+        if (inBattle) {
+          targetMon.isConfused = false;
+          targetMon.confusionTurnsRemaining = 0;
+        }
+        return "$prefix${targetMon.nickname} fully restored HP and cured status!";
+      default:
+        targetMon.status = StatusCondition.none;
+        if (itemId == 'full_heal' || itemId == 'antidote') {
+          targetMon.isBadlyPoisoned = false;
+          targetMon.toxicCounter = 1;
+        }
+        if (itemId == 'full_heal' && inBattle) {
+          targetMon.isConfused = false;
+          targetMon.confusionTurnsRemaining = 0;
+        }
+        return "$prefix${targetMon.nickname}'s status condition was cured!";
+    }
   }
 
   /// Evolution stone compatibility table

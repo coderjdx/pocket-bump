@@ -8,6 +8,7 @@ import '../models/trainer.dart';
 import '../services/gym_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/move_pp_picker_dialog.dart';
 import 'battle_screen.dart';
 
 class PokemonLeagueScreen extends StatefulWidget {
@@ -1227,6 +1228,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               'burn_heal',
               'ice_heal',
               'full_heal',
+              'ether',
+              'max_ether',
+              'elixir',
+              'max_elixir',
+              'leppa_berry',
             ];
 
             final available = medicineItems
@@ -1377,97 +1383,53 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       fontSize: 12,
                     ),
                   ),
-                  subtitle: mon.status != StatusCondition.none
+                  subtitle: ItemDatabase.isPpRestoreItem(itemId)
                       ? Text(
-                          "Status: ${mon.status.name.toUpperCase()}",
-                          style: const TextStyle(color: Colors.redAccent, fontSize: 10),
+                          "Total PP ${mon.moves.fold<int>(0, (s, m) => s + m.currentPp)}/${mon.moves.fold<int>(0, (s, m) => s + m.maxPp)}",
+                          style: const TextStyle(color: Colors.amberAccent, fontSize: 10),
                         )
-                      : null,
-                  onTap: () {
-                    // Apply item effect
-                    bool applied = false;
-                    if (itemId == 'revive') {
-                      if (mon.isFainted) {
-                        mon.currentHp = max(1, mon.maxHp ~/ 2);
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      }
-                    } else if (!mon.isFainted) {
-                      if (itemId == 'potion') {
-                        if (mon.currentHp < mon.maxHp) {
-                          mon.currentHp = min(mon.maxHp, mon.currentHp + 20);
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'super_potion') {
-                        if (mon.currentHp < mon.maxHp) {
-                          mon.currentHp = min(mon.maxHp, mon.currentHp + 50);
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'hyper_potion') {
-                        if (mon.currentHp < mon.maxHp) {
-                          mon.currentHp = min(mon.maxHp, mon.currentHp + 200);
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'max_potion') {
-                        if (mon.currentHp < mon.maxHp) {
-                          mon.currentHp = mon.maxHp;
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'full_restore') {
-                        if (mon.currentHp < mon.maxHp || mon.status != StatusCondition.none) {
-                          mon.currentHp = mon.maxHp;
-                          mon.status = StatusCondition.none;
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'full_heal') {
-                        if (mon.status != StatusCondition.none) {
-                          mon.status = StatusCondition.none;
-                          trainer.adjustItemCount(itemId, -1);
-                          applied = true;
-                        }
-                      } else if (itemId == 'antidote' && mon.status == StatusCondition.poison) {
-                        mon.status = StatusCondition.none;
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      } else if (itemId == 'paralyze_heal' && mon.status == StatusCondition.paralysis) {
-                        mon.status = StatusCondition.none;
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      } else if (itemId == 'awakening' && mon.status == StatusCondition.sleep) {
-                        mon.status = StatusCondition.none;
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      } else if (itemId == 'burn_heal' && mon.status == StatusCondition.burn) {
-                        mon.status = StatusCondition.none;
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      } else if (itemId == 'ice_heal' && mon.status == StatusCondition.freeze) {
-                        mon.status = StatusCondition.none;
-                        trainer.adjustItemCount(itemId, -1);
-                        applied = true;
-                      }
-                    }
-
-                    if (applied) {
-                      trainer.saveProgress();
-                      onUpdated();
-                      Navigator.pop(ctx);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Used ${itemId.replaceAll('_', ' ')} on ${mon.nickname}!"),
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    } else {
+                      : mon.status != StatusCondition.none
+                          ? Text(
+                              "Status: ${mon.status.name.toUpperCase()}",
+                              style: const TextStyle(color: Colors.redAccent, fontSize: 10),
+                            )
+                          : null,
+                  onTap: () async {
+                    if (!ItemDatabase.canUseMedicineOn(itemId, mon)) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("It won't have any effect!"),
                           duration: Duration(seconds: 1),
+                        ),
+                      );
+                      return;
+                    }
+                    int? moveIndex;
+                    if (ItemDatabase.isSingleMovePpItem(itemId)) {
+                      final itemDef = ItemDatabase.byId(itemId);
+                      if (itemDef != null) {
+                        moveIndex = await showMovePpPickerDialog(
+                          ctx,
+                          pokemon: mon,
+                          item: itemDef,
+                        );
+                        if (moveIndex == null) return;
+                      }
+                    }
+                    final String msg = ItemDatabase.applyMedicineToPokemon(
+                      itemId: itemId,
+                      targetMon: mon,
+                      moveIndex: moveIndex,
+                    );
+                    trainer.adjustItemCount(itemId, -1);
+                    trainer.saveProgress();
+                    onUpdated();
+                    if (ctx.mounted) Navigator.pop(ctx);
+                    if (mounted) {
+                      ScaffoldMessenger.of(this.context).showSnackBar(
+                        SnackBar(
+                          content: Text(msg),
+                          duration: const Duration(seconds: 2),
                         ),
                       );
                     }

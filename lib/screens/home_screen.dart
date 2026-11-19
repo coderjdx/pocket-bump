@@ -18,6 +18,7 @@ import '../services/step_counter_service.dart';
 import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
@@ -2753,75 +2754,45 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               separatorBuilder: (_, __) => const SizedBox(height: 6),
               itemBuilder: (_, idx) {
                 final mon = trainer.party[idx];
-                bool usable = false;
-                if (medicineItem.id == 'revive') {
-                  usable = mon.isFainted;
-                } else if (!mon.isFainted) {
-                  switch (medicineItem.id) {
-                    case 'potion':
-                    case 'super_potion':
-                    case 'hyper_potion':
-                    case 'max_potion':
-                      usable = mon.currentHp < mon.maxHp;
-                      break;
-                    case 'full_restore':
-                      usable = mon.currentHp < mon.maxHp ||
-                          mon.status != StatusCondition.none;
-                      break;
-                    case 'full_heal':
-                      usable = mon.status != StatusCondition.none;
-                      break;
-                    case 'antidote':
-                      usable = mon.status == StatusCondition.poison;
-                      break;
-                    case 'paralyze_heal':
-                      usable = mon.status == StatusCondition.paralysis;
-                      break;
-                    case 'awakening':
-                      usable = mon.status == StatusCondition.sleep;
-                      break;
-                    case 'burn_heal':
-                      usable = mon.status == StatusCondition.burn;
-                      break;
-                    case 'ice_heal':
-                      usable = mon.status == StatusCondition.freeze;
-                      break;
-                  }
-                }
+                final bool usable =
+                    ItemDatabase.canUseMedicineOn(medicineItem.id, mon);
+                final bool isPpItem =
+                    ItemDatabase.isPpRestoreItem(medicineItem.id);
+                final int curPp =
+                    mon.moves.fold<int>(0, (s, m) => s + m.currentPp);
+                final int maxPp =
+                    mon.moves.fold<int>(0, (s, m) => s + m.maxPp);
 
                 return InkWell(
                   onTap: usable
-                      ? () {
-                          String msg =
-                              "Used ${medicineItem.name} on ${mon.nickname}!";
-                          if (medicineItem.id == 'revive') {
-                            mon.currentHp = max(1, mon.maxHp ~/ 2);
-                            msg =
-                                "${mon.nickname} was revived to ${mon.currentHp} HP!";
-                          } else if (medicineItem.id == 'potion') {
-                            mon.currentHp = min(mon.maxHp, mon.currentHp + 20);
-                          } else if (medicineItem.id == 'super_potion') {
-                            mon.currentHp = min(mon.maxHp, mon.currentHp + 50);
-                          } else if (medicineItem.id == 'hyper_potion') {
-                            mon.currentHp = min(mon.maxHp, mon.currentHp + 200);
-                          } else if (medicineItem.id == 'max_potion') {
-                            mon.currentHp = mon.maxHp;
-                          } else if (medicineItem.id == 'full_restore') {
-                            mon.currentHp = mon.maxHp;
-                            mon.status = StatusCondition.none;
-                          } else {
-                            mon.status = StatusCondition.none;
+                      ? () async {
+                          int? moveIndex;
+                          if (ItemDatabase.isSingleMovePpItem(medicineItem.id)) {
+                            moveIndex = await showMovePpPickerDialog(
+                              dlgCtx,
+                              pokemon: mon,
+                              item: medicineItem,
+                            );
+                            if (moveIndex == null) return;
                           }
+                          final String msg =
+                              ItemDatabase.applyMedicineToPokemon(
+                            itemId: medicineItem.id,
+                            targetMon: mon,
+                            moveIndex: moveIndex,
+                          );
                           trainer.adjustItemCount(medicineItem.id, -1);
                           trainer.saveProgress();
-                          Navigator.pop(dlgCtx);
-                          setState(() {});
-                          ScaffoldMessenger.of(parentContext).showSnackBar(
-                            SnackBar(
-                              content: Text(msg),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
+                          if (dlgCtx.mounted) Navigator.pop(dlgCtx);
+                          if (mounted) setState(() {});
+                          if (parentContext.mounted) {
+                            ScaffoldMessenger.of(parentContext).showSnackBar(
+                              SnackBar(
+                                content: Text(msg),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
                         }
                       : null,
                   borderRadius: BorderRadius.circular(12),
@@ -2872,7 +2843,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   maxHp: mon.maxHp,
                                 ),
                                 Text(
-                                  "HP ${mon.currentHp}/${mon.maxHp}${mon.status != StatusCondition.none ? ' • ${mon.status.shortLabel}' : ''}",
+                                  isPpItem
+                                      ? "PP $curPp/$maxPp • HP ${mon.currentHp}/${mon.maxHp}"
+                                      : "HP ${mon.currentHp}/${mon.maxHp}${mon.status != StatusCondition.none ? ' • ${mon.status.shortLabel}' : ''}",
                                   style: const TextStyle(
                                     color: Colors.white60,
                                     fontSize: 10,
@@ -3134,7 +3107,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   color: Colors.white60,
                                                   fontSize: 11),
                                             ),
-                                            if (item.isMedicine) ...[
+                                            if (item.isMedicine ||
+                                                item.id == 'leppa_berry') ...[
                                               const SizedBox(height: 6),
                                               SizedBox(
                                                 height: 28,

@@ -470,7 +470,11 @@ class Trainer extends ChangeNotifier {
       burnHeals +
       iceHeals +
       fullHeals +
-      fullRestores;
+      fullRestores +
+      (customItems['ether'] ?? 0) +
+      (customItems['max_ether'] ?? 0) +
+      (customItems['elixir'] ?? 0) +
+      (customItems['max_elixir'] ?? 0);
 
   void addMoney(int amount) {
     if (amount <= 0) return;
