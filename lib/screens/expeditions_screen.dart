@@ -5,6 +5,7 @@ import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/expedition_database.dart';
 import '../services/pokedex_database.dart';
+import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
@@ -476,6 +477,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           opponentPokemon: wildMon,
           isWild: true,
           battleBackgroundAsset: widget.destination.backgroundAsset,
+          bgmCategory: BattleBgmCategory.expedition,
           continueButtonLabel: wildIndex < 2
               ? "NEXT ENCOUNTER (${wildIndex + 2}/3)"
               : "PRESS FORWARD →",
@@ -531,6 +533,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           opponentSpriteId: rocket.spriteId,
           prizeMoney: rocket.prizeMoney,
           battleBackgroundAsset: widget.destination.backgroundAsset,
+          bgmCategory: BattleBgmCategory.expedition,
           continueButtonLabel: "CONTINUE EXPEDITION",
         ),
       ),
@@ -588,6 +591,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           isWild: true,
           isLegendaryBoss: true,
           battleBackgroundAsset: widget.destination.backgroundAsset,
+          bgmCategory: BattleBgmCategory.special,
           continueButtonLabel: "FINISH EXPEDITION",
         ),
       ),

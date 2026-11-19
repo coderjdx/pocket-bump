@@ -5,6 +5,7 @@ import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/pvp_link_service.dart';
+import 'services/sound_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
   await PvpDeviceIdentity.loadOrInit();
+  await SoundService.instance.init();
   final savedTrainer = await Trainer.loadOrCreate();
   runApp(PocketBumpApp(initialTrainer: savedTrainer));
 }
@@ -26,8 +28,25 @@ class PocketBumpApp extends StatefulWidget {
   State<PocketBumpApp> createState() => _PocketBumpAppState();
 }
 
-class _PocketBumpAppState extends State<PocketBumpApp> {
+class _PocketBumpAppState extends State<PocketBumpApp> with WidgetsBindingObserver {
   bool _didPrecache = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    SoundService.instance.handleAppLifecycle(state);
+  }
 
   @override
   void didChangeDependencies() {
@@ -89,7 +108,10 @@ class _PocketBumpAppState extends State<PocketBumpApp> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Trainer>.value(
       value: widget.initialTrainer,
-      child: Consumer<Trainer>(
+      child: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => SoundService.instance.unlockOnUserGesture(),
+        child: Consumer<Trainer>(
         builder: (context, trainer, child) {
           return MaterialApp(
             title: 'Pocket Bump',
@@ -151,6 +173,7 @@ class _PocketBumpAppState extends State<PocketBumpApp> {
             },
           );
         },
+      ),
       ),
     );
   }

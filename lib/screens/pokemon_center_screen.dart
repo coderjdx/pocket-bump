@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
+import '../services/sound_service.dart';
 import '../widgets/pokeball_sprite.dart';
 import 'poke_mart_screen.dart';
 
@@ -23,6 +24,18 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
   String _nurseMessage =
       "Welcome to the Pokémon Center! Shall we restore your Pokémon to perfect condition?";
 
+  @override
+  void initState() {
+    super.initState();
+    SoundService.instance.playBgm(BgmTrack.pokemonCenter);
+  }
+
+  @override
+  void dispose() {
+    SoundService.instance.playBgm(BgmTrack.hubTown);
+    super.dispose();
+  }
+
   Future<void> _runClassicHealAnimation(Trainer trainer) async {
     if (_isHealing) return;
 
@@ -39,6 +52,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
       await Future.delayed(const Duration(milliseconds: 210));
       if (!mounted) return;
       HapticFeedback.selectionClick();
+      SoundService.instance.playUiTap();
       setState(() {
         _placedBalls = i;
       });
@@ -48,6 +62,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     if (!mounted) return;
 
     // Step 2: 4 synchronized classic healing pulses ("doot-doot-doot-doot-da-da!")
+    SoundService.instance.playCenterHealJingle();
     setState(() {
       _nurseMessage = "Restoring HP, PP, and curing status conditions...";
     });
@@ -801,6 +816,10 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     final boxNum = trainer.addPokemon(restoredMon);
     trainer.saveProgress();
     HapticFeedback.heavyImpact();
+    SoundService.instance.playPokemonCry(restoredMon.species.id);
+    Future.delayed(const Duration(milliseconds: 350), () {
+      if (mounted) SoundService.instance.playLevelUpSfx();
+    });
 
     showDialog(
       context: context,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
+import '../services/sound_service.dart';
 
 class EvolutionScreen extends StatefulWidget {
   final PokemonSpecies fromSpecies;
@@ -112,7 +113,8 @@ class _EvolutionScreenState extends State<EvolutionScreen>
     ]).timeout(const Duration(milliseconds: 1200), onTimeout: () => const []);
     if (!mounted) return;
 
-    // Phase 1: Dramatic anticipation hold
+    // Phase 1: Dramatic anticipation hold + starting cry
+    SoundService.instance.playPokemonCry(widget.fromSpecies.id);
     await Future.delayed(const Duration(milliseconds: 1350));
     if (!mounted) return;
 
@@ -126,6 +128,10 @@ class _EvolutionScreenState extends State<EvolutionScreen>
 
     // Phase 3: Climax white flash -> full reveal of evolved form
     HapticFeedback.heavyImpact();
+    SoundService.instance.playEvolutionFanfare();
+    Future.delayed(const Duration(milliseconds: 450), () {
+      if (mounted) SoundService.instance.playPokemonCry(widget.toSpecies.id);
+    });
     setState(() {
       _phase = 'reveal';
       _finished = true;

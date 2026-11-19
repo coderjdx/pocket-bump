@@ -5,6 +5,8 @@ import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
+import '../services/sound_service.dart';
+import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/type_badge.dart';
 import '../widgets/version_picker.dart';
@@ -25,6 +27,12 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
   int _selectedStarterId = 4; // Default to Charmander
   final List<int> _starters = [1, 4, 7]; // Bulbasaur, Charmander, Squirtle
+
+  @override
+  void initState() {
+    super.initState();
+    SoundService.instance.playBgm(BgmTrack.titleLab);
+  }
 
   @override
   void dispose() {
@@ -220,7 +228,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 24),
+            const SoundToggleButton(size: 16),
           ],
         ),
         const SizedBox(height: 8),
@@ -504,7 +512,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 24),
+            const SoundToggleButton(size: 16),
           ],
         ),
         const SizedBox(height: 6),
@@ -527,7 +535,10 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
             final c = mon.types.first.color;
             final isSelected = _selectedStarterId == id;
             return GestureDetector(
-              onTap: () => setState(() => _selectedStarterId = id),
+              onTap: () {
+                SoundService.instance.playPokemonCry(id);
+                setState(() => _selectedStarterId = id);
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -753,6 +764,8 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           height: 48,
           child: ElevatedButton(
             onPressed: () {
+              SoundService.instance.playUiConfirm();
+              SoundService.instance.playPokemonCry(selectedMon.species.id);
               final trainer = Provider.of<Trainer>(context, listen: false);
               trainer.setGameVersion(_selectedVersion);
               trainer.setIdentity(

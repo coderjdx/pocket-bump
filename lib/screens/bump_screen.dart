@@ -8,6 +8,7 @@ import '../services/bump_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../services/pvp_transport.dart';
+import '../services/sound_service.dart';
 import 'battle_screen.dart';
 import 'rivals_screen.dart';
 import 'trade_screen.dart';
@@ -188,6 +189,7 @@ class _BumpScreenState extends State<BumpScreen>
     setState(() {
       _linkState = _BumpLinkState.matched;
     });
+    SoundService.instance.playBumpChime();
 
     HapticFeedback.heavyImpact();
 
@@ -230,6 +232,7 @@ class _BumpScreenState extends State<BumpScreen>
 
       // Transfer session lifecycle to BattleScreen.
       _matchedSession = null;
+      SoundService.instance.playBumpChime();
 
       Navigator.pushReplacement(
         context,
@@ -243,6 +246,7 @@ class _BumpScreenState extends State<BumpScreen>
             trainerTitle: session.opponentTitle,
             opponentSpriteId: session.opponentSpriteId,
             battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+            bgmCategory: BattleBgmCategory.special,
           ),
         ),
       );
@@ -270,6 +274,7 @@ class _BumpScreenState extends State<BumpScreen>
     setState(() {
       _linkState = _BumpLinkState.matched;
     });
+    SoundService.instance.playBumpChime();
 
     Future.wait([
       Future.delayed(const Duration(milliseconds: 750)),
@@ -292,6 +297,7 @@ class _BumpScreenState extends State<BumpScreen>
             trainerName: 'Rival Blue',
             opponentSpriteId: 'male_blue',
             battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+            bgmCategory: BattleBgmCategory.special,
           ),
         ),
       );

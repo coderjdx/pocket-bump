@@ -6,6 +6,7 @@ import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
+import '../services/sound_service.dart';
 import '../widgets/type_badge.dart';
 
 enum _PokedexFilter {
@@ -638,6 +639,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
     final primaryColor = spec.types.first.color;
     final dexNum = "#${spec.id.toString().padLeft(3, '0')}";
     bool showShiny = isShinyCaught;
+    SoundService.instance.playPokemonCry(spec.id);
 
     showModalBottomSheet(
       context: context,
@@ -672,9 +674,25 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             ),
                           ],
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.close, color: Colors.white60),
-                          onPressed: () => Navigator.pop(ctx),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              tooltip: "Play Cry",
+                              icon: const Icon(Icons.volume_up_rounded,
+                                  color: Colors.cyanAccent, size: 21),
+                              onPressed: () =>
+                                  SoundService.instance.playPokemonCry(spec.id),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.close,
+                                  color: Colors.white60),
+                              onPressed: () {
+                                SoundService.instance.playUiCancel();
+                                Navigator.pop(ctx);
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     ),

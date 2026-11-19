@@ -15,6 +15,7 @@ dependencies:
   permission_handler: ^13.0.2
   shared_preferences: ^2.3.2
   url_launcher: ^6.3.1
+  audioplayers: ">=6.3.0 <6.5.0"
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +29,6 @@ flutter:
     - assets/images/badges/
     - assets/images/balls/
     - assets/images/trainers/
+    - assets/audio/bgm/
+    - assets/audio/cries/
+    - assets/audio/sfx/

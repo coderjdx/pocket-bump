@@ -342,6 +342,9 @@ class PokemonSpecies {
   String get shinyArtworkUrl =>
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/$id.png';
 
+  /// Bundled Pokémon cry asset path (relative to `assets/` for AudioPlayers AssetSource).
+  String get cryAsset => 'audio/cries/$id.mp3';
+
   /// Only the base 146 non-Legendary / non-Mythical Kanto roster can be shiny.
   bool get isShinyEligible =>
       !isLegendary &&

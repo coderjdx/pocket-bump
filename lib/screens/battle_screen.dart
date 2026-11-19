@@ -13,9 +13,11 @@ import '../services/battle_engine.dart';
 import '../services/item_drop_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
+import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import 'evolution_screen.dart';
 
@@ -43,6 +45,7 @@ class BattleScreen extends StatefulWidget {
   final PvpMatchSession? pvpSession;
   final bool isLegendaryBoss;
   final String? continueButtonLabel;
+  final BattleBgmCategory? bgmCategory;
 
   const BattleScreen({
     super.key,
@@ -58,6 +61,7 @@ class BattleScreen extends StatefulWidget {
     this.pvpSession,
     this.isLegendaryBoss = false,
     this.continueButtonLabel,
+    this.bgmCategory,
   });
 
   @override
@@ -176,9 +180,23 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Color _calloutColor = Colors.amberAccent;
   final BattleFieldState _fieldState = BattleFieldState();
 
+  BattleBgmCategory get _resolvedBgmCategory {
+    if (widget.bgmCategory != null) return widget.bgmCategory!;
+    if (widget.isLegendaryBoss || widget.pvpSession != null) {
+      return BattleBgmCategory.special;
+    }
+    if (!widget.isWild &&
+        ((widget.opponentSpriteId?.startsWith('rocket_') ?? false) ||
+            (widget.trainerTitle?.contains('Rocket') ?? false))) {
+      return BattleBgmCategory.expedition;
+    }
+    return widget.isWild ? BattleBgmCategory.wild : BattleBgmCategory.gym;
+  }
+
   @override
   void initState() {
     super.initState();
+    SoundService.instance.playBattleBgm(_resolvedBgmCategory);
     _trainer = Provider.of<Trainer>(context, listen: false);
     for (final mon in _trainer.party) {
       mon.clearVolatileBattleState();
@@ -351,6 +369,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       }
       _trainer.resetAllPartyStatStages();
       _trainer.saveProgress();
+      SoundService.instance.playBgm(BgmTrack.hubTown);
     }
     if (mounted) {
       Navigator.pop(context, won);
@@ -393,9 +412,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await Future.delayed(const Duration(milliseconds: 650));
     if (!mounted) return;
 
-    if (widget.isWild && _opponentPokemon.isShiny) {
-      await _playShinySparkle(isPlayer: false);
-      if (!mounted) return;
+    if (widget.isWild) {
+      SoundService.instance.playPokemonCry(_opponentPokemon.species.id);
+      if (_opponentPokemon.isShiny) {
+        await _playShinySparkle(isPlayer: false);
+        if (!mounted) return;
+      }
     }
 
     if (!widget.isWild) {
@@ -521,6 +543,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (!mounted) return;
 
     HapticFeedback.mediumImpact();
+    SoundService.instance.playPokemonCry(mon.species.id);
     setState(() {
       _showOpponentSummonBallArc = false;
       _showOpponentTrainerSprite = false;
@@ -578,6 +601,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     // Ball opens with summon burst & Pokémon pops onto the platform
     HapticFeedback.mediumImpact();
+    SoundService.instance.playPokemonCry(mon.species.id);
     setState(() {
       _showSummonBallArc = false;
       _showTrainerSprite = false;
@@ -721,6 +745,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (event.isSelfDamage) {
       final hurtPlayer = event.isPlayerActor;
       HapticFeedback.mediumImpact();
+      SoundService.instance.playHitSfx();
       setState(() {
         _floatingCallout = "-${event.damageDealt}";
         _calloutOnOpponent = !hurtPlayer;
@@ -759,6 +784,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         !event.isSelfDamage) {
       HapticFeedback.heavyImpact();
       final bool oppFainted = event.isPlayerActor;
+      final faintedSpeciesId = oppFainted
+          ? _opponentPokemon.species.id
+          : _playerPokemon.species.id;
+      SoundService.instance.playPokemonCry(faintedSpeciesId, fainted: true);
+      Future.delayed(const Duration(milliseconds: 220), () {
+        if (mounted) SoundService.instance.playFaintSfx();
+      });
       setState(() {
         _floatingCallout = "KNOCKED OUT!";
         _calloutOnOpponent = oppFainted;
@@ -788,6 +820,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (event.isStatusTick) {
       final hurtPlayer = !event.isPlayerActor;
       if (event.damageDealt > 0) {
+        SoundService.instance.playStatusAilmentSfx();
         setState(() {
           _activeMoveId = event.moveId ??
               (event.moveType == PokemonType.fire ? 'status_burn' : 'status_poison');
@@ -819,6 +852,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         });
         await Future.delayed(const Duration(milliseconds: 520));
       } else {
+        if (event.healAmount > 0) {
+          SoundService.instance.playHealSfx();
+        }
         if (event.targetHpAfter > 0 || event.healAmount > 0) {
           setState(() {
             if (event.isPlayerActor) {
@@ -985,7 +1021,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         if (!mounted) return;
       }
 
-      // 2. Trigger full-arena move-specific VFX
+      // 2. Trigger full-arena move-specific VFX + SFX
+      SoundService.instance.playMoveSfx(
+        event.moveType!,
+        event.moveCategory ?? MoveCategory.physical,
+      );
       setState(() {
         _playerLungeOffset = Offset.zero;
         _opponentLungeOffset = Offset.zero;
@@ -1053,6 +1093,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
         if (event.damageDealt > 0) {
           HapticFeedback.mediumImpact();
+          SoundService.instance.playHitSfx(
+            effectiveness: event.effectiveness,
+            isCrit: event.isCrit,
+          );
           setState(() {
             if (isPlayer) {
               _opponentFlash = true;
@@ -1075,6 +1119,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _arenaShakeController.forward(from: 0);
           }
         } else if (event.healAmount > 0) {
+          SoundService.instance.playHealSfx();
           setState(() {
             if (isPlayer) {
               _displayedPlayerHp = event.targetHpAfter;
@@ -1086,6 +1131,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             _calloutColor = calloutCol;
           });
         } else {
+          if (isNoEffectHit) {
+            SoundService.instance.playHitSfx(isMiss: true);
+          } else if (event.statChangedLabel != null) {
+            SoundService.instance.playStatChangeSfx(
+              isUp: !event.statChangedLabel!.contains('▼'),
+            );
+          } else if (event.statusInflictedLabel != null) {
+            SoundService.instance.playStatusAilmentSfx();
+          }
           setState(() {
             _floatingCallout = callout;
             _calloutOnOpponent = calloutOnOpp;
@@ -1112,6 +1166,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _floatingCallout = null;
       });
     } else {
+      if (event.isMiss) {
+        SoundService.instance.playHitSfx(isMiss: true);
+      }
       if (event.surfaceActorOnAttack) {
         setState(() {
           _playerSubmerged = _playerPokemon.isUnderground;
@@ -1535,6 +1592,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
       }
 
+      SoundService.instance.playVictoryFanfare(isTrainer: !widget.isWild);
       _playerWon = true;
       _recordPvpBattleOutcomeIfNeeded(playerWon: true);
       if (!mounted) return;
@@ -1634,6 +1692,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (!mounted) return;
 
     // Phase 1: Throw Flight Arc from Trainer hand to wild Pokémon
+    SoundService.instance.playBallThrowSfx();
     setState(() {
       _trainerPose = 2;
       _showPokeBallThrow = true;
@@ -1729,6 +1788,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
     // Phase 2: Open Capsule & Laser Absorption (wild Pokémon shrinks into beam)
     HapticFeedback.lightImpact();
+    SoundService.instance.playBallOpenSfx();
     setState(() {
       _showTrainerSprite = false;
       _catchBallPhase = _BallAnimPhase.absorb;
@@ -1765,6 +1825,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _catchBallPhase = _BallAnimPhase.wobble;
     });
     for (int i = 0; i < 3; i++) {
+      SoundService.instance.playBallWobbleSfx();
       setState(() {
         _ballButtonGlowColor = Colors.redAccent;
       });
@@ -1812,6 +1873,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           ? "\n${_opponentPokemon.species.name} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!"
           : "";
       HapticFeedback.heavyImpact();
+      SoundService.instance.playBallCatchSfx();
+      SoundService.instance.playVictoryFanfare(isTrainer: isLegendaryKoThrow);
       setState(() {
         _catchBallPhase = _BallAnimPhase.locked;
         _ballButtonGlowColor = Colors.amberAccent;
@@ -1844,6 +1907,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       });
     } else {
       // Phase 5b: Break-Free Open Capsule Burst
+      SoundService.instance.playBallBreakSfx();
+      Future.delayed(const Duration(milliseconds: 140), () {
+        if (mounted) SoundService.instance.playPokemonCry(_opponentPokemon.species.id);
+      });
       setState(() {
         _catchBallPhase = _BallAnimPhase.breakout;
         _ballButtonGlowColor = null;
@@ -1981,6 +2048,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         PokedexDatabase.movesUnlockedAtExactLevel,
       );
       if (levelResult.leveledUp) {
+        SoundService.instance.playLevelUpSfx();
         setState(() {
           if (participant == _playerPokemon) {
             _displayedPlayerHp = _playerPokemon.currentHp;
@@ -2993,17 +3061,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               ),
                             ),
 
-                            if (_fieldState.effectiveWeather(
-                                    _playerPokemon, _opponentPokemon) !=
-                                BattleWeather.none)
-                              Positioned(
-                                top: 10,
-                                right: 10,
-                                child: _buildWeatherBadge(
-                                  _fieldState.effectiveWeather(
-                                      _playerPokemon, _opponentPokemon),
-                                ),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const SoundToggleButton(size: 16),
+                                  if (_fieldState.effectiveWeather(
+                                          _playerPokemon, _opponentPokemon) !=
+                                      BattleWeather.none) ...[
+                                    const SizedBox(height: 6),
+                                    _buildWeatherBadge(
+                                      _fieldState.effectiveWeather(
+                                          _playerPokemon, _opponentPokemon),
+                                    ),
+                                  ],
+                                ],
                               ),
+                            ),
 
                             // Opponent Animated Sprite / Opposing Trainer Throw Sprite (Bottom-anchored on distant platform)
                             Positioned(

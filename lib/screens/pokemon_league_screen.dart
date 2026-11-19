@@ -6,6 +6,7 @@ import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/gym_database.dart';
+import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import 'battle_screen.dart';
 
@@ -831,6 +832,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           prizeMoney: currentOpponent.prizeMoney,
           preservePartyHpOnExit: true,
           battleBackgroundAsset: _activeGym!.backgroundAsset,
+          bgmCategory: BattleBgmCategory.gym,
         ),
       ),
     );

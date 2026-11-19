@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/trainer.dart';
+import '../services/sound_service.dart';
 import '../widgets/pokeball_sprite.dart';
 
 class PokeMartScreen extends StatefulWidget {
@@ -575,6 +576,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                                 trainer.adjustItemCount(item.id, quantity);
                                 trainer.saveProgress();
                                 HapticFeedback.mediumImpact();
+                                SoundService.instance.playUiBuy();
                                 Navigator.pop(ctx);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

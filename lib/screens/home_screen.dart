@@ -12,11 +12,13 @@ import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/app_update_service.dart';
 import '../services/pokedex_database.dart';
+import '../services/sound_service.dart';
 import '../services/step_counter_service.dart';
 import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/version_picker.dart';
 import 'battle_screen.dart';
@@ -43,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
+    SoundService.instance.playBgm(BgmTrack.hubTown);
     _leadBobController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1400),
@@ -594,10 +597,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => _openPartyManagerModal(trainer),
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SoundToggleButton(size: 14),
+                    const SizedBox(width: 6),
+                    InkWell(
+                      onTap: () {
+                        SoundService.instance.playUiTap();
+                        _openPartyManagerModal(trainer);
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                     decoration: BoxDecoration(
@@ -625,6 +636,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ],
                     ),
                   ),
+                ),
+                  ],
                 ),
               ],
             ),
@@ -699,55 +712,59 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   child: child,
                                 );
                               },
-                              child: Opacity(
-                                opacity: lead.isFainted ? 0.5 : 1.0,
-                                child: Stack(
-                                  clipBehavior: Clip.none,
-                                  children: [
-                                    Image.network(
-                                      lead.spriteUrl,
-                                      width: companionSize * 1.38,
-                                      height: companionSize,
-                                      fit: BoxFit.contain,
-                                      alignment: Alignment.bottomCenter,
-                                      filterQuality: FilterQuality.none,
-                                      errorBuilder: (c, e, s) => Image.network(
-                                        lead.staticSpriteUrl,
+                              child: GestureDetector(
+                                onTap: () => SoundService.instance
+                                    .playPokemonCry(lead.species.id),
+                                child: Opacity(
+                                  opacity: lead.isFainted ? 0.5 : 1.0,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Image.network(
+                                        lead.spriteUrl,
                                         width: companionSize * 1.38,
                                         height: companionSize,
                                         fit: BoxFit.contain,
                                         alignment: Alignment.bottomCenter,
                                         filterQuality: FilterQuality.none,
-                                        errorBuilder: (c2, e2, s2) => Icon(
-                                          Icons.catching_pokemon,
-                                          color: accentColor,
-                                          size: (companionSize * 0.62)
-                                              .clamp(28.0, 60.0),
+                                        errorBuilder: (c, e, s) => Image.network(
+                                          lead.staticSpriteUrl,
+                                          width: companionSize * 1.38,
+                                          height: companionSize,
+                                          fit: BoxFit.contain,
+                                          alignment: Alignment.bottomCenter,
+                                          filterQuality: FilterQuality.none,
+                                          errorBuilder: (c2, e2, s2) => Icon(
+                                            Icons.catching_pokemon,
+                                            color: accentColor,
+                                            size: (companionSize * 0.62)
+                                                .clamp(28.0, 60.0),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    if (lead.isShiny)
-                                      Positioned(
-                                        top: 0,
-                                        right: -2,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(3),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xCC151824),
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.amberAccent
-                                                  .withOpacity(0.8),
+                                      if (lead.isShiny)
+                                        Positioned(
+                                          top: 0,
+                                          right: -2,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xCC151824),
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.amberAccent
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                            child: const Icon(
+                                              Icons.auto_awesome_rounded,
+                                              color: Colors.amberAccent,
+                                              size: 13,
                                             ),
                                           ),
-                                          child: const Icon(
-                                            Icons.auto_awesome_rounded,
-                                            color: Colors.amberAccent,
-                                            size: 13,
-                                          ),
                                         ),
-                                      ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -1178,7 +1195,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           icon: Icons.share_rounded,
           label: trainer.expShareEnabled ? "EXP SHARE ON" : "EXP SHARE OFF",
           activeColor: Colors.cyanAccent,
-          onTap: () => trainer.toggleExpShare(),
+          onTap: () {
+            SoundService.instance.playUiTap();
+            trainer.toggleExpShare();
+          },
         ),
         const SizedBox(width: 6),
         pill(
@@ -1186,7 +1206,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           icon: Icons.shield_rounded,
           label: trainer.repelEnabled ? "REPEL ON" : "REPEL OFF",
           activeColor: Colors.orangeAccent,
-          onTap: () => trainer.toggleRepel(),
+          onTap: () {
+            SoundService.instance.playUiTap();
+            trainer.toggleRepel();
+          },
         ),
       ],
     );
@@ -1203,7 +1226,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }) {
     return Expanded(
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          SoundService.instance.playUiTap();
+          onTap();
+        },
         borderRadius: BorderRadius.circular(14),
         child: Container(
           padding: const EdgeInsets.fromLTRB(9, 8, 8, 8),
