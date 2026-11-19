@@ -2710,11 +2710,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
                             // Opponent Animated Sprite / Opposing Trainer Throw Sprite (Bottom-anchored on distant platform)
                             Positioned(
-                              left: oppPlatform.dx - 85,
-                              top: oppPlatform.dy - 165,
+                              left: oppPlatform.dx - 120,
+                              top: oppPlatform.dy - 200,
                               child: SizedBox(
-                                width: 170,
-                                height: 165,
+                                width: 240,
+                                height: 200,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
@@ -2814,11 +2814,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
                             // Player Platform Area: Trainer Throw Sprite & Player Pokémon
                             Positioned(
-                              left: playerPlatform.dx - 110,
-                              top: playerPlatform.dy - 210,
+                              left: playerPlatform.dx - 170,
+                              top: playerPlatform.dy - 260,
                               child: SizedBox(
-                                width: 220,
-                                height: 210,
+                                width: 340,
+                                height: 260,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
@@ -2852,6 +2852,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             _showPlayerPokemon ? _playerSummonScale : 0.05,
                                         duration: const Duration(milliseconds: 280),
                                         curve: Curves.easeOutBack,
+                                        alignment: Alignment.bottomCenter,
                                         child: _buildAnimatedCombatant(
                                           url: _playerPokemon.backSpriteUrl,
                                           fallbackUrl:
@@ -3530,16 +3531,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required bool flashWhite,
     required bool isPlayer,
   }) {
+    // Allow horizontal headroom (1.45x) so wide-winged/tail Gen V sprites
+    // scale by their canonical height rather than shrinking to fit a square box.
     final spriteImage = Image.network(
       url,
-      width: size,
+      width: size * 1.45,
       height: size,
       fit: BoxFit.contain,
       alignment: Alignment.bottomCenter,
       filterQuality: FilterQuality.none,
       errorBuilder: (ctx, err, stack) => Image.network(
         fallbackUrl,
-        width: size,
+        width: size * 1.45,
         height: size,
         fit: BoxFit.contain,
         alignment: Alignment.bottomCenter,

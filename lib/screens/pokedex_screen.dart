@@ -775,8 +775,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                       child: Column(
                         children: [
                           Container(
-                            width: 130,
-                            height: 130,
+                            width: 156,
+                            height: 132,
                             decoration: BoxDecoration(
                               color: const Color(0xFF0A0B14),
                               borderRadius: BorderRadius.circular(22),
@@ -787,26 +787,36 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               ),
                             ),
                             child: Center(
-                              child: Image.network(
-                                showShiny ? spec.shinySpriteUrl : spec.spriteUrl,
-                                width: 102,
-                                height: 102,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                                errorBuilder: (_, __, ___) => Image.network(
+                              child: Builder(builder: (_) {
+                                final double showcaseSize =
+                                    spec.scaledUiSize(112, minSize: 48);
+                                return Image.network(
                                   showShiny
-                                      ? spec.staticShinySpriteUrl
-                                      : spec.staticSpriteUrl,
-                                  width: 102,
-                                  height: 102,
+                                      ? spec.shinySpriteUrl
+                                      : spec.spriteUrl,
+                                  width: showcaseSize * 1.35,
+                                  height: showcaseSize,
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.bottomCenter,
                                   filterQuality: FilterQuality.none,
-                                  errorBuilder: (_, __, ___) => Icon(
-                                    Icons.catching_pokemon,
-                                    size: 64,
-                                    color: primaryColor,
+                                  errorBuilder: (_, __, ___) => Image.network(
+                                    showShiny
+                                        ? spec.staticShinySpriteUrl
+                                        : spec.staticSpriteUrl,
+                                    width: showcaseSize * 1.35,
+                                    height: showcaseSize,
+                                    fit: BoxFit.contain,
+                                    alignment: Alignment.bottomCenter,
+                                    filterQuality: FilterQuality.none,
+                                    errorBuilder: (_, __, ___) => Icon(
+                                      Icons.catching_pokemon,
+                                      size: (showcaseSize * 0.65)
+                                          .clamp(28.0, 68.0),
+                                      color: primaryColor,
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              }),
                             ),
                           ),
                       const SizedBox(height: 10),

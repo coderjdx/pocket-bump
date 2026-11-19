@@ -163,27 +163,40 @@ class PokemonSpecies {
     return playerLevel >= requiredPlayerLevelForEncounter;
   }
 
+  /// Proportional visual scale factor derived from canonical Pokémon height.
+  /// Calibrated so Stage 1 starters (~0.5–0.7m), Stage 2 (~1.0–1.2m),
+  /// Stage 3 (~1.6–2.2m), and giants (Onix/Gyarados) read at distinct sizes.
   double get speciesScale {
-    if (heightMeters <= 0.2) return 0.44;
-    if (heightMeters <= 0.3) return 0.49;
-    if (heightMeters <= 0.4) return 0.56;
-    if (heightMeters <= 0.5) return 0.63;
-    if (heightMeters <= 0.6) return 0.65;
-    if (heightMeters <= 0.7) return 0.67;
-    if (heightMeters <= 0.8) return 0.76;
-    if (heightMeters <= 1.0) return 0.82;
-    if (heightMeters <= 1.1) return 0.85;
-    if (heightMeters <= 1.5) return 1.00;
-    if (heightMeters <= 1.6) return 1.05;
-    if (heightMeters <= 1.7) return 1.10;
-    return 1.14;
+    if (heightMeters <= 0.2) return 0.34;
+    if (heightMeters <= 0.3) return 0.38;
+    if (heightMeters <= 0.4) return 0.44;
+    if (heightMeters <= 0.5) return 0.50;
+    if (heightMeters <= 0.6) return 0.56;
+    if (heightMeters <= 0.7) return 0.61;
+    if (heightMeters <= 0.8) return 0.68;
+    if (heightMeters <= 1.0) return 0.76;
+    if (heightMeters <= 1.2) return 0.84;
+    if (heightMeters <= 1.5) return 0.96;
+    if (heightMeters <= 1.7) return 1.12;
+    if (heightMeters <= 2.2) return 1.24;
+    return 1.36;
   }
 
-  /// Foreground (player) active Pokémon size in logical pixels (base 162px for a 1.5m Pokémon)
-  double get battlePlayerSize => (162.0 * speciesScale).roundToDouble();
+  /// Foreground (player) active Pokémon height in logical pixels (base 166px for ~1.5m Pokémon)
+  double get battlePlayerSize => (166.0 * speciesScale).roundToDouble();
 
-  /// Distant (opponent) Pokémon size in logical pixels (~0.56x foreground size for perspective depth)
-  double get battleOpponentSize => (90.0 * speciesScale).roundToDouble();
+  /// Distant (opponent) Pokémon height in logical pixels (~0.55x foreground size for perspective depth)
+  double get battleOpponentSize => (92.0 * speciesScale).roundToDouble();
+
+  /// Lead companion display height next to the 92px Trainer on the Home screen stage
+  double get homeCompanionSize =>
+      (88.0 * speciesScale).roundToDouble().clamp(42.0, 116.0);
+
+  /// Proportional showcase height for UI frames (Pokédex, Evolution, Detail cards)
+  double scaledUiSize(double maxSize, {double minSize = 38.0}) {
+    final normalized = (speciesScale / 1.18).clamp(0.32, 1.0);
+    return (maxSize * normalized).roundToDouble().clamp(minSize, maxSize);
+  }
 
   /// Habitat-appropriate pixel-art battle arena background for wild encounters
   String get battleBackgroundAsset {

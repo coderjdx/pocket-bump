@@ -583,7 +583,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           // Hero Character Stage: Trainer Portrait next to Lead Pokémon
           SizedBox(
-            height: 114,
+            height: 124,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -630,79 +630,89 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ],
                     ),
                     const SizedBox(width: 14),
-                    // Animated Lead Pokémon Standing Next to Trainer
+                    // Animated Lead Pokémon Standing Next to Trainer (height-scaled)
                     if (lead != null)
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          AnimatedBuilder(
-                            animation: _leadBobController,
-                            builder: (context, child) {
-                              final dy = -sin(_leadBobController.value * pi) * 3.5;
-                              return Transform.translate(
-                                offset: Offset(0, dy),
-                                child: child,
-                              );
-                            },
-                            child: Opacity(
-                              opacity: lead.isFainted ? 0.5 : 1.0,
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Image.network(
-                                    lead.spriteUrl,
-                                    width: 92,
-                                    height: 92,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (c, e, s) => Image.network(
-                                      lead.staticSpriteUrl,
-                                      width: 92,
-                                      height: 92,
+                      Builder(builder: (_) {
+                        final double companionSize =
+                            lead.species.homeCompanionSize;
+                        final double shadowWidth =
+                            (companionSize * 0.72).clamp(32.0, 84.0);
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            AnimatedBuilder(
+                              animation: _leadBobController,
+                              builder: (context, child) {
+                                final dy =
+                                    -sin(_leadBobController.value * pi) * 3.5;
+                                return Transform.translate(
+                                  offset: Offset(0, dy),
+                                  child: child,
+                                );
+                              },
+                              child: Opacity(
+                                opacity: lead.isFainted ? 0.5 : 1.0,
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Image.network(
+                                      lead.spriteUrl,
+                                      width: companionSize * 1.38,
+                                      height: companionSize,
                                       fit: BoxFit.contain,
+                                      alignment: Alignment.bottomCenter,
                                       filterQuality: FilterQuality.none,
-                                      errorBuilder: (c2, e2, s2) => Icon(
-                                        Icons.catching_pokemon,
-                                        color: accentColor,
-                                        size: 56,
+                                      errorBuilder: (c, e, s) => Image.network(
+                                        lead.staticSpriteUrl,
+                                        width: companionSize * 1.38,
+                                        height: companionSize,
+                                        fit: BoxFit.contain,
+                                        alignment: Alignment.bottomCenter,
+                                        filterQuality: FilterQuality.none,
+                                        errorBuilder: (c2, e2, s2) => Icon(
+                                          Icons.catching_pokemon,
+                                          color: accentColor,
+                                          size: (companionSize * 0.62)
+                                              .clamp(28.0, 60.0),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  if (lead.isShiny)
-                                    Positioned(
-                                      top: 0,
-                                      right: -2,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(3),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xCC151824),
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.amberAccent
-                                                .withOpacity(0.8),
+                                    if (lead.isShiny)
+                                      Positioned(
+                                        top: 0,
+                                        right: -2,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(3),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xCC151824),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Colors.amberAccent
+                                                  .withOpacity(0.8),
+                                            ),
+                                          ),
+                                          child: const Icon(
+                                            Icons.auto_awesome_rounded,
+                                            color: Colors.amberAccent,
+                                            size: 13,
                                           ),
                                         ),
-                                        child: const Icon(
-                                          Icons.auto_awesome_rounded,
-                                          color: Colors.amberAccent,
-                                          size: 13,
-                                        ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 62,
-                            height: 7,
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.48),
-                              borderRadius: BorderRadius.circular(12),
+                            Container(
+                              width: shadowWidth,
+                              height: 6,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.48),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        );
+                      }),
                   ],
                 ),
               ],

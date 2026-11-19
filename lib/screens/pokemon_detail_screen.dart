@@ -351,25 +351,29 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         child: Stack(
                           children: [
                             Center(
-                              child: Image.network(
-                                mon.spriteUrl,
-                                width: 68,
-                                height: 68,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                                errorBuilder: (_, __, ___) => Image.network(
-                                  mon.staticSpriteUrl,
-                                  width: 68,
-                                  height: 68,
+                              child: Builder(builder: (_) {
+                                final double heroSize = mon.species
+                                    .scaledUiSize(72, minSize: 38);
+                                return Image.network(
+                                  mon.spriteUrl,
+                                  width: 78,
+                                  height: heroSize,
                                   fit: BoxFit.contain,
                                   filterQuality: FilterQuality.none,
-                                  errorBuilder: (_, __, ___) => Icon(
-                                    Icons.catching_pokemon,
-                                    color: typeColor,
-                                    size: 42,
+                                  errorBuilder: (_, __, ___) => Image.network(
+                                    mon.staticSpriteUrl,
+                                    width: 78,
+                                    height: heroSize,
+                                    fit: BoxFit.contain,
+                                    filterQuality: FilterQuality.none,
+                                    errorBuilder: (_, __, ___) => Icon(
+                                      Icons.catching_pokemon,
+                                      color: typeColor,
+                                      size: (heroSize * 0.68).clamp(24.0, 46.0),
+                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              }),
                             ),
                             if (mon.isShiny)
                               const Positioned(

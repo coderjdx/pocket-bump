@@ -150,15 +150,17 @@ class _EvolutionScreenState extends State<EvolutionScreen>
   }) {
     final Widget raw = Image.network(
       _spriteFor(species),
-      width: size,
+      width: size * 1.4,
       height: size,
       fit: BoxFit.contain,
+      alignment: Alignment.bottomCenter,
       filterQuality: FilterQuality.none,
       errorBuilder: (_, __, ___) => Image.network(
         _staticSpriteFor(species),
-        width: size,
+        width: size * 1.4,
         height: size,
         fit: BoxFit.contain,
+        alignment: Alignment.bottomCenter,
         filterQuality: FilterQuality.none,
         errorBuilder: (_, __, ___) => Icon(
           Icons.catching_pokemon,
@@ -260,7 +262,8 @@ class _EvolutionScreenState extends State<EvolutionScreen>
                                 scale: pulse,
                                 child: _buildPokemonSprite(
                                   widget.fromSpecies,
-                                  size: 148,
+                                  size: widget.fromSpecies
+                                      .scaledUiSize(168, minSize: 72),
                                   whiteSilhouette: false,
                                 ),
                               );
@@ -273,6 +276,11 @@ class _EvolutionScreenState extends State<EvolutionScreen>
                               final bool showNew = wave >= 0;
                               final double baseScale = 0.96 + 0.14 * wave.abs();
                               final double glowSize = 150 + 70 * sin(t * pi);
+                              final double morphSize = showNew
+                                  ? widget.toSpecies
+                                      .scaledUiSize(170, minSize: 72)
+                                  : widget.fromSpecies
+                                      .scaledUiSize(168, minSize: 72);
                               return Stack(
                                 alignment: Alignment.center,
                                 children: [
@@ -297,7 +305,7 @@ class _EvolutionScreenState extends State<EvolutionScreen>
                                       showNew
                                           ? widget.toSpecies
                                           : widget.fromSpecies,
-                                      size: showNew ? 154 : 146,
+                                      size: morphSize,
                                       whiteSilhouette: true,
                                     ),
                                   ),
@@ -321,7 +329,8 @@ class _EvolutionScreenState extends State<EvolutionScreen>
                                         Transform.scale(scale: s, child: child),
                                     child: _buildPokemonSprite(
                                       widget.toSpecies,
-                                      size: 164,
+                                      size: widget.toSpecies
+                                          .scaledUiSize(174, minSize: 76),
                                       whiteSilhouette: false,
                                     ),
                                   ),
