@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/move.dart';
 import '../models/pokemon_type.dart';
+import 'pokedex_database.dart';
 
 enum BgmTrack {
   none,
@@ -289,7 +290,7 @@ class SoundService extends ChangeNotifier {
 
   // Phase 1: Pokémon Cries
   Future<void> playPokemonCry(int speciesId, {bool fainted = false}) async {
-    if (isSfxMuted || speciesId < 1 || speciesId > 151) return;
+    if (isSfxMuted || !PokedexDatabase.species.containsKey(speciesId)) return;
     try {
       await _cryPlayer.stop();
       await _cryPlayer.setVolume((_sfxVolume * 0.92).clamp(0.0, 1.0));

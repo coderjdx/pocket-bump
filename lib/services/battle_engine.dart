@@ -1001,11 +1001,15 @@ class BattleEngine {
         if (h >= 0.7) return 60;
         return h >= 0.4 ? 40 : 20;
       case 'heavy_slam':
+      case 'heat_crash':
         final ratio = attacker.species.heightMeters / max(0.1, defender.species.heightMeters);
         if (ratio >= 3.0) return 120;
         if (ratio >= 2.0) return 100;
         if (ratio >= 1.4) return 80;
         return 60;
+      case 'eruption':
+      case 'water_spout':
+        return max(1, (150 * attacker.hpPercent).round());
       case 'gyro_ball':
         final sRatio = (25.0 * defender.effectiveSpe / max(1, attacker.effectiveSpe)).round();
         return sRatio.clamp(1, 150);
@@ -3864,6 +3868,21 @@ class BattleEngine {
         events.add(BattleStepEvent(
           message: "$monName's perish count fell to ${mon.perishTurnsRemaining}!",
           isPlayerActor: isPlayer, hideMoveVfx: true,
+        ));
+      }
+    }
+
+    // Speed Boost end-of-turn Speed raise
+    if (!mon.isFainted && ab == 'speed_boost') {
+      final delta = mon.modifyStatStage('spe', 1);
+      if (delta != 0) {
+        events.add(BattleStepEvent(
+          message: "$monName's Speed Boost raised its Speed!",
+          isPlayerActor: isPlayer,
+          statChangedLabel: 'SPE ▲',
+          statTargetIsSelf: true,
+          hideMoveVfx: true,
+          abilityTriggeredName: 'Speed Boost',
         ));
       }
     }

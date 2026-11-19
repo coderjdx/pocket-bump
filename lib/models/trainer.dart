@@ -56,6 +56,8 @@ class Trainer extends ChangeNotifier {
   bool repelEnabled;
   bool hasEarnedExpeditionMasterBall;
   Set<int> caughtExpeditionLegendaryIds;
+  Set<String> redeemedGiftCodes;
+  Set<String> claimedEventGiftIds;
   List<RivalRecord> rivals;
 
   Trainer({
@@ -98,6 +100,8 @@ class Trainer extends ChangeNotifier {
     this.repelEnabled = false,
     this.hasEarnedExpeditionMasterBall = false,
     Set<int>? caughtExpeditionLegendaryIds,
+    Set<String>? redeemedGiftCodes,
+    Set<String>? claimedEventGiftIds,
     List<RivalRecord>? rivals,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
@@ -111,6 +115,8 @@ class Trainer extends ChangeNotifier {
         gymTodaySteps = gymTodaySteps ?? {},
         customItems = customItems ?? {},
         caughtExpeditionLegendaryIds = caughtExpeditionLegendaryIds ?? {},
+        redeemedGiftCodes = redeemedGiftCodes ?? {},
+        claimedEventGiftIds = claimedEventGiftIds ?? {},
         rivals = rivals ?? [] {
     activePcBoxIndex = activePcBoxIndex.clamp(0, numPcBoxes - 1);
     this.pcBoxes = List.generate(numPcBoxes, (boxIdx) {
@@ -748,6 +754,22 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool hasRedeemedGiftCode(String code) =>
+      redeemedGiftCodes.contains(code.toUpperCase());
+
+  void markGiftCodeRedeemed(String code) {
+    redeemedGiftCodes.add(code.toUpperCase());
+    notifyListeners();
+  }
+
+  bool hasClaimedEventGift(String eventId) =>
+      claimedEventGiftIds.contains(eventId);
+
+  void markEventGiftClaimed(String eventId) {
+    claimedEventGiftIds.add(eventId);
+    notifyListeners();
+  }
+
   int getItemCount(String itemId) {
     switch (itemId) {
       case 'poke_ball':
@@ -978,6 +1000,8 @@ class Trainer extends ChangeNotifier {
       'hasEarnedExpeditionMasterBall': hasEarnedExpeditionMasterBall,
       'caughtExpeditionLegendaryIds':
           caughtExpeditionLegendaryIds.toList()..sort(),
+      'redeemedGiftCodes': redeemedGiftCodes.toList()..sort(),
+      'claimedEventGiftIds': claimedEventGiftIds.toList()..sort(),
       'rivals': rivals.map((r) => r.toJson()).toList(),
       'party': party.map((mon) => mon.toJson()).toList(),
       'activePcBoxIndex': activePcBoxIndex,
@@ -1064,6 +1088,15 @@ class Trainer extends ChangeNotifier {
         (json['caughtExpeditionLegendaryIds'] as List<dynamic>? ?? const [])
             .whereType<num>()
             .map((n) => n.toInt())
+            .toSet();
+    redeemedGiftCodes =
+        (json['redeemedGiftCodes'] as List<dynamic>? ?? const [])
+            .whereType<String>()
+            .map((s) => s.toUpperCase())
+            .toSet();
+    claimedEventGiftIds =
+        (json['claimedEventGiftIds'] as List<dynamic>? ?? const [])
+            .whereType<String>()
             .toSet();
 
     final rawRivals = json['rivals'] as List<dynamic>? ?? const [];
@@ -1216,6 +1249,8 @@ class Trainer extends ChangeNotifier {
     repelEnabled = false;
     hasEarnedExpeditionMasterBall = false;
     caughtExpeditionLegendaryIds = {};
+    redeemedGiftCodes = {};
+    claimedEventGiftIds = {};
     rivals = [];
     _suppressAutoSave = false;
     super.notifyListeners();

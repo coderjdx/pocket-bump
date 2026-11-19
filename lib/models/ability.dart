@@ -77,6 +77,11 @@ class AbilityDatabase {
       name: 'Compound Eyes',
       description: 'The Pokémon\'s compound eyes boost move accuracy by 30%.',
     ),
+    'contrary': AbilityDefinition(
+      id: 'contrary',
+      name: 'Contrary',
+      description: 'Makes stat changes have an opposite effect.',
+    ),
     'cute_charm': AbilityDefinition(
       id: 'cute_charm',
       name: 'Cute Charm',
@@ -436,6 +441,11 @@ class AbilityDatabase {
       id: 'sniper',
       name: 'Sniper',
       description: 'Powers up critical hits to deal 50% more damage.',
+    ),
+    'speed_boost': AbilityDefinition(
+      id: 'speed_boost',
+      name: 'Speed Boost',
+      description: 'The Pokémon\'s Speed stat is boosted every turn.',
     ),
     'snow_cloak': AbilityDefinition(
       id: 'snow_cloak',

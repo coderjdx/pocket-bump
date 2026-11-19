@@ -11,6 +11,7 @@ import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/app_update_service.dart';
+import '../services/mystery_gift_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../services/step_counter_service.dart';
@@ -25,6 +26,7 @@ import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'evolution_screen.dart';
 import 'expeditions_screen.dart';
+import 'mystery_gift_screen.dart';
 import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
@@ -1506,6 +1508,137 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ),
           ),
+        ),
+        const SizedBox(height: 7),
+
+        // Row 4: Mystery Gift (Event Distributions & 16-Char Promo Codes)
+        Builder(
+          builder: (context) {
+            final unclaimedCount =
+                MysteryGiftService.unclaimedEvents(trainer).length;
+            final hasPromoAvailable = !trainer
+                .hasRedeemedGiftCode(MysteryGiftService.sinnohStarterCode);
+            final alertCount = unclaimedCount + (hasPromoAvailable ? 1 : 0);
+
+            return Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  SoundService.instance.playUiTap();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MysteryGiftScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(13),
+                child: Ink(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1F1634), Color(0xFF151226)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(
+                      color: alertCount > 0
+                          ? Colors.pinkAccent.withOpacity(0.55)
+                          : Colors.white.withOpacity(0.14),
+                      width: 1.1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.35),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: Colors.pinkAccent.withOpacity(0.14),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.pinkAccent.withOpacity(0.4),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.card_giftcard_rounded,
+                          color: Colors.pinkAccent,
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 9),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "MYSTERY GIFT",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
+                            Text(
+                              unclaimedCount > 0
+                                  ? "$unclaimedCount Event Distribution${unclaimedCount == 1 ? '' : 's'} Ready • Enter Gift Code"
+                                  : "Check Event Gifts • Enter 16-Char Promo Code",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: unclaimedCount > 0
+                                    ? Colors.pinkAccent.shade100
+                                    : Colors.white54,
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (alertCount > 0) ...[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.pinkAccent.withOpacity(0.22),
+                            borderRadius: BorderRadius.circular(99),
+                            border: Border.all(
+                              color: Colors.pinkAccent.withOpacity(0.6),
+                            ),
+                          ),
+                          child: Text(
+                            "$alertCount NEW",
+                            style: const TextStyle(
+                              color: Colors.pinkAccent,
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.4,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                      ],
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        color: Colors.pinkAccent,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ],
     );

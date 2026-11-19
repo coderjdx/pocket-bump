@@ -248,18 +248,22 @@ class ExpeditionDatabase {
         trainer.hasCaughtExpeditionSpecies(destination.legendarySpeciesId);
 
     if (!caughtMew && random.nextDouble() < 0.0001) {
+      final spec = PokedexDatabase.species[mewSpeciesId];
       return PokedexDatabase.createPokemon(
         mewSpeciesId,
         level: 99,
         respectMinEncounterLevel: false,
+        isShiny: spec != null && PokedexDatabase.rollShiny(spec),
         hiddenAbilityChance: 0.15,
       );
     }
     if (!caughtDest && random.nextDouble() < 0.05) {
+      final spec = PokedexDatabase.species[destination.legendarySpeciesId];
       return PokedexDatabase.createPokemon(
         destination.legendarySpeciesId,
         level: 99,
         respectMinEncounterLevel: false,
+        isShiny: spec != null && PokedexDatabase.rollShiny(spec),
         hiddenAbilityChance: 0.15,
       );
     }

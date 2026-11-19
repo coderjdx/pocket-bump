@@ -84,6 +84,7 @@ class PokemonSpecies {
   final String abilitySlot1Id;
   final String? abilitySlot2Id;
   final String? hiddenAbilityId;
+  final bool allowWildEncounter;
 
   const PokemonSpecies({
     required this.id,
@@ -112,6 +113,7 @@ class PokemonSpecies {
     this.abilitySlot1Id = 'run_away',
     this.abilitySlot2Id,
     this.hiddenAbilityId,
+    this.allowWildEncounter = true,
   });
 
   String abilityForSlot(int slot) {
@@ -162,6 +164,7 @@ class PokemonSpecies {
   /// Starter lines can only ever be encountered in the wild in their first stage.
   /// Fossil Pokémon cannot be encountered in the wild (must be restored at a Poké Lab).
   bool get isWildEncounterable {
+    if (!allowWildEncounter) return false;
     if (rarity == PokemonRarity.special) return false;
     if (isFossilPokemon) return false;
     if (isStarter && evolutionStage > 1) return false;
@@ -345,11 +348,8 @@ class PokemonSpecies {
   /// Bundled Pokémon cry asset path (relative to `assets/` for AudioPlayers AssetSource).
   String get cryAsset => 'audio/cries/$id.mp3';
 
-  /// Only the base 146 non-Legendary / non-Mythical Kanto roster can be shiny.
-  bool get isShinyEligible =>
-      !isLegendary &&
-      !isMythical &&
-      !const {144, 145, 146, 150, 151}.contains(id);
+  /// All Pokémon (including Legendaries and Mythicals) have shiny variants.
+  bool get isShinyEligible => true;
 
   bool get isDualType => types.length > 1;
 }

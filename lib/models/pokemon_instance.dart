@@ -299,6 +299,9 @@ class PokemonInstance {
 
   /// Applies a stat stage change (-6 to +6) and returns the actual delta applied.
   int modifyStatStage(String statTarget, int delta) {
+    if (effectiveAbilityId == 'contrary') {
+      delta = -delta;
+    }
     int before;
     int after;
     switch (statTarget) {

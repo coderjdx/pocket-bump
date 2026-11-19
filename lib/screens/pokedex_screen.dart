@@ -76,7 +76,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
             ),
             const SizedBox(width: 8),
             const Text(
-              "KANTO POKÉDEX",
+              "NATIONAL POKÉDEX",
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
