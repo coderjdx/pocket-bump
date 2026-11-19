@@ -277,6 +277,31 @@ class PokemonInstance {
     spe = _calculateStat(species.baseSpe, level);
   }
 
+  /// Levels a newly caught Legendary/Mythical boss down cleanly (e.g. Lv.99 -> Lv.50),
+  /// syncing EXP, moves, stats, full HP, and clearing status/volatile effects.
+  void resetToCatchLevel(int targetLevel) {
+    level = targetLevel.clamp(1, 100);
+    currentExp = level <= 1 ? 0 : (level - 1) * (level - 1) * (level - 1);
+    final freshMoves = PokedexDatabase.movesForSpeciesAtLevel(species, level);
+    moves = freshMoves;
+    learnedMoveIds.clear();
+    for (final id in PokedexDatabase.learnedMoveIdsUpToLevel(species, level)) {
+      recordLearnedMoveId(id);
+    }
+    for (final m in moves) {
+      recordLearnedMoveId(m.id);
+    }
+    clearVolatileBattleState();
+    status = StatusCondition.none;
+    maxHp = _calculateMaxHp(species.baseHp, level);
+    currentHp = maxHp;
+    atk = _calculateStat(species.baseAtk, level);
+    def = _calculateStat(species.baseDef, level);
+    spa = _calculateStat(species.baseSpA, level);
+    spd = _calculateStat(species.baseSpD, level);
+    spe = _calculateStat(species.baseSpe, level);
+  }
+
   void recordLearnedMoveId(String moveId) {
     if (moveId.isEmpty || !PokedexDatabase.moves.containsKey(moveId)) return;
     if (!learnedMoveIds.contains(moveId)) {

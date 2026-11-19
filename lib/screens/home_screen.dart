@@ -22,6 +22,7 @@ import '../widgets/version_picker.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'evolution_screen.dart';
+import 'expeditions_screen.dart';
 import 'pc_storage_screen.dart';
 import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
@@ -1377,6 +1378,108 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               subtitleColor: Colors.purpleAccent.shade100,
             ),
           ],
+        ),
+        const SizedBox(height: 7),
+
+        // Row 3: Expeditions (Unlocks at 8 Badges)
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: trainer.isExpeditionsUnlocked
+                ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ExpeditionsScreen()),
+                    );
+                  }
+                : () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            "Expeditions unlock after earning all 8 Gym Badges! ($badges/8 earned)"),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+            borderRadius: BorderRadius.circular(13),
+            child: Ink(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: trainer.isExpeditionsUnlocked
+                      ? [
+                          const Color(0xFF00ACC1).withOpacity(0.24),
+                          const Color(0xEC101728),
+                        ]
+                      : [
+                          const Color(0xD8111524),
+                          const Color(0xE00B0E18),
+                        ],
+                ),
+                borderRadius: BorderRadius.circular(13),
+                border: Border.all(
+                  color: trainer.isExpeditionsUnlocked
+                      ? Colors.cyanAccent.withOpacity(0.6)
+                      : Colors.white12,
+                  width: 1.2,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    trainer.isExpeditionsUnlocked
+                        ? Icons.explore_rounded
+                        : Icons.lock_rounded,
+                    color: trainer.isExpeditionsUnlocked
+                        ? Colors.cyanAccent
+                        : Colors.white38,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 9),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "EXPEDITIONS",
+                          style: TextStyle(
+                            color: trainer.isExpeditionsUnlocked
+                                ? Colors.white
+                                : Colors.white60,
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                        Text(
+                          trainer.isExpeditionsUnlocked
+                              ? "4 Legendary Sites • Team Rocket • Master Ball Hunt"
+                              : "Locked • Earn all 8 Badges to unlock ($badges/8)",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: trainer.isExpeditionsUnlocked
+                                ? Colors.cyanAccent
+                                : Colors.white38,
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: trainer.isExpeditionsUnlocked
+                        ? Colors.cyanAccent
+                        : Colors.white24,
+                    size: 18,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );

@@ -82,6 +82,16 @@ class ItemDatabase {
       color: Color(0xFFFFCA28),
       icon: Icons.sports_baseball,
     ),
+    'master_ball': Item(
+      id: 'master_ball',
+      name: 'Master Ball',
+      description: 'The ultimate Poké Ball that catches any wild Pokémon without fail (100% catch rate).',
+      category: ItemCategory.pokeball,
+      requiredBadges: 8,
+      rarity: PokemonRarity.special,
+      color: Color(0xFFAB47BC),
+      icon: Icons.catching_pokemon,
+    ),
 
     // === MEDICINE ===
     'potion': Item(

@@ -40,6 +40,8 @@ class BattleScreen extends StatefulWidget {
   final List<PokemonInstance>? opponentTeam;
   final String? battleBackgroundAsset;
   final PvpMatchSession? pvpSession;
+  final bool isLegendaryBoss;
+  final String? continueButtonLabel;
 
   const BattleScreen({
     super.key,
@@ -53,6 +55,8 @@ class BattleScreen extends StatefulWidget {
     this.opponentTeam,
     this.battleBackgroundAsset,
     this.pvpSession,
+    this.isLegendaryBoss = false,
+    this.continueButtonLabel,
   });
 
   @override
@@ -136,6 +140,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   bool _showCaptureLockBurst = false;
   bool _showEvolutionGlow = false;
   String _throwingBallType = 'poke_ball';
+  bool _inLegendaryCapturePhase = false;
+  int _legendaryCatchAttempts = 0;
 
   // Player Trainer & summon throw states
   bool _showTrainerSprite = true;
@@ -327,7 +333,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   void _finishAndExit([bool? playerWon]) {
-    final bool won = playerWon ?? _playerWon;
+    final bool won =
+        playerWon ?? (_playerWon || _inLegendaryCapturePhase);
     if (!_didHealOnExit) {
       _didHealOnExit = true;
       if (!_battleEnded && widget.pvpSession != null) {
@@ -1307,6 +1314,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _playerPokemon.trappedByMoveId = null;
       _playerPokemon.trappedByMoveName = null;
       _opponentSubmerged = false;
+
+      if (widget.isLegendaryBoss) {
+        setState(() {
+          _inLegendaryCapturePhase = true;
+          _isProcessingTurn = false;
+          _isSelectingMove = false;
+          _currentMessage =
+              "Wild ${_opponentPokemon.species.name} was knocked out! Throw a Poké Ball or Run Away!";
+        });
+        return;
+      }
+
       await _awardExpForOpponent();
       if (!mounted) return;
 
@@ -1454,12 +1473,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (ballType == 'poke_ball' && _trainer.pokeBalls <= 0) return;
     if (ballType == 'great_ball' && _trainer.greatBalls <= 0) return;
     if (ballType == 'ultra_ball' && _trainer.ultraBalls <= 0) return;
+    if (ballType == 'master_ball' && _trainer.masterBalls <= 0) return;
+
+    final bool isLegendaryKoThrow =
+        widget.isLegendaryBoss && _inLegendaryCapturePhase;
 
     if (widget.pvpSession != null) {
       setState(() {
-        if (ballType == 'poke_ball') _trainer.pokeBalls--;
-        if (ballType == 'great_ball') _trainer.greatBalls--;
-        if (ballType == 'ultra_ball') _trainer.ultraBalls--;
+        _trainer.adjustItemCount(ballType, -1);
         _trainer.saveProgress();
         _throwingBallType = ballType;
         _trainerHeldBallType = ballType;
@@ -1472,9 +1493,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     setState(() {
-      if (ballType == 'poke_ball') _trainer.pokeBalls--;
-      if (ballType == 'great_ball') _trainer.greatBalls--;
-      if (ballType == 'ultra_ball') _trainer.ultraBalls--;
+      _trainer.adjustItemCount(ballType, -1);
       _trainer.saveProgress();
       _throwingBallType = ballType;
       _trainerHeldBallType = ballType;
@@ -1490,6 +1509,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _showCaptureLockBurst = false;
       _ballButtonGlowColor = null;
       _catchBallPhase = _BallAnimPhase.none;
+      if (isLegendaryKoThrow) {
+        _visualOpponentFainted = false;
+        _opponentKoController.reset();
+      }
       _currentMessage =
           "${_trainer.name} threw a ${ballType.replaceAll('_', ' ').toUpperCase()}!";
     });
@@ -1562,6 +1585,41 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
+    if (widget.isLegendaryBoss && !_inLegendaryCapturePhase) {
+      HapticFeedback.heavyImpact();
+      setState(() {
+        _showTrainerSprite = false;
+        _catchBallPhase = _BallAnimPhase.blocked;
+        _floatingCallout = "SWIPED AWAY!";
+        _calloutOnOpponent = true;
+        _calloutColor = Colors.redAccent;
+        _currentMessage =
+            "Wild ${_opponentPokemon.species.name} swiped the ${ballType.replaceAll('_', ' ').toUpperCase()} away! Defeat it first!";
+      });
+      _opponentShakeController.forward(from: 0);
+      _arenaShakeController.forward(from: 0);
+      _ballPhaseController.duration = const Duration(milliseconds: 420);
+      _ballPhaseController.forward(from: 0);
+
+      await Future.delayed(const Duration(milliseconds: 1100));
+      if (!mounted) return;
+
+      setState(() {
+        _showPokeBallThrow = false;
+        _catchBallPhase = _BallAnimPhase.none;
+        _floatingCallout = null;
+        _showPlayerPokemon = true;
+        _playerSummonScale = 1.0;
+      });
+      await Future.delayed(const Duration(milliseconds: 220));
+      if (!mounted) return;
+
+      await _runOpponentFreeAttack();
+      if (!mounted) return;
+      await _checkPostTurnConditions();
+      return;
+    }
+
     // Phase 2: Open Capsule & Laser Absorption (wild Pokémon shrinks into beam)
     HapticFeedback.lightImpact();
     setState(() {
@@ -1614,10 +1672,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (!mounted) return;
     }
 
-    final bool caught = BattleEngine.attemptCapture(
-      target: _opponentPokemon,
-      ballType: ballType,
-    );
+    final bool caught = isLegendaryKoThrow
+        ? BattleEngine.attemptLegendaryKoCapture(ballType: ballType)
+        : BattleEngine.attemptCapture(
+            target: _opponentPokemon,
+            ballType: ballType,
+          );
 
     if (caught) {
       // Snapshot eligible EXP recipients before adding the newly caught Pokémon
@@ -1626,8 +1686,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
       // Phase 5a: Capture Lock & Golden Stars
       _opponentPokemon.caughtBall = ballType;
+      if (isLegendaryKoThrow) {
+        _opponentPokemon.resetToCatchLevel(50);
+        _trainer.markExpeditionSpeciesCaught(_opponentPokemon.species.id);
+      }
       final int? sentToBox = _trainer.addPokemon(_opponentPokemon);
-      final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
+      final itemDrop = isLegendaryKoThrow
+          ? null
+          : ItemDropService.rollDrop(_opponentPokemon.species);
       if (itemDrop != null) {
         _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
         _trainer.saveProgress();
@@ -1643,8 +1709,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _catchBallPhase = _BallAnimPhase.locked;
         _ballButtonGlowColor = Colors.amberAccent;
         _showCaptureLockBurst = true;
-        _currentMessage =
-            "Gotcha! ${_opponentPokemon.species.name} was caught!";
+        _currentMessage = isLegendaryKoThrow
+            ? "Gotcha! ${_opponentPokemon.species.name} was caught and calmed down to Lv. 50!"
+            : "Gotcha! ${_opponentPokemon.species.name} was caught!";
       });
       _ballPhaseController.duration = const Duration(milliseconds: 520);
       _ballPhaseController.forward(from: 0);
@@ -1661,8 +1728,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
       _playerWon = true;
       setState(() {
-        _currentMessage =
-            "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
+        _inLegendaryCapturePhase = false;
+        _currentMessage = isLegendaryKoThrow
+            ? "Gotcha! ${_opponentPokemon.species.name} was caught (Lv. 50)!$boxNote"
+            : "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
         _battleEnded = true;
         _isProcessingTurn = false;
       });
@@ -1699,6 +1768,56 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await Future.delayed(const Duration(milliseconds: 700));
       if (!mounted) return;
 
+      if (isLegendaryKoThrow) {
+        _legendaryCatchAttempts++;
+        final double fleeChance = _legendaryCatchAttempts == 1
+            ? 0.50
+            : (_legendaryCatchAttempts == 2 ? 0.75 : 1.00);
+        if (Random().nextDouble() < fleeChance) {
+          setState(() {
+            _visualOpponentFainted = true;
+            _inLegendaryCapturePhase = false;
+            _playerWon = true;
+            _battleEnded = true;
+            _isProcessingTurn = false;
+            _currentMessage =
+                "Wild ${_opponentPokemon.species.name} escaped into the shadows!";
+          });
+          await _opponentKoController.forward(from: 0.0);
+          return;
+        }
+
+        final int furiousHp =
+            (_opponentPokemon.maxHp * 0.70).round().clamp(1, _opponentPokemon.maxHp);
+        _opponentPokemon.currentHp = furiousHp;
+        _opponentPokemon.status = StatusCondition.none;
+        _opponentPokemon.clearVolatileBattleState();
+        HapticFeedback.heavyImpact();
+        setState(() {
+          _displayedOpponentHp = furiousHp;
+          _inLegendaryCapturePhase = false;
+          _isProcessingTurn = false;
+          _isSelectingMove = false;
+          _opponentFlash = true;
+          _floatingCallout = "FURIOUS! +70% HP";
+          _calloutOnOpponent = true;
+          _calloutColor = Colors.orangeAccent;
+          _currentMessage =
+              "Wild ${_opponentPokemon.species.name} grew furious and regained 70% of its HP!";
+        });
+        _arenaShakeController.forward(from: 0);
+        await Future.delayed(const Duration(milliseconds: 520));
+        if (!mounted) return;
+        setState(() {
+          _opponentFlash = false;
+          _floatingCallout = null;
+        });
+        if (_playerPokemon.isFainted) {
+          _openSwitchModal(forced: true);
+        }
+        return;
+      }
+
       await _runOpponentFreeAttack();
       if (!mounted) return;
 
@@ -1719,6 +1838,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Future<void> _awardExpForOpponent({
     List<PokemonInstance>? explicitRecipients,
   }) async {
+    if (widget.isLegendaryBoss ||
+        _opponentPokemon.species.isLegendary ||
+        _opponentPokemon.species.isMythical) {
+      return;
+    }
     final List<PokemonInstance> recipients =
         explicitRecipients ?? _resolveExpRecipients();
     if (recipients.isEmpty) return;
@@ -3093,116 +3217,124 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 flex: 40,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                  child: _battleEnded
-                      ? Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 360),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF151C2C),
-                                    borderRadius: BorderRadius.circular(14),
-                                    border: Border.all(
-                                      color: (_playerWon
-                                              ? Colors.amberAccent
-                                              : Colors.redAccent)
-                                          .withOpacity(0.32),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        _playerWon
-                                            ? Icons.emoji_events_rounded
-                                            : Icons.shield_outlined,
-                                        color: _playerWon
-                                            ? Colors.amberAccent
-                                            : Colors.redAccent,
-                                        size: 22,
+                  child: _inLegendaryCapturePhase
+                      ? _buildLegendaryCaptureCommandDeck()
+                      : _battleEnded
+                          ? Center(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(maxWidth: 360),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 10,
                                       ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Text(
-                                          _playerWon
-                                              ? "Battle Complete! Ready to proceed."
-                                              : "Return and regroup your team.",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF151C2C),
+                                        borderRadius: BorderRadius.circular(14),
+                                        border: Border.all(
+                                          color: (_playerWon
+                                                  ? Colors.amberAccent
+                                                  : Colors.redAccent)
+                                              .withOpacity(0.32),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            _playerWon
+                                                ? Icons.emoji_events_rounded
+                                                : Icons.shield_outlined,
+                                            color: _playerWon
+                                                ? Colors.amberAccent
+                                                : Colors.redAccent,
+                                            size: 22,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              _playerWon
+                                                  ? "Battle Complete! Ready to proceed."
+                                                  : "Return and regroup your team.",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 12.5,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 50,
+                                      child: ElevatedButton.icon(
+                                        onPressed: () =>
+                                            _finishAndExit(_playerWon),
+                                        icon: Icon(
+                                          widget.preservePartyHpOnExit
+                                              ? (_playerWon
+                                                  ? Icons.arrow_forward_rounded
+                                                  : Icons.close_rounded)
+                                              : (_playerWon
+                                                  ? Icons.check_circle_outline_rounded
+                                                  : Icons.exit_to_app_rounded),
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                        label: Text(
+                                          widget.continueButtonLabel != null &&
+                                                  _playerWon
+                                              ? widget.continueButtonLabel!
+                                              : widget.preservePartyHpOnExit
+                                                  ? (_playerWon
+                                                      ? "CONTINUE GAUNTLET"
+                                                      : "RETREAT FROM GYM")
+                                                  : (_playerWon
+                                                      ? "CONTINUE"
+                                                      : "RETURN"),
                                           style: const TextStyle(
-                                            fontSize: 12.5,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 13.5,
+                                            letterSpacing: 0.9,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              widget.preservePartyHpOnExit
+                                                  ? (_playerWon
+                                                      ? Colors.indigo.shade600
+                                                      : Colors.blueGrey.shade700)
+                                                  : (_playerWon
+                                                      ? const Color(0xFFD32F2F)
+                                                      : const Color(0xFF334155)),
+                                          foregroundColor: Colors.white,
+                                          elevation: 4,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(14),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: ElevatedButton.icon(
-                                    onPressed: () => _finishAndExit(_playerWon),
-                                    icon: Icon(
-                                      widget.preservePartyHpOnExit
-                                          ? (_playerWon
-                                              ? Icons.arrow_forward_rounded
-                                              : Icons.close_rounded)
-                                          : (_playerWon
-                                              ? Icons.check_circle_outline_rounded
-                                              : Icons.exit_to_app_rounded),
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    label: Text(
-                                      widget.preservePartyHpOnExit
-                                          ? (_playerWon
-                                              ? "CONTINUE GAUNTLET"
-                                              : "RETREAT FROM GYM")
-                                          : (_playerWon
-                                              ? "CONTINUE"
-                                              : "RETURN"),
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 13.5,
-                                        letterSpacing: 0.9,
-                                      ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: widget.preservePartyHpOnExit
-                                          ? (_playerWon
-                                              ? Colors.indigo.shade600
-                                              : Colors.blueGrey.shade700)
-                                          : (_playerWon
-                                              ? const Color(0xFFD32F2F)
-                                              : const Color(0xFF334155)),
-                                      foregroundColor: Colors.white,
-                                      elevation: 4,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(14),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
+                            )
+                          : AnimatedOpacity(
+                              opacity: _isProcessingTurn ? 0.52 : 1.0,
+                              duration: const Duration(milliseconds: 160),
+                              child: _isSelectingMove
+                                  ? _buildMoveSelection()
+                                  : _buildMainActionMenu(),
                             ),
-                          ),
-                        )
-                      : AnimatedOpacity(
-                          opacity: _isProcessingTurn ? 0.52 : 1.0,
-                          duration: const Duration(milliseconds: 160),
-                          child: _isSelectingMove
-                              ? _buildMoveSelection()
-                              : _buildMainActionMenu(),
-                        ),
                 ),
               ),
             ],
@@ -3213,9 +3345,182 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Color _ballTopColor(String ballType) {
+    if (ballType == 'master_ball') return Colors.purple.shade600;
     if (ballType == 'ultra_ball') return Colors.amber.shade700;
     if (ballType == 'great_ball') return Colors.blue.shade600;
     return Colors.red.shade600;
+  }
+
+  Widget _buildLegendaryCaptureCommandDeck() {
+    final bool hasAnyBall = _trainer.pokeBalls > 0 ||
+        _trainer.greatBalls > 0 ||
+        _trainer.ultraBalls > 0 ||
+        _trainer.masterBalls > 0;
+    final double nextFleePct = _legendaryCatchAttempts == 0
+        ? 50
+        : (_legendaryCatchAttempts == 1 ? 75 : 100);
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 380),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF151C2C),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.amberAccent.withOpacity(0.45),
+                ),
+              ),
+              child: Text(
+                "${_opponentPokemon.species.name} is stunned! Catch rates: Master 100% • Ultra 10% • Great 5% • Poké 1% (Flee if missed: ${nextFleePct.toInt()}%)",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.amberAccent,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 52,
+                    child: ElevatedButton.icon(
+                      onPressed: (!_isProcessingTurn && hasAnyBall)
+                          ? _openLegendaryBallPickerModal
+                          : null,
+                      icon: const PokeBallSpriteWidget(
+                        ballType: 'ultra_ball',
+                        size: 22,
+                      ),
+                      label: Text(
+                        hasAnyBall ? "THROW POKÉ BALL" : "NO BALLS LEFT",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 12.5,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFD32F2F),
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.white12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: SizedBox(
+                    height: 52,
+                    child: OutlinedButton(
+                      onPressed: !_isProcessingTurn
+                          ? () => _finishAndExit(true)
+                          : null,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: const Text(
+                        "RUN AWAY",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 11.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openLegendaryBallPickerModal() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF222536),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        final balls = <Widget>[];
+        void addBallRow(
+          String id,
+          String name,
+          String rateLabel,
+          int count,
+          Color color,
+        ) {
+          if (count <= 0) return;
+          balls.add(_bagRow(
+            icon: Icons.catching_pokemon,
+            iconColor: color,
+            leadingWidget: PokeBallSpriteWidget(ballType: id, size: 28),
+            title: "$name ($rateLabel)",
+            rarity: id == 'master_ball' ? 'Master' : 'Ball',
+            subtitle: "x$count remaining",
+            btnLabel: "THROW",
+            btnColor: color,
+            enabled: true,
+            onTap: () {
+              Navigator.pop(ctx);
+              _onThrowPokeBall(id);
+            },
+          ));
+        }
+
+        addBallRow('master_ball', 'Master Ball', '100%', _trainer.masterBalls,
+            Colors.purpleAccent);
+        addBallRow('ultra_ball', 'Ultra Ball', '10%', _trainer.ultraBalls,
+            Colors.amber.shade800);
+        addBallRow('great_ball', 'Great Ball', '5%', _trainer.greatBalls,
+            Colors.blueAccent);
+        addBallRow('poke_ball', 'Poké Ball', '1%', _trainer.pokeBalls,
+            Colors.redAccent);
+
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  "CAPTURE ATTEMPT",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.amberAccent,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13.5,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ...balls,
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildBallShadow({
@@ -4774,6 +5079,24 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             onTap: () {
               Navigator.pop(ctx);
               _onThrowPokeBall('ultra_ball');
+            },
+          ));
+        }
+        if (_trainer.masterBalls > 0) {
+          rows.add(_bagRow(
+            icon: Icons.catching_pokemon,
+            iconColor: Colors.purpleAccent,
+            leadingWidget:
+                const PokeBallSpriteWidget(ballType: 'master_ball', size: 28),
+            title: "Master Ball (100%)",
+            rarity: "Master",
+            subtitle: "x${_trainer.masterBalls} remaining",
+            btnLabel: "THROW",
+            btnColor: Colors.purple.shade600,
+            enabled: true,
+            onTap: () {
+              Navigator.pop(ctx);
+              _onThrowPokeBall('master_ball');
             },
           ));
         }

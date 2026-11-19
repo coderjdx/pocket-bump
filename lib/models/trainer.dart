@@ -26,6 +26,7 @@ class Trainer extends ChangeNotifier {
   int pokeBalls;
   int greatBalls;
   int ultraBalls;
+  int masterBalls;
   int potions;
   int superPotions;
   int hyperPotions;
@@ -53,6 +54,8 @@ class Trainer extends ChangeNotifier {
   Map<String, int> customItems;
   bool expShareEnabled;
   bool repelEnabled;
+  bool hasEarnedExpeditionMasterBall;
+  Set<int> caughtExpeditionLegendaryIds;
   List<RivalRecord> rivals;
 
   Trainer({
@@ -65,6 +68,7 @@ class Trainer extends ChangeNotifier {
     this.pokeBalls = 20,
     this.greatBalls = 0,
     this.ultraBalls = 0,
+    this.masterBalls = 0,
     this.potions = 10,
     this.superPotions = 0,
     this.hyperPotions = 0,
@@ -92,6 +96,8 @@ class Trainer extends ChangeNotifier {
     Map<String, int>? customItems,
     this.expShareEnabled = false,
     this.repelEnabled = false,
+    this.hasEarnedExpeditionMasterBall = false,
+    Set<int>? caughtExpeditionLegendaryIds,
     List<RivalRecord>? rivals,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
         party = party ?? [],
@@ -104,6 +110,7 @@ class Trainer extends ChangeNotifier {
         completedGymStepIds = completedGymStepIds ?? {},
         gymTodaySteps = gymTodaySteps ?? {},
         customItems = customItems ?? {},
+        caughtExpeditionLegendaryIds = caughtExpeditionLegendaryIds ?? {},
         rivals = rivals ?? [] {
     activePcBoxIndex = activePcBoxIndex.clamp(0, numPcBoxes - 1);
     this.pcBoxes = List.generate(numPcBoxes, (boxIdx) {
@@ -424,6 +431,7 @@ class Trainer extends ChangeNotifier {
     int total = pokeBalls +
         greatBalls +
         ultraBalls +
+        masterBalls +
         potions +
         superPotions +
         hyperPotions +
@@ -723,6 +731,23 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get isExpeditionsUnlocked => clearedGymIds.length >= 8;
+
+  bool hasCaughtExpeditionSpecies(int speciesId) =>
+      caughtExpeditionLegendaryIds.contains(speciesId);
+
+  void markExpeditionSpeciesCaught(int speciesId) {
+    caughtExpeditionLegendaryIds.add(speciesId);
+    notifyListeners();
+  }
+
+  void claimExpeditionMasterBall() {
+    if (hasEarnedExpeditionMasterBall) return;
+    hasEarnedExpeditionMasterBall = true;
+    masterBalls = (masterBalls + 1).clamp(0, 99);
+    notifyListeners();
+  }
+
   int getItemCount(String itemId) {
     switch (itemId) {
       case 'poke_ball':
@@ -731,6 +756,8 @@ class Trainer extends ChangeNotifier {
         return greatBalls;
       case 'ultra_ball':
         return ultraBalls;
+      case 'master_ball':
+        return masterBalls;
       case 'potion':
         return potions;
       case 'super_potion':
@@ -768,6 +795,9 @@ class Trainer extends ChangeNotifier {
         break;
       case 'ultra_ball':
         ultraBalls = (ultraBalls + delta).clamp(0, 99);
+        break;
+      case 'master_ball':
+        masterBalls = (masterBalls + delta).clamp(0, 99);
         break;
       case 'potion':
         potions = (potions + delta).clamp(0, 99);
@@ -917,6 +947,7 @@ class Trainer extends ChangeNotifier {
       'pokeBalls': pokeBalls,
       'greatBalls': greatBalls,
       'ultraBalls': ultraBalls,
+      'masterBalls': masterBalls,
       'potions': potions,
       'superPotions': superPotions,
       'hyperPotions': hyperPotions,
@@ -944,6 +975,9 @@ class Trainer extends ChangeNotifier {
       'customItems': customItems,
       'expShareEnabled': expShareEnabled,
       'repelEnabled': repelEnabled,
+      'hasEarnedExpeditionMasterBall': hasEarnedExpeditionMasterBall,
+      'caughtExpeditionLegendaryIds':
+          caughtExpeditionLegendaryIds.toList()..sort(),
       'rivals': rivals.map((r) => r.toJson()).toList(),
       'party': party.map((mon) => mon.toJson()).toList(),
       'activePcBoxIndex': activePcBoxIndex,
@@ -967,6 +1001,7 @@ class Trainer extends ChangeNotifier {
     pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 20).clamp(0, 99);
     greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
+    masterBalls = ((json['masterBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
     potions = ((json['potions'] as num?)?.toInt() ?? 10).clamp(0, 99);
     superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
     hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
@@ -1023,6 +1058,13 @@ class Trainer extends ChangeNotifier {
     });
     expShareEnabled = json['expShareEnabled'] == true;
     repelEnabled = json['repelEnabled'] == true;
+    hasEarnedExpeditionMasterBall =
+        json['hasEarnedExpeditionMasterBall'] == true;
+    caughtExpeditionLegendaryIds =
+        (json['caughtExpeditionLegendaryIds'] as List<dynamic>? ?? const [])
+            .whereType<num>()
+            .map((n) => n.toInt())
+            .toSet();
 
     final rawRivals = json['rivals'] as List<dynamic>? ?? const [];
     final loadedRivals = <RivalRecord>[];
@@ -1144,6 +1186,7 @@ class Trainer extends ChangeNotifier {
     pokeBalls = 20;
     greatBalls = 0;
     ultraBalls = 0;
+    masterBalls = 0;
     potions = 10;
     superPotions = 0;
     hyperPotions = 0;
@@ -1171,6 +1214,8 @@ class Trainer extends ChangeNotifier {
     customItems = {};
     expShareEnabled = false;
     repelEnabled = false;
+    hasEarnedExpeditionMasterBall = false;
+    caughtExpeditionLegendaryIds = {};
     rivals = [];
     _suppressAutoSave = false;
     super.notifyListeners();

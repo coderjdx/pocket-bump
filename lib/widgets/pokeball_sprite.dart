@@ -25,6 +25,8 @@ class PokeBallSpriteWidget extends StatelessWidget {
         return 'assets/images/balls/great_ball.png';
       case 'ultra_ball':
         return 'assets/images/balls/ultra_ball.png';
+      case 'master_ball':
+        return 'assets/images/balls/master_ball.png';
       case 'poke_ball':
       default:
         return 'assets/images/balls/poke_ball.png';
@@ -130,6 +132,8 @@ class _DetailedPokeBallPainter extends CustomPainter {
         return const Color(0xFF1E88E5);
       case 'ultra_ball':
         return const Color(0xFF2B2D36);
+      case 'master_ball':
+        return const Color(0xFF7B1FA2);
       case 'poke_ball':
       default:
         return const Color(0xFFE53935);
@@ -142,6 +146,8 @@ class _DetailedPokeBallPainter extends CustomPainter {
         return const Color(0xFF64B5F6);
       case 'ultra_ball':
         return const Color(0xFF4B4F5E);
+      case 'master_ball':
+        return const Color(0xFFCE93D8);
       case 'poke_ball':
       default:
         return const Color(0xFFFF6F60);

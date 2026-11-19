@@ -1517,4 +1517,22 @@ class BattleEngine {
     }
     return true; // All 4 shakes passed!
   }
+
+  /// KO-to-catch formula used during Expedition Legendary / Mythical boss battles:
+  /// Master Ball = 100%, Ultra Ball = 10%, Great Ball = 5%, Poké Ball / Special = 1%.
+  static bool attemptLegendaryKoCapture({
+    required String ballType,
+    Random? rng,
+  }) {
+    if (ballType == 'master_ball') return true;
+    final double rate;
+    if (ballType == 'ultra_ball') {
+      rate = 0.10;
+    } else if (ballType == 'great_ball') {
+      rate = 0.05;
+    } else {
+      rate = 0.01;
+    }
+    return (rng ?? _rng).nextDouble() < rate;
+  }
 }
