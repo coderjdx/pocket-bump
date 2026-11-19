@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/game_version.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/mystery_gift_service.dart';
 import '../services/sound_service.dart';

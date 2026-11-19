@@ -204,7 +204,7 @@ class MysteryGiftService {
       );
     }
 
-    return const GiftRedemptionResult(
+    return GiftRedemptionResult(
       success: false,
       title: 'Code Not Recognized',
       message:
