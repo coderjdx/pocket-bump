@@ -170,38 +170,53 @@ class GymDatabase {
           spriteId: 'npc_camper',
           name: 'Camper Liam',
           title: 'Gym Junior Trainer',
-          prizeMoney: 250,
+          prizeMoney: 400,
           introDialogue: "Stop right there! You're ten thousand light-years from facing Brock!",
-          team: [GymPokemonSpec(speciesId: 74, level: 9)], // Geodude
+          team: [
+            GymPokemonSpec(speciesId: 27, level: 19), // Sandshrew
+            GymPokemonSpec(speciesId: 74, level: 21), // Geodude
+          ],
         ),
         const GymTrainer(
           id: 'pewter_t2',
           spriteId: 'npc_hiker',
           name: 'Hiker Anthony',
           title: 'Mountain Man',
-          prizeMoney: 300,
+          prizeMoney: 500,
           introDialogue: "My rock Pokémon have high defense! Can you scratch them?",
-          team: [GymPokemonSpec(speciesId: 74, level: 10)], // Geodude
+          team: [
+            GymPokemonSpec(speciesId: 111, level: 19), // Rhyhorn
+            GymPokemonSpec(speciesId: 140, level: 20), // Kabuto
+            GymPokemonSpec(speciesId: 74, level: 21), // Geodude
+          ],
         ),
         const GymTrainer(
           id: 'pewter_t3',
           spriteId: 'npc_lass',
           name: 'Picnicker Diana',
           title: 'Gym Trainer',
-          prizeMoney: 350,
-          introDialogue: "Watch out for sand attack! My Sandshrew is super swift!",
-          team: [GymPokemonSpec(speciesId: 27, level: 10)], // Sandshrew
+          prizeMoney: 600,
+          introDialogue: "Watch out for sand attack! My Sandshrew and Sandslash are super swift!",
+          team: [
+            GymPokemonSpec(speciesId: 50, level: 18), // Diglett
+            GymPokemonSpec(speciesId: 138, level: 19), // Omanyte
+            GymPokemonSpec(speciesId: 27, level: 21), // Sandshrew
+            GymPokemonSpec(speciesId: 28, level: 22), // Sandslash
+          ],
         ),
         const GymTrainer(
           id: 'pewter_t4',
           spriteId: 'npc_camper',
           name: 'Jr. Trainer Jerry',
           title: 'Brock\'s Apprentice',
-          prizeMoney: 400,
+          prizeMoney: 750,
           introDialogue: "If you can't beat me, you'll never survive Brock's Onix!",
           team: [
-            GymPokemonSpec(speciesId: 50, level: 11), // Diglett
-            GymPokemonSpec(speciesId: 74, level: 11), // Geodude
+            GymPokemonSpec(speciesId: 104, level: 18), // Cubone
+            GymPokemonSpec(speciesId: 140, level: 19), // Kabuto
+            GymPokemonSpec(speciesId: 111, level: 20), // Rhyhorn
+            GymPokemonSpec(speciesId: 50, level: 21), // Diglett
+            GymPokemonSpec(speciesId: 74, level: 22), // Geodude
           ],
         ),
       ],
@@ -210,11 +225,15 @@ class GymDatabase {
         spriteId: 'leader_brock',
         name: 'Brock',
         title: 'Pewter Gym Leader',
-        prizeMoney: 1400,
+        prizeMoney: 2400,
         introDialogue: "I'm Brock! I'm Pewter's Gym Leader! My rock-hard willpower is evident even in my Pokémon!",
         team: [
-          GymPokemonSpec(speciesId: 74, level: 12), // Geodude
-          GymPokemonSpec(speciesId: 95, level: 14), // Onix
+          GymPokemonSpec(speciesId: 27, level: 17), // Sandshrew
+          GymPokemonSpec(speciesId: 140, level: 18), // Kabuto
+          GymPokemonSpec(speciesId: 138, level: 19), // Omanyte
+          GymPokemonSpec(speciesId: 111, level: 20), // Rhyhorn
+          GymPokemonSpec(speciesId: 74, level: 22), // Geodude
+          GymPokemonSpec(speciesId: 95, level: 24), // Onix
         ],
       ),
     ),
@@ -282,20 +301,24 @@ class GymDatabase {
           spriteId: 'npc_swimmer',
           name: 'Swimmer Luis',
           title: 'Poolside Athlete',
-          prizeMoney: 450,
+          prizeMoney: 650,
           introDialogue: "Splash! Let's see if your team knows how to swim!",
-          team: [GymPokemonSpec(speciesId: 118, level: 15)], // Goldeen
+          team: [
+            GymPokemonSpec(speciesId: 116, level: 24), // Horsea
+            GymPokemonSpec(speciesId: 118, level: 26), // Goldeen
+          ],
         ),
         const GymTrainer(
           id: 'cerulean_t2',
           spriteId: 'npc_swimmer',
           name: 'Sailor Trevor',
           title: 'Ocean Sailor',
-          prizeMoney: 500,
+          prizeMoney: 800,
           introDialogue: "Anchors aweigh! My water partners won't take it easy on you!",
           team: [
-            GymPokemonSpec(speciesId: 116, level: 15), // Horsea
-            GymPokemonSpec(speciesId: 90, level: 15), // Shellder
+            GymPokemonSpec(speciesId: 72, level: 24), // Tentacool
+            GymPokemonSpec(speciesId: 116, level: 25), // Horsea
+            GymPokemonSpec(speciesId: 90, level: 26), // Shellder
           ],
         ),
         const GymTrainer(
@@ -303,20 +326,28 @@ class GymDatabase {
           spriteId: 'npc_lass',
           name: 'Picnicker Diana',
           title: 'Cerulean Swimmer',
-          prizeMoney: 550,
-          introDialogue: "Poliwag's Water Gun will wash you right out of our gym pool!",
-          team: [GymPokemonSpec(speciesId: 60, level: 17)], // Poliwag
+          prizeMoney: 950,
+          introDialogue: "My Water Pokémon will wash you right out of our gym pool!",
+          team: [
+            GymPokemonSpec(speciesId: 54, level: 23), // Psyduck
+            GymPokemonSpec(speciesId: 98, level: 24), // Krabby
+            GymPokemonSpec(speciesId: 60, level: 26), // Poliwag
+            GymPokemonSpec(speciesId: 61, level: 27), // Poliwhirl
+          ],
         ),
         const GymTrainer(
           id: 'cerulean_t4',
           spriteId: 'npc_beauty',
           name: 'Beauty Violet',
           title: 'Gym Sensational Sister',
-          prizeMoney: 600,
+          prizeMoney: 1100,
           introDialogue: "Misty is tough, but you'll have to get past our synchronized defense first!",
           team: [
-            GymPokemonSpec(speciesId: 118, level: 16), // Goldeen
-            GymPokemonSpec(speciesId: 120, level: 16), // Staryu
+            GymPokemonSpec(speciesId: 116, level: 23), // Horsea
+            GymPokemonSpec(speciesId: 86, level: 24), // Seel
+            GymPokemonSpec(speciesId: 61, level: 25), // Poliwhirl
+            GymPokemonSpec(speciesId: 118, level: 26), // Goldeen
+            GymPokemonSpec(speciesId: 120, level: 27), // Staryu
           ],
         ),
       ],
@@ -325,11 +356,15 @@ class GymDatabase {
         spriteId: 'leader_misty',
         name: 'Misty',
         title: 'Cerulean Gym Leader',
-        prizeMoney: 2100,
+        prizeMoney: 3200,
         introDialogue: "Hi, you're a new face! Only trainers with true policy and skill can win against my Water Pokémon!",
         team: [
-          GymPokemonSpec(speciesId: 120, level: 18), // Staryu
-          GymPokemonSpec(speciesId: 121, level: 21), // Starmie
+          GymPokemonSpec(speciesId: 118, level: 22), // Goldeen
+          GymPokemonSpec(speciesId: 54, level: 23), // Psyduck
+          GymPokemonSpec(speciesId: 86, level: 24), // Seel
+          GymPokemonSpec(speciesId: 61, level: 25), // Poliwhirl
+          GymPokemonSpec(speciesId: 120, level: 27), // Staryu
+          GymPokemonSpec(speciesId: 121, level: 29), // Starmie
         ],
       ),
     ),
@@ -397,29 +432,38 @@ class GymDatabase {
           spriteId: 'npc_swimmer',
           name: 'Sailor Dwayne',
           title: 'Naval Recruit',
-          prizeMoney: 650,
+          prizeMoney: 1000,
           introDialogue: "Lt. Surge taught me the shock-and-awe combat doctrine!",
-          team: [GymPokemonSpec(speciesId: 25, level: 19)], // Pikachu
+          team: [
+            GymPokemonSpec(speciesId: 125, level: 33), // Electabuzz
+            GymPokemonSpec(speciesId: 25, level: 35), // Pikachu
+          ],
         ),
         const GymTrainer(
           id: 'vermilion_t2',
           spriteId: 'npc_engineer',
           name: 'Engineer Baily',
           title: 'Power Plant Tech',
-          prizeMoney: 700,
-          introDialogue: "High voltage warning! Magnemite is fully charged!",
-          team: [GymPokemonSpec(speciesId: 81, level: 20)], // Magnemite
+          prizeMoney: 1200,
+          introDialogue: "High voltage warning! Magnemite and Magneton are fully charged!",
+          team: [
+            GymPokemonSpec(speciesId: 100, level: 33), // Voltorb
+            GymPokemonSpec(speciesId: 81, level: 34), // Magnemite
+            GymPokemonSpec(speciesId: 82, level: 35), // Magneton
+          ],
         ),
         const GymTrainer(
           id: 'vermilion_t3',
           spriteId: 'npc_engineer',
           name: 'Gentleman Tucker',
           title: 'Army Veteran',
-          prizeMoney: 800,
+          prizeMoney: 1400,
           introDialogue: "War is rough, rookie! Prepare for rapid electric fire!",
           team: [
-            GymPokemonSpec(speciesId: 25, level: 20), // Pikachu
-            GymPokemonSpec(speciesId: 100, level: 20), // Voltorb
+            GymPokemonSpec(speciesId: 125, level: 32), // Electabuzz
+            GymPokemonSpec(speciesId: 25, level: 33), // Pikachu
+            GymPokemonSpec(speciesId: 100, level: 35), // Voltorb
+            GymPokemonSpec(speciesId: 101, level: 36), // Electrode
           ],
         ),
         const GymTrainer(
@@ -427,11 +471,14 @@ class GymDatabase {
           spriteId: 'npc_camper',
           name: 'Rocker Gene',
           title: 'Sound & Surge',
-          prizeMoney: 850,
+          prizeMoney: 1650,
           introDialogue: "Can you hear that hum? It's the electric current ready to buzz you!",
           team: [
-            GymPokemonSpec(speciesId: 100, level: 21), // Voltorb
-            GymPokemonSpec(speciesId: 81, level: 21), // Magnemite
+            GymPokemonSpec(speciesId: 100, level: 32), // Voltorb
+            GymPokemonSpec(speciesId: 81, level: 33), // Magnemite
+            GymPokemonSpec(speciesId: 135, level: 34), // Jolteon
+            GymPokemonSpec(speciesId: 101, level: 35), // Electrode
+            GymPokemonSpec(speciesId: 82, level: 36), // Magneton
           ],
         ),
       ],
@@ -440,12 +487,15 @@ class GymDatabase {
         spriteId: 'leader_surge',
         name: 'Lt. Surge',
         title: 'Vermilion Gym Leader',
-        prizeMoney: 2400,
+        prizeMoney: 4200,
         introDialogue: "Ten-hut! You won't live long in combat with just guts! I tell you, electric Pokémon saved me during the war!",
         team: [
-          GymPokemonSpec(speciesId: 100, level: 21), // Voltorb
-          GymPokemonSpec(speciesId: 25, level: 22), // Pikachu
-          GymPokemonSpec(speciesId: 26, level: 24), // Raichu
+          GymPokemonSpec(speciesId: 100, level: 31), // Voltorb
+          GymPokemonSpec(speciesId: 25, level: 32), // Pikachu
+          GymPokemonSpec(speciesId: 82, level: 33), // Magneton
+          GymPokemonSpec(speciesId: 125, level: 34), // Electabuzz
+          GymPokemonSpec(speciesId: 101, level: 36), // Electrode
+          GymPokemonSpec(speciesId: 26, level: 38), // Raichu
         ],
       ),
     ),
@@ -513,11 +563,11 @@ class GymDatabase {
           spriteId: 'npc_lass',
           name: 'Lass Kay',
           title: 'Flower Arranger',
-          prizeMoney: 850,
+          prizeMoney: 1350,
           introDialogue: "Welcome to our botanical paradise! Watch out for sweet scents!",
           team: [
-            GymPokemonSpec(speciesId: 69, level: 23), // Bellsprout
-            GymPokemonSpec(speciesId: 43, level: 23), // Oddish
+            GymPokemonSpec(speciesId: 70, level: 41), // Weepinbell
+            GymPokemonSpec(speciesId: 44, level: 43), // Gloom
           ],
         ),
         const GymTrainer(
@@ -525,11 +575,12 @@ class GymDatabase {
           spriteId: 'npc_beauty',
           name: 'Beauty Tamia',
           title: 'Floral Designer',
-          prizeMoney: 900,
+          prizeMoney: 1600,
           introDialogue: "Our petals hide sharp thorns and paralyzing spores!",
           team: [
-            GymPokemonSpec(speciesId: 43, level: 24), // Oddish
-            GymPokemonSpec(speciesId: 69, level: 24), // Bellsprout
+            GymPokemonSpec(speciesId: 44, level: 41), // Gloom
+            GymPokemonSpec(speciesId: 70, level: 42), // Weepinbell
+            GymPokemonSpec(speciesId: 71, level: 43), // Victreebel
           ],
         ),
         const GymTrainer(
@@ -537,11 +588,13 @@ class GymDatabase {
           spriteId: 'npc_lass',
           name: 'Picnicker Tina',
           title: 'Nature Scout',
-          prizeMoney: 950,
-          introDialogue: "My Bulbasaur has trained under Erika's serene guidance!",
+          prizeMoney: 1850,
+          introDialogue: "My Bulbasaur line has blossomed under Erika's serene guidance!",
           team: [
-            GymPokemonSpec(speciesId: 1, level: 24), // Bulbasaur
-            GymPokemonSpec(speciesId: 2, level: 26), // Ivysaur
+            GymPokemonSpec(speciesId: 1, level: 40), // Bulbasaur
+            GymPokemonSpec(speciesId: 2, level: 41), // Ivysaur
+            GymPokemonSpec(speciesId: 103, level: 43), // Exeggutor
+            GymPokemonSpec(speciesId: 3, level: 44), // Venusaur
           ],
         ),
         const GymTrainer(
@@ -549,11 +602,14 @@ class GymDatabase {
           spriteId: 'npc_beauty',
           name: 'Cooltrainer Mary',
           title: 'Celadon Elite',
-          prizeMoney: 1050,
+          prizeMoney: 2150,
           introDialogue: "Only those who respect the delicate strength of flora may challenge the mistress!",
           team: [
-            GymPokemonSpec(speciesId: 70, level: 26), // Weepinbell
-            GymPokemonSpec(speciesId: 44, level: 26), // Gloom
+            GymPokemonSpec(speciesId: 114, level: 40), // Tangela
+            GymPokemonSpec(speciesId: 70, level: 41), // Weepinbell
+            GymPokemonSpec(speciesId: 44, level: 42), // Gloom
+            GymPokemonSpec(speciesId: 71, level: 43), // Victreebel
+            GymPokemonSpec(speciesId: 45, level: 44), // Vileplume
           ],
         ),
       ],
@@ -562,12 +618,15 @@ class GymDatabase {
         spriteId: 'leader_erika',
         name: 'Erika',
         title: 'Celadon Gym Leader',
-        prizeMoney: 2900,
+        prizeMoney: 5400,
         introDialogue: "Hello... Lovely weather, isn't it? It's so pleasant. My name is Erika. I am the Leader of Celadon Gym.",
         team: [
-          GymPokemonSpec(speciesId: 71, level: 29), // Victreebel
-          GymPokemonSpec(speciesId: 114, level: 24), // Tangela
-          GymPokemonSpec(speciesId: 45, level: 29), // Vileplume
+          GymPokemonSpec(speciesId: 103, level: 39), // Exeggutor
+          GymPokemonSpec(speciesId: 47, level: 40), // Parasect
+          GymPokemonSpec(speciesId: 3, level: 41), // Venusaur
+          GymPokemonSpec(speciesId: 114, level: 42), // Tangela
+          GymPokemonSpec(speciesId: 71, level: 44), // Victreebel
+          GymPokemonSpec(speciesId: 45, level: 46), // Vileplume
         ],
       ),
     ),
@@ -635,11 +694,11 @@ class GymDatabase {
           spriteId: 'npc_ninja',
           name: 'Juggler Kirk',
           title: 'Ninja Illusionist',
-          prizeMoney: 1100,
+          prizeMoney: 1750,
           introDialogue: "Fwahaha! The invisible walls are just the first of my illusions!",
           team: [
-            GymPokemonSpec(speciesId: 96, level: 34), // Drowzee
-            GymPokemonSpec(speciesId: 64, level: 34), // Kadabra
+            GymPokemonSpec(speciesId: 97, level: 49), // Hypno
+            GymPokemonSpec(speciesId: 64, level: 51), // Kadabra
           ],
         ),
         const GymTrainer(
@@ -647,11 +706,12 @@ class GymDatabase {
           spriteId: 'npc_ninja',
           name: 'Tamer Edgar',
           title: 'Beast Ninja',
-          prizeMoney: 1200,
+          prizeMoney: 2050,
           introDialogue: "Venom courses through my serpentine companions!",
           team: [
-            GymPokemonSpec(speciesId: 24, level: 33), // Arbok
-            GymPokemonSpec(speciesId: 28, level: 33), // Sandslash
+            GymPokemonSpec(speciesId: 34, level: 49), // Nidoking
+            GymPokemonSpec(speciesId: 24, level: 50), // Arbok
+            GymPokemonSpec(speciesId: 28, level: 51), // Sandslash
           ],
         ),
         const GymTrainer(
@@ -659,11 +719,13 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Juggler Shawn',
           title: 'Hypnotic Master',
-          prizeMoney: 1300,
+          prizeMoney: 2350,
           introDialogue: "Can your mind resist sleep while toxins sap your vitality?",
           team: [
-            GymPokemonSpec(speciesId: 96, level: 34), // Drowzee
-            GymPokemonSpec(speciesId: 97, level: 36), // Hypno
+            GymPokemonSpec(speciesId: 42, level: 48), // Golbat
+            GymPokemonSpec(speciesId: 96, level: 49), // Drowzee
+            GymPokemonSpec(speciesId: 49, level: 51), // Venomoth
+            GymPokemonSpec(speciesId: 97, level: 52), // Hypno
           ],
         ),
         const GymTrainer(
@@ -671,11 +733,14 @@ class GymDatabase {
           spriteId: 'npc_ninja',
           name: 'Ninja Boy Lao',
           title: 'Shadow Disciple',
-          prizeMoney: 1400,
+          prizeMoney: 2700,
           introDialogue: "Koga's ninja techniques have been passed down for four centuries!",
           team: [
-            GymPokemonSpec(speciesId: 109, level: 35), // Koffing
-            GymPokemonSpec(speciesId: 88, level: 35), // Grimer
+            GymPokemonSpec(speciesId: 109, level: 48), // Koffing
+            GymPokemonSpec(speciesId: 88, level: 49), // Grimer
+            GymPokemonSpec(speciesId: 73, level: 50), // Tentacruel
+            GymPokemonSpec(speciesId: 89, level: 51), // Muk
+            GymPokemonSpec(speciesId: 110, level: 52), // Weezing
           ],
         ),
       ],
@@ -684,13 +749,15 @@ class GymDatabase {
         spriteId: 'leader_koga',
         name: 'Koga',
         title: 'Fuchsia Gym Leader',
-        prizeMoney: 4300,
+        prizeMoney: 6800,
         introDialogue: "Fwahahaha! A mere child challenges me? Very well, despair before the creeping terror of poison and sleep!",
         team: [
-          GymPokemonSpec(speciesId: 109, level: 37), // Koffing
-          GymPokemonSpec(speciesId: 89, level: 39), // Muk
-          GymPokemonSpec(speciesId: 109, level: 37), // Koffing
-          GymPokemonSpec(speciesId: 110, level: 43), // Weezing
+          GymPokemonSpec(speciesId: 109, level: 47), // Koffing
+          GymPokemonSpec(speciesId: 42, level: 48), // Golbat
+          GymPokemonSpec(speciesId: 24, level: 49), // Arbok
+          GymPokemonSpec(speciesId: 49, level: 50), // Venomoth
+          GymPokemonSpec(speciesId: 89, level: 52), // Muk
+          GymPokemonSpec(speciesId: 110, level: 54), // Weezing
         ],
       ),
     ),
@@ -758,11 +825,11 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Psychic Johan',
           title: 'Telekinetic Adept',
-          prizeMoney: 1400,
+          prizeMoney: 2200,
           introDialogue: "I can read your mind! You are wondering if you can defeat me!",
           team: [
-            GymPokemonSpec(speciesId: 64, level: 36), // Kadabra
-            GymPokemonSpec(speciesId: 122, level: 36), // Mr. Mime
+            GymPokemonSpec(speciesId: 64, level: 59), // Kadabra
+            GymPokemonSpec(speciesId: 122, level: 61), // Mr. Mime
           ],
         ),
         const GymTrainer(
@@ -770,11 +837,12 @@ class GymDatabase {
           spriteId: 'npc_beauty',
           name: 'Channeler Stacy',
           title: 'Medium of Spirits',
-          prizeMoney: 1450,
+          prizeMoney: 2550,
           introDialogue: "The unseen realm bows to Sabrina's overwhelming psionic will!",
           team: [
-            GymPokemonSpec(speciesId: 92, level: 34), // Gastly
-            GymPokemonSpec(speciesId: 93, level: 36), // Haunter
+            GymPokemonSpec(speciesId: 92, level: 59), // Gastly
+            GymPokemonSpec(speciesId: 93, level: 60), // Haunter
+            GymPokemonSpec(speciesId: 94, level: 61), // Gengar
           ],
         ),
         const GymTrainer(
@@ -782,11 +850,13 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Psychic Cameron',
           title: 'Mind Bender',
-          prizeMoney: 1500,
+          prizeMoney: 2950,
           introDialogue: "Physical attacks cannot breach a focused telepathic mind!",
           team: [
-            GymPokemonSpec(speciesId: 79, level: 35), // Slowpoke
-            GymPokemonSpec(speciesId: 80, level: 37), // Slowbro
+            GymPokemonSpec(speciesId: 79, level: 58), // Slowpoke
+            GymPokemonSpec(speciesId: 103, level: 59), // Exeggutor
+            GymPokemonSpec(speciesId: 124, level: 61), // Jynx
+            GymPokemonSpec(speciesId: 80, level: 62), // Slowbro
           ],
         ),
         const GymTrainer(
@@ -794,11 +864,14 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Psychic Preston',
           title: 'High Esper',
-          prizeMoney: 1600,
+          prizeMoney: 3400,
           introDialogue: "Sabrina foresaw your arrival three days ago. Your defeat was also predicted!",
           team: [
-            GymPokemonSpec(speciesId: 80, level: 38), // Slowbro
-            GymPokemonSpec(speciesId: 64, level: 38), // Kadabra
+            GymPokemonSpec(speciesId: 64, level: 58), // Kadabra
+            GymPokemonSpec(speciesId: 97, level: 59), // Hypno
+            GymPokemonSpec(speciesId: 103, level: 60), // Exeggutor
+            GymPokemonSpec(speciesId: 124, level: 61), // Jynx
+            GymPokemonSpec(speciesId: 80, level: 62), // Slowbro
           ],
         ),
       ],
@@ -807,13 +880,15 @@ class GymDatabase {
         spriteId: 'leader_sabrina',
         name: 'Sabrina',
         title: 'Saffron Gym Leader',
-        prizeMoney: 4300,
+        prizeMoney: 8200,
         introDialogue: "I had a vision of your arrival! I have had psychic powers since I was a child. I do not like to fight, but I will not lose!",
         team: [
-          GymPokemonSpec(speciesId: 64, level: 38), // Kadabra
-          GymPokemonSpec(speciesId: 122, level: 37), // Mr. Mime
-          GymPokemonSpec(speciesId: 49, level: 38), // Venomoth
-          GymPokemonSpec(speciesId: 65, level: 43), // Alakazam
+          GymPokemonSpec(speciesId: 64, level: 57), // Kadabra
+          GymPokemonSpec(speciesId: 80, level: 58), // Slowbro
+          GymPokemonSpec(speciesId: 97, level: 59), // Hypno
+          GymPokemonSpec(speciesId: 122, level: 60), // Mr. Mime
+          GymPokemonSpec(speciesId: 49, level: 62), // Venomoth
+          GymPokemonSpec(speciesId: 65, level: 64), // Alakazam
         ],
       ),
     ),
@@ -881,11 +956,11 @@ class GymDatabase {
           spriteId: 'npc_ninja',
           name: 'Burglar Quinn',
           title: 'Torchbearer',
-          prizeMoney: 1600,
+          prizeMoney: 2700,
           introDialogue: "Quiz time! Does fire burn? You're about to find out first hand!",
           team: [
-            GymPokemonSpec(speciesId: 58, level: 39), // Growlithe
-            GymPokemonSpec(speciesId: 37, level: 39), // Vulpix
+            GymPokemonSpec(speciesId: 58, level: 69), // Growlithe
+            GymPokemonSpec(speciesId: 38, level: 71), // Ninetales
           ],
         ),
         const GymTrainer(
@@ -893,11 +968,12 @@ class GymDatabase {
           spriteId: 'npc_engineer',
           name: 'Super Nerd Erik',
           title: 'Thermodynamics Researcher',
-          prizeMoney: 1700,
+          prizeMoney: 3100,
           introDialogue: "The combustion reaction in Ninetales' nine tails is mathematically sublime!",
           team: [
-            GymPokemonSpec(speciesId: 37, level: 40), // Vulpix
-            GymPokemonSpec(speciesId: 38, level: 42), // Ninetales
+            GymPokemonSpec(speciesId: 37, level: 69), // Vulpix
+            GymPokemonSpec(speciesId: 136, level: 70), // Flareon
+            GymPokemonSpec(speciesId: 38, level: 71), // Ninetales
           ],
         ),
         const GymTrainer(
@@ -905,11 +981,13 @@ class GymDatabase {
           spriteId: 'npc_hiker',
           name: 'Burglar Ramon',
           title: 'Fire Thief',
-          prizeMoney: 1800,
+          prizeMoney: 3600,
           introDialogue: "Can your Pokémon withstand a 10,000-degree blaze?",
           team: [
-            GymPokemonSpec(speciesId: 77, level: 41), // Ponyta
-            GymPokemonSpec(speciesId: 58, level: 41), // Growlithe
+            GymPokemonSpec(speciesId: 77, level: 68), // Ponyta
+            GymPokemonSpec(speciesId: 58, level: 69), // Growlithe
+            GymPokemonSpec(speciesId: 6, level: 71), // Charizard
+            GymPokemonSpec(speciesId: 78, level: 72), // Rapidash
           ],
         ),
         const GymTrainer(
@@ -917,11 +995,14 @@ class GymDatabase {
           spriteId: 'npc_engineer',
           name: 'Super Nerd Avery',
           title: 'Volcano Expert',
-          prizeMoney: 1900,
+          prizeMoney: 4100,
           introDialogue: "Magmar's body burns brighter than magma! You better bring Burn Heal!",
           team: [
-            GymPokemonSpec(speciesId: 78, level: 43), // Rapidash
-            GymPokemonSpec(speciesId: 126, level: 43), // Magmar
+            GymPokemonSpec(speciesId: 38, level: 68), // Ninetales
+            GymPokemonSpec(speciesId: 136, level: 69), // Flareon
+            GymPokemonSpec(speciesId: 6, level: 70), // Charizard
+            GymPokemonSpec(speciesId: 78, level: 71), // Rapidash
+            GymPokemonSpec(speciesId: 126, level: 72), // Magmar
           ],
         ),
       ],
@@ -930,13 +1011,15 @@ class GymDatabase {
         spriteId: 'leader_blaine',
         name: 'Blaine',
         title: 'Cinnabar Gym Leader',
-        prizeMoney: 4700,
+        prizeMoney: 9800,
         introDialogue: "Hah! I am Blaine, the red-hot quiz master! My fiery Pokémon will incinerate all challengers! You better have Burn Heal ready!",
         team: [
-          GymPokemonSpec(speciesId: 58, level: 42), // Growlithe
-          GymPokemonSpec(speciesId: 77, level: 40), // Ponyta
-          GymPokemonSpec(speciesId: 78, level: 42), // Rapidash
-          GymPokemonSpec(speciesId: 59, level: 47), // Arcanine
+          GymPokemonSpec(speciesId: 58, level: 67), // Growlithe
+          GymPokemonSpec(speciesId: 77, level: 68), // Ponyta
+          GymPokemonSpec(speciesId: 38, level: 69), // Ninetales
+          GymPokemonSpec(speciesId: 126, level: 70), // Magmar
+          GymPokemonSpec(speciesId: 78, level: 72), // Rapidash
+          GymPokemonSpec(speciesId: 59, level: 74), // Arcanine
         ],
       ),
     ),
@@ -1004,11 +1087,11 @@ class GymDatabase {
           spriteId: 'npc_hiker',
           name: 'Tamer Cole',
           title: 'Beast Master',
-          prizeMoney: 2000,
+          prizeMoney: 3300,
           introDialogue: "The Viridian Gym was closed for so long... Now only the elite may tread here!",
           team: [
-            GymPokemonSpec(speciesId: 24, level: 43), // Arbok
-            GymPokemonSpec(speciesId: 128, level: 44), // Tauros
+            GymPokemonSpec(speciesId: 24, level: 81), // Arbok
+            GymPokemonSpec(speciesId: 128, level: 83), // Tauros
           ],
         ),
         const GymTrainer(
@@ -1016,11 +1099,12 @@ class GymDatabase {
           spriteId: 'npc_ninja',
           name: 'Black Belt Takashi',
           title: 'Dojo Champion',
-          prizeMoney: 2100,
+          prizeMoney: 3850,
           introDialogue: "Earth and martial arts unite! We will crush your defenses to gravel!",
           team: [
-            GymPokemonSpec(speciesId: 67, level: 44), // Machoke
-            GymPokemonSpec(speciesId: 68, level: 46), // Machamp
+            GymPokemonSpec(speciesId: 67, level: 81), // Machoke
+            GymPokemonSpec(speciesId: 57, level: 82), // Primeape
+            GymPokemonSpec(speciesId: 68, level: 83), // Machamp
           ],
         ),
         const GymTrainer(
@@ -1028,11 +1112,13 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Cooltrainer Samuel',
           title: 'Gym Enforcer',
-          prizeMoney: 2200,
-          introDialogue: "Rhyhorn's armor cannot be pierced by ordinary strikes! Tremble!",
+          prizeMoney: 4450,
+          introDialogue: "Rhydon's armor cannot be pierced by ordinary strikes! Tremble!",
           team: [
-            GymPokemonSpec(speciesId: 28, level: 45), // Sandslash
-            GymPokemonSpec(speciesId: 111, level: 46), // Rhyhorn
+            GymPokemonSpec(speciesId: 105, level: 80), // Marowak
+            GymPokemonSpec(speciesId: 111, level: 81), // Rhyhorn
+            GymPokemonSpec(speciesId: 28, level: 83), // Sandslash
+            GymPokemonSpec(speciesId: 112, level: 84), // Rhydon
           ],
         ),
         const GymTrainer(
@@ -1040,11 +1126,14 @@ class GymDatabase {
           spriteId: 'npc_psychic',
           name: 'Cooltrainer Yuji',
           title: 'Giovanni\'s Right Hand',
-          prizeMoney: 2300,
+          prizeMoney: 5100,
           introDialogue: "You stand before the gateway to the Pokémon League! Show me your absolute peak!",
           team: [
-            GymPokemonSpec(speciesId: 33, level: 46), // Nidorino
-            GymPokemonSpec(speciesId: 75, level: 47), // Graveler
+            GymPokemonSpec(speciesId: 33, level: 80), // Nidorino
+            GymPokemonSpec(speciesId: 75, level: 81), // Graveler
+            GymPokemonSpec(speciesId: 51, level: 82), // Dugtrio
+            GymPokemonSpec(speciesId: 34, level: 83), // Nidoking
+            GymPokemonSpec(speciesId: 76, level: 84), // Golem
           ],
         ),
       ],
@@ -1053,14 +1142,15 @@ class GymDatabase {
         spriteId: 'leader_giovanni',
         name: 'Giovanni',
         title: 'Viridian Gym Leader',
-        prizeMoney: 5000,
+        prizeMoney: 12000,
         introDialogue: "Fwahaha! Welcome to my hideout! It seems you've made quite a name for yourself. But this is the end of the line! Behold the ultimate power of Earth!",
         team: [
-          GymPokemonSpec(speciesId: 111, level: 45), // Rhyhorn
-          GymPokemonSpec(speciesId: 51, level: 42), // Dugtrio
-          GymPokemonSpec(speciesId: 31, level: 45), // Nidoqueen
-          GymPokemonSpec(speciesId: 34, level: 46), // Nidoking
-          GymPokemonSpec(speciesId: 112, level: 50), // Rhydon
+          GymPokemonSpec(speciesId: 111, level: 79), // Rhyhorn
+          GymPokemonSpec(speciesId: 53, level: 80), // Persian
+          GymPokemonSpec(speciesId: 51, level: 81), // Dugtrio
+          GymPokemonSpec(speciesId: 31, level: 82), // Nidoqueen
+          GymPokemonSpec(speciesId: 34, level: 84), // Nidoking
+          GymPokemonSpec(speciesId: 112, level: 86), // Rhydon
         ],
       ),
     ),
