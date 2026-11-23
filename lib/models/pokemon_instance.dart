@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'ability.dart';
 import 'pokemon_species.dart';
+import 'pokemon_type.dart';
 import 'move.dart';
 import '../services/pokedex_database.dart';
 
@@ -114,6 +115,31 @@ class PokemonInstance {
   bool isBadlyPoisoned = false;
   int toxicCounter = 1;
   int substituteHp = 0;
+  bool flinchedThisTurn = false;
+  int turnsActiveInBattle = 0;
+  int lastPhysicalDamageTakenThisTurn = 0;
+  int lastSpecialDamageTakenThisTurn = 0;
+  int consecutiveFuryCutterHits = 0;
+  bool hasFocusEnergy = false;
+  int sureHitAgainstTurns = 0;
+  bool isIdentified = false;
+  bool isMeanLookTrapped = false;
+  bool isTormented = false;
+  String? disabledMoveId;
+  int disableTurnsRemaining = 0;
+  List<PokemonType>? activeTypesOverride;
+  List<Move>? transformedMoves;
+  Map<String, int>? transformedBaseStats;
+  int stockpileCount = 0;
+
+  List<PokemonType> get effectiveTypes => activeTypesOverride ?? species.types;
+  List<Move> get activeMoves => transformedMoves ?? moves;
+
+  int get combatBaseAtk => transformedBaseStats?['atk'] ?? atk;
+  int get combatBaseDef => transformedBaseStats?['def'] ?? def;
+  int get combatBaseSpa => transformedBaseStats?['spa'] ?? spa;
+  int get combatBaseSpd => transformedBaseStats?['spd'] ?? spd;
+  int get combatBaseSpe => transformedBaseStats?['spe'] ?? spe;
 
   bool get hasForcedTurnAction =>
       needsRecharge ||
@@ -264,19 +290,21 @@ class PokemonInstance {
     return s >= 0 ? (2 + s) / 2.0 : 2.0 / (2 - s);
   }
 
-  int get effectiveAtk => (atk * _stageMultiplier(atkStage)).round().clamp(1, 9999);
-  int get effectiveDef => (def * _stageMultiplier(defStage)).round().clamp(1, 9999);
-  int get effectiveSpa => (spa * _stageMultiplier(spaStage)).round().clamp(1, 9999);
-  int get effectiveSpd => (spd * _stageMultiplier(spdStage)).round().clamp(1, 9999);
+  int get effectiveAtk => (combatBaseAtk * _stageMultiplier(atkStage)).round().clamp(1, 9999);
+  int get effectiveDef => (combatBaseDef * _stageMultiplier(defStage)).round().clamp(1, 9999);
+  int get effectiveSpa => (combatBaseSpa * _stageMultiplier(spaStage)).round().clamp(1, 9999);
+  int get effectiveSpd => (combatBaseSpd * _stageMultiplier(spdStage)).round().clamp(1, 9999);
   int get effectiveSpe {
-    double base = spe * _stageMultiplier(speStage);
+    double base = combatBaseSpe * _stageMultiplier(speStage);
     if (status == StatusCondition.paralysis && effectiveAbilityId != 'quick_feet') {
       base *= 0.5;
     }
     if (status != StatusCondition.none && effectiveAbilityId == 'quick_feet') {
       base *= 1.5;
     }
-    if (consumedHeldItemForUnburden && effectiveAbilityId == 'unburden') {
+    if (consumedHeldItemForUnburden &&
+        !hasHeldItem &&
+        effectiveAbilityId == 'unburden') {
       base *= 2.0;
     }
     return base.round().clamp(1, 9999);
@@ -580,6 +608,22 @@ class PokemonInstance {
     isSeeded = false;
     toxicCounter = 1;
     substituteHp = 0;
+    flinchedThisTurn = false;
+    turnsActiveInBattle = 0;
+    lastPhysicalDamageTakenThisTurn = 0;
+    lastSpecialDamageTakenThisTurn = 0;
+    consecutiveFuryCutterHits = 0;
+    hasFocusEnergy = false;
+    sureHitAgainstTurns = 0;
+    isIdentified = false;
+    isMeanLookTrapped = false;
+    isTormented = false;
+    disabledMoveId = null;
+    disableTurnsRemaining = 0;
+    activeTypesOverride = null;
+    transformedMoves = null;
+    transformedBaseStats = null;
+    stockpileCount = 0;
   }
 
   void resetStatStages() {

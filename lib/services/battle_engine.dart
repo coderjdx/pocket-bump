@@ -213,8 +213,6 @@ class BattleEngine {
     'volt_tackle': 0.33,
     'wild_charge': 0.25,
     'head_smash': 0.50,
-    'jump_kick': 0.50,
-    'hi_jump_kick': 0.50,
   };
 
   static const Set<String> _drainMoves = {
@@ -225,6 +223,7 @@ class BattleEngine {
     'karate_chop', 'razor_leaf', 'slash', 'crabhammer', 'cross_chop',
     'air_cutter', 'blaze_kick', 'leaf_blade', 'night_slash', 'shadow_claw',
     'psycho_cut', 'cross_poison', 'stone_edge', 'drill_run',
+    'razor_wind', 'sky_attack',
   };
 
   static const Set<String> _ohkoMoves = {
@@ -250,7 +249,7 @@ class BattleEngine {
     'fake_out': 100, 'astonish': 30, 'extrasensory': 10, 'air_slash': 30,
     'dark_pulse': 20, 'dragon_rush': 20, 'thunder_fang': 10, 'ice_fang': 10,
     'fire_fang': 10, 'waterfall': 20, 'zen_headbutt': 20, 'iron_head': 30,
-    'heart_stamp': 30, 'steamroller': 30, 'icicle_crash': 30,
+    'heart_stamp': 30, 'steamroller': 30, 'icicle_crash': 30, 'sky_attack': 30,
   };
 
   /// Multi-stat moves: list of `(stat, delta, appliesToSelf)`
@@ -290,11 +289,13 @@ class BattleEngine {
       _damagingStatEffects = {
     'acid': (chance: 10, stat: 'spd', delta: -1, self: false),
     'acid_spray': (chance: 100, stat: 'spd', delta: -2, self: false),
+    'aurora_beam': (chance: 10, stat: 'atk', delta: -1, self: false),
     'bubble': (chance: 10, stat: 'spe', delta: -1, self: false),
     'bubble_beam': (chance: 10, stat: 'spe', delta: -1, self: false),
     'bug_buzz': (chance: 10, stat: 'spd', delta: -1, self: false),
     'bulldoze': (chance: 100, stat: 'spe', delta: -1, self: false),
     'charge_beam': (chance: 70, stat: 'spa', delta: 1, self: true),
+    'constrict': (chance: 10, stat: 'spe', delta: -1, self: false),
     'crunch': (chance: 20, stat: 'def', delta: -1, self: false),
     'crush_claw': (chance: 50, stat: 'def', delta: -1, self: false),
     'earth_power': (chance: 10, stat: 'spd', delta: -1, self: false),
@@ -310,8 +311,10 @@ class BattleEngine {
     'metal_claw': (chance: 10, stat: 'atk', delta: 1, self: true),
     'meteor_mash': (chance: 20, stat: 'atk', delta: 1, self: true),
     'mirror_shot': (chance: 30, stat: 'acc', delta: -1, self: false),
+    'moonblast': (chance: 30, stat: 'spa', delta: -1, self: false),
     'mud_bomb': (chance: 30, stat: 'acc', delta: -1, self: false),
     'mud_shot': (chance: 100, stat: 'spe', delta: -1, self: false),
+    'mud_slap': (chance: 100, stat: 'acc', delta: -1, self: false),
     'muddy_water': (chance: 30, stat: 'acc', delta: -1, self: false),
     'psychic': (chance: 10, stat: 'spd', delta: -1, self: false),
     'rapid_spin': (chance: 100, stat: 'spe', delta: 1, self: true),
@@ -327,7 +330,7 @@ class BattleEngine {
   static bool _isGrounded(PokemonInstance mon, BattleFieldState? field, {bool bypassAbility = false}) {
     if (field != null && field.gravityTurns > 0) return true;
     if (mon.hasMagnetRise) return false;
-    if (mon.species.types.contains(PokemonType.flying)) return false;
+    if (mon.effectiveTypes.contains(PokemonType.flying)) return false;
     if (!bypassAbility && mon.effectiveAbilityId == 'levitate') return false;
     return true;
   }
@@ -380,6 +383,7 @@ class BattleEngine {
   }) {
     final List<BattleStepEvent> events = [];
     if (mon.isFainted) return events;
+    mon.turnsActiveInBattle = 0;
 
     final monName = _labelFor(mon, isPlayer, isWild);
     final foeName = _labelFor(foe, !isPlayer, isWild);
@@ -391,7 +395,8 @@ class BattleEngine {
     final bool grounded = _isGrounded(mon, activeField);
 
     if (side.hasStealthRock && !magicGuard) {
-      final double mult = PokemonTypeExtension.getEffectiveness(PokemonType.rock, mon.species.types);
+      final double mult =
+          PokemonTypeExtension.getEffectiveness(PokemonType.rock, mon.effectiveTypes);
       final int srDmg = max(1, (mon.maxHp * mult / 8.0).floor());
       mon.currentHp = (mon.currentHp - srDmg).clamp(0, mon.maxHp);
       events.add(BattleStepEvent(
@@ -403,7 +408,15 @@ class BattleEngine {
         targetFainted: mon.isFainted,
         isStatusTick: true,
       ));
-      if (mon.isFainted) return events;
+      if (mon.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$monName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+        return events;
+      }
     }
 
     if (side.spikesLayers > 0 && grounded && !magicGuard) {
@@ -419,11 +432,19 @@ class BattleEngine {
         targetFainted: mon.isFainted,
         isStatusTick: true,
       ));
-      if (mon.isFainted) return events;
+      if (mon.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$monName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+        return events;
+      }
     }
 
     if (side.toxicSpikesLayers > 0 && grounded) {
-      if (mon.species.types.contains(PokemonType.poison)) {
+      if (mon.effectiveTypes.contains(PokemonType.poison)) {
         side.toxicSpikesLayers = 0;
         events.add(BattleStepEvent(
           message: "$monName absorbed the poison spikes!",
@@ -546,11 +567,12 @@ class BattleEngine {
         }
         break;
       case 'imposter':
-        if (!foe.isFainted && foe.effectiveAbilityId != 'imposter') {
-          mon.activeAbilityId = foe.effectiveAbilityId;
+        if (!foe.isFainted &&
+            foe.effectiveAbilityId != 'imposter' &&
+            mon.transformedMoves == null) {
+          _applyTransformCopy(mon, foe);
           events.add(BattleStepEvent(
-            message:
-                "$monName's Imposter mimicked $foeName's ${AbilityDatabase.nameOf(foe.effectiveAbilityId)}!",
+            message: "$monName transformed into ${foe.species.name}!",
             isPlayerActor: isPlayer,
             hideMoveVfx: true,
             abilityTriggeredName: 'Imposter',
@@ -570,10 +592,10 @@ class BattleEngine {
         break;
       case 'anticipation':
         if (!foe.isFainted) {
-          final hasDanger = foe.moves.any((m) =>
+          final hasDanger = foe.activeMoves.any((m) =>
               _ohkoMoves.contains(m.id) ||
               (m.power > 0 &&
-                  PokemonTypeExtension.getEffectiveness(m.type, mon.species.types) >= 2.0));
+                  PokemonTypeExtension.getEffectiveness(m.type, mon.effectiveTypes) >= 2.0));
           if (hasDanger) {
             events.add(BattleStepEvent(
               message: "$monName shuddered with Anticipation!",
@@ -585,9 +607,9 @@ class BattleEngine {
         }
         break;
       case 'forewarn':
-        if (!foe.isFainted && foe.moves.isNotEmpty) {
-          Move best = foe.moves.first;
-          for (final m in foe.moves) {
+        if (!foe.isFainted && foe.activeMoves.isNotEmpty) {
+          Move best = foe.activeMoves.first;
+          for (final m in foe.activeMoves) {
             if (m.power > best.power) best = m;
           }
           if (best.power > 0) {
@@ -629,17 +651,91 @@ class BattleEngine {
     return events;
   }
 
+  static void _applyTransformCopy(PokemonInstance target, PokemonInstance source) {
+    target.transformedBaseStats = {
+      'atk': source.combatBaseAtk,
+      'def': source.combatBaseDef,
+      'spa': source.combatBaseSpa,
+      'spd': source.combatBaseSpd,
+      'spe': source.combatBaseSpe,
+    };
+    target
+      ..atkStage = source.atkStage
+      ..defStage = source.defStage
+      ..spaStage = source.spaStage
+      ..spdStage = source.spdStage
+      ..speStage = source.speStage
+      ..accStage = source.accStage
+      ..evaStage = source.evaStage;
+    target.activeTypesOverride = List<PokemonType>.from(source.effectiveTypes);
+    target.activeAbilityId = source.effectiveAbilityId;
+    target.transformedMoves = source.activeMoves
+        .map(
+          (m) => Move(
+            id: m.id,
+            name: m.name,
+            type: m.type,
+            category: m.category,
+            power: m.power,
+            accuracy: m.accuracy,
+            maxPp: 5,
+            currentPp: 5,
+            priority: m.priority,
+            description: m.description,
+            statTarget: m.statTarget,
+            statChange: m.statChange,
+            statusEffect: m.statusEffect,
+            statusChance: m.statusChance,
+            minHits: m.minHits,
+            maxHits: m.maxHits,
+            stageMechanic: m.stageMechanic,
+            chargeStatusMessage: m.chargeStatusMessage,
+            chargeSelfStatTarget: m.chargeSelfStatTarget,
+            chargeSelfStatChange: m.chargeSelfStatChange,
+          ),
+        )
+        .toList();
+  }
+
+  static double _applyIdentifiedTypeOverride(
+    double typeMultiplier,
+    PokemonType moveType,
+    PokemonInstance defender, {
+    required bool bypassGhostWithScrappy,
+  }) {
+    final List<PokemonType> types = defender.effectiveTypes;
+    if (types.contains(PokemonType.ghost) &&
+        (moveType == PokemonType.normal || moveType == PokemonType.fighting) &&
+        (bypassGhostWithScrappy || defender.isIdentified)) {
+      final nonGhost = types.where((t) => t != PokemonType.ghost).toList();
+      return nonGhost.isEmpty
+          ? 1.0
+          : PokemonTypeExtension.getEffectiveness(moveType, nonGhost);
+    }
+    if (types.contains(PokemonType.dark) &&
+        moveType == PokemonType.psychic &&
+        defender.isIdentified) {
+      final nonDark = types.where((t) => t != PokemonType.dark).toList();
+      return nonDark.isEmpty
+          ? 1.0
+          : PokemonTypeExtension.getEffectiveness(moveType, nonDark);
+    }
+    return typeMultiplier;
+  }
+
   // ─── MOVE RESOLUTION & AI ───────────────────────────────────────────────────
   static Move? resolveEffectiveMove(PokemonInstance mon, Move? selectedMove) {
     final String? forcedId = mon.forcedMoveId;
     if (forcedId == null || forcedId == 'recharge') {
       if (mon.encoreTurnsRemaining > 0 && mon.encoredMoveId != null) {
-        final encored = mon.moves.where((m) => m.id == mon.encoredMoveId && m.currentPp > 0);
+        final encored = mon.activeMoves.where(
+          (m) => m.id == mon.encoredMoveId && m.currentPp > 0,
+        );
         if (encored.isNotEmpty) return encored.first;
       }
       return selectedMove;
     }
-    for (final m in mon.moves) {
+    for (final m in mon.activeMoves) {
       if (m.id == forcedId) return m;
     }
     final dbMove = PokedexDatabase.moves[forcedId];
@@ -651,19 +747,28 @@ class BattleEngine {
     PokemonInstance? target,
     Random? rng,
   }) {
-    if (opponent.moves.isEmpty) return null;
+    final moves = opponent.activeMoves;
+    if (moves.isEmpty) return null;
     if (opponent.encoreTurnsRemaining > 0 && opponent.encoredMoveId != null) {
-      final encored = opponent.moves.where((m) => m.id == opponent.encoredMoveId && m.currentPp > 0);
+      final encored = moves.where(
+        (m) => m.id == opponent.encoredMoveId && m.currentPp > 0,
+      );
       if (encored.isNotEmpty) return encored.first;
     }
-    final withPp = opponent.moves.where((m) => m.currentPp > 0).toList();
+    final withPp = moves.where((m) => m.currentPp > 0).toList();
     final List<Move> available =
-        withPp.isNotEmpty ? withPp : List<Move>.from(opponent.moves);
+        withPp.isNotEmpty ? withPp : List<Move>.from(moves);
 
     final bool inRedHp =
         opponent.maxHp > 0 && (opponent.currentHp / opponent.maxHp) <= 0.20;
     final filtered = available.where((m) {
       if (!inRedHp && (m.id == 'self_destruct' || m.id == 'explosion' || m.id == 'memento')) {
+        return false;
+      }
+      if (opponent.disableTurnsRemaining > 0 && m.id == opponent.disabledMoveId) {
+        return false;
+      }
+      if (opponent.isTormented && m.id == opponent.lastMoveUsedId) {
         return false;
       }
       if (opponent.isTaunted && m.category == MoveCategory.status) {
@@ -678,8 +783,11 @@ class BattleEngine {
           target.status != StatusCondition.sleep) {
         return false;
       }
-      if (m.id == 'last_resort' && opponent.moves.length > 1) {
-        return true;
+      if (m.id == 'fake_out' && opponent.turnsActiveInBattle > 0) {
+        return false;
+      }
+      if (m.id == 'last_resort' && opponent.lastMoveUsedId == null) {
+        return false;
       }
       return true;
     }).toList();
@@ -725,12 +833,18 @@ class BattleEngine {
       ..isProtectedThisTurn = false
       ..isEnduringThisTurn = false
       ..actedFirstThisTurn = false
-      ..lastDamageTakenThisTurn = 0;
+      ..flinchedThisTurn = false
+      ..lastDamageTakenThisTurn = 0
+      ..lastPhysicalDamageTakenThisTurn = 0
+      ..lastSpecialDamageTakenThisTurn = 0;
     opponentMon
       ..isProtectedThisTurn = false
       ..isEnduringThisTurn = false
       ..actedFirstThisTurn = false
-      ..lastDamageTakenThisTurn = 0;
+      ..flinchedThisTurn = false
+      ..lastDamageTakenThisTurn = 0
+      ..lastPhysicalDamageTakenThisTurn = 0
+      ..lastSpecialDamageTakenThisTurn = 0;
 
     final preBerryPlayer = checkAndConsumeHeldBerry(
       playerMon,
@@ -858,6 +972,12 @@ class BattleEngine {
       }
       events.addAll(processEndOfTurnField(activeField, playerMon, opponentMon));
     }
+    if (!playerMon.isFainted) {
+      playerMon.turnsActiveInBattle++;
+    }
+    if (!opponentMon.isFainted) {
+      opponentMon.turnsActiveInBattle++;
+    }
 
     return events;
   }
@@ -961,7 +1081,7 @@ class BattleEngine {
     }
 
     if (held == 'leppa_berry') {
-      final depleted = mon.moves.where((m) => m.currentPp <= 0).toList();
+      final depleted = mon.activeMoves.where((m) => m.currentPp <= 0).toList();
       if (depleted.isNotEmpty) {
         final targetMove = depleted.first;
         final int restored = min(10, targetMove.maxPp - targetMove.currentPp);
@@ -1082,7 +1202,27 @@ class BattleEngine {
       case 'assurance':
         return defender.lastDamageTakenThisTurn > 0 ? 120 : 60;
       case 'spit_up':
-        return 100;
+        return 100 * attacker.stockpileCount.clamp(1, 3);
+      case 'magnitude':
+        return 70;
+      case 'punishment':
+        int oppBoosts = 0;
+        for (final s in [
+          defender.atkStage, defender.defStage, defender.spaStage,
+          defender.spdStage, defender.speStage, defender.accStage, defender.evaStage,
+        ]) {
+          if (s > 0) oppBoosts += s;
+        }
+        return min(200, 60 + 20 * oppBoosts);
+      case 'fury_cutter':
+        return min(160, 40 * (1 << attacker.consecutiveFuryCutterHits.clamp(0, 2)));
+      case 'fling':
+        return attacker.hasHeldItem ? 60 : 0;
+      case 'natural_gift':
+        final heldObj = attacker.hasHeldItem ? ItemDatabase.byId(attacker.heldItemId!) : null;
+        return (heldObj != null && heldObj.isBerry) ? 80 : 0;
+      case 'retaliate':
+        return 70;
       default:
         return move.power;
     }
@@ -1134,7 +1274,7 @@ class BattleEngine {
       movePowerDouble *= 1.3;
     }
     if (atkAb == 'rivalry' &&
-        attacker.species.types.any((t) => defender.species.types.contains(t))) {
+        attacker.effectiveTypes.any((t) => defender.effectiveTypes.contains(t))) {
       movePowerDouble *= 1.25;
     }
     if (atkAb == 'flash_fire' && attacker.flashFireBoosted && move.type == PokemonType.fire) {
@@ -1171,38 +1311,38 @@ class BattleEngine {
     if (_highCritMoves.contains(move.id)) {
       critChanceDenom = max(2, critChanceDenom ~/ 2);
     }
-
-    double typeMultiplier =
-        PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
-    if (atkAb == 'scrappy' &&
-        (move.type == PokemonType.normal || move.type == PokemonType.fighting) &&
-        defender.species.types.contains(PokemonType.ghost)) {
-      // Treat Ghost as 1.0x against Normal/Fighting while keeping secondary type mult
-      final nonGhost = defender.species.types.where((t) => t != PokemonType.ghost).toList();
-      typeMultiplier = nonGhost.isEmpty
-          ? 1.0
-          : PokemonTypeExtension.getEffectiveness(move.type, nonGhost);
+    if (attacker.hasFocusEnergy) {
+      critChanceDenom = max(1, critChanceDenom ~/ 4);
     }
+
+    double typeMultiplier = _applyIdentifiedTypeOverride(
+      PokemonTypeExtension.getEffectiveness(move.type, defender.effectiveTypes),
+      move.type,
+      defender,
+      bypassGhostWithScrappy: atkAb == 'scrappy',
+    );
 
     final bool isCrit = !critBlocked &&
         typeMultiplier > 0 &&
         (move.id == 'storm_throw' || random.nextInt(critChanceDenom) == 0);
 
     // Attack & Defense stat selection (Psystrike / Psyshock hit Def!)
-    final bool hitsPhysicalDef =
+    final bool baseHitsPhysicalDef =
         move.category == MoveCategory.physical ||
         move.id == 'psystrike' ||
         move.id == 'psyshock';
+    final bool wonderRoomSwapped = field != null && field.wonderRoomTurns > 0;
+    final bool usePhysicalDefStat = wonderRoomSwapped ? !baseHitsPhysicalDef : baseHitsPhysicalDef;
 
     int attackStat;
     if (move.category == MoveCategory.physical) {
       attackStat = unawareDef
-          ? attacker.atk
-          : (isCrit && attacker.atkStage < 0 ? attacker.atk : attacker.effectiveAtk);
+          ? attacker.combatBaseAtk
+          : (isCrit && attacker.atkStage < 0 ? attacker.combatBaseAtk : attacker.effectiveAtk);
     } else {
       attackStat = unawareDef
-          ? attacker.spa
-          : (isCrit && attacker.spaStage < 0 ? attacker.spa : attacker.effectiveSpa);
+          ? attacker.combatBaseSpa
+          : (isCrit && attacker.spaStage < 0 ? attacker.combatBaseSpa : attacker.effectiveSpa);
     }
     if (isPlayer && playerTrainer != null) {
       final double badgeMult = move.category == MoveCategory.physical
@@ -1222,35 +1362,35 @@ class BattleEngine {
       attackStat = (attackStat * 1.5).round();
     }
 
-    int defenseStat = hitsPhysicalDef
+    int defenseStat = usePhysicalDefStat
         ? (unawareAtk
-            ? defender.def
-            : (isCrit && defender.defStage > 0 ? defender.def : defender.effectiveDef))
+            ? defender.combatBaseDef
+            : (isCrit && defender.defStage > 0 ? defender.combatBaseDef : defender.effectiveDef))
         : (unawareAtk
-            ? defender.spd
-            : (isCrit && defender.spdStage > 0 ? defender.spd : defender.effectiveSpd));
+            ? defender.combatBaseSpd
+            : (isCrit && defender.spdStage > 0 ? defender.combatBaseSpd : defender.effectiveSpd));
     if (!isPlayer && playerTrainer != null) {
-      final double badgeMult = hitsPhysicalDef
+      final double badgeMult = baseHitsPhysicalDef
           ? playerTrainer.defBadgeMultiplier
           : playerTrainer.spdBadgeMultiplier;
       defenseStat = (defenseStat * badgeMult).round();
     }
     if (!bypassDefAb &&
-        hitsPhysicalDef &&
+        usePhysicalDefStat &&
         defAb == 'marvel_scale' &&
         defender.status != StatusCondition.none) {
       defenseStat = (defenseStat * 1.5).round();
     }
-    if (!hitsPhysicalDef &&
+    if (!baseHitsPhysicalDef &&
         weather == BattleWeather.sandstorm &&
-        defender.species.types.contains(PokemonType.rock)) {
+        defender.effectiveTypes.contains(PokemonType.rock)) {
       defenseStat = (defenseStat * 1.5).round();
     }
 
     final double base =
         (((2 * attacker.level / 5 + 2) * movePower * attackStat / max(1, defenseStat)) / 50) +
             2;
-    final bool hasStab = attacker.species.types.contains(move.type);
+    final bool hasStab = attacker.effectiveTypes.contains(move.type);
     final double stab = hasStab ? (atkAb == 'adaptability' ? 2.0 : 1.5) : 1.0;
 
     final double crit = isCrit ? (atkAb == 'sniper' ? 2.25 : 1.5) : 1.0;
@@ -1294,8 +1434,8 @@ class BattleEngine {
     double screenMult = 1.0;
     if (field != null && !isCrit && atkAb != 'infiltrator' && move.id != 'brick_break') {
       final defSide = field.sideFor(!isPlayer);
-      if (hitsPhysicalDef && defSide.reflectTurns > 0) screenMult = 0.5;
-      if (!hitsPhysicalDef && defSide.lightScreenTurns > 0) screenMult = 0.5;
+      if (baseHitsPhysicalDef && defSide.reflectTurns > 0) screenMult = 0.5;
+      if (!baseHitsPhysicalDef && defSide.lightScreenTurns > 0) screenMult = 0.5;
     }
 
     int damage = (base *
@@ -1318,9 +1458,46 @@ class BattleEngine {
   static bool _hasSheerForceBoost(Move move) =>
       (move.statusChance > 0 && move.statusEffect != null) ||
       (_flinchChances[move.id] ?? 0) > 0 ||
+      move.id == 'tri_attack' ||
+      move.id == 'ancient_power' ||
+      move.id == 'silver_wind' ||
       (_damagingStatEffects.containsKey(move.id) &&
           _damagingStatEffects[move.id]!.delta != 0 &&
           !_damagingStatEffects[move.id]!.self);
+
+  static void _applyJumpKickCrashIfApplicable(
+    Move move,
+    PokemonInstance attacker,
+    String attackerName,
+    bool isPlayer,
+    List<BattleStepEvent> events,
+  ) {
+    if ((move.id != 'jump_kick' && move.id != 'high_jump_kick') ||
+        attacker.isFainted ||
+        attacker.effectiveAbilityId == 'magic_guard') {
+      return;
+    }
+    final int crashDmg = max(1, attacker.maxHp ~/ 2);
+    attacker.currentHp = (attacker.currentHp - crashDmg).clamp(0, attacker.maxHp);
+    events.add(BattleStepEvent(
+      message: "$attackerName kept going and crashed!",
+      isPlayerActor: isPlayer,
+      moveType: move.type,
+      damageDealt: crashDmg,
+      targetHpAfter: attacker.currentHp,
+      targetFainted: attacker.isFainted,
+      isSelfDamage: true,
+      hideMoveVfx: true,
+    ));
+    if (attacker.isFainted) {
+      events.add(BattleStepEvent(
+        message: "$attackerName fainted!",
+        isPlayerActor: !isPlayer,
+        targetHpAfter: 0,
+        targetFainted: true,
+      ));
+    }
+  }
 
   // ─── SINGLE ATTACK EXECUTION ────────────────────────────────────────────────
   static List<BattleStepEvent> executeSingleAttack(
@@ -1333,10 +1510,13 @@ class BattleEngine {
     BattleFieldState? field,
     Move? defenderIntendedMove,
     Random? rng,
+    bool consumePp = true,
+    int? powerOverride,
   }) {
     final random = rng ?? _rng;
     final activeField = field ?? BattleFieldState();
     final List<BattleStepEvent> events = [];
+    if (attacker.isFainted || defender.isFainted) return events;
     final attackerName = _labelFor(attacker, isPlayer, isWild);
     final defenderName = _labelFor(defender, !isPlayer, isWild);
     final String atkAb = attacker.effectiveAbilityId;
@@ -1354,11 +1534,44 @@ class BattleEngine {
       return events;
     }
 
-    // 0b. Taunt guard
+    // 0a. Flinch check
+    if (attacker.flinchedThisTurn) {
+      attacker.flinchedThisTurn = false;
+      _clearMoveLocks(attacker);
+      events.add(BattleStepEvent(
+        message: "$attackerName flinched and couldn't move!",
+        isPlayerActor: isPlayer,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+
+    // 0b. Taunt / Disable / Torment guards
     if (attacker.isTaunted && move.category == MoveCategory.status) {
       events.add(BattleStepEvent(
         message: "$attackerName can't use ${move.name} after the taunt!",
         isPlayerActor: isPlayer,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (attacker.disableTurnsRemaining > 0 && attacker.disabledMoveId == move.id) {
+      events.add(BattleStepEvent(
+        message: "$attackerName's ${move.name} is disabled!",
+        isPlayerActor: isPlayer,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (attacker.isTormented &&
+        attacker.lastMoveUsedId == move.id &&
+        move.id != 'struggle') {
+      events.add(BattleStepEvent(
+        message: "$attackerName can't use the same move twice in a row due to Torment!",
+        isPlayerActor: isPlayer,
+        isMiss: true,
         hideMoveVfx: true,
       ));
       return events;
@@ -1455,6 +1668,7 @@ class BattleEngine {
         message: "$attackerName lost its focus and couldn't move!",
         isPlayerActor: isPlayer,
         isMiss: true,
+        hideMoveVfx: true,
       ));
       return events;
     }
@@ -1468,20 +1682,120 @@ class BattleEngine {
         move.stageMechanic == MoveStageMechanic.escalatingRoll &&
         attacker.rolloutTurnsRemaining > 0;
 
+    final String? previousMoveUsedId = attacker.lastMoveUsedId;
     if (!isContinuingCharge &&
         !isContinuingBide &&
         !isContinuingRampage &&
         !isContinuingRollout) {
       attacker.hasDestinyBond = false;
-      if (move.currentPp > 0) {
+      if (consumePp && move.currentPp > 0) {
         final int ppCost = (!bypassDefAb && defAb == 'pressure') ? 2 : 1;
         move.currentPp = max(0, move.currentPp - ppCost);
       }
       attacker.lastMoveUsedId = move.id;
+      if (move.id != 'fury_cutter') {
+        attacker.consecutiveFuryCutterHits = 0;
+      }
     }
 
-    if (move.id != 'protect' && move.id != 'detect' && move.id != 'endure') {
+    if (move.id != 'protect' &&
+        move.id != 'detect' &&
+        move.id != 'endure' &&
+        move.id != 'quick_guard' &&
+        move.id != 'wide_guard') {
       attacker.consecutiveProtectCount = 0;
+    }
+
+    // Prerequisite checks for conditional moves
+    if (move.id == 'dream_eater' && defender.status != StatusCondition.sleep) {
+      events.add(BattleStepEvent(
+        message:
+            "$attackerName used ${move.name}! But it failed because $defenderName isn't asleep!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (move.id == 'snore' && attacker.status != StatusCondition.sleep) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}! But it failed!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (move.id == 'fake_out' && attacker.turnsActiveInBattle > 0) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}! But it failed!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (move.id == 'last_resort' &&
+        (previousMoveUsedId == null || previousMoveUsedId == 'last_resort')) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}! But it failed!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (move.id == 'fling' && !attacker.hasHeldItem) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}! But it had no item to throw!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
+    }
+    if (move.id == 'natural_gift') {
+      final heldObj = attacker.hasHeldItem ? ItemDatabase.byId(attacker.heldItemId!) : null;
+      if (heldObj == null || !heldObj.isBerry) {
+        events.add(BattleStepEvent(
+          message: "$attackerName used ${move.name}! But it has no Berry!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          isMiss: true,
+          hideMoveVfx: true,
+        ));
+        return events;
+      }
+    }
+    if ((move.id == 'spit_up' || move.id == 'swallow') &&
+        attacker.stockpileCount <= 0) {
+      events.add(BattleStepEvent(
+        message: "$attackerName used ${move.name}! But it hadn't stockpiled any power!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        isMiss: true,
+        hideMoveVfx: true,
+      ));
+      return events;
     }
 
     // Sleep Talk picks another move cleanly
@@ -1497,7 +1811,7 @@ class BattleEngine {
         ));
         return events;
       }
-      final candidates = attacker.moves.where((m) => m.id != 'sleep_talk').toList();
+      final candidates = attacker.activeMoves.where((m) => m.id != 'sleep_talk').toList();
       if (candidates.isEmpty) {
         events.add(BattleStepEvent(
           message: "$attackerName used Sleep Talk, but it failed!",
@@ -1523,6 +1837,7 @@ class BattleEngine {
         isWild: isWild,
         playerTrainer: playerTrainer,
         field: activeField,
+        consumePp: false,
         rng: random,
       ));
       return events;
@@ -1756,12 +2071,16 @@ class BattleEngine {
           ((move.statChange > 0 && move.statTarget != null) ||
               move.id == 'recover' || move.id == 'soft_boiled' || move.id == 'rest' ||
               move.id == 'roost' || move.id == 'slack_off' || move.id == 'synthesis' ||
-              move.id == 'moonlight' || move.id == 'belly_drum' || move.id == 'substitute' ||
+              move.id == 'moonlight' || move.id == 'morning_sun' || move.id == 'belly_drum' ||
+              move.id == 'substitute' || move.id == 'focus_energy' || move.id == 'acupressure' ||
+              move.id == 'wonder_room' || move.id == 'recycle' || move.id == 'conversion' ||
+              move.id == 'conversion_2' || move.id == 'camouflage' || move.id == 'reflect_type' ||
               move.id == 'rain_dance' || move.id == 'sunny_day' ||
               move.id == 'sandstorm' || move.id == 'hail' ||
               _multiStatMoves.containsKey(move.id));
       if (!selfStatus) {
         _clearMoveLocks(attacker);
+        attacker.consecutiveFuryCutterHits = 0;
         events.add(BattleStepEvent(
           message: "$attackerName used ${move.name}! $defenderName protected itself!",
           isPlayerActor: isPlayer,
@@ -1771,6 +2090,7 @@ class BattleEngine {
           isMiss: true,
           surfaceActorOnAttack: surfacedThisTurn,
         ));
+        _applyJumpKickCrashIfApplicable(move, attacker, attackerName, isPlayer, events);
         return events;
       }
     }
@@ -1916,26 +2236,34 @@ class BattleEngine {
       }
     }
 
-    // 3. Accuracy Check (accounting for Abilities, Weather, Never-Miss Moves)
+    // 3. Accuracy Check (accounting for Abilities, Weather, Never-Miss Moves, Lock-On)
     const Set<String> neverMissMoves = {
       'swift', 'shock_wave', 'aerial_ace', 'feint_attack', 'magical_leaf',
       'aura_sphere', 'magnet_bomb', 'shadow_punch', 'vital_throw', 'clear_smog',
       'trump_card', 'roost', 'recover', 'soft_boiled', 'rest', 'slack_off',
-      'synthesis', 'moonlight', 'haze', 'belly_drum', 'refresh', 'aromatherapy',
-      'rain_dance', 'sunny_day', 'sandstorm', 'hail', 'safeguard', 'mist',
-      'tailwind', 'spikes', 'toxic_spikes', 'stealth_rock', 'gravity',
+      'synthesis', 'moonlight', 'morning_sun', 'haze', 'belly_drum', 'refresh',
+      'aromatherapy', 'rain_dance', 'sunny_day', 'sandstorm', 'hail', 'safeguard',
+      'mist', 'tailwind', 'spikes', 'toxic_spikes', 'stealth_rock', 'gravity',
       'lucky_chant', 'substitute', 'splash', 'focus_energy', 'destiny_bond',
       'perish_song', 'magnet_rise', 'aqua_ring', 'ingrain', 'mean_look', 'block',
-      'curse', 'mirror_move', 'conversion', 'conversion_2', 'psych_up',
+      'curse', 'mirror_move', 'copycat', 'metronome', 'mimic', 'transform',
+      'conversion', 'conversion_2', 'camouflage', 'reflect_type', 'psych_up',
       'shell_smash', 'quiver_dance', 'calm_mind', 'dragon_dance', 'coil',
       'work_up', 'cosmic_power', 'growth', 'nasty_plot', 'rock_polish',
       'barrier', 'amnesia', 'iron_defense', 'minimize', 'stockpile', 'swallow',
-      'power_swap', 'guard_swap', 'mud_sport', 'water_sport', 'wonder_room',
+      'acupressure', 'power_swap', 'guard_swap', 'mud_sport', 'water_sport',
+      'wonder_room', 'recycle', 'lock_on', 'mind_reader', 'foresight',
+      'odor_sleuth', 'miracle_eye', 'quick_guard', 'wide_guard', 'teleport',
       'swords_dance', 'harden', 'agility', 'double_team', 'meditate',
       'defense_curl', 'light_screen', 'reflect', 'withdraw', 'acid_armor',
     };
     final bool noGuard = atkAb == 'no_guard' || defAb == 'no_guard';
+    final bool sureHit = defender.sureHitAgainstTurns > 0;
+    if (sureHit) {
+      defender.sureHitAgainstTurns = 0;
+    }
     final bool bypassAcc = noGuard ||
+        sureHit ||
         neverMissMoves.contains(move.id) ||
         (move.category == MoveCategory.status && move.statTarget != null && move.statChange > 0);
 
@@ -1958,11 +2286,14 @@ class BattleEngine {
         if (defAb == 'sand_veil' && weatherNow == BattleWeather.sandstorm) mod *= 0.8;
         if (defAb == 'snow_cloak' && weatherNow == BattleWeather.hail) mod *= 0.8;
       }
+      final double defEvaMult =
+          (defender.isIdentified && defender.evaStage > 0) ? 1.0 : defender.evasionMultiplier;
       final double effAcc =
-          (baseAcc * mod * attacker.accuracyMultiplier * defender.evasionMultiplier)
+          (baseAcc * mod * attacker.accuracyMultiplier * defEvaMult)
               .clamp(1.0, 100.0);
       if (random.nextDouble() * 100.0 >= effAcc) {
         _clearMoveLocks(attacker);
+        attacker.consecutiveFuryCutterHits = 0;
         events.add(BattleStepEvent(
           message: "$attackerName used ${move.name}, but it missed!",
           isPlayerActor: isPlayer,
@@ -1971,26 +2302,13 @@ class BattleEngine {
           isMiss: true,
           surfaceActorOnAttack: surfacedThisTurn,
         ));
-        if (move.id == 'jump_kick' || move.id == 'hi_jump_kick') {
-          final crashDmg = max(1, attacker.maxHp ~/ 2);
-          attacker.currentHp = (attacker.currentHp - crashDmg).clamp(0, attacker.maxHp);
-          events.add(BattleStepEvent(
-            message: "$attackerName kept going and crashed!",
-            isPlayerActor: isPlayer,
-            moveType: move.type,
-            damageDealt: crashDmg,
-            targetHpAfter: attacker.currentHp,
-            targetFainted: attacker.isFainted,
-            isSelfDamage: true,
-            hideMoveVfx: true,
-          ));
-        }
+        _applyJumpKickCrashIfApplicable(move, attacker, attackerName, isPlayer, events);
         appendSelfKoEventsIfNeeded();
         return events;
       }
     }
 
-    // 4. Status / Fixed-Damage / Utility Moves (when category == status or base power == 0)
+    // 4. Status / Fixed-Damage / Utility Moves
     if (move.category == MoveCategory.status) {
       return _executeStatusMove(
         attacker: attacker,
@@ -1998,6 +2316,8 @@ class BattleEngine {
         defender: defender,
         isPlayer: isPlayer,
         isWild: isWild,
+        playerTrainer: playerTrainer,
+        defenderIntendedMove: defenderIntendedMove,
         field: activeField,
         random: random,
         appendSelfKo: appendSelfKoEventsIfNeeded,
@@ -2005,12 +2325,23 @@ class BattleEngine {
     }
 
     // Fixed / Special HP-formula damaging moves
-    if (move.power == 0 ||
-        const {
-          'dragon_rage', 'sonic_boom', 'seismic_toss', 'night_shade',
-          'super_fang', 'endeavor', 'final_gambit', 'guillotine', 'horn_drill',
-          'fissure', 'sheer_cold',
-        }.contains(move.id)) {
+    const Set<String> specialFormulaMoveIds = {
+      'dragon_rage',
+      'sonic_boom',
+      'seismic_toss',
+      'night_shade',
+      'super_fang',
+      'endeavor',
+      'final_gambit',
+      'guillotine',
+      'horn_drill',
+      'fissure',
+      'sheer_cold',
+      'psywave',
+      'counter',
+      'mirror_coat',
+    };
+    if (specialFormulaMoveIds.contains(move.id)) {
       return _executeSpecialFormulaAttack(
         attacker: attacker,
         move: move,
@@ -2019,17 +2350,50 @@ class BattleEngine {
         isWild: isWild,
         surfacedThisTurn: surfacedThisTurn,
         random: random,
+        field: activeField,
       );
     }
 
     // 5. Damaging Multi-Hit / Standard Moves
     final int hitCount = _rollHitCount(attacker, move, random);
-    final int? rolloutPower = move.stageMechanic == MoveStageMechanic.escalatingRoll
-        ? (30 * pow(2, attacker.rolloutHitCount.clamp(0, 4)).toInt())
-        : null;
+    int? resolvedPowerOverride = powerOverride;
+    if (resolvedPowerOverride == null && move.stageMechanic == MoveStageMechanic.escalatingRoll) {
+      resolvedPowerOverride = 30 * pow(2, attacker.rolloutHitCount.clamp(0, 4)).toInt();
+    } else if (resolvedPowerOverride == null && move.id == 'magnitude') {
+      final int r = random.nextInt(100);
+      final int magLevel;
+      final int magPower;
+      if (r < 5) {
+        magLevel = 4;
+        magPower = 10;
+      } else if (r < 15) {
+        magLevel = 5;
+        magPower = 30;
+      } else if (r < 35) {
+        magLevel = 6;
+        magPower = 50;
+      } else if (r < 65) {
+        magLevel = 7;
+        magPower = 70;
+      } else if (r < 85) {
+        magLevel = 8;
+        magPower = 90;
+      } else if (r < 95) {
+        magLevel = 9;
+        magPower = 110;
+      } else {
+        magLevel = 10;
+        magPower = 150;
+      }
+      resolvedPowerOverride = magPower;
+      events.add(BattleStepEvent(
+        message: "Magnitude $magLevel!",
+        isPlayerActor: isPlayer,
+        hideMoveVfx: true,
+      ));
+    }
     int totalDamageDealt = 0;
     int actualHits = 0;
-    bool anyCrit = false;
     final bool sheerForceBlocksSec = atkAb == 'sheer_force' && _hasSheerForceBoost(move);
 
     for (int hit = 1; hit <= hitCount; hit++) {
@@ -2041,13 +2405,13 @@ class BattleEngine {
         playerTrainer: playerTrainer,
         random: random,
         field: activeField,
-        powerOverride: rolloutPower,
+        powerOverride: resolvedPowerOverride,
         extraMultiplier: isSelfKoMove ? 2.0 : 1.0,
       );
-      if (hitResult.isCrit) anyCrit = true;
 
       if (hitResult.typeMultiplier == 0.0) {
         _clearMoveLocks(attacker);
+        attacker.consecutiveFuryCutterHits = 0;
         events.add(BattleStepEvent(
           message:
               "$attackerName used ${move.name}! It doesn't affect $defenderName...",
@@ -2059,6 +2423,7 @@ class BattleEngine {
           targetHpAfter: defender.currentHp,
           surfaceActorOnAttack: hit == 1 && surfacedThisTurn,
         ));
+        _applyJumpKickCrashIfApplicable(move, attacker, attackerName, isPlayer, events);
         appendSelfKoEventsIfNeeded();
         return events;
       }
@@ -2107,6 +2472,11 @@ class BattleEngine {
       final actualLost = max(0, prevDefHp - defender.currentHp);
       totalDamageDealt += actualLost;
       defender.lastDamageTakenThisTurn += actualLost;
+      if (move.category == MoveCategory.physical) {
+        defender.lastPhysicalDamageTakenThisTurn += actualLost;
+      } else if (move.category == MoveCategory.special) {
+        defender.lastSpecialDamageTakenThisTurn += actualLost;
+      }
       actualHits = hit;
 
       if (defender.bideTurnsRemaining > 0 && actualLost > 0) {
@@ -2294,6 +2664,40 @@ class BattleEngine {
       ));
     }
 
+    // Consume held items & discharge Stockpile after hitting
+    if (move.id == 'fury_cutter' && totalDamageDealt > 0) {
+      attacker.consecutiveFuryCutterHits = min(2, attacker.consecutiveFuryCutterHits + 1);
+    }
+    if ((move.id == 'fling' || move.id == 'natural_gift') &&
+        totalDamageDealt > 0 &&
+        attacker.hasHeldItem) {
+      final usedItemId = attacker.heldItemId!;
+      final heldObj = ItemDatabase.byId(usedItemId);
+      if (heldObj != null && heldObj.isBerry) {
+        attacker.consumedBerryIdForHarvest = usedItemId;
+      }
+      attacker.consumedHeldItemForUnburden = true;
+      attacker.unequipHeldItem();
+      events.add(BattleStepEvent(
+        message: "$attackerName used up its ${heldObj?.name ?? usedItemId}!",
+        isPlayerActor: isPlayer,
+        hideMoveVfx: true,
+      ));
+    }
+    if (move.id == 'spit_up' && attacker.stockpileCount > 0) {
+      final int stacks = attacker.stockpileCount;
+      attacker.stockpileCount = 0;
+      attacker.modifyStatStage('def', -stacks);
+      attacker.modifyStatStage('spd', -stacks);
+      events.add(BattleStepEvent(
+        message: "$attackerName's stockpile effect wore off!",
+        isPlayerActor: isPlayer,
+        statChangedLabel: 'DEF ▼ SPD ▼',
+        statTargetIsSelf: true,
+        hideMoveVfx: true,
+      ));
+    }
+
     // Secondary stat changes on damaging moves (and multi-stat self drops like Superpower)
     if (totalDamageDealt > 0 && !sheerForceBlocksSec) {
       if (_multiStatMoves.containsKey(move.id)) {
@@ -2318,6 +2722,51 @@ class BattleEngine {
           }
         }
       }
+
+      if ((move.id == 'ancient_power' || move.id == 'silver_wind') &&
+          !attacker.isFainted) {
+        final int chance = (atkAb == 'serene_grace' ? 20 : 10).clamp(0, 100);
+        if (random.nextInt(100) < chance) {
+          for (final stat in const ['atk', 'def', 'spa', 'spd', 'spe']) {
+            attacker.modifyStatStage(stat, 1);
+          }
+          events.add(BattleStepEvent(
+            message: "$attackerName's stats all rose!",
+            isPlayerActor: isPlayer,
+            statChangedLabel: 'ALL ▲',
+            statTargetIsSelf: true,
+            hideMoveVfx: true,
+          ));
+        }
+      }
+
+      if (move.id == 'tri_attack' &&
+          !defender.isFainted &&
+          defender.status == StatusCondition.none &&
+          !(!bypassDefAb && defAb == 'shield_dust')) {
+        final int chance = (atkAb == 'serene_grace' ? 40 : 20).clamp(0, 100);
+        if (random.nextInt(100) < chance) {
+          const choices = ['burn', 'paralysis', 'freeze'];
+          final pickedStatus = choices[random.nextInt(choices.length)];
+          final label = _tryInflictStatus(
+            defender,
+            pickedStatus,
+            random: random,
+            field: activeField,
+            targetIsPlayer: !isPlayer,
+            source: attacker,
+            bypassDefAbility: bypassDefAb,
+          );
+          if (label != null) {
+            events.add(BattleStepEvent(
+              message: "$defenderName became $label",
+              isPlayerActor: isPlayer,
+              statusInflictedLabel: label,
+              hideMoveVfx: true,
+            ));
+          }
+        }
+      }
     }
 
     // HP Draining attacks & Liquid Ooze check
@@ -2335,6 +2784,14 @@ class BattleEngine {
           abilityTriggeredName: 'Liquid Ooze',
           hideMoveVfx: true,
         ));
+        if (attacker.isFainted) {
+          events.add(BattleStepEvent(
+            message: "$attackerName fainted!",
+            isPlayerActor: !isPlayer,
+            targetHpAfter: 0,
+            targetFainted: true,
+          ));
+        }
       } else if (attacker.currentHp < attacker.maxHp) {
         final int actualHeal = min(amt, attacker.maxHp - attacker.currentHp);
         attacker.currentHp += actualHeal;
@@ -2406,6 +2863,7 @@ class BattleEngine {
         attacker.actedFirstThisTurn &&
         (!bypassDefAb ? defAb != 'inner_focus' && defAb != 'shield_dust' : true) &&
         random.nextInt(100) < flinchChance) {
+      defender.flinchedThisTurn = true;
       // Steadfast boosts Speed +1 when flinched!
       if (defAb == 'steadfast') {
         defender.modifyStatStage('spe', 1);
@@ -2504,6 +2962,12 @@ class BattleEngine {
           targetFainted: true,
           isSelfDamage: true,
           hideMoveVfx: true,
+        ));
+        events.add(BattleStepEvent(
+          message: "$attackerName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
         ));
       } else if (!attacker.isFainted && atkAb == 'moxie') {
         attacker.modifyStatStage('atk', 1);
@@ -2630,6 +3094,14 @@ class BattleEngine {
         abilityTriggeredName: 'Aftermath',
         hideMoveVfx: true,
       ));
+      if (attacker.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$attackerName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+      }
     }
 
     if (attacker.isFainted || bypassDefAb) return;
@@ -2673,7 +3145,7 @@ class BattleEngine {
       }
     } else if (defAb == 'effect_spore' &&
         atkAb != 'overcoat' &&
-        !attacker.species.types.contains(PokemonType.grass) &&
+        !attacker.effectiveTypes.contains(PokemonType.grass) &&
         random.nextInt(100) < 30) {
       final roll = random.nextInt(3);
       final chosen = roll == 0 ? 'sleep' : (roll == 1 ? 'paralysis' : 'poison');
@@ -2711,6 +3183,8 @@ class BattleEngine {
     required PokemonInstance defender,
     required bool isPlayer,
     required bool isWild,
+    Trainer? playerTrainer,
+    Move? defenderIntendedMove,
     required BattleFieldState field,
     required Random random,
     required void Function() appendSelfKo,
@@ -2796,6 +3270,11 @@ class BattleEngine {
       int healAmt;
       if (isRest) {
         healAmt = attacker.maxHp;
+      } else if (move.id == 'swallow') {
+        final int stacks = attacker.stockpileCount.clamp(1, 3);
+        healAmt = stacks == 1
+            ? max(1, attacker.maxHp ~/ 4)
+            : (stacks == 2 ? max(1, attacker.maxHp ~/ 2) : attacker.maxHp);
       } else if (move.id == 'synthesis' || move.id == 'moonlight' || move.id == 'morning_sun') {
         if (weather == BattleWeather.sun) {
           healAmt = max(1, (attacker.maxHp * 2 / 3).round());
@@ -2812,6 +3291,11 @@ class BattleEngine {
       if (isRest) {
         attacker.status = StatusCondition.sleep;
         attacker.isBadlyPoisoned = false;
+      } else if (move.id == 'swallow' && attacker.stockpileCount > 0) {
+        final int stacks = attacker.stockpileCount;
+        attacker.stockpileCount = 0;
+        attacker.modifyStatStage('def', -stacks);
+        attacker.modifyStatStage('spd', -stacks);
       }
       events.add(BattleStepEvent(
         message: isRest
@@ -2862,7 +3346,7 @@ class BattleEngine {
 
     // 4. Curse
     if (move.id == 'curse') {
-      if (attacker.species.types.contains(PokemonType.ghost)) {
+      if (attacker.effectiveTypes.contains(PokemonType.ghost)) {
         final int cost = max(1, attacker.maxHp ~/ 2);
         attacker.currentHp = (attacker.currentHp - cost).clamp(0, attacker.maxHp);
         defender.isSeeded = true;
@@ -2874,8 +3358,17 @@ class BattleEngine {
           moveCategory: move.category,
           damageDealt: cost,
           targetHpAfter: attacker.currentHp,
+          targetFainted: attacker.isFainted,
           isSelfDamage: true,
         ));
+        if (attacker.isFainted) {
+          events.add(BattleStepEvent(
+            message: "$attackerName fainted!",
+            isPlayerActor: !isPlayer,
+            targetHpAfter: 0,
+            targetFainted: true,
+          ));
+        }
         return events;
       }
       attacker.modifyStatStage('spe', -1);
@@ -2893,7 +3386,7 @@ class BattleEngine {
       return events;
     }
 
-    // 5. Field / Side Buffs & Hazards
+    // 5. Field / Side Buffs, Hazards & Specialized Status Mechanics
     final selfSide = field.sideFor(isPlayer);
     final oppSide = field.sideFor(!isPlayer);
     switch (move.id) {
@@ -2981,6 +3474,15 @@ class BattleEngine {
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
         ));
         return events;
+      case 'wonder_room':
+        field.wonderRoomTurns = field.wonderRoomTurns > 0 ? 0 : 5;
+        events.add(BattleStepEvent(
+          message: field.wonderRoomTurns > 0
+              ? "It created a bizarre area in which Defense and Sp. Def stats are swapped!"
+              : "Wonder Room wore off, and Defense and Sp. Def stats returned to normal!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
       case 'haze':
         attacker..atkStage = 0..defStage = 0..spaStage = 0..spdStage = 0..speStage = 0..accStage = 0..evaStage = 0;
         defender..atkStage = 0..defStage = 0..spaStage = 0..spdStage = 0..speStage = 0..accStage = 0..evaStage = 0;
@@ -3002,6 +3504,212 @@ class BattleEngine {
           message: "$attackerName copied $defenderName's stat changes!",
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
         ));
+        return events;
+      case 'power_swap':
+        final int tmpAtk = attacker.atkStage;
+        final int tmpSpa = attacker.spaStage;
+        attacker..atkStage = defender.atkStage..spaStage = defender.spaStage;
+        defender..atkStage = tmpAtk..spaStage = tmpSpa;
+        events.add(BattleStepEvent(
+          message: "$attackerName switched all changes to its Attack and Sp. Atk with the target!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'guard_swap':
+        final int tmpDef = attacker.defStage;
+        final int tmpSpd = attacker.spdStage;
+        attacker..defStage = defender.defStage..spdStage = defender.spdStage;
+        defender..defStage = tmpDef..spdStage = tmpSpd;
+        events.add(BattleStepEvent(
+          message: "$attackerName switched all changes to its Defense and Sp. Def with the target!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'focus_energy':
+        if (attacker.hasFocusEnergy) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used ${move.name}, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        } else {
+          attacker.hasFocusEnergy = true;
+          events.add(BattleStepEvent(
+            message: "$attackerName is getting pumped!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+            statusInflictedLabel: 'CRIT UP!',
+          ));
+        }
+        return events;
+      case 'acupressure':
+        final boostable = <String>[];
+        if (attacker.atkStage < 6) boostable.add('atk');
+        if (attacker.defStage < 6) boostable.add('def');
+        if (attacker.spaStage < 6) boostable.add('spa');
+        if (attacker.spdStage < 6) boostable.add('spd');
+        if (attacker.speStage < 6) boostable.add('spe');
+        if (attacker.accStage < 6) boostable.add('acc');
+        if (attacker.evaStage < 6) boostable.add('eva');
+        if (boostable.isEmpty) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Acupressure, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        } else {
+          final pickedStat = boostable[random.nextInt(boostable.length)];
+          _applySingleStatStage(
+            target: attacker,
+            foe: defender,
+            stat: pickedStat,
+            delta: 2,
+            targetLabel: attackerName,
+            targetIsPlayer: isPlayer,
+            byFoe: false,
+            bypassDefAbility: bypassDefAb,
+            events: events,
+            move: move,
+            actorLabel: attackerName,
+            isPlayerActor: isPlayer,
+            field: field,
+          );
+        }
+        return events;
+      case 'lock_on':
+      case 'mind_reader':
+        defender.sureHitAgainstTurns = 2;
+        events.add(BattleStepEvent(
+          message: "$attackerName took aim at $defenderName!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'telekinesis':
+        defender.sureHitAgainstTurns = 3;
+        events.add(BattleStepEvent(
+          message: "$defenderName was hurled into the air!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'foresight':
+      case 'odor_sleuth':
+      case 'miracle_eye':
+        defender.isIdentified = true;
+        events.add(BattleStepEvent(
+          message: "$attackerName identified $defenderName!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'mean_look':
+      case 'block':
+        defender.isMeanLookTrapped = true;
+        events.add(BattleStepEvent(
+          message: "$defenderName can no longer escape!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+        ));
+        return events;
+      case 'disable':
+        final lastId = defender.lastMoveUsedId;
+        if (lastId == null ||
+            defender.disableTurnsRemaining > 0 ||
+            !defender.activeMoves.any((m) => m.id == lastId)) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Disable, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          defender.disabledMoveId = lastId;
+          defender.disableTurnsRemaining = 4;
+          final disabledName = defender.activeMoves.firstWhere((m) => m.id == lastId).name;
+          events.add(BattleStepEvent(
+            message: "$defenderName's $disabledName was disabled!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'torment':
+        if (defender.isTormented) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Torment, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          defender.isTormented = true;
+          events.add(BattleStepEvent(
+            message: "$defenderName was subjected to Torment!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'spite':
+        final lastId = defender.lastMoveUsedId;
+        final matched = lastId == null
+            ? const <Move>[]
+            : defender.activeMoves.where((m) => m.id == lastId).toList();
+        if (matched.isNotEmpty && matched.first.currentPp > 0) {
+          final targetMove = matched.first;
+          final int drop = min(4, targetMove.currentPp);
+          targetMove.currentPp = max(0, targetMove.currentPp - 4);
+          events.add(BattleStepEvent(
+            message: "It reduced the PP of $defenderName's ${targetMove.name} by $drop!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Spite, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'trick':
+      case 'switcheroo':
+        if ((!attacker.hasHeldItem && !defender.hasHeldItem) ||
+            (!bypassDefAb && defAb == 'sticky_hold') ||
+            atkAb == 'sticky_hold') {
+          events.add(BattleStepEvent(
+            message: "$attackerName used ${move.name}, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          final tmp = attacker.heldItemId;
+          attacker.heldItemId = defender.heldItemId;
+          defender.heldItemId = tmp;
+          events.add(BattleStepEvent(
+            message: "$attackerName switched items with $defenderName!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'bestow':
+        if (!attacker.hasHeldItem || defender.hasHeldItem) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Bestow, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          final itemId = attacker.heldItemId!;
+          final itemName = ItemDatabase.byId(itemId)?.name ?? itemId;
+          defender.heldItemId = itemId;
+          attacker.heldItemId = null;
+          attacker.consumedHeldItemForUnburden = true;
+          events.add(BattleStepEvent(
+            message: "$defenderName received $itemName from $attackerName!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'recycle':
+        if (attacker.hasHeldItem || attacker.consumedBerryIdForHarvest == null) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Recycle, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        } else {
+          final restoredId = attacker.consumedBerryIdForHarvest!;
+          attacker.heldItemId = restoredId;
+          attacker.consumedBerryIdForHarvest = null;
+          events.add(BattleStepEvent(
+            message: "$attackerName found one ${ItemDatabase.byId(restoredId)?.name ?? restoredId}!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        }
         return events;
       case 'refresh':
       case 'aromatherapy':
@@ -3082,7 +3790,7 @@ class BattleEngine {
         return events;
       case 'encore':
         if (defender.lastMoveUsedId != null &&
-            defender.moves.any((m) => m.id == defender.lastMoveUsedId)) {
+            defender.activeMoves.any((m) => m.id == defender.lastMoveUsedId)) {
           defender.encoredMoveId = defender.lastMoveUsedId;
           defender.encoreTurnsRemaining = 3;
           events.add(BattleStepEvent(
@@ -3123,16 +3831,304 @@ class BattleEngine {
         }
         break;
       case 'soak':
+        defender.activeTypesOverride = [PokemonType.water];
         events.add(BattleStepEvent(
-          message: "$attackerName drenched $defenderName with Soak!",
+          message: "$defenderName transformed into the Water type!",
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
         ));
+        return events;
+      case 'conversion':
+        final PokemonType nextType = attacker.activeMoves.first.type;
+        attacker.activeTypesOverride = [nextType];
+        events.add(BattleStepEvent(
+          message: "$attackerName transformed into the ${nextType.displayName} type!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+        ));
+        return events;
+      case 'conversion_2':
+        final lastFoeMove = defender.lastMoveUsedId != null
+            ? PokedexDatabase.moves[defender.lastMoveUsedId!]
+            : null;
+        PokemonType chosenType = PokemonType.steel;
+        if (lastFoeMove != null) {
+          final candidates = PokemonType.values.where((t) {
+            final mult = PokemonTypeExtension.getEffectiveness(lastFoeMove.type, [t]);
+            return mult < 1.0 && !attacker.effectiveTypes.contains(t);
+          }).toList();
+          if (candidates.isNotEmpty) {
+            chosenType = candidates[random.nextInt(candidates.length)];
+          }
+        }
+        attacker.activeTypesOverride = [chosenType];
+        events.add(BattleStepEvent(
+          message: "$attackerName transformed into the ${chosenType.displayName} type!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+        ));
+        return events;
+      case 'camouflage':
+        final PokemonType terrainType = switch (weather) {
+          BattleWeather.sandstorm => PokemonType.rock,
+          BattleWeather.rain => PokemonType.water,
+          BattleWeather.hail => PokemonType.ice,
+          _ => PokemonType.normal,
+        };
+        attacker.activeTypesOverride = [terrainType];
+        events.add(BattleStepEvent(
+          message: "$attackerName transformed into the ${terrainType.displayName} type!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+        ));
+        return events;
+      case 'reflect_type':
+        attacker.activeTypesOverride = List<PokemonType>.from(defender.effectiveTypes);
+        events.add(BattleStepEvent(
+          message: "$attackerName's type changed to match $defenderName's!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+        ));
+        return events;
+      case 'transform':
+        if (attacker.transformedMoves != null) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Transform, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        } else {
+          _applyTransformCopy(attacker, defender);
+          events.add(BattleStepEvent(
+            message: "$attackerName transformed into ${defender.species.name}!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        }
+        return events;
+      case 'metronome':
+        const blockedMetronome = {
+          'metronome', 'struggle', 'transform', 'mimic', 'copycat',
+          'mirror_move', 'me_first', 'sleep_talk', 'snore', 'focus_punch',
+        };
+        final allPool = PokedexDatabase.moves.values
+            .where((m) => !blockedMetronome.contains(m.id))
+            .toList();
+        if (allPool.isEmpty) break;
+        final chosen = allPool[random.nextInt(allPool.length)];
+        events.add(BattleStepEvent(
+          message: "$attackerName used Metronome! Waggling a finger let it use ${chosen.name}!",
+          isPlayerActor: isPlayer, hideMoveVfx: true,
+        ));
+        events.addAll(executeSingleAttack(
+          attacker,
+          chosen.copy(),
+          defender,
+          isPlayer: isPlayer,
+          isWild: isWild,
+          playerTrainer: playerTrainer,
+          field: field,
+          defenderIntendedMove: defenderIntendedMove,
+          consumePp: false,
+          rng: random,
+        ));
+        return events;
+      case 'copycat':
+      case 'mirror_move':
+        const blockedCopy = {
+          'copycat', 'mirror_move', 'metronome', 'sleep_talk', 'struggle',
+        };
+        final lastId = defender.lastMoveUsedId;
+        final copied = lastId != null ? PokedexDatabase.moves[lastId] : null;
+        if (copied == null || blockedCopy.contains(copied.id)) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used ${move.name}, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          events.add(BattleStepEvent(
+            message: "$attackerName used ${move.name}! (${copied.name})",
+            isPlayerActor: isPlayer, hideMoveVfx: true,
+          ));
+          events.addAll(executeSingleAttack(
+            attacker,
+            copied.copy(),
+            defender,
+            isPlayer: isPlayer,
+            isWild: isWild,
+            playerTrainer: playerTrainer,
+            field: field,
+            defenderIntendedMove: defenderIntendedMove,
+            consumePp: false,
+            rng: random,
+          ));
+        }
+        return events;
+      case 'me_first':
+        const blockedMeFirst = {'me_first', 'counter', 'mirror_coat', 'focus_punch'};
+        Move? candidate;
+        if (defenderIntendedMove != null &&
+            defenderIntendedMove.category != MoveCategory.status &&
+            defenderIntendedMove.power > 0 &&
+            !blockedMeFirst.contains(defenderIntendedMove.id)) {
+          candidate = defenderIntendedMove;
+        } else {
+          final dmgs = defender.activeMoves
+              .where((m) =>
+                  m.category != MoveCategory.status &&
+                  m.power > 0 &&
+                  !blockedMeFirst.contains(m.id))
+              .toList();
+          if (dmgs.isNotEmpty) {
+            candidate = dmgs[random.nextInt(dmgs.length)];
+          }
+        }
+        if (candidate == null) {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Me First, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        } else {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Me First! (${candidate.name})",
+            isPlayerActor: isPlayer, hideMoveVfx: true,
+          ));
+          events.addAll(executeSingleAttack(
+            attacker,
+            candidate.copy(),
+            defender,
+            isPlayer: isPlayer,
+            isWild: isWild,
+            playerTrainer: playerTrainer,
+            field: field,
+            defenderIntendedMove: defenderIntendedMove,
+            consumePp: false,
+            powerOverride: (candidate.power * 1.5).round(),
+            rng: random,
+          ));
+        }
+        return events;
+      case 'mimic':
+        final lastId = defender.lastMoveUsedId;
+        final copied = lastId != null ? PokedexDatabase.moves[lastId] : null;
+        if (copied == null ||
+            copied.id == 'mimic' ||
+            copied.id == 'transform' ||
+            copied.id == 'metronome' ||
+            copied.id == 'struggle') {
+          events.add(BattleStepEvent(
+            message: "$attackerName used Mimic, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        } else {
+          final List<Move> working = attacker.transformedMoves ??
+              attacker.moves.map((m) => m.copy()).toList();
+          final int mimicIdx = working.indexWhere((m) => m.id == 'mimic');
+          if (mimicIdx >= 0) {
+            working[mimicIdx] = Move(
+              id: copied.id,
+              name: copied.name,
+              type: copied.type,
+              category: copied.category,
+              power: copied.power,
+              accuracy: copied.accuracy,
+              maxPp: 5,
+              currentPp: 5,
+              priority: copied.priority,
+              description: copied.description,
+              statTarget: copied.statTarget,
+              statChange: copied.statChange,
+              statusEffect: copied.statusEffect,
+              statusChance: copied.statusChance,
+              minHits: copied.minHits,
+              maxHits: copied.maxHits,
+              stageMechanic: copied.stageMechanic,
+              chargeStatusMessage: copied.chargeStatusMessage,
+              chargeSelfStatTarget: copied.chargeSelfStatTarget,
+              chargeSelfStatChange: copied.chargeSelfStatChange,
+            );
+            attacker.transformedMoves = working;
+          }
+          events.add(BattleStepEvent(
+            message: "$attackerName learned ${copied.name}!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+          ));
+        }
+        return events;
+      case 'quick_guard':
+      case 'wide_guard':
+        final double successProb = 1.0 / pow(2, attacker.consecutiveProtectCount).toDouble();
+        if (random.nextDouble() < successProb) {
+          attacker.consecutiveProtectCount++;
+          attacker.isProtectedThisTurn = true;
+          events.add(BattleStepEvent(
+            message: "$attackerName protected itself with ${move.name}!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true, statusInflictedLabel: 'PROTECTED',
+          ));
+        } else {
+          attacker.consecutiveProtectCount = 0;
+          events.add(BattleStepEvent(
+            message: "$attackerName used ${move.name}, but it failed!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+        }
+        return events;
+      case 'roar':
+      case 'whirlwind':
+        final bool foeSoundproof =
+            move.id == 'roar' && !bypassDefAb && defAb == 'soundproof';
+        if (foeSoundproof) {
+          events.add(BattleStepEvent(
+            message: "$defenderName's Soundproof blocked Roar!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, hideMoveVfx: true, abilityTriggeredName: 'Soundproof',
+          ));
+        } else {
+          events.add(BattleStepEvent(
+            message: "$attackerName blew $defenderName back with ${move.name}!",
+            isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
+          ));
+          _applySingleStatStage(
+            target: defender,
+            foe: attacker,
+            stat: 'atk',
+            delta: -1,
+            targetLabel: defenderName,
+            targetIsPlayer: !isPlayer,
+            byFoe: true,
+            bypassDefAbility: bypassDefAb,
+            events: events,
+            field: field,
+          );
+          _applySingleStatStage(
+            target: defender,
+            foe: attacker,
+            stat: 'spa',
+            delta: -1,
+            targetLabel: defenderName,
+            targetIsPlayer: !isPlayer,
+            byFoe: true,
+            bypassDefAbility: bypassDefAb,
+            events: events,
+            field: field,
+          );
+        }
+        return events;
+      case 'teleport':
+        events.add(BattleStepEvent(
+          message: "$attackerName warped across the battlefield!",
+          isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true,
+        ));
+        _applySingleStatStage(
+          target: attacker,
+          foe: defender,
+          stat: 'eva',
+          delta: 1,
+          targetLabel: attackerName,
+          targetIsPlayer: isPlayer,
+          byFoe: false,
+          bypassDefAbility: bypassDefAb,
+          events: events,
+          field: field,
+        );
         return events;
     }
 
     // 6. Leech Seed
     if (move.id == 'leech_seed') {
-      if (defender.species.types.contains(PokemonType.grass)) {
+      if (defender.effectiveTypes.contains(PokemonType.grass)) {
         events.add(BattleStepEvent(
           message: "$attackerName used Leech Seed! It doesn't affect $defenderName...",
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
@@ -3349,6 +4345,20 @@ class BattleEngine {
     Move? move,
     BattleWeather weather = BattleWeather.none,
   }) {
+    if (moveId == 'stockpile') {
+      if (attacker.stockpileCount >= 3) {
+        events.add(BattleStepEvent(
+          message: "$attackerName can't stockpile any more!",
+          isPlayerActor: isPlayer,
+          moveId: move?.id,
+          moveType: move?.type,
+          moveCategory: move?.category,
+          statTargetIsSelf: true,
+        ));
+        return;
+      }
+      attacker.stockpileCount++;
+    }
     final entries = _multiStatMoves[moveId]!;
     final List<String> tags = [];
     for (final e in entries) {
@@ -3485,6 +4495,7 @@ class BattleEngine {
     required bool isWild,
     required bool surfacedThisTurn,
     required Random random,
+    BattleFieldState? field,
   }) {
     final List<BattleStepEvent> events = [];
     final attackerName = _labelFor(attacker, isPlayer, isWild);
@@ -3493,13 +4504,12 @@ class BattleEngine {
     final String defAb = defender.effectiveAbilityId;
     final bool bypassDefAb = atkAb == 'mold_breaker';
 
-    double typeEff = PokemonTypeExtension.getEffectiveness(move.type, defender.species.types);
-    if (atkAb == 'scrappy' &&
-        (move.type == PokemonType.normal || move.type == PokemonType.fighting) &&
-        defender.species.types.contains(PokemonType.ghost)) {
-      final nonGhost = defender.species.types.where((t) => t != PokemonType.ghost).toList();
-      typeEff = nonGhost.isEmpty ? 1.0 : PokemonTypeExtension.getEffectiveness(move.type, nonGhost);
-    }
+    double typeEff = _applyIdentifiedTypeOverride(
+      PokemonTypeExtension.getEffectiveness(move.type, defender.effectiveTypes),
+      move.type,
+      defender,
+      bypassGhostWithScrappy: atkAb == 'scrappy',
+    );
     if (typeEff == 0.0) {
       events.add(BattleStepEvent(
         message: "$attackerName used ${move.name}! It doesn't affect $defenderName...",
@@ -3551,6 +4561,19 @@ class BattleEngine {
       case 'night_shade':
         fixedDmg = attacker.level;
         break;
+      case 'psywave':
+        fixedDmg = max(1, (attacker.level * (50 + random.nextInt(101))) ~/ 100);
+        break;
+      case 'counter':
+        fixedDmg = attacker.lastPhysicalDamageTakenThisTurn > 0
+            ? attacker.lastPhysicalDamageTakenThisTurn * 2
+            : 0;
+        break;
+      case 'mirror_coat':
+        fixedDmg = attacker.lastSpecialDamageTakenThisTurn > 0
+            ? attacker.lastSpecialDamageTakenThisTurn * 2
+            : 0;
+        break;
       case 'super_fang':
         fixedDmg = max(1, defender.currentHp ~/ 2);
         break;
@@ -3589,8 +4612,15 @@ class BattleEngine {
       fixedDmg = max(0, defender.currentHp - 1);
     }
 
+    final int prevHp = defender.currentHp;
     defender.currentHp = (defender.currentHp - fixedDmg).clamp(0, defender.maxHp);
-    defender.lastDamageTakenThisTurn += fixedDmg;
+    final int actualLost = max(0, prevHp - defender.currentHp);
+    defender.lastDamageTakenThisTurn += actualLost;
+    if (move.category == MoveCategory.physical) {
+      defender.lastPhysicalDamageTakenThisTurn += actualLost;
+    } else if (move.category == MoveCategory.special) {
+      defender.lastSpecialDamageTakenThisTurn += actualLost;
+    }
 
     events.add(BattleStepEvent(
       message: _ohkoMoves.contains(move.id)
@@ -3617,6 +4647,12 @@ class BattleEngine {
         targetFainted: true,
         isSelfDamage: true,
         hideMoveVfx: true,
+      ));
+      events.add(BattleStepEvent(
+        message: "$attackerName fainted!",
+        isPlayerActor: !isPlayer,
+        targetHpAfter: 0,
+        targetFainted: true,
       ));
     }
 
@@ -3728,9 +4764,9 @@ class BattleEngine {
         }
       }
     } else if (weather == BattleWeather.sandstorm && !magicGuard) {
-      final bool immune = mon.species.types.contains(PokemonType.rock) ||
-          mon.species.types.contains(PokemonType.ground) ||
-          mon.species.types.contains(PokemonType.steel) ||
+      final bool immune = mon.effectiveTypes.contains(PokemonType.rock) ||
+          mon.effectiveTypes.contains(PokemonType.ground) ||
+          mon.effectiveTypes.contains(PokemonType.steel) ||
           ab == 'sand_veil' || ab == 'sand_rush' || ab == 'sand_force' || ab == 'overcoat';
       if (!immune) {
         final int chip = max(1, mon.maxHp ~/ 16);
@@ -3756,7 +4792,7 @@ class BattleEngine {
           isPlayerActor: isPlayer, healAmount: heal, targetHpAfter: mon.currentHp, isStatusTick: true,
         ));
       } else if (!magicGuard &&
-          !mon.species.types.contains(PokemonType.ice) &&
+          !mon.effectiveTypes.contains(PokemonType.ice) &&
           ab != 'snow_cloak' &&
           ab != 'overcoat' &&
           ab != 'ice_body') {
@@ -3886,6 +4922,19 @@ class BattleEngine {
       mon.magnetRiseTurnsRemaining--;
       if (mon.magnetRiseTurnsRemaining <= 0) mon.hasMagnetRise = false;
     }
+    if (mon.sureHitAgainstTurns > 0) {
+      mon.sureHitAgainstTurns--;
+    }
+    if (mon.disableTurnsRemaining > 0) {
+      mon.disableTurnsRemaining--;
+      if (mon.disableTurnsRemaining <= 0) {
+        mon.disabledMoveId = null;
+        events.add(BattleStepEvent(
+          message: "$monName's move is no longer disabled!",
+          isPlayerActor: isPlayer, hideMoveVfx: true,
+        ));
+      }
+    }
     if (!mon.isFainted && mon.perishTurnsRemaining > 0) {
       mon.perishTurnsRemaining--;
       if (mon.perishTurnsRemaining == 0) {
@@ -3894,6 +4943,9 @@ class BattleEngine {
         events.add(BattleStepEvent(
           message: "$monName's perish count fell to 0!",
           isPlayerActor: !isPlayer, damageDealt: cost, targetHpAfter: 0, targetFainted: true, isStatusTick: true,
+        ));
+        events.add(BattleStepEvent(
+          message: "$monName fainted!", isPlayerActor: !isPlayer, targetHpAfter: 0, targetFainted: true,
         ));
       } else {
         events.add(BattleStepEvent(
@@ -3930,7 +4982,16 @@ class BattleEngine {
     field.playerSide.tickTurn();
     field.opponentSide.tickTurn();
     if (field.gravityTurns > 0) field.gravityTurns--;
-    if (field.wonderRoomTurns > 0) field.wonderRoomTurns--;
+    if (field.wonderRoomTurns > 0) {
+      field.wonderRoomTurns--;
+      if (field.wonderRoomTurns == 0) {
+        events.add(BattleStepEvent(
+          message: "Wonder Room wore off, and Defense and Sp. Def stats returned to normal!",
+          isPlayerActor: true,
+          hideMoveVfx: true,
+        ));
+      }
+    }
 
     if (field.weather != BattleWeather.none && field.weatherTurnsRemaining > 0) {
       field.weatherTurnsRemaining--;
@@ -3983,15 +5044,15 @@ class BattleEngine {
 
     switch (effect) {
       case 'burn':
-        if (target.species.types.contains(PokemonType.fire) ||
+        if (target.effectiveTypes.contains(PokemonType.fire) ||
             (!bypassDefAbility && ab == 'water_veil')) {
           return null;
         }
         target.status = StatusCondition.burn;
         return 'BURNED!';
       case 'poison':
-        if (target.species.types.contains(PokemonType.poison) ||
-            target.species.types.contains(PokemonType.steel) ||
+        if (target.effectiveTypes.contains(PokemonType.poison) ||
+            target.effectiveTypes.contains(PokemonType.steel) ||
             (!bypassDefAbility && ab == 'immunity')) {
           return null;
         }
@@ -4000,8 +5061,8 @@ class BattleEngine {
         target.toxicCounter = 1;
         return 'POISONED!';
       case 'badly_poison':
-        if (target.species.types.contains(PokemonType.poison) ||
-            target.species.types.contains(PokemonType.steel) ||
+        if (target.effectiveTypes.contains(PokemonType.poison) ||
+            target.effectiveTypes.contains(PokemonType.steel) ||
             (!bypassDefAbility && ab == 'immunity')) {
           return null;
         }
@@ -4010,7 +5071,7 @@ class BattleEngine {
         target.toxicCounter = 1;
         return 'BADLY POISONED!';
       case 'paralysis':
-        if (target.species.types.contains(PokemonType.electric) ||
+        if (target.effectiveTypes.contains(PokemonType.electric) ||
             (!bypassDefAbility && ab == 'limber')) {
           return null;
         }
@@ -4023,7 +5084,7 @@ class BattleEngine {
         target.status = StatusCondition.sleep;
         return 'ASLEEP!';
       case 'freeze':
-        if (target.species.types.contains(PokemonType.ice) ||
+        if (target.effectiveTypes.contains(PokemonType.ice) ||
             field?.effectiveWeather(target, source) == BattleWeather.sun) {
           return null;
         }

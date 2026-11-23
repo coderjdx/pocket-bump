@@ -201,7 +201,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     SoundService.instance.playBattleBgm(_resolvedBgmCategory);
     _trainer = Provider.of<Trainer>(context, listen: false);
     for (final mon in _trainer.party) {
-      mon.clearVolatileBattleState();
+      mon.resetStatStages();
     }
     _playerPokemon = _trainer.leadPokemon!;
     _trainerHeldBallType = _playerPokemon.caughtBall;
@@ -212,7 +212,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
             ? List<PokemonInstance>.from(widget.opponentTeam!)
             : [widget.opponentPokemon];
     for (final mon in _opponentFullTeam) {
-      mon.clearVolatileBattleState();
+      mon.resetStatStages();
     }
     _opponentParty = List<PokemonInstance>.from(_opponentFullTeam);
     final int oppLeadIdx = _opponentParty.indexWhere((p) => !p.isFainted);
@@ -665,6 +665,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _opponentPokemon.trappedTurnsRemaining = 0;
     _opponentPokemon.trappedByMoveId = null;
     _opponentPokemon.trappedByMoveName = null;
+    _opponentPokemon.isMeanLookTrapped = false;
     _playerKoController.reset();
     _recordParticipant(nextMon);
     setState(() {
@@ -1192,15 +1193,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await _executePvpTurn(<String, dynamic>{
         'type': 'fight',
         'moveId': forcedId ??
-            (_playerPokemon.moves.isNotEmpty
-                ? _playerPokemon.moves.first.id
+            (_playerPokemon.activeMoves.isNotEmpty
+                ? _playerPokemon.activeMoves.first.id
                 : 'tackle'),
       });
       return;
     }
 
-    final Move? fallbackMove = _playerPokemon.moves.isNotEmpty
-        ? _playerPokemon.moves.first
+    final Move? fallbackMove = _playerPokemon.activeMoves.isNotEmpty
+        ? _playerPokemon.activeMoves.first
         : PokedexDatabase.moves['tackle']?.copy();
     final Move? effectiveMove =
         BattleEngine.resolveEffectiveMove(_playerPokemon, fallbackMove) ??
@@ -1243,9 +1244,26 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await _executeForcedPlayerTurn();
       return;
     }
-    if (move.currentPp <= 0) {
+    final activeMoves = _playerPokemon.activeMoves;
+    final bool allOutOfPp = activeMoves.every((m) => m.currentPp <= 0);
+    if (allOutOfPp) {
+      move = PokedexDatabase.moves['struggle']?.copy() ?? move;
+    } else if (move.currentPp <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("${move.name} has no PP left!")),
+      );
+      return;
+    } else if (_playerPokemon.disableTurnsRemaining > 0 &&
+        _playerPokemon.disabledMoveId == move.id) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("${move.name} is disabled!")),
+      );
+      return;
+    } else if (_playerPokemon.isTormented &&
+        _playerPokemon.lastMoveUsedId == move.id) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("${move.name} can't be used twice in a row!")),
       );
       return;
     }
@@ -1304,7 +1322,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         return;
       } else if (roll < 90) {
         // 4. Random move
-        final randomMove = _playerPokemon.moves[Random().nextInt(_playerPokemon.moves.length)];
+        final active = _playerPokemon.activeMoves;
+        final randomMove = active[Random().nextInt(active.length)];
         setState(() {
           _currentMessage = "${_playerPokemon.nickname} ignored orders and used ${randomMove.name} instead!";
         });
@@ -1477,6 +1496,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _playerPokemon.trappedTurnsRemaining = 0;
       _playerPokemon.trappedByMoveId = null;
       _playerPokemon.trappedByMoveName = null;
+      _playerPokemon.isMeanLookTrapped = false;
       _opponentSubmerged = false;
 
       if (widget.isLegendaryBoss) {
@@ -1607,6 +1627,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       _opponentPokemon.trappedTurnsRemaining = 0;
       _opponentPokemon.trappedByMoveId = null;
       _opponentPokemon.trappedByMoveName = null;
+      _opponentPokemon.isMeanLookTrapped = false;
       setState(() {
         _playerSubmerged = false;
         _isProcessingTurn = false;
@@ -2470,6 +2491,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _opponentPokemon.trappedTurnsRemaining = 0;
           _opponentPokemon.trappedByMoveId = null;
           _opponentPokemon.trappedByMoveName = null;
+          _opponentPokemon.isMeanLookTrapped = false;
           _playerKoController.reset();
           _recordParticipant(nextMon);
           setState(() {
@@ -2513,6 +2535,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _playerPokemon.trappedTurnsRemaining = 0;
           _playerPokemon.trappedByMoveId = null;
           _playerPokemon.trappedByMoveName = null;
+          _playerPokemon.isMeanLookTrapped = false;
           _opponentParty.remove(nextOpp);
           if (monJson != null) {
             _syncPokemonStateFromJson(nextOpp, monJson);
@@ -4499,17 +4522,17 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   bool get _isTrappedByOpponentAbility {
     if (_opponentPokemon.isFainted) return false;
-    if (_playerPokemon.species.types.contains(PokemonType.ghost)) return false;
+    if (_playerPokemon.effectiveTypes.contains(PokemonType.ghost)) return false;
     final oppAb = _opponentPokemon.effectiveAbilityId;
     if (oppAb == 'arena_trap') {
       final bool isGrounded = _fieldState.gravityTurns > 0 ||
-          (!_playerPokemon.species.types.contains(PokemonType.flying) &&
+          (!_playerPokemon.effectiveTypes.contains(PokemonType.flying) &&
               !_playerPokemon.hasMagnetRise &&
               _playerPokemon.effectiveAbilityId != 'levitate');
       return isGrounded;
     }
     if (oppAb == 'magnet_pull' &&
-        _playerPokemon.species.types.contains(PokemonType.steel)) {
+        _playerPokemon.effectiveTypes.contains(PokemonType.steel)) {
       return true;
     }
     return false;
@@ -4517,9 +4540,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   Widget _buildMainActionMenu() {
     final bool hasLockedMove = _playerPokemon.hasForcedTurnAction;
-    final bool isMoveTrapped = _playerPokemon.trappedTurnsRemaining > 0;
+    final bool isGhost = _playerPokemon.effectiveTypes.contains(PokemonType.ghost);
+    final bool isIngrained = _playerPokemon.isIngrained;
+    final bool isMoveTrapped = isIngrained ||
+        (!isGhost &&
+            (_playerPokemon.trappedTurnsRemaining > 0 ||
+                _playerPokemon.isMeanLookTrapped));
     final bool isAbilityTrapped = _isTrappedByOpponentAbility;
     final bool isTrapped = isMoveTrapped || isAbilityTrapped;
+    final String switchTrapMessage = isIngrained
+        ? "${_playerPokemon.nickname} is rooted in place by Ingrain!"
+        : (_playerPokemon.isMeanLookTrapped && !isGhost
+            ? "${_playerPokemon.nickname} can't escape!"
+            : (isAbilityTrapped
+                ? "${_playerPokemon.nickname} is trapped by ${AbilityDatabase.nameOf(_opponentPokemon.effectiveAbilityId)}!"
+                : "${_playerPokemon.nickname} is trapped by ${_playerPokemon.trappedByMoveName ?? 'the vortex'}!"));
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool compact = constraints.maxHeight < 168;
@@ -4605,9 +4640,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       content: Text(
                                         hasLockedMove
                                             ? "${_playerPokemon.nickname} is mid-move and cannot switch!"
-                                            : (isAbilityTrapped
-                                                ? "${_playerPokemon.nickname} is trapped by ${AbilityDatabase.nameOf(_opponentPokemon.effectiveAbilityId)}!"
-                                                : "${_playerPokemon.nickname} is trapped by ${_playerPokemon.trappedByMoveName ?? 'the vortex'}!"),
+                                            : switchTrapMessage,
                                       ),
                                       duration: const Duration(seconds: 2),
                                     ),
@@ -4640,12 +4673,19 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                               );
                               return;
                             }
-                            if (isTrapped &&
-                                _playerPokemon.effectiveAbilityId != 'run_away') {
-                              final trapReason = isAbilityTrapped
-                                  ? AbilityDatabase.nameOf(
-                                      _opponentPokemon.effectiveAbilityId)
-                                  : (_playerPokemon.trappedByMoveName ?? 'the trap');
+                            if ((isIngrained || isTrapped) &&
+                                (isIngrained ||
+                                    _playerPokemon.effectiveAbilityId !=
+                                        'run_away')) {
+                              final trapReason = isIngrained
+                                  ? 'Ingrain'
+                                  : (_playerPokemon.isMeanLookTrapped && !isGhost
+                                      ? 'Mean Look'
+                                      : (isAbilityTrapped
+                                          ? AbilityDatabase.nameOf(
+                                              _opponentPokemon.effectiveAbilityId)
+                                          : (_playerPokemon.trappedByMoveName ??
+                                              'the trap')));
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -4672,7 +4712,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildMoveSelection() {
-    final moves = _playerPokemon.moves;
+    final moves = _playerPokemon.activeMoves;
     return LayoutBuilder(
       builder: (context, constraints) {
         final bool compact = constraints.maxHeight < 176;
@@ -4827,11 +4867,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   Widget _buildMoveButton(Move move, {bool compact = false}) {
     final Color typeColor = move.type.color;
-    final bool noPp = move.currentPp <= 0;
+    final bool isDisabled = _playerPokemon.disableTurnsRemaining > 0 &&
+        _playerPokemon.disabledMoveId == move.id;
+    final bool isTormented = _playerPokemon.isTormented &&
+        _playerPokemon.lastMoveUsedId == move.id;
+    final bool noPp = move.currentPp <= 0 || isDisabled || isTormented;
     final double eff = move.power > 0
         ? PokemonTypeExtension.getEffectiveness(
             move.type,
-            _opponentPokemon.species.types,
+            _opponentPokemon.effectiveTypes,
           )
         : 1.0;
 
@@ -5022,7 +5066,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            "${move.currentPp}/${move.maxPp}",
+                            isDisabled
+                                ? "DISABLED"
+                                : (isTormented
+                                    ? "TORMENT"
+                                    : "${move.currentPp}/${move.maxPp}"),
                             style: TextStyle(
                               fontSize: compact ? 10 : 10.5,
                               color: ppColor,
