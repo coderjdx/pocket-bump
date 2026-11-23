@@ -687,18 +687,21 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  /// Processes each step individually: increments today's total & hidden 0..400 encounter counter
-  /// and rolls probability `encounterSteps / 400.0` (1/400 at step 1, 2/400 at step 2, ..., 400/400 at 400).
-  /// When [repelEnabled] is true, wild encounters are suppressed.
-  bool recordStepsAndCheckEncounter(int delta) {
+  /// Increments today's & lifetime step counters by [delta], updates Gym step
+  /// progression, and rolls the 0..400 wild encounter check when [allowEncounter]
+  /// and [!repelEnabled] are both true.
+  bool recordStepsAndCheckEncounter(
+    int delta, {
+    bool allowEncounter = true,
+  }) {
     if (delta <= 0) return false;
     _syncDailyRollover();
     _accumulateGymSteps(delta);
+    dailySteps += delta;
+    totalSteps += delta;
     bool triggered = false;
-    for (int i = 0; i < delta; i++) {
-      dailySteps++;
-      totalSteps++;
-      if (!repelEnabled) {
+    if (allowEncounter && !repelEnabled) {
+      for (int i = 0; i < delta; i++) {
         encounterSteps = (encounterSteps + 1).clamp(0, maxEncounterSteps);
         final double chance = encounterSteps / maxEncounterSteps;
         if (encounterSteps >= maxEncounterSteps || _rng.nextDouble() < chance) {
@@ -1213,6 +1216,9 @@ class Trainer extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_saveKey);
       await prefs.remove(_backupSaveKey);
+      await prefs.remove('pb_step_last_hw_steps');
+      await prefs.remove('pb_step_last_hw_date');
+      await prefs.remove('pb_step_pending_hc_credit');
     } catch (_) {}
     name = 'Red';
     avatar = TrainerAvatar.presets.first;

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -53,23 +54,61 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       duration: const Duration(milliseconds: 1400),
     )..repeat(reverse: true);
 
-    StepCounterService.initialize(
-      onStepDelta: (diff) {
-        if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _promptVersionChoiceIfNeeded();
+      if (!mounted) return;
+      await _initStepCounterSync();
+      if (!mounted) return;
+      await _checkAppUpdate();
+    });
+  }
+
+  Future<void> _initStepCounterSync() async {
+    await StepCounterService.initialize(
+      getCurrentDailySteps: () {
+        if (!mounted) return 0;
+        return Provider.of<Trainer>(context, listen: false).todaySteps;
+      },
+      onStepDelta: (diff, {required bool isLiveStep}) {
+        if (!mounted || diff <= 0) return;
         final trainer = Provider.of<Trainer>(context, listen: false);
-        final triggered = trainer.recordStepsAndCheckEncounter(diff);
-        if (triggered && trainer.gameVersion != null) {
+        final bool onHomeTopRoute = ModalRoute.of(context)?.isCurrent == true;
+        final triggered = trainer.recordStepsAndCheckEncounter(
+          diff,
+          allowEncounter: isLiveStep && onHomeTopRoute,
+        );
+        if (triggered && onHomeTopRoute && trainer.gameVersion != null) {
           StepCounterService.triggerEncounterAlert();
           _launchWildEncounter();
         }
       },
+      requestPermissions: true,
     );
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _promptVersionChoiceIfNeeded();
-      if (!mounted) return;
-      await _checkAppUpdate();
-    });
+  Future<void> _handleManualStepSync() async {
+    if (kIsWeb) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Phone step counter sync is available in the Android APK app."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    final res = await StepCounterService.syncNow(
+      requestPermissions: true,
+      openSettingsIfDenied: true,
+      forceSensorRefresh: true,
+    );
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(res.message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   Future<void> _promptVersionChoiceIfNeeded() async {
@@ -1006,16 +1045,84 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     color: Colors.cyanAccent, size: 14),
               ),
               const SizedBox(width: 7),
-              const Text(
-                "POKÉWALKER GEAR",
-                style: TextStyle(
-                  color: Colors.cyanAccent,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 10,
-                  letterSpacing: 1.0,
+              const Expanded(
+                child: Text(
+                  "POKÉWALKER GEAR",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.cyanAccent,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 10,
+                    letterSpacing: 1.0,
+                  ),
                 ),
               ),
-              const Spacer(),
+              ValueListenableBuilder<StepSyncState>(
+                valueListenable: StepCounterService.syncState,
+                builder: (context, sync, _) {
+                  final Color pillColor;
+                  final IconData pillIcon;
+                  switch (sync.status) {
+                    case StepSyncStatus.syncedHealthAndSensor:
+                    case StepSyncStatus.syncedHealthOnly:
+                      pillColor = Colors.greenAccent;
+                      pillIcon = Icons.sync_rounded;
+                      break;
+                    case StepSyncStatus.syncedSensorOnly:
+                      pillColor = Colors.cyanAccent;
+                      pillIcon = Icons.sensors_rounded;
+                      break;
+                    case StepSyncStatus.syncing:
+                      pillColor = Colors.amberAccent;
+                      pillIcon = Icons.sync_rounded;
+                      break;
+                    case StepSyncStatus.needsPermission:
+                      pillColor = Colors.amberAccent;
+                      pillIcon = Icons.touch_app_rounded;
+                      break;
+                    case StepSyncStatus.webPreview:
+                    case StepSyncStatus.unavailable:
+                      pillColor = Colors.white54;
+                      pillIcon = Icons.sensors_off_rounded;
+                      break;
+                  }
+                  return Tooltip(
+                    message: sync.detail,
+                    child: InkWell(
+                      onTap: _handleManualStepSync,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 7, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: pillColor.withOpacity(0.14),
+                          borderRadius: BorderRadius.circular(8),
+                          border:
+                              Border.all(color: pillColor.withOpacity(0.55)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(pillIcon, size: 11, color: pillColor),
+                            const SizedBox(width: 4),
+                            Text(
+                              sync.label,
+                              style: TextStyle(
+                                color: pillColor,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 9.5,
+                                letterSpacing: 0.4,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 6),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -1815,6 +1922,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               if (modalContext != null && modalContext.mounted) {
                 Navigator.pop(modalContext);
               }
+              await StepCounterService.resetPersistedBaselines();
               await trainer.deleteSaveAndReset();
               messenger.showSnackBar(
                 const SnackBar(

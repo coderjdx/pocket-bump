@@ -6,6 +6,7 @@ import 'screens/starter_select_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/pvp_link_service.dart';
 import 'services/sound_service.dart';
+import 'services/step_counter_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,9 @@ class _PocketBumpAppState extends State<PocketBumpApp> with WidgetsBindingObserv
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     SoundService.instance.handleAppLifecycle(state);
+    if (state == AppLifecycleState.resumed) {
+      StepCounterService.onAppResumed();
+    }
   }
 
   @override

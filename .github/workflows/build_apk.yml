@@ -33,7 +33,7 @@ jobs:
         run: |
           flutter create --platforms=android --org com.coderjdx --project-name pocket_bump .
           python3 -c '
-          import os, re, shutil
+          import glob, os, re, shutil
           path = "android/app/src/main/AndroidManifest.xml"
           with open(path, "r") as f:
               content = f.read()
@@ -42,12 +42,49 @@ jobs:
               <uses-permission android:name="android.permission.BODY_SENSORS" />
               <uses-permission android:name="android.permission.VIBRATE" />
               <uses-permission android:name="android.permission.WAKE_LOCK" />
+              <uses-permission android:name="android.permission.health.READ_STEPS" />
           """
           if "ACTIVITY_RECOGNITION" not in content:
               content = content.replace("<application", perms + "    <application", 1)
+          hc_intent = """            <intent-filter>
+                  <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+              </intent-filter>
+          """
+          if "ACTION_SHOW_PERMISSIONS_RATIONALE" not in content:
+              content = content.replace("</activity>", hc_intent + "        </activity>", 1)
+          hc_alias = """        <activity-alias
+                  android:name="ViewPermissionUsageActivity"
+                  android:exported="true"
+                  android:targetActivity=".MainActivity"
+                  android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+                  <intent-filter>
+                      <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                      <category android:name="android.category.HEALTH_PERMISSIONS" />
+                  </intent-filter>
+              </activity-alias>
+          """
+          if "ViewPermissionUsageActivity" not in content:
+              content = content.replace("</activity>", "</activity>\n" + hc_alias, 1)
+          hc_queries = """        <package android:name="com.google.android.apps.healthdata" />
+                  <intent>
+                      <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+                  </intent>
+          """
+          if "com.google.android.apps.healthdata" not in content:
+              if "<queries>" in content:
+                  content = content.replace("<queries>", "<queries>\n" + hc_queries, 1)
+              else:
+                  content = content.replace("</manifest>", "    <queries>\n" + hc_queries + "    </queries>\n</manifest>", 1)
           content = re.sub(r"android:label=\"[^\"]*\"", "android:label=\"Pocket Bump\"", content, count=1)
           with open(path, "w") as f:
               f.write(content)
+          for kt_path in glob.glob("android/app/src/main/kotlin/**/MainActivity.kt", recursive=True):
+              with open(kt_path, "r") as f:
+                  kt = f.read()
+              kt = kt.replace("io.flutter.embedding.android.FlutterActivity", "io.flutter.embedding.android.FlutterFragmentActivity")
+              kt = re.sub(r"class\s+MainActivity\s*:\s*FlutterActivity\(\)", "class MainActivity : FlutterFragmentActivity()", kt)
+              with open(kt_path, "w") as f:
+                  f.write(kt)
           shutil.rmtree("android/app/src/main/res/mipmap-anydpi-v26", ignore_errors=True)
           icon_map = {
               "assets/icons/ic_launcher_mdpi.png": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
@@ -65,7 +102,8 @@ jobs:
           gradle_path = "android/app/build.gradle.kts"
           with open(gradle_path, "r") as f:
               g = f.read()
-          g = g.replace("compileSdk = flutter.compileSdkVersion", "compileSdk = 37")
+          g = re.sub(r"compileSdk\s*=\s*flutter\.compileSdkVersion", "compileSdk = 37", g)
+          g = re.sub(r"minSdk\s*=\s*flutter\.minSdkVersion", "minSdk = 26", g)
           with open(gradle_path, "w") as f:
               f.write(g)
           '
