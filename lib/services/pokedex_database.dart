@@ -2732,7 +2732,7 @@ class PokedexDatabase {
       power: 120,
       accuracy: 100,
       maxPp: 10,
-      description: 'Foresaw attack that strikes with intense Psychic power.',
+      description: 'Two turns after this move is used, a hunk of psychic energy attacks the target.',
     ),
     'whirlpool': Move(
       id: 'whirlpool',

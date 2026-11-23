@@ -32,6 +32,17 @@ class BattleSideState {
   int spikesLayers = 0; // 0..3
   int toxicSpikesLayers = 0; // 0..2
   bool hasStealthRock = false;
+  int futureSightTurns = 0; // Set to 3 on use -> ticks end of T1 (2), T2 (1), T3 (0 & strikes!)
+  PokemonInstance? futureSightAttacker;
+  bool futureSightFromPlayer = false;
+  Move? futureSightMove;
+
+  void clearFutureSight() {
+    futureSightTurns = 0;
+    futureSightAttacker = null;
+    futureSightFromPlayer = false;
+    futureSightMove = null;
+  }
 
   void clearHazards() {
     spikesLayers = 0;
@@ -88,6 +99,7 @@ class BattleFieldState {
       ..mistTurns = 0
       ..tailwindTurns = 0
       ..luckyChantTurns = 0
+      ..clearFutureSight()
       ..clearHazards();
     opponentSide
       ..reflectTurns = 0
@@ -96,6 +108,7 @@ class BattleFieldState {
       ..mistTurns = 0
       ..tailwindTurns = 0
       ..luckyChantTurns = 0
+      ..clearFutureSight()
       ..clearHazards();
   }
 }
@@ -745,6 +758,8 @@ class BattleEngine {
   static Move? selectOpponentMove(
     PokemonInstance opponent, {
     PokemonInstance? target,
+    BattleFieldState? field,
+    bool opponentIsPlayer = false,
     Random? rng,
   }) {
     final moves = opponent.activeMoves;
@@ -788,6 +803,11 @@ class BattleEngine {
         return false;
       }
       if (m.id == 'last_resort' && opponent.lastMoveUsedId == null) {
+        return false;
+      }
+      if (m.id == 'future_sight' &&
+          field != null &&
+          field.sideFor(!opponentIsPlayer).futureSightTurns > 0) {
         return false;
       }
       return true;
@@ -971,8 +991,14 @@ class BattleEngine {
           field: activeField,
         ));
       }
-      events.addAll(processEndOfTurnField(activeField, playerMon, opponentMon));
     }
+    events.addAll(processEndOfTurnField(
+      activeField,
+      playerMon,
+      opponentMon,
+      isWild: isWild,
+      playerTrainer: playerTrainer,
+    ));
     if (!playerMon.isFainted) {
       playerMon.turnsActiveInBattle++;
     }
@@ -1859,6 +1885,37 @@ class BattleEngine {
         ));
         return events;
       }
+    }
+
+    // Future Sight: foresee attack on target's side, striking 2 turns later (end of turn T+2)
+    if (move.id == 'future_sight') {
+      final targetSide = activeField.sideFor(!isPlayer);
+      if (targetSide.futureSightTurns > 0) {
+        events.add(BattleStepEvent(
+          message: "$attackerName used ${move.name}! But it failed!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          isMiss: true,
+          hideMoveVfx: true,
+        ));
+        return events;
+      }
+      targetSide.futureSightTurns = 3;
+      targetSide.futureSightAttacker = attacker;
+      targetSide.futureSightFromPlayer = isPlayer;
+      targetSide.futureSightMove = move.copy();
+      events.add(BattleStepEvent(
+        message: "$attackerName foresaw an attack!",
+        isPlayerActor: isPlayer,
+        moveId: move.id,
+        moveType: move.type,
+        moveCategory: move.category,
+        statTargetIsSelf: true,
+        isChargeTurn: true,
+      ));
+      return events;
     }
 
     // Damp blocks Self-Destruct & Explosion
@@ -5051,12 +5108,199 @@ class BattleEngine {
     return events;
   }
 
+  static void _resolveFutureSightForSide({
+    required BattleFieldState field,
+    required bool targetIsPlayer,
+    required PokemonInstance playerMon,
+    required PokemonInstance opponentMon,
+    required bool isWild,
+    required Trainer? playerTrainer,
+    required Random random,
+    required List<BattleStepEvent> events,
+  }) {
+    final side = field.sideFor(targetIsPlayer);
+    if (side.futureSightTurns <= 0) return;
+    side.futureSightTurns--;
+    if (side.futureSightTurns > 0) return;
+
+    final attacker = side.futureSightAttacker;
+    final fromPlayer = side.futureSightFromPlayer;
+    final move = side.futureSightMove ??
+        PokedexDatabase.moves['future_sight']?.copy() ??
+        Move(
+          id: 'future_sight',
+          name: 'Future Sight',
+          type: PokemonType.psychic,
+          category: MoveCategory.special,
+          power: 120,
+          accuracy: 100,
+          maxPp: 10,
+          description:
+              'Two turns after this move is used, a hunk of psychic energy attacks the target.',
+        );
+    side.clearFutureSight();
+
+    final target = targetIsPlayer ? playerMon : opponentMon;
+    if (attacker == null || target.isFainted) return;
+
+    final targetName = _labelFor(target, targetIsPlayer, isWild);
+    final String atkAb = attacker.effectiveAbilityId;
+    final String defAb = target.effectiveAbilityId;
+    final bool bypassDefAb = atkAb == 'mold_breaker';
+    final bool noGuard = atkAb == 'no_guard' || defAb == 'no_guard';
+
+    // Gen V Future Sight bypasses Protect/Detect, but semi-invulnerable targets avoid it unless No Guard
+    if (target.isUnderground && !noGuard) {
+      events.add(BattleStepEvent(
+        message: "$targetName avoided the Future Sight attack!",
+        isPlayerActor: fromPlayer,
+        moveId: 'future_sight',
+        moveType: PokemonType.psychic,
+        moveCategory: MoveCategory.special,
+        isMiss: true,
+      ));
+      return;
+    }
+
+    final hitResult = _computeHitDamage(
+      attacker: attacker,
+      move: move,
+      defender: target,
+      isPlayer: fromPlayer,
+      playerTrainer: playerTrainer,
+      random: random,
+      field: field,
+    );
+
+    if (hitResult.typeMultiplier == 0.0) {
+      events.add(BattleStepEvent(
+        message:
+            "$targetName took the Future Sight attack! It doesn't affect $targetName...",
+        isPlayerActor: fromPlayer,
+        moveId: 'future_sight',
+        moveType: PokemonType.psychic,
+        moveCategory: MoveCategory.special,
+        effectiveness: 0.0,
+        targetHpAfter: target.currentHp,
+      ));
+      return;
+    }
+
+    if (target.substituteHp > 0 && atkAb != 'infiltrator') {
+      target.substituteHp = max(0, target.substituteHp - hitResult.damage);
+      final bool broke = target.substituteHp <= 0;
+      events.add(BattleStepEvent(
+        message: broke
+            ? "$targetName took the Future Sight attack! $targetName's substitute broke!"
+            : "$targetName took the Future Sight attack! The substitute took the damage for $targetName!",
+        isPlayerActor: fromPlayer,
+        moveId: 'future_sight',
+        moveType: PokemonType.psychic,
+        moveCategory: MoveCategory.special,
+        damageDealt: 0,
+        targetHpAfter: target.currentHp,
+        isCrit: hitResult.isCrit,
+        effectiveness: hitResult.typeMultiplier,
+        statusInflictedLabel: broke ? 'SUB BROKE!' : 'SUBSTITUTE!',
+      ));
+      return;
+    }
+
+    int dealtDamage = hitResult.damage;
+    bool sturdySaved = false;
+    bool enduredHit = false;
+    if (dealtDamage >= target.currentHp) {
+      if (target.isEnduringThisTurn) {
+        dealtDamage = max(0, target.currentHp - 1);
+        enduredHit = true;
+      } else if (!bypassDefAb &&
+          defAb == 'sturdy' &&
+          target.currentHp == target.maxHp) {
+        dealtDamage = max(0, target.currentHp - 1);
+        sturdySaved = true;
+      }
+    }
+
+    final int prevHp = target.currentHp;
+    target.currentHp = (target.currentHp - dealtDamage).clamp(0, target.maxHp);
+    final int actualLost = max(0, prevHp - target.currentHp);
+    target.lastDamageTakenThisTurn += actualLost;
+    target.lastSpecialDamageTakenThisTurn += actualLost;
+    if (target.bideTurnsRemaining > 0 && actualLost > 0) {
+      target.bideDamageStored += actualLost;
+    }
+
+    final msgBuffer = StringBuffer("$targetName took the Future Sight attack!");
+    if (hitResult.isCrit) msgBuffer.write(" A critical hit!");
+    if (hitResult.typeMultiplier >= 2.0) {
+      msgBuffer.write(" It's super effective!");
+    } else if (hitResult.typeMultiplier > 0 && hitResult.typeMultiplier < 1.0) {
+      msgBuffer.write(" It's not very effective...");
+    }
+    if (sturdySaved) {
+      msgBuffer.write(" $targetName endured the hit with Sturdy!");
+    } else if (enduredHit) {
+      msgBuffer.write(" $targetName endured the hit!");
+    }
+
+    events.add(BattleStepEvent(
+      message: msgBuffer.toString(),
+      isPlayerActor: fromPlayer,
+      moveId: 'future_sight',
+      moveType: PokemonType.psychic,
+      moveCategory: MoveCategory.special,
+      damageDealt: dealtDamage,
+      targetHpAfter: target.currentHp,
+      isCrit: hitResult.isCrit,
+      effectiveness: hitResult.typeMultiplier,
+      targetFainted: target.isFainted,
+      abilityTriggeredName: sturdySaved ? 'Sturdy' : null,
+    ));
+
+    if (!target.isFainted) {
+      final berryEv = checkAndConsumeHeldBerry(
+        target,
+        opponent: targetIsPlayer ? opponentMon : playerMon,
+        isPlayer: targetIsPlayer,
+        isWild: isWild,
+      );
+      if (berryEv != null) events.add(berryEv);
+    } else {
+      events.add(BattleStepEvent(
+        message: "$targetName fainted!",
+        isPlayerActor: fromPlayer,
+        targetHpAfter: 0,
+        targetFainted: true,
+      ));
+    }
+  }
+
   static List<BattleStepEvent> processEndOfTurnField(
     BattleFieldState field,
-    PokemonInstance a,
-    PokemonInstance b,
-  ) {
+    PokemonInstance playerMon,
+    PokemonInstance opponentMon, {
+    bool isWild = true,
+    Trainer? playerTrainer,
+    Random? rng,
+    bool playerSideFirst = true,
+  }) {
     final List<BattleStepEvent> events = [];
+    final random = rng ?? _rng;
+
+    final sideOrder = playerSideFirst ? [true, false] : [false, true];
+    for (final targetIsPlayer in sideOrder) {
+      _resolveFutureSightForSide(
+        field: field,
+        targetIsPlayer: targetIsPlayer,
+        playerMon: playerMon,
+        opponentMon: opponentMon,
+        isWild: isWild,
+        playerTrainer: playerTrainer,
+        random: random,
+        events: events,
+      );
+    }
+
     field.playerSide.tickTurn();
     field.opponentSide.tickTurn();
     if (field.gravityTurns > 0) field.gravityTurns--;

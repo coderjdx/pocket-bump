@@ -24,6 +24,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   List<GymTrainer> _activeGauntlet = const [];
   int _gauntletIndex = 0; // 0 to 4 (0-3: Gym Trainers, 4: Gym Leader)
   bool _inGauntletCheckpoint = false;
+  bool _isLaunchingBattle = false;
+  bool _isBagModalOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -577,7 +579,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     ),
                   ),
                   ElevatedButton.icon(
-                    onPressed: canChallenge
+                    onPressed: (canChallenge && !_isLaunchingBattle)
                         ? () => _startGymGauntlet(context, trainer, gym)
                         : null,
                     icon: Icon(
@@ -766,6 +768,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
   // === GAUNTLET RUNNER & BATTLE LOOP ===
   Future<void> _startGymGauntlet(BuildContext context, Trainer trainer, GymDefinition gym) async {
+    if (_isLaunchingBattle) return;
     if (!trainer.hasConsciousPokemon) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("All Pokémon in your party are fainted! Heal first.")),
@@ -799,7 +802,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   }
 
   Future<void> _launchNextGauntletBattle(Trainer trainer) async {
-    if (_activeGym == null) return;
+    if (_activeGym == null || _isLaunchingBattle) return;
 
     final gauntlet = _activeGauntlet.isNotEmpty
         ? _activeGauntlet
@@ -810,47 +813,143 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
       return;
     }
 
-    final currentOpponent = gauntlet[_gauntletIndex];
-    final opponentTeamInstances = currentOpponent.team.map((spec) => spec.createInstance()).toList();
-    final firstMon = opponentTeamInstances.first;
+    setState(() => _isLaunchingBattle = true);
 
-    await precacheImage(
-      AssetImage(_activeGym!.backgroundAsset),
-      context,
-    ).catchError((_) {});
-    if (!mounted) return;
+    try {
+      final currentOpponent = gauntlet[_gauntletIndex];
+      final opponentTeamInstances =
+          currentOpponent.team.map((spec) => spec.createInstance()).toList();
+      final firstMon = opponentTeamInstances.first;
 
-    final bool? won = await Navigator.push<bool>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BattleScreen(
-          opponentPokemon: firstMon,
-          opponentTeam: opponentTeamInstances,
-          isWild: false,
-          trainerName: currentOpponent.name,
-          trainerTitle: currentOpponent.title,
-          opponentSpriteId: currentOpponent.spriteId,
-          prizeMoney: currentOpponent.prizeMoney,
-          preservePartyHpOnExit: true,
-          battleBackgroundAsset: _activeGym!.backgroundAsset,
-          bgmCategory: BattleBgmCategory.gym,
+      await precacheImage(
+        AssetImage(_activeGym!.backgroundAsset),
+        context,
+      ).catchError((_) {});
+      if (!mounted) return;
+
+      final bool? won = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BattleScreen(
+            opponentPokemon: firstMon,
+            opponentTeam: opponentTeamInstances,
+            isWild: false,
+            trainerName: currentOpponent.name,
+            trainerTitle: currentOpponent.title,
+            opponentSpriteId: currentOpponent.spriteId,
+            prizeMoney: currentOpponent.prizeMoney,
+            preservePartyHpOnExit: true,
+            battleBackgroundAsset: _activeGym!.backgroundAsset,
+            bgmCategory: BattleBgmCategory.gym,
+          ),
         ),
+      );
+      if (!mounted) return;
+
+      if (won == true) {
+        // Advance to checkpoint
+        setState(() {
+          _isLaunchingBattle = false;
+          _gauntletIndex++;
+          if (_gauntletIndex >= gauntlet.length) {
+            _inGauntletCheckpoint = false;
+            _onGauntletVictorious(trainer, _activeGym!);
+          } else {
+            _inGauntletCheckpoint = true;
+          }
+        });
+      } else {
+        // Lost or fled — preserve party HP/PP/status (heal at Pokémon Center)
+        trainer.resetAllPartyStatStages();
+        trainer.saveProgress();
+        setState(() {
+          _isLaunchingBattle = false;
+          _inGauntletCheckpoint = false;
+          _activeGym = null;
+          _activeGauntlet = const [];
+          _gauntletIndex = 0;
+        });
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              backgroundColor: const Color(0xFF1E1E28),
+              title: const Text(
+                "GAUNTLET FAILED",
+                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+              ),
+              content: const Text(
+                "Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",
+                style: TextStyle(color: Colors.white70, fontSize: 13),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (ModalRoute.of(ctx)?.isCurrent == true) {
+                      Navigator.pop(ctx);
+                    }
+                  },
+                  child: const Text("OK", style: TextStyle(color: Colors.amberAccent)),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    } finally {
+      if (mounted && _isLaunchingBattle) {
+        setState(() => _isLaunchingBattle = false);
+      }
+    }
+  }
+
+  Future<void> _confirmRetreatFromGauntlet(Trainer trainer) async {
+    if (_activeGym == null || _isLaunchingBattle) return;
+    final gymName = _activeGym!.name;
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E28),
+        title: const Text(
+          "RETREAT FROM GAUNTLET?",
+          style: TextStyle(
+            color: Colors.redAccent,
+            fontWeight: FontWeight.w900,
+            fontSize: 15,
+          ),
+        ),
+        content: Text(
+          "Retreating from $gymName will reset your current gauntlet progress (Match $_gauntletIndex of 5 cleared).\n\nYour party's current HP, PP, and status will be preserved.",
+          style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (ModalRoute.of(ctx)?.isCurrent == true) {
+                Navigator.pop(ctx, false);
+              }
+            },
+            child: const Text(
+              "STAY",
+              style: TextStyle(color: Colors.tealAccent, fontWeight: FontWeight.bold),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              if (ModalRoute.of(ctx)?.isCurrent == true) {
+                Navigator.pop(ctx, true);
+              }
+            },
+            child: const Text(
+              "RETREAT",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
     );
 
-    if (won == true) {
-      // Advance to checkpoint
-      setState(() {
-        _gauntletIndex++;
-        if (_gauntletIndex >= gauntlet.length) {
-          _inGauntletCheckpoint = false;
-          _onGauntletVictorious(trainer, _activeGym!);
-        } else {
-          _inGauntletCheckpoint = true;
-        }
-      });
-    } else {
-      // Lost or fled — preserve party HP/PP/status (heal at Pokémon Center)
+    if (confirmed == true && mounted) {
       trainer.resetAllPartyStatStages();
       trainer.saveProgress();
       setState(() {
@@ -859,28 +958,6 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         _activeGauntlet = const [];
         _gauntletIndex = 0;
       });
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            backgroundColor: const Color(0xFF1E1E28),
-            title: const Text(
-              "GAUNTLET FAILED",
-              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-            ),
-            content: const Text(
-              "Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",
-              style: TextStyle(color: Colors.white70, fontSize: 13),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text("OK", style: TextStyle(color: Colors.amberAccent)),
-              ),
-            ],
-          ),
-        );
-      }
     }
   }
 
@@ -897,23 +974,51 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 nextOpponent.team.length)
             .round();
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF0C0E18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0D0E18),
-        elevation: 0,
-        title: Text(
-          "${gym.name.toUpperCase()} CHECKPOINT",
-          style: const TextStyle(
-            fontWeight: FontWeight.w900,
-            fontSize: 14,
-            letterSpacing: 1.0,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && !_isLaunchingBattle) {
+          _confirmRetreatFromGauntlet(trainer);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFF0C0E18),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: const Color(0xCC0D0E18),
+          elevation: 0,
+          title: Text(
+            "${gym.name.toUpperCase()} CHECKPOINT",
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 14,
+              letterSpacing: 1.0,
+            ),
           ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          actions: [
+            TextButton.icon(
+              onPressed: _isLaunchingBattle
+                  ? null
+                  : () => _confirmRetreatFromGauntlet(trainer),
+              icon: const Icon(
+                Icons.exit_to_app_rounded,
+                color: Colors.redAccent,
+                size: 15,
+              ),
+              label: const Text(
+                "RETREAT",
+                style: TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 10.5,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+          ],
         ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -1126,7 +1231,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     children: [
                       Expanded(
                         child: OutlinedButton.icon(
-                          onPressed: () => _openBagModal(context, trainer),
+                          onPressed: _isLaunchingBattle
+                              ? null
+                              : () => _openBagModal(context, trainer),
                           icon: const Icon(Icons.medical_services_rounded,
                               size: 16),
                           label: const Text(
@@ -1149,10 +1256,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            setState(() => _inGauntletCheckpoint = false);
-                            _launchNextGauntletBattle(trainer);
-                          },
+                          onPressed: _isLaunchingBattle
+                              ? null
+                              : () => _launchNextGauntletBattle(trainer),
                           icon: const Icon(Icons.play_arrow_rounded, size: 18),
                           label: Text(
                             isLeaderNext ? "FACE LEADER" : "CONTINUE",
@@ -1172,39 +1278,20 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-
-                  // Retreat Button
-                  Center(
-                    child: TextButton.icon(
-                      onPressed: () {
-                        trainer.resetAllPartyStatStages();
-                        trainer.saveProgress();
-                        setState(() {
-                          _inGauntletCheckpoint = false;
-                          _activeGym = null;
-                          _gauntletIndex = 0;
-                        });
-                      },
-                      icon: const Icon(Icons.exit_to_app,
-                          color: Colors.white38, size: 14),
-                      label: const Text(
-                        "RETREAT FROM GAUNTLET (RESETS PROGRESS)",
-                        style: TextStyle(color: Colors.white38, fontSize: 10),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
+      ),
     );
   }
 
   // === BAG USE MODAL AT CHECKPOINT ===
   void _openBagModal(BuildContext context, Trainer trainer) {
+    if (_isBagModalOpen || _isLaunchingBattle) return;
+    _isBagModalOpen = true;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1213,6 +1300,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
+        bool isClosing = false;
         return StatefulBuilder(
           builder: (ctx, setModalState) {
             final medicineItems = [
@@ -1258,7 +1346,13 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.close, color: Colors.white60),
-                        onPressed: () => Navigator.pop(ctx),
+                        onPressed: () {
+                          if (isClosing) return;
+                          if (ModalRoute.of(ctx)?.isCurrent == true) {
+                            isClosing = true;
+                            Navigator.pop(ctx);
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -1322,8 +1416,12 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                                       trainer,
                                       itemId,
                                       () {
-                                        setModalState(() {});
-                                        setState(() {});
+                                        if (ctx.mounted) {
+                                          setModalState(() {});
+                                        }
+                                        if (mounted) {
+                                          setState(() {});
+                                        }
                                       },
                                     );
                                   },
@@ -1347,7 +1445,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           },
         );
       },
-    );
+    ).whenComplete(() {
+      _isBagModalOpen = false;
+    });
   }
 
   void _selectPartyTargetAndApply(
@@ -1359,6 +1459,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     showDialog(
       context: context,
       builder: (ctx) {
+        bool isApplying = false;
         return AlertDialog(
           backgroundColor: const Color(0xFF1E1E28),
           title: Text(
@@ -1395,8 +1496,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                             )
                           : null,
                   onTap: () async {
+                    if (isApplying) return;
                     if (!ItemDatabase.canUseMedicineOn(itemId, mon)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      ScaffoldMessenger.of(this.context).showSnackBar(
                         const SnackBar(
                           content: Text("It won't have any effect!"),
                           duration: Duration(seconds: 1),
@@ -1404,34 +1506,41 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       );
                       return;
                     }
-                    int? moveIndex;
-                    if (ItemDatabase.isSingleMovePpItem(itemId)) {
-                      final itemDef = ItemDatabase.byId(itemId);
-                      if (itemDef != null) {
-                        moveIndex = await showMovePpPickerDialog(
-                          ctx,
-                          pokemon: mon,
-                          item: itemDef,
-                        );
-                        if (moveIndex == null) return;
+                    isApplying = true;
+                    try {
+                      int? moveIndex;
+                      if (ItemDatabase.isSingleMovePpItem(itemId)) {
+                        final itemDef = ItemDatabase.byId(itemId);
+                        if (itemDef != null) {
+                          moveIndex = await showMovePpPickerDialog(
+                            ctx,
+                            pokemon: mon,
+                            item: itemDef,
+                          );
+                          if (moveIndex == null) return;
+                        }
                       }
-                    }
-                    final String msg = ItemDatabase.applyMedicineToPokemon(
-                      itemId: itemId,
-                      targetMon: mon,
-                      moveIndex: moveIndex,
-                    );
-                    trainer.adjustItemCount(itemId, -1);
-                    trainer.saveProgress();
-                    onUpdated();
-                    if (ctx.mounted) Navigator.pop(ctx);
-                    if (mounted) {
-                      ScaffoldMessenger.of(this.context).showSnackBar(
-                        SnackBar(
-                          content: Text(msg),
-                          duration: const Duration(seconds: 2),
-                        ),
+                      final String msg = ItemDatabase.applyMedicineToPokemon(
+                        itemId: itemId,
+                        targetMon: mon,
+                        moveIndex: moveIndex,
                       );
+                      trainer.adjustItemCount(itemId, -1);
+                      trainer.saveProgress();
+                      onUpdated();
+                      if (ctx.mounted && ModalRoute.of(ctx)?.isCurrent == true) {
+                        Navigator.pop(ctx);
+                      }
+                      if (mounted) {
+                        ScaffoldMessenger.of(this.context).showSnackBar(
+                          SnackBar(
+                            content: Text(msg),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    } finally {
+                      isApplying = false;
                     }
                   },
                 );

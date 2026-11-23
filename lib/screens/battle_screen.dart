@@ -711,29 +711,92 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Future<void> _runOpponentFreeAttack() async {
-    if (_opponentPokemon.isFainted || _opponentPokemon.moves.isEmpty) return;
-    await Future.delayed(const Duration(milliseconds: 260));
-    if (!mounted) return;
-    final rawOppMove = BattleEngine.selectOpponentMove(
-      _opponentPokemon,
-      target: _playerPokemon,
-    );
-    if (rawOppMove == null) return;
-    final effectiveOppMove =
-        BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove) ??
-            rawOppMove;
-    final events = BattleEngine.executeSingleAttack(
-      _opponentPokemon,
-      effectiveOppMove,
+    _playerPokemon
+      ..isProtectedThisTurn = false
+      ..isEnduringThisTurn = false
+      ..actedFirstThisTurn = false
+      ..flinchedThisTurn = false
+      ..lastDamageTakenThisTurn = 0
+      ..lastPhysicalDamageTakenThisTurn = 0
+      ..lastSpecialDamageTakenThisTurn = 0;
+    _opponentPokemon
+      ..isProtectedThisTurn = false
+      ..isEnduringThisTurn = false
+      ..actedFirstThisTurn = false
+      ..flinchedThisTurn = false
+      ..lastDamageTakenThisTurn = 0
+      ..lastPhysicalDamageTakenThisTurn = 0
+      ..lastSpecialDamageTakenThisTurn = 0;
+
+    if (!_opponentPokemon.isFainted && _opponentPokemon.moves.isNotEmpty) {
+      await Future.delayed(const Duration(milliseconds: 260));
+      if (!mounted) return;
+      final rawOppMove = BattleEngine.selectOpponentMove(
+        _opponentPokemon,
+        target: _playerPokemon,
+        field: _fieldState,
+      );
+      if (rawOppMove != null) {
+        final effectiveOppMove =
+            BattleEngine.resolveEffectiveMove(_opponentPokemon, rawOppMove) ??
+                rawOppMove;
+        final events = BattleEngine.executeSingleAttack(
+          _opponentPokemon,
+          effectiveOppMove,
+          _playerPokemon,
+          isPlayer: false,
+          isWild: widget.isWild,
+          playerTrainer: _trainer,
+          field: _fieldState,
+        );
+        for (final ev in events) {
+          await _playStepEvent(ev);
+          if (!mounted) return;
+        }
+      }
+    }
+
+    if (!_playerPokemon.isFainted && !_opponentPokemon.isFainted) {
+      for (final ev in BattleEngine.processEndOfTurnStatus(
+        _playerPokemon,
+        opponent: _opponentPokemon,
+        isPlayer: true,
+        isWild: widget.isWild,
+        field: _fieldState,
+      )) {
+        await _playStepEvent(ev);
+        if (!mounted) return;
+      }
+      if (!_playerPokemon.isFainted && !_opponentPokemon.isFainted) {
+        for (final ev in BattleEngine.processEndOfTurnStatus(
+          _opponentPokemon,
+          opponent: _playerPokemon,
+          isPlayer: false,
+          isWild: widget.isWild,
+          field: _fieldState,
+        )) {
+          await _playStepEvent(ev);
+          if (!mounted) return;
+        }
+      }
+    }
+
+    for (final ev in BattleEngine.processEndOfTurnField(
+      _fieldState,
       _playerPokemon,
-      isPlayer: false,
+      _opponentPokemon,
       isWild: widget.isWild,
       playerTrainer: _trainer,
-      field: _fieldState,
-    );
-    for (final ev in events) {
+    )) {
       await _playStepEvent(ev);
       if (!mounted) return;
+    }
+
+    if (!_playerPokemon.isFainted) {
+      _playerPokemon.turnsActiveInBattle++;
+    }
+    if (!_opponentPokemon.isFainted) {
+      _opponentPokemon.turnsActiveInBattle++;
     }
   }
 
@@ -1216,6 +1279,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     final opponentMove = BattleEngine.selectOpponentMove(
       _opponentPokemon,
       target: _playerPokemon,
+      field: _fieldState,
     );
 
     final events = BattleEngine.resolveTurn(
@@ -1348,6 +1412,16 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           });
           await _playerKoController.forward(from: 0.0);
           if (!mounted) return;
+          for (final ev in BattleEngine.processEndOfTurnField(
+            _fieldState,
+            _playerPokemon,
+            _opponentPokemon,
+            isWild: widget.isWild,
+            playerTrainer: _trainer,
+          )) {
+            await _playStepEvent(ev);
+            if (!mounted) return;
+          }
           await _checkPostTurnConditions();
           return;
         }
@@ -1366,6 +1440,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     final opponentMove = BattleEngine.selectOpponentMove(
       _opponentPokemon,
       target: _playerPokemon,
+      field: _fieldState,
     );
 
     final events = BattleEngine.resolveTurn(
@@ -2796,11 +2871,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (!mounted) return;
         }
       }
-      for (final ev in BattleEngine.processEndOfTurnField(
-          _fieldState, _playerPokemon, _opponentPokemon)) {
-        await _playStepEvent(ev);
-        if (!mounted) return;
-      }
+    }
+    for (final ev in BattleEngine.processEndOfTurnField(
+      _fieldState,
+      _playerPokemon,
+      _opponentPokemon,
+      isWild: false,
+      playerTrainer: null,
+      rng: orderRng,
+      playerSideFirst: hostFirstOrder.first.isPlayer,
+    )) {
+      await _playStepEvent(ev);
+      if (!mounted) return;
     }
 
     // 6. Post-turn KO / Forced Switch / Victory check.
