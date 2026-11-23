@@ -5,6 +5,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import 'pokemon_detail_screen.dart';
 
 class PcStorageScreen extends StatefulWidget {
   const PcStorageScreen({super.key});
@@ -45,6 +46,45 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       _selectedSlotIndex = null;
       _selectedPartyIndex = null;
     });
+  }
+
+  void _openPcPokemonInfo(int boxIdx, int slotIdx) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PokemonDetailScreen(
+          pcBoxIndex: boxIdx,
+          pcSlotIndex: slotIdx,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openPartyPokemonInfo(int partyIdx) async {
+    final result = await Navigator.push<Object?>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PokemonDetailScreen(partyIndex: partyIdx),
+      ),
+    );
+    if (result == 'promoted_to_lead' && mounted) {
+      _selectPartySlot(0);
+    }
+  }
+
+  void _openSelectedPokemonInfo() {
+    if (_selectedInParty) {
+      final partyIdx = _selectedPartyIndex;
+      if (partyIdx != null) {
+        _openPartyPokemonInfo(partyIdx);
+      }
+      return;
+    }
+    final boxIdx = _selectedBoxIndex;
+    final slotIdx = _selectedSlotIndex;
+    if (boxIdx != null && slotIdx != null) {
+      _openPcPokemonInfo(boxIdx, slotIdx);
+    }
   }
 
   PokemonInstance? _resolveSelectedPokemon(Trainer trainer) {
@@ -408,6 +448,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     final typeColor = mon.species.types.first.color;
     return InkWell(
       onTap: () => _selectPcSlot(boxIdx, slotIdx),
+      onLongPress: () {
+        _selectPcSlot(boxIdx, slotIdx);
+        _openPcPokemonInfo(boxIdx, slotIdx);
+      },
       borderRadius: BorderRadius.circular(10),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
@@ -516,7 +560,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   ),
                   SizedBox(height: 3),
                   Text(
-                    "Tap any Pokémon in the Box above or your Party below to withdraw, deposit, swap, move between boxes, or release.",
+                    "Tap any Pokémon in the Box above or your Party below to view info, withdraw, deposit, swap, move between boxes, or release.",
                     style: TextStyle(color: Colors.white60, fontSize: 10.5),
                   ),
                 ],
@@ -552,83 +596,115 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
           // Top info row
           Row(
             children: [
-              _buildPokemonSprite(selectedMon.species,
-                  size: 46, isShiny: selectedMon.isShiny),
-              const SizedBox(width: 8),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: _selectedInParty
-                                ? Colors.redAccent.withOpacity(0.22)
-                                : Colors.purpleAccent.withOpacity(0.22),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            _selectedInParty
-                                ? "POKÉMON #${(_selectedPartyIndex ?? 0) + 1}"
-                                : "BOX ${boxIdx + 1}",
-                            style: TextStyle(
-                              color: _selectedInParty
-                                  ? Colors.redAccent.shade100
-                                  : Colors.purpleAccent.shade100,
-                              fontSize: 8.5,
-                              fontWeight: FontWeight.bold,
+                child: InkWell(
+                  onTap: _openSelectedPokemonInfo,
+                  borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    children: [
+                      _buildPokemonSprite(selectedMon.species,
+                          size: 46, isShiny: selectedMon.isShiny),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 1),
+                                  decoration: BoxDecoration(
+                                    color: _selectedInParty
+                                        ? Colors.redAccent.withOpacity(0.22)
+                                        : Colors.purpleAccent.withOpacity(0.22),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Text(
+                                    _selectedInParty
+                                        ? "POKÉMON #${(_selectedPartyIndex ?? 0) + 1}"
+                                        : "BOX ${boxIdx + 1}",
+                                    style: TextStyle(
+                                      color: _selectedInParty
+                                          ? Colors.redAccent.shade100
+                                          : Colors.purpleAccent.shade100,
+                                      fontSize: 8.5,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    selectedMon.nickname,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13.5,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  "Lv.${selectedMon.level}",
+                                  style: const TextStyle(
+                                    color: Colors.amberAccent,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11.5,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: Text(
-                            selectedMon.nickname,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13.5,
+                            const SizedBox(height: 2),
+                            Text(
+                              "HP ${selectedMon.maxHp} • ATK ${selectedMon.atk} • DEF ${selectedMon.def} • SPA ${selectedMon.spa} • SPD ${selectedMon.spd} • SPE ${selectedMon.spe}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 9.5,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 2),
+                            Text(
+                              heldName != null
+                                  ? "Moves: ${selectedMon.moves.map((m) => m.name).join(', ')} • Held: $heldName"
+                                  : "Moves: ${selectedMon.moves.map((m) => m.name).join(', ')}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white54,
+                                fontSize: 9.5,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 6),
-                        Text(
-                          "Lv.${selectedMon.level}",
-                          style: const TextStyle(
-                            color: Colors.amberAccent,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      "HP ${selectedMon.maxHp} • ATK ${selectedMon.atk} • DEF ${selectedMon.def} • SPA ${selectedMon.spa} • SPD ${selectedMon.spd} • SPE ${selectedMon.spe}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 9.5,
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      heldName != null
-                          ? "Moves: ${selectedMon.moves.map((m) => m.name).join(', ')} • Held: $heldName"
-                          : "Moves: ${selectedMon.moves.map((m) => m.name).join(', ')}",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white54,
-                        fontSize: 9.5,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 6),
+              OutlinedButton.icon(
+                onPressed: _openSelectedPokemonInfo,
+                icon: const Icon(Icons.auto_stories_rounded, size: 13),
+                label: const Text(
+                  "INFO",
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.cyanAccent,
+                  side: BorderSide(color: Colors.cyanAccent.withOpacity(0.55)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9)),
                 ),
               ),
             ],
@@ -952,6 +1028,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     final typeColor = mon.species.types.first.color;
     return InkWell(
       onTap: () => _selectPartySlot(idx),
+      onLongPress: () {
+        _selectPartySlot(idx);
+        _openPartyPokemonInfo(idx);
+      },
       borderRadius: BorderRadius.circular(10),
       child: Container(
         height: 54,

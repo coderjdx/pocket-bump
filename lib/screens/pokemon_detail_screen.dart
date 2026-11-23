@@ -15,18 +15,45 @@ import '../widgets/pokeball_sprite.dart';
 import '../widgets/type_badge.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
-  final int partyIndex;
+  final int? partyIndex;
+  final int? pcBoxIndex;
+  final int? pcSlotIndex;
 
   const PokemonDetailScreen({
     super.key,
-    required this.partyIndex,
-  });
+    this.partyIndex,
+    this.pcBoxIndex,
+    this.pcSlotIndex,
+  }) : assert(
+          partyIndex != null || (pcBoxIndex != null && pcSlotIndex != null),
+          'Provide either partyIndex or both pcBoxIndex and pcSlotIndex.',
+        );
 
   @override
   State<PokemonDetailScreen> createState() => _PokemonDetailScreenState();
 }
 
 class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
+  PokemonInstance? _resolvePokemon(Trainer trainer) {
+    final pIdx = widget.partyIndex;
+    if (pIdx != null) {
+      if (pIdx >= 0 && pIdx < trainer.party.length) {
+        return trainer.party[pIdx];
+      }
+      return null;
+    }
+    final bIdx = widget.pcBoxIndex;
+    final sIdx = widget.pcSlotIndex;
+    if (bIdx != null &&
+        sIdx != null &&
+        bIdx >= 0 &&
+        bIdx < trainer.pcBoxes.length &&
+        sIdx >= 0 &&
+        sIdx < trainer.pcBoxes[bIdx].length) {
+      return trainer.pcBoxes[bIdx][sIdx];
+    }
+    return null;
+  }
   String _categoryTag(MoveCategory c) {
     switch (c) {
       case MoveCategory.physical:
@@ -234,18 +261,18 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   Widget build(BuildContext context) {
     return Consumer<Trainer>(
       builder: (context, trainer, _) {
-        if (widget.partyIndex < 0 || widget.partyIndex >= trainer.party.length) {
+        final mon = _resolvePokemon(trainer);
+        if (mon == null) {
           return Scaffold(
             backgroundColor: const Color(0xFF0E1220),
             appBar: AppBar(title: const Text("POKÉMON SUMMARY")),
             body: const Center(
-              child: Text("Pokémon not found in party.",
+              child: Text("Pokémon not found.",
                   style: TextStyle(color: Colors.white70)),
             ),
           );
         }
 
-        final mon = trainer.party[widget.partyIndex];
         final Color typeColor = mon.species.types.first.color;
         final int prevLvlExp =
             (mon.level - 1) * (mon.level - 1) * (mon.level - 1);
@@ -279,13 +306,13 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               ),
               centerTitle: true,
               actions: [
-                if (widget.partyIndex != 0)
+                if (widget.partyIndex != null && widget.partyIndex != 0)
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: TextButton.icon(
                       onPressed: () {
-                        trainer.setLeadPokemon(widget.partyIndex);
-                        Navigator.pop(context);
+                        trainer.setLeadPokemon(widget.partyIndex!);
+                        Navigator.pop(context, 'promoted_to_lead');
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
@@ -302,6 +329,32 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           color: Colors.amberAccent,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  )
+                else if (widget.pcBoxIndex != null)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.purpleAccent.withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Colors.purpleAccent.withOpacity(0.55),
+                          ),
+                        ),
+                        child: Text(
+                          "BOX ${widget.pcBoxIndex! + 1}",
+                          style: TextStyle(
+                            color: Colors.purpleAccent.shade100,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.6,
+                          ),
                         ),
                       ),
                     ),
@@ -792,6 +845,12 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const SizedBox(height: 10),
               _infoRow("Species",
                   "#${mon.species.id.toString().padLeft(3, '0')} ${mon.species.name}"),
+              _infoRow(
+                "Location",
+                widget.partyIndex != null
+                    ? "Party (#${widget.partyIndex! + 1})"
+                    : "PC Box ${widget.pcBoxIndex! + 1} • Slot ${widget.pcSlotIndex! + 1}",
+              ),
               _infoRow("Caught In",
                   ItemDatabase.byId(mon.caughtBall)?.name ?? 'Poké Ball'),
               _infoRow("Rarity Tier", mon.species.rarity.displayName),
