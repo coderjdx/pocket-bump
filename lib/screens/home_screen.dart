@@ -1589,7 +1589,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                         Text(
                           trainer.isExpeditionsUnlocked
-                              ? "4 Legendary Sites • Team Rocket • Master Ball Hunt"
+                              ? "4 Uncharted Kanto Sites • High-Risk Gauntlets"
                               : "Locked • Earn all 8 Badges to unlock ($badges/8)",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

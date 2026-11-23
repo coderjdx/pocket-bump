@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/expedition_database.dart';
-import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
@@ -18,8 +17,6 @@ class ExpeditionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
     final bool unlocked = trainer.isExpeditionsUnlocked;
-    final bool caughtMew =
-        trainer.hasCaughtExpeditionSpecies(ExpeditionDatabase.mewSpeciesId);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0A0D18),
@@ -68,7 +65,7 @@ class ExpeditionsScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 24),
               children: [
-                _buildOverviewBanner(trainer, unlocked, caughtMew),
+                _buildOverviewBanner(trainer, unlocked),
                 const SizedBox(height: 12),
                 for (final dest in ExpeditionDatabase.destinations) ...[
                   _buildDestinationCard(context, trainer, dest, unlocked),
@@ -82,8 +79,7 @@ class ExpeditionsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOverviewBanner(
-      Trainer trainer, bool unlocked, bool caughtMew) {
+  Widget _buildOverviewBanner(Trainer trainer, bool unlocked) {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
@@ -112,7 +108,7 @@ class ExpeditionsScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   unlocked
-                      ? "HIGH-RISK LEGENDARY EXPEDITIONS"
+                      ? "HIGH-RISK EXPEDITIONS"
                       : "LOCKED • REQUIRES ALL 8 GYM BADGES (${trainer.clearedGymIds.length}/8)",
                   style: TextStyle(
                     color: unlocked ? Colors.cyanAccent : Colors.redAccent,
@@ -126,68 +122,11 @@ class ExpeditionsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            "Endure 3 Lv.85–90 wild battles with zero rest, defeat a Lv.90 avg Team Rocket ambush, and roll a chance to encounter Kanto's Legends (Lv.99).",
+            "Endure 3 Lv.85–90 wild battles with zero rest and defeat a Lv.90 avg Team Rocket ambush deep in uncharted Kanto.",
             style: TextStyle(
               color: Colors.white70,
               fontSize: 11,
               height: 1.35,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
-            children: [
-              _statusChip(
-                icon: const PokeBallSpriteWidget(
-                    ballType: 'master_ball', size: 15),
-                label: trainer.hasEarnedExpeditionMasterBall
-                    ? "Master Ball Claimed"
-                    : "Jessie/James Drop: 1% Master Ball",
-                active: trainer.hasEarnedExpeditionMasterBall,
-                color: Colors.purpleAccent,
-              ),
-              _statusChip(
-                icon: Icon(
-                  caughtMew ? Icons.verified_rounded : Icons.auto_awesome,
-                  size: 14,
-                  color: caughtMew ? Colors.pinkAccent : Colors.amberAccent,
-                ),
-                label: caughtMew ? "Mew Caught!" : "Secret 0.01% Mew",
-                active: caughtMew,
-                color: Colors.pinkAccent,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _statusChip({
-    required Widget icon,
-    required String label,
-    required bool active,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(active ? 0.22 : 0.10),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(active ? 0.75 : 0.35)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          icon,
-          const SizedBox(width: 5),
-          Text(
-            label,
-            style: TextStyle(
-              color: active ? Colors.white : color,
-              fontSize: 10,
-              fontWeight: FontWeight.w800,
             ),
           ),
         ],
@@ -201,10 +140,6 @@ class ExpeditionsScreen extends StatelessWidget {
     ExpeditionDestination dest,
     bool unlocked,
   ) {
-    final legendary = PokedexDatabase.species[dest.legendarySpeciesId];
-    final bool alreadyCaught =
-        trainer.hasCaughtExpeditionSpecies(dest.legendarySpeciesId);
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -278,53 +213,6 @@ class ExpeditionsScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (legendary != null)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Opacity(
-                              opacity: alreadyCaught ? 0.95 : 0.85,
-                              child: Image.network(
-                                legendary.spriteUrl,
-                                width: 52,
-                                height: 52,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                                errorBuilder: (_, __, ___) => Image.network(
-                                  legendary.staticSpriteUrl,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 1.5),
-                              decoration: BoxDecoration(
-                                color: alreadyCaught
-                                    ? Colors.green.shade700.withOpacity(0.9)
-                                    : Colors.black87,
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(
-                                  color: alreadyCaught
-                                      ? Colors.greenAccent
-                                      : dest.accentColor.withOpacity(0.6),
-                                ),
-                              ),
-                              child: Text(
-                                alreadyCaught
-                                    ? "${legendary.name} Caught"
-                                    : "${legendary.name} (5%)",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8.5,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                     ],
                   ),
                 ),
@@ -1074,7 +962,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   children: [
                     Text(
                       isMew
-                          ? "0.01% MYTHICAL ANOMALY!"
+                          ? "MYTHICAL POKÉMON APPEARED!"
                           : "LEGENDARY POKÉMON APPEARED!",
                       style: TextStyle(
                         color: isMew ? Colors.pinkAccent : Colors.amberAccent,
@@ -1163,7 +1051,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                 ? "Incredible victory! You subdued ${_bossEncounter!.species.name} and added it to your collection at Lv. 50."
                 : _bossEscapedThisRun
                     ? "You defeated ${_bossEncounter!.species.name}, though it fled before staying in the ball. It can still reappear on future Expeditions!"
-                    : "You cleared all 3 wild battles and drove off Team Rocket's ${_rocketChallenger?.name ?? 'raiders'}! No legendary Pokémon appeared this time.";
+                    : "You cleared all 3 wild battles and drove off Team Rocket's ${_rocketChallenger?.name ?? 'raiders'}! The area fell quiet.";
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1271,7 +1159,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "1% RARE DROP: MASTER BALL!",
+                  "RARE REWARD: MASTER BALL!",
                   style: TextStyle(
                     color: Colors.amberAccent,
                     fontWeight: FontWeight.w900,

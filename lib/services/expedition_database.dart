@@ -60,7 +60,7 @@ class ExpeditionDatabase {
       name: 'Seafoam Islands',
       subtitle: 'Frozen Subterranean Sea',
       description:
-          'Glacial sea caverns deep beneath southern Kanto where Articuno roosts.',
+          'Glacial sea caverns deep beneath southern Kanto, carved by freezing subterranean tides.',
       arrivalNarration:
           'Icy mist swirls around subterranean tides as your team steps onto the frozen ledges of Seafoam Islands...',
       legendarySpeciesId: 144, // Articuno
@@ -75,7 +75,7 @@ class ExpeditionDatabase {
       name: 'Power Plant',
       subtitle: 'Abandoned High-Voltage Hall',
       description:
-          'Abandoned copper-wound generators crackling with static where Zapdos nests.',
+          'Abandoned copper-wound generators crackling with restless high-voltage static.',
       arrivalNarration:
           'Humming generators echo through overgrown turbine halls while arcs of lightning flash across the Power Plant...',
       legendarySpeciesId: 145, // Zapdos
@@ -90,7 +90,7 @@ class ExpeditionDatabase {
       name: 'Victory Road',
       subtitle: 'Molten Summit Ridge',
       description:
-          'Scorched volcanic caverns on Indigo Plateau where Moltres kindles eternal flames.',
+          'Scorched volcanic caverns on Indigo Plateau where searing heat rises from basalt fissures.',
       arrivalNarration:
           'Waves of dry volcanic heat rise from basalt fissures as you march deep into the fiery tunnels of Victory Road...',
       legendarySpeciesId: 146, // Moltres
@@ -105,7 +105,7 @@ class ExpeditionDatabase {
       name: 'Cerulean Cave',
       subtitle: 'Bioluminescent Crystal Sanctum',
       description:
-          'Uncharted crystal chambers hiding Kanto\'s strongest wild Pokémon and Mewtwo.',
+          'Uncharted crystal chambers pulsing with intense energy deep beneath Cerulean City.',
       arrivalNarration:
           'Violet-cyan crystals illuminate the mist-filled abyss of Cerulean Cave. An overwhelming psychic aura stirs nearby...',
       legendarySpeciesId: 150, // Mewtwo

@@ -567,7 +567,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                         ),
                         if (isCleared) ...[
                           Text(
-                            "Re-challenge (On-Par Lv. • 2–5 Trainer / 6 Leader Mons): Rare Gen 1 TMs, ${gym.signatureHeldItemDrop.replaceAll('_', ' ')}, Stones & Fossils",
+                            "Re-challenge (On-Par Lv. • 2–5 Trainer / 6 Leader Mons)",
                             style: TextStyle(
                               color: gym.elementColor,
                               fontSize: 9.5,
