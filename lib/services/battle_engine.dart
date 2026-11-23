@@ -780,7 +780,8 @@ class BattleEngine {
       }
       if ((m.id == 'dream_eater' || m.id == 'nightmare') &&
           target != null &&
-          target.status != StatusCondition.sleep) {
+          (target.status != StatusCondition.sleep ||
+              (m.id == 'nightmare' && target.hasNightmare))) {
         return false;
       }
       if (m.id == 'fake_out' && opponent.turnsActiveInBattle > 0) {
@@ -3837,6 +3838,53 @@ class BattleEngine {
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category,
         ));
         return events;
+      case 'nightmare':
+        if (defender.status != StatusCondition.sleep) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Nightmare! But it failed because $defenderName isn't asleep!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            isMiss: true,
+            hideMoveVfx: true,
+          ));
+        } else if (defender.hasNightmare) {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Nightmare, but $defenderName is already having a nightmare!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            isMiss: true,
+            hideMoveVfx: true,
+          ));
+        } else if (defender.substituteHp > 0 && atkAb != 'infiltrator') {
+          events.add(BattleStepEvent(
+            message:
+                "$attackerName used Nightmare! $defenderName's substitute blocked it!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'BLOCKED',
+            targetHpAfter: defender.currentHp,
+          ));
+        } else {
+          defender.hasNightmare = true;
+          events.add(BattleStepEvent(
+            message: "$defenderName began having a nightmare!",
+            isPlayerActor: isPlayer,
+            moveId: move.id,
+            moveType: move.type,
+            moveCategory: move.category,
+            statusInflictedLabel: 'NIGHTMARE!',
+            targetHpAfter: defender.currentHp,
+          ));
+        }
+        return events;
       case 'conversion':
         final PokemonType nextType = attacker.activeMoves.first.type;
         attacker.activeTypesOverride = [nextType];
@@ -4836,6 +4884,36 @@ class BattleEngine {
           message: "$monName fainted!", isPlayerActor: !isPlayer, targetHpAfter: 0, targetFainted: true,
         ));
         return events;
+      }
+    }
+
+    // 4b. Nightmare (1/4 max HP while asleep, ignored by Magic Guard)
+    if (!mon.isFainted && mon.hasNightmare) {
+      if (mon.status != StatusCondition.sleep) {
+        mon.hasNightmare = false;
+      } else if (!magicGuard) {
+        final int nightmareDmg = max(1, mon.maxHp ~/ 4);
+        mon.currentHp = (mon.currentHp - nightmareDmg).clamp(0, mon.maxHp);
+        events.add(BattleStepEvent(
+          message: "$monName is locked in a nightmare!",
+          isPlayerActor: !isPlayer,
+          moveId: 'nightmare',
+          moveType: PokemonType.ghost,
+          damageDealt: nightmareDmg,
+          targetHpAfter: mon.currentHp,
+          targetFainted: mon.isFainted,
+          isStatusTick: true,
+        ));
+        if (mon.isFainted) {
+          mon.hasNightmare = false;
+          events.add(BattleStepEvent(
+            message: "$monName fainted!",
+            isPlayerActor: !isPlayer,
+            targetHpAfter: 0,
+            targetFainted: true,
+          ));
+          return events;
+        }
       }
     }
 

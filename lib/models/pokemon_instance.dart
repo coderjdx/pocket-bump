@@ -59,7 +59,14 @@ class PokemonInstance {
   List<Move> moves;
   List<String> learnedMoveIds;
   int currentExp;
-  StatusCondition status;
+  StatusCondition _status;
+  StatusCondition get status => _status;
+  set status(StatusCondition value) {
+    _status = value;
+    if (value != StatusCondition.sleep) {
+      hasNightmare = false;
+    }
+  }
   String? heldItemId;
   String caughtBall;
   final bool isShiny;
@@ -112,6 +119,7 @@ class PokemonInstance {
   bool isConfused = false;
   int confusionTurnsRemaining = 0;
   bool isSeeded = false;
+  bool hasNightmare = false;
   bool isBadlyPoisoned = false;
   int toxicCounter = 1;
   int substituteHp = 0;
@@ -216,13 +224,14 @@ class PokemonInstance {
     List<Move>? moves,
     List<String>? learnedMoveIds,
     int? currentExp,
-    this.status = StatusCondition.none,
+    StatusCondition status = StatusCondition.none,
     this.heldItemId,
     this.caughtBall = 'poke_ball',
     bool isShiny = false,
     String? abilityId,
     int? abilitySlot,
-  })  : isShiny = isShiny && species.isShinyEligible,
+  })  : _status = status,
+        isShiny = isShiny && species.isShinyEligible,
         nickname = nickname ?? species.name,
         abilitySlot = abilitySlot ??
             (abilityId != null
@@ -606,6 +615,7 @@ class PokemonInstance {
     isConfused = false;
     confusionTurnsRemaining = 0;
     isSeeded = false;
+    hasNightmare = false;
     toxicCounter = 1;
     substituteHp = 0;
     flinchedThisTurn = false;
