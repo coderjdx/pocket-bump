@@ -5438,19 +5438,83 @@ class BattleEngine {
     }
   }
 
+  static bool isNightTime([DateTime? now]) {
+    final int hour = (now ?? DateTime.now()).hour;
+    return hour >= 20 || hour < 6;
+  }
+
+  /// Effective catch multiplier for all Poké Balls in standard wild encounters.
+  static double getBallCatchMultiplier({
+    required String ballType,
+    required PokemonInstance target,
+    PokemonInstance? playerPokemon,
+    int turnNumber = 1,
+    bool isAlreadyCaught = false,
+    bool isExpedition = false,
+    bool? isNight,
+  }) {
+    switch (ballType) {
+      case 'great_ball':
+        return 1.5;
+      case 'ultra_ball':
+        return 2.0;
+      case 'master_ball':
+        return 255.0;
+      case 'quick_ball':
+        return turnNumber <= 1 ? 5.0 : 1.0;
+      case 'timer_ball':
+        return min(4.0, 1.0 + max(0, turnNumber - 1) * 0.3);
+      case 'dusk_ball':
+        return (isExpedition || (isNight ?? isNightTime())) ? 3.0 : 1.0;
+      case 'net_ball':
+        final hasNetType = target.species.types.any(
+          (t) => t == PokemonType.water || t == PokemonType.bug,
+        );
+        return hasNetType ? 3.5 : 1.0;
+      case 'fast_ball':
+        return target.species.baseSpe >= 100 ? 4.0 : 1.0;
+      case 'dream_ball':
+        return target.status == StatusCondition.sleep ? 4.0 : 1.0;
+      case 'repeat_ball':
+        return isAlreadyCaught ? 3.5 : 1.0;
+      case 'level_ball':
+        if (playerPokemon == null) return 1.0;
+        if (playerPokemon.level >= target.level * 2) return 4.0;
+        if (playerPokemon.level > target.level) return 2.0;
+        return 1.0;
+      case 'heal_ball':
+        return 1.5;
+      case 'poke_ball':
+      default:
+        return 1.0;
+    }
+  }
+
   /// Gen 4 Capture Formula
   static bool attemptCapture({
     required PokemonInstance target,
     required String ballType,
+    PokemonInstance? playerPokemon,
+    int turnNumber = 1,
+    bool isAlreadyCaught = false,
+    bool isExpedition = false,
+    bool? isNight,
+    Random? rng,
   }) {
-    double ballMod = 1.0;
-    if (ballType == 'great_ball') ballMod = 1.5;
-    if (ballType == 'ultra_ball') ballMod = 2.0;
     if (ballType == 'master_ball') return true;
+    final double ballMod = getBallCatchMultiplier(
+      ballType: ballType,
+      target: target,
+      playerPokemon: playerPokemon,
+      turnNumber: turnNumber,
+      isAlreadyCaught: isAlreadyCaught,
+      isExpedition: isExpedition,
+      isNight: isNight,
+    );
 
-    int maxHp = target.maxHp;
-    int curHp = target.currentHp;
-    int catchRate = target.species.baseCatchRate;
+    final int maxHp = target.maxHp;
+    final int curHp = target.currentHp;
+    final int catchRate = target.species.baseCatchRate;
 
     double statusMod = 1.0;
     if (target.status == StatusCondition.sleep || target.status == StatusCondition.freeze) {
@@ -5459,31 +5523,101 @@ class BattleEngine {
       statusMod = 1.5;
     }
 
-    double a = (((3 * maxHp - 2 * curHp) * catchRate * ballMod) / (3 * maxHp)) * statusMod;
+    final double a =
+        (((3 * maxHp - 2 * curHp) * catchRate * ballMod) / (3 * maxHp)) * statusMod;
     if (a >= 255) return true;
 
-    double b = 65536.0 * pow(a / 255.0, 0.25).toDouble();
+    final Random rand = rng ?? _rng;
+    final double b = 65536.0 * pow(a / 255.0, 0.25).toDouble();
     for (int i = 0; i < 4; i++) {
-      if (_rng.nextInt(65536) >= b) {
+      if (rand.nextInt(65536) >= b) {
         return false;
       }
     }
     return true;
   }
 
+  /// Catch probability used during Expedition Legendary / Mythical boss KO phase.
+  static double getLegendaryKoCatchRate({
+    required String ballType,
+    required PokemonInstance target,
+    PokemonInstance? playerPokemon,
+    int turnNumber = 1,
+    bool isAlreadyCaught = false,
+    bool isExpedition = true,
+    bool? isNight,
+    int legendaryCatchAttempts = 0,
+  }) {
+    switch (ballType) {
+      case 'master_ball':
+        return 1.00;
+      case 'ultra_ball':
+        return 0.10;
+      case 'great_ball':
+        return 0.05;
+      case 'poke_ball':
+        return 0.01;
+      case 'quick_ball':
+        return legendaryCatchAttempts == 0 ? 0.12 : 0.05;
+      case 'timer_ball':
+        return min(0.15, 0.05 + max(0, turnNumber - 1) * 0.01);
+      case 'dusk_ball':
+        return (isExpedition || (isNight ?? isNightTime())) ? 0.14 : 0.05;
+      case 'net_ball':
+        final hasNetType = target.species.types.any(
+          (t) => t == PokemonType.water || t == PokemonType.bug,
+        );
+        return hasNetType ? 0.15 : 0.05;
+      case 'fast_ball':
+        return target.species.baseSpe >= 100 ? 0.15 : 0.05;
+      case 'dream_ball':
+        return target.status == StatusCondition.sleep ? 0.15 : 0.05;
+      case 'repeat_ball':
+        return isAlreadyCaught ? 0.15 : 0.05;
+      case 'level_ball':
+        return (playerPokemon != null && playerPokemon.level > target.level)
+            ? 0.15
+            : 0.05;
+      case 'heal_ball':
+        return 0.06;
+      default:
+        return 0.01;
+    }
+  }
+
   /// KO-to-catch formula used during Expedition Legendary / Mythical boss battles
   static bool attemptLegendaryKoCapture({
     required String ballType,
+    PokemonInstance? target,
+    PokemonInstance? playerPokemon,
+    int turnNumber = 1,
+    bool isAlreadyCaught = false,
+    bool isExpedition = true,
+    bool? isNight,
+    int legendaryCatchAttempts = 0,
     Random? rng,
   }) {
     if (ballType == 'master_ball') return true;
     final double rate;
-    if (ballType == 'ultra_ball') {
-      rate = 0.10;
-    } else if (ballType == 'great_ball') {
-      rate = 0.05;
+    if (target == null) {
+      if (ballType == 'ultra_ball') {
+        rate = 0.10;
+      } else if (ballType == 'great_ball') {
+        rate = 0.05;
+      } else {
+        rate = 0.01;
+      }
     } else {
-      rate = 0.01;
+      rate = getLegendaryKoCatchRate(
+        ballType: ballType,
+        target: target,
+        playerPokemon: playerPokemon,
+        turnNumber: turnNumber,
+        isAlreadyCaught: isAlreadyCaught,
+        isExpedition: isExpedition,
+        isNight: isNight,
+        legendaryCatchAttempts: legendaryCatchAttempts,
+      );
     }
     return (rng ?? _rng).nextDouble() < rate;
   }

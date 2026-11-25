@@ -150,6 +150,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   String _throwingBallType = 'poke_ball';
   bool _inLegendaryCapturePhase = false;
   int _legendaryCatchAttempts = 0;
+  int _battleTurn = 1;
+
+  bool get _isExpeditionBattle =>
+      widget.isLegendaryBoss ||
+      widget.bgmCategory == BattleBgmCategory.expedition;
 
   // Player Trainer & summon throw states
   bool _showTrainerSprite = true;
@@ -1551,6 +1556,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   Future<void> _checkPostTurnConditions({int? pvpTurn}) async {
     if (!mounted) return;
+    if (!_inLegendaryCapturePhase) {
+      _battleTurn++;
+    }
 
     // 1. All party Pokémon fainted -> player immediately loses and gains nothing
     if (!_trainer.hasConsciousPokemon) {
@@ -1656,16 +1664,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       }
 
       if (widget.isWild) {
-        // Roll chance for Pokémon item drop based on its rarity
-        final itemDrop = ItemDropService.rollDrop(_opponentPokemon.species);
-        if (itemDrop != null) {
-          _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
+        // Roll 1–3 item drops based on opponent rarity
+        final itemDrops = ItemDropService.rollDrops(_opponentPokemon.species);
+        if (itemDrops.isNotEmpty) {
+          for (final drop in itemDrops) {
+            _trainer.adjustItemCount(drop.itemId, drop.count);
+          }
           _trainer.saveProgress();
           setState(() {
             _currentMessage =
-                "${_opponentPokemon.nickname} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!";
+                "${_opponentPokemon.nickname} dropped ${ItemDropService.formatDrops(itemDrops)}!";
           });
-          await Future.delayed(const Duration(milliseconds: 1100));
+          await Future.delayed(const Duration(milliseconds: 1200));
           if (!mounted) return;
         }
       } else {
@@ -1734,11 +1744,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       return;
     }
 
-    if (ballType == 'poke_ball' && _trainer.pokeBalls <= 0) return;
-    if (ballType == 'great_ball' && _trainer.greatBalls <= 0) return;
-    if (ballType == 'ultra_ball' && _trainer.ultraBalls <= 0) return;
-    if (ballType == 'master_ball' && _trainer.masterBalls <= 0) return;
+    if (_trainer.getItemCount(ballType) <= 0) return;
 
+    final String ballDisplayName = ItemDatabase.byId(ballType)?.name ??
+        ballType.replaceAll('_', ' ').toUpperCase();
     final bool isLegendaryKoThrow =
         widget.isLegendaryBoss && _inLegendaryCapturePhase;
 
@@ -1777,8 +1786,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _visualOpponentFainted = false;
         _opponentKoController.reset();
       }
-      _currentMessage =
-          "${_trainer.name} threw a ${ballType.replaceAll('_', ' ').toUpperCase()}!";
+      _currentMessage = "${_trainer.name} threw a $ballDisplayName!";
     });
 
     await Future.delayed(const Duration(milliseconds: 160));
@@ -1859,7 +1867,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _calloutOnOpponent = true;
         _calloutColor = Colors.redAccent;
         _currentMessage =
-            "Wild ${_opponentPokemon.species.name} swiped the ${ballType.replaceAll('_', ' ').toUpperCase()} away! Defeat it first!";
+            "Wild ${_opponentPokemon.species.name} swiped the $ballDisplayName away! Defeat it first!";
       });
       _opponentShakeController.forward(from: 0);
       _arenaShakeController.forward(from: 0);
@@ -1939,11 +1947,25 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       if (!mounted) return;
     }
 
+    final bool isAlreadyCaught =
+        _trainer.isSpeciesCaught(_opponentPokemon.species.id);
     final bool caught = isLegendaryKoThrow
-        ? BattleEngine.attemptLegendaryKoCapture(ballType: ballType)
+        ? BattleEngine.attemptLegendaryKoCapture(
+            ballType: ballType,
+            target: _opponentPokemon,
+            playerPokemon: _playerPokemon,
+            turnNumber: _battleTurn,
+            isAlreadyCaught: isAlreadyCaught,
+            isExpedition: _isExpeditionBattle,
+            legendaryCatchAttempts: _legendaryCatchAttempts,
+          )
         : BattleEngine.attemptCapture(
             target: _opponentPokemon,
             ballType: ballType,
+            playerPokemon: _playerPokemon,
+            turnNumber: _battleTurn,
+            isAlreadyCaught: isAlreadyCaught,
+            isExpedition: _isExpeditionBattle,
           );
 
     if (caught) {
@@ -1957,19 +1979,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _opponentPokemon.resetToCatchLevel(50);
         _trainer.markExpeditionSpeciesCaught(_opponentPokemon.species.id);
       }
+      if (ballType == 'heal_ball') {
+        _opponentPokemon.healFull();
+      }
       final int? sentToBox = _trainer.addPokemon(_opponentPokemon);
-      final itemDrop = isLegendaryKoThrow
-          ? null
-          : ItemDropService.rollDrop(_opponentPokemon.species);
-      if (itemDrop != null) {
-        _trainer.adjustItemCount(itemDrop.itemId, itemDrop.count);
+      final itemDrops = isLegendaryKoThrow
+          ? const <ItemDrop>[]
+          : ItemDropService.rollDrops(_opponentPokemon.species);
+      if (itemDrops.isNotEmpty) {
+        for (final drop in itemDrops) {
+          _trainer.adjustItemCount(drop.itemId, drop.count);
+        }
         _trainer.saveProgress();
       }
       final String boxNote = (sentToBox != null && sentToBox > 0)
           ? "\n${_opponentPokemon.nickname} was sent to PC Box $sentToBox!"
           : "";
-      final String dropNote = itemDrop != null
-          ? "\n${_opponentPokemon.species.name} dropped ${itemDrop.count > 1 ? '${itemDrop.count}x ' : 'a '}${itemDrop.itemName}!"
+      final String healNote = ballType == 'heal_ball'
+          ? "\n${_opponentPokemon.species.name} was fully healed by Heal Ball!"
+          : "";
+      final String dropNote = itemDrops.isNotEmpty
+          ? "\n${_opponentPokemon.species.name} dropped ${ItemDropService.formatDrops(itemDrops)}!"
           : "";
       HapticFeedback.heavyImpact();
       SoundService.instance.playBallCatchSfx();
@@ -1999,8 +2029,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _inLegendaryCapturePhase = false;
         _currentMessage = isLegendaryKoThrow
-            ? "Gotcha! ${_opponentPokemon.species.name} was caught (Lv. 50)!$boxNote"
-            : "Gotcha! ${_opponentPokemon.species.name} was caught!$boxNote$dropNote";
+            ? "Gotcha! ${_opponentPokemon.species.name} was caught (Lv. 50)!$healNote$boxNote"
+            : "Gotcha! ${_opponentPokemon.species.name} was caught!$healNote$boxNote$dropNote";
         _battleEnded = true;
         _isProcessingTurn = false;
       });
@@ -3760,17 +3790,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Color _ballTopColor(String ballType) {
-    if (ballType == 'master_ball') return Colors.purple.shade600;
-    if (ballType == 'ultra_ball') return Colors.amber.shade700;
-    if (ballType == 'great_ball') return Colors.blue.shade600;
-    return Colors.red.shade600;
+    return ItemDatabase.byId(ballType)?.color ?? Colors.red.shade600;
   }
 
   Widget _buildLegendaryCaptureCommandDeck() {
-    final bool hasAnyBall = _trainer.pokeBalls > 0 ||
-        _trainer.greatBalls > 0 ||
-        _trainer.ultraBalls > 0 ||
-        _trainer.masterBalls > 0;
+    final bool hasAnyBall =
+        ItemDatabase.allBalls.any((b) => _trainer.getItemCount(b.id) > 0);
     final double nextFleePct = _legendaryCatchAttempts == 0
         ? 50
         : (_legendaryCatchAttempts == 1 ? 75 : 100);
@@ -3792,7 +3817,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 ),
               ),
               child: Text(
-                "${_opponentPokemon.species.name} is stunned! Catch rates: Master 100% • Ultra 10% • Great 5% • Poké 1% (Flee if missed: ${nextFleePct.toInt()}%)",
+                "${_opponentPokemon.species.name} is stunned! Master 100% • Special & Ultra Balls boost odds (Flee if missed: ${nextFleePct.toInt()}%)",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.amberAccent,
@@ -3868,69 +3893,105 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
+  String _formatBallRateBadge(Item ball) {
+    if (ball.id == 'master_ball') return '100%';
+    final double mult = BattleEngine.getBallCatchMultiplier(
+      ballType: ball.id,
+      target: _opponentPokemon,
+      playerPokemon: _playerPokemon,
+      turnNumber: _battleTurn,
+      isAlreadyCaught: _trainer.isSpeciesCaught(_opponentPokemon.species.id),
+      isExpedition: _isExpeditionBattle,
+    );
+    final String multStr =
+        mult == mult.roundToDouble() ? '${mult.toInt()}.0x' : '${mult.toStringAsFixed(1)}x';
+    if (ball.id == 'heal_ball') return '$multStr + Heal';
+    return multStr;
+  }
+
   void _openLegendaryBallPickerModal() {
+    final bool isAlreadyCaught =
+        _trainer.isSpeciesCaught(_opponentPokemon.species.id);
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: const Color(0xFF222536),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
-        final balls = <Widget>[];
-        void addBallRow(
-          String id,
-          String name,
-          String rateLabel,
-          int count,
-          Color color,
-        ) {
-          if (count <= 0) return;
-          balls.add(_bagRow(
+        final ownedBalls = ItemDatabase.allBalls
+            .where((b) => _trainer.getItemCount(b.id) > 0)
+            .map((b) {
+          final rate = BattleEngine.getLegendaryKoCatchRate(
+            ballType: b.id,
+            target: _opponentPokemon,
+            playerPokemon: _playerPokemon,
+            turnNumber: _battleTurn,
+            isAlreadyCaught: isAlreadyCaught,
+            isExpedition: _isExpeditionBattle,
+            legendaryCatchAttempts: _legendaryCatchAttempts,
+          );
+          return (ball: b, rate: rate, count: _trainer.getItemCount(b.id));
+        }).toList()
+          ..sort((a, b) => b.rate.compareTo(a.rate));
+
+        final balls = ownedBalls.map((entry) {
+          final b = entry.ball;
+          final pct = (entry.rate * 100).round();
+          return _bagRow(
             icon: Icons.catching_pokemon,
-            iconColor: color,
-            leadingWidget: PokeBallSpriteWidget(ballType: id, size: 28),
-            title: "$name ($rateLabel)",
-            rarity: id == 'master_ball' ? 'Master' : 'Ball',
-            subtitle: "x$count remaining",
+            iconColor: b.color,
+            leadingWidget: PokeBallSpriteWidget(ballType: b.id, size: 28),
+            title: "${b.name} ($pct%)",
+            rarity: b.id == 'master_ball'
+                ? 'Master'
+                : (ItemDatabase.specialBallIds.contains(b.id)
+                    ? 'Special'
+                    : b.rarity.displayName),
+            subtitle: "x${entry.count} remaining",
             btnLabel: "THROW",
-            btnColor: color,
+            btnColor: b.color,
             enabled: true,
             onTap: () {
               Navigator.pop(ctx);
-              _onThrowPokeBall(id);
+              _onThrowPokeBall(b.id);
             },
-          ));
-        }
-
-        addBallRow('master_ball', 'Master Ball', '100%', _trainer.masterBalls,
-            Colors.purpleAccent);
-        addBallRow('ultra_ball', 'Ultra Ball', '10%', _trainer.ultraBalls,
-            Colors.amber.shade800);
-        addBallRow('great_ball', 'Great Ball', '5%', _trainer.greatBalls,
-            Colors.blueAccent);
-        addBallRow('poke_ball', 'Poké Ball', '1%', _trainer.pokeBalls,
-            Colors.redAccent);
+          );
+        }).toList();
 
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
-                  "CAPTURE ATTEMPT",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.amberAccent,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 13.5,
-                    letterSpacing: 1.0,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(ctx).size.height * 0.72,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    "CAPTURE ATTEMPT",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.amberAccent,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 13.5,
+                      letterSpacing: 1.0,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                ...balls,
-              ],
+                  const SizedBox(height: 12),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: balls,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -5569,76 +5630,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       builder: (ctx) {
         final rows = <Widget>[];
 
-        // Balls (available in both wild & trainer battles; trainers block throws)
-        if (_trainer.pokeBalls > 0) {
+        // Balls (standard + Special Poké Balls; trainers block throws)
+        for (final ball in ItemDatabase.allBalls) {
+          final int count = _trainer.getItemCount(ball.id);
+          if (count <= 0) continue;
+          final bool isSpecial = ItemDatabase.specialBallIds.contains(ball.id);
+          final String rateBadge = _formatBallRateBadge(ball);
           rows.add(_bagRow(
             icon: Icons.catching_pokemon,
-            iconColor: Colors.redAccent,
-            leadingWidget:
-                const PokeBallSpriteWidget(ballType: 'poke_ball', size: 28),
-            title: "Poké Ball",
-            rarity: "Common",
-            subtitle: "x${_trainer.pokeBalls} remaining",
+            iconColor: ball.color,
+            leadingWidget: PokeBallSpriteWidget(ballType: ball.id, size: 28),
+            title: ball.id == 'poke_ball'
+                ? ball.name
+                : "${ball.name} ($rateBadge)",
+            rarity: ball.id == 'master_ball'
+                ? 'Master'
+                : (isSpecial ? 'Special' : ball.rarity.displayName),
+            subtitle: "x$count remaining",
             btnLabel: "THROW",
-            btnColor: Colors.redAccent,
+            btnColor: ball.color,
             enabled: true,
             onTap: () {
               Navigator.pop(ctx);
-              _onThrowPokeBall('poke_ball');
-            },
-          ));
-        }
-        if (_trainer.greatBalls > 0) {
-          rows.add(_bagRow(
-            icon: Icons.catching_pokemon,
-            iconColor: Colors.blueAccent,
-            leadingWidget:
-                const PokeBallSpriteWidget(ballType: 'great_ball', size: 28),
-            title: "Great Ball (1.5x)",
-            rarity: "Uncommon",
-            subtitle: "x${_trainer.greatBalls} remaining",
-            btnLabel: "THROW",
-            btnColor: Colors.blueAccent,
-            enabled: true,
-            onTap: () {
-              Navigator.pop(ctx);
-              _onThrowPokeBall('great_ball');
-            },
-          ));
-        }
-        if (_trainer.ultraBalls > 0) {
-          rows.add(_bagRow(
-            icon: Icons.catching_pokemon,
-            iconColor: Colors.amberAccent,
-            leadingWidget:
-                const PokeBallSpriteWidget(ballType: 'ultra_ball', size: 28),
-            title: "Ultra Ball (2.0x)",
-            rarity: "Rare",
-            subtitle: "x${_trainer.ultraBalls} remaining",
-            btnLabel: "THROW",
-            btnColor: Colors.amber.shade800,
-            enabled: true,
-            onTap: () {
-              Navigator.pop(ctx);
-              _onThrowPokeBall('ultra_ball');
-            },
-          ));
-        }
-        if (_trainer.masterBalls > 0) {
-          rows.add(_bagRow(
-            icon: Icons.catching_pokemon,
-            iconColor: Colors.purpleAccent,
-            leadingWidget:
-                const PokeBallSpriteWidget(ballType: 'master_ball', size: 28),
-            title: "Master Ball (100%)",
-            rarity: "Master",
-            subtitle: "x${_trainer.masterBalls} remaining",
-            btnLabel: "THROW",
-            btnColor: Colors.purple.shade600,
-            enabled: true,
-            onTap: () {
-              Navigator.pop(ctx);
-              _onThrowPokeBall('master_ball');
+              _onThrowPokeBall(ball.id);
             },
           ));
         }

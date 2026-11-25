@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/expedition_database.dart';
+import '../services/item_drop_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/pokeball_sprite.dart';
@@ -313,6 +315,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
   int _wildCompleted = 0;
   RocketChallenger? _rocketChallenger;
   PokemonInstance? _bossEncounter;
+  List<ItemDrop> _rocketDrops = const [];
   bool _earnedMasterBall = false;
   bool _expeditionFailed = false;
   bool _caughtBossThisRun = false;
@@ -436,6 +439,16 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
       });
       return;
     }
+
+    // Team Rocket item drops (1–3 wild-tier items + 1 random Special Poké Ball)
+    final rocketDrops = ItemDropService.rollExpeditionRocketDrops(
+      isJessieOrJames: rocket.isJessieOrJames,
+    );
+    for (final drop in rocketDrops) {
+      trainer.adjustItemCount(drop.itemId, drop.count);
+    }
+    trainer.saveProgress();
+    _rocketDrops = rocketDrops;
 
     // 1% one-time Master Ball reward when defeating Jessie or James
     if (rocket.isJessieOrJames &&
@@ -1008,6 +1021,10 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
               ),
             ),
             const SizedBox(height: 12),
+            if (_rocketDrops.isNotEmpty) ...[
+              _buildRocketDropsBanner(),
+              const SizedBox(height: 10),
+            ],
             if (_earnedMasterBall) ...[
               _buildMasterBallRewardBanner(),
               const SizedBox(height: 10),
@@ -1103,6 +1120,10 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       height: 1.4,
                     ),
                   ),
+                  if (_rocketDrops.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    _buildRocketDropsBanner(),
+                  ],
                   if (_earnedMasterBall) ...[
                     const SizedBox(height: 14),
                     _buildMasterBallRewardBanner(),
@@ -1135,6 +1156,79 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           ],
         );
     }
+  }
+
+  Widget _buildRocketDropsBanner() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF172036).withOpacity(0.92),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.cyanAccent.withOpacity(0.45)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.backpack_rounded, color: Colors.cyanAccent, size: 17),
+              SizedBox(width: 7),
+              Text(
+                "TEAM ROCKET LOOT DROPPED",
+                style: TextStyle(
+                  color: Colors.cyanAccent,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 11,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 7),
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
+            children: _rocketDrops.map((drop) {
+              final itemDef = ItemDatabase.byId(drop.itemId);
+              final bool isBall = itemDef?.isBall == true;
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: (itemDef?.color ?? Colors.cyanAccent).withOpacity(0.45),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isBall)
+                      PokeBallSpriteWidget(ballType: drop.itemId, size: 16)
+                    else
+                      Icon(
+                        itemDef?.icon ?? Icons.inventory_2_rounded,
+                        color: itemDef?.color ?? Colors.white70,
+                        size: 14,
+                      ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "${drop.count}x ${drop.itemName}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMasterBallRewardBanner() {

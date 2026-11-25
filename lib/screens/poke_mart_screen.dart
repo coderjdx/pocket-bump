@@ -273,6 +273,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
     required bool locked,
   }) {
     final int userCount = trainer.getItemCount(item.id);
+    final bool tmAlreadyOwned = item.isTm && trainer.hasTm(item.id);
     return Opacity(
       opacity: locked ? 0.58 : 1.0,
       child: Container(
@@ -343,7 +344,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                             border: Border.all(color: Colors.white12),
                           ),
                           child: Text(
-                            "BAG x$userCount",
+                            item.isTm ? "BAG ∞" : "BAG x$userCount",
                             style: const TextStyle(
                               color: Colors.cyanAccent,
                               fontSize: 8.5,
@@ -395,6 +396,25 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                         color: Colors.amberAccent,
                         fontWeight: FontWeight.w900,
                         fontSize: 9.5,
+                      ),
+                    ),
+                  )
+                else if (tmAlreadyOwned)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0A0E18),
+                      borderRadius: BorderRadius.circular(9),
+                      border: Border.all(color: Colors.cyanAccent.withOpacity(0.45)),
+                    ),
+                    child: const Text(
+                      "OWNED",
+                      style: TextStyle(
+                        color: Colors.cyanAccent,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 10.5,
+                        letterSpacing: 0.6,
                       ),
                     ),
                   )
@@ -466,9 +486,13 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
 
   // === BUY QUANTITY MODAL ===
   void _openBuyDialog(BuildContext context, Trainer trainer, Item item) {
+    if (item.isTm && trainer.hasTm(item.id)) return;
     int quantity = 1;
     final int itemPrice = item.price ?? 0;
-    final int maxAffordable = itemPrice > 0 ? (trainer.money ~/ itemPrice).clamp(0, 99) : 99;
+    final int maxAllowed = item.isTm ? 1 : 99;
+    final int maxAffordable = itemPrice > 0
+        ? (trainer.money ~/ itemPrice).clamp(0, maxAllowed)
+        : maxAllowed;
 
     showModalBottomSheet(
       context: context,

@@ -237,11 +237,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
       newMove: tmMove,
       recordOnSkip: false,
       headerNote:
-          "Use 1x ${tmItem.name} to teach ${tmMove.name} to ${mon.nickname}?",
+          "Teach ${tmMove.name} to ${mon.nickname} using ${tmItem.name}? (Reusable)",
     );
     if (!outcome.learned) return;
 
-    trainer.adjustItemCount(tmItem.id, -1);
     trainer.saveProgress();
     trainer.notifyListeners();
     if (!mounted) return;
@@ -1407,12 +1406,31 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    "${tm.name} (x$count)",
+                                    tm.name,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12.5,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 1),
+                                  decoration: BoxDecoration(
+                                    color: tm.color.withOpacity(0.18),
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: tm.color.withOpacity(0.5)),
+                                  ),
+                                  child: Text(
+                                    "∞",
+                                    style: TextStyle(
+                                      color: tm.color,
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),

@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// Displays a pixel-art Poké Ball, Great Ball, or Ultra Ball with optional
+/// Displays a pixel-art Poké Ball sprite with optional
 /// open-capsule split state, pulsing center button glow, and capture lock sheen.
 class PokeBallSpriteWidget extends StatelessWidget {
-  final String ballType; // 'poke_ball', 'great_ball', 'ultra_ball'
+  final String ballType;
   final double size;
   final bool isOpen;
   final Color? buttonGlowColor;
@@ -22,11 +22,18 @@ class PokeBallSpriteWidget extends StatelessWidget {
   String get _assetPath {
     switch (ballType) {
       case 'great_ball':
-        return 'assets/images/balls/great_ball.png';
       case 'ultra_ball':
-        return 'assets/images/balls/ultra_ball.png';
       case 'master_ball':
-        return 'assets/images/balls/master_ball.png';
+      case 'quick_ball':
+      case 'timer_ball':
+      case 'dusk_ball':
+      case 'net_ball':
+      case 'fast_ball':
+      case 'dream_ball':
+      case 'repeat_ball':
+      case 'level_ball':
+      case 'heal_ball':
+        return 'assets/images/balls/$ballType.png';
       case 'poke_ball':
       default:
         return 'assets/images/balls/poke_ball.png';
@@ -134,6 +141,24 @@ class _DetailedPokeBallPainter extends CustomPainter {
         return const Color(0xFF2B2D36);
       case 'master_ball':
         return const Color(0xFF7B1FA2);
+      case 'quick_ball':
+        return const Color(0xFF1E88E5);
+      case 'timer_ball':
+        return const Color(0xFFF1F5F9);
+      case 'dusk_ball':
+        return const Color(0xFF166534);
+      case 'net_ball':
+        return const Color(0xFF0D9488);
+      case 'fast_ball':
+        return const Color(0xFFE53935);
+      case 'dream_ball':
+        return const Color(0xFFEC4899);
+      case 'repeat_ball':
+        return const Color(0xFFEF4444);
+      case 'level_ball':
+        return const Color(0xFF272730);
+      case 'heal_ball':
+        return const Color(0xFFF472B6);
       case 'poke_ball':
       default:
         return const Color(0xFFE53935);
@@ -148,6 +173,24 @@ class _DetailedPokeBallPainter extends CustomPainter {
         return const Color(0xFF4B4F5E);
       case 'master_ball':
         return const Color(0xFFCE93D8);
+      case 'quick_ball':
+        return const Color(0xFFFFD54F);
+      case 'timer_ball':
+        return const Color(0xFFEF4444);
+      case 'dusk_ball':
+        return const Color(0xFF22C55E);
+      case 'net_ball':
+        return const Color(0xFF2DD4BF);
+      case 'fast_ball':
+        return const Color(0xFFFFD54F);
+      case 'dream_ball':
+        return const Color(0xFFC084FC);
+      case 'repeat_ball':
+        return const Color(0xFFFACC15);
+      case 'level_ball':
+        return const Color(0xFFFACC15);
+      case 'heal_ball':
+        return const Color(0xFF38BDF8);
       case 'poke_ball':
       default:
         return const Color(0xFFFF6F60);
@@ -279,6 +322,56 @@ class _DetailedPokeBallPainter extends CustomPainter {
         Offset(topCenter.dx - r * 0.42, topCenter.dy - r * 0.60),
         Offset(topCenter.dx + r * 0.42, topCenter.dy - r * 0.60),
         stripePaint..strokeWidth = max(2.0, r * 0.20),
+      );
+    } else if (ballType == 'quick_ball' || ballType == 'fast_ball' || ballType == 'level_ball') {
+      final accentPaint = Paint()
+        ..color = const Color(0xFFFFD54F)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = max(2.0, r * 0.22)
+        ..strokeCap = StrokeCap.round;
+      canvas.drawLine(
+        Offset(topCenter.dx - r * 0.55, topCenter.dy - r * 0.62),
+        Offset(topCenter.dx, topCenter.dy - r * 0.22),
+        accentPaint,
+      );
+      canvas.drawLine(
+        Offset(topCenter.dx + r * 0.55, topCenter.dy - r * 0.62),
+        Offset(topCenter.dx, topCenter.dy - r * 0.22),
+        accentPaint,
+      );
+    } else if (ballType == 'dusk_ball' || ballType == 'timer_ball' || ballType == 'repeat_ball') {
+      canvas.drawCircle(
+        Offset(topCenter.dx, topCenter.dy - r * 0.45),
+        r * 0.26,
+        Paint()
+          ..color = ballType == 'repeat_ball'
+              ? const Color(0xFFFACC15)
+              : const Color(0xFFEF4444)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = max(1.8, r * 0.16),
+      );
+    } else if (ballType == 'net_ball') {
+      final netPaint = Paint()
+        ..color = const Color(0xFF141824)
+        ..strokeWidth = max(1.5, r * 0.13);
+      canvas.drawLine(
+        Offset(topCenter.dx - r * 0.40, topCenter.dy - r * 0.78),
+        Offset(topCenter.dx + r * 0.40, topCenter.dy - r * 0.05),
+        netPaint,
+      );
+      canvas.drawLine(
+        Offset(topCenter.dx + r * 0.40, topCenter.dy - r * 0.78),
+        Offset(topCenter.dx - r * 0.40, topCenter.dy - r * 0.05),
+        netPaint,
+      );
+    } else if (ballType == 'dream_ball' || ballType == 'heal_ball') {
+      canvas.drawCircle(
+        Offset(topCenter.dx, topCenter.dy - r * 0.44),
+        r * 0.22,
+        Paint()
+          ..color = ballType == 'dream_ball'
+              ? const Color(0xFFC084FC)
+              : const Color(0xFF38BDF8),
       );
     }
 

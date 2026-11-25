@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'game_version.dart';
+import 'item.dart';
 import 'pokemon_instance.dart';
 import 'rival.dart';
 import 'trainer_avatar.dart';
@@ -777,6 +778,8 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool hasTm(String tmId) => getItemCount(tmId) > 0;
+
   int getItemCount(String itemId) {
     switch (itemId) {
       case 'poke_ball':
@@ -862,7 +865,18 @@ class Trainer extends ChangeNotifier {
         fullRestores = (fullRestores + delta).clamp(0, 99);
         break;
       default:
+        final bool isTm = ItemDatabase.byId(itemId)?.isTm == true;
         final current = customItems[itemId] ?? 0;
+        if (isTm) {
+          if (current >= 1 && delta > 0) return;
+          final updated = (current + delta).clamp(0, 1);
+          if (updated <= 0) {
+            customItems.remove(itemId);
+          } else {
+            customItems[itemId] = 1;
+          }
+          break;
+        }
         final updated = (current + delta).clamp(0, 99);
         if (updated <= 0) {
           customItems.remove(itemId);
@@ -1084,7 +1098,8 @@ class Trainer extends ChangeNotifier {
     final rawCustom = json['customItems'] as Map<String, dynamic>? ?? {};
     rawCustom.forEach((k, v) {
       if (v is num && v.toInt() > 0) {
-        customItems[k] = v.toInt().clamp(0, 99);
+        final bool isTm = ItemDatabase.byId(k)?.isTm == true;
+        customItems[k] = isTm ? 1 : v.toInt().clamp(0, 99);
       }
     });
     expShareEnabled = json['expShareEnabled'] == true;

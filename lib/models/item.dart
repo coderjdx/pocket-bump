@@ -44,11 +44,36 @@ class Item {
   bool get isEvolutionStone => category == ItemCategory.evolutionStone;
   bool get isFossil => category == ItemCategory.fossil;
   bool get isTm => category == ItemCategory.tm;
+  bool get isReusable => isTm;
   bool get isBall => category == ItemCategory.pokeball;
   bool get isMedicine => category == ItemCategory.medicine;
 }
 
 class ItemDatabase {
+  static const List<String> standardBallIds = [
+    'poke_ball',
+    'great_ball',
+    'ultra_ball',
+    'master_ball',
+  ];
+
+  static const List<String> specialBallIds = [
+    'quick_ball',
+    'timer_ball',
+    'dusk_ball',
+    'net_ball',
+    'fast_ball',
+    'dream_ball',
+    'repeat_ball',
+    'level_ball',
+    'heal_ball',
+  ];
+
+  static List<Item> get allBalls => [
+        for (final id in [...standardBallIds, ...specialBallIds])
+          if (allItems[id] != null) allItems[id]!,
+      ];
+
   static const Map<String, Item> allItems = {
     // === BALLS ===
     'poke_ball': Item(
@@ -93,6 +118,87 @@ class ItemDatabase {
       rarity: PokemonRarity.special,
       color: Color(0xFFAB47BC),
       icon: Icons.catching_pokemon,
+    ),
+    'quick_ball': Item(
+      id: 'quick_ball',
+      name: 'Quick Ball',
+      description: 'An ultra-fast Poké Ball with a 5.0x catch rate when thrown on Turn 1 of battle.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF29B6F6),
+      icon: Icons.bolt_rounded,
+    ),
+    'timer_ball': Item(
+      id: 'timer_ball',
+      name: 'Timer Ball',
+      description: 'A Poké Ball that grows stronger each turn, scaling from 1.0x up to 4.0x in long battles.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFEF5350),
+      icon: Icons.timer_rounded,
+    ),
+    'dusk_ball': Item(
+      id: 'dusk_ball',
+      name: 'Dusk Ball',
+      description: 'A shadowy Poké Ball with a 3.0x catch rate at night (8 PM–6 AM) or during Expeditions.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF2E7D32),
+      icon: Icons.nights_stay_rounded,
+    ),
+    'net_ball': Item(
+      id: 'net_ball',
+      name: 'Net Ball',
+      description: 'A specialized Poké Ball with a 3.5x catch rate on Water- and Bug-type Pokémon.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF26A69A),
+      icon: Icons.grid_4x4_rounded,
+    ),
+    'fast_ball': Item(
+      id: 'fast_ball',
+      name: 'Fast Ball',
+      description: 'A sleek Poké Ball with a 4.0x catch rate on agile Pokémon with 100+ Base Speed.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFF7043),
+      icon: Icons.speed_rounded,
+    ),
+    'dream_ball': Item(
+      id: 'dream_ball',
+      name: 'Dream Ball',
+      description: 'A misty Poké Ball with a 4.0x catch rate on sleeping wild Pokémon.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFEC407A),
+      icon: Icons.bedtime_rounded,
+    ),
+    'repeat_ball': Item(
+      id: 'repeat_ball',
+      name: 'Repeat Ball',
+      description: 'A Poké Ball with a 3.5x catch rate on species already registered in your Pokédex.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFFB300),
+      icon: Icons.repeat_rounded,
+    ),
+    'level_ball': Item(
+      id: 'level_ball',
+      name: 'Level Ball',
+      description: 'A Poké Ball with 2.0x catch rate if your Pokémon outlevels the target (4.0x at 2x+ level).',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFFCA28),
+      icon: Icons.trending_up_rounded,
+    ),
+    'heal_ball': Item(
+      id: 'heal_ball',
+      name: 'Heal Ball',
+      description: 'A soothing Poké Ball (1.5x catch rate) that fully restores HP, PP, and status on catch.',
+      category: ItemCategory.pokeball,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFF48FB1),
+      icon: Icons.favorite_rounded,
     ),
 
     // === MEDICINE ===

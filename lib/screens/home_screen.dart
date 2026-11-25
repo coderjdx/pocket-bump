@@ -3154,7 +3154,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                         BorderRadius.circular(8),
                                                   ),
                                                   child: Text(
-                                                    "x$count",
+                                                    item.isTm ? "∞" : "x$count",
                                                     style: TextStyle(
                                                       color: count > 0
                                                           ? item.color
@@ -3286,32 +3286,34 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            tooltip: "Add 1",
-                                            onPressed: () => trainer.adjustItemCount(item.id, 1),
-                                            icon: const Icon(Icons.add_circle_outline,
-                                                color: Colors.white70, size: 20),
-                                            constraints: const BoxConstraints(),
-                                            padding: const EdgeInsets.all(4),
-                                          ),
-                                          IconButton(
-                                            tooltip: "Discard 1",
-                                            onPressed: count > 0
-                                                ? () => trainer.adjustItemCount(item.id, -1)
-                                                : null,
-                                            icon: Icon(
-                                              Icons.remove_circle_outline,
-                                              color: count > 0 ? Colors.redAccent : Colors.white24,
-                                              size: 20,
+                                      if (!item.isTm) ...[
+                                        const SizedBox(width: 8),
+                                        Column(
+                                          children: [
+                                            IconButton(
+                                              tooltip: "Add 1",
+                                              onPressed: () => trainer.adjustItemCount(item.id, 1),
+                                              icon: const Icon(Icons.add_circle_outline,
+                                                  color: Colors.white70, size: 20),
+                                              constraints: const BoxConstraints(),
+                                              padding: const EdgeInsets.all(4),
                                             ),
-                                            constraints: const BoxConstraints(),
-                                            padding: const EdgeInsets.all(4),
-                                          ),
-                                        ],
-                                      ),
+                                            IconButton(
+                                              tooltip: "Discard 1",
+                                              onPressed: count > 0
+                                                  ? () => trainer.adjustItemCount(item.id, -1)
+                                                  : null,
+                                              icon: Icon(
+                                                Icons.remove_circle_outline,
+                                                color: count > 0 ? Colors.redAccent : Colors.white24,
+                                                size: 20,
+                                              ),
+                                              constraints: const BoxConstraints(),
+                                              padding: const EdgeInsets.all(4),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 );
@@ -3381,11 +3383,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             newMove: tmMove,
                             recordOnSkip: false,
                             headerNote:
-                                "Use 1x ${tmItem.name} to teach ${tmMove.name} to ${mon.nickname}?",
+                                "Teach ${tmMove.name} to ${mon.nickname} using ${tmItem.name}? (Reusable)",
                           );
                           if (outcome.learned) {
-                            trainer.adjustItemCount(tmItem.id, -1);
                             trainer.saveProgress();
+                            trainer.notifyListeners();
                             if (mounted) {
                               ScaffoldMessenger.of(this.context).showSnackBar(
                                 SnackBar(

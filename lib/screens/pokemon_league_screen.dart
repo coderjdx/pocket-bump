@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +5,9 @@ import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/gym_database.dart';
+import '../services/item_drop_service.dart';
 import '../services/sound_service.dart';
+import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_pp_picker_dialog.dart';
 import 'battle_screen.dart';
@@ -1561,40 +1562,19 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     trainer.resetAllPartyStatStages();
     trainer.saveProgress();
 
-    // Rare drop roll on repeat clears (Gen 1 TMs, held items, evolution stones, or fossil items)
-    String? droppedItemName;
+    // Guaranteed 1–3 drops on repeat clears (unique TMs, held items, stones, fossils/vouchers)
+    List<ItemDrop> droppedItems = const [];
     if (!firstClear) {
-      final rng = Random();
-      final roll = rng.nextDouble();
-      if (roll < 0.28 && gym.tmDrops.isNotEmpty) {
-        // Rare Gen 1 TM drop (weighted toward the Gym Leader's signature TM)
-        final int tmIdx =
-            rng.nextDouble() < 0.35 ? 0 : rng.nextInt(gym.tmDrops.length);
-        final String tmId = gym.tmDrops[tmIdx];
-        trainer.adjustItemCount(tmId, 1);
-        final itemDef = ItemDatabase.byId(tmId);
-        droppedItemName = itemDef?.name ?? tmId.toUpperCase();
-      } else if (roll < 0.46) {
-        // Drop signature held item
-        trainer.adjustItemCount(gym.signatureHeldItemDrop, 1);
-        final itemDef = ItemDatabase.byId(gym.signatureHeldItemDrop);
-        droppedItemName = itemDef?.name ?? gym.signatureHeldItemDrop;
-      } else if (roll < 0.62) {
-        // Drop signature stone
-        trainer.adjustItemCount(gym.signatureStoneDrop, 1);
-        final itemDef = ItemDatabase.byId(gym.signatureStoneDrop);
-        droppedItemName = itemDef?.name ?? gym.signatureStoneDrop;
-      } else if (roll < 0.74) {
-        // Rare Unknown Fossil drop
-        trainer.adjustItemCount('unknown_fossil', 1);
-        droppedItemName =
-            ItemDatabase.byId('unknown_fossil')?.name ?? 'Unknown Fossil';
-      } else if (roll < 0.86) {
-        // Rare Fossil Restoration Voucher drop
-        trainer.adjustItemCount('fossil_restoration_voucher', 1);
-        droppedItemName =
-            ItemDatabase.byId('fossil_restoration_voucher')?.name ??
-                'Fossil Restoration Voucher';
+      final Set<String> ownedTmIds = TmService.allTms
+          .where((tm) => trainer.hasTm(tm.id))
+          .map((tm) => tm.id)
+          .toSet();
+      droppedItems = ItemDropService.rollGymRematchDrops(
+        gym: gym,
+        ownedTmIds: ownedTmIds,
+      );
+      for (final drop in droppedItems) {
+        trainer.adjustItemCount(drop.itemId, drop.count);
       }
       trainer.saveProgress();
     }
@@ -1667,7 +1647,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   ],
                 ),
               ),
-            ] else if (droppedItemName != null) ...[
+            ] else if (droppedItems.isNotEmpty) ...[
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -1675,20 +1655,60 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.amberAccent.withOpacity(0.6)),
                 ),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.card_giftcard, color: Colors.amberAccent, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        "Rare Gym Leader Drop: Received 1x $droppedItemName!",
-                        style: const TextStyle(
-                          color: Colors.amberAccent,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                    const Row(
+                      children: [
+                        Icon(Icons.card_giftcard, color: Colors.amberAccent, size: 18),
+                        SizedBox(width: 8),
+                        Text(
+                          "Gym Leader Rematch Rewards",
+                          style: TextStyle(
+                            color: Colors.amberAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
+                    const SizedBox(height: 6),
+                    ...droppedItems.map((d) {
+                      final itemDef = ItemDatabase.byId(d.itemId);
+                      final String badgeText =
+                          (itemDef?.isTm == true) ? 'REUSABLE' : 'x${d.count}';
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Row(
+                          children: [
+                            Icon(
+                              itemDef?.icon ?? Icons.inventory_2_rounded,
+                              color: itemDef?.color ?? Colors.amberAccent,
+                              size: 14,
+                            ),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                d.itemName,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 11.5,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              badgeText,
+                              style: const TextStyle(
+                                color: Colors.amberAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
