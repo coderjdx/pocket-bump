@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../screens/pokemon_detail_screen.dart';
 import 'hp_bar.dart';
