@@ -5444,6 +5444,8 @@ class BattleEngine {
   }
 
   /// Effective catch multiplier for all Poké Balls in standard wild encounters.
+  /// Special Poké Balls grant no bonus modifiers on Legendaries or Mythicals
+  /// and use the regular Poké Ball rate (1.0x) instead.
   static double getBallCatchMultiplier({
     required String ballType,
     required PokemonInstance target,
@@ -5453,6 +5455,10 @@ class BattleEngine {
     bool isExpedition = false,
     bool? isNight,
   }) {
+    if ((target.species.isLegendary || target.species.isMythical) &&
+        ItemDatabase.specialBallIds.contains(ballType)) {
+      return 1.0;
+    }
     switch (ballType) {
       case 'great_ball':
         return 1.5;
@@ -5538,6 +5544,7 @@ class BattleEngine {
   }
 
   /// Catch probability used during Expedition Legendary / Mythical boss KO phase.
+  /// Special Poké Balls have the same catch rate as a regular Poké Ball (1%).
   static double getLegendaryKoCatchRate({
     required String ballType,
     required PokemonInstance target,
@@ -5556,30 +5563,6 @@ class BattleEngine {
       case 'great_ball':
         return 0.05;
       case 'poke_ball':
-        return 0.01;
-      case 'quick_ball':
-        return legendaryCatchAttempts == 0 ? 0.12 : 0.05;
-      case 'timer_ball':
-        return min(0.15, 0.05 + max(0, turnNumber - 1) * 0.01);
-      case 'dusk_ball':
-        return (isExpedition || (isNight ?? isNightTime())) ? 0.14 : 0.05;
-      case 'net_ball':
-        final hasNetType = target.species.types.any(
-          (t) => t == PokemonType.water || t == PokemonType.bug,
-        );
-        return hasNetType ? 0.15 : 0.05;
-      case 'fast_ball':
-        return target.species.baseSpe >= 100 ? 0.15 : 0.05;
-      case 'dream_ball':
-        return target.status == StatusCondition.sleep ? 0.15 : 0.05;
-      case 'repeat_ball':
-        return isAlreadyCaught ? 0.15 : 0.05;
-      case 'level_ball':
-        return (playerPokemon != null && playerPokemon.level > target.level)
-            ? 0.15
-            : 0.05;
-      case 'heal_ball':
-        return 0.06;
       default:
         return 0.01;
     }

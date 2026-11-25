@@ -3817,7 +3817,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 ),
               ),
               child: Text(
-                "${_opponentPokemon.species.name} is stunned! Master 100% • Special & Ultra Balls boost odds (Flee if missed: ${nextFleePct.toInt()}%)",
+                "${_opponentPokemon.species.name} is stunned! Catch rates: Master 100% • Ultra 10% • Great 5% • Other Balls 1% (Flee if missed: ${nextFleePct.toInt()}%)",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.amberAccent,

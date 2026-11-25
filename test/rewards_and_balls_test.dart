@@ -344,22 +344,68 @@ void main() {
         1.5,
       );
 
-      // Legendary KO Catch Rates
-      expect(
-        BattleEngine.getLegendaryKoCatchRate(
-            ballType: 'dusk_ball', target: waterTarget, isExpedition: true),
-        0.14,
+      // Legendary & Mythical targets receive no Special Poké Ball bonuses (1.0x / 1%)
+      final legendaryTarget = _makeMon(
+        _makeSpecies(
+          id: 144,
+          name: 'Articuno',
+          types: [PokemonType.water, PokemonType.flying],
+          baseSpe: 150,
+          isLegendary: true,
+        ),
+        level: 20,
+        status: StatusCondition.sleep,
       );
-      expect(
-        BattleEngine.getLegendaryKoCatchRate(
-            ballType: 'fast_ball', target: fastSleepingTarget),
-        0.15,
+      final mythicalTarget = _makeMon(
+        _makeSpecies(
+          id: 151,
+          name: 'Mew',
+          types: [PokemonType.water],
+          baseSpe: 150,
+          isMythical: true,
+        ),
+        level: 20,
+        status: StatusCondition.sleep,
       );
-      expect(
-        BattleEngine.getLegendaryKoCatchRate(
-            ballType: 'heal_ball', target: waterTarget),
-        0.06,
-      );
+
+      for (final bossTarget in [legendaryTarget, mythicalTarget]) {
+        for (final ballId in ItemDatabase.specialBallIds) {
+          expect(
+            BattleEngine.getBallCatchMultiplier(
+              ballType: ballId,
+              target: bossTarget,
+              playerPokemon: highLead,
+              turnNumber: 1,
+              isAlreadyCaught: true,
+              isExpedition: true,
+              isNight: true,
+            ),
+            1.0,
+          );
+          expect(
+            BattleEngine.getLegendaryKoCatchRate(
+              ballType: ballId,
+              target: bossTarget,
+              playerPokemon: highLead,
+              turnNumber: 1,
+              isAlreadyCaught: true,
+              isExpedition: true,
+              isNight: true,
+            ),
+            0.01,
+          );
+        }
+        expect(
+          BattleEngine.getBallCatchMultiplier(
+              ballType: 'ultra_ball', target: bossTarget),
+          2.0,
+        );
+        expect(
+          BattleEngine.getLegendaryKoCatchRate(
+              ballType: 'ultra_ball', target: bossTarget),
+          0.10,
+        );
+      }
     });
   });
 }
