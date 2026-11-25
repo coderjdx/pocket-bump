@@ -30838,7 +30838,7 @@ s=1
 break}a=A.be(J.aZ(m,"tag_name"))
 a0=a==null?null:B.m.d8(a)
 l=a0==null?"":a0
-if(J.cS(l)===0||!A.b75(l,"1.0.84")){q=null
+if(J.cS(l)===0||!A.b75(l,"1.0.85")){q=null
 s=1
 break}s=!a5?8:9
 break
@@ -30863,7 +30863,7 @@ break}}}b=A.be(J.aZ(m,"name"))
 c=b==null?null:B.m.d8(b)
 b=h
 if(!(c!=null&&c.length!==0))A.u(l)
-q=new A.Nn("1.0.84",l,b)
+q=new A.Nn("1.0.85",l,b)
 s=1
 break
 p=2
@@ -32700,21 +32700,24 @@ a7J:function a7J(){},
 a7K:function a7K(){},
 a7z:function a7z(){},
 a7O:function a7O(){},
-aXF(a,b,c,d,e){var s,r,q,p,o,n,m,l,k,j,i,h,g=B.aMY.i(0,d)
-if(g==null)g=B.YX
-s=a?g.e:g.a
-r=a?g.f:g.b
-q=a?g.r:g.c
-p=a?g.w:g.d
+aXF(a,b,c,d,a0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=B.aMY.i(0,d)
+if(e==null)e=B.YX
+s=a?e.e:e.a
+r=a?e.f:e.b
+q=a?e.r:e.c
+p=a?e.w:e.d
 o=s>0?s:60
 n=r>0?r:60
-m=Math.min(e,Math.min(c/o,b/n))
-l=B.b.ib(o*m)
-k=B.b.ib(n*m)
-j=q>0?q:n
-i=p*m
-h=j*m
-return new A.amR(l,k,m,i+h*0.5,B.b.D(i+h,h,k),h)},
+m=isFinite(c)?c:1
+l=Math.max(1,m)
+m=isFinite(b)?b:1
+k=Math.max(0.05,Math.min(a0,Math.min(l/o,Math.max(1,m)/n)))
+j=Math.max(1,B.b.ib(o*k))
+i=Math.max(1,B.b.ib(n*k))
+h=q>0?q:n
+g=B.b.D(p*k,0,i)
+f=Math.min(i,h*k)
+return new A.amR(j,i,k,B.b.D(g+f*0.5,0,i),Math.min(i,Math.max(f,g+f)),f)},
 ac:function ac(a,b,c,d,e,f,g,h){var _=this
 _.a=a
 _.b=b
@@ -106127,7 +106130,7 @@ e=e.a.a
 c=d?u.K+e+".gif":u.C+e+".gif"
 e=""+e
 e=d?u.x+e+".png":u.Z+e+".png"
-d=B.b.D(96*s.c,64,Math.min(b1,b3))
+d=B.b.D(96*s.c,64,Math.max(64,Math.min(b1,b3)))
 b=a7.p4
 a=a7.p2
 a0=a7.k3
@@ -106157,7 +106160,7 @@ h=h.a.a
 f=g?"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/shiny/"+h+".gif":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/"+h+".gif"
 h=""+h
 h=g?"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/"+h+".png":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/"+h+".png"
-g=B.b.D(96*r.c,80,Math.min(b5,b8))
+g=B.b.D(96*r.c,80,Math.max(80,Math.min(b5,b8)))
 e=a7.p3
 d=a7.p1
 c=a7.k2
