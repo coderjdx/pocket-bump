@@ -7,6 +7,7 @@ import 'package:pocket_bump/models/pokemon_type.dart';
 import 'package:pocket_bump/models/trainer.dart';
 import 'package:pocket_bump/services/adventure_database.dart';
 import 'package:pocket_bump/services/battle_engine.dart';
+import 'package:pocket_bump/services/battle_sprite_metrics.dart';
 import 'package:pocket_bump/services/gym_database.dart';
 import 'package:pocket_bump/services/item_drop_service.dart';
 import 'package:pocket_bump/services/pokedex_database.dart';
@@ -500,6 +501,38 @@ void main() {
               ballType: 'ultra_ball', target: bossTarget),
           0.10,
         );
+      }
+    });
+  });
+
+  group('BattleSpriteMetrics Layout Safety', () {
+    test('resolve never throws clamp range error across all species and viewports', () {
+      final viewports = [
+        (zoom: 1.05, maxW: 96.0, maxH: 92.0),
+        (zoom: 1.38, maxW: 175.0, maxH: 142.0),
+        (zoom: 1.88, maxW: 214.0, maxH: 176.0),
+        (zoom: 1.93, maxW: 240.0, maxH: 195.0),
+        (zoom: 1.38, maxW: 0.0, maxH: 0.0),
+      ];
+
+      for (final speciesId in BattleSpriteMetrics.bySpeciesId.keys) {
+        for (final isBack in [false, true]) {
+          for (final vp in viewports) {
+            final resolved = BattleSpriteMetrics.resolve(
+              speciesId: speciesId,
+              isBack: isBack,
+              targetZoom: vp.zoom,
+              maxWidth: vp.maxW,
+              maxHeight: vp.maxH,
+            );
+            expect(resolved.width.isFinite && resolved.width >= 1.0, isTrue);
+            expect(resolved.height.isFinite && resolved.height >= 1.0, isTrue);
+            expect(resolved.visualHeight.isFinite && resolved.visualHeight > 0.0, isTrue);
+            expect(resolved.bodyCenterFromBottom >= 0.0, isTrue);
+            expect(resolved.bodyTopFromBottom >= resolved.visualHeight - 0.001, isTrue);
+            expect(resolved.bodyTopFromBottom <= resolved.height + 0.001, isTrue);
+          }
+        }
       }
     });
   });

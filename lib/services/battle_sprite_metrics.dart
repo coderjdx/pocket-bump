@@ -253,15 +253,22 @@ class BattleSpriteMetrics {
 
     final double safeW = rawW > 0 ? rawW.toDouble() : 60.0;
     final double safeH = rawH > 0 ? rawH.toDouble() : 60.0;
-    final double zoom = min(targetZoom, min(maxWidth / safeW, maxHeight / safeH));
-    final double renderW = (safeW * zoom).roundToDouble();
-    final double renderH = (safeH * zoom).roundToDouble();
+    final double safeMaxW = max(1.0, maxWidth.isFinite ? maxWidth : 1.0);
+    final double safeMaxH = max(1.0, maxHeight.isFinite ? maxHeight : 1.0);
+    final double zoom = max(
+      0.05,
+      min(targetZoom, min(safeMaxW / safeW, safeMaxH / safeH)),
+    );
+    final double renderW = max(1.0, (safeW * zoom).roundToDouble());
+    final double renderH = max(1.0, (safeH * zoom).roundToDouble());
 
     final double visHClamped = rawVisH > 0 ? rawVisH.toDouble() : safeH;
-    final double bodyBottom = rawPadB * zoom;
-    final double bodyH = visHClamped * zoom;
-    final double bodyCenterFromBottom = bodyBottom + bodyH * 0.5;
-    final double bodyTopFromBottom = (bodyBottom + bodyH).clamp(bodyH, renderH);
+    final double bodyBottom = (rawPadB * zoom).clamp(0.0, renderH);
+    final double bodyH = min(renderH, visHClamped * zoom);
+    final double bodyCenterFromBottom =
+        (bodyBottom + bodyH * 0.5).clamp(0.0, renderH);
+    final double bodyTopFromBottom =
+        min(renderH, max(bodyH, bodyBottom + bodyH));
 
     return ResolvedBattleSpriteLayout(
       width: renderW,

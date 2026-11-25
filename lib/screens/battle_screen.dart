@@ -3300,7 +3300,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           width: oppLayout.width,
                                           height: oppLayout.height,
                                           fallbackBoxSize: (96.0 * oppLayout.zoom)
-                                              .clamp(64.0, min(oppMaxW, oppMaxH)),
+                                              .clamp(64.0, max(64.0, min(oppMaxW, oppMaxH))),
                                           isFainted: _visualOpponentFainted,
                                           isSubmerged: _opponentSubmerged,
                                           lungeOffset: _opponentLungeOffset,
@@ -3419,7 +3419,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           width: playerLayout.width,
                                           height: playerLayout.height,
                                           fallbackBoxSize: (96.0 * playerLayout.zoom)
-                                              .clamp(80.0, min(playerMaxW, playerMaxH)),
+                                              .clamp(80.0, max(80.0, min(playerMaxW, playerMaxH))),
                                           isFainted: _visualPlayerFainted,
                                           isSubmerged: _playerSubmerged,
                                           lungeOffset: _playerLungeOffset,
