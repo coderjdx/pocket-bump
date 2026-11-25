@@ -225,38 +225,61 @@ class PokemonSpecies {
     return playerLevel >= requiredPlayerLevelForEncounter;
   }
 
-  /// Proportional visual scale factor derived from canonical Pokémon height.
-  /// Calibrated so Stage 1 starters (~0.5–0.7m), Stage 2 (~1.0–1.2m),
-  /// Stage 3 (~1.6–2.2m), and giants (Onix/Gyarados) read at distinct sizes.
-  double get speciesScale {
-    if (heightMeters <= 0.2) return 0.34;
-    if (heightMeters <= 0.3) return 0.38;
-    if (heightMeters <= 0.4) return 0.44;
-    if (heightMeters <= 0.5) return 0.50;
-    if (heightMeters <= 0.6) return 0.56;
-    if (heightMeters <= 0.7) return 0.61;
-    if (heightMeters <= 0.8) return 0.68;
-    if (heightMeters <= 1.0) return 0.76;
-    if (heightMeters <= 1.2) return 0.84;
-    if (heightMeters <= 1.5) return 0.96;
-    if (heightMeters <= 1.7) return 1.12;
-    if (heightMeters <= 2.2) return 1.24;
-    return 1.36;
+  /// Visual standing/posture height in meters used for UI sprite scaling.
+  /// Serpentine/coiled Pokémon use pokédex nose-to-tail length for [heightMeters]
+  /// (kept intact for weight/height move formulas), so map their visual posture height here.
+  double get visualHeightMeters {
+    switch (id) {
+      case 23: // Ekans (2.0m length, small coiled snake)
+        return 0.7;
+      case 24: // Arbok (3.5m length, coiled hood)
+        return 1.5;
+      case 95: // Onix (8.8m length, towering coiled rock snake)
+        return 2.6;
+      case 130: // Gyarados (6.5m length, towering sea serpent)
+        return 2.6;
+      case 147: // Dratini (1.8m length, tiny coiled dragon)
+        return 0.7;
+      case 148: // Dragonair (4.0m length, slender coiled dragon)
+        return 1.4;
+      case 497: // Serperior (3.3m length, regal coiled serpent)
+        return 1.6;
+      default:
+        return heightMeters;
+    }
   }
 
-  /// Foreground (player) active Pokémon height in logical pixels (base 166px for ~1.5m Pokémon)
-  double get battlePlayerSize => (166.0 * speciesScale).roundToDouble();
+  /// Proportional visual scale factor derived from visual standing height.
+  /// Calibrated smoothly across tiny Pokémon (~0.2-0.4m), mid-stage (~0.8-1.4m),
+  /// and towering evolutions/legendaries (2.0m+).
+  double get speciesScale {
+    final h = visualHeightMeters;
+    if (h <= 0.3) return 0.52;
+    if (h <= 0.4) return 0.58;
+    if (h <= 0.5) return 0.64;
+    if (h <= 0.6) return 0.70;
+    if (h <= 0.7) return 0.75;
+    if (h <= 0.9) return 0.82;
+    if (h <= 1.1) return 0.88;
+    if (h <= 1.4) return 0.96;
+    if (h <= 1.7) return 1.04;
+    if (h <= 2.2) return 1.12;
+    return 1.20;
+  }
 
-  /// Distant (opponent) Pokémon height in logical pixels (~0.55x foreground size for perspective depth)
-  double get battleOpponentSize => (92.0 * speciesScale).roundToDouble();
+  /// Foreground (player) active Pokémon height in logical pixels
+  double get battlePlayerSize => (148.0 * speciesScale).roundToDouble();
+
+  /// Distant (opponent) Pokémon height in logical pixels (~0.73x foreground for natural depth)
+  double get battleOpponentSize => (108.0 * speciesScale).roundToDouble();
 
   /// Lead companion display height next to the 92px Trainer on the Home screen stage
   double get homeCompanionSize =>
-      (88.0 * speciesScale).roundToDouble().clamp(42.0, 116.0);
+      (88.0 * speciesScale).roundToDouble().clamp(44.0, 112.0);
 
   /// Proportional showcase height for UI frames (Pokédex, Evolution, Detail cards)
   double scaledUiSize(double maxSize, {double minSize = 38.0}) {
-    final normalized = (speciesScale / 1.18).clamp(0.32, 1.0);
+    final normalized = (speciesScale / 1.15).clamp(0.42, 1.0);
     return (maxSize * normalized).roundToDouble().clamp(minSize, maxSize);
   }
 

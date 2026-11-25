@@ -11,6 +11,7 @@ import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/battle_engine.dart';
+import '../services/battle_sprite_metrics.dart';
 import '../services/item_drop_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
@@ -3071,15 +3072,66 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         final arenaW = constraints.maxWidth;
                         final arenaH = constraints.maxHeight;
 
-                        // Dynamic species + perspective sizes & platform anchors mapped from battle_bg_route.png
-                        final double oppSize = _opponentPokemon.species.battleOpponentSize;
-                        final double playerSize = _playerPokemon.species.battlePlayerSize;
+                        // Viewport-responsive Gen V uniform pixel scaling synchronized with background platforms
+                        final double bgScale = max(arenaW / 900.0, arenaH / 750.0);
+                        final double viewportFactor = (bgScale / 0.455).clamp(0.76, 1.40);
 
                         final oppPlatform = _mapBgPoint(693, 406, arenaW, arenaH);
                         final playerPlatform = _mapBgPoint(284, 606, arenaW, arenaH);
 
-                        final oppSpriteCenter = oppPlatform + Offset(0, -oppSize * 0.45);
-                        final playerSpriteCenter = playerPlatform + Offset(0, -playerSize * 0.45);
+                        final double oppMaxW = min(
+                          arenaW * 0.44,
+                          max(96.0, (arenaW - oppPlatform.dx) * 1.96),
+                        ).clamp(96.0, max(96.0, 175.0 * viewportFactor));
+                        final double oppMaxH = min(
+                          max(92.0, oppPlatform.dy - 12.0),
+                          142.0 * viewportFactor,
+                        ).clamp(92.0, 195.0);
+
+                        final double playerMaxW = min(
+                          arenaW * 0.56,
+                          max(136.0, playerPlatform.dx * 1.96),
+                        ).clamp(136.0, max(136.0, 214.0 * viewportFactor));
+                        final double playerMaxH = min(
+                          max(116.0, playerPlatform.dy - 92.0),
+                          176.0 * viewportFactor,
+                        ).clamp(116.0, 245.0);
+
+                        final oppLayout = BattleSpriteMetrics.resolve(
+                          speciesId: _opponentPokemon.species.id,
+                          isBack: false,
+                          targetZoom: 1.38 * viewportFactor,
+                          maxWidth: oppMaxW,
+                          maxHeight: oppMaxH,
+                        );
+                        final playerLayout = BattleSpriteMetrics.resolve(
+                          speciesId: _playerPokemon.species.id,
+                          isBack: true,
+                          targetZoom: 1.88 * viewportFactor,
+                          maxWidth: playerMaxW,
+                          maxHeight: playerMaxH,
+                        );
+
+                        final double oppSize = oppLayout.visualHeight;
+                        final double playerSize = playerLayout.visualHeight;
+                        final double oppTrainerSize =
+                            (128.0 * viewportFactor).roundToDouble();
+                        final double playerTrainerSize =
+                            (176.0 * viewportFactor).roundToDouble();
+
+                        final double oppContainerW =
+                            max(oppMaxW + 48.0, oppTrainerSize + 48.0);
+                        final double oppContainerH =
+                            max(oppMaxH + 56.0, oppTrainerSize + 48.0);
+                        final double playerContainerW =
+                            max(playerMaxW + 48.0, playerTrainerSize + 48.0);
+                        final double playerContainerH =
+                            max(playerMaxH + 56.0, playerTrainerSize + 48.0);
+
+                        final oppSpriteCenter = oppPlatform +
+                            Offset(0, -oppLayout.bodyCenterFromBottom);
+                        final playerSpriteCenter = playerPlatform +
+                            Offset(0, -playerLayout.bodyCenterFromBottom);
 
                         return Stack(
                           fit: StackFit.expand,
@@ -3173,11 +3225,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
                             // Opponent Animated Sprite / Opposing Trainer Throw Sprite (Bottom-anchored on distant platform)
                             Positioned(
-                              left: oppPlatform.dx - 120,
-                              top: oppPlatform.dy - 200,
+                              left: oppPlatform.dx - oppContainerW / 2,
+                              top: oppPlatform.dy - oppContainerH,
                               child: SizedBox(
-                                width: 240,
-                                height: 200,
+                                width: oppContainerW,
+                                height: oppContainerH,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
@@ -3195,7 +3247,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             isBackView: false,
                                             pose: _opponentTrainerPose,
                                             ballColor: _ballTopColor(_opponentHeldBallType),
-                                            size: 138,
+                                            size: oppTrainerSize,
                                           ),
                                         ),
                                       ),
@@ -3213,7 +3265,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           url: _opponentPokemon.spriteUrl,
                                           fallbackUrl:
                                               _opponentPokemon.staticSpriteUrl,
-                                          size: oppSize,
+                                          width: oppLayout.width,
+                                          height: oppLayout.height,
+                                          fallbackBoxSize: (96.0 * oppLayout.zoom)
+                                              .clamp(64.0, min(oppMaxW, oppMaxH)),
                                           isFainted: _visualOpponentFainted,
                                           isSubmerged: _opponentSubmerged,
                                           lungeOffset: _opponentLungeOffset,
@@ -3230,7 +3285,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         duration: const Duration(milliseconds: 280),
                                         builder: (context, t, _) {
                                           return CustomPaint(
-                                            size: const Size(140, 140),
+                                            size: Size(
+                                              136.0 * viewportFactor,
+                                              136.0 * viewportFactor,
+                                            ),
                                             painter: _SummonBurstPainter(progress: t),
                                           );
                                         },
@@ -3242,7 +3300,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           duration: const Duration(milliseconds: 880),
                                           builder: (context, t, _) {
                                             return CustomPaint(
-                                              size: const Size(156, 156),
+                                              size: Size(
+                                                156.0 * viewportFactor,
+                                                156.0 * viewportFactor,
+                                              ),
                                               painter:
                                                   _ShinySparklePainter(progress: t),
                                             );
@@ -3257,7 +3318,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           return const SizedBox.shrink();
                                         }
                                         return CustomPaint(
-                                          size: const Size(150, 140),
+                                          size: Size(
+                                            148.0 * viewportFactor,
+                                            138.0 * viewportFactor,
+                                          ),
                                           painter: _KoBurstPainter(
                                             progress: _opponentKoController.value,
                                           ),
@@ -3268,7 +3332,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       _buildCalloutBanner(
                                         _floatingCallout!,
                                         _calloutColor,
-                                        bottom: oppSize + 6,
+                                        bottom: oppLayout.bodyTopFromBottom + 8,
                                       ),
                                   ],
                                 ),
@@ -3277,11 +3341,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
                             // Player Platform Area: Trainer Throw Sprite & Player Pokémon
                             Positioned(
-                              left: playerPlatform.dx - 170,
-                              top: playerPlatform.dy - 260,
+                              left: playerPlatform.dx - playerContainerW / 2,
+                              top: playerPlatform.dy - playerContainerH,
                               child: SizedBox(
-                                width: 340,
-                                height: 260,
+                                width: playerContainerW,
+                                height: playerContainerH,
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,
                                   clipBehavior: Clip.none,
@@ -3301,7 +3365,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                             pose: _trainerPose,
                                             ballColor:
                                                 _ballTopColor(_trainerHeldBallType),
-                                            size: 192,
+                                            size: playerTrainerSize,
                                           ),
                                         ),
                                       ),
@@ -3320,7 +3384,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           url: _playerPokemon.backSpriteUrl,
                                           fallbackUrl:
                                               _playerPokemon.staticBackSpriteUrl,
-                                          size: playerSize,
+                                          width: playerLayout.width,
+                                          height: playerLayout.height,
+                                          fallbackBoxSize: (96.0 * playerLayout.zoom)
+                                              .clamp(80.0, min(playerMaxW, playerMaxH)),
                                           isFainted: _visualPlayerFainted,
                                           isSubmerged: _playerSubmerged,
                                           lungeOffset: _playerLungeOffset,
@@ -3341,7 +3408,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           return const SizedBox.shrink();
                                         }
                                         return CustomPaint(
-                                          size: const Size(220, 210),
+                                          size: Size(
+                                            200.0 * viewportFactor,
+                                            190.0 * viewportFactor,
+                                          ),
                                           painter: _KoBurstPainter(
                                             progress: _playerKoController.value,
                                           ),
@@ -3356,7 +3426,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         duration: const Duration(milliseconds: 280),
                                         builder: (context, t, _) {
                                           return CustomPaint(
-                                            size: const Size(165, 165),
+                                            size: Size(
+                                              165.0 * viewportFactor,
+                                              165.0 * viewportFactor,
+                                            ),
                                             painter: _SummonBurstPainter(progress: t),
                                           );
                                         },
@@ -3369,7 +3442,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           duration: const Duration(milliseconds: 880),
                                           builder: (context, t, _) {
                                             return CustomPaint(
-                                              size: const Size(184, 184),
+                                              size: Size(
+                                                184.0 * viewportFactor,
+                                                184.0 * viewportFactor,
+                                              ),
                                               painter:
                                                   _ShinySparklePainter(progress: t),
                                             );
@@ -3381,7 +3457,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                       _buildCalloutBanner(
                                         _floatingCallout!,
                                         _calloutColor,
-                                        bottom: playerSize + 6,
+                                        bottom: playerLayout.bodyTopFromBottom + 8,
                                       ),
                                   ],
                                 ),
@@ -3447,6 +3523,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                 playerPlatform: playerPlatform,
                                 oppPlatform: oppPlatform,
                                 oppSize: oppSize,
+                                oppSpriteCenter: oppSpriteCenter,
+                                viewportFactor: viewportFactor,
                               ),
 
                             // Player Info Card (Bottom-Right)
@@ -3969,11 +4047,15 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required Offset playerPlatform,
     required Offset oppPlatform,
     required double oppSize,
+    required Offset oppSpriteCenter,
+    required double viewportFactor,
   }) {
-    final Offset startPos = playerPlatform + const Offset(38, -118);
-    final Offset impactPos = oppPlatform + Offset(0, -oppSize * 0.48);
+    final Offset startPos =
+        playerPlatform + Offset(38 * viewportFactor, -118 * viewportFactor);
+    final Offset impactPos = oppSpriteCenter;
     final Offset groundPos = oppPlatform + const Offset(0, -13);
-    final Offset startFloor = playerPlatform + const Offset(24, -2);
+    final Offset startFloor =
+        playerPlatform + Offset(24 * viewportFactor, -2);
     final Offset oppFloor = oppPlatform + const Offset(0, -1);
 
     return AnimatedBuilder(
@@ -4022,7 +4104,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 child: CustomPaint(
                   painter: _CaptureAbsorbPainter(
                     ballCenter: ballPos,
-                    targetCenter: oppPlatform + Offset(0, -oppSize * 0.36),
+                    targetCenter: oppSpriteCenter + Offset(0, oppSize * 0.08),
                     progress: t,
                   ),
                 ),
@@ -4166,7 +4248,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Widget _buildAnimatedCombatant({
     required String url,
     required String fallbackUrl,
-    required double size,
+    required double width,
+    required double height,
+    required double fallbackBoxSize,
     required bool isFainted,
     bool isSubmerged = false,
     required Offset lungeOffset,
@@ -4175,25 +4259,23 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required bool flashWhite,
     required bool isPlayer,
   }) {
-    // Allow horizontal headroom (1.45x) so wide-winged/tail Gen V sprites
-    // scale by their canonical height rather than shrinking to fit a square box.
     final spriteImage = Image.network(
       url,
-      width: size * 1.45,
-      height: size,
+      width: width,
+      height: height,
       fit: BoxFit.contain,
       alignment: Alignment.bottomCenter,
       filterQuality: FilterQuality.none,
       errorBuilder: (ctx, err, stack) => Image.network(
         fallbackUrl,
-        width: size * 1.45,
-        height: size,
+        width: fallbackBoxSize,
+        height: fallbackBoxSize,
         fit: BoxFit.contain,
         alignment: Alignment.bottomCenter,
         filterQuality: FilterQuality.none,
         errorBuilder: (c, e, s) => Icon(
           Icons.catching_pokemon,
-          size: (size * 0.65).clamp(24.0, 80.0),
+          size: (height * 0.65).clamp(24.0, 80.0),
           color: Colors.white,
         ),
       ),
@@ -4216,7 +4298,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         final double sinkT = koT > 0.18
             ? Curves.easeInBack.transform(((koT - 0.18) / 0.82).clamp(0.0, 1.0))
             : 0.0;
-        final double koSinkY = sinkT * (size * 0.85);
+        final double koSinkY = sinkT * (height * 0.85);
         final double koScaleY = (1.0 - 0.35 * sinkT).clamp(0.55, 1.2);
         final double koTilt = -0.18 * sinkT;
         final double koOpacity = koT > 0
