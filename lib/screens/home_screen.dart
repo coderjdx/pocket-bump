@@ -23,6 +23,7 @@ import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/version_picker.dart';
+import 'adventure_screen.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'evolution_screen.dart';
@@ -293,11 +294,36 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  void _simulateSteps(Trainer trainer, int delta) {
-    final triggered = trainer.recordStepsAndCheckEncounter(delta);
-    if (triggered && trainer.gameVersion != null) {
-      _launchWildEncounter();
+  Future<void> _launchAdventure(Trainer trainer) async {
+    if (!trainer.hasConsciousPokemon) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "All Pokémon in your party have fainted! Visit the Pokémon Center to heal your party."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
     }
+    if (trainer.repelEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Repel is active! Toggle Repel off to go on an Adventure."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    if (trainer.gameVersion == null) {
+      await _promptVersionChoiceIfNeeded();
+      if (!mounted || trainer.gameVersion == null) return;
+    }
+    SoundService.instance.playUiTap();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AdventureScreen()),
+    );
   }
 
   @override
@@ -1145,83 +1171,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             ],
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _simulateSteps(trainer, 1),
-                  icon: const Icon(Icons.directions_walk_rounded, size: 13),
-                  label: const Text(
-                    "+1 STEP",
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFF141A2E),
-                    foregroundColor: Colors.white,
-                    side: BorderSide(
-                        color: Colors.indigoAccent.withOpacity(0.6)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                  ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _launchAdventure(trainer),
+              icon: const Icon(Icons.explore_rounded,
+                  size: 16, color: Colors.black87),
+              label: const Text(
+                "GO ON AN ADVENTURE",
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.6,
                 ),
               ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => _simulateSteps(trainer, 25),
-                  icon: const Icon(Icons.add_circle_outline, size: 13),
-                  label: const Text(
-                    "+25 STEPS",
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFF141A2E),
-                    foregroundColor: Colors.white,
-                    side: BorderSide(
-                        color: Colors.indigoAccent.withOpacity(0.6)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                  ),
-                ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF34EB8C),
+                foregroundColor: Colors.black87,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                elevation: 2,
               ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: _launchWildEncounter,
-                  icon: const Icon(Icons.explore_rounded,
-                      size: 13, color: Colors.black87),
-                  label: const Text(
-                    "TALL GRASS",
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF34EB8C),
-                    foregroundColor: Colors.black87,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                    elevation: 2,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 6),
           _buildUtilityToggleRow(trainer),
@@ -1419,7 +1392,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildHubRow(Trainer trainer) {
-    final int totalSpecies = PokedexDatabase.species.length;
+    const int totalSpecies = PokedexDatabase.gen1TotalSpecies;
     final int caught = trainer.caughtCount;
     final int badges = trainer.clearedGymIds.length;
 
@@ -3006,34 +2979,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 10),
                     _buildUtilityToggleRow(trainer),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          trainer.claimSupplyDrop();
-                          ScaffoldMessenger.of(this.context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                "Claimed Supply Drop: +5 Poké Balls, +2 Great Balls, +1 Ultra Ball, +3 Potions, +1 Revive!",
-                              ),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.card_giftcard, size: 18),
-                        label: const Text(
-                          "CLAIM POKÉ MART SUPPLY DROP (+ITEMS)",
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigoAccent,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 12),
                     Expanded(
                       child: availableItems.isEmpty
@@ -3054,7 +2999,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                   const SizedBox(height: 6),
                                   const Text(
-                                    "Claim a Poké Mart supply drop above, visit the Poké Mart, or explore to get item drops from wild Pokémon encounters.",
+                                    "Visit the Poké Mart or explore Adventures and wild encounters to collect items.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white38,
@@ -3154,7 +3099,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                         BorderRadius.circular(8),
                                                   ),
                                                   child: Text(
-                                                    item.isTm ? "∞" : "x$count",
+                                                    item.isTm
+                                                        ? "∞"
+                                                        : (item.isAdventureMap
+                                                            ? "UNLOCKED"
+                                                            : "x$count"),
                                                     style: TextStyle(
                                                       color: count > 0
                                                           ? item.color
@@ -3267,6 +3216,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   ),
                                                 ),
                                               ),
+                                            ] else if (item.isAdventureMap) ...[
+                                              const SizedBox(height: 6),
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white.withOpacity(0.06),
+                                                  borderRadius: BorderRadius.circular(6),
+                                                ),
+                                                child: const Text(
+                                                  "Adventure Map: unlocks this Biome in Go on an Adventure",
+                                                  style: TextStyle(color: Colors.white54, fontSize: 9.5),
+                                                ),
+                                              ),
                                             ] else if (item.isHeldItem || item.isBerry) ...[
                                               const SizedBox(height: 6),
                                               Container(
@@ -3286,7 +3248,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           ],
                                         ),
                                       ),
-                                      if (!item.isTm) ...[
+                                      if (!item.isTm && !item.isAdventureMap) ...[
                                         const SizedBox(width: 8),
                                         Column(
                                           children: [

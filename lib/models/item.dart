@@ -11,6 +11,7 @@ enum ItemCategory {
   evolutionStone,
   fossil,
   tm,
+  adventureMap,
 }
 
 class Item {
@@ -44,7 +45,8 @@ class Item {
   bool get isEvolutionStone => category == ItemCategory.evolutionStone;
   bool get isFossil => category == ItemCategory.fossil;
   bool get isTm => category == ItemCategory.tm;
-  bool get isReusable => isTm;
+  bool get isAdventureMap => category == ItemCategory.adventureMap;
+  bool get isReusable => isTm || isAdventureMap;
   bool get isBall => category == ItemCategory.pokeball;
   bool get isMedicine => category == ItemCategory.medicine;
 }
@@ -67,6 +69,17 @@ class ItemDatabase {
     'repeat_ball',
     'level_ball',
     'heal_ball',
+  ];
+
+  static const List<String> adventureMapIds = [
+    'map_underground_cave',
+    'map_deep_sea',
+    'map_thunder_plains',
+    'map_emerald_forest',
+    'map_toxic_marsh',
+    'map_mystic_sanctum',
+    'map_volcanic_ridge',
+    'map_victory_highlands',
   ];
 
   static List<Item> get allBalls => [
@@ -1166,6 +1179,80 @@ class ItemDatabase {
       color: Color(0xFFBDBDBD),
       icon: Icons.album_rounded,
       moveId: 'substitute',
+    ),
+
+    // === ADVENTURE MAPS (Unique Biome Unlocks) ===
+    'map_underground_cave': Item(
+      id: 'map_underground_cave',
+      name: 'Underground Cave Adventure Map',
+      description: 'Unlocks the Underground Cave Biome (Rock, Ground & Steel types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFBCAAA4),
+      icon: Icons.map_rounded,
+    ),
+    'map_deep_sea': Item(
+      id: 'map_deep_sea',
+      name: 'Deep Sea Adventure Map',
+      description: 'Unlocks the Deep Sea Biome (Water & Ice types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF29B6F6),
+      icon: Icons.map_rounded,
+    ),
+    'map_thunder_plains': Item(
+      id: 'map_thunder_plains',
+      name: 'Thunder Plains Adventure Map',
+      description: 'Unlocks the Thunder Plains Biome (Electric, Normal & Flying types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFFD54F),
+      icon: Icons.map_rounded,
+    ),
+    'map_emerald_forest': Item(
+      id: 'map_emerald_forest',
+      name: 'Forest Adventure Map',
+      description: 'Unlocks the Emerald Forest Biome (Grass & Bug types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF66BB6A),
+      icon: Icons.map_rounded,
+    ),
+    'map_toxic_marsh': Item(
+      id: 'map_toxic_marsh',
+      name: 'Toxic Marsh Adventure Map',
+      description: 'Unlocks the Toxic Marsh Biome (Poison & Ghost types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFAB47BC),
+      icon: Icons.map_rounded,
+    ),
+    'map_mystic_sanctum': Item(
+      id: 'map_mystic_sanctum',
+      name: 'Mystic Sanctum Adventure Map',
+      description: 'Unlocks the Mystic Sanctum Biome (Psychic & Fairy types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFEC407A),
+      icon: Icons.map_rounded,
+    ),
+    'map_volcanic_ridge': Item(
+      id: 'map_volcanic_ridge',
+      name: 'Volcanic Ridge Adventure Map',
+      description: 'Unlocks the Volcanic Ridge Biome (Fire & Dragon types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFF7043),
+      icon: Icons.map_rounded,
+    ),
+    'map_victory_highlands': Item(
+      id: 'map_victory_highlands',
+      name: 'Victory Highlands Adventure Map',
+      description: 'Unlocks the Victory Highlands Biome (Fighting, Ground & Rock types) for Go on an Adventure.',
+      category: ItemCategory.adventureMap,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF8D6E63),
+      icon: Icons.map_rounded,
     ),
   };
 

@@ -8,8 +8,8 @@ import '../services/gym_database.dart';
 import '../services/item_drop_service.dart';
 import '../services/sound_service.dart';
 import '../services/tm_service.dart';
+import '../widgets/gauntlet_checkpoint_sheets.dart';
 import '../widgets/hp_bar.dart';
-import '../widgets/move_pp_picker_dialog.dart';
 import 'battle_screen.dart';
 
 class PokemonLeagueScreen extends StatefulWidget {
@@ -907,50 +907,14 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   Future<void> _confirmRetreatFromGauntlet(Trainer trainer) async {
     if (_activeGym == null || _isLaunchingBattle) return;
     final gymName = _activeGym!.name;
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E28),
-        title: const Text(
-          "RETREAT FROM GAUNTLET?",
-          style: TextStyle(
-            color: Colors.redAccent,
-            fontWeight: FontWeight.w900,
-            fontSize: 15,
-          ),
-        ),
-        content: Text(
-          "Retreating from $gymName will reset your current gauntlet progress (Match $_gauntletIndex of 5 cleared).\n\nYour party's current HP, PP, and status will be preserved.",
-          style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              if (ModalRoute.of(ctx)?.isCurrent == true) {
-                Navigator.pop(ctx, false);
-              }
-            },
-            child: const Text(
-              "STAY",
-              style: TextStyle(color: Colors.tealAccent, fontWeight: FontWeight.bold),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              if (ModalRoute.of(ctx)?.isCurrent == true) {
-                Navigator.pop(ctx, true);
-              }
-            },
-            child: const Text(
-              "RETREAT",
-              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
+    final bool confirmed = await confirmGiveUpGauntletDialog(
+      context,
+      title: "GIVE UP GAUNTLET?",
+      message:
+          "Giving up in $gymName will reset your current gauntlet progress (Match $_gauntletIndex of 5 cleared).\n\nYour party's current HP, PP, and status will be preserved.",
     );
 
-    if (confirmed == true && mounted) {
+    if (confirmed && mounted) {
       trainer.resetAllPartyStatStages();
       trainer.saveProgress();
       setState(() {
@@ -998,27 +962,6 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           ),
           centerTitle: true,
           automaticallyImplyLeading: false,
-          actions: [
-            TextButton.icon(
-              onPressed: _isLaunchingBattle
-                  ? null
-                  : () => _confirmRetreatFromGauntlet(trainer),
-              icon: const Icon(
-                Icons.exit_to_app_rounded,
-                color: Colors.redAccent,
-                size: 15,
-              ),
-              label: const Text(
-                "RETREAT",
-                style: TextStyle(
-                  color: Colors.redAccent,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 10.5,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-          ],
         ),
       body: Stack(
         fit: StackFit.expand,
@@ -1096,7 +1039,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          "HP, PP, and status do not auto-heal between gauntlet battles. Use items from your Bag to prepare!",
+                          "HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pokémon before the next match!",
                           style: TextStyle(color: Colors.white70, fontSize: 10.5),
                         ),
                       ],
@@ -1227,57 +1170,15 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
                   const SizedBox(height: 12),
 
-                  // Action Buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: _isLaunchingBattle
-                              ? null
-                              : () => _openBagModal(context, trainer),
-                          icon: const Icon(Icons.medical_services_rounded,
-                              size: 16),
-                          label: const Text(
-                            "USE BAG ITEMS",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 11,
-                            ),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xFF121828),
-                            foregroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.tealAccent),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: _isLaunchingBattle
-                              ? null
-                              : () => _launchNextGauntletBattle(trainer),
-                          icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                          label: Text(
-                            isLeaderNext ? "FACE LEADER" : "CONTINUE",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 11,
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: gym.elementColor,
-                            foregroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                          ),
-                        ),
-                      ),
-                    ],
+                  // Action Buttons: Next Battle, Bag, Pokémon, Give Up
+                  GauntletCheckpointActionBar(
+                    nextBattleColor: gym.elementColor,
+                    nextBattleLabel: isLeaderNext ? 'NEXT: LEADER' : 'NEXT BATTLE',
+                    busy: _isLaunchingBattle,
+                    onNextBattle: () => _launchNextGauntletBattle(trainer),
+                    onBag: () => _openBagModal(context, trainer),
+                    onPokemon: () => _openPartyModal(context, trainer),
+                    onGiveUp: () => _confirmRetreatFromGauntlet(trainer),
                   ),
                 ],
               ),
@@ -1289,268 +1190,33 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     );
   }
 
-  // === BAG USE MODAL AT CHECKPOINT ===
+  // === BAG & PARTY MODALS AT CHECKPOINT ===
   void _openBagModal(BuildContext context, Trainer trainer) {
     if (_isBagModalOpen || _isLaunchingBattle) return;
     _isBagModalOpen = true;
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: const Color(0xFF1E1E28),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) {
-        bool isClosing = false;
-        return StatefulBuilder(
-          builder: (ctx, setModalState) {
-            final medicineItems = [
-              'potion',
-              'super_potion',
-              'hyper_potion',
-              'max_potion',
-              'full_restore',
-              'revive',
-              'antidote',
-              'paralyze_heal',
-              'awakening',
-              'burn_heal',
-              'ice_heal',
-              'full_heal',
-              'ether',
-              'max_ether',
-              'elixir',
-              'max_elixir',
-              'leppa_berry',
-            ];
-
-            final available = medicineItems
-                .where((id) => trainer.getItemCount(id) > 0)
-                .toList();
-
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.75,
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "USE ITEMS ON POKÉMON",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white60),
-                        onPressed: () {
-                          if (isClosing) return;
-                          if (ModalRoute.of(ctx)?.isCurrent == true) {
-                            isClosing = true;
-                            Navigator.pop(ctx);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  if (available.isEmpty) ...[
-                    const Expanded(
-                      child: Center(
-                        child: Text(
-                          "You don't have any healing items in your Bag!",
-                          style: TextStyle(color: Colors.white38, fontSize: 13),
-                        ),
-                      ),
-                    ),
-                  ] else ...[
-                    Expanded(
-                      child: ListView.separated(
-                        itemCount: available.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
-                        itemBuilder: (c, idx) {
-                          final itemId = available[idx];
-                          final itemDef = ItemDatabase.byId(itemId);
-                          final count = trainer.getItemCount(itemId);
-
-                          return Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF282836),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  itemDef?.icon ?? Icons.medical_services,
-                                  color: itemDef?.color ?? Colors.tealAccent,
-                                  size: 24,
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${itemDef?.name ?? itemId} (x$count)",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      Text(
-                                        itemDef?.description ?? "",
-                                        style: const TextStyle(color: Colors.white54, fontSize: 10.5),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _selectPartyTargetAndApply(
-                                      context,
-                                      trainer,
-                                      itemId,
-                                      () {
-                                        if (ctx.mounted) {
-                                          setModalState(() {});
-                                        }
-                                        if (mounted) {
-                                          setState(() {});
-                                        }
-                                      },
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.tealAccent,
-                                    foregroundColor: Colors.black,
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  ),
-                                  child: const Text("USE", style: TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            );
-          },
-        );
+    showCheckpointBagSheet(
+      context,
+      trainer,
+      onUpdated: () {
+        if (mounted) setState(() {});
       },
     ).whenComplete(() {
       _isBagModalOpen = false;
     });
   }
 
-  void _selectPartyTargetAndApply(
-    BuildContext context,
-    Trainer trainer,
-    String itemId,
-    VoidCallback onUpdated,
-  ) {
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        bool isApplying = false;
-        return AlertDialog(
-          backgroundColor: const Color(0xFF1E1E28),
-          title: Text(
-            "USE ${itemId.replaceAll('_', ' ').toUpperCase()} ON:",
-            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
-          ),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: trainer.party.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 6),
-              itemBuilder: (c, idx) {
-                final mon = trainer.party[idx];
-                return ListTile(
-                  tileColor: const Color(0xFF282836),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  title: Text(
-                    "${mon.nickname} (HP ${mon.currentHp}/${mon.maxHp})",
-                    style: TextStyle(
-                      color: mon.isFainted ? Colors.white38 : Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                  subtitle: ItemDatabase.isPpRestoreItem(itemId)
-                      ? Text(
-                          "Total PP ${mon.moves.fold<int>(0, (s, m) => s + m.currentPp)}/${mon.moves.fold<int>(0, (s, m) => s + m.maxPp)}",
-                          style: const TextStyle(color: Colors.amberAccent, fontSize: 10),
-                        )
-                      : mon.status != StatusCondition.none
-                          ? Text(
-                              "Status: ${mon.status.name.toUpperCase()}",
-                              style: const TextStyle(color: Colors.redAccent, fontSize: 10),
-                            )
-                          : null,
-                  onTap: () async {
-                    if (isApplying) return;
-                    if (!ItemDatabase.canUseMedicineOn(itemId, mon)) {
-                      ScaffoldMessenger.of(this.context).showSnackBar(
-                        const SnackBar(
-                          content: Text("It won't have any effect!"),
-                          duration: Duration(seconds: 1),
-                        ),
-                      );
-                      return;
-                    }
-                    isApplying = true;
-                    try {
-                      int? moveIndex;
-                      if (ItemDatabase.isSingleMovePpItem(itemId)) {
-                        final itemDef = ItemDatabase.byId(itemId);
-                        if (itemDef != null) {
-                          moveIndex = await showMovePpPickerDialog(
-                            ctx,
-                            pokemon: mon,
-                            item: itemDef,
-                          );
-                          if (moveIndex == null) return;
-                        }
-                      }
-                      final String msg = ItemDatabase.applyMedicineToPokemon(
-                        itemId: itemId,
-                        targetMon: mon,
-                        moveIndex: moveIndex,
-                      );
-                      trainer.adjustItemCount(itemId, -1);
-                      trainer.saveProgress();
-                      onUpdated();
-                      if (ctx.mounted && ModalRoute.of(ctx)?.isCurrent == true) {
-                        Navigator.pop(ctx);
-                      }
-                      if (mounted) {
-                        ScaffoldMessenger.of(this.context).showSnackBar(
-                          SnackBar(
-                            content: Text(msg),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    } finally {
-                      isApplying = false;
-                    }
-                  },
-                );
-              },
-            ),
-          ),
-        );
+  void _openPartyModal(BuildContext context, Trainer trainer) {
+    if (_isBagModalOpen || _isLaunchingBattle) return;
+    _isBagModalOpen = true;
+    showCheckpointPartySheet(
+      context,
+      trainer,
+      onUpdated: () {
+        if (mounted) setState(() {});
       },
-    );
+    ).whenComplete(() {
+      _isBagModalOpen = false;
+    });
   }
 
   // === GAUNTLET VICTORY CELEBRATION ===
@@ -1562,16 +1228,20 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     trainer.resetAllPartyStatStages();
     trainer.saveProgress();
 
-    // Guaranteed 1–3 drops on repeat clears (unique TMs, held items, stones, fossils/vouchers)
+    // Guaranteed 1–3 drops on repeat clears (unique TMs, Adventure Maps, held items, stones, fossils/vouchers)
     List<ItemDrop> droppedItems = const [];
     if (!firstClear) {
       final Set<String> ownedTmIds = TmService.allTms
           .where((tm) => trainer.hasTm(tm.id))
           .map((tm) => tm.id)
           .toSet();
+      final Set<String> ownedAdventureMapIds = ItemDatabase.adventureMapIds
+          .where(trainer.hasAdventureMap)
+          .toSet();
       droppedItems = ItemDropService.rollGymRematchDrops(
         gym: gym,
         ownedTmIds: ownedTmIds,
+        ownedAdventureMapIds: ownedAdventureMapIds,
       );
       for (final drop in droppedItems) {
         trainer.adjustItemCount(drop.itemId, drop.count);
@@ -1675,8 +1345,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     const SizedBox(height: 6),
                     ...droppedItems.map((d) {
                       final itemDef = ItemDatabase.byId(d.itemId);
-                      final String badgeText =
-                          (itemDef?.isTm == true) ? 'REUSABLE' : 'x${d.count}';
+                      final String badgeText = (itemDef?.isTm == true)
+                          ? 'REUSABLE'
+                          : (itemDef?.isAdventureMap == true
+                              ? 'UNLOCKED'
+                              : 'x${d.count}');
                       return Padding(
                         padding: const EdgeInsets.only(top: 3),
                         child: Row(

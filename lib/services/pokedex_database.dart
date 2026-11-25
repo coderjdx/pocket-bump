@@ -7,6 +7,10 @@ import '../models/pokemon_instance.dart';
 
 class PokedexDatabase {
   static final Random _rng = Random();
+  static const int gen1TotalSpecies = 151;
+
+  static List<int> get gen1SpeciesIds =>
+      species.keys.where((id) => id <= gen1TotalSpecies).toList()..sort();
 
   // ─── MOVES ─────────────────────────────────────────────────────────────
   static final Map<String, Move> moves = {
@@ -11826,34 +11830,64 @@ class PokedexDatabase {
     int playerLevel = 5,
     GameVersion? gameVersion,
   }) {
-    // 65% Common (1st stage), 30% Uncommon (2nd stage within 5 levels),
-    // 5% Rare (1st stage starters, 3rd stage, final pseudo-legendary within 10 levels).
-    final targetRarity = rollEncounterRarity();
-    final rarityPool = speciesForRarity(
-      targetRarity,
+    return generateAdventureEncounter(
       playerLevel: playerLevel,
       gameVersion: gameVersion,
     );
-    final eligiblePool = species.values
+  }
+
+  /// Generates a wild encounter using the standard Tall Grass rarity rates
+  /// (65% Common, 30% Uncommon, 5% Rare), optionally restricted to [allowedTypes]
+  /// for Adventure Biomes. Never spawns Legendaries or Mythicals.
+  static PokemonInstance generateAdventureEncounter({
+    int playerLevel = 5,
+    GameVersion? gameVersion,
+    Set<PokemonType>? allowedTypes,
+    Random? rng,
+  }) {
+    final Random r = rng ?? _rng;
+    final bool hasTypeFilter = allowedTypes != null && allowedTypes.isNotEmpty;
+    bool matchesPool(PokemonSpecies s) {
+      if (s.isLegendary || s.isMythical) return false;
+      if (!s.isWildEncounterable) return false;
+      if (!s.isAvailableInVersion(gameVersion)) return false;
+      if (hasTypeFilter && !s.types.any(allowedTypes.contains)) return false;
+      return true;
+    }
+
+    final targetRarity = rollEncounterRarity(r.nextDouble());
+    final rarityPool = species.values
         .where((s) =>
+            matchesPool(s) &&
+            s.rarity == targetRarity &&
             s.canEncounterAtPlayerLevel(playerLevel, gameVersion: gameVersion))
         .toList();
+    final eligiblePool = species.values
+        .where((s) =>
+            matchesPool(s) &&
+            s.canEncounterAtPlayerLevel(playerLevel, gameVersion: gameVersion))
+        .toList();
+    final fallbackPool = species.values.where(matchesPool).toList();
     final pool = rarityPool.isNotEmpty
         ? rarityPool
         : (eligiblePool.isNotEmpty
             ? eligiblePool
-            : species.values
-                .where((s) =>
-                    s.isWildEncounterable &&
-                    s.isAvailableInVersion(gameVersion))
-                .toList());
-    final chosen = pool[_rng.nextInt(pool.length)];
+            : (fallbackPool.isNotEmpty
+                ? fallbackPool
+                : species.values
+                    .where((s) =>
+                        !s.isLegendary &&
+                        !s.isMythical &&
+                        s.isWildEncounterable &&
+                        s.isAvailableInVersion(gameVersion))
+                    .toList()));
+    final chosen = pool[r.nextInt(pool.length)];
 
     final baseMin = (playerLevel - 2).clamp(2, 99);
     final baseMax = (playerLevel + 1).clamp(baseMin, 100);
     final minLvl = max(baseMin, chosen.minEncounterLevel).clamp(2, 100);
     final maxLvl = max(baseMax, minLvl).clamp(minLvl, 100);
-    final level = minLvl + _rng.nextInt(maxLvl - minLvl + 1);
+    final level = minLvl + r.nextInt(maxLvl - minLvl + 1);
     final bool isShiny = rollShiny(chosen);
     return createPokemon(chosen.id, level: level, isShiny: isShiny);
   }

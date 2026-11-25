@@ -48,6 +48,7 @@ class BattleScreen extends StatefulWidget {
   final PvpMatchSession? pvpSession;
   final bool isLegendaryBoss;
   final String? continueButtonLabel;
+  final String? defeatButtonLabel;
   final BattleBgmCategory? bgmCategory;
 
   const BattleScreen({
@@ -64,6 +65,7 @@ class BattleScreen extends StatefulWidget {
     this.pvpSession,
     this.isLegendaryBoss = false,
     this.continueButtonLabel,
+    this.defeatButtonLabel,
     this.bgmCategory,
   });
 
@@ -3741,7 +3743,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                               : widget.preservePartyHpOnExit
                                                   ? (_playerWon
                                                       ? "CONTINUE GAUNTLET"
-                                                      : "RETREAT FROM GYM")
+                                                      : (widget.defeatButtonLabel ??
+                                                          "RETREAT FROM GYM"))
                                                   : (_playerWon
                                                       ? "CONTINUE"
                                                       : "RETURN"),

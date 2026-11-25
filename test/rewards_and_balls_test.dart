@@ -5,6 +5,7 @@ import 'package:pocket_bump/models/pokemon_instance.dart';
 import 'package:pocket_bump/models/pokemon_species.dart';
 import 'package:pocket_bump/models/pokemon_type.dart';
 import 'package:pocket_bump/models/trainer.dart';
+import 'package:pocket_bump/services/adventure_database.dart';
 import 'package:pocket_bump/services/battle_engine.dart';
 import 'package:pocket_bump/services/gym_database.dart';
 import 'package:pocket_bump/services/item_drop_service.dart';
@@ -174,17 +175,111 @@ void main() {
             tmDropsInResult.length);
       }
 
-      // When all of the gym's TMs are already owned, drops come purely from the 4 non-TM buckets.
+      // When all of the gym's TMs and Map are already owned, drops come purely from the 4 non-TM/non-Map buckets.
       final allGymTms = gym.tmDrops.toSet();
       for (int i = 0; i < 200; i++) {
         final drops = ItemDropService.rollGymRematchDrops(
           gym: gym,
           ownedTmIds: allGymTms,
+          ownedAdventureMapIds: {gym.signatureAdventureMapDrop},
           rng: rng,
         );
         expect(drops, isNotEmpty);
         for (final drop in drops) {
-          expect(ItemDatabase.byId(drop.itemId)?.isTm ?? false, isFalse);
+          final def = ItemDatabase.byId(drop.itemId);
+          expect(def?.isTm ?? false, isFalse);
+          expect(def?.isAdventureMap ?? false, isFalse);
+        }
+      }
+
+      // Unowned Adventure Map can drop, never repeats within one clear, and never drops once owned.
+      bool sawMapDrop = false;
+      for (int i = 0; i < 400; i++) {
+        final drops = ItemDropService.rollGymRematchDrops(
+          gym: gym,
+          ownedTmIds: const {},
+          ownedAdventureMapIds: const {},
+          rng: rng,
+        );
+        final mapDrops = drops
+            .where((d) => d.itemId == gym.signatureAdventureMapDrop)
+            .toList();
+        if (mapDrops.isNotEmpty) {
+          sawMapDrop = true;
+          expect(mapDrops, hasLength(1));
+          expect(mapDrops.first.count, 1);
+        }
+      }
+      expect(sawMapDrop, isTrue);
+    });
+  });
+
+  group('Pokédex & Adventure Mode', () {
+    test('Pokédex Gen 1 total is 151 while caughtCount exceeds 151 with Gen 2-5 Pokémon', () {
+      expect(PokedexDatabase.gen1TotalSpecies, 151);
+      expect(PokedexDatabase.gen1SpeciesIds, hasLength(151));
+      expect(PokedexDatabase.gen1SpeciesIds.every((id) => id <= 151), isTrue);
+
+      final trainer = Trainer(
+        name: 'Red',
+        caughtSpeciesIds: {
+          for (int id = 1; id <= 151; id++) id,
+          390, // Chimchar
+          391, // Monferno
+          392, // Infernape
+        },
+      );
+      expect(trainer.caughtCount, 154);
+    });
+
+    test('Adventure Maps are unique and clamp/deduplicate to 1', () {
+      final trainer = Trainer(name: 'Red');
+      trainer.party = [_makeMon(_makeSpecies())];
+      const mapId = 'map_deep_sea';
+      expect(trainer.hasAdventureMap(mapId), isFalse);
+
+      trainer.adjustItemCount(mapId, 1);
+      expect(trainer.hasAdventureMap(mapId), isTrue);
+      expect(trainer.getItemCount(mapId), 1);
+
+      trainer.adjustItemCount(mapId, 4);
+      expect(trainer.getItemCount(mapId), 1);
+
+      final json = trainer.toJson();
+      final custom = Map<String, dynamic>.from(json['customItems'] as Map? ?? {});
+      custom[mapId] = 5;
+      json['customItems'] = custom;
+
+      final restored = Trainer(name: 'Restored');
+      restored.applyFromJson(json);
+      expect(restored.getItemCount(mapId), 1);
+    });
+
+    test('Adventure encounters never spawn Legendaries/Mythicals and respect Biome types', () {
+      final rng = Random(2026);
+      for (int i = 0; i < 150; i++) {
+        final wild = PokedexDatabase.generateAdventureEncounter(
+          playerLevel: 50,
+          rng: rng,
+        );
+        expect(wild.species.isLegendary, isFalse);
+        expect(wild.species.isMythical, isFalse);
+      }
+
+      for (final biome in AdventureDatabase.biomes) {
+        for (int i = 0; i < 30; i++) {
+          final wild = PokedexDatabase.generateAdventureEncounter(
+            playerLevel: 50,
+            allowedTypes: biome.typeSet,
+            rng: rng,
+          );
+          expect(wild.species.isLegendary, isFalse);
+          expect(wild.species.isMythical, isFalse);
+          expect(
+            wild.species.types.any(biome.typeSet.contains),
+            isTrue,
+            reason: '${wild.species.name} did not match ${biome.name}',
+          );
         }
       }
     });

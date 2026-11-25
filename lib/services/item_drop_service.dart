@@ -342,32 +342,76 @@ class ItemDropService {
 
   /// Guaranteed 1–3 item drops on Gym Leader rematch clears (no empty drops).
   ///
-  /// When unowned TMs remain in [gym.tmDrops]:
-  /// - 32% TM (never repeats TMs already in [ownedTmIds] or this roll)
-  /// - 21% Signature held item
-  /// - 19% Signature stone / Leftovers
-  /// - 14% Unknown Fossil
-  /// - 14% Fossil Restoration Voucher
+  /// When the gym's Adventure Map is still unowned:
+  /// - 15% Adventure Map (unique per player, never repeats)
+  /// - 27% TM (never repeats TMs already in [ownedTmIds] or this roll)
+  /// - 18% Signature held item
+  /// - 16% Signature stone / Leftovers
+  /// - 12% Unknown Fossil
+  /// - 12% Fossil Restoration Voucher
   ///
-  /// When all of [gym.tmDrops] are already owned, the 32% TM weight is
-  /// redistributed proportionally across the 4 non-TM buckets.
+  /// Once the Adventure Map is owned (or already rolled), reverts to:
+  /// - 32% TM / 21% held item / 19% stone / 14% fossil / 14% voucher
+  ///
+  /// Whenever all of [gym.tmDrops] are already owned, the TM weight is
+  /// redistributed proportionally across the remaining buckets.
   static List<ItemDrop> rollGymRematchDrops({
     required GymDefinition gym,
     required Set<String> ownedTmIds,
+    Set<String> ownedAdventureMapIds = const {},
     Random? rng,
   }) {
     final Random r = rng ?? _rng;
     final int dropCount = rollDropCount(r);
     final Set<String> grantedTms = {};
+    final Set<String> grantedMaps = {};
     final List<ItemDrop> rawDrops = [];
 
     for (int i = 0; i < dropCount; i++) {
       final List<String> availableTms = gym.tmDrops
           .where((id) => !ownedTmIds.contains(id) && !grantedTms.contains(id))
           .toList();
+      final bool canDropMap = gym.signatureAdventureMapDrop.isNotEmpty &&
+          !ownedAdventureMapIds.contains(gym.signatureAdventureMapDrop) &&
+          !grantedMaps.contains(gym.signatureAdventureMapDrop);
 
       final double roll = r.nextDouble();
-      if (availableTms.isNotEmpty) {
+      if (canDropMap && availableTms.isNotEmpty) {
+        if (roll < 0.15) {
+          grantedMaps.add(gym.signatureAdventureMapDrop);
+          rawDrops.add(_itemDropFromId(gym.signatureAdventureMapDrop));
+        } else if (roll < 0.42) {
+          final String sigTm = gym.tmDrops.first;
+          final String chosenTm =
+              (availableTms.contains(sigTm) && r.nextDouble() < 0.35)
+                  ? sigTm
+                  : availableTms[r.nextInt(availableTms.length)];
+          grantedTms.add(chosenTm);
+          rawDrops.add(_itemDropFromId(chosenTm));
+        } else if (roll < 0.60) {
+          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
+        } else if (roll < 0.76) {
+          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
+        } else if (roll < 0.88) {
+          rawDrops.add(_itemDropFromId('unknown_fossil'));
+        } else {
+          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+        }
+      } else if (canDropMap) {
+        // Unowned Adventure Map, all TMs owned: 15:18:16:12:12 (sum 73)
+        if (roll < 15 / 73) {
+          grantedMaps.add(gym.signatureAdventureMapDrop);
+          rawDrops.add(_itemDropFromId(gym.signatureAdventureMapDrop));
+        } else if (roll < 33 / 73) {
+          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
+        } else if (roll < 49 / 73) {
+          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
+        } else if (roll < 61 / 73) {
+          rawDrops.add(_itemDropFromId('unknown_fossil'));
+        } else {
+          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+        }
+      } else if (availableTms.isNotEmpty) {
         if (roll < 0.32) {
           final String sigTm = gym.tmDrops.first;
           final String chosenTm =
@@ -386,7 +430,7 @@ class ItemDropService {
           rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
         }
       } else {
-        // All TMs from this gym are already owned: redistribute 21:19:14:14
+        // All TMs & Map owned: redistribute 21:19:14:14
         if (roll < 21 / 68) {
           rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
         } else if (roll < 40 / 68) {

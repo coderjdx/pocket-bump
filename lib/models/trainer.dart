@@ -736,15 +736,6 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  void addSteps(int delta) {
-    if (delta <= 0) return;
-    _syncDailyRollover();
-    _accumulateGymSteps(delta);
-    dailySteps += delta;
-    totalSteps += delta;
-    notifyListeners();
-  }
-
   bool get isExpeditionsUnlocked => clearedGymIds.length >= 8;
 
   bool hasCaughtExpeditionSpecies(int speciesId) =>
@@ -779,6 +770,8 @@ class Trainer extends ChangeNotifier {
   }
 
   bool hasTm(String tmId) => getItemCount(tmId) > 0;
+
+  bool hasAdventureMap(String mapId) => getItemCount(mapId) > 0;
 
   int getItemCount(String itemId) {
     switch (itemId) {
@@ -865,9 +858,11 @@ class Trainer extends ChangeNotifier {
         fullRestores = (fullRestores + delta).clamp(0, 99);
         break;
       default:
-        final bool isTm = ItemDatabase.byId(itemId)?.isTm == true;
+        final itemDef = ItemDatabase.byId(itemId);
+        final bool isUniqueUnlock =
+            itemDef != null && (itemDef.isTm || itemDef.isAdventureMap);
         final current = customItems[itemId] ?? 0;
-        if (isTm) {
+        if (isUniqueUnlock) {
           if (current >= 1 && delta > 0) return;
           final updated = (current + delta).clamp(0, 1);
           if (updated <= 0) {
@@ -966,18 +961,6 @@ class Trainer extends ChangeNotifier {
     rivals[idx].isFriend = !rivals[idx].isFriend;
     notifyListeners();
     return rivals[idx].isFriend;
-  }
-
-  void claimSupplyDrop() {
-    pokeBalls = (pokeBalls + 5).clamp(0, 99);
-    greatBalls = (greatBalls + 2).clamp(0, 99);
-    ultraBalls = (ultraBalls + 1).clamp(0, 99);
-    potions = (potions + 3).clamp(0, 99);
-    superPotions = (superPotions + 2).clamp(0, 99);
-    revives = (revives + 1).clamp(0, 99);
-    fullHeals = (fullHeals + 1).clamp(0, 99);
-    antidotes = (antidotes + 1).clamp(0, 99);
-    notifyListeners();
   }
 
   Map<String, dynamic> toJson() {
@@ -1098,8 +1081,10 @@ class Trainer extends ChangeNotifier {
     final rawCustom = json['customItems'] as Map<String, dynamic>? ?? {};
     rawCustom.forEach((k, v) {
       if (v is num && v.toInt() > 0) {
-        final bool isTm = ItemDatabase.byId(k)?.isTm == true;
-        customItems[k] = isTm ? 1 : v.toInt().clamp(0, 99);
+        final itemDef = ItemDatabase.byId(k);
+        final bool isUniqueUnlock =
+            itemDef != null && (itemDef.isTm || itemDef.isAdventureMap);
+        customItems[k] = isUniqueUnlock ? 1 : v.toInt().clamp(0, 99);
       }
     });
     expShareEnabled = json['expShareEnabled'] == true;

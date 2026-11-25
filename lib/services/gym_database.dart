@@ -79,6 +79,7 @@ class GymDefinition {
   final int requiredSteps;
   final String signatureHeldItemDrop;
   final String signatureStoneDrop;
+  final String signatureAdventureMapDrop;
   final List<String> tmDrops;
   final List<int> rematchTrainerSpeciesIds;
   final List<GymPokemonSpec> rematchLeaderSpecs;
@@ -101,6 +102,7 @@ class GymDefinition {
     required this.requiredSteps,
     required this.signatureHeldItemDrop,
     required this.signatureStoneDrop,
+    this.signatureAdventureMapDrop = '',
     required this.tmDrops,
     required this.rematchTrainerSpeciesIds,
     required this.rematchLeaderSpecs,
@@ -130,6 +132,7 @@ class GymDatabase {
       requiredSteps: 2000,
       signatureHeldItemDrop: 'hard_stone',
       signatureStoneDrop: 'moon_stone',
+      signatureAdventureMapDrop: 'map_underground_cave',
       tmDrops: const ['tm_34', 'tm_48', 'tm_28', 'tm_08', 'tm_09', 'tm_20'],
       rematchTrainerSpeciesIds: const [74, 75, 76, 95, 111, 27, 28, 138, 140],
       rematchLeaderSpecs: const [
@@ -261,6 +264,7 @@ class GymDatabase {
       requiredSteps: 4000,
       signatureHeldItemDrop: 'mystic_water',
       signatureStoneDrop: 'water_stone',
+      signatureAdventureMapDrop: 'map_deep_sea',
       tmDrops: const ['tm_11', 'tm_12', 'tm_13', 'tm_14', 'tm_33', 'tm_39'],
       rematchTrainerSpeciesIds: const [118, 119, 116, 117, 60, 61, 90, 91, 120, 54, 55],
       rematchLeaderSpecs: const [
@@ -392,6 +396,7 @@ class GymDatabase {
       requiredSteps: 6000,
       signatureHeldItemDrop: 'magnet',
       signatureStoneDrop: 'thunder_stone',
+      signatureAdventureMapDrop: 'map_thunder_plains',
       tmDrops: const ['tm_24', 'tm_25', 'tm_45', 'tm_01', 'tm_05', 'tm_49', 'tm_16'],
       rematchTrainerSpeciesIds: const [25, 26, 81, 82, 100, 101, 125, 135],
       rematchLeaderSpecs: const [
@@ -523,6 +528,7 @@ class GymDatabase {
       requiredSteps: 8000,
       signatureHeldItemDrop: 'miracle_seed',
       signatureStoneDrop: 'leaf_stone',
+      signatureAdventureMapDrop: 'map_emerald_forest',
       tmDrops: const ['tm_21', 'tm_22', 'tm_03', 'tm_10', 'tm_32', 'tm_37', 'tm_41'],
       rematchTrainerSpeciesIds: const [43, 44, 45, 69, 70, 71, 1, 2, 102, 103, 114],
       rematchLeaderSpecs: const [
@@ -654,6 +660,7 @@ class GymDatabase {
       requiredSteps: 10000,
       signatureHeldItemDrop: 'poison_barb',
       signatureStoneDrop: 'fire_stone',
+      signatureAdventureMapDrop: 'map_toxic_marsh',
       tmDrops: const ['tm_06', 'tm_36', 'tm_47', 'tm_31', 'tm_40', 'tm_44'],
       rematchTrainerSpeciesIds: const [41, 42, 48, 49, 23, 24, 88, 89, 109, 110, 97, 73],
       rematchLeaderSpecs: const [
@@ -785,6 +792,7 @@ class GymDatabase {
       requiredSteps: 12000,
       signatureHeldItemDrop: 'twisted_spoon',
       signatureStoneDrop: 'moon_stone',
+      signatureAdventureMapDrop: 'map_mystic_sanctum',
       tmDrops: const ['tm_46', 'tm_29', 'tm_30', 'tm_35', 'tm_42', 'tm_50'],
       rematchTrainerSpeciesIds: const [63, 64, 65, 96, 97, 79, 80, 122, 124, 103, 93, 94],
       rematchLeaderSpecs: const [
@@ -916,6 +924,7 @@ class GymDatabase {
       requiredSteps: 15000,
       signatureHeldItemDrop: 'charcoal',
       signatureStoneDrop: 'fire_stone',
+      signatureAdventureMapDrop: 'map_volcanic_ridge',
       tmDrops: const ['tm_38', 'tm_15', 'tm_17', 'tm_18', 'tm_19', 'tm_23'],
       rematchTrainerSpeciesIds: const [58, 59, 37, 38, 77, 78, 126, 4, 5, 6, 136],
       rematchLeaderSpecs: const [
@@ -1047,6 +1056,7 @@ class GymDatabase {
       requiredSteps: 20000,
       signatureHeldItemDrop: 'soft_sand',
       signatureStoneDrop: 'leftovers',
+      signatureAdventureMapDrop: 'map_victory_highlands',
       tmDrops: const ['tm_27', 'tm_26', 'tm_07', 'tm_02', 'tm_04', 'tm_43'],
       rematchTrainerSpeciesIds: const [24, 28, 30, 31, 33, 34, 51, 67, 68, 75, 76, 111, 112, 128, 53],
       rematchLeaderSpecs: const [

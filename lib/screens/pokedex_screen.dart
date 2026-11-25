@@ -29,8 +29,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
   @override
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
-    final List<int> allIds = PokedexDatabase.species.keys.toList()..sort();
-    final int total = allIds.length;
+    final List<int> allIds = PokedexDatabase.gen1SpeciesIds;
+    final int total = PokedexDatabase.gen1TotalSpecies;
     final int caughtTotal = trainer.caughtCount;
     final int seenTotal = trainer.seenCount;
     final int unseenTotal = allIds.where((id) => !trainer.isSpeciesSeen(id)).length;
@@ -76,7 +76,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
             ),
             const SizedBox(width: 8),
             const Text(
-              "NATIONAL POKÉDEX",
+              "POKÉDEX",
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
@@ -148,7 +148,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 const PokeBallSymbol(size: 18, isCaught: true),
                                 const SizedBox(width: 6),
                                 Text(
-                                  "$caughtTotal Caught",
+                                  "$caughtTotal/$total Caught",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
