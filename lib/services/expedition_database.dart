@@ -136,7 +136,7 @@ class ExpeditionDatabase {
     112, // Rhydon
   ];
 
-  /// Generates 1 of the 3 strong wild Pokémon (Lv. 85-90), respecting
+  /// Generates 1 of the 3 strong wild Pokémon (Lv. 99), respecting
   /// the player's Red / Blue-Green version exclusives.
   static PokemonInstance generateWildEncounter(
     ExpeditionDestination destination, {
@@ -151,7 +151,7 @@ class ExpeditionDatabase {
     final pool = filtered.isNotEmpty ? filtered : destination.wildSpeciesPool;
     final chosenId = pool[random.nextInt(pool.length)];
     final species = PokedexDatabase.species[chosenId]!;
-    final int level = 85 + random.nextInt(6); // 85..90
+    const int level = 99;
     final bool isShiny = PokedexDatabase.rollShiny(species);
     return PokedexDatabase.createPokemon(
       chosenId,
@@ -162,11 +162,11 @@ class ExpeditionDatabase {
   }
 
   /// Generates the Team Rocket ambush challenger (10% chance Jessie or James,
-  /// 90% Team Rocket Grunt) with a full 6-Pokémon party averaging Lv. 90.
+  /// 90% Team Rocket Grunt) with a full 6-Pokémon party all at Lv. 99.
   static RocketChallenger generateRocketChallenger({Random? rng}) {
     final random = rng ?? _rng;
     final double roll = random.nextDouble();
-    const List<int> levels = [88, 89, 90, 90, 91, 92]; // Exact avg = 90.0
+    const List<int> levels = [99, 99, 99, 99, 99, 99];
 
     if (roll < 0.05) {
       const ids = [108, 42, 124, 89, 130, 24]; // Lickitung..Arbok

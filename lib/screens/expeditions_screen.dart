@@ -122,7 +122,7 @@ class ExpeditionsScreen extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            "Endure 3 Lv.85–90 wild battles with zero rest and defeat a Lv.90 avg Team Rocket ambush deep in uncharted Kanto.",
+            "Endure 3 Lv.99 wild battles with zero rest and defeat a Lv.99 Team Rocket ambush deep in uncharted Kanto.",
             style: TextStyle(
               color: Colors.white70,
               fontSize: 11,
@@ -779,7 +779,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "Another fierce Lv.85–90 wild Pokémon blocks the path deeper into ${dest.name}. Your team gets no rest!",
+                      "Another fierce Lv.99 wild Pokémon blocks the path deeper into ${dest.name}. Your team gets no rest!",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white70,
@@ -896,7 +896,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     ),
                     const SizedBox(height: 6),
                     const Text(
-                      "Full Party of 6 • Average Lv. 90",
+                      "Full Party of 6 • Lv. 99",
                       style: TextStyle(
                         color: Colors.amberAccent,
                         fontWeight: FontWeight.w900,
