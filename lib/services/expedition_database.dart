@@ -158,6 +158,8 @@ class ExpeditionDatabase {
       level: level,
       isShiny: isShiny,
       respectMinEncounterLevel: false,
+      eggMoveChance: 0.30,
+      rng: random,
     );
   }
 

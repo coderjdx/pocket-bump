@@ -12,6 +12,7 @@ enum ItemCategory {
   fossil,
   tm,
   adventureMap,
+  tutorItem,
 }
 
 class Item {
@@ -46,6 +47,7 @@ class Item {
   bool get isFossil => category == ItemCategory.fossil;
   bool get isTm => category == ItemCategory.tm;
   bool get isAdventureMap => category == ItemCategory.adventureMap;
+  bool get isTutorItem => category == ItemCategory.tutorItem;
   bool get isReusable => isTm || isAdventureMap;
   bool get isBall => category == ItemCategory.pokeball;
   bool get isMedicine => category == ItemCategory.medicine;
@@ -677,6 +679,17 @@ class ItemDatabase {
       rarity: PokemonRarity.rare,
       color: Color(0xFF4DD0E1),
       icon: Icons.science,
+    ),
+    'heart_scale': Item(
+      id: 'heart_scale',
+      name: 'Heart Scale',
+      description: 'A lovely, heart-shaped scale. Trade 1x to the Move Tutor at the Pokémon Center to teach an Egg Move.',
+      category: ItemCategory.tutorItem,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFF6B9D),
+      icon: Icons.favorite_rounded,
     ),
 
     // === GEN 1 TECHNICAL MACHINES (TM01 - TM50) ===

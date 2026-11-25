@@ -7,6 +7,7 @@ import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/pokeball_sprite.dart';
+import 'move_tutor_screen.dart';
 import 'poke_mart_screen.dart';
 
 class PokemonCenterScreen extends StatefulWidget {
@@ -113,6 +114,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     final trainer = Provider.of<Trainer>(context);
     final int fossils = trainer.getItemCount('unknown_fossil');
     final int vouchers = trainer.getItemCount('fossil_restoration_voucher');
+    final int heartScales = trainer.getItemCount('heart_scale');
     final bool needsHeal = trainer.party.any(
       (mon) =>
           mon.currentHp < mon.maxHp ||
@@ -297,6 +299,24 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 10),
+                  _buildFacilityTile(
+                    onTap: _isHealing
+                        ? null
+                        : () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MoveTutorScreen(),
+                              ),
+                            );
+                          },
+                    icon: Icons.favorite_rounded,
+                    accentColor: const Color(0xFFFF6B9D),
+                    title: "Move Tutor (Egg Moves)",
+                    subtitle:
+                        "$heartScales Heart Scale${heartScales == 1 ? '' : 's'} • Teach special moves",
                   ),
                 ],
               ),
@@ -929,6 +949,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     final trainer = Provider.of<Trainer>(context);
     final int fossils = trainer.getItemCount('unknown_fossil');
     final int vouchers = trainer.getItemCount('fossil_restoration_voucher');
+    final int heartScales = trainer.getItemCount('heart_scale');
     final bool canRestore = fossils > 0 && vouchers > 0 && !trainer.isStorageFull;
 
     return Scaffold(

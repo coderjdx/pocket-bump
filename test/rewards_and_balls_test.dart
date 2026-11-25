@@ -8,6 +8,8 @@ import 'package:pocket_bump/models/trainer.dart';
 import 'package:pocket_bump/services/adventure_database.dart';
 import 'package:pocket_bump/services/battle_engine.dart';
 import 'package:pocket_bump/services/battle_sprite_metrics.dart';
+import 'package:pocket_bump/services/egg_move_service.dart';
+import 'package:pocket_bump/services/expedition_database.dart';
 import 'package:pocket_bump/services/gym_database.dart';
 import 'package:pocket_bump/services/item_drop_service.dart';
 import 'package:pocket_bump/services/pokedex_database.dart';
@@ -534,6 +536,103 @@ void main() {
           }
         }
       }
+    });
+  });
+
+  group('Egg Moves & Heart Scale Tutor Drops', () {
+    test('all configured Egg Moves exist in PokedexDatabase and inherit cleanly', () {
+      for (final entry in EggMoveService.familyEggMoveIds.entries) {
+        expect(PokedexDatabase.species.containsKey(entry.key), isTrue);
+        for (final moveId in entry.value) {
+          expect(
+            PokedexDatabase.moves.containsKey(moveId),
+            isTrue,
+            reason: 'Missing move $moveId for root ${entry.key}',
+          );
+        }
+      }
+
+      final charizard = PokedexDatabase.species[6]!;
+      expect(EggMoveService.isEggMoveForSpecies(charizard, 'dragon_dance'), isTrue);
+
+      final vaporeon = PokedexDatabase.species[134]!;
+      expect(EggMoveService.isEggMoveForSpecies(vaporeon, 'yawn'), isTrue);
+
+      final infernape = PokedexDatabase.species[392]!;
+      expect(EggMoveService.isEggMoveForSpecies(infernape, 'thunder_punch'), isTrue);
+    });
+
+    test('wild & expedition encounters can spawn knowing an Egg Move', () {
+      final rng = Random(404);
+      bool sawAdventureEggMove = false;
+      for (int i = 0; i < 120; i++) {
+        final mon = PokedexDatabase.generateAdventureEncounter(
+          playerLevel: 30,
+          rng: rng,
+        );
+        if (mon.moves.any((m) => EggMoveService.isEggMoveForSpecies(mon.species, m.id))) {
+          sawAdventureEggMove = true;
+          break;
+        }
+      }
+      expect(sawAdventureEggMove, isTrue);
+
+      final dest = ExpeditionDatabase.destinations.first;
+      bool sawExpeditionEggMove = false;
+      for (int i = 0; i < 120; i++) {
+        final mon = ExpeditionDatabase.generateWildEncounter(dest, rng: rng);
+        if (mon.moves.any((m) => EggMoveService.isEggMoveForSpecies(mon.species, m.id))) {
+          sawExpeditionEggMove = true;
+          break;
+        }
+      }
+      expect(sawExpeditionEggMove, isTrue);
+    });
+
+    test('Heart Scale drops only from Gym Leaders and Team Rocket, never Wilds', () {
+      final rng = Random(505);
+      final wildSpecies = [
+        _makeSpecies(id: 19, name: 'Rattata', evolutionSpeciesId: 20),
+        _makeSpecies(id: 20, name: 'Raticate', evolutionStage: 2, evolutionSpeciesId: null),
+        _makeSpecies(id: 6, name: 'Charizard', evolutionStage: 3, evolutionSpeciesId: null),
+        _makeSpecies(id: 150, name: 'Mewtwo', isLegendary: true, evolutionSpeciesId: null),
+      ];
+      for (final spec in wildSpecies) {
+        for (int i = 0; i < 300; i++) {
+          final drops = ItemDropService.rollDrops(spec, rng: rng);
+          expect(drops.any((d) => d.itemId == 'heart_scale'), isFalse);
+        }
+      }
+
+      final gym = GymDatabase.gyms.first;
+      bool sawGymHeartScale = false;
+      for (int i = 0; i < 150; i++) {
+        final drops = ItemDropService.rollGymRematchDrops(
+          gym: gym,
+          ownedTmIds: const {},
+          rng: rng,
+        );
+        if (drops.any((d) => d.itemId == 'heart_scale')) {
+          sawGymHeartScale = true;
+          break;
+        }
+      }
+      expect(sawGymHeartScale, isTrue);
+
+      bool sawGruntHeartScale = false;
+      bool sawBossHeartScale = false;
+      for (int i = 0; i < 100; i++) {
+        if (ItemDropService.rollExpeditionRocketDrops(isJessieOrJames: false, rng: rng)
+            .any((d) => d.itemId == 'heart_scale')) {
+          sawGruntHeartScale = true;
+        }
+        if (ItemDropService.rollExpeditionRocketDrops(isJessieOrJames: true, rng: rng)
+            .any((d) => d.itemId == 'heart_scale')) {
+          sawBossHeartScale = true;
+        }
+      }
+      expect(sawGruntHeartScale, isTrue);
+      expect(sawBossHeartScale, isTrue);
     });
   });
 }

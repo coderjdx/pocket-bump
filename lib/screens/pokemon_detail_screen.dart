@@ -6,6 +6,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../services/egg_move_service.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../services/tm_service.dart';
@@ -1181,6 +1182,29 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                             ),
                             const SizedBox(width: 6),
                             TypeBadge(type: m.type),
+                            if (EggMoveService.isEggMoveForSpecies(
+                                mon.species, m.id)) ...[
+                              const SizedBox(width: 5),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFF6B9D).withOpacity(0.18),
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: const Color(0xFFFF6B9D)
+                                          .withOpacity(0.6)),
+                                ),
+                                child: const Text(
+                                  "EGG",
+                                  style: TextStyle(
+                                    color: Color(0xFFFF8BB3),
+                                    fontSize: 8.5,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ],
                             const SizedBox(width: 5),
                             Text(
                               _categoryTag(m.category),
@@ -1306,6 +1330,29 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               ),
                               const SizedBox(width: 6),
                               TypeBadge(type: rm.type),
+                              if (EggMoveService.isEggMoveForSpecies(
+                                  mon.species, rm.id)) ...[
+                                const SizedBox(width: 5),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 1),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFF6B9D).withOpacity(0.18),
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                        color: const Color(0xFFFF6B9D)
+                                            .withOpacity(0.6)),
+                                  ),
+                                  child: const Text(
+                                    "EGG",
+                                    style: TextStyle(
+                                      color: Color(0xFFFF8BB3),
+                                      fontSize: 8.5,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
                           const SizedBox(height: 3),

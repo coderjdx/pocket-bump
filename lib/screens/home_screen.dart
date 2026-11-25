@@ -3229,6 +3229,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                   style: TextStyle(color: Colors.white54, fontSize: 9.5),
                                                 ),
                                               ),
+                                            ] else if (item.isTutorItem) ...[
+                                              const SizedBox(height: 6),
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFFF6B9D).withOpacity(0.12),
+                                                  borderRadius: BorderRadius.circular(6),
+                                                ),
+                                                child: const Text(
+                                                  "Move Tutor currency: teach Egg Moves at the Pokémon Center",
+                                                  style: TextStyle(color: Color(0xFFFF9EBB), fontSize: 9.5),
+                                                ),
+                                              ),
                                             ] else if (item.isHeldItem || item.isBerry) ...[
                                               const SizedBox(height: 6),
                                               Container(

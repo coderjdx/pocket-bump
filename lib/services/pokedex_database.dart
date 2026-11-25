@@ -4,6 +4,7 @@ import '../models/move.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/pokemon_instance.dart';
+import 'egg_move_service.dart';
 
 class PokedexDatabase {
   static final Random _rng = Random();
@@ -11768,6 +11769,8 @@ class PokedexDatabase {
     String? abilityId,
     int? abilitySlot,
     double hiddenAbilityChance = 0.02,
+    double eggMoveChance = 0.0,
+    Random? rng,
   }) {
     final spec = species[speciesId]!;
     final effectiveLevel =
@@ -11778,11 +11781,28 @@ class PokedexDatabase {
     final int resolvedSlot = abilitySlot ??
         (abilityId != null ? spec.slotForAbility(abilityId) : rolled.slot);
     final String resolvedAbility = abilityId ?? spec.abilityForSlot(resolvedSlot);
+    final List<Move> startingMoves =
+        movesForSpeciesAtLevel(spec, effectiveLevel);
+    if (eggMoveChance > 0) {
+      final Move? rolledEggMove = EggMoveService.rollWildEggMove(
+        spec,
+        chance: eggMoveChance,
+        excludeMoveIds: startingMoves.map((m) => m.id).toSet(),
+        rng: rng,
+      );
+      if (rolledEggMove != null) {
+        if (startingMoves.length < 4) {
+          startingMoves.add(rolledEggMove);
+        } else {
+          startingMoves[0] = rolledEggMove;
+        }
+      }
+    }
     return PokemonInstance(
       species: spec,
       nickname: nickname,
       level: effectiveLevel,
-      moves: movesForSpeciesAtLevel(spec, effectiveLevel),
+      moves: startingMoves,
       isShiny: isShiny && spec.isShinyEligible,
       abilityId: resolvedAbility,
       abilitySlot: resolvedSlot,
@@ -11889,7 +11909,13 @@ class PokedexDatabase {
     final maxLvl = max(baseMax, minLvl).clamp(minLvl, 100);
     final level = minLvl + r.nextInt(maxLvl - minLvl + 1);
     final bool isShiny = rollShiny(chosen);
-    return createPokemon(chosen.id, level: level, isShiny: isShiny);
+    return createPokemon(
+      chosen.id,
+      level: level,
+      isShiny: isShiny,
+      eggMoveChance: hasTypeFilter ? 0.25 : 0.15,
+      rng: r,
+    );
   }
 
   // ─── RIVAL POKÉMON GENERATOR ──────────────────────────────────────────

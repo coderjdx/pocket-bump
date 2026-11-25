@@ -341,17 +341,19 @@ class ItemDropService {
   }
 
   /// Guaranteed 1–3 item drops on Gym Leader rematch clears (no empty drops).
+  /// Heart Scales drop exclusively from Gym Leaders and Team Rocket.
   ///
   /// When the gym's Adventure Map is still unowned:
   /// - 15% Adventure Map (unique per player, never repeats)
-  /// - 27% TM (never repeats TMs already in [ownedTmIds] or this roll)
-  /// - 18% Signature held item
-  /// - 16% Signature stone / Leftovers
-  /// - 12% Unknown Fossil
-  /// - 12% Fossil Restoration Voucher
+  /// - 24% TM (never repeats TMs already in [ownedTmIds] or this roll)
+  /// - 15% Heart Scale
+  /// - 14% Signature held item
+  /// - 12% Signature stone / Leftovers
+  /// - 10% Unknown Fossil
+  /// - 10% Fossil Restoration Voucher
   ///
-  /// Once the Adventure Map is owned (or already rolled), reverts to:
-  /// - 32% TM / 21% held item / 19% stone / 14% fossil / 14% voucher
+  /// Once the Adventure Map is owned (or already rolled):
+  /// - 28% TM / 18% Heart Scale / 16% held item / 14% stone / 12% fossil / 12% voucher
   ///
   /// Whenever all of [gym.tmDrops] are already owned, the TM weight is
   /// redistributed proportionally across the remaining buckets.
@@ -380,7 +382,7 @@ class ItemDropService {
         if (roll < 0.15) {
           grantedMaps.add(gym.signatureAdventureMapDrop);
           rawDrops.add(_itemDropFromId(gym.signatureAdventureMapDrop));
-        } else if (roll < 0.42) {
+        } else if (roll < 0.39) {
           final String sigTm = gym.tmDrops.first;
           final String chosenTm =
               (availableTms.contains(sigTm) && r.nextDouble() < 0.35)
@@ -388,7 +390,45 @@ class ItemDropService {
                   : availableTms[r.nextInt(availableTms.length)];
           grantedTms.add(chosenTm);
           rawDrops.add(_itemDropFromId(chosenTm));
-        } else if (roll < 0.60) {
+        } else if (roll < 0.54) {
+          rawDrops.add(_itemDropFromId('heart_scale'));
+        } else if (roll < 0.68) {
+          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
+        } else if (roll < 0.80) {
+          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
+        } else if (roll < 0.90) {
+          rawDrops.add(_itemDropFromId('unknown_fossil'));
+        } else {
+          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+        }
+      } else if (canDropMap) {
+        // Unowned Adventure Map, all TMs owned: 15:15:14:12:10:10 (sum 76)
+        if (roll < 15 / 76) {
+          grantedMaps.add(gym.signatureAdventureMapDrop);
+          rawDrops.add(_itemDropFromId(gym.signatureAdventureMapDrop));
+        } else if (roll < 30 / 76) {
+          rawDrops.add(_itemDropFromId('heart_scale'));
+        } else if (roll < 44 / 76) {
+          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
+        } else if (roll < 56 / 76) {
+          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
+        } else if (roll < 66 / 76) {
+          rawDrops.add(_itemDropFromId('unknown_fossil'));
+        } else {
+          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+        }
+      } else if (availableTms.isNotEmpty) {
+        if (roll < 0.28) {
+          final String sigTm = gym.tmDrops.first;
+          final String chosenTm =
+              (availableTms.contains(sigTm) && r.nextDouble() < 0.35)
+                  ? sigTm
+                  : availableTms[r.nextInt(availableTms.length)];
+          grantedTms.add(chosenTm);
+          rawDrops.add(_itemDropFromId(chosenTm));
+        } else if (roll < 0.46) {
+          rawDrops.add(_itemDropFromId('heart_scale'));
+        } else if (roll < 0.62) {
           rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
         } else if (roll < 0.76) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
@@ -397,45 +437,15 @@ class ItemDropService {
         } else {
           rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
         }
-      } else if (canDropMap) {
-        // Unowned Adventure Map, all TMs owned: 15:18:16:12:12 (sum 73)
-        if (roll < 15 / 73) {
-          grantedMaps.add(gym.signatureAdventureMapDrop);
-          rawDrops.add(_itemDropFromId(gym.signatureAdventureMapDrop));
-        } else if (roll < 33 / 73) {
-          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
-        } else if (roll < 49 / 73) {
-          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
-        } else if (roll < 61 / 73) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
-        } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
-        }
-      } else if (availableTms.isNotEmpty) {
-        if (roll < 0.32) {
-          final String sigTm = gym.tmDrops.first;
-          final String chosenTm =
-              (availableTms.contains(sigTm) && r.nextDouble() < 0.35)
-                  ? sigTm
-                  : availableTms[r.nextInt(availableTms.length)];
-          grantedTms.add(chosenTm);
-          rawDrops.add(_itemDropFromId(chosenTm));
-        } else if (roll < 0.53) {
-          rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
-        } else if (roll < 0.72) {
-          rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
-        } else if (roll < 0.86) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
-        } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
-        }
       } else {
-        // All TMs & Map owned: redistribute 21:19:14:14
-        if (roll < 21 / 68) {
+        // All TMs & Map owned: 18:16:14:12:12 (sum 72)
+        if (roll < 18 / 72) {
+          rawDrops.add(_itemDropFromId('heart_scale'));
+        } else if (roll < 34 / 72) {
           rawDrops.add(_itemDropFromId(gym.signatureHeldItemDrop));
-        } else if (roll < 40 / 68) {
+        } else if (roll < 48 / 72) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
-        } else if (roll < 54 / 68) {
+        } else if (roll < 60 / 72) {
           rawDrops.add(_itemDropFromId('unknown_fossil'));
         } else {
           rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
@@ -451,6 +461,7 @@ class ItemDropService {
   ///   - Rocket Grunt: Uncommon (60%) or Rare (40%)
   ///   - Jessie & James: Rare (75%) or Special (25%)
   /// - Plus 1x random Special Poké Ball
+  /// - Plus Heart Scale chance (Grunt: 35% for 1x; Jessie/James: 65% for 1x–2x)
   static List<ItemDrop> rollExpeditionRocketDrops({
     required bool isJessieOrJames,
     Random? rng,
@@ -476,6 +487,13 @@ class ItemDropService {
     final String specialBallId = ItemDatabase.specialBallIds[
         r.nextInt(ItemDatabase.specialBallIds.length)];
     rawDrops.add(_itemDropFromId(specialBallId));
+
+    final double heartChance = isJessieOrJames ? 0.65 : 0.35;
+    if (r.nextDouble() < heartChance) {
+      final int scaleCount =
+          (isJessieOrJames && r.nextDouble() < 0.25) ? 2 : 1;
+      rawDrops.add(_itemDropFromId('heart_scale', count: scaleCount));
+    }
 
     return mergeDrops(rawDrops);
   }
