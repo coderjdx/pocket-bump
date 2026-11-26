@@ -29,17 +29,6 @@ class AdventureScreen extends StatelessWidget {
       );
       return;
     }
-    if (trainer.repelEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Repel is active! Toggle Repel off to embark on an Adventure.',
-          ),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
 
     SoundService.instance.playUiTap();
     Navigator.push(

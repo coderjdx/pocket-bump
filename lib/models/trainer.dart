@@ -54,7 +54,6 @@ class Trainer extends ChangeNotifier {
   Map<int, int> gymTodaySteps;
   Map<String, int> customItems;
   bool expShareEnabled;
-  bool repelEnabled;
   bool hasEarnedExpeditionMasterBall;
   Set<int> caughtExpeditionLegendaryIds;
   Set<String> redeemedGiftCodes;
@@ -98,7 +97,6 @@ class Trainer extends ChangeNotifier {
     Map<int, int>? gymTodaySteps,
     Map<String, int>? customItems,
     this.expShareEnabled = false,
-    this.repelEnabled = false,
     this.hasEarnedExpeditionMasterBall = false,
     Set<int>? caughtExpeditionLegendaryIds,
     Set<String>? redeemedGiftCodes,
@@ -690,7 +688,7 @@ class Trainer extends ChangeNotifier {
 
   /// Increments today's & lifetime step counters by [delta], updates Gym step
   /// progression, and rolls the 0..400 wild encounter check when [allowEncounter]
-  /// and [!repelEnabled] are both true.
+  /// is true.
   bool recordStepsAndCheckEncounter(
     int delta, {
     bool allowEncounter = true,
@@ -701,7 +699,7 @@ class Trainer extends ChangeNotifier {
     dailySteps += delta;
     totalSteps += delta;
     bool triggered = false;
-    if (allowEncounter && !repelEnabled) {
+    if (allowEncounter) {
       for (int i = 0; i < delta; i++) {
         encounterSteps = (encounterSteps + 1).clamp(0, maxEncounterSteps);
         final double chance = encounterSteps / maxEncounterSteps;
@@ -718,14 +716,6 @@ class Trainer extends ChangeNotifier {
 
   void toggleExpShare([bool? value]) {
     expShareEnabled = value ?? !expShareEnabled;
-    notifyListeners();
-  }
-
-  void toggleRepel([bool? value]) {
-    repelEnabled = value ?? !repelEnabled;
-    if (repelEnabled) {
-      encounterSteps = 0;
-    }
     notifyListeners();
   }
 
@@ -1000,7 +990,6 @@ class Trainer extends ChangeNotifier {
       'gymTodaySteps': gymTodaySteps.map((k, v) => MapEntry(k.toString(), v)),
       'customItems': customItems,
       'expShareEnabled': expShareEnabled,
-      'repelEnabled': repelEnabled,
       'hasEarnedExpeditionMasterBall': hasEarnedExpeditionMasterBall,
       'caughtExpeditionLegendaryIds':
           caughtExpeditionLegendaryIds.toList()..sort(),
@@ -1088,7 +1077,6 @@ class Trainer extends ChangeNotifier {
       }
     });
     expShareEnabled = json['expShareEnabled'] == true;
-    repelEnabled = json['repelEnabled'] == true;
     hasEarnedExpeditionMasterBall =
         json['hasEarnedExpeditionMasterBall'] == true;
     caughtExpeditionLegendaryIds =
@@ -1256,7 +1244,6 @@ class Trainer extends ChangeNotifier {
     gymTodaySteps = {};
     customItems = {};
     expShareEnabled = false;
-    repelEnabled = false;
     hasEarnedExpeditionMasterBall = false;
     caughtExpeditionLegendaryIds = {};
     redeemedGiftCodes = {};
