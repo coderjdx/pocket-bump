@@ -913,6 +913,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                             children: PokedexDatabase.firstStageFossilSpeciesIds
                                 .map((id) {
                               final spec = PokedexDatabase.species[id]!;
+                              final bool obtained = trainer.isSpeciesCaught(id);
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -920,47 +921,65 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                     width: 72,
                                     height: 72,
                                     decoration: PokeDecorations.card(
-                                      fill: PokeColors.cardWhite,
-                                      border: PokeColors.pokeGreen,
+                                      fill: obtained
+                                          ? PokeColors.cardWhite
+                                          : PokeColors.panelSoft,
+                                      border: obtained
+                                          ? PokeColors.pokeGreen
+                                          : PokeColors.frameBorderSoft,
                                       radius: 16,
                                       borderWidth: 1.5,
                                     ),
                                     child: Center(
-                                      child: Image.network(
-                                        spec.spriteUrl,
-                                        width: 54,
-                                        height: 54,
-                                        fit: BoxFit.contain,
-                                        filterQuality: FilterQuality.none,
-                                        errorBuilder: (_, __, ___) =>
-                                            Image.network(
-                                          spec.staticSpriteUrl,
-                                          width: 54,
-                                          height: 54,
-                                          fit: BoxFit.contain,
-                                          filterQuality: FilterQuality.none,
-                                          errorBuilder: (_, __, ___) =>
-                                              const Icon(
-                                            Icons.catching_pokemon,
-                                            color: PokeColors.pokeGreen,
-                                          ),
-                                        ),
-                                      ),
+                                      child: obtained
+                                          ? Image.network(
+                                              spec.spriteUrl,
+                                              width: 54,
+                                              height: 54,
+                                              fit: BoxFit.contain,
+                                              filterQuality: FilterQuality.none,
+                                              errorBuilder: (_, __, ___) =>
+                                                  Image.network(
+                                                spec.staticSpriteUrl,
+                                                width: 54,
+                                                height: 54,
+                                                fit: BoxFit.contain,
+                                                filterQuality:
+                                                    FilterQuality.none,
+                                                errorBuilder: (_, __, ___) =>
+                                                    const Icon(
+                                                  Icons.catching_pokemon,
+                                                  color: PokeColors.pokeGreen,
+                                                ),
+                                              ),
+                                            )
+                                          : const Text(
+                                              "?",
+                                              style: TextStyle(
+                                                color: PokeColors.inkMuted,
+                                                fontSize: 34,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(height: 7),
                                   Text(
-                                    spec.name,
-                                    style: const TextStyle(
-                                      color: PokeColors.inkDark,
+                                    obtained ? spec.name : "???",
+                                    style: TextStyle(
+                                      color: obtained
+                                          ? PokeColors.inkDark
+                                          : PokeColors.inkMuted,
                                       fontWeight: FontWeight.w900,
                                       fontSize: 12.5,
                                     ),
                                   ),
-                                  const Text(
+                                  Text(
                                     "Lv. 10",
                                     style: TextStyle(
-                                      color: PokeColors.pokeGreenDark,
+                                      color: obtained
+                                          ? PokeColors.pokeGreenDark
+                                          : PokeColors.inkSubtle,
                                       fontSize: 10,
                                       fontWeight: FontWeight.w900,
                                     ),

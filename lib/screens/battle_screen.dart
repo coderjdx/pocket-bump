@@ -5763,7 +5763,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
-        final rows = <Widget>[];
+        final medicineRows = <Widget>[];
+        final ballRows = <Widget>[];
 
         // Balls (standard + Special Poké Balls; trainers block throws)
         for (final ball in ItemDatabase.allBalls) {
@@ -5771,7 +5772,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (count <= 0) continue;
           final bool isSpecial = ItemDatabase.specialBallIds.contains(ball.id);
           final String rateBadge = _formatBallRateBadge(ball);
-          rows.add(_bagRow(
+          ballRows.add(_bagRow(
             icon: Icons.catching_pokemon,
             iconColor: ball.color,
             leadingWidget: PokeBallSpriteWidget(ballType: ball.id, size: 28),
@@ -5954,7 +5955,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (count <= 0) continue;
           final bool anyEligible =
               _trainer.party.any((p) => _canUseBattleItemOn(med.id, p));
-          rows.add(_bagRow(
+          medicineRows.add(_bagRow(
             icon: med.icon,
             iconColor: med.color,
             title: med.name,
@@ -5974,55 +5975,185 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           ));
         }
 
-        return SizedBox(
-          height: MediaQuery.of(ctx).size.height * 0.72,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Widget buildPocketList({
+          required List<Widget> items,
+          required IconData emptyIcon,
+          required String emptyTitle,
+          required String emptyHint,
+        }) {
+          if (items.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      "TRAINER BAG",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                    Icon(emptyIcon, color: Colors.white24, size: 40),
+                    const SizedBox(height: 10),
+                    Text(
+                      emptyTitle,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white60),
-                      onPressed: () => Navigator.pop(ctx),
+                    const SizedBox(height: 6),
+                    Text(
+                      emptyHint,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 12,
+                        height: 1.35,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Expanded(
-                  child: rows.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.inventory_2_outlined,
-                                  color: Colors.white24, size: 40),
-                              SizedBox(height: 10),
-                              Text(
-                                "Your Bag is empty!",
-                                style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ListView(
-                          physics: const BouncingScrollPhysics(),
-                          children: rows,
-                        ),
+              ),
+            );
+          }
+          return ListView(
+            physics: const BouncingScrollPhysics(),
+            children: items,
+          );
+        }
+
+        Widget buildBagTab({
+          required IconData icon,
+          required String label,
+          required int count,
+        }) {
+          return Tab(
+            height: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 16),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    label,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                  decoration: BoxDecoration(
+                    color: Colors.white12,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    "$count",
+                    style: const TextStyle(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
+            ),
+          );
+        }
+
+        return DefaultTabController(
+          length: 2,
+          child: SizedBox(
+            height: MediaQuery.of(ctx).size.height * 0.72,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.backpack_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "TRAINER BAG",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white60),
+                        onPressed: () => Navigator.pop(ctx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1F1F2B),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white12),
+                    ),
+                    child: TabBar(
+                      indicator: BoxDecoration(
+                        color: const Color(0xFF3A3A4D),
+                        borderRadius: BorderRadius.circular(9),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      dividerColor: Colors.transparent,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.white54,
+                      tabs: [
+                        buildBagTab(
+                          icon: Icons.healing_rounded,
+                          label: "Medicine",
+                          count: medicineRows.length,
+                        ),
+                        buildBagTab(
+                          icon: Icons.catching_pokemon,
+                          label: "Poké Balls",
+                          count: ballRows.length,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        buildPocketList(
+                          items: medicineRows,
+                          emptyIcon: Icons.medical_services_outlined,
+                          emptyTitle: "No Medicine in your Bag!",
+                          emptyHint:
+                              "Stock up on Potions, Status Healers, and Revives at the Poké Mart.",
+                        ),
+                        buildPocketList(
+                          items: ballRows,
+                          emptyIcon: Icons.catching_pokemon,
+                          emptyTitle: "No Poké Balls in your Bag!",
+                          emptyHint:
+                              "Stock up on Poké Balls at the Poké Mart or Expeditions.",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
