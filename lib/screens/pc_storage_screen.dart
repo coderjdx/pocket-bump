@@ -7,6 +7,7 @@ import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import 'pokemon_detail_screen.dart';
 
 class PcStorageScreen extends StatefulWidget {
@@ -127,24 +128,13 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     bool isShiny = false,
   }) {
     final fallbackColor = species.types.first.color;
-    return Image.network(
-      isShiny ? species.shinySpriteUrl : species.spriteUrl,
+    return PokemonSpriteImage.fromSpecies(
+      species,
+      isShiny: isShiny,
       width: size,
       height: size,
-      fit: BoxFit.contain,
-      filterQuality: FilterQuality.none,
-      errorBuilder: (_, __, ___) => Image.network(
-        isShiny ? species.staticShinySpriteUrl : species.staticSpriteUrl,
-        width: size,
-        height: size,
-        fit: BoxFit.contain,
-        filterQuality: FilterQuality.none,
-        errorBuilder: (_, __, ___) => Icon(
-          Icons.catching_pokemon,
-          color: fallbackColor,
-          size: size * 0.72,
-        ),
-      ),
+      fallbackIconSize: size * 0.72,
+      fallbackIconColor: fallbackColor,
     );
   }
 

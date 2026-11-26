@@ -10,6 +10,7 @@ import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
 import 'double_battle_screen.dart';
@@ -965,17 +966,12 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                     ),
                     const SizedBox(height: 14),
-                    Image.network(
-                      boss.spriteUrl,
+                    PokemonSpriteImage.fromInstance(
+                      boss,
                       width: 132,
                       height: 132,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.none,
-                      errorBuilder: (_, __, ___) => Image.network(
-                        boss.staticSpriteUrl,
-                        width: 120,
-                        height: 120,
-                      ),
+                      fallbackIconSize: 72,
+                      fallbackIconColor: bossColor,
                     ),
                     const SizedBox(height: 10),
                     Text(

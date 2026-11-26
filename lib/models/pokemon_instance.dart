@@ -711,6 +711,9 @@ class PokemonInstance {
 
   bool get hasHeldItem => heldItemId != null && heldItemId!.isNotEmpty;
 
+  String get spriteAsset => isShiny ? species.shinySpriteAsset : species.spriteAsset;
+  String get backSpriteAsset =>
+      isShiny ? species.shinyBackSpriteAsset : species.backSpriteAsset;
   String get spriteUrl => isShiny ? species.shinySpriteUrl : species.spriteUrl;
   String get backSpriteUrl =>
       isShiny ? species.shinyBackSpriteUrl : species.backSpriteUrl;

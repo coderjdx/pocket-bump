@@ -11,6 +11,7 @@ import '../services/pvp_link_service.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 import 'evolution_screen.dart';
 
@@ -306,24 +307,12 @@ class _TradeScreenState extends State<TradeScreen>
                   child: Stack(
                     children: [
                       Center(
-                        child: Image.network(
-                          mon.spriteUrl,
+                        child: PokemonSpriteImage.fromInstance(
+                          mon,
                           width: 56,
                           height: 56,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                          errorBuilder: (_, __, ___) => Image.network(
-                            mon.staticSpriteUrl,
-                            width: 56,
-                            height: 56,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => Icon(
-                              Icons.catching_pokemon,
-                              color: typeAccent,
-                              size: 36,
-                            ),
-                          ),
+                          fallbackIconSize: 36,
+                          fallbackIconColor: typeAccent,
                         ),
                       ),
                       if (mon.isShiny)
@@ -800,26 +789,13 @@ class _TradeScreenState extends State<TradeScreen>
                                         ),
                                         child: Row(
                                           children: [
-                                            Image.network(
-                                              mon.spriteUrl,
+                                            PokemonSpriteImage.fromInstance(
+                                              mon,
                                               width: 36,
                                               height: 36,
-                                              fit: BoxFit.contain,
-                                              filterQuality: FilterQuality.none,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Image.network(
-                                                mon.staticSpriteUrl,
-                                                width: 36,
-                                                height: 36,
-                                                filterQuality:
-                                                    FilterQuality.none,
-                                                errorBuilder: (_, __, ___) =>
-                                                    const Icon(
-                                                  Icons.catching_pokemon,
-                                                  color: PokeColors.inkMuted,
-                                                  size: 24,
-                                                ),
-                                              ),
+                                              fallbackIconSize: 24,
+                                              fallbackIconColor:
+                                                  PokeColors.inkMuted,
                                             ),
                                             const SizedBox(width: 6),
                                             Expanded(

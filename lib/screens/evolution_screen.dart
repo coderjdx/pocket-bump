@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../services/sound_service.dart';
+import '../widgets/pokemon_sprite_image.dart';
 
 class EvolutionScreen extends StatefulWidget {
   final PokemonSpecies fromSpecies;
@@ -96,21 +97,18 @@ class _EvolutionScreenState extends State<EvolutionScreen>
     });
   }
 
-  String _spriteFor(PokemonSpecies species) =>
-      widget.isShiny ? species.shinySpriteUrl : species.spriteUrl;
-
-  String _staticSpriteFor(PokemonSpecies species) =>
-      widget.isShiny ? species.staticShinySpriteUrl : species.staticSpriteUrl;
+  String _assetFor(PokemonSpecies species) =>
+      widget.isShiny ? species.shinySpriteAsset : species.spriteAsset;
 
   Future<void> _runEvolutionSequence() async {
     if (!mounted) return;
     // Preload pre-evolution and evolved sprites so there's zero pop-in mid-morph
     await Future.wait([
-      precacheImage(NetworkImage(_spriteFor(widget.fromSpecies)), context)
+      precacheImage(AssetImage(_assetFor(widget.fromSpecies)), context)
           .catchError((_) {}),
-      precacheImage(NetworkImage(_spriteFor(widget.toSpecies)), context)
+      precacheImage(AssetImage(_assetFor(widget.toSpecies)), context)
           .catchError((_) {}),
-    ]).timeout(const Duration(milliseconds: 1200), onTimeout: () => const []);
+    ]);
     if (!mounted) return;
 
     // Phase 1: Dramatic anticipation hold + starting cry
@@ -154,26 +152,14 @@ class _EvolutionScreenState extends State<EvolutionScreen>
     required double size,
     required bool whiteSilhouette,
   }) {
-    final Widget raw = Image.network(
-      _spriteFor(species),
+    final Widget raw = PokemonSpriteImage.fromSpecies(
+      species,
+      isShiny: widget.isShiny,
       width: size * 1.4,
       height: size,
-      fit: BoxFit.contain,
       alignment: Alignment.bottomCenter,
-      filterQuality: FilterQuality.none,
-      errorBuilder: (_, __, ___) => Image.network(
-        _staticSpriteFor(species),
-        width: size * 1.4,
-        height: size,
-        fit: BoxFit.contain,
-        alignment: Alignment.bottomCenter,
-        filterQuality: FilterQuality.none,
-        errorBuilder: (_, __, ___) => Icon(
-          Icons.catching_pokemon,
-          size: size * 0.72,
-          color: whiteSilhouette ? Colors.white : species.types.first.color,
-        ),
-      ),
+      fallbackIconSize: size * 0.72,
+      fallbackIconColor: whiteSilhouette ? Colors.white : species.types.first.color,
     );
     if (!whiteSilhouette) return raw;
     return ColorFiltered(

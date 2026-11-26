@@ -8,6 +8,7 @@ import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import 'move_tutor_screen.dart';
 import 'poke_mart_screen.dart';
 
@@ -701,24 +702,12 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
             SizedBox(
               width: 90,
               height: 90,
-              child: Image.network(
-                restoredMon.spriteUrl,
+              child: PokemonSpriteImage.fromInstance(
+                restoredMon,
                 width: 90,
                 height: 90,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-                errorBuilder: (_, __, ___) => Image.network(
-                  restoredMon.staticSpriteUrl,
-                  width: 90,
-                  height: 90,
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.none,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.catching_pokemon,
-                    color: PokeColors.pokeGreen,
-                    size: 56,
-                  ),
-                ),
+                fallbackIconSize: 56,
+                fallbackIconColor: PokeColors.pokeGreen,
               ),
             ),
             const SizedBox(height: 12),
@@ -932,26 +921,13 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                     ),
                                     child: Center(
                                       child: obtained
-                                          ? Image.network(
-                                              spec.spriteUrl,
+                                          ? PokemonSpriteImage.fromSpecies(
+                                              spec,
                                               width: 54,
                                               height: 54,
-                                              fit: BoxFit.contain,
-                                              filterQuality: FilterQuality.none,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Image.network(
-                                                spec.staticSpriteUrl,
-                                                width: 54,
-                                                height: 54,
-                                                fit: BoxFit.contain,
-                                                filterQuality:
-                                                    FilterQuality.none,
-                                                errorBuilder: (_, __, ___) =>
-                                                    const Icon(
-                                                  Icons.catching_pokemon,
-                                                  color: PokeColors.pokeGreen,
-                                                ),
-                                              ),
+                                              fallbackIconSize: 30,
+                                              fallbackIconColor:
+                                                  PokeColors.pokeGreen,
                                             )
                                           : const Text(
                                               "?",

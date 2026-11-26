@@ -8,6 +8,7 @@ import '../screens/pokemon_detail_screen.dart';
 import 'hp_bar.dart';
 import 'move_pp_picker_dialog.dart';
 import 'poke_theme.dart';
+import 'pokemon_sprite_image.dart';
 
 /// Shared row of 4 tall portrait buttons for multi-stage gauntlets with rest checkpoints:
 /// Next Battle, Bag, Pokémon, and Give Up.
@@ -518,17 +519,12 @@ Future<void> showCheckpointPartySheet(
                             children: [
                               Row(
                                 children: [
-                                  Image.network(
-                                    mon.spriteUrl,
+                                  PokemonSpriteImage.fromInstance(
+                                    mon,
                                     width: 48,
                                     height: 48,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (_, __, ___) => Icon(
-                                      Icons.catching_pokemon,
-                                      color: typeColor,
-                                      size: 36,
-                                    ),
+                                    fallbackIconSize: 36,
+                                    fallbackIconColor: typeColor,
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(

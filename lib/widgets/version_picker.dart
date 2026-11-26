@@ -3,6 +3,7 @@ import '../models/game_version.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import 'poke_theme.dart';
+import 'pokemon_sprite_image.dart';
 
 class VersionChoiceCard extends StatelessWidget {
   final GameVersion version;
@@ -66,24 +67,12 @@ class VersionChoiceCard extends StatelessWidget {
               ),
               child: Center(
                 child: mascot != null
-                    ? Image.network(
-                        mascot.spriteUrl,
+                    ? PokemonSpriteImage.fromSpecies(
+                        mascot,
                         width: compact ? 46 : 56,
                         height: compact ? 46 : 56,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                        errorBuilder: (_, __, ___) => Image.network(
-                          mascot.staticSpriteUrl,
-                          width: compact ? 44 : 54,
-                          height: compact ? 44 : 54,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                          errorBuilder: (_, __, ___) => Icon(
-                            Icons.catching_pokemon,
-                            color: primary,
-                            size: compact ? 28 : 34,
-                          ),
-                        ),
+                        fallbackIconSize: compact ? 28 : 34,
+                        fallbackIconColor: primary,
                       )
                     : Icon(Icons.catching_pokemon, color: primary),
               ),

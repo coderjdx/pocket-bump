@@ -7,6 +7,7 @@ import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/type_badge.dart';
@@ -620,20 +621,10 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Image.network(
-                          mon.spriteUrl,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                          errorBuilder: (ctx, err, stack) => Image.network(
-                            mon.staticSpriteUrl,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (c2, e2, s2) => Icon(
-                              Icons.catching_pokemon,
-                              color: c,
-                              size: 40,
-                            ),
-                          ),
+                        child: PokemonSpriteImage.fromSpecies(
+                          mon,
+                          fallbackIconSize: 40,
+                          fallbackIconColor: c,
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -682,22 +673,11 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                       colors: [typeColor.withOpacity(0.26), Colors.transparent],
                     ),
                   ),
-                  child: Image.network(
-                    selectedMon.species.spriteUrl,
+                  child: PokemonSpriteImage.fromSpecies(
+                    selectedMon.species,
                     height: 76,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (ctx, err, stack) => Image.network(
-                      selectedMon.species.staticSpriteUrl,
-                      height: 76,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.none,
-                      errorBuilder: (c2, e2, s2) => Icon(
-                        Icons.catching_pokemon,
-                        color: typeColor,
-                        size: 66,
-                      ),
-                    ),
+                    fallbackIconSize: 66,
+                    fallbackIconColor: typeColor,
                   ),
                 ),
                 Text(

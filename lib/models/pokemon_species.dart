@@ -340,6 +340,14 @@ class PokemonSpecies {
     return 'assets/images/battle_bg_route.png';
   }
 
+  String get spriteAsset => 'assets/sprites/front/$id.gif';
+
+  String get backSpriteAsset => 'assets/sprites/back/$id.gif';
+
+  String get shinySpriteAsset => 'assets/sprites/shiny_front/$id.gif';
+
+  String get shinyBackSpriteAsset => 'assets/sprites/shiny_back/$id.gif';
+
   String get spriteUrl =>
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/$id.gif';
 

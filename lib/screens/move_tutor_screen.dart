@@ -9,6 +9,7 @@ import '../services/egg_move_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 
 class MoveTutorScreen extends StatefulWidget {
@@ -222,17 +223,12 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.network(
-                                    mon.spriteUrl,
+                                  PokemonSpriteImage.fromInstance(
+                                    mon,
                                     width: 40,
                                     height: 40,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (_, __, ___) => Icon(
-                                      Icons.catching_pokemon,
-                                      color: typeColor,
-                                      size: 28,
-                                    ),
+                                    fallbackIconSize: 28,
+                                    fallbackIconColor: typeColor,
                                   ),
                                   const SizedBox(height: 3),
                                   Text(

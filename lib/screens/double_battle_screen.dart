@@ -20,6 +20,7 @@ import '../widgets/move_learn_dialog.dart';
 import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/move_vfx_effects.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import 'evolution_screen.dart';
@@ -253,10 +254,8 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
     for (final m in _slots) {
       if (m != null) {
         final isOpp = _slots.indexOf(m) >= 2;
-        final url = isOpp ? m.spriteUrl : m.backSpriteUrl;
-        final fallback = isOpp ? m.staticSpriteUrl : m.staticBackSpriteUrl;
-        futures.add(precacheImage(NetworkImage(url), context)
-            .catchError((_) => precacheImage(NetworkImage(fallback), context))
+        final assetPath = isOpp ? m.spriteAsset : m.backSpriteAsset;
+        futures.add(precacheImage(AssetImage(assetPath), context)
             .catchError((_) {}));
       }
     }
@@ -1396,19 +1395,11 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
                         children: [
                           Opacity(
                             opacity: mon.isFainted ? 0.45 : 1.0,
-                            child: Image.network(
-                              mon.spriteUrl,
+                            child: PokemonSpriteImage.fromInstance(
+                              mon,
                               width: 38,
                               height: 38,
-                              fit: BoxFit.contain,
-                              filterQuality: FilterQuality.none,
-                              errorBuilder: (_, __, ___) => Image.network(
-                                mon.staticSpriteUrl,
-                                width: 38,
-                                height: 38,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                              ),
+                              fallbackIconSize: 28,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -2374,9 +2365,6 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
         slot != _commandSlot;
     final double boxW = layout.width + 24;
     final double boxH = layout.height + 24;
-    final String primaryUrl = isBack ? mon.backSpriteUrl : mon.spriteUrl;
-    final String fallbackUrl =
-        isBack ? mon.staticBackSpriteUrl : mon.staticSpriteUrl;
 
     return Positioned(
       left: anchor.dx - boxW / 2,
@@ -2451,19 +2439,13 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
                       child: SizedBox(
                         width: layout.width,
                         height: layout.height,
-                        child: Image.network(
-                          primaryUrl,
+                        child: PokemonSpriteImage.fromInstance(
+                          mon,
+                          isBack: isBack,
                           width: layout.width,
                           height: layout.height,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                          errorBuilder: (_, __, ___) => Image.network(
-                            fallbackUrl,
-                            width: layout.width,
-                            height: layout.height,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                          ),
+                          alignment: Alignment.bottomCenter,
+                          fallbackIconColor: Colors.white,
                         ),
                       ),
                     ),
@@ -2958,19 +2940,11 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
               ),
             ),
             const SizedBox(height: 4),
-            Image.network(
-              mon.spriteUrl,
+            PokemonSpriteImage.fromInstance(
+              mon,
               width: 36,
               height: 36,
-              fit: BoxFit.contain,
-              filterQuality: FilterQuality.none,
-              errorBuilder: (_, __, ___) => Image.network(
-                mon.staticSpriteUrl,
-                width: 36,
-                height: 36,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-              ),
+              fallbackIconSize: 26,
             ),
             const SizedBox(height: 3),
             Text(

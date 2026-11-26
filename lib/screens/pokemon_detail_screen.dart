@@ -15,6 +15,7 @@ import '../widgets/move_learn_dialog.dart';
 import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 
 class PokemonDetailScreen extends StatefulWidget {
@@ -399,24 +400,13 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 child: Builder(builder: (_) {
                                   final double heroSize = mon.species
                                       .scaledUiSize(72, minSize: 38);
-                                  return Image.network(
-                                    mon.spriteUrl,
+                                  return PokemonSpriteImage.fromInstance(
+                                    mon,
                                     width: 78,
                                     height: heroSize,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (_, __, ___) => Image.network(
-                                      mon.staticSpriteUrl,
-                                      width: 78,
-                                      height: heroSize,
-                                      fit: BoxFit.contain,
-                                      filterQuality: FilterQuality.none,
-                                      errorBuilder: (_, __, ___) => Icon(
-                                        Icons.catching_pokemon,
-                                        color: typeColor,
-                                        size: (heroSize * 0.68).clamp(24.0, 46.0),
-                                      ),
-                                    ),
+                                    fallbackIconSize:
+                                        (heroSize * 0.68).clamp(24.0, 46.0),
+                                    fallbackIconColor: typeColor,
                                   );
                                 }),
                               ),

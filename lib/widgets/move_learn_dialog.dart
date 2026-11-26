@@ -3,6 +3,7 @@ import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
 import 'poke_theme.dart';
+import 'pokemon_sprite_image.dart';
 import 'type_badge.dart';
 
 class MoveLearnOutcome {
@@ -78,24 +79,12 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
               children: [
                 Row(
                   children: [
-                    Image.network(
-                      pokemon.spriteUrl,
+                    PokemonSpriteImage.fromInstance(
+                      pokemon,
                       width: 44,
                       height: 44,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.none,
-                      errorBuilder: (_, __, ___) => Image.network(
-                        pokemon.staticSpriteUrl,
-                        width: 44,
-                        height: 44,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.catching_pokemon,
-                          color: pokemon.species.types.first.color,
-                          size: 32,
-                        ),
-                      ),
+                      fallbackIconSize: 32,
+                      fallbackIconColor: pokemon.species.types.first.color,
                     ),
                     const SizedBox(width: 10),
                     Expanded(

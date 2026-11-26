@@ -22,6 +22,7 @@ import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/move_vfx_effects.dart';
 import '../widgets/nickname_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import 'evolution_screen.dart';
@@ -3424,7 +3425,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         curve: Curves.easeOutBack,
                                         alignment: Alignment.bottomCenter,
                                         child: _buildAnimatedCombatant(
-                                          url: _opponentPokemon.spriteUrl,
+                                          assetPath: _opponentPokemon.spriteAsset,
                                           fallbackUrl:
                                               _opponentPokemon.staticSpriteUrl,
                                           width: oppLayout.width,
@@ -3543,7 +3544,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         curve: Curves.easeOutBack,
                                         alignment: Alignment.bottomCenter,
                                         child: _buildAnimatedCombatant(
-                                          url: _playerPokemon.backSpriteUrl,
+                                          assetPath: _playerPokemon.backSpriteAsset,
                                           fallbackUrl:
                                               _playerPokemon.staticBackSpriteUrl,
                                           width: playerLayout.width,
@@ -4442,7 +4443,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Widget _buildAnimatedCombatant({
-    required String url,
+    required String assetPath,
     required String fallbackUrl,
     required double width,
     required double height,
@@ -4455,13 +4456,14 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     required bool flashWhite,
     required bool isPlayer,
   }) {
-    final spriteImage = Image.network(
-      url,
+    final spriteImage = Image.asset(
+      assetPath,
       width: width,
       height: height,
       fit: BoxFit.contain,
       alignment: Alignment.bottomCenter,
       filterQuality: FilterQuality.none,
+      gaplessPlayback: true,
       errorBuilder: (ctx, err, stack) => Image.network(
         fallbackUrl,
         width: fallbackBoxSize,
@@ -5543,23 +5545,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                           ),
                           child: Row(
                             children: [
-                              Image.network(
-                                mon.spriteUrl,
+                              PokemonSpriteImage.fromInstance(
+                                mon,
                                 width: 42,
                                 height: 42,
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.none,
-                                errorBuilder: (_, __, ___) => Image.network(
-                                  mon.staticSpriteUrl,
-                                  width: 42,
-                                  height: 42,
-                                  filterQuality: FilterQuality.none,
-                                  errorBuilder: (_, __, ___) => const Icon(
-                                    Icons.catching_pokemon,
-                                    color: Colors.white54,
-                                    size: 30,
-                                  ),
-                                ),
+                                fallbackIconSize: 30,
                               ),
                               const SizedBox(width: 10),
                               Expanded(
@@ -6313,24 +6303,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                             children: [
                               Opacity(
                                 opacity: mon.isFainted ? 0.45 : 1.0,
-                                child: Image.network(
-                                  mon.spriteUrl,
+                                child: PokemonSpriteImage.fromInstance(
+                                  mon,
                                   width: 38,
                                   height: 38,
-                                  fit: BoxFit.contain,
-                                  filterQuality: FilterQuality.none,
-                                  errorBuilder: (c, e, s) => Image.network(
-                                    mon.staticSpriteUrl,
-                                    width: 38,
-                                    height: 38,
-                                    fit: BoxFit.contain,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (c2, e2, s2) => const Icon(
-                                      Icons.catching_pokemon,
-                                      color: Colors.white54,
-                                      size: 28,
-                                    ),
-                                  ),
+                                  fallbackIconSize: 28,
                                 ),
                               ),
                               const SizedBox(width: 10),

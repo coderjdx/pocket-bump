@@ -17,6 +17,7 @@ import '../widgets/hp_bar.dart';
 import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokemon_head_portrait.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_bust_portrait.dart';
@@ -2034,25 +2035,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Stack(
                                         clipBehavior: Clip.none,
                                         children: [
-                                          Image.network(
-                                            mon.spriteUrl,
+                                          PokemonSpriteImage.fromInstance(
+                                            mon,
                                             width: 54,
                                             height: 54,
-                                            fit: BoxFit.contain,
-                                            filterQuality: FilterQuality.none,
-                                            errorBuilder: (_, __, ___) =>
-                                                Image.network(
-                                              mon.staticSpriteUrl,
-                                              width: 54,
-                                              height: 54,
-                                              filterQuality: FilterQuality.none,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Icon(
-                                                Icons.catching_pokemon,
-                                                color: typeColor,
-                                                size: 40,
-                                              ),
-                                            ),
+                                            fallbackIconSize: 40,
+                                            fallbackIconColor: typeColor,
                                           ),
                                           if (mon.isShiny)
                                             const Positioned(

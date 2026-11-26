@@ -8,6 +8,7 @@ import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 
 enum _PokedexFilter {
@@ -486,15 +487,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             BlendMode.srcATop)),
                 child: Opacity(
                   opacity: isSeen ? (isCaught ? 1.0 : 0.85) : 0.45,
-                  child: Image.network(
-                    spec.staticSpriteUrl,
-                    fit: BoxFit.contain,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (_, __, ___) => Icon(
-                      Icons.catching_pokemon,
-                      size: 44,
-                      color: isSeen ? primaryColor : PokeColors.inkSubtle,
-                    ),
+                  child: PokemonSpriteImage.fromSpecies(
+                    spec,
+                    fallbackIconSize: 44,
+                    fallbackIconColor:
+                        isSeen ? primaryColor : PokeColors.inkSubtle,
                   ),
                 ),
               ),
@@ -751,31 +748,15 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               child: Builder(builder: (_) {
                                 final double showcaseSize =
                                     spec.scaledUiSize(112, minSize: 48);
-                                return Image.network(
-                                  showShiny
-                                      ? spec.shinySpriteUrl
-                                      : spec.spriteUrl,
+                                return PokemonSpriteImage.fromSpecies(
+                                  spec,
+                                  isShiny: showShiny,
                                   width: showcaseSize * 1.35,
                                   height: showcaseSize,
-                                  fit: BoxFit.contain,
                                   alignment: Alignment.bottomCenter,
-                                  filterQuality: FilterQuality.none,
-                                  errorBuilder: (_, __, ___) => Image.network(
-                                    showShiny
-                                        ? spec.staticShinySpriteUrl
-                                        : spec.staticSpriteUrl,
-                                    width: showcaseSize * 1.35,
-                                    height: showcaseSize,
-                                    fit: BoxFit.contain,
-                                    alignment: Alignment.bottomCenter,
-                                    filterQuality: FilterQuality.none,
-                                    errorBuilder: (_, __, ___) => Icon(
-                                      Icons.catching_pokemon,
-                                      size: (showcaseSize * 0.65)
-                                          .clamp(28.0, 68.0),
-                                      color: primaryColor,
-                                    ),
-                                  ),
+                                  fallbackIconSize: (showcaseSize * 0.65)
+                                      .clamp(28.0, 68.0),
+                                  fallbackIconColor: primaryColor,
                                 );
                               }),
                             ),

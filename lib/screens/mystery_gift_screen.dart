@@ -8,6 +8,7 @@ import '../models/trainer.dart';
 import '../services/mystery_gift_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 
 class MysteryGiftScreen extends StatefulWidget {
@@ -156,24 +157,12 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                 ),
                 child: Column(
                   children: [
-                    Image.network(
-                      mon.spriteUrl,
+                    PokemonSpriteImage.fromInstance(
+                      mon,
                       width: 96,
                       height: 96,
-                      fit: BoxFit.contain,
-                      filterQuality: FilterQuality.none,
-                      errorBuilder: (_, __, ___) => Image.network(
-                        mon.staticSpriteUrl,
-                        width: 96,
-                        height: 96,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.catching_pokemon,
-                          size: 64,
-                          color: mon.species.types.first.color,
-                        ),
-                      ),
+                      fallbackIconSize: 64,
+                      fallbackIconColor: mon.species.types.first.color,
                     ),
                     const SizedBox(height: 8),
                     Row(

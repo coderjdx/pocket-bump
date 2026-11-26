@@ -13,6 +13,7 @@ import '../widgets/move_learn_dialog.dart';
 import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
+import '../widgets/pokemon_sprite_image.dart';
 import 'evolution_screen.dart';
 
 class _BagPocketDef {
@@ -778,23 +779,12 @@ class _BagScreenState extends State<BagScreen> {
                         SizedBox(
                           width: 42,
                           height: 42,
-                          child: Image.network(
-                            mon.spriteUrl,
+                          child: PokemonSpriteImage.fromInstance(
+                            mon,
                             width: 42,
                             height: 42,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => Image.network(
-                              mon.staticSpriteUrl,
-                              width: 42,
-                              height: 42,
-                              filterQuality: FilterQuality.none,
-                              errorBuilder: (_, __, ___) => const Icon(
-                                Icons.catching_pokemon,
-                                color: PokeColors.inkSubtle,
-                                size: 30,
-                              ),
-                            ),
+                            fallbackIconSize: 30,
+                            fallbackIconColor: PokeColors.inkSubtle,
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -994,17 +984,12 @@ class _BagScreenState extends State<BagScreen> {
                       ),
                       child: Row(
                         children: [
-                          Image.network(
-                            mon.spriteUrl,
+                          PokemonSpriteImage.fromInstance(
+                            mon,
                             width: 38,
                             height: 38,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => const Icon(
-                              Icons.catching_pokemon,
-                              color: PokeColors.inkSubtle,
-                              size: 28,
-                            ),
+                            fallbackIconSize: 28,
+                            fallbackIconColor: PokeColors.inkSubtle,
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -1161,17 +1146,12 @@ class _BagScreenState extends State<BagScreen> {
                       ),
                       child: Row(
                         children: [
-                          Image.network(
-                            mon.spriteUrl,
+                          PokemonSpriteImage.fromInstance(
+                            mon,
                             width: 36,
                             height: 36,
-                            fit: BoxFit.contain,
-                            filterQuality: FilterQuality.none,
-                            errorBuilder: (_, __, ___) => const Icon(
-                              Icons.catching_pokemon,
-                              color: PokeColors.inkSubtle,
-                              size: 26,
-                            ),
+                            fallbackIconSize: 26,
+                            fallbackIconColor: PokeColors.inkSubtle,
                           ),
                           const SizedBox(width: 10),
                           Expanded(

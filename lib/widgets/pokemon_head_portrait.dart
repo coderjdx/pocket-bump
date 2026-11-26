@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
 import 'poke_theme.dart';
+import 'pokemon_sprite_image.dart';
 
 Color statusConditionBadgeColor(StatusCondition status) {
   switch (status) {
@@ -39,6 +40,14 @@ class PokemonHeadPortrait extends StatelessWidget {
     final Color secondary = types.length > 1 ? types[1].color : primary;
     final bool fainted = pokemon.isFainted;
 
+    Widget localPortraitFallback() => PokemonSpriteImage.fromInstance(
+          pokemon,
+          width: size,
+          height: size,
+          fallbackIconSize: size * 0.56,
+          fallbackIconColor: Colors.white,
+        );
+
     Widget portraitImage = Transform.scale(
       scale: 1.38,
       alignment: const Alignment(0.0, -0.44),
@@ -48,20 +57,11 @@ class PokemonHeadPortrait extends StatelessWidget {
         height: size,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.medium,
-        errorBuilder: (_, __, ___) => Image.network(
-          pokemon.staticSpriteUrl,
-          width: size,
-          height: size,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.none,
-          errorBuilder: (_, __, ___) => Center(
-            child: Icon(
-              Icons.catching_pokemon,
-              color: Colors.white,
-              size: size * 0.56,
-            ),
-          ),
-        ),
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return localPortraitFallback();
+        },
+        errorBuilder: (_, __, ___) => localPortraitFallback(),
       ),
     );
 

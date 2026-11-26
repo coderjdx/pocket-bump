@@ -30,6 +30,10 @@ flutter:
     - assets/images/badges/
     - assets/images/balls/
     - assets/images/trainers/
+    - assets/sprites/front/
+    - assets/sprites/back/
+    - assets/sprites/shiny_front/
+    - assets/sprites/shiny_back/
     - assets/audio/bgm/
     - assets/audio/cries/
     - assets/audio/sfx/
