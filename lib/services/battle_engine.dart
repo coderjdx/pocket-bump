@@ -38,6 +38,17 @@ class BattleSideState {
   PokemonInstance? futureSightAttacker;
   bool futureSightFromPlayer = false;
   Move? futureSightMove;
+  bool wideGuardActiveThisTurn = false;
+  bool quickGuardActiveThisTurn = false;
+  int? redirectSlotIndex;
+  bool redirectIsPowder = false;
+
+  void clearTurnGuards() {
+    wideGuardActiveThisTurn = false;
+    quickGuardActiveThisTurn = false;
+    redirectSlotIndex = null;
+    redirectIsPowder = false;
+  }
 
   void clearFutureSight() {
     futureSightTurns = 0;
@@ -88,6 +99,15 @@ class BattleFieldState {
     return weather;
   }
 
+  BattleWeather effectiveWeatherMulti(Iterable<PokemonInstance> activeMons) {
+    for (final mon in activeMons) {
+      if (!mon.isFainted && mon.effectiveAbilityId == 'cloud_nine') {
+        return BattleWeather.none;
+      }
+    }
+    return weather;
+  }
+
   void resetAll() {
     weather = BattleWeather.none;
     weatherTurnsRemaining = 0;
@@ -105,6 +125,7 @@ class BattleFieldState {
       ..luckyChantTurns = 0
       ..hasHealingWishPending = false
       ..allyFaintedLastTurn = false
+      ..clearTurnGuards()
       ..clearFutureSight()
       ..clearHazards();
     opponentSide
@@ -116,6 +137,7 @@ class BattleFieldState {
       ..luckyChantTurns = 0
       ..hasHealingWishPending = false
       ..allyFaintedLastTurn = false
+      ..clearTurnGuards()
       ..clearFutureSight()
       ..clearHazards();
   }
@@ -350,6 +372,64 @@ class BattleEngine {
   static String _labelFor(PokemonInstance mon, bool isPlayer, bool isWild) {
     return isPlayer ? mon.nickname : (isWild ? "Wild ${mon.nickname}" : mon.nickname);
   }
+
+  static bool isPowderMove(String moveId) => _powderMoves.contains(moveId);
+  static bool isSoundMove(String moveId) => _soundMoves.contains(moveId);
+  static bool hasSheerForceBoost(Move move) => _hasSheerForceBoost(move);
+  static void clearMoveLocks(PokemonInstance mon) => _clearMoveLocks(mon);
+  static bool isGroundedForBattle(PokemonInstance mon, BattleFieldState? field, {bool bypassAbility = false}) =>
+      _isGrounded(mon, field, bypassAbility: bypassAbility);
+  static List<PokemonType> defensiveTypesOf(PokemonInstance mon) => _defensiveTypes(mon);
+  static String? tryInflictStatus(
+    PokemonInstance target,
+    String effect, {
+    Random? random,
+    BattleFieldState? field,
+    bool targetIsPlayer = false,
+    PokemonInstance? source,
+    bool bypassDefAbility = false,
+  }) =>
+      _tryInflictStatus(
+        target,
+        effect,
+        random: random,
+        field: field,
+        targetIsPlayer: targetIsPlayer,
+        source: source,
+        bypassDefAbility: bypassDefAbility,
+      );
+  static bool applySingleStatStage({
+    required PokemonInstance target,
+    required PokemonInstance foe,
+    required String stat,
+    required int delta,
+    required String targetLabel,
+    required bool targetIsPlayer,
+    required bool byFoe,
+    required bool bypassDefAbility,
+    required List<BattleStepEvent> events,
+    Move? move,
+    String? actorLabel,
+    bool? isPlayerActor,
+    BattleFieldState? field,
+    bool hideMoveVfx = false,
+  }) =>
+      _applySingleStatStage(
+        target: target,
+        foe: foe,
+        stat: stat,
+        delta: delta,
+        targetLabel: targetLabel,
+        targetIsPlayer: targetIsPlayer,
+        byFoe: byFoe,
+        bypassDefAbility: bypassDefAbility,
+        events: events,
+        move: move,
+        actorLabel: actorLabel,
+        isPlayerActor: isPlayerActor,
+        field: field,
+        hideMoveVfx: hideMoveVfx,
+      );
 
   static List<PokemonType> _defensiveTypes(PokemonInstance mon) {
     final base = mon.effectiveTypes;
@@ -1362,12 +1442,16 @@ class BattleEngine {
     required Move move,
     required PokemonInstance defender,
     required bool isPlayer,
+    bool? defenderIsPlayer,
     required Trainer? playerTrainer,
     required Random random,
     BattleFieldState? field,
     int? powerOverride,
     double extraMultiplier = 1.0,
+    bool isDoubleBattleScreen = false,
+    bool allyHasFriendGuard = false,
   }) {
+    final bool defIsPlayer = defenderIsPlayer ?? !isPlayer;
     final String atkAb = attacker.effectiveAbilityId;
     final String defAb = defender.effectiveAbilityId;
     final bool bypassDefAb = atkAb == 'mold_breaker';
@@ -1442,7 +1526,7 @@ class BattleEngine {
 
     // Crit check (check before Attack/Defense ignores on Crit!)
     final bool critBlocked = (!bypassDefAb && (defAb == 'battle_armor' || defAb == 'shell_armor')) ||
-        (field != null && field.sideFor(!isPlayer).luckyChantTurns > 0);
+        (field != null && field.sideFor(defIsPlayer).luckyChantTurns > 0);
     int critChanceDenom =
         (isPlayer && playerTrainer != null && playerTrainer.critBadgeBonus > 0) ? 8 : 16;
     if (_highCritMoves.contains(move.id)) {
@@ -1506,7 +1590,7 @@ class BattleEngine {
         : (unawareAtk
             ? defender.combatBaseSpd
             : (isCrit && defender.spdStage > 0 ? defender.combatBaseSpd : defender.effectiveSpd));
-    if (!isPlayer && playerTrainer != null) {
+    if (defIsPlayer && playerTrainer != null) {
       final double badgeMult = baseHitsPhysicalDef
           ? playerTrainer.defBadgeMultiplier
           : playerTrainer.spdBadgeMultiplier;
@@ -1552,6 +1636,9 @@ class BattleEngine {
       if (defAb == 'friend_guard') {
         abilityDamageMult *= 0.85;
       }
+      if (allyHasFriendGuard) {
+        abilityDamageMult *= 0.75;
+      }
       if (defAb == 'dry_skin' && move.type == PokemonType.fire) {
         abilityDamageMult *= 1.25;
       }
@@ -1570,9 +1657,10 @@ class BattleEngine {
     // Screens (Reflect / Light Screen) bypassed by Critical Hit, Brick Break, or Infiltrator
     double screenMult = 1.0;
     if (field != null && !isCrit && atkAb != 'infiltrator' && move.id != 'brick_break') {
-      final defSide = field.sideFor(!isPlayer);
-      if (baseHitsPhysicalDef && defSide.reflectTurns > 0) screenMult = 0.5;
-      if (!baseHitsPhysicalDef && defSide.lightScreenTurns > 0) screenMult = 0.5;
+      final defSide = field.sideFor(defIsPlayer);
+      final double screenFactor = isDoubleBattleScreen ? (2.0 / 3.0) : 0.5;
+      if (baseHitsPhysicalDef && defSide.reflectTurns > 0) screenMult = screenFactor;
+      if (!baseHitsPhysicalDef && defSide.lightScreenTurns > 0) screenMult = screenFactor;
     }
 
     int damage = (base *
@@ -1642,6 +1730,7 @@ class BattleEngine {
     Move move,
     PokemonInstance defender, {
     required bool isPlayer,
+    bool? defenderIsPlayer,
     bool isWild = true,
     Trainer? playerTrainer,
     BattleFieldState? field,
@@ -1650,13 +1739,20 @@ class BattleEngine {
     bool consumePp = true,
     bool isSubMove = false,
     int? powerOverride,
+    double spreadDamageMultiplier = 1.0,
+    bool isDoubleBattleScreen = false,
+    bool allyHasFriendGuard = false,
+    bool skipLifeOrbRecoil = false,
+    bool clearHelpingHandAfter = true,
+    bool deferSelfKo = false,
   }) {
     final random = rng ?? _rng;
     final activeField = field ?? BattleFieldState();
     final List<BattleStepEvent> events = [];
     if (attacker.isFainted || defender.isFainted) return events;
+    final bool defIsPlayer = defenderIsPlayer ?? !isPlayer;
     final attackerName = _labelFor(attacker, isPlayer, isWild);
-    final defenderName = _labelFor(defender, !isPlayer, isWild);
+    final defenderName = _labelFor(defender, defIsPlayer, isWild);
     final String atkAb = attacker.effectiveAbilityId;
     final String defAb = defender.effectiveAbilityId;
     final bool bypassDefAb = atkAb == 'mold_breaker';
@@ -2094,6 +2190,7 @@ class BattleEngine {
     }
 
     void appendSelfKoEventsIfNeeded() {
+      if (deferSelfKo) return;
       if (!isSelfKoMove && move.id != 'memento' && move.id != 'healing_wish') {
         return;
       }
@@ -2448,11 +2545,26 @@ class BattleEngine {
         defender.modifyStatStage('spa', 1);
         events.add(BattleStepEvent(
           message: "$defenderName's Lightning Rod absorbed the electricity and raised Sp. Atk!",
-          isPlayerActor: !isPlayer,
+          isPlayerActor: defIsPlayer,
           statChangedLabel: 'SPA ▲',
           statTargetIsSelf: true,
           hideMoveVfx: true,
           abilityTriggeredName: 'Lightning Rod',
+          surfaceActorOnAttack: surfacedThisTurn,
+        ));
+        return events;
+      }
+      if (move.type == PokemonType.water &&
+          move.category != MoveCategory.status &&
+          defAb == 'storm_drain') {
+        defender.modifyStatStage('spa', 1);
+        events.add(BattleStepEvent(
+          message: "$defenderName's Storm Drain drew in the water and raised Sp. Atk!",
+          isPlayerActor: defIsPlayer,
+          statChangedLabel: 'SPA ▲',
+          statTargetIsSelf: true,
+          hideMoveVfx: true,
+          abilityTriggeredName: 'Storm Drain',
           surfaceActorOnAttack: surfacedThisTurn,
         ));
         return events;
@@ -2588,6 +2700,7 @@ class BattleEngine {
         move: move,
         defender: defender,
         isPlayer: isPlayer,
+        defenderIsPlayer: defIsPlayer,
         isWild: isWild,
         playerTrainer: playerTrainer,
         defenderIntendedMove: defenderIntendedMove,
@@ -2620,6 +2733,7 @@ class BattleEngine {
         move: move,
         defender: defender,
         isPlayer: isPlayer,
+        defenderIsPlayer: defIsPlayer,
         isWild: isWild,
         surfacedThisTurn: surfacedThisTurn,
         random: random,
@@ -2675,11 +2789,15 @@ class BattleEngine {
         move: move,
         defender: defender,
         isPlayer: isPlayer,
+        defenderIsPlayer: defIsPlayer,
         playerTrainer: playerTrainer,
         random: random,
         field: activeField,
         powerOverride: resolvedPowerOverride,
-        extraMultiplier: isSelfKoMove ? 2.0 : 1.0,
+        extraMultiplier:
+            (isSelfKoMove ? 2.0 : 1.0) * spreadDamageMultiplier,
+        isDoubleBattleScreen: isDoubleBattleScreen,
+        allyHasFriendGuard: allyHasFriendGuard,
       );
 
       if (hitResult.typeMultiplier == 0.0) {
@@ -2773,7 +2891,7 @@ class BattleEngine {
             move.statusEffect!,
             random: random,
             field: activeField,
-            targetIsPlayer: !isPlayer,
+            targetIsPlayer: defIsPlayer,
             source: attacker,
             bypassDefAbility: bypassDefAb,
           );
@@ -2891,7 +3009,7 @@ class BattleEngine {
 
     // Brick Break shatters screens & Rapid Spin clears hazards/traps
     if (move.id == 'brick_break' && totalDamageDealt > 0) {
-      final defSide = activeField.sideFor(!isPlayer);
+      final defSide = activeField.sideFor(defIsPlayer);
       if (defSide.reflectTurns > 0 || defSide.lightScreenTurns > 0) {
         defSide.clearScreens();
         events.add(BattleStepEvent(
@@ -2989,7 +3107,7 @@ class BattleEngine {
               stat: eff.stat,
               delta: eff.delta,
               targetLabel: eff.self ? attackerName : defenderName,
-              targetIsPlayer: eff.self ? isPlayer : !isPlayer,
+              targetIsPlayer: eff.self ? isPlayer : defIsPlayer,
               byFoe: !eff.self,
               bypassDefAbility: bypassDefAb,
               events: events,
@@ -3110,7 +3228,8 @@ class BattleEngine {
     }
 
     // Life Orb (+30% power, 10% max HP recoil on damaging hits unless Magic Guard / Sheer Force)
-    if (totalDamageDealt > 0 &&
+    if (!skipLifeOrbRecoil &&
+        totalDamageDealt > 0 &&
         !attacker.isFainted &&
         attacker.heldItemId == 'life_orb' &&
         atkAb != 'magic_guard' &&
@@ -3235,7 +3354,9 @@ class BattleEngine {
     }
 
     // Consume Charge / Helping Hand after damaging attack, plus Uproar / Covet / Pluck / Bug Bite / Throw switches
-    attacker.helpingHandBoosted = false;
+    if (clearHelpingHandAfter) {
+      attacker.helpingHandBoosted = false;
+    }
     if (move.id != 'charge') {
       attacker.isChargedElectric = false;
     }
@@ -3612,6 +3733,7 @@ class BattleEngine {
     required Move move,
     required PokemonInstance defender,
     required bool isPlayer,
+    bool? defenderIsPlayer,
     required bool isWild,
     Trainer? playerTrainer,
     Move? defenderIntendedMove,
@@ -3620,8 +3742,9 @@ class BattleEngine {
     required void Function() appendSelfKo,
   }) {
     final List<BattleStepEvent> events = [];
+    final bool defIsPlayer = defenderIsPlayer ?? !isPlayer;
     final attackerName = _labelFor(attacker, isPlayer, isWild);
-    final defenderName = _labelFor(defender, !isPlayer, isWild);
+    final defenderName = _labelFor(defender, defIsPlayer, isWild);
     final String atkAb = attacker.effectiveAbilityId;
     final String defAb = defender.effectiveAbilityId;
     final bool bypassDefAb = atkAb == 'mold_breaker';
@@ -5140,14 +5263,16 @@ class BattleEngine {
     required Move move,
     required PokemonInstance defender,
     required bool isPlayer,
+    bool? defenderIsPlayer,
     required bool isWild,
     required bool surfacedThisTurn,
     required Random random,
     BattleFieldState? field,
   }) {
     final List<BattleStepEvent> events = [];
+    final bool defIsPlayer = defenderIsPlayer ?? !isPlayer;
     final attackerName = _labelFor(attacker, isPlayer, isWild);
-    final defenderName = _labelFor(defender, !isPlayer, isWild);
+    final defenderName = _labelFor(defender, defIsPlayer, isWild);
     final String atkAb = attacker.effectiveAbilityId;
     final String defAb = defender.effectiveAbilityId;
     final bool bypassDefAb = atkAb == 'mold_breaker';

@@ -6,6 +6,19 @@ enum MoveCategory {
   status,
 }
 
+enum MoveTarget {
+  singleAdjacent,
+  allFoes,
+  allOthers,
+  self,
+  allyOnly,
+  allyOrSelf,
+  userSide,
+  foeSide,
+  entireField,
+  randomFoe,
+}
+
 enum MoveStageMechanic {
   none,
   twoTurnCharge,

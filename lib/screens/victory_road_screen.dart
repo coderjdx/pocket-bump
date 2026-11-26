@@ -14,6 +14,7 @@ import '../widgets/poke_theme.dart';
 import '../widgets/pokemon_head_portrait.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
+import 'double_battle_screen.dart';
 import 'hall_of_fame_screen.dart';
 
 enum _VictoryRoadMode {
@@ -161,22 +162,38 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
         final bool? trainerWon = await Navigator.push<bool>(
           context,
           MaterialPageRoute(
-            builder: (_) => BattleScreen(
-              opponentPokemon: team.first,
-              opponentTeam: team,
-              isWild: false,
-              trainerName: opponent.name,
-              trainerTitle: opponent.title,
-              trainerIntroLine: opponent.introDialogue,
-              trainerDefeatLine: opponent.defeatDialogue,
-              opponentSpriteId: opponent.spriteId,
-              prizeMoney: opponent.prizeMoney,
-              preservePartyHpOnExit: true,
-              battleBackgroundAsset: stage.backgroundAsset,
-              bgmCategory: stage.bgmCategory,
-              continueButtonLabel: continueLabel,
-              defeatButtonLabel: 'LEAVE CHALLENGE',
-            ),
+            builder: (_) => stage.isDoubleBattle
+                ? DoubleBattleScreen(
+                    opponentTeam: team,
+                    trainerName: opponent.name,
+                    trainerTitle: opponent.title,
+                    trainerIntroLine: opponent.introDialogue,
+                    trainerDefeatLine: opponent.defeatDialogue,
+                    opponentSpriteId: opponent.spriteId,
+                    partnerSpriteId: stage.partnerSpriteId,
+                    prizeMoney: opponent.prizeMoney,
+                    preservePartyHpOnExit: true,
+                    battleBackgroundAsset: stage.backgroundAsset,
+                    bgmCategory: stage.bgmCategory,
+                    continueButtonLabel: continueLabel,
+                    defeatButtonLabel: 'LEAVE CHALLENGE',
+                  )
+                : BattleScreen(
+                    opponentPokemon: team.first,
+                    opponentTeam: team,
+                    isWild: false,
+                    trainerName: opponent.name,
+                    trainerTitle: opponent.title,
+                    trainerIntroLine: opponent.introDialogue,
+                    trainerDefeatLine: opponent.defeatDialogue,
+                    opponentSpriteId: opponent.spriteId,
+                    prizeMoney: opponent.prizeMoney,
+                    preservePartyHpOnExit: true,
+                    battleBackgroundAsset: stage.backgroundAsset,
+                    bgmCategory: stage.bgmCategory,
+                    continueButtonLabel: continueLabel,
+                    defeatButtonLabel: 'LEAVE CHALLENGE',
+                  ),
           ),
         );
         if (!mounted) return;
@@ -1149,7 +1166,7 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
           ),
           const SizedBox(height: 10),
           const Text(
-            "Alternate 6 intense Lv. 99 battles (Wild → Master Trainer → Wild → Master Trainer → Wild → Random Final Four or Blue). The final boss drops their signature exclusive Held Item & Rare TM!",
+            "Alternate 6 intense Lv. 99 battles (Wild → Master 2v2 Doubles → Wild → Master 2v2 Doubles → Wild → 1v1 Random Final Four or Blue). The final boss drops their signature exclusive Held Item & Rare TM!",
             style: TextStyle(
               color: PokeColors.inkMuted,
               fontSize: 11.5,
@@ -1159,11 +1176,11 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
           const SizedBox(height: 10),
           _stagePatternBanner(const [
             "1. Wild Lv.99",
-            "2. Master Lv.99",
+            "2. Master 2v2",
             "3. Wild Lv.99",
-            "4. Master Lv.99",
+            "4. Master 2v2",
             "5. Wild Lv.99",
-            "6. Final 4 / Blue",
+            "6. Final 4 / Blue (1v1)",
           ]),
           const SizedBox(height: 12),
           const Text(

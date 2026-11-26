@@ -33,7 +33,9 @@ class RocketChallenger {
   final String name;
   final String title;
   final String spriteId;
+  final String? partnerSpriteId;
   final bool isJessieOrJames;
+  final bool isDoubleBattle;
   final String introDialogue;
   final String defeatDialogue;
   final int prizeMoney;
@@ -43,7 +45,9 @@ class RocketChallenger {
     required this.name,
     required this.title,
     required this.spriteId,
+    this.partnerSpriteId,
     required this.isJessieOrJames,
+    this.isDoubleBattle = false,
     required this.introDialogue,
     this.defeatDialogue = "No way! Back to the balloon!",
     required this.prizeMoney,
@@ -165,58 +169,37 @@ class ExpeditionDatabase {
     );
   }
 
-  /// Generates the Team Rocket ambush challenger (10% chance Jessie or James,
-  /// 90% Team Rocket Grunt) with a full 6-Pokémon party all at Lv. 99.
+  /// Generates the Team Rocket ambush challenger (10% chance Jessie & James
+  /// 2v2 Double Battle, 90% Team Rocket Grunt Singles) with a full 6-Pokémon party all at Lv. 99.
   static RocketChallenger generateRocketChallenger({Random? rng}) {
     final random = rng ?? _rng;
     final double roll = random.nextDouble();
     const List<int> levels = [99, 99, 99, 99, 99, 99];
 
-    if (roll < 0.05) {
-      const ids = [108, 42, 124, 89, 130, 24]; // Lickitung..Arbok
+    if (roll < 0.10) {
+      // Tag-team 2v2 Double Battle: Arbok & Weezing lead, backed by Lickitung, Victreebel, Gyarados, Persian
+      const ids = [24, 110, 108, 71, 130, 53];
       final team = [
         for (int i = 0; i < 6; i++)
           PokedexDatabase.createPokemon(
             ids[i],
             level: levels[i],
             respectMinEncounterLevel: false,
-            hiddenAbilityChance: 0.10,
+            hiddenAbilityChance: 0.12,
+            rng: random,
           ),
       ];
       return RocketChallenger(
-        name: 'Jessie',
+        name: 'Jessie & James',
         title: 'Team Rocket Duo',
         spriteId: 'rocket_jessie',
+        partnerSpriteId: 'rocket_james',
         isJessieOrJames: true,
+        isDoubleBattle: true,
         introDialogue:
-            "Prepare for trouble! This rare hunting ground belongs to Team Rocket now!",
+            "Jessie: Prepare for trouble! James: And make it double! Hand over your rarest Pokémon!",
         defeatDialogue:
-            "This isn't over! Looks like Team Rocket's blasting off again!",
-        prizeMoney: 10000,
-        team: team,
-      );
-    }
-
-    if (roll < 0.10) {
-      const ids = [53, 73, 130, 49, 71, 110]; // Persian..Weezing
-      final team = [
-        for (int i = 0; i < 6; i++)
-          PokedexDatabase.createPokemon(
-            ids[i],
-            level: levels[i],
-            respectMinEncounterLevel: false,
-            hiddenAbilityChance: 0.10,
-          ),
-      ];
-      return RocketChallenger(
-        name: 'James',
-        title: 'Team Rocket Duo',
-        spriteId: 'rocket_james',
-        isJessieOrJames: true,
-        introDialogue:
-            "And make it double! Hand over your rarest Pokémon and step aside!",
-        defeatDialogue:
-            "Jessie, hold on! Why do we always get blasted off again?!",
+            "Jessie & James: No way! Looks like Team Rocket's blasting off again!",
         prizeMoney: 10000,
         team: team,
       );

@@ -45,6 +45,8 @@ class VictoryRoadStage {
   final GymTrainer? trainer;
   final String backgroundAsset;
   final BattleBgmCategory bgmCategory;
+  final bool isDoubleBattle;
+  final String? partnerSpriteId;
   final String? _customLabel;
 
   String get label => _customLabel ?? trainer?.name ?? 'Wild Ambush';
@@ -58,6 +60,8 @@ class VictoryRoadStage {
         wildLevel = level,
         trainer = null,
         bgmCategory = BattleBgmCategory.wild,
+        isDoubleBattle = false,
+        partnerSpriteId = null,
         _customLabel = label;
 
   const VictoryRoadStage.trainer({
@@ -65,6 +69,8 @@ class VictoryRoadStage {
     required GymTrainer this.trainer,
     this.backgroundAsset = 'assets/images/battle_bg_victory_road.png',
     this.bgmCategory = BattleBgmCategory.gym,
+    this.isDoubleBattle = false,
+    this.partnerSpriteId,
     String? customLabel,
   })  : isWild = false,
         wildLevel = null,
@@ -607,68 +613,148 @@ class EliteFourDatabase {
         id: 'vr_master_t1',
         spriteId: 'npc_ninja',
         name: 'Ninja Master Kaito',
-        title: 'Victory Road Master',
+        title: 'Victory Road Master (2v2)',
         prizeMoney: 6500,
         introDialogue:
-            "At the summit of Victory Road, only Lv. 99 teams survive! Draw your blade!",
+            "At the summit of Victory Road, our shadow duo strikes as one in Double Battles!",
         defeatDialogue:
-            "Your speed and precision cut right through my shadow arts!",
+            "Your speed and precision cut right through our coordinated shadow arts!",
         team: [
-          GymPokemonSpec(speciesId: 49, level: 99, heldItemId: 'poison_barb'), // Venomoth
-          GymPokemonSpec(speciesId: 94, level: 99, heldItemId: 'spell_tag'), // Gengar
-          GymPokemonSpec(speciesId: 123, level: 99, heldItemId: 'sitrus_berry'), // Scyther
-          GymPokemonSpec(speciesId: 65, level: 99, heldItemId: 'twisted_spoon'), // Alakazam
+          GymPokemonSpec(
+            speciesId: 49, // Venomoth
+            level: 99,
+            heldItemId: 'poison_barb',
+            moveIds: ['bug_buzz', 'sludge_wave', 'rage_powder', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 94, // Gengar
+            level: 99,
+            heldItemId: 'spell_tag',
+            moveIds: ['shadow_ball', 'sludge_wave', 'icy_wind', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 123, // Scyther
+            level: 99,
+            heldItemId: 'sitrus_berry',
+            moveIds: ['x_scissor', 'aerial_ace', 'quick_guard', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 65, // Alakazam
+            level: 99,
+            heldItemId: 'twisted_spoon',
+            moveIds: ['psychic', 'shadow_ball', 'ally_switch', 'protect'],
+          ),
         ],
       ),
       GymTrainer(
         id: 'vr_master_t2',
         spriteId: 'npc_psychic',
         name: 'Ace Esper Reina',
-        title: 'Victory Road Master',
+        title: 'Victory Road Master (2v2)',
         prizeMoney: 6800,
         introDialogue:
-            "I foresaw the Champion's ascent—and I prepared my strongest psychic squad just for you!",
+            "Double minds move as one! Face our coordinated Lv. 99 psychic tag-team!",
         defeatDialogue:
-            "Even my foresight couldn't predict a victory like that!",
+            "Even dual foresight couldn't predict a victory like that!",
         team: [
-          GymPokemonSpec(speciesId: 122, level: 99, heldItemId: 'twisted_spoon'), // Mr. Mime
-          GymPokemonSpec(speciesId: 121, level: 99, heldItemId: 'mystic_water'), // Starmie
-          GymPokemonSpec(speciesId: 80, level: 99, heldItemId: 'leftovers'), // Slowbro
-          GymPokemonSpec(speciesId: 103, level: 99, heldItemId: 'miracle_seed'), // Exeggutor
+          GymPokemonSpec(
+            speciesId: 122, // Mr. Mime
+            level: 99,
+            heldItemId: 'twisted_spoon',
+            moveIds: ['psychic', 'helping_hand', 'reflect', 'light_screen'],
+          ),
+          GymPokemonSpec(
+            speciesId: 121, // Starmie
+            level: 99,
+            heldItemId: 'mystic_water',
+            moveIds: ['surf', 'blizzard', 'psychic', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 80, // Slowbro
+            level: 99,
+            heldItemId: 'leftovers',
+            moveIds: ['surf', 'psychic', 'heal_pulse', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 103, // Exeggutor
+            level: 99,
+            heldItemId: 'miracle_seed',
+            moveIds: ['leaf_storm', 'psychic', 'sleep_powder', 'protect'],
+          ),
         ],
       ),
       GymTrainer(
         id: 'vr_master_t3',
         spriteId: 'npc_hiker',
         name: 'Mountaineer Magnus',
-        title: 'Victory Road Master',
+        title: 'Victory Road Master (2v2)',
         prizeMoney: 7000,
         introDialogue:
-            "Before you face the League Masters ahead, test your mettle against our Lv. 99 mountain titans!",
+            "Wait till you feel twin Rock Slides shaking the summit in a Lv. 99 Double Battle!",
         defeatDialogue:
             "Granite and iron shattered like glass! Keep marching to the hall!",
         team: [
-          GymPokemonSpec(speciesId: 76, level: 99, heldItemId: 'hard_stone'), // Golem
-          GymPokemonSpec(speciesId: 141, level: 99, heldItemId: 'sitrus_berry'), // Kabutops
-          GymPokemonSpec(speciesId: 142, level: 99, heldItemId: 'lum_berry'), // Aerodactyl
-          GymPokemonSpec(speciesId: 112, level: 99, heldItemId: 'soft_sand'), // Rhydon
+          GymPokemonSpec(
+            speciesId: 142, // Aerodactyl
+            level: 99,
+            heldItemId: 'lum_berry',
+            moveIds: ['rock_slide', 'earthquake', 'tailwind', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 76, // Golem
+            level: 99,
+            heldItemId: 'hard_stone',
+            moveIds: ['rock_slide', 'earthquake', 'explosion', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 141, // Kabutops
+            level: 99,
+            heldItemId: 'sitrus_berry',
+            moveIds: ['rock_slide', 'waterfall', 'aqua_jet', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 112, // Rhydon
+            level: 99,
+            heldItemId: 'soft_sand',
+            moveIds: ['earthquake', 'rock_slide', 'megahorn', 'protect'],
+          ),
         ],
       ),
       GymTrainer(
         id: 'vr_master_t4',
         spriteId: 'npc_beauty',
         name: 'Ace Duelist Valerie',
-        title: 'Victory Road Master',
+        title: 'Victory Road Master (2v2)',
         prizeMoney: 7200,
         introDialogue:
-            "Every trainer up here dreams of beating the Champion! Let's dance at Lv. 99!",
+            "Champions command two Pokémon in harmony—let's see how you handle a Lv. 99 Double Battle!",
         defeatDialogue:
-            "What poise and power! You truly shine like a Champion!",
+            "What poise and synergy! You truly shine like a Champion!",
         team: [
-          GymPokemonSpec(speciesId: 36, level: 99, heldItemId: 'leftovers'), // Clefable
-          GymPokemonSpec(speciesId: 59, level: 99, heldItemId: 'charcoal'), // Arcanine
-          GymPokemonSpec(speciesId: 135, level: 99, heldItemId: 'magnet'), // Jolteon
-          GymPokemonSpec(speciesId: 131, level: 99, heldItemId: 'mystic_water'), // Lapras
+          GymPokemonSpec(
+            speciesId: 36, // Clefable
+            level: 99,
+            heldItemId: 'leftovers',
+            moveIds: ['moonblast', 'follow_me', 'helping_hand', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 59, // Arcanine
+            level: 99,
+            heldItemId: 'charcoal',
+            moveIds: ['heat_wave', 'extreme_speed', 'close_combat', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 135, // Jolteon
+            level: 99,
+            heldItemId: 'magnet',
+            moveIds: ['discharge', 'shadow_ball', 'helping_hand', 'protect'],
+          ),
+          GymPokemonSpec(
+            speciesId: 131, // Lapras
+            level: 99,
+            heldItemId: 'mystic_water',
+            moveIds: ['surf', 'blizzard', 'icy_wind', 'protect'],
+          ),
         ],
       ),
     ];
@@ -684,7 +770,8 @@ class EliteFourDatabase {
       VictoryRoadStage.trainer(
         stageNumber: 2,
         trainer: shuffled[0],
-        customLabel: shuffled[0].name,
+        isDoubleBattle: true,
+        customLabel: '${shuffled[0].name} (2v2 Doubles)',
       ),
       const VictoryRoadStage.wild(
         stageNumber: 3,
@@ -694,7 +781,8 @@ class EliteFourDatabase {
       VictoryRoadStage.trainer(
         stageNumber: 4,
         trainer: shuffled[1],
-        customLabel: shuffled[1].name,
+        isDoubleBattle: true,
+        customLabel: '${shuffled[1].name} (2v2 Doubles)',
       ),
       const VictoryRoadStage.wild(
         stageNumber: 5,
@@ -704,6 +792,7 @@ class EliteFourDatabase {
       VictoryRoadStage.trainer(
         stageNumber: 6,
         trainer: finalBoss,
+        isDoubleBattle: false,
         backgroundAsset: finalBoss.backgroundAsset,
         bgmCategory: finalBoss.bgmCategory,
         customLabel: '${finalBoss.name} (Master Boss)',

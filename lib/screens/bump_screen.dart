@@ -11,6 +11,7 @@ import '../services/pvp_transport.dart';
 import '../services/sound_service.dart';
 import '../widgets/poke_theme.dart';
 import 'battle_screen.dart';
+import 'double_battle_screen.dart';
 import 'rivals_screen.dart';
 import 'trade_screen.dart';
 
@@ -155,11 +156,22 @@ class _BumpScreenState extends State<BumpScreen>
       );
       return;
     }
-    if (_selectedMode == BumpLinkMode.battle && !trainer.hasConsciousPokemon) {
+    if (_selectedMode.isBattle && !trainer.hasConsciousPokemon) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
               "All Pokémon in your party have fainted! Visit the Pokémon Center to heal your party."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    if (_selectedMode == BumpLinkMode.doubleBattle &&
+        trainer.party.where((p) => !p.isFainted).length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Doubles Battle requires at least 2 conscious Pokémon in your party!"),
           duration: Duration(seconds: 2),
         ),
       );
@@ -239,17 +251,27 @@ class _BumpScreenState extends State<BumpScreen>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => BattleScreen(
-            pvpSession: session,
-            opponentPokemon: firstOpp,
-            opponentTeam: team,
-            isWild: false,
-            trainerName: session.opponentName,
-            trainerTitle: session.opponentTitle,
-            opponentSpriteId: session.opponentSpriteId,
-            battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
-            bgmCategory: BattleBgmCategory.special,
-          ),
+          builder: (context) => session.mode == BumpLinkMode.doubleBattle
+              ? DoubleBattleScreen(
+                  pvpSession: session,
+                  opponentTeam: team,
+                  trainerName: session.opponentName,
+                  trainerTitle: session.opponentTitle,
+                  opponentSpriteId: session.opponentSpriteId,
+                  battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+                  bgmCategory: BattleBgmCategory.special,
+                )
+              : BattleScreen(
+                  pvpSession: session,
+                  opponentPokemon: firstOpp,
+                  opponentTeam: team,
+                  isWild: false,
+                  trainerName: session.opponentName,
+                  trainerTitle: session.opponentTitle,
+                  opponentSpriteId: session.opponentSpriteId,
+                  battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+                  bgmCategory: BattleBgmCategory.special,
+                ),
         ),
       );
     });
@@ -263,6 +285,18 @@ class _BumpScreenState extends State<BumpScreen>
         const SnackBar(
           content: Text(
               "All Pokémon in your party have fainted! Visit the Pokémon Center to heal your party."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    final bool isDoublesPractice = _selectedMode == BumpLinkMode.doubleBattle;
+    if (isDoublesPractice &&
+        trainer.party.where((p) => !p.isFainted).length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "Doubles Practice requires at least 2 conscious Pokémon in your party!"),
           duration: Duration(seconds: 2),
         ),
       );
@@ -287,26 +321,51 @@ class _BumpScreenState extends State<BumpScreen>
     ]).then((_) {
       if (!mounted) return;
       final playerLevel = trainer.leadPokemon?.level ?? 5;
-      final rivalMon =
-          PokedexDatabase.generateRivalPokemon(playerLevel: playerLevel);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BattleScreen(
-            opponentPokemon: rivalMon,
-            isWild: false,
-            trainerName: 'Rival Blue',
-            trainerIntroLine:
-                "Hey! Think your team's tough enough? Smell ya if you lose!",
-            trainerDefeatLine:
-                "What?! You actually beat me here? Next time I won't go easy!",
-            opponentSpriteId: 'male_blue',
-            battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
-            bgmCategory: BattleBgmCategory.special,
+      if (isDoublesPractice) {
+        final rivalTeam = [
+          for (int i = 0; i < 4; i++)
+            PokedexDatabase.generateRivalPokemon(playerLevel: playerLevel),
+        ];
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DoubleBattleScreen(
+              opponentTeam: rivalTeam,
+              trainerName: 'Rival Blue',
+              trainerTitle: 'Doubles Practice',
+              trainerIntroLine:
+                  "Two on two? Hope your team's synergy can keep up with mine!",
+              trainerDefeatLine:
+                  "Not bad at all! Next time I'll bring an even stronger pair!",
+              opponentSpriteId: 'male_blue',
+              battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+              bgmCategory: BattleBgmCategory.special,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        final rivalMon =
+            PokedexDatabase.generateRivalPokemon(playerLevel: playerLevel);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BattleScreen(
+              opponentPokemon: rivalMon,
+              isWild: false,
+              trainerName: 'Rival Blue',
+              trainerIntroLine:
+                  "Hey! Think your team's tough enough? Smell ya if you lose!",
+              trainerDefeatLine:
+                  "What?! You actually beat me here? Next time I won't go easy!",
+              opponentSpriteId: 'male_blue',
+              battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
+              bgmCategory: BattleBgmCategory.special,
+            ),
+          ),
+        );
+      }
     });
   }
 
@@ -360,7 +419,9 @@ class _BumpScreenState extends State<BumpScreen>
         }
         return _selectedMode == BumpLinkMode.trade
             ? "TRADE LINK • SCANNING NEARBY"
-            : "BATTLE LINK • SCANNING NEARBY";
+            : (_selectedMode == BumpLinkMode.doubleBattle
+                ? "2v2 DOUBLES • SCANNING NEARBY"
+                : "1v1 SINGLES • SCANNING NEARBY");
     }
   }
 
@@ -371,9 +432,11 @@ class _BumpScreenState extends State<BumpScreen>
       case _BumpLinkState.linking:
         return _selectedMode == BumpLinkMode.trade
             ? "BUMP DETECTED! OPENING TRADE LINK..."
-            : "BUMP DETECTED! LINKING WITH NEARBY TRAINER...";
+            : (_selectedMode == BumpLinkMode.doubleBattle
+                ? "BUMP DETECTED! LINKING 2v2 DOUBLES..."
+                : "BUMP DETECTED! LINKING WITH NEARBY TRAINER...");
       case _BumpLinkState.timedOut:
-        return "No partner in ${_selectedMode == BumpLinkMode.trade ? 'Trade' : 'Battle'} mode responded";
+        return "No partner in ${_selectedMode.displayLabel} mode responded";
       case _BumpLinkState.scanning:
         final matching =
             _nearbyTrainers.where((t) => t.mode == _selectedMode).toList();
@@ -382,7 +445,7 @@ class _BumpScreenState extends State<BumpScreen>
         }
         if (_nearbyTrainers.isNotEmpty) {
           final other = _nearbyTrainers.first;
-          return "${other.name.toUpperCase()} IS IN ${other.mode.name.toUpperCase()} MODE";
+          return "${other.name.toUpperCase()} IS IN ${other.mode.displayLabel.toUpperCase()}";
         }
         return _selectedMode == BumpLinkMode.trade
             ? "FIST-BUMP TO TRADE POKÉMON!"
@@ -401,61 +464,138 @@ class _BumpScreenState extends State<BumpScreen>
             ? "Pairing trainers for 1-for-1 Link Trade (7s window)..."
             : "Exchanging team rosters over VS Link (7s window)...";
       case _BumpLinkState.timedOut:
-        return "Make sure both phones have ${_selectedMode == BumpLinkMode.trade ? 'Trade' : 'Battle'} mode selected, then give a firm fist bump.";
+        return "Make sure both phones have ${_selectedMode.displayLabel} selected, then give a firm fist bump.";
       case _BumpLinkState.scanning:
-        return _selectedMode == BumpLinkMode.trade
-            ? "Select TRADE on both phones, then give a firm fist bump to swap Pokémon and trigger Link Trade evolutions!"
-            : "Select BATTLE on both phones, then give a firm fist bump to battle each other's team.";
+        if (_selectedMode == BumpLinkMode.trade) {
+          return "Select TRADE on both phones, then give a firm fist bump to swap Pokémon and trigger Link Trade evolutions!";
+        }
+        if (_selectedMode == BumpLinkMode.doubleBattle) {
+          return "Select BATTLE • 2v2 DOUBLES on both phones, then give a firm fist bump for a Doubles match!";
+        }
+        return "Select BATTLE • 1v1 SINGLES on both phones, then give a firm fist bump to battle each other's team.";
     }
   }
 
   Widget _buildModeSelector() {
     final bool locked = _linkState == _BumpLinkState.linking ||
         _linkState == _BumpLinkState.matched;
-    final bool battleSelected = _selectedMode == BumpLinkMode.battle;
+    final bool battleSelected = _selectedMode.isBattle;
+    final bool doublesSelected = _selectedMode == BumpLinkMode.doubleBattle;
     final bool tradeSelected = _selectedMode == BumpLinkMode.trade;
 
-    return Row(
+    Widget formatPill({
+      required String label,
+      required bool active,
+      required VoidCallback? onTap,
+    }) {
+      return Expanded(
+        child: Material(
+          color: active ? PokeColors.pokeRedDark : PokeColors.cardWhite,
+          borderRadius: BorderRadius.circular(10),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: active
+                      ? PokeColors.pokeRedDark
+                      : PokeColors.frameBorderSoft,
+                  width: 1.4,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: active ? Colors.white : PokeColors.inkDark,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.6,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          child: PokePortraitButton(
-            label: "BATTLE LINK",
-            subtitle: battleSelected ? "ACTIVE MODE" : "VS TEAM",
-            icon: Icons.sports_mma_rounded,
-            topColor: battleSelected
-                ? PokeColors.pokeRed
-                : PokeColors.inkSubtle,
-            bottomColor: battleSelected
-                ? PokeColors.pokeRedDark
-                : PokeColors.frameBorder,
-            height: 108,
-            iconSize: 32,
-            selected: battleSelected,
-            locked: locked && !battleSelected,
-            badgeText: battleSelected ? "ON" : null,
-            onTap: locked ? null : () => _selectMode(BumpLinkMode.battle),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: PokePortraitButton(
+                label: "BATTLE LINK",
+                subtitle: battleSelected
+                    ? (doublesSelected ? "2v2 DOUBLES" : "1v1 SINGLES")
+                    : "VS TEAM",
+                icon: Icons.sports_mma_rounded,
+                topColor: battleSelected
+                    ? PokeColors.pokeRed
+                    : PokeColors.inkSubtle,
+                bottomColor: battleSelected
+                    ? PokeColors.pokeRedDark
+                    : PokeColors.frameBorder,
+                height: 100,
+                iconSize: 30,
+                selected: battleSelected,
+                locked: locked && !battleSelected,
+                badgeText: battleSelected
+                    ? (doublesSelected ? "2v2" : "1v1")
+                    : null,
+                onTap: locked
+                    ? null
+                    : () => _selectMode(doublesSelected
+                        ? BumpLinkMode.doubleBattle
+                        : BumpLinkMode.battle),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: PokePortraitButton(
+                label: "TRADE LINK",
+                subtitle: tradeSelected ? "ACTIVE MODE" : "SWAP & EVOLVE",
+                icon: Icons.swap_horiz_rounded,
+                topColor: tradeSelected
+                    ? PokeColors.linkTeal
+                    : PokeColors.inkSubtle,
+                bottomColor: tradeSelected
+                    ? PokeColors.linkTealDark
+                    : PokeColors.frameBorder,
+                height: 100,
+                iconSize: 30,
+                selected: tradeSelected,
+                locked: locked && !tradeSelected,
+                badgeText: tradeSelected ? "ON" : null,
+                onTap: locked ? null : () => _selectMode(BumpLinkMode.trade),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: PokePortraitButton(
-            label: "TRADE LINK",
-            subtitle: tradeSelected ? "ACTIVE MODE" : "SWAP & EVOLVE",
-            icon: Icons.swap_horiz_rounded,
-            topColor: tradeSelected
-                ? PokeColors.linkTeal
-                : PokeColors.inkSubtle,
-            bottomColor: tradeSelected
-                ? PokeColors.linkTealDark
-                : PokeColors.frameBorder,
-            height: 108,
-            iconSize: 32,
-            selected: tradeSelected,
-            locked: locked && !tradeSelected,
-            badgeText: tradeSelected ? "ON" : null,
-            onTap: locked ? null : () => _selectMode(BumpLinkMode.trade),
+        if (battleSelected) ...[
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              formatPill(
+                label: "1v1 SINGLES",
+                active: !doublesSelected,
+                onTap: locked ? null : () => _selectMode(BumpLinkMode.battle),
+              ),
+              const SizedBox(width: 8),
+              formatPill(
+                label: "2v2 DOUBLES",
+                active: doublesSelected,
+                onTap: locked
+                    ? null
+                    : () => _selectMode(BumpLinkMode.doubleBattle),
+              ),
+            ],
           ),
-        ),
+        ],
       ],
     );
   }
@@ -798,9 +938,11 @@ class _BumpScreenState extends State<BumpScreen>
                           onPressed: _launchSoloPracticeBattle,
                           icon: const Icon(Icons.smart_toy_outlined,
                               color: PokeColors.badgeGoldDark, size: 17),
-                          label: const Text(
-                            "PRACTICE VS RIVAL BLUE (SOLO AI)",
-                            style: TextStyle(
+                          label: Text(
+                            _selectedMode == BumpLinkMode.doubleBattle
+                                ? "PRACTICE VS RIVAL BLUE (2v2 DOUBLES)"
+                                : "PRACTICE VS RIVAL BLUE (SOLO AI)",
+                            style: const TextStyle(
                               color: PokeColors.inkDark,
                               fontWeight: FontWeight.w800,
                               fontSize: 11.5,
@@ -872,9 +1014,11 @@ class _BumpScreenState extends State<BumpScreen>
                               : _launchSoloPracticeBattle,
                           icon: const Icon(Icons.smart_toy_outlined,
                               color: PokeColors.pokeBlueDark, size: 16),
-                          label: const Text(
-                            "PRACTICE VS RIVAL BLUE (SOLO AI)",
-                            style: TextStyle(
+                          label: Text(
+                            _selectedMode == BumpLinkMode.doubleBattle
+                                ? "PRACTICE VS RIVAL BLUE (2v2 DOUBLES)"
+                                : "PRACTICE VS RIVAL BLUE (SOLO AI)",
+                            style: const TextStyle(
                               color: PokeColors.inkDark,
                               fontWeight: FontWeight.w800,
                               fontSize: 11,

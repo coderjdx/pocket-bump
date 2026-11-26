@@ -46,7 +46,35 @@ class PvpDeviceIdentity {
 
 enum BumpLinkMode {
   battle,
+  doubleBattle,
   trade,
+}
+
+extension BumpLinkModeExt on BumpLinkMode {
+  bool get isBattle =>
+      this == BumpLinkMode.battle || this == BumpLinkMode.doubleBattle;
+  bool get isDoubleBattle => this == BumpLinkMode.doubleBattle;
+  String get displayLabel {
+    switch (this) {
+      case BumpLinkMode.battle:
+        return 'Singles Battle';
+      case BumpLinkMode.doubleBattle:
+        return 'Doubles Battle';
+      case BumpLinkMode.trade:
+        return 'Trade';
+    }
+  }
+}
+
+BumpLinkMode parseBumpLinkMode(String? raw) {
+  switch (raw) {
+    case 'trade':
+      return BumpLinkMode.trade;
+    case 'doubleBattle':
+      return BumpLinkMode.doubleBattle;
+    default:
+      return BumpLinkMode.battle;
+  }
 }
 
 class NearbyRadarTrainer {
@@ -1045,7 +1073,7 @@ class PvpLobbyMatchmaker {
 
     final String? kind = payload['kind'] as String?;
     final BumpLinkMode payloadMode =
-        (payload['mode'] == 'trade') ? BumpLinkMode.trade : BumpLinkMode.battle;
+        parseBumpLinkMode(payload['mode'] as String?);
     if (kind == 'RADAR_PRESENCE') {
       _nearbyTrainers[senderId] = NearbyRadarTrainer(
         deviceId: senderId,
@@ -1187,7 +1215,7 @@ class PvpLobbyMatchmaker {
       opponentTeam: opponentTeam,
       mode: mode,
     );
-    if (mode == BumpLinkMode.battle) {
+    if (mode.isBattle) {
       session.startListening();
     }
     onMatched(session);

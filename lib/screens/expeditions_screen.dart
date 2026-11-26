@@ -12,6 +12,7 @@ import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
+import 'double_battle_screen.dart';
 
 class ExpeditionsScreen extends StatelessWidget {
   const ExpeditionsScreen({super.key});
@@ -374,20 +375,34 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     final bool? won = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
-        builder: (_) => BattleScreen(
-          opponentPokemon: rocket.team.first,
-          opponentTeam: rocket.team,
-          isWild: false,
-          trainerName: rocket.name,
-          trainerTitle: rocket.title,
-          trainerIntroLine: rocket.introDialogue,
-          trainerDefeatLine: rocket.defeatDialogue,
-          opponentSpriteId: rocket.spriteId,
-          prizeMoney: rocket.prizeMoney,
-          battleBackgroundAsset: widget.destination.backgroundAsset,
-          bgmCategory: BattleBgmCategory.expedition,
-          continueButtonLabel: "CONTINUE EXPEDITION",
-        ),
+        builder: (_) => rocket.isDoubleBattle
+            ? DoubleBattleScreen(
+                opponentTeam: rocket.team,
+                trainerName: rocket.name,
+                trainerTitle: rocket.title,
+                trainerIntroLine: rocket.introDialogue,
+                trainerDefeatLine: rocket.defeatDialogue,
+                opponentSpriteId: rocket.spriteId,
+                partnerSpriteId: rocket.partnerSpriteId,
+                prizeMoney: rocket.prizeMoney,
+                battleBackgroundAsset: widget.destination.backgroundAsset,
+                bgmCategory: BattleBgmCategory.expedition,
+                continueButtonLabel: "CONTINUE EXPEDITION",
+              )
+            : BattleScreen(
+                opponentPokemon: rocket.team.first,
+                opponentTeam: rocket.team,
+                isWild: false,
+                trainerName: rocket.name,
+                trainerTitle: rocket.title,
+                trainerIntroLine: rocket.introDialogue,
+                trainerDefeatLine: rocket.defeatDialogue,
+                opponentSpriteId: rocket.spriteId,
+                prizeMoney: rocket.prizeMoney,
+                battleBackgroundAsset: widget.destination.backgroundAsset,
+                bgmCategory: BattleBgmCategory.expedition,
+                continueButtonLabel: "CONTINUE EXPEDITION",
+              ),
       ),
     );
     if (!mounted) return;
@@ -824,10 +839,26 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TrainerSpriteWidget(
-                      spriteId: rocket.spriteId,
-                      size: 96,
-                    ),
+                    if (rocket.isDoubleBattle && rocket.partnerSpriteId != null)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TrainerSpriteWidget(
+                            spriteId: rocket.spriteId,
+                            size: 86,
+                          ),
+                          const SizedBox(width: 8),
+                          TrainerSpriteWidget(
+                            spriteId: rocket.partnerSpriteId!,
+                            size: 86,
+                          ),
+                        ],
+                      )
+                    else
+                      TrainerSpriteWidget(
+                        spriteId: rocket.spriteId,
+                        size: 96,
+                      ),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -840,7 +871,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                       child: Text(
                         rocket.isJessieOrJames
-                            ? "RARE ENCOUNTER: ${rocket.name.toUpperCase()} (TEAM ROCKET)"
+                            ? "RARE 2v2 DOUBLE BATTLE • TEAM ROCKET DUO"
                             : "TEAM ROCKET BALLOON DESCENDED!",
                         style: const TextStyle(
                           color: Colors.white,
@@ -862,9 +893,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      "Full Party of 6 • Lv. 99",
-                      style: TextStyle(
+                    Text(
+                      rocket.isDoubleBattle
+                          ? "Full Party of 6 • Lv. 99 • 2v2 Double Battle"
+                          : "Full Party of 6 • Lv. 99",
+                      style: const TextStyle(
                         color: PokeColors.badgeGoldDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 11,

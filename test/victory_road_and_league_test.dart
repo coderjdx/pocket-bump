@@ -120,12 +120,15 @@ void main() {
         expect(stages[0].isWild, isTrue);
         expect(stages[0].wildLevel, 99);
         expect(stages[1].isWild, isFalse);
+        expect(stages[1].isDoubleBattle, isTrue);
         expect(stages[2].isWild, isTrue);
         expect(stages[2].wildLevel, 99);
         expect(stages[3].isWild, isFalse);
+        expect(stages[3].isDoubleBattle, isTrue);
         expect(stages[4].isWild, isTrue);
         expect(stages[4].wildLevel, 99);
         expect(stages[5].isWild, isFalse);
+        expect(stages[5].isDoubleBattle, isFalse);
 
         final boss = stages[5].trainer as LeagueBossTrainer;
         seenBosses.add(boss.name);
