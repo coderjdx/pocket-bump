@@ -45,17 +45,20 @@ class VictoryRoadStage {
   final GymTrainer? trainer;
   final String backgroundAsset;
   final BattleBgmCategory bgmCategory;
-  final String label;
+  final String? _customLabel;
+
+  String get label => _customLabel ?? trainer?.name ?? 'Wild Ambush';
 
   const VictoryRoadStage.wild({
     required this.stageNumber,
     required int level,
     this.backgroundAsset = 'assets/images/battle_bg_victory_road.png',
-    this.label = 'Wild Ambush',
+    String label = 'Wild Ambush',
   })  : isWild = true,
         wildLevel = level,
         trainer = null,
-        bgmCategory = BattleBgmCategory.wild;
+        bgmCategory = BattleBgmCategory.wild,
+        _customLabel = label;
 
   const VictoryRoadStage.trainer({
     required this.stageNumber,
@@ -65,7 +68,7 @@ class VictoryRoadStage {
     String? customLabel,
   })  : isWild = false,
         wildLevel = null,
-        label = customLabel ?? trainer.name;
+        _customLabel = customLabel;
 }
 
 class EliteFourDatabase {
@@ -390,7 +393,7 @@ class EliteFourDatabase {
   static List<ItemDrop> buildChampionFirstClearRewards({required Trainer trainer}) {
     final List<ItemDrop> rewards = [];
     final tm51 = ItemDatabase.byId('tm_51');
-    if (tm51 != null && !trainer.hasItem('tm_51')) {
+    if (tm51 != null && !trainer.hasTm('tm_51')) {
       rewards.add(ItemDrop(
         itemId: tm51.id,
         itemName: tm51.name,
@@ -730,7 +733,7 @@ class EliteFourDatabase {
 
     // 2. Signature Exclusive Rare TM (if not owned yet); otherwise bonus Rare Candy
     final tm = ItemDatabase.byId(boss.exclusiveTmId);
-    if (tm != null && !trainer.hasItem(tm.id)) {
+    if (tm != null && !trainer.hasTm(tm.id)) {
       drops.add(ItemDrop(
         itemId: tm.id,
         itemName: tm.name,

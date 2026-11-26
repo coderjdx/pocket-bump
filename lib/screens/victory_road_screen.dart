@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_species.dart';
 import '../models/trainer.dart';
 import '../services/elite_four_database.dart';
 import '../services/gym_database.dart';
@@ -1212,7 +1213,7 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
     final heldName =
         ItemDatabase.byId(boss.exclusiveHeldItemId)?.name ?? boss.exclusiveHeldItemId;
     final tmName = ItemDatabase.byId(boss.exclusiveTmId)?.name ?? boss.exclusiveTmId;
-    final bool hasTm = trainer.hasItem(boss.exclusiveTmId);
+    final bool hasTm = trainer.hasTm(boss.exclusiveTmId);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
