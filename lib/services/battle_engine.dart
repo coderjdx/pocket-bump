@@ -1222,19 +1222,20 @@ class BattleEngine {
     switch (move.id) {
       case 'low_kick':
       case 'grass_knot':
-        final h = defender.species.heightMeters;
-        if (h >= 2.2) return 120;
-        if (h >= 1.6) return 100;
-        if (h >= 1.1) return 80;
-        if (h >= 0.7) return 60;
-        return h >= 0.4 ? 40 : 20;
+        final w = defender.species.weightKg;
+        if (w >= 200.0) return 120;
+        if (w >= 100.0) return 100;
+        if (w >= 50.0) return 80;
+        if (w >= 25.0) return 60;
+        return w >= 10.0 ? 40 : 20;
       case 'heavy_slam':
       case 'heat_crash':
-        final ratio = attacker.species.heightMeters / max(0.1, defender.species.heightMeters);
-        if (ratio >= 3.0) return 120;
-        if (ratio >= 2.0) return 100;
-        if (ratio >= 1.4) return 80;
-        return 60;
+        final ratio = attacker.species.weightKg / max(0.1, defender.species.weightKg);
+        if (ratio >= 5.0) return 120;
+        if (ratio >= 4.0) return 100;
+        if (ratio >= 3.0) return 80;
+        if (ratio >= 2.0) return 60;
+        return 40;
       case 'eruption':
       case 'water_spout':
         return max(1, (150 * attacker.hpPercent).round());

@@ -865,6 +865,21 @@ class _PokedexScreenState extends State<PokedexScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
+                              color: Colors.white10,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              "${spec.weightKg} kg",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
                               color: spec.rarity.color.withOpacity(0.16),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: spec.rarity.color.withOpacity(0.65)),

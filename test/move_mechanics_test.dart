@@ -398,4 +398,88 @@ void main() {
       expect(events.any((e) => e.message.contains('grudge')), isTrue);
     });
   });
+
+  group('Weight-Dependent Moves', () {
+    test('all 187 Pokedex species have official positive weightKg values', () {
+      expect(PokedexDatabase.species.length, 187);
+      for (final sp in PokedexDatabase.species.values) {
+        expect(sp.weightKg, greaterThan(0), reason: '${sp.name} missing weightKg');
+      }
+      expect(PokedexDatabase.species[92]!.weightKg, 0.1); // Gastly
+      expect(PokedexDatabase.species[76]!.weightKg, 300.0); // Golem
+      expect(PokedexDatabase.species[143]!.weightKg, 460.0); // Snorlax
+    });
+
+    test('Grass Knot / Low Kick scale with defender weightKg instead of height', () {
+      final caster = _makeMon(
+        name: 'Pikachu',
+        types: const [PokemonType.grass],
+        moveIds: ['grass_knot'],
+      );
+      final gastly = PokemonInstance(
+        species: PokedexDatabase.species[92]!, // 1.3m tall, 0.1kg (20 power)
+        level: 50,
+        moves: [PokedexDatabase.moves['tackle']!.copy()],
+      );
+      final golem = PokemonInstance(
+        species: PokedexDatabase.species[76]!, // 1.4m tall, 300kg (120 power)
+        level: 50,
+        moves: [PokedexDatabase.moves['tackle']!.copy()],
+      );
+
+      final gastlyEv = BattleEngine.executeSingleAttack(
+        caster,
+        caster.moves[0],
+        gastly,
+        isPlayer: true,
+        rng: Random(7),
+      );
+      final golemEv = BattleEngine.executeSingleAttack(
+        caster,
+        caster.moves[0],
+        golem,
+        isPlayer: true,
+        rng: Random(7),
+      );
+      final dmgGastly = gastlyEv.firstWhere((e) => e.damageDealt > 0).damageDealt;
+      final dmgGolem = golemEv.firstWhere((e) => e.damageDealt > 0).damageDealt;
+      // 120 power vs 4x Grass-weak Golem dwarfs 20 power vs 0.5x Poison-resisted Gastly
+      expect(dmgGolem, greaterThan(dmgGastly * 10));
+    });
+
+    test('Heavy Slam scales with attacker-to-defender weightKg ratio', () {
+      final snorlax = PokemonInstance(
+        species: PokedexDatabase.species[143]!, // 460 kg
+        level: 50,
+        moves: [PokedexDatabase.moves['heavy_slam']!.copy()],
+      );
+      final squirtle = PokemonInstance(
+        species: PokedexDatabase.species[7]!, // 9.0 kg -> ratio > 51x -> 120 power
+        level: 50,
+        moves: [PokedexDatabase.moves['tackle']!.copy()],
+      );
+      final onix = PokemonInstance(
+        species: PokedexDatabase.species[95]!, // 210 kg -> ratio 2.19x -> 60 power
+        level: 50,
+        moves: [PokedexDatabase.moves['tackle']!.copy()],
+      );
+
+      final vsSquirtle = BattleEngine.executeSingleAttack(
+        snorlax,
+        snorlax.moves[0],
+        squirtle,
+        isPlayer: true,
+        rng: Random(3),
+      );
+      final vsOnix = BattleEngine.executeSingleAttack(
+        snorlax,
+        snorlax.moves[0],
+        onix,
+        isPlayer: true,
+        rng: Random(3),
+      );
+      expect(vsSquirtle.firstWhere((e) => e.damageDealt > 0).damageDealt,
+          greaterThan(vsOnix.firstWhere((e) => e.damageDealt > 0).damageDealt));
+    });
+  });
 }

@@ -70,6 +70,7 @@ class PokemonSpecies {
   final int baseCatchRate;
   final int baseExp;
   final double heightMeters;
+  final double weightKg;
   final int evolutionStage;
   final bool isStarter;
   final bool isFossil;
@@ -99,6 +100,7 @@ class PokemonSpecies {
     this.baseCatchRate = 45,
     this.baseExp = 64,
     this.heightMeters = 0.7,
+    this.weightKg = 10.0,
     this.evolutionStage = 1,
     this.isStarter = false,
     this.isFossil = false,
