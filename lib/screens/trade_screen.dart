@@ -9,6 +9,7 @@ import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/type_badge.dart';
 import 'evolution_screen.dart';
@@ -51,7 +52,8 @@ class _TradeScreenState extends State<TradeScreen>
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${widget.session.partnerName} left the Trade Link room."),
+          content:
+              Text("${widget.session.partnerName} left the Trade Link room."),
           duration: const Duration(seconds: 2),
         ),
       );
@@ -183,28 +185,20 @@ class _TradeScreenState extends State<TradeScreen>
     final String? tradeEvoName = tradeEvoTargetId != null
         ? PokedexDatabase.species[tradeEvoTargetId]?.name
         : null;
+    final Color typeAccent =
+        mon != null ? mon.species.types.first.color : accentColor;
 
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            (mon != null ? mon.species.types.first.color : accentColor)
-                .withOpacity(mon != null ? 0.18 : 0.08),
-            const Color(0xFF131827),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: isConfirmed
-              ? const Color(0xFF34EB8C)
-              : (mon != null
-                  ? accentColor.withOpacity(0.55)
-                  : Colors.white12),
-          width: isConfirmed ? 1.8 : 1.2,
-        ),
+      decoration: PokeDecorations.card(
+        fill: mon != null
+            ? Color.lerp(PokeColors.creamSurface, typeAccent, 0.08)!
+            : PokeColors.creamSurface,
+        border: isConfirmed
+            ? PokeColors.pokeGreen
+            : (mon != null ? accentColor : PokeColors.frameBorderSoft),
+        radius: 18,
+        borderWidth: isConfirmed ? 2.2 : 1.5,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,16 +207,15 @@ class _TradeScreenState extends State<TradeScreen>
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    const EdgeInsets.symmetric(horizontal: 9, vertical: 3.5),
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.18),
+                  color: accentColor,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: accentColor.withOpacity(0.5)),
                 ),
                 child: Text(
                   ownerLabel,
-                  style: TextStyle(
-                    color: accentColor,
+                  style: const TextStyle(
+                    color: Colors.white,
                     fontSize: 9.5,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.7,
@@ -235,13 +228,14 @@ class _TradeScreenState extends State<TradeScreen>
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: isConfirmed
-                      ? const Color(0xFF34EB8C).withOpacity(0.2)
-                      : Colors.white.withOpacity(0.08),
+                      ? PokeColors.pokeGreen.withOpacity(0.16)
+                      : PokeColors.cardWhite,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: isConfirmed
-                        ? const Color(0xFF34EB8C)
-                        : Colors.white24,
+                        ? PokeColors.pokeGreen
+                        : PokeColors.frameBorderSoft,
+                    width: 1.3,
                   ),
                 ),
                 child: Row(
@@ -255,8 +249,8 @@ class _TradeScreenState extends State<TradeScreen>
                               : Icons.radio_button_unchecked_rounded),
                       size: 11,
                       color: isConfirmed
-                          ? const Color(0xFF34EB8C)
-                          : Colors.white70,
+                          ? PokeColors.pokeGreenDark
+                          : PokeColors.inkMuted,
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -265,8 +259,8 @@ class _TradeScreenState extends State<TradeScreen>
                           : (mon != null ? "READY" : "WAITING"),
                       style: TextStyle(
                         color: isConfirmed
-                            ? const Color(0xFF34EB8C)
-                            : Colors.white70,
+                            ? PokeColors.pokeGreenDark
+                            : PokeColors.inkMuted,
                         fontSize: 9,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.5,
@@ -280,14 +274,15 @@ class _TradeScreenState extends State<TradeScreen>
           const SizedBox(height: 10),
           if (mon == null)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               child: Center(
                 child: Text(
                   emptyText,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.white54,
+                    color: PokeColors.inkMuted,
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -299,12 +294,13 @@ class _TradeScreenState extends State<TradeScreen>
                   width: 68,
                   height: 68,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0A0D18),
+                    color: PokeColors.cardWhite,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
                       color: mon.isShiny
-                          ? Colors.amberAccent.withOpacity(0.8)
-                          : mon.species.types.first.color.withOpacity(0.5),
+                          ? PokeColors.badgeGold
+                          : typeAccent.withOpacity(0.65),
+                      width: 1.6,
                     ),
                   ),
                   child: Stack(
@@ -324,7 +320,7 @@ class _TradeScreenState extends State<TradeScreen>
                             filterQuality: FilterQuality.none,
                             errorBuilder: (_, __, ___) => Icon(
                               Icons.catching_pokemon,
-                              color: mon.species.types.first.color,
+                              color: typeAccent,
                               size: 36,
                             ),
                           ),
@@ -336,7 +332,7 @@ class _TradeScreenState extends State<TradeScreen>
                           right: 4,
                           child: Icon(
                             Icons.auto_awesome_rounded,
-                            color: Colors.amberAccent,
+                            color: PokeColors.badgeGoldDark,
                             size: 13,
                           ),
                         ),
@@ -356,7 +352,7 @@ class _TradeScreenState extends State<TradeScreen>
                           if (mon.isShiny) ...[
                             const Icon(
                               Icons.auto_awesome_rounded,
-                              color: Colors.amberAccent,
+                              color: PokeColors.badgeGoldDark,
                               size: 13,
                             ),
                             const SizedBox(width: 3),
@@ -367,23 +363,31 @@ class _TradeScreenState extends State<TradeScreen>
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: PokeColors.inkDark,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
                           ),
-                          Text(
-                            "Lv.${mon.level}",
-                            style: const TextStyle(
-                              color: Colors.amberAccent,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w900,
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: PokeColors.badgeGold.withOpacity(0.22),
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Text(
+                              "Lv.${mon.level}",
+                              style: const TextStyle(
+                                color: PokeColors.badgeGoldDark,
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 5),
                       Wrap(
                         spacing: 5,
                         runSpacing: 4,
@@ -393,17 +397,19 @@ class _TradeScreenState extends State<TradeScreen>
                           if (heldItem != null)
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
+                                  horizontal: 7, vertical: 2.5),
                               decoration: BoxDecoration(
-                                color: Colors.white10,
+                                color: PokeColors.cardWhite,
                                 borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                    color: PokeColors.frameBorderSoft),
                               ),
                               child: Text(
                                 "Held: ${heldItem.name}",
                                 style: const TextStyle(
-                                  color: Colors.white70,
+                                  color: PokeColors.inkMuted,
                                   fontSize: 9.5,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
                             ),
@@ -415,11 +421,9 @@ class _TradeScreenState extends State<TradeScreen>
                           padding: const EdgeInsets.symmetric(
                               horizontal: 7, vertical: 2.5),
                           decoration: BoxDecoration(
-                            color: Colors.amberAccent.withOpacity(0.16),
+                            color: PokeColors.badgeGold.withOpacity(0.18),
                             borderRadius: BorderRadius.circular(7),
-                            border: Border.all(
-                              color: Colors.amberAccent.withOpacity(0.7),
-                            ),
+                            border: Border.all(color: PokeColors.badgeGoldDark),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -427,13 +431,13 @@ class _TradeScreenState extends State<TradeScreen>
                               const Icon(
                                 Icons.auto_awesome_rounded,
                                 size: 11,
-                                color: Colors.amberAccent,
+                                color: PokeColors.badgeGoldDark,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 "TRADE EVOLVES → ${tradeEvoName.toUpperCase()}",
                                 style: const TextStyle(
-                                  color: Colors.amberAccent,
+                                  color: PokeColors.badgeGoldDark,
                                   fontSize: 9,
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 0.4,
@@ -470,99 +474,80 @@ class _TradeScreenState extends State<TradeScreen>
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF0A0D18),
+        backgroundColor: PokeColors.canvasCream,
+        appBar: buildPokeAppBar(
+          context: context,
+          title: "FIST-BUMP LINK TRADE",
+          barColor: PokeColors.linkTeal,
+          bottomBorderColor: PokeColors.linkTealDark,
+          onBack: _exitTradeRoom,
+        ),
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/images/bg_bump_radar.png',
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.none,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF0A0D18).withOpacity(0.84),
-                    const Color(0xFF0C1222).withOpacity(0.78),
-                    const Color(0xFF080A14).withOpacity(0.94),
-                  ],
-                ),
-              ),
+            const PokeBackdrop(
+              assetPath: 'assets/images/bg_bump_radar.png',
+              topOpacity: 0.30,
+              midOpacity: 0.56,
+              bottomOpacity: 0.90,
             ),
             SafeArea(
+              top: false,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
+                padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
                 child: Column(
                   children: [
-                    // Header
-                    Row(
-                      children: [
-                        Material(
-                          color: const Color(0xFF171E2E),
-                          borderRadius: BorderRadius.circular(10),
-                          child: InkWell(
-                            onTap: _exitTradeRoom,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.14),
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.arrow_back_ios_new_rounded,
-                                size: 15,
-                                color: Colors.white70,
+                    // Connection Status Strip
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 7),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.cardWhite,
+                        border: session.isPeerLeft
+                            ? PokeColors.pokeRed
+                            : PokeColors.linkTeal,
+                        radius: 12,
+                        borderWidth: 1.4,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            session.isPeerLeft
+                                ? Icons.link_off_rounded
+                                : Icons.link_rounded,
+                            size: 16,
+                            color: session.isPeerLeft
+                                ? PokeColors.pokeRed
+                                : PokeColors.linkTealDark,
+                          ),
+                          const SizedBox(width: 7),
+                          Expanded(
+                            child: Text(
+                              session.isPeerLeft
+                                  ? "${session.partnerName} disconnected from Trade Room"
+                                  : "Linked with ${session.partnerName} • Round #${session.round}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: session.isPeerLeft
+                                    ? PokeColors.pokeRed
+                                    : PokeColors.linkTealDark,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "FIST-BUMP LINK TRADE",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13.5,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.0,
-                                ),
-                              ),
-                              Text(
-                                session.isPeerLeft
-                                    ? "${session.partnerName} disconnected"
-                                    : "Linked with ${session.partnerName} • Round #${session.round}",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: session.isPeerLeft
-                                      ? Colors.redAccent
-                                      : Colors.cyanAccent,
-                                  fontSize: 10.5,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
 
                     // Partner Offer
                     _buildOfferCard(
                       ownerLabel: "${session.partnerName.toUpperCase()}'S OFFER",
-                      accentColor: Colors.cyanAccent,
+                      accentColor: PokeColors.linkTealDark,
                       mon: peerOffer,
                       isConfirmed: session.peerConfirmed,
                       emptyText: session.isPeerLeft
@@ -578,40 +563,53 @@ class _TradeScreenState extends State<TradeScreen>
                         builder: (context, _) {
                           final pulse = _beamController.value;
                           final active = myOffer != null && peerOffer != null;
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.swap_vert_rounded,
-                                size: 22,
-                                color: active
-                                    ? Color.lerp(
-                                        Colors.cyanAccent,
-                                        const Color(0xFF34EB8C),
-                                        (0.5 + 0.5 * (pulse * 2 - 1).abs()),
-                                      )
-                                    : Colors.white24,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                _isAnimatingTrade
-                                    ? "TRANSFERRING POKÉMON DATA..."
-                                    : (session.myConfirmed &&
-                                            session.peerConfirmed
-                                        ? "BOTH LOCKED • EXECUTING TRADE!"
-                                        : (active
-                                            ? "LOCK BOTH OFFERS TO TRADE"
-                                            : "SELECT POKÉMON BELOW TO OFFER")),
-                                style: TextStyle(
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            decoration: PokeDecorations.card(
+                              fill: PokeColors.cardWhite,
+                              border: active
+                                  ? PokeColors.pokeGreen
+                                  : PokeColors.frameBorderSoft,
+                              radius: 20,
+                              borderWidth: 1.3,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.swap_vert_rounded,
+                                  size: 18,
                                   color: active
-                                      ? Colors.amberAccent
-                                      : Colors.white54,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 0.7,
+                                      ? Color.lerp(
+                                          PokeColors.linkTeal,
+                                          PokeColors.pokeGreen,
+                                          (0.5 + 0.5 * (pulse * 2 - 1).abs()),
+                                        )
+                                      : PokeColors.inkSubtle,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 6),
+                                Text(
+                                  _isAnimatingTrade
+                                      ? "TRANSFERRING POKÉMON DATA..."
+                                      : (session.myConfirmed &&
+                                              session.peerConfirmed
+                                          ? "BOTH LOCKED • EXECUTING TRADE!"
+                                          : (active
+                                              ? "LOCK BOTH OFFERS TO TRADE"
+                                              : "SELECT POKÉMON BELOW TO OFFER")),
+                                  style: TextStyle(
+                                    color: active
+                                        ? PokeColors.pokeGreenDark
+                                        : PokeColors.inkMuted,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 0.6,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -620,7 +618,7 @@ class _TradeScreenState extends State<TradeScreen>
                     // Your Offer
                     _buildOfferCard(
                       ownerLabel: "${trainer.name.toUpperCase()}'S OFFER",
-                      accentColor: Colors.amberAccent,
+                      accentColor: PokeColors.pokeBlue,
                       mon: myOffer,
                       isConfirmed: session.myConfirmed,
                       emptyText: "Tap a Pokémon from your party below to offer.",
@@ -634,27 +632,26 @@ class _TradeScreenState extends State<TradeScreen>
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF131B2E),
-                            borderRadius: BorderRadius.circular(18),
-                            border: Border.all(
-                              color: const Color(0xFF34EB8C).withOpacity(0.65),
-                            ),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.creamSurface,
+                            border: PokeColors.pokeGreen,
+                            radius: 18,
+                            borderWidth: 2.0,
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
                                 Icons.check_circle_rounded,
-                                color: Color(0xFF34EB8C),
-                                size: 40,
+                                color: PokeColors.pokeGreen,
+                                size: 42,
                               ),
                               const SizedBox(height: 8),
                               const Text(
                                 "LINK TRADE COMPLETE!",
                                 style: TextStyle(
-                                  color: Color(0xFF34EB8C),
-                                  fontSize: 15,
+                                  color: PokeColors.pokeGreenDark,
+                                  fontSize: 15.5,
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 0.8,
                                 ),
@@ -664,9 +661,9 @@ class _TradeScreenState extends State<TradeScreen>
                                 "Sent $_lastSentName ↔ Received ${_lastReceivedMon!.species.name}!",
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
+                                  color: PokeColors.inkDark,
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -676,9 +673,12 @@ class _TradeScreenState extends State<TradeScreen>
                                     child: OutlinedButton(
                                       onPressed: _exitTradeRoom,
                                       style: OutlinedButton.styleFrom(
-                                        foregroundColor: Colors.white70,
+                                        backgroundColor: PokeColors.cardWhite,
+                                        foregroundColor: PokeColors.inkDark,
                                         side: const BorderSide(
-                                            color: Colors.white24),
+                                          color: PokeColors.frameBorderSoft,
+                                          width: 1.5,
+                                        ),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 12),
                                         shape: RoundedRectangleBorder(
@@ -714,8 +714,7 @@ class _TradeScreenState extends State<TradeScreen>
                                             fontWeight: FontWeight.w900),
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFF00ACC1),
+                                        backgroundColor: PokeColors.linkTeal,
                                         foregroundColor: Colors.white,
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 12),
@@ -736,10 +735,11 @@ class _TradeScreenState extends State<TradeScreen>
                       Expanded(
                         child: Container(
                           padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xCC111626),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white12),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.creamSurface.withOpacity(0.96),
+                            border: PokeColors.frameBorderSoft,
+                            radius: 16,
+                            borderWidth: 1.5,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -747,7 +747,7 @@ class _TradeScreenState extends State<TradeScreen>
                               const Text(
                                 "YOUR POKÉMON PARTY",
                                 style: TextStyle(
-                                  color: Colors.white60,
+                                  color: PokeColors.inkMuted,
                                   fontSize: 10,
                                   fontWeight: FontWeight.w900,
                                   letterSpacing: 0.8,
@@ -784,19 +784,18 @@ class _TradeScreenState extends State<TradeScreen>
                                             horizontal: 8, vertical: 6),
                                         decoration: BoxDecoration(
                                           color: selected
-                                              ? Colors.amberAccent
-                                                  .withOpacity(0.16)
-                                              : const Color(0xFF1A2135),
+                                              ? const Color(0xFFFFF8E1)
+                                              : PokeColors.cardWhite,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                           border: Border.all(
                                             color: selected
-                                                ? Colors.amberAccent
+                                                ? PokeColors.badgeGoldDark
                                                 : (tradeEvo
-                                                    ? Colors.cyanAccent
-                                                        .withOpacity(0.55)
-                                                    : Colors.white12),
-                                            width: selected ? 1.6 : 1.0,
+                                                    ? PokeColors.linkTeal
+                                                    : PokeColors
+                                                        .frameBorderSoft),
+                                            width: selected ? 2.0 : 1.3,
                                           ),
                                         ),
                                         child: Row(
@@ -817,7 +816,7 @@ class _TradeScreenState extends State<TradeScreen>
                                                 errorBuilder: (_, __, ___) =>
                                                     const Icon(
                                                   Icons.catching_pokemon,
-                                                  color: Colors.white54,
+                                                  color: PokeColors.inkMuted,
                                                   size: 24,
                                                 ),
                                               ),
@@ -836,8 +835,8 @@ class _TradeScreenState extends State<TradeScreen>
                                                         const Icon(
                                                           Icons
                                                               .auto_awesome_rounded,
-                                                          color:
-                                                              Colors.amberAccent,
+                                                          color: PokeColors
+                                                              .badgeGoldDark,
                                                           size: 11,
                                                         ),
                                                         const SizedBox(width: 2),
@@ -850,10 +849,11 @@ class _TradeScreenState extends State<TradeScreen>
                                                               .ellipsis,
                                                           style:
                                                               const TextStyle(
-                                                            color: Colors.white,
+                                                            color: PokeColors
+                                                                .inkDark,
                                                             fontSize: 11.5,
                                                             fontWeight:
-                                                                FontWeight.w800,
+                                                                FontWeight.w900,
                                                           ),
                                                         ),
                                                       ),
@@ -868,11 +868,13 @@ class _TradeScreenState extends State<TradeScreen>
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: tradeEvo
-                                                          ? Colors.cyanAccent
-                                                          : Colors.amberAccent,
+                                                          ? PokeColors
+                                                              .linkTealDark
+                                                          : PokeColors
+                                                              .badgeGoldDark,
                                                       fontSize: 9.5,
                                                       fontWeight:
-                                                          FontWeight.w700,
+                                                          FontWeight.w800,
                                                     ),
                                                   ),
                                                 ],
@@ -901,9 +903,12 @@ class _TradeScreenState extends State<TradeScreen>
                                   child: OutlinedButton(
                                     onPressed: session.unlockConfirmation,
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.amberAccent,
+                                      backgroundColor: PokeColors.cardWhite,
+                                      foregroundColor: PokeColors.badgeGoldDark,
                                       side: const BorderSide(
-                                          color: Colors.amberAccent),
+                                        color: PokeColors.badgeGoldDark,
+                                        width: 1.5,
+                                      ),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(14),
                                       ),
@@ -950,15 +955,15 @@ class _TradeScreenState extends State<TradeScreen>
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF00BFA5),
-                                  foregroundColor: Colors.black87,
+                                  backgroundColor: PokeColors.linkTeal,
+                                  foregroundColor: Colors.white,
                                   disabledBackgroundColor: session.myConfirmed
-                                      ? const Color(0xFF34EB8C)
-                                          .withOpacity(0.25)
-                                      : Colors.white12,
+                                      ? PokeColors.pokeGreen.withOpacity(0.18)
+                                      : PokeColors.panelSoft,
                                   disabledForegroundColor: session.myConfirmed
-                                      ? const Color(0xFF34EB8C)
-                                      : Colors.white38,
+                                      ? PokeColors.pokeGreenDark
+                                      : PokeColors.inkSubtle,
+                                  elevation: 3,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14),
                                   ),
@@ -975,38 +980,49 @@ class _TradeScreenState extends State<TradeScreen>
             ),
             if (_isAnimatingTrade)
               Container(
-                color: Colors.black.withOpacity(0.75),
+                color: Colors.black.withOpacity(0.55),
                 child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        width: 54,
-                        height: 54,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 4,
-                          color: Colors.cyanAccent,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.all(24),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.creamSurface,
+                      border: PokeColors.linkTeal,
+                      radius: 20,
+                      borderWidth: 2,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          width: 52,
+                          height: 52,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 4.5,
+                            color: PokeColors.linkTeal,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Sending $_lastSentName...",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900,
+                        const SizedBox(height: 16),
+                        Text(
+                          "Sending $_lastSentName...",
+                          style: const TextStyle(
+                            color: PokeColors.inkDark,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      const Text(
-                        "Fist-Bump Link Cable Transfer in progress!",
-                        style: TextStyle(
-                          color: Colors.cyanAccent,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                        const SizedBox(height: 6),
+                        const Text(
+                          "Fist-Bump Link Cable Transfer in progress!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: PokeColors.linkTealDark,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

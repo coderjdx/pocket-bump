@@ -7,6 +7,7 @@ import '../services/adventure_database.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../widgets/gauntlet_checkpoint_sheets.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/type_badge.dart';
 import 'battle_screen.dart';
 
@@ -50,69 +51,40 @@ class AdventureScreen extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0A0E18),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white70,
-            size: 18,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'GO ON AN ADVENTURE',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: 'GO ON AN ADVENTURE',
+        barColor: PokeColors.pokeGreen,
+        bottomBorderColor: PokeColors.pokeGreenDark,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/battle_bg_route.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF090D18).withOpacity(0.84),
-                  const Color(0xFF0E1525).withOpacity(0.76),
-                  const Color(0xFF070A12).withOpacity(0.94),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/battle_bg_route.png',
+            topOpacity: 0.24,
+            midOpacity: 0.48,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
+            top: false,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 24),
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 24),
               children: [
                 Container(
                   padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xE8121A2B),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFF34EB8C).withOpacity(0.45),
-                    ),
+                  decoration: PokeDecorations.card(
+                    fill: PokeColors.creamSurface,
+                    border: PokeColors.pokeGreen,
+                    radius: 16,
+                    borderWidth: 1.6,
                   ),
                   child: const Row(
                     children: [
                       Icon(
                         Icons.explore_rounded,
-                        color: Color(0xFF34EB8C),
+                        color: PokeColors.pokeGreenDark,
                         size: 26,
                       ),
                       SizedBox(width: 11),
@@ -120,8 +92,9 @@ class AdventureScreen extends StatelessWidget {
                         child: Text(
                           'Face a 5-wild-Pokémon gauntlet with rest checkpoints between battles. Unlock Biomes with Adventure Maps from Gym Leader rematches to target specific types!',
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: PokeColors.inkMuted,
                             fontSize: 11.5,
+                            fontWeight: FontWeight.w600,
                             height: 1.38,
                           ),
                         ),
@@ -135,20 +108,31 @@ class AdventureScreen extends StatelessWidget {
                 _buildRandomAdventureCard(context, trainer),
                 const SizedBox(height: 18),
 
-                Row(
-                  children: [
-                    const Icon(Icons.map_rounded, color: Colors.amberAccent, size: 16),
-                    const SizedBox(width: 6),
-                    Text(
-                      'BIOME ADVENTURES (${unlockedBiomes.length}/${AdventureDatabase.biomes.length} UNLOCKED)',
-                      style: const TextStyle(
-                        color: Colors.amberAccent,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.9,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: PokeDecorations.card(
+                    fill: PokeColors.creamSurface.withOpacity(0.95),
+                    border: PokeColors.badgeGold,
+                    radius: 11,
+                    borderWidth: 1.3,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.map_rounded,
+                          color: PokeColors.badgeGoldDark, size: 16),
+                      const SizedBox(width: 6),
+                      Text(
+                        'BIOME ADVENTURES (${unlockedBiomes.length}/${AdventureDatabase.biomes.length} UNLOCKED)',
+                        style: const TextStyle(
+                          color: PokeColors.badgeGoldDark,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.8,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
 
@@ -181,17 +165,11 @@ class AdventureScreen extends StatelessWidget {
   Widget _buildRandomAdventureCard(BuildContext context, Trainer trainer) {
     return Container(
       padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xEB152B26), Color(0xEB0E1824)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: const Color(0xFF34EB8C).withOpacity(0.75),
-          width: 1.4,
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: PokeColors.pokeGreen,
+        radius: 18,
+        borderWidth: 1.8,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,15 +179,15 @@ class AdventureScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(9),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0A1412),
+                  color: PokeColors.pokeGreen.withOpacity(0.14),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: const Color(0xFF34EB8C).withOpacity(0.55),
+                    color: PokeColors.pokeGreen.withOpacity(0.55),
                   ),
                 ),
                 child: const Icon(
                   Icons.shuffle_rounded,
-                  color: Color(0xFF34EB8C),
+                  color: PokeColors.pokeGreenDark,
                   size: 24,
                 ),
               ),
@@ -221,7 +199,7 @@ class AdventureScreen extends StatelessWidget {
                     Text(
                       'RANDOM ADVENTURE',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 15,
                         letterSpacing: 0.5,
@@ -231,7 +209,7 @@ class AdventureScreen extends StatelessWidget {
                     Text(
                       '5 Random Wild Encounters • Rest Between Battles',
                       style: TextStyle(
-                        color: Color(0xFF34EB8C),
+                        color: PokeColors.pokeGreenDark,
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
                       ),
@@ -244,7 +222,11 @@ class AdventureScreen extends StatelessWidget {
           const SizedBox(height: 9),
           const Text(
             'Encounter 5 wild Pokémon across all habitats using standard wild encounter rates.',
-            style: TextStyle(color: Colors.white70, fontSize: 11.5, height: 1.35),
+            style: TextStyle(
+              color: PokeColors.inkMuted,
+              fontSize: 11.5,
+              height: 1.35,
+            ),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -257,8 +239,8 @@ class AdventureScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.6),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF34EB8C),
-                foregroundColor: Colors.black,
+                backgroundColor: PokeColors.pokeGreen,
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -277,26 +259,16 @@ class AdventureScreen extends StatelessWidget {
     required AdventureBiome biome,
     required bool unlocked,
   }) {
+    final Color darkAccent = PokeColors.darken(biome.accentColor, 0.16);
     return Opacity(
-      opacity: unlocked ? 1.0 : 0.68,
+      opacity: unlocked ? 1.0 : 0.82,
       child: Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              biome.accentColor.withOpacity(unlocked ? 0.22 : 0.08),
-              const Color(0xEA121829),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: unlocked
-                ? biome.accentColor.withOpacity(0.65)
-                : Colors.white12,
-            width: 1.2,
-          ),
+        decoration: PokeDecorations.card(
+          fill: unlocked ? PokeColors.cardWhite : PokeColors.creamSurface,
+          border: unlocked ? biome.accentColor : PokeColors.frameBorderSoft,
+          radius: 16,
+          borderWidth: unlocked ? 1.6 : 1.2,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,17 +278,19 @@ class AdventureScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0A0F1A),
+                    color: unlocked
+                        ? biome.accentColor.withOpacity(0.15)
+                        : PokeColors.panelSoft,
                     borderRadius: BorderRadius.circular(11),
                     border: Border.all(
                       color: unlocked
                           ? biome.accentColor.withOpacity(0.6)
-                          : Colors.white12,
+                          : PokeColors.frameBorderSoft,
                     ),
                   ),
                   child: Icon(
                     unlocked ? biome.icon : Icons.lock_rounded,
-                    color: unlocked ? biome.accentColor : Colors.white38,
+                    color: unlocked ? darkAccent : PokeColors.inkSubtle,
                     size: 22,
                   ),
                 ),
@@ -328,7 +302,7 @@ class AdventureScreen extends StatelessWidget {
                       Text(
                         biome.name.toUpperCase(),
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: PokeColors.inkDark,
                           fontWeight: FontWeight.w900,
                           fontSize: 13.5,
                           letterSpacing: 0.4,
@@ -338,8 +312,9 @@ class AdventureScreen extends StatelessWidget {
                       Text(
                         biome.subtitle,
                         style: const TextStyle(
-                          color: Colors.white60,
+                          color: PokeColors.inkMuted,
                           fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -369,8 +344,8 @@ class AdventureScreen extends StatelessWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: biome.accentColor,
-                    foregroundColor: Colors.black,
+                    backgroundColor: darkAccent,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 11),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(11),
@@ -382,16 +357,15 @@ class AdventureScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0A0E18),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.amberAccent.withOpacity(0.28)),
+                decoration: PokeDecorations.inset(
+                  radius: 10,
+                  border: PokeColors.badgeGold.withOpacity(0.55),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.map_outlined,
-                      color: Colors.amberAccent,
+                      color: PokeColors.badgeGoldDark,
                       size: 15,
                     ),
                     const SizedBox(width: 7),
@@ -399,7 +373,7 @@ class AdventureScreen extends StatelessWidget {
                       child: Text(
                         'Locked • Rematch ${biome.sourceGymName} for its Adventure Map',
                         style: const TextStyle(
-                          color: Colors.amberAccent,
+                          color: PokeColors.badgeGoldDark,
                           fontSize: 10.5,
                           fontWeight: FontWeight.bold,
                         ),
@@ -449,7 +423,9 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
   }
 
   Color get _accentColor =>
-      widget.biome?.accentColor ?? const Color(0xFF34EB8C);
+      widget.biome?.accentColor ?? PokeColors.pokeGreen;
+
+  Color get _accentDark => PokeColors.darken(_accentColor, 0.16);
 
   String get _title =>
       widget.biome?.name.toUpperCase() ?? 'RANDOM ADVENTURE';
@@ -559,11 +535,12 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF0A0D18),
-        extendBodyBehindAppBar: true,
+        backgroundColor: PokeColors.canvasCream,
         appBar: AppBar(
-          backgroundColor: const Color(0xCC0A0E18),
-          elevation: 0,
+          backgroundColor: _accentDark,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          surfaceTintColor: Colors.transparent,
           automaticallyImplyLeading: false,
           title: Text(
             _phase == _AdventurePhase.checkpoint
@@ -581,25 +558,14 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              bgAsset,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.none,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF0B101D).withOpacity(0.80),
-                    const Color(0xFF0C1220).withOpacity(0.66),
-                    const Color(0xFF070A12).withOpacity(0.92),
-                  ],
-                ),
-              ),
+            PokeBackdrop(
+              assetPath: bgAsset,
+              topOpacity: 0.24,
+              midOpacity: 0.50,
+              bottomOpacity: 0.88,
             ),
             SafeArea(
+              top: false,
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: _phase == _AdventurePhase.summary
@@ -620,30 +586,23 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                _accentColor.withOpacity(0.22),
-                const Color(0xEA121624),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: _accentColor.withOpacity(0.6),
-              width: 1.3,
-            ),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface,
+            border: _accentDark,
+            radius: 16,
+            borderWidth: 1.6,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon(Icons.check_circle_rounded, color: _accentColor, size: 18),
+                  Icon(Icons.check_circle_rounded, color: _accentDark, size: 18),
                   const SizedBox(width: 7),
                   Text(
                     'ENCOUNTER $_encountersCompleted OF $totalEncounters CLEARED',
                     style: TextStyle(
-                      color: _accentColor,
+                      color: _accentDark,
                       fontWeight: FontWeight.w900,
                       fontSize: 11,
                       letterSpacing: 0.8,
@@ -657,7 +616,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                     ? 'Preparing first wild encounter...'
                     : 'NEXT: WILD ENCOUNTER #${_encountersCompleted + 1} OF $totalEncounters',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: PokeColors.inkDark,
                   fontWeight: FontWeight.w900,
                   fontSize: 13.5,
                 ),
@@ -665,7 +624,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
               const SizedBox(height: 4),
               const Text(
                 'Rest checkpoint: heal up with Bag items or reorganize your party before continuing.',
-                style: TextStyle(color: Colors.white70, fontSize: 10.5),
+                style: TextStyle(color: PokeColors.inkMuted, fontSize: 10.5),
               ),
             ],
           ),
@@ -674,7 +633,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         const Text(
           'POKÉMON CONDITION',
           style: TextStyle(
-            color: Colors.white70,
+            color: PokeColors.inkDark,
             fontSize: 11,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.9,
@@ -688,15 +647,15 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
             itemBuilder: (_, idx) {
               final mon = trainer.party[idx];
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xE8141826),
-                  borderRadius: BorderRadius.circular(13),
-                  border: Border.all(
-                    color: mon.isFainted
-                        ? Colors.redAccent.withOpacity(0.5)
-                        : Colors.white.withOpacity(0.12),
-                  ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.cardWhite,
+                  border: mon.isFainted
+                      ? PokeColors.pokeRed
+                      : PokeColors.frameBorderSoft,
+                  radius: 13,
+                  borderWidth: 1.4,
                 ),
                 child: Row(
                   children: [
@@ -708,7 +667,9 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                             Text(
                               mon.nickname,
                               style: TextStyle(
-                                color: mon.isFainted ? Colors.white38 : Colors.white,
+                                color: mon.isFainted
+                                    ? PokeColors.inkSubtle
+                                    : PokeColors.inkDark,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 13,
                               ),
@@ -717,8 +678,8 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                             Text(
                               'Lv.${mon.level}',
                               style: const TextStyle(
-                                color: Color(0xFFFFD54F),
-                                fontWeight: FontWeight.bold,
+                                color: PokeColors.badgeGoldDark,
+                                fontWeight: FontWeight.w900,
                                 fontSize: 11,
                               ),
                             ),
@@ -730,13 +691,13 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                                   vertical: 1,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.redAccent.withOpacity(0.22),
+                                  color: PokeColors.pokeRed.withOpacity(0.14),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   mon.status.name.toUpperCase(),
                                   style: const TextStyle(
-                                    color: Colors.redAccent,
+                                    color: PokeColors.pokeRed,
                                     fontSize: 8.5,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -749,8 +710,11 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                         Text(
                           'HP: ${mon.currentHp} / ${mon.maxHp}',
                           style: TextStyle(
-                            color: mon.isFainted ? Colors.redAccent : Colors.white60,
+                            color: mon.isFainted
+                                ? PokeColors.pokeRed
+                                : PokeColors.inkMuted,
                             fontSize: 11,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -762,16 +726,16 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: (mon.currentHp / mon.maxHp).clamp(0.0, 1.0),
-                          minHeight: 6,
-                          backgroundColor: Colors.white10,
+                          minHeight: 7,
+                          backgroundColor: PokeColors.panelSoft,
                           valueColor: AlwaysStoppedAnimation<Color>(
                             mon.isFainted
                                 ? Colors.transparent
                                 : (mon.currentHp <= mon.maxHp / 5
-                                    ? Colors.redAccent
+                                    ? PokeColors.pokeRed
                                     : (mon.currentHp <= mon.maxHp / 2
-                                        ? Colors.amberAccent
-                                        : const Color(0xFF34EB8C))),
+                                        ? PokeColors.badgeGold
+                                        : PokeColors.pokeGreen)),
                           ),
                         ),
                       ),
@@ -784,7 +748,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         ),
         const SizedBox(height: 12),
         GauntletCheckpointActionBar(
-          nextBattleColor: _accentColor,
+          nextBattleColor: _accentDark,
           nextBattleLabel: 'NEXT BATTLE',
           busy: _busyLaunching,
           onNextBattle: _launchNextEncounter,
@@ -809,6 +773,9 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
   }
 
   Widget _buildSummaryView() {
+    final Color outcomeColor = _failed
+        ? PokeColors.pokeRed
+        : (_gaveUp ? PokeColors.bagOrange : _accentDark);
     final String headline = _failed
         ? 'Adventure Ended'
         : _gaveUp
@@ -826,14 +793,11 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xEB111626),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: _failed
-                  ? Colors.redAccent
-                  : (_gaveUp ? Colors.orangeAccent : _accentColor),
-            ),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface,
+            border: outcomeColor,
+            radius: 20,
+            borderWidth: 1.8,
           ),
           child: Column(
             children: [
@@ -844,15 +808,13 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                         ? Icons.flag_rounded
                         : Icons.workspace_premium_rounded),
                 size: 52,
-                color: _failed
-                    ? Colors.redAccent
-                    : (_gaveUp ? Colors.orangeAccent : _accentColor),
+                color: outcomeColor,
               ),
               const SizedBox(height: 12),
               Text(
                 headline,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: PokeColors.inkDark,
                   fontWeight: FontWeight.w900,
                   fontSize: 20,
                 ),
@@ -862,7 +824,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
                 body,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Colors.white70,
+                  color: PokeColors.inkMuted,
                   fontSize: 13,
                   height: 1.4,
                 ),
@@ -877,8 +839,8 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
           child: ElevatedButton(
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _accentColor,
-              foregroundColor: Colors.black,
+              backgroundColor: _accentDark,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),

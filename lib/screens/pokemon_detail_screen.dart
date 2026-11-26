@@ -12,6 +12,7 @@ import '../services/sound_service.dart';
 import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/type_badge.dart';
 
@@ -55,6 +56,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     }
     return null;
   }
+
   String _categoryTag(MoveCategory c) {
     switch (c) {
       case MoveCategory.physical:
@@ -69,11 +71,11 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
   Color _categoryColor(MoveCategory c) {
     switch (c) {
       case MoveCategory.physical:
-        return Colors.orangeAccent;
+        return const Color(0xFFD84315);
       case MoveCategory.special:
-        return Colors.lightBlueAccent;
+        return PokeColors.pokeBlueDark;
       case MoveCategory.status:
-        return Colors.purpleAccent;
+        return const Color(0xFF7B1FA2);
     }
   }
 
@@ -103,15 +105,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     final int? slotIdx = await showDialog<int>(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF141828),
+        backgroundColor: PokeColors.creamSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: reserveMove.type.color.withOpacity(0.55)),
+          side: BorderSide(color: reserveMove.type.color, width: 1.6),
         ),
         title: Text(
           "Swap in ${reserveMove.name}",
           style: const TextStyle(
-            color: Colors.white,
+            color: PokeColors.inkDark,
             fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
@@ -125,7 +127,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               Text(
                 "Choose an active move to swap out for ${reserveMove.name}. The replaced move stays remembered so you can swap it back anytime.",
                 style: const TextStyle(
-                    color: Colors.white70, fontSize: 11.5, height: 1.3),
+                    color: PokeColors.inkMuted, fontSize: 11.5, height: 1.3),
               ),
               const SizedBox(height: 10),
               ...List.generate(mon.moves.length, (i) {
@@ -138,11 +140,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1D2338),
-                        borderRadius: BorderRadius.circular(12),
-                        border:
-                            Border.all(color: cur.type.color.withOpacity(0.45)),
+                      decoration: PokeDecorations.card(
+                        border: cur.type.color,
+                        radius: 12,
+                        borderWidth: 1.4,
                       ),
                       child: Row(
                         children: [
@@ -157,8 +158,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                         cur.name,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                          color: PokeColors.inkDark,
+                                          fontWeight: FontWeight.w900,
                                           fontSize: 13,
                                         ),
                                       ),
@@ -171,7 +172,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 Text(
                                   "PWR ${cur.powerLabel} • ACC ${cur.accuracy}% • PP ${cur.currentPp}/${cur.maxPp}",
                                   style: const TextStyle(
-                                    color: Colors.white60,
+                                    color: PokeColors.inkMuted,
                                     fontSize: 10,
                                   ),
                                 ),
@@ -179,7 +180,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                             ),
                           ),
                           const Icon(Icons.swap_horiz_rounded,
-                              color: Colors.amberAccent, size: 20),
+                              color: PokeColors.pokeBlue, size: 20),
                         ],
                       ),
                     ),
@@ -192,8 +193,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dlgCtx, null),
-            child:
-                const Text("Cancel", style: TextStyle(color: Colors.white60)),
+            child: const Text("Cancel",
+                style: TextStyle(color: PokeColors.inkMuted)),
           ),
         ],
       ),
@@ -264,16 +265,21 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         final mon = _resolvePokemon(trainer);
         if (mon == null) {
           return Scaffold(
-            backgroundColor: const Color(0xFF0E1220),
-            appBar: AppBar(title: const Text("POKÉMON SUMMARY")),
+            backgroundColor: PokeColors.canvasCream,
+            appBar: buildPokeAppBar(
+              context: context,
+              title: "POKÉMON SUMMARY",
+              barColor: PokeColors.pokeRed,
+            ),
             body: const Center(
               child: Text("Pokémon not found.",
-                  style: TextStyle(color: Colors.white70)),
+                  style: TextStyle(color: PokeColors.inkMuted)),
             ),
           );
         }
 
         final Color typeColor = mon.species.types.first.color;
+        final Color typeHeader = PokeColors.darken(typeColor, 0.16);
         final int prevLvlExp =
             (mon.level - 1) * (mon.level - 1) * (mon.level - 1);
         final int nextLvlExp = mon.expForNextLevel;
@@ -287,13 +293,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         return DefaultTabController(
           length: 3,
           child: Scaffold(
-            backgroundColor: const Color(0xFF0C101C),
+            backgroundColor: PokeColors.canvasCream,
             appBar: AppBar(
-              backgroundColor: const Color(0xFF101526),
-              elevation: 0,
+              backgroundColor: typeHeader,
+              foregroundColor: Colors.white,
+              surfaceTintColor: Colors.transparent,
+              elevation: 2,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white70, size: 18),
+                    color: Colors.white, size: 18),
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
@@ -302,6 +310,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                   fontSize: 13.5,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 1.0,
+                  color: Colors.white,
                 ),
               ),
               centerTitle: true,
@@ -322,11 +331,11 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         );
                       },
                       icon: const Icon(Icons.star_rounded,
-                          color: Colors.amberAccent, size: 16),
+                          color: Color(0xFFFFE082), size: 16),
                       label: const Text(
                         "LEAD",
                         style: TextStyle(
-                          color: Colors.amberAccent,
+                          color: Colors.white,
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
                         ),
@@ -341,16 +350,13 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: Colors.purpleAccent.withOpacity(0.18),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Colors.purpleAccent.withOpacity(0.55),
-                          ),
                         ),
                         child: Text(
                           "BOX ${widget.pcBoxIndex! + 1}",
                           style: TextStyle(
-                            color: Colors.purpleAccent.shade100,
+                            color: typeHeader,
                             fontSize: 10,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.6,
@@ -367,16 +373,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        typeColor.withOpacity(0.24),
-                        const Color(0xFF13182A),
-                      ],
-                    ),
+                    color: PokeColors.creamSurface,
                     border: Border(
-                      bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
+                      bottom: BorderSide(color: typeHeader, width: 1.8),
                     ),
                   ),
                   child: Row(
@@ -384,23 +383,11 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                       Container(
                         width: 84,
                         height: 84,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0A0D18),
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(
-                              color: mon.isShiny
-                                  ? Colors.amberAccent.withOpacity(0.85)
-                                  : typeColor.withOpacity(0.65),
-                              width: mon.isShiny ? 2.0 : 1.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: (mon.isShiny
-                                      ? Colors.amberAccent
-                                      : typeColor)
-                                  .withOpacity(0.28),
-                              blurRadius: 14,
-                            ),
-                          ],
+                        decoration: PokeDecorations.card(
+                          fill: PokeColors.cardWhite,
+                          border: mon.isShiny ? PokeColors.badgeGold : typeHeader,
+                          radius: 18,
+                          borderWidth: 2.0,
                         ),
                         child: Stack(
                           children: [
@@ -439,7 +426,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 right: 4,
                                 child: Icon(
                                   Icons.auto_awesome_rounded,
-                                  color: Colors.amberAccent,
+                                  color: PokeColors.badgeGoldDark,
                                   size: 14,
                                 ),
                               ),
@@ -463,11 +450,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                         horizontal: 5, vertical: 1.5),
                                     decoration: BoxDecoration(
                                       color:
-                                          Colors.amberAccent.withOpacity(0.2),
+                                          PokeColors.badgeGold.withOpacity(0.22),
                                       borderRadius: BorderRadius.circular(6),
                                       border: Border.all(
-                                        color:
-                                            Colors.amberAccent.withOpacity(0.8),
+                                        color: PokeColors.badgeGoldDark,
                                       ),
                                     ),
                                     child: const Row(
@@ -475,14 +461,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                       children: [
                                         Icon(
                                           Icons.auto_awesome_rounded,
-                                          color: Colors.amberAccent,
+                                          color: PokeColors.badgeGoldDark,
                                           size: 10,
                                         ),
                                         SizedBox(width: 2),
                                         Text(
                                           "SHINY",
                                           style: TextStyle(
-                                            color: Colors.amberAccent,
+                                            color: PokeColors.badgeGoldDark,
                                             fontSize: 8.5,
                                             fontWeight: FontWeight.w900,
                                             letterSpacing: 0.4,
@@ -497,7 +483,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                     mon.nickname,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: PokeColors.inkDark,
                                       fontSize: 17,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -507,16 +493,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: Colors.amberAccent.withOpacity(0.18),
+                                    color: PokeColors.badgeGold.withOpacity(0.18),
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
-                                        color: Colors.amberAccent
-                                            .withOpacity(0.55)),
+                                        color: PokeColors.badgeGoldDark),
                                   ),
                                   child: Text(
                                     "Lv.${mon.level}",
                                     style: const TextStyle(
-                                      color: Colors.amberAccent,
+                                      color: PokeColors.badgeGoldDark,
                                       fontSize: 11,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -538,8 +523,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                       : "No Held Item",
                                   style: TextStyle(
                                     color: mon.hasHeldItem
-                                        ? Colors.amberAccent
-                                        : Colors.white38,
+                                        ? PokeColors.badgeGoldDark
+                                        : PokeColors.inkSubtle,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -547,7 +532,12 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 7),
-                            HpBar(currentHp: mon.currentHp, maxHp: mon.maxHp),
+                            HpBar(
+                              currentHp: mon.currentHp,
+                              maxHp: mon.maxHp,
+                              textColor: PokeColors.inkMuted,
+                              hpLabelColor: PokeColors.badgeGoldDark,
+                            ),
                             const SizedBox(height: 3),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -556,8 +546,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   "HP ${mon.currentHp}/${mon.maxHp}${mon.isFainted ? ' • FAINTED' : (mon.status != StatusCondition.none ? ' • ${mon.status.shortLabel}' : '')}",
                                   style: TextStyle(
                                     color: mon.isFainted
-                                        ? Colors.redAccent
-                                        : Colors.white70,
+                                        ? PokeColors.pokeRed
+                                        : PokeColors.inkMuted,
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -567,7 +557,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                       ? "MAX LEVEL"
                                       : "Next Lv: $expRemaining EXP",
                                   style: const TextStyle(
-                                    color: Colors.cyanAccent,
+                                    color: PokeColors.pokeBlueDark,
                                     fontSize: 9.5,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -579,10 +569,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               borderRadius: BorderRadius.circular(3),
                               child: LinearProgressIndicator(
                                 value: expProgress,
-                                minHeight: 3.5,
-                                backgroundColor: Colors.white12,
+                                minHeight: 4,
+                                backgroundColor: PokeColors.panelSoft,
                                 valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.cyanAccent),
+                                    PokeColors.pokeBlue),
                               ),
                             ),
                           ],
@@ -594,11 +584,12 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
 
                 // ─── TABS ─────────────────────────────────────────────────
                 Container(
-                  color: const Color(0xFF101526),
+                  color: typeHeader,
                   child: const TabBar(
-                    indicatorColor: Colors.amberAccent,
-                    labelColor: Colors.amberAccent,
-                    unselectedLabelColor: Colors.white60,
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 3,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.white70,
                     labelStyle: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w900,
@@ -634,12 +625,12 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     final bool obeys = mon.level <= trainer.maxObedienceLevel;
     final ability = mon.abilityDefinition;
     final stats = [
-      ('HP', mon.maxHp, mon.species.baseHp, const Color(0xFF66BB6A)),
-      ('Attack', mon.atk, mon.species.baseAtk, const Color(0xFFFF7043)),
-      ('Defense', mon.def, mon.species.baseDef, const Color(0xFFFFCA28)),
-      ('Sp. Atk', mon.spa, mon.species.baseSpA, const Color(0xFF42A5F5)),
-      ('Sp. Def', mon.spd, mon.species.baseSpD, const Color(0xFF26C6DA)),
-      ('Speed', mon.spe, mon.species.baseSpe, const Color(0xFFAB47BC)),
+      ('HP', mon.maxHp, mon.species.baseHp, PokeColors.pokeGreen),
+      ('Attack', mon.atk, mon.species.baseAtk, PokeColors.pokeRed),
+      ('Defense', mon.def, mon.species.baseDef, PokeColors.bagOrange),
+      ('Sp. Atk', mon.spa, mon.species.baseSpA, PokeColors.pokeBlue),
+      ('Sp. Def', mon.spd, mon.species.baseSpD, PokeColors.linkTeal),
+      ('Speed', mon.spe, mon.species.baseSpe, const Color(0xFF7B1FA2)),
     ];
 
     return ListView(
@@ -647,24 +638,13 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
       children: [
         Container(
           padding: const EdgeInsets.all(13),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: mon.isHiddenAbility
-                  ? [
-                      const Color(0xFF2B2212),
-                      const Color(0xFF171C30),
-                    ]
-                  : [
-                      const Color(0xFF132234),
-                      const Color(0xFF141A2E),
-                    ],
-            ),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: mon.isHiddenAbility
-                  ? const Color(0xFFFFD54F).withOpacity(0.55)
-                  : Colors.cyanAccent.withOpacity(0.32),
-            ),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: mon.isHiddenAbility
+                ? PokeColors.badgeGoldDark
+                : PokeColors.pokeBlue,
+            radius: 16,
+            borderWidth: 1.5,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,14 +655,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                     Icons.bolt_rounded,
                     size: 16,
                     color: mon.isHiddenAbility
-                        ? const Color(0xFFFFD54F)
-                        : Colors.cyanAccent,
+                        ? PokeColors.badgeGoldDark
+                        : PokeColors.pokeBlue,
                   ),
                   const SizedBox(width: 5),
                   const Text(
                     "ABILITY",
                     style: TextStyle(
-                      color: Colors.white60,
+                      color: PokeColors.inkMuted,
                       fontSize: 10,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.9,
@@ -694,16 +674,16 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 7, vertical: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFD54F).withOpacity(0.20),
+                        color: PokeColors.badgeGold.withOpacity(0.20),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: const Color(0xFFFFD54F).withOpacity(0.7),
+                          color: PokeColors.badgeGoldDark,
                         ),
                       ),
                       child: const Text(
                         "HIDDEN ABILITY",
                         style: TextStyle(
-                          color: Color(0xFFFFE082),
+                          color: PokeColors.badgeGoldDark,
                           fontSize: 8.5,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.5,
@@ -717,8 +697,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 ability?.name ?? mon.abilityId,
                 style: TextStyle(
                   color: mon.isHiddenAbility
-                      ? const Color(0xFFFFE082)
-                      : Colors.white,
+                      ? PokeColors.badgeGoldDark
+                      : PokeColors.inkDark,
                   fontSize: 15,
                   fontWeight: FontWeight.w900,
                 ),
@@ -728,7 +708,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 Text(
                   ability.description,
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: PokeColors.inkMuted,
                     fontSize: 11.5,
                     height: 1.35,
                   ),
@@ -740,10 +720,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141A2E),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white12),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.frameBorderSoft,
+            radius: 16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -751,7 +731,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const Text(
                 "BATTLE STATS",
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: PokeColors.inkDark,
                   fontSize: 11,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.9,
@@ -773,7 +753,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         child: Text(
                           label,
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: PokeColors.inkMuted,
                             fontSize: 11.5,
                             fontWeight: FontWeight.bold,
                           ),
@@ -798,7 +778,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           child: LinearProgressIndicator(
                             value: ratio,
                             minHeight: 7,
-                            backgroundColor: Colors.white10,
+                            backgroundColor: PokeColors.panelSoft,
                             valueColor: AlwaysStoppedAnimation<Color>(color),
                           ),
                         ),
@@ -810,7 +790,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           "Base $baseVal",
                           textAlign: TextAlign.right,
                           style: const TextStyle(
-                            color: Colors.white38,
+                            color: PokeColors.inkSubtle,
                             fontSize: 9.5,
                           ),
                         ),
@@ -825,10 +805,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141A2E),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white12),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.frameBorderSoft,
+            radius: 16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -836,7 +816,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const Text(
                 "POKÉMON DETAILS",
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: PokeColors.inkDark,
                   fontSize: 11,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.9,
@@ -863,7 +843,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 obeys
                     ? "Obeys all orders (Cap Lv.${trainer.maxObedienceLevel})"
                     : "May disobey! Requires more Badges (Cap Lv.${trainer.maxObedienceLevel})",
-                valueColor: obeys ? Colors.greenAccent : Colors.orangeAccent,
+                valueColor:
+                    obeys ? PokeColors.pokeGreenDark : PokeColors.bagOrangeDark,
               ),
               _infoRow(
                 "Total PP",
@@ -886,14 +867,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
             width: 118,
             child: Text(
               label,
-              style: const TextStyle(color: Colors.white54, fontSize: 11.5),
+              style: const TextStyle(color: PokeColors.inkMuted, fontSize: 11.5),
             ),
           ),
           Expanded(
             child: Text(
               value,
               style: TextStyle(
-                color: valueColor ?? Colors.white,
+                color: valueColor ?? PokeColors.inkDark,
                 fontSize: 11.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -918,14 +899,13 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
       children: [
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141A2E),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: currentHeld != null
-                  ? currentHeld.color.withOpacity(0.6)
-                  : Colors.white12,
-            ),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: currentHeld != null
+                ? currentHeld.color
+                : PokeColors.frameBorderSoft,
+            radius: 16,
+            borderWidth: 1.5,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -933,7 +913,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const Text(
                 "CURRENTLY HELD ITEM",
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: PokeColors.inkDark,
                   fontSize: 10.5,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.9,
@@ -943,7 +923,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               if (currentHeld == null)
                 const Text(
                   "None equipped. Select any Berry or Held Item below to give it to this Pokémon.",
-                  style: TextStyle(color: Colors.white54, fontSize: 12),
+                  style: TextStyle(color: PokeColors.inkMuted, fontSize: 12),
                 )
               else
                 Row(
@@ -951,11 +931,12 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                     Container(
                       padding: const EdgeInsets.all(9),
                       decoration: BoxDecoration(
-                        color: currentHeld.color.withOpacity(0.18),
+                        color: currentHeld.color.withOpacity(0.14),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(currentHeld.icon,
-                          color: currentHeld.color, size: 24),
+                          color: PokeColors.darken(currentHeld.color, 0.14),
+                          size: 24),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -965,15 +946,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           Text(
                             currentHeld.name,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: PokeColors.inkDark,
                               fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           Text(
                             currentHeld.description,
                             style: const TextStyle(
-                                color: Colors.white60, fontSize: 11),
+                                color: PokeColors.inkMuted, fontSize: 11),
                           ),
                         ],
                       ),
@@ -988,16 +969,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         }
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.redAccent,
-                        side: BorderSide(
-                            color: Colors.redAccent.withOpacity(0.6)),
+                        foregroundColor: PokeColors.pokeRed,
+                        side: const BorderSide(color: PokeColors.pokeRed),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 6),
                       ),
                       child: const Text(
                         "TAKE",
                         style: TextStyle(
-                            fontSize: 11, fontWeight: FontWeight.bold),
+                            fontSize: 11, fontWeight: FontWeight.w900),
                       ),
                     ),
                   ],
@@ -1009,7 +989,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         const Text(
           "BAG HELD ITEMS & BERRIES",
           style: TextStyle(
-            color: Colors.white60,
+            color: PokeColors.inkMuted,
             fontSize: 10.5,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.9,
@@ -1019,33 +999,34 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         if (bagHoldables.isEmpty)
           Container(
             padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141A2E),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white10),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface,
+              border: PokeColors.frameBorderSoft,
+              radius: 14,
             ),
             child: const Text(
               "No Berries or Held Items in your Bag right now.\nDefeat or catch wild Pokémon for Berries, or re-challenge Gym Leaders for rare Held Items!",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white54, fontSize: 11.5),
+              style: TextStyle(color: PokeColors.inkMuted, fontSize: 11.5),
             ),
           )
         else
           ...bagHoldables.map((item) {
             final count = trainer.getItemCount(item.id);
+            final itemDark = PokeColors.darken(item.color, 0.16);
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF141A2E),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: item.color.withOpacity(0.35)),
+                decoration: PokeDecorations.card(
+                  border: item.color.withOpacity(0.55),
+                  radius: 14,
+                  borderWidth: 1.4,
                 ),
                 child: Row(
                   children: [
-                    Icon(item.icon, color: item.color, size: 22),
+                    Icon(item.icon, color: itemDark, size: 22),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -1056,8 +1037,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               Text(
                                 item.name,
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  color: PokeColors.inkDark,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 13,
                                 ),
                               ),
@@ -1065,9 +1046,9 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               Text(
                                 "x$count",
                                 style: TextStyle(
-                                  color: item.color,
+                                  color: itemDark,
                                   fontSize: 11,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
                             ],
@@ -1076,7 +1057,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           Text(
                             item.description,
                             style: const TextStyle(
-                                color: Colors.white60, fontSize: 10.5),
+                                color: PokeColors.inkMuted, fontSize: 10.5),
                           ),
                         ],
                       ),
@@ -1100,9 +1081,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: item.color.withOpacity(0.22),
-                        foregroundColor: item.color,
-                        side: BorderSide(color: item.color.withOpacity(0.6)),
+                        backgroundColor: itemDark,
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
                         minimumSize: Size.zero,
@@ -1137,7 +1117,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
             Text(
               "ACTIVE MOVESET (${mon.moves.length}/4)",
               style: const TextStyle(
-                color: Colors.white70,
+                color: PokeColors.inkDark,
                 fontSize: 10.5,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.9,
@@ -1145,7 +1125,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
             ),
             const Text(
               "Reorder or swap below",
-              style: TextStyle(color: Colors.white38, fontSize: 10),
+              style: TextStyle(color: PokeColors.inkMuted, fontSize: 10),
             ),
           ],
         ),
@@ -1156,10 +1136,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
             padding: const EdgeInsets.only(bottom: 8),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
-              decoration: BoxDecoration(
-                color: const Color(0xFF141A2E),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: m.type.color.withOpacity(0.55)),
+              decoration: PokeDecorations.card(
+                border: m.type.color,
+                radius: 14,
+                borderWidth: 1.4,
               ),
               child: Row(
                 children: [
@@ -1174,8 +1154,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 m.name,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  color: PokeColors.inkDark,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 13.5,
                                 ),
                               ),
@@ -1189,16 +1169,16 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 1),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFFF6B9D).withOpacity(0.18),
+                                  color:
+                                      PokeColors.centerRose.withOpacity(0.14),
                                   borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                      color: const Color(0xFFFF6B9D)
-                                          .withOpacity(0.6)),
+                                  border:
+                                      Border.all(color: PokeColors.centerRose),
                                 ),
                                 child: const Text(
                                   "EGG",
                                   style: TextStyle(
-                                    color: Color(0xFFFF8BB3),
+                                    color: PokeColors.centerRoseDark,
                                     fontSize: 8.5,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -1211,7 +1191,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                               style: TextStyle(
                                 color: _categoryColor(m.category),
                                 fontSize: 9,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
                           ],
@@ -1220,12 +1200,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         Text(
                           "PWR ${m.powerLabel} • ACC ${m.accuracy}% • PP ${m.currentPp}/${m.maxPp}",
                           style: const TextStyle(
-                              color: Colors.white70, fontSize: 10),
+                              color: PokeColors.inkDark,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700),
                         ),
                         Text(
                           m.description,
                           style: const TextStyle(
-                              color: Colors.white54, fontSize: 10),
+                              color: PokeColors.inkMuted, fontSize: 10),
                         ),
                       ],
                     ),
@@ -1243,7 +1225,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           child: const Padding(
                             padding: EdgeInsets.all(3),
                             child: Icon(Icons.keyboard_arrow_up_rounded,
-                                color: Colors.white70, size: 18),
+                                color: PokeColors.inkMuted, size: 18),
                           ),
                         ),
                       if (idx < mon.moves.length - 1)
@@ -1256,7 +1238,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           child: const Padding(
                             padding: EdgeInsets.all(3),
                             child: Icon(Icons.keyboard_arrow_down_rounded,
-                                color: Colors.white70, size: 18),
+                                color: PokeColors.inkMuted, size: 18),
                           ),
                         ),
                     ],
@@ -1271,7 +1253,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         Text(
           "REMEMBERED & LEARNABLE MOVES (${reserveMoves.length})",
           style: const TextStyle(
-            color: Colors.cyanAccent,
+            color: PokeColors.pokeBlueDark,
             fontSize: 10.5,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.9,
@@ -1280,21 +1262,21 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         const SizedBox(height: 3),
         Text(
           "Includes all level-up moves up to Lv. ${mon.level}, pre-evolution moves, and TMs — swap freely anytime.",
-          style: const TextStyle(color: Colors.white54, fontSize: 10.5),
+          style: const TextStyle(color: PokeColors.inkMuted, fontSize: 10.5),
         ),
         const SizedBox(height: 8),
         if (reserveMoves.isEmpty)
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141A2E),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white10),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface,
+              border: PokeColors.frameBorderSoft,
+              radius: 14,
             ),
             child: Text(
               "All moves unlocked up to Lv. ${mon.level} are already equipped above. New moves will appear here as this Pokémon levels up or learns TMs.",
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white54, fontSize: 11),
+              style: const TextStyle(color: PokeColors.inkMuted, fontSize: 11),
             ),
           )
         else
@@ -1304,10 +1286,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF141A2E),
-                  borderRadius: BorderRadius.circular(13),
-                  border: Border.all(color: rm.type.color.withOpacity(0.35)),
+                decoration: PokeDecorations.card(
+                  border: rm.type.color.withOpacity(0.6),
+                  radius: 13,
+                  borderWidth: 1.3,
                 ),
                 child: Row(
                   children: [
@@ -1322,8 +1304,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   rm.name,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    color: PokeColors.inkDark,
+                                    fontWeight: FontWeight.w900,
                                     fontSize: 13,
                                   ),
                                 ),
@@ -1337,16 +1319,16 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 1),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFFF6B9D).withOpacity(0.18),
+                                    color:
+                                        PokeColors.centerRose.withOpacity(0.14),
                                     borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: const Color(0xFFFF6B9D)
-                                            .withOpacity(0.6)),
+                                    border:
+                                        Border.all(color: PokeColors.centerRose),
                                   ),
                                   child: const Text(
                                     "EGG",
                                     style: TextStyle(
-                                      color: Color(0xFFFF8BB3),
+                                      color: PokeColors.centerRoseDark,
                                       fontSize: 8.5,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -1359,12 +1341,14 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           Text(
                             "PWR ${rm.powerLabel} • ACC ${rm.accuracy}% • PP ${rm.maxPp}",
                             style: const TextStyle(
-                                color: Colors.white60, fontSize: 10),
+                                color: PokeColors.inkDark,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600),
                           ),
                           Text(
                             rm.description,
                             style: const TextStyle(
-                                color: Colors.white38, fontSize: 10),
+                                color: PokeColors.inkMuted, fontSize: 10),
                           ),
                         ],
                       ),
@@ -1374,9 +1358,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                       onPressed: () =>
                           _promptSwapRememberedMove(trainer, mon, rm),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.cyanAccent,
-                        side: BorderSide(
-                            color: Colors.cyanAccent.withOpacity(0.6)),
+                        foregroundColor: PokeColors.pokeBlueDark,
+                        side: const BorderSide(color: PokeColors.pokeBlue),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 6),
                         minimumSize: Size.zero,
@@ -1397,7 +1380,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         Text(
           "TEACH GEN 1 TM FROM BAG (${ownedTms.length})",
           style: const TextStyle(
-            color: Colors.amberAccent,
+            color: PokeColors.badgeGoldDark,
             fontSize: 10.5,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.9,
@@ -1407,20 +1390,19 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
         if (ownedTms.isEmpty)
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141A2E),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white10),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface,
+              border: PokeColors.frameBorderSoft,
+              radius: 14,
             ),
             child: const Text(
               "No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pokémon League to earn rare TM drops!",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white54, fontSize: 11),
+              style: TextStyle(color: PokeColors.inkMuted, fontSize: 11),
             ),
           )
         else
           ...ownedTms.map((tm) {
-            final count = trainer.getItemCount(tm.id);
             final tmMove = TmService.getMoveForTm(tm);
             if (tmMove == null) return const SizedBox.shrink();
             final bool compatible = TmService.canLearnTm(mon.species, tm);
@@ -1428,22 +1410,23 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                 mon.moves.any((m) => m.id == tmMove.id);
             final bool alreadyLearned =
                 mon.learnedMoveIds.contains(tmMove.id);
+            final tmDark = PokeColors.darken(tm.color, 0.16);
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 7),
               child: Opacity(
-                opacity: compatible && !alreadyLearned ? 1.0 : 0.55,
+                opacity: compatible && !alreadyLearned ? 1.0 : 0.60,
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 11, vertical: 9),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF141A2E),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(color: tm.color.withOpacity(0.35)),
+                  decoration: PokeDecorations.card(
+                    border: tmDark.withOpacity(0.5),
+                    radius: 13,
+                    borderWidth: 1.3,
                   ),
                   child: Row(
                     children: [
-                      Icon(tm.icon, color: tm.color, size: 22),
+                      Icon(tm.icon, color: tmDark, size: 22),
                       const SizedBox(width: 9),
                       Expanded(
                         child: Column(
@@ -1456,8 +1439,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                     tm.name,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                      color: PokeColors.inkDark,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 12.5,
                                     ),
                                   ),
@@ -1466,16 +1449,11 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 1),
-                                  decoration: BoxDecoration(
-                                    color: tm.color.withOpacity(0.18),
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: tm.color.withOpacity(0.5)),
-                                  ),
+                                  decoration: PokeDecorations.inset(radius: 5),
                                   child: Text(
                                     "∞",
                                     style: TextStyle(
-                                      color: tm.color,
+                                      color: tmDark,
                                       fontSize: 9.5,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -1495,7 +1473,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                           : "PWR ${tmMove.powerLabel} • ACC ${tmMove.accuracy}% • PP ${tmMove.maxPp}"))
                                   : "${mon.species.name} cannot learn ${tmMove.name}",
                               style: const TextStyle(
-                                  color: Colors.white60, fontSize: 10),
+                                  color: PokeColors.inkMuted, fontSize: 10),
                             ),
                           ],
                         ),
@@ -1506,9 +1484,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                             ? () => _teachTmToPokemon(trainer, mon, tm, tmMove)
                             : null,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: tm.color.withOpacity(0.24),
-                          foregroundColor: tm.color,
-                          side: BorderSide(color: tm.color.withOpacity(0.6)),
+                          backgroundColor: tmDark,
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: PokeColors.panelSoft,
+                          disabledForegroundColor: PokeColors.inkSubtle,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 6),
                           minimumSize: Size.zero,

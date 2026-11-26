@@ -11,6 +11,7 @@ import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/move_pp_picker_dialog.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import 'evolution_screen.dart';
 
@@ -44,14 +45,14 @@ class _BagScreenState extends State<BagScreen> {
     _BagPocketDef(
       label: 'Medicine',
       icon: Icons.healing_rounded,
-      color: Color(0xFF4DD0E1),
+      color: PokeColors.centerRose,
       categories: [ItemCategory.medicine],
       emptyHint: 'Buy Potions, Status Healers, and Revives at the Poké Mart.',
     ),
     _BagPocketDef(
       label: 'Poké Balls',
       icon: Icons.catching_pokemon,
-      color: Color(0xFFEF5350),
+      color: PokeColors.pokeRed,
       categories: [ItemCategory.pokeball],
       emptyHint:
           'Stock up on Poké Balls at the Poké Mart or find Special Balls in Expeditions.',
@@ -59,14 +60,14 @@ class _BagScreenState extends State<BagScreen> {
     _BagPocketDef(
       label: 'Berries',
       icon: Icons.eco_rounded,
-      color: Color(0xFF66BB6A),
+      color: PokeColors.pokeGreen,
       categories: [ItemCategory.berry],
       emptyHint: 'Berries can drop from Wild Encounters and Adventures.',
     ),
     _BagPocketDef(
       label: 'Held Items',
       icon: Icons.shield_rounded,
-      color: Color(0xFFFFB74D),
+      color: PokeColors.bagOrange,
       categories: [ItemCategory.heldItem],
       emptyHint:
           'Defeat Gym Leaders and wild Pokémon to earn Held Items for your team.',
@@ -74,7 +75,7 @@ class _BagScreenState extends State<BagScreen> {
     _BagPocketDef(
       label: 'TMs',
       icon: Icons.album_rounded,
-      color: Color(0xFFBA68C8),
+      color: PokeColors.leagueIndigo,
       categories: [ItemCategory.tm],
       emptyHint:
           'Earn reusable TMs from Gym Leaders and Team Rocket encounters.',
@@ -82,7 +83,7 @@ class _BagScreenState extends State<BagScreen> {
     _BagPocketDef(
       label: 'Key & Special',
       icon: Icons.vpn_key_rounded,
-      color: Color(0xFFFFD54F),
+      color: PokeColors.badgeGoldDark,
       categories: [
         ItemCategory.evolutionStone,
         ItemCategory.tutorItem,
@@ -127,16 +128,17 @@ class _BagScreenState extends State<BagScreen> {
         return DefaultTabController(
           length: _pockets.length,
           child: Scaffold(
-            backgroundColor: const Color(0xFF0E121E),
+            backgroundColor: PokeColors.canvasCream,
             appBar: AppBar(
-              backgroundColor: const Color(0xFF131828),
+              backgroundColor: PokeColors.bagOrange,
               foregroundColor: Colors.white,
-              elevation: 0,
+              surfaceTintColor: Colors.transparent,
+              elevation: 2,
               titleSpacing: 8,
               title: Row(
                 children: [
                   const Icon(Icons.backpack_rounded,
-                      color: Colors.amberAccent, size: 22),
+                      color: Colors.white, size: 22),
                   const SizedBox(width: 8),
                   const Text(
                     'TRAINER BAG',
@@ -144,6 +146,7 @@ class _BagScreenState extends State<BagScreen> {
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
                       letterSpacing: 0.8,
+                      color: Colors.white,
                     ),
                   ),
                   const Spacer(),
@@ -151,15 +154,15 @@ class _BagScreenState extends State<BagScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.amberAccent.withOpacity(0.14),
+                      color: PokeColors.cardWhite,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: Colors.amberAccent.withOpacity(0.45)),
+                          color: PokeColors.bagOrangeDark, width: 1.3),
                     ),
                     child: Text(
                       '${trainer.totalItems} ITEMS',
                       style: const TextStyle(
-                        color: Colors.amberAccent,
+                        color: PokeColors.bagOrangeDark,
                         fontSize: 10.5,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.5,
@@ -168,53 +171,59 @@ class _BagScreenState extends State<BagScreen> {
                   ),
                 ],
               ),
-              bottom: TabBar(
-                isScrollable: true,
-                tabAlignment: TabAlignment.start,
-                indicatorColor: Colors.amberAccent,
-                indicatorWeight: 3,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.white54,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 14),
-                tabs: _pockets.map((pocket) {
-                  final distinct = _countPocketItems(trainer, pocket);
-                  return Tab(
-                    height: 44,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(pocket.icon, size: 16, color: pocket.color),
-                        const SizedBox(width: 6),
-                        Text(
-                          pocket.label,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 12.5,
-                          ),
-                        ),
-                        if (distinct > 0) ...[
-                          const SizedBox(width: 5),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 1),
-                            decoration: BoxDecoration(
-                              color: pocket.color.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              '$distinct',
-                              style: TextStyle(
-                                color: pocket.color,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w900,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(46),
+                child: Container(
+                  color: PokeColors.bagOrangeDark,
+                  child: TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 3,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.white70,
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 14),
+                    tabs: _pockets.map((pocket) {
+                      final distinct = _countPocketItems(trainer, pocket);
+                      return Tab(
+                        height: 44,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(pocket.icon, size: 16, color: Colors.white),
+                            const SizedBox(width: 6),
+                            Text(
+                              pocket.label,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 12.5,
                               ),
                             ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  );
-                }).toList(),
+                            if (distinct > 0) ...[
+                              const SizedBox(width: 5),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.24),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  '$distinct',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
             ),
             body: TabBarView(
@@ -239,26 +248,35 @@ class _BagScreenState extends State<BagScreen> {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(28),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(pocket.icon, size: 52, color: Colors.white24),
-              const SizedBox(height: 12),
-              Text(
-                'No ${pocket.label} Yet',
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          child: Container(
+            padding: const EdgeInsets.all(22),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface,
+              border: PokeColors.frameBorderSoft,
+              radius: 18,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(pocket.icon, size: 48, color: PokeColors.inkSubtle),
+                const SizedBox(height: 12),
+                Text(
+                  'No ${pocket.label} Yet',
+                  style: const TextStyle(
+                    color: PokeColors.inkDark,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                pocket.emptyHint,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white38, fontSize: 12.5),
-              ),
-            ],
+                const SizedBox(height: 6),
+                Text(
+                  pocket.emptyHint,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: PokeColors.inkMuted, fontSize: 12.5),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -285,10 +303,11 @@ class _BagScreenState extends State<BagScreen> {
     if (!unlocked) {
       return Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: const Color(0xFF151926),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white12),
+        decoration: PokeDecorations.card(
+          fill: PokeColors.creamSurface,
+          border: PokeColors.frameBorderSoft,
+          radius: 16,
+          borderWidth: 1.4,
         ),
         child: Row(
           children: [
@@ -296,12 +315,12 @@ class _BagScreenState extends State<BagScreen> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.06),
+                color: PokeColors.panelSoft,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(
                 Icons.lock_outline_rounded,
-                color: Colors.white38,
+                color: PokeColors.inkSubtle,
                 size: 24,
               ),
             ),
@@ -315,8 +334,8 @@ class _BagScreenState extends State<BagScreen> {
                       const Text(
                         'EXP Share',
                         style: TextStyle(
-                          color: Colors.white70,
-                          fontWeight: FontWeight.bold,
+                          color: PokeColors.inkMuted,
+                          fontWeight: FontWeight.w900,
                           fontSize: 14,
                         ),
                       ),
@@ -324,15 +343,11 @@ class _BagScreenState extends State<BagScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 1.5),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.white24),
-                        ),
+                        decoration: PokeDecorations.inset(radius: 6),
                         child: const Text(
                           'LOCKED',
                           style: TextStyle(
-                            color: Colors.white54,
+                            color: PokeColors.inkSubtle,
                             fontSize: 8,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.4,
@@ -344,7 +359,7 @@ class _BagScreenState extends State<BagScreen> {
                   const SizedBox(height: 3),
                   const Text(
                     'Defeat Giovanni at Viridian Gym (8th Gym) to unlock the EXP Share.',
-                    style: TextStyle(color: Colors.white38, fontSize: 11),
+                    style: TextStyle(color: PokeColors.inkMuted, fontSize: 11),
                   ),
                 ],
               ),
@@ -352,26 +367,20 @@ class _BagScreenState extends State<BagScreen> {
             const SizedBox(width: 8),
             const Icon(
               Icons.lock_rounded,
-              color: Colors.white30,
+              color: PokeColors.inkSubtle,
               size: 20,
             ),
           ],
         ),
       );
     }
-    const Color accent = Colors.cyanAccent;
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: active
-              ? [const Color(0xFF15293A), const Color(0xFF121C2B)]
-              : [const Color(0xFF181D2D), const Color(0xFF131724)],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: active ? accent.withOpacity(0.7) : Colors.white12,
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: active ? PokeColors.pokeBlue : PokeColors.frameBorderSoft,
+        radius: 16,
+        borderWidth: active ? 1.8 : 1.4,
       ),
       child: Row(
         children: [
@@ -379,12 +388,13 @@ class _BagScreenState extends State<BagScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: (active ? accent : Colors.white24).withOpacity(0.16),
+              color: (active ? PokeColors.pokeBlue : PokeColors.inkSubtle)
+                  .withOpacity(0.14),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
               Icons.share_rounded,
-              color: active ? accent : Colors.white54,
+              color: active ? PokeColors.pokeBlueDark : PokeColors.inkMuted,
               size: 24,
             ),
           ),
@@ -398,8 +408,8 @@ class _BagScreenState extends State<BagScreen> {
                     const Text(
                       'EXP Share',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                        color: PokeColors.inkDark,
+                        fontWeight: FontWeight.w900,
                         fontSize: 14,
                       ),
                     ),
@@ -408,15 +418,14 @@ class _BagScreenState extends State<BagScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 1.5),
                       decoration: BoxDecoration(
-                        color: Colors.amberAccent.withOpacity(0.16),
+                        color: PokeColors.badgeGold.withOpacity(0.20),
                         borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                            color: Colors.amberAccent.withOpacity(0.55)),
+                        border: Border.all(color: PokeColors.badgeGold),
                       ),
                       child: const Text(
                         'KEY ITEM',
                         style: TextStyle(
-                          color: Colors.amberAccent,
+                          color: PokeColors.badgeGoldDark,
                           fontSize: 8,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.4,
@@ -428,7 +437,7 @@ class _BagScreenState extends State<BagScreen> {
                 const SizedBox(height: 3),
                 const Text(
                   'Shares battle Experience Points across your entire carried party.',
-                  style: TextStyle(color: Colors.white60, fontSize: 11),
+                  style: TextStyle(color: PokeColors.inkMuted, fontSize: 11),
                 ),
               ],
             ),
@@ -436,7 +445,7 @@ class _BagScreenState extends State<BagScreen> {
           const SizedBox(width: 8),
           Switch.adaptive(
             value: active,
-            activeColor: Colors.cyanAccent,
+            activeColor: PokeColors.pokeBlue,
             onChanged: (_) {
               SoundService.instance.playUiTap();
               trainer.toggleExpShare();
@@ -454,13 +463,15 @@ class _BagScreenState extends State<BagScreen> {
         !item.isAdventureMap &&
         !item.isFossil &&
         !item.isTutorItem;
+    final Color itemDark = PokeColors.darken(item.color, 0.16);
 
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A2033),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: item.color.withOpacity(0.35)),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: item.color.withOpacity(0.55),
+        radius: 16,
+        borderWidth: 1.4,
       ),
       child: Row(
         children: [
@@ -468,13 +479,14 @@ class _BagScreenState extends State<BagScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: item.color.withOpacity(0.18),
+              color: item.color.withOpacity(0.14),
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: item.color.withOpacity(0.45)),
             ),
             child: Center(
               child: item.isBall
                   ? PokeBallSpriteWidget(ballType: item.id, size: 30)
-                  : Icon(item.icon, color: item.color, size: 24),
+                  : Icon(item.icon, color: itemDark, size: 24),
             ),
           ),
           const SizedBox(width: 12),
@@ -488,8 +500,8 @@ class _BagScreenState extends State<BagScreen> {
                       child: Text(
                         item.name,
                         style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: PokeColors.inkDark,
+                          fontWeight: FontWeight.w900,
                           fontSize: 13.5,
                         ),
                       ),
@@ -499,19 +511,19 @@ class _BagScreenState extends State<BagScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 1.5),
                       decoration: BoxDecoration(
-                        color: item.color.withOpacity(0.18),
+                        color: item.color.withOpacity(0.14),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(
-                          color: item.color.withOpacity(0.6),
+                          color: itemDark.withOpacity(0.5),
                           width: 0.8,
                         ),
                       ),
                       child: Text(
                         item.rarity.name.toUpperCase(),
                         style: TextStyle(
-                          color: item.color,
+                          color: itemDark,
                           fontSize: 7.5,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           letterSpacing: 0.4,
                         ),
                       ),
@@ -520,18 +532,15 @@ class _BagScreenState extends State<BagScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 1.5),
-                      decoration: BoxDecoration(
-                        color: Colors.black38,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                      decoration: PokeDecorations.inset(radius: 8),
                       child: Text(
                         item.isTm
                             ? '∞'
                             : (item.isAdventureMap ? 'UNLOCKED' : 'x$count'),
                         style: TextStyle(
-                          color: count > 0 ? item.color : Colors.white38,
+                          color: count > 0 ? itemDark : PokeColors.inkSubtle,
                           fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
@@ -540,13 +549,14 @@ class _BagScreenState extends State<BagScreen> {
                 const SizedBox(height: 3),
                 Text(
                   item.description,
-                  style: const TextStyle(color: Colors.white60, fontSize: 11),
+                  style: const TextStyle(
+                      color: PokeColors.inkMuted, fontSize: 11),
                 ),
                 if (item.isMedicine || item.id == 'leppa_berry') ...[
                   const SizedBox(height: 6),
                   SizedBox(
-                    height: 28,
-                    child: OutlinedButton(
+                    height: 30,
+                    child: ElevatedButton(
                       onPressed: count > 0
                           ? () => _useBagMedicineOnPartyPokemon(
                                 context,
@@ -554,10 +564,10 @@ class _BagScreenState extends State<BagScreen> {
                                 item,
                               )
                           : null,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: item.color,
-                        side: BorderSide(color: item.color.withOpacity(0.6)),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: itemDark,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
                       ),
@@ -571,7 +581,7 @@ class _BagScreenState extends State<BagScreen> {
                 ] else if (item.isEvolutionStone) ...[
                   const SizedBox(height: 6),
                   SizedBox(
-                    height: 28,
+                    height: 30,
                     child: ElevatedButton.icon(
                       onPressed: count > 0
                           ? () => _useEvolutionStone(context, trainer, item)
@@ -583,10 +593,9 @@ class _BagScreenState extends State<BagScreen> {
                             fontSize: 11, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: item.color.withOpacity(0.25),
-                        foregroundColor: item.color,
-                        side: BorderSide(color: item.color.withOpacity(0.7)),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        backgroundColor: itemDark,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
                       ),
@@ -595,7 +604,7 @@ class _BagScreenState extends State<BagScreen> {
                 ] else if (item.isTm) ...[
                   const SizedBox(height: 6),
                   SizedBox(
-                    height: 28,
+                    height: 30,
                     child: ElevatedButton.icon(
                       onPressed: count > 0
                           ? () => _useTmFromBag(context, trainer, item)
@@ -607,10 +616,9 @@ class _BagScreenState extends State<BagScreen> {
                             fontSize: 11, fontWeight: FontWeight.bold),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: item.color.withOpacity(0.24),
-                        foregroundColor: item.color,
-                        side: BorderSide(color: item.color.withOpacity(0.7)),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        backgroundColor: itemDark,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)),
                       ),
@@ -620,22 +628,22 @@ class _BagScreenState extends State<BagScreen> {
                   const SizedBox(height: 6),
                   _hintChip(
                     'Adventure Map: unlocks this Biome in Battle → Adventures',
-                    Colors.white.withOpacity(0.06),
-                    Colors.white54,
+                    PokeColors.panelSoft,
+                    PokeColors.pokeGreenDark,
                   ),
                 ] else if (item.isTutorItem) ...[
                   const SizedBox(height: 6),
                   _hintChip(
                     'Move Tutor currency: teach Egg Moves at Facilities → Move Tutor',
-                    const Color(0xFFFF6B9D).withOpacity(0.12),
-                    const Color(0xFFFF9EBB),
+                    PokeColors.centerRose.withOpacity(0.12),
+                    PokeColors.centerRoseDark,
                   ),
                 ] else if (item.isFossil) ...[
                   const SizedBox(height: 6),
                   _hintChip(
                     'Research item: restore Fossils at Facilities → Pokémon Lab',
-                    Colors.amberAccent.withOpacity(0.1),
-                    Colors.amberAccent.shade100,
+                    PokeColors.badgeGold.withOpacity(0.16),
+                    PokeColors.badgeGoldDark,
                   ),
                 ] else if (item.isHeldItem || item.isBerry) ...[
                   const SizedBox(height: 6),
@@ -643,8 +651,8 @@ class _BagScreenState extends State<BagScreen> {
                     item.isBerry
                         ? 'Held item: auto-consumed in battle or equip via Pokémon'
                         : 'Held item: equip via Pokémon to boost battle power',
-                    Colors.white.withOpacity(0.06),
-                    Colors.white54,
+                    PokeColors.panelSoft,
+                    PokeColors.inkMuted,
                   ),
                 ],
               ],
@@ -662,7 +670,7 @@ class _BagScreenState extends State<BagScreen> {
                   : null,
               icon: Icon(
                 Icons.delete_outline_rounded,
-                color: count > 0 ? Colors.redAccent : Colors.white24,
+                color: count > 0 ? PokeColors.pokeRed : PokeColors.inkSubtle,
                 size: 20,
               ),
               constraints: const BoxConstraints(),
@@ -683,7 +691,7 @@ class _BagScreenState extends State<BagScreen> {
       ),
       child: Text(
         text,
-        style: TextStyle(color: fg, fontSize: 9.5),
+        style: TextStyle(color: fg, fontSize: 9.5, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -710,24 +718,28 @@ class _BagScreenState extends State<BagScreen> {
       return;
     }
 
+    final Color stoneDark = PokeColors.darken(stoneItem.color, 0.16);
     showDialog(
       context: parentContext,
       builder: (dlgCtx) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF121624),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: PokeColors.creamSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: stoneDark, width: 1.5),
+          ),
           title: Row(
             children: [
-              Icon(stoneItem.icon, color: stoneItem.color, size: 24),
+              Icon(stoneItem.icon, color: stoneDark, size: 24),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Use ${stoneItem.name}',
                   style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                    color: PokeColors.inkDark,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ],
@@ -738,7 +750,7 @@ class _BagScreenState extends State<BagScreen> {
             children: [
               const Text(
                 'Select a party Pokémon to evolve:',
-                style: TextStyle(color: Colors.white70, fontSize: 12),
+                style: TextStyle(color: PokeColors.inkMuted, fontSize: 12),
               ),
               const SizedBox(height: 12),
               ...compatible.map((mon) {
@@ -756,11 +768,10 @@ class _BagScreenState extends State<BagScreen> {
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF1A2033),
-                      borderRadius: BorderRadius.circular(12),
-                      border:
-                          Border.all(color: stoneItem.color.withOpacity(0.4)),
+                    decoration: PokeDecorations.card(
+                      border: stoneDark.withOpacity(0.5),
+                      radius: 12,
+                      borderWidth: 1.4,
                     ),
                     child: Row(
                       children: [
@@ -780,7 +791,7 @@ class _BagScreenState extends State<BagScreen> {
                               filterQuality: FilterQuality.none,
                               errorBuilder: (_, __, ___) => const Icon(
                                 Icons.catching_pokemon,
-                                color: Colors.white54,
+                                color: PokeColors.inkSubtle,
                                 size: 30,
                               ),
                             ),
@@ -794,26 +805,29 @@ class _BagScreenState extends State<BagScreen> {
                               Text(
                                 mon.nickname,
                                 style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13),
+                                  color: PokeColors.inkDark,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
                               ),
                               Text(
                                 'Lv. ${mon.level}',
                                 style: const TextStyle(
-                                    color: Colors.white60, fontSize: 11),
+                                  color: PokeColors.inkMuted,
+                                  fontSize: 11,
+                                ),
                               ),
                             ],
                           ),
                         ),
                         const Icon(Icons.arrow_forward,
-                            color: Colors.white38, size: 16),
+                            color: PokeColors.inkSubtle, size: 16),
                         const SizedBox(width: 8),
                         Text(
                           targetSpecies?.name ?? '???',
                           style: TextStyle(
-                            color: stoneItem.color,
-                            fontWeight: FontWeight.bold,
+                            color: stoneDark,
+                            fontWeight: FontWeight.w900,
                             fontSize: 13,
                           ),
                         ),
@@ -827,8 +841,8 @@ class _BagScreenState extends State<BagScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dlgCtx),
-              child:
-                  const Text('Cancel', style: TextStyle(color: Colors.white54)),
+              child: const Text('Cancel',
+                  style: TextStyle(color: PokeColors.inkMuted)),
             ),
           ],
         );
@@ -888,24 +902,27 @@ class _BagScreenState extends State<BagScreen> {
     Trainer trainer,
     Item medicineItem,
   ) {
+    final Color medDark = PokeColors.darken(medicineItem.color, 0.16);
     showDialog(
       context: parentContext,
       builder: (dlgCtx) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF121624),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          backgroundColor: PokeColors.creamSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: medDark, width: 1.5),
+          ),
           title: Row(
             children: [
-              Icon(medicineItem.icon, color: medicineItem.color, size: 22),
+              Icon(medicineItem.icon, color: medDark, size: 22),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'USE ${medicineItem.name.toUpperCase()} ON:',
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: PokeColors.inkDark,
                     fontSize: 13.5,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
@@ -967,14 +984,13 @@ class _BagScreenState extends State<BagScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A2033),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: usable
-                              ? medicineItem.color.withOpacity(0.55)
-                              : Colors.white12,
-                        ),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.cardWhite,
+                        border: usable
+                            ? medDark.withOpacity(0.65)
+                            : PokeColors.frameBorderSoft,
+                        radius: 12,
+                        borderWidth: 1.4,
                       ),
                       child: Row(
                         children: [
@@ -986,7 +1002,7 @@ class _BagScreenState extends State<BagScreen> {
                             filterQuality: FilterQuality.none,
                             errorBuilder: (_, __, ___) => const Icon(
                               Icons.catching_pokemon,
-                              color: Colors.white54,
+                              color: PokeColors.inkSubtle,
                               size: 28,
                             ),
                           ),
@@ -998,8 +1014,8 @@ class _BagScreenState extends State<BagScreen> {
                                 Text(
                                   '${mon.nickname} • Lv.${mon.level}',
                                   style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    color: PokeColors.inkDark,
+                                    fontWeight: FontWeight.w900,
                                     fontSize: 12.5,
                                   ),
                                 ),
@@ -1007,13 +1023,15 @@ class _BagScreenState extends State<BagScreen> {
                                 HpBar(
                                   currentHp: mon.currentHp,
                                   maxHp: mon.maxHp,
+                                  textColor: PokeColors.inkMuted,
+                                  hpLabelColor: PokeColors.badgeGoldDark,
                                 ),
                                 Text(
                                   isPpItem
                                       ? 'PP $curPp/$maxPp • HP ${mon.currentHp}/${mon.maxHp}'
                                       : "HP ${mon.currentHp}/${mon.maxHp}${mon.status != StatusCondition.none ? ' • ${mon.status.shortLabel}' : ''}",
                                   style: const TextStyle(
-                                    color: Colors.white60,
+                                    color: PokeColors.inkMuted,
                                     fontSize: 10,
                                   ),
                                 ),
@@ -1024,10 +1042,8 @@ class _BagScreenState extends State<BagScreen> {
                           Text(
                             usable ? 'USE' : 'N/A',
                             style: TextStyle(
-                              color: usable
-                                  ? medicineItem.color
-                                  : Colors.white38,
-                              fontWeight: FontWeight.bold,
+                              color: usable ? medDark : PokeColors.inkSubtle,
+                              fontWeight: FontWeight.w900,
                               fontSize: 11,
                             ),
                           ),
@@ -1043,7 +1059,7 @@ class _BagScreenState extends State<BagScreen> {
             TextButton(
               onPressed: () => Navigator.pop(dlgCtx),
               child: const Text('Cancel',
-                  style: TextStyle(color: Colors.white60)),
+                  style: TextStyle(color: PokeColors.inkMuted)),
             ),
           ],
         );
@@ -1058,23 +1074,28 @@ class _BagScreenState extends State<BagScreen> {
   ) {
     final tmMove = TmService.getMoveForTm(tmItem);
     if (tmMove == null) return;
+    final Color tmDark = PokeColors.darken(tmItem.color, 0.16);
 
     showDialog(
       context: parentContext,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF141828),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: BorderSide(color: tmDark, width: 1.5),
+        ),
         title: Row(
           children: [
-            Icon(tmItem.icon, color: tmItem.color, size: 22),
+            Icon(tmItem.icon, color: tmDark, size: 22),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'Teach ${tmItem.name}',
                 style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+                  color: PokeColors.inkDark,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ],
@@ -1130,14 +1151,13 @@ class _BagScreenState extends State<BagScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A2033),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: canTeach
-                              ? tmItem.color.withOpacity(0.55)
-                              : Colors.white12,
-                        ),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.cardWhite,
+                        border: canTeach
+                            ? tmDark.withOpacity(0.65)
+                            : PokeColors.frameBorderSoft,
+                        radius: 12,
+                        borderWidth: 1.4,
                       ),
                       child: Row(
                         children: [
@@ -1149,7 +1169,7 @@ class _BagScreenState extends State<BagScreen> {
                             filterQuality: FilterQuality.none,
                             errorBuilder: (_, __, ___) => const Icon(
                               Icons.catching_pokemon,
-                              color: Colors.white54,
+                              color: PokeColors.inkSubtle,
                               size: 26,
                             ),
                           ),
@@ -1161,9 +1181,10 @@ class _BagScreenState extends State<BagScreen> {
                                 Text(
                                   '${mon.nickname} • Lv.${mon.level}',
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.5),
+                                    color: PokeColors.inkDark,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12.5,
+                                  ),
                                 ),
                                 Text(
                                   known
@@ -1173,9 +1194,10 @@ class _BagScreenState extends State<BagScreen> {
                                           : 'Not compatible'),
                                   style: TextStyle(
                                     color: canTeach
-                                        ? Colors.cyanAccent
-                                        : Colors.white54,
+                                        ? PokeColors.pokeGreenDark
+                                        : PokeColors.inkMuted,
                                     fontSize: 10,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -1184,8 +1206,8 @@ class _BagScreenState extends State<BagScreen> {
                           Text(
                             known ? 'KNOWN' : (compatible ? 'TEACH' : 'N/A'),
                             style: TextStyle(
-                              color: canTeach ? tmItem.color : Colors.white38,
-                              fontWeight: FontWeight.bold,
+                              color: canTeach ? tmDark : PokeColors.inkSubtle,
+                              fontWeight: FontWeight.w900,
                               fontSize: 11,
                             ),
                           ),
@@ -1202,7 +1224,7 @@ class _BagScreenState extends State<BagScreen> {
           TextButton(
             onPressed: () => Navigator.pop(dlgCtx),
             child: const Text('Cancel',
-                style: TextStyle(color: Colors.white60)),
+                style: TextStyle(color: PokeColors.inkMuted)),
           ),
         ],
       ),

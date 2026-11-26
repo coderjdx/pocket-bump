@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
+import 'poke_theme.dart';
 import 'type_badge.dart';
 
 class MoveLearnOutcome {
@@ -28,11 +29,11 @@ String _moveCategoryLabel(MoveCategory cat) {
 Color _moveCategoryColor(MoveCategory cat) {
   switch (cat) {
     case MoveCategory.physical:
-      return Colors.orangeAccent;
+      return const Color(0xFFD84315);
     case MoveCategory.special:
-      return Colors.lightBlueAccent;
+      return PokeColors.pokeBlue;
     case MoveCategory.status:
-      return Colors.purpleAccent;
+      return const Color(0xFF7B1FA2);
   }
 }
 
@@ -58,11 +59,11 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
     barrierDismissible: false,
     builder: (dlgCtx) {
       return Dialog(
-        backgroundColor: const Color(0xFF141828),
+        backgroundColor: PokeColors.creamSurface,
         insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: newMove.type.color.withOpacity(0.55), width: 1.4),
+          side: BorderSide(color: newMove.type.color, width: 1.8),
         ),
         child: ConstrainedBox(
           constraints: BoxConstraints(
@@ -106,7 +107,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                               if (pokemon.isShiny) ...[
                                 const Icon(
                                   Icons.auto_awesome_rounded,
-                                  color: Colors.amberAccent,
+                                  color: PokeColors.badgeGoldDark,
                                   size: 12,
                                 ),
                                 const SizedBox(width: 3),
@@ -116,7 +117,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                   "${pokemon.nickname.toUpperCase()} • Lv.${pokemon.level}",
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    color: Colors.amberAccent,
+                                    color: PokeColors.badgeGoldDark,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w900,
                                     letterSpacing: 0.7,
@@ -129,7 +130,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                           Text(
                             "Learn ${newMove.name}?",
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: PokeColors.inkDark,
                               fontSize: 16,
                               fontWeight: FontWeight.w900,
                             ),
@@ -144,7 +145,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                   headerNote ??
                       "${pokemon.nickname} already knows 4 moves. Pick a move below to replace with ${newMove.name}:",
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: PokeColors.inkMuted,
                     fontSize: 11.5,
                     height: 1.3,
                   ),
@@ -155,16 +156,11 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        newMove.type.color.withOpacity(0.22),
-                        const Color(0xFF1D2338),
-                      ],
-                    ),
+                    color: PokeColors.cardWhite,
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: newMove.type.color.withOpacity(0.8),
-                      width: 1.3,
+                      color: newMove.type.color,
+                      width: 1.8,
                     ),
                   ),
                   child: Column(
@@ -176,13 +172,13 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: Colors.amberAccent,
+                              color: PokeColors.badgeGold,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: const Text(
                               "NEW",
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 8.5,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -193,7 +189,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                             child: Text(
                               newMove.name,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: PokeColors.inkDark,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -210,7 +206,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                 horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: _moveCategoryColor(newMove.category)
-                                  .withOpacity(0.18),
+                                  .withOpacity(0.14),
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Text(
@@ -226,7 +222,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                           Text(
                             "PWR ${newMove.powerLabel} • ACC ${newMove.accuracy}% • PP ${newMove.maxPp}",
                             style: const TextStyle(
-                              color: Colors.white70,
+                              color: PokeColors.inkMuted,
                               fontSize: 10.5,
                               fontWeight: FontWeight.bold,
                             ),
@@ -237,7 +233,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                       Text(
                         newMove.description,
                         style: const TextStyle(
-                          color: Colors.white60,
+                          color: PokeColors.inkMuted,
                           fontSize: 10.5,
                         ),
                       ),
@@ -249,7 +245,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                 const Text(
                   "SELECT A MOVE TO REPLACE",
                   style: TextStyle(
-                    color: Colors.white54,
+                    color: PokeColors.inkMuted,
                     fontSize: 10,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.8,
@@ -270,12 +266,11 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1A2033),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: existing.type.color.withOpacity(0.45),
-                            ),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.cardWhite,
+                            border: existing.type.color.withOpacity(0.65),
+                            radius: 12,
+                            borderWidth: 1.4,
                           ),
                           child: Row(
                             children: [
@@ -290,7 +285,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                             existing.name,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              color: Colors.white,
+                                              color: PokeColors.inkDark,
                                               fontSize: 13,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -314,7 +309,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                     Text(
                                       "PWR ${existing.powerLabel} • ACC ${existing.accuracy}% • PP ${existing.currentPp}/${existing.maxPp}",
                                       style: const TextStyle(
-                                        color: Colors.white60,
+                                        color: PokeColors.inkMuted,
                                         fontSize: 10,
                                       ),
                                     ),
@@ -323,7 +318,7 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                        color: Colors.white38,
+                                        color: PokeColors.inkSubtle,
                                         fontSize: 9.5,
                                       ),
                                     ),
@@ -335,16 +330,16 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 9, vertical: 6),
                                 decoration: BoxDecoration(
-                                  color: Colors.redAccent.withOpacity(0.18),
+                                  color: PokeColors.pokeRed.withOpacity(0.12),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: Colors.redAccent.withOpacity(0.6),
+                                    color: PokeColors.pokeRed.withOpacity(0.65),
                                   ),
                                 ),
                                 child: const Text(
                                   "REPLACE",
                                   style: TextStyle(
-                                    color: Colors.redAccent,
+                                    color: PokeColors.pokeRed,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -360,14 +355,15 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
 
                 const SizedBox(height: 10),
                 if (recordOnSkip)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 6),
                     child: Text(
                       "Tip: Skipped level-up moves can still be swapped in later via Pokémon → Moves.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.cyanAccent.withOpacity(0.75),
+                        color: PokeColors.pokeBlue,
                         fontSize: 9.5,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -376,8 +372,8 @@ Future<MoveLearnOutcome> showMoveLearnDialog(
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(dlgCtx, null),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white70,
-                      side: BorderSide(color: Colors.white.withOpacity(0.22)),
+                      foregroundColor: PokeColors.inkMuted,
+                      side: const BorderSide(color: PokeColors.frameBorderSoft),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

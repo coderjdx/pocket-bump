@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import '../services/sound_service.dart';
+import 'poke_theme.dart';
 
 class SoundToggleButton extends StatelessWidget {
   final Color iconColor;
   final double size;
+  final Color? bgColor;
+  final Color? borderColor;
 
   const SoundToggleButton({
     super.key,
-    this.iconColor = Colors.white,
+    this.iconColor = PokeColors.inkDark,
     this.size = 18,
+    this.bgColor,
+    this.borderColor,
   });
 
   @override
@@ -24,12 +29,14 @@ class SoundToggleButton extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.45),
+              color: bgColor ?? PokeColors.cardWhite,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: sound.isMuted
-                    ? Colors.redAccent.withOpacity(0.55)
-                    : Colors.cyanAccent.withOpacity(0.4),
+                color: borderColor ??
+                    (sound.isMuted
+                        ? PokeColors.pokeRed
+                        : PokeColors.frameBorderSoft),
+                width: 1.3,
               ),
             ),
             child: Icon(
@@ -37,7 +44,7 @@ class SoundToggleButton extends StatelessWidget {
                   ? Icons.volume_off_rounded
                   : Icons.volume_up_rounded,
               size: size,
-              color: sound.isMuted ? Colors.redAccent : iconColor,
+              color: sound.isMuted ? PokeColors.pokeRed : iconColor,
             ),
           ),
         );
@@ -50,7 +57,7 @@ void showSoundSettingsSheet(BuildContext context) {
   SoundService.instance.playUiTap();
   showModalBottomSheet(
     context: context,
-    backgroundColor: const Color(0xFF141828),
+    backgroundColor: PokeColors.creamSurface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
     ),
@@ -68,13 +75,13 @@ void showSoundSettingsSheet(BuildContext context) {
                 Row(
                   children: [
                     const Icon(Icons.music_note_rounded,
-                        color: Colors.cyanAccent, size: 20),
+                        color: PokeColors.pokeBlue, size: 22),
                     const SizedBox(width: 8),
                     const Expanded(
                       child: Text(
                         "SOUND & BGM SETTINGS",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: PokeColors.inkDark,
                           fontWeight: FontWeight.w900,
                           fontSize: 15,
                           letterSpacing: 0.6,
@@ -91,13 +98,16 @@ void showSoundSettingsSheet(BuildContext context) {
                             ? Icons.volume_off_rounded
                             : Icons.volume_up_rounded,
                         size: 16,
-                        color: s.isMuted ? Colors.redAccent : Colors.greenAccent,
+                        color: s.isMuted
+                            ? PokeColors.pokeRed
+                            : PokeColors.pokeGreen,
                       ),
                       label: Text(
                         s.isMuted ? "MUTED" : "ACTIVE",
                         style: TextStyle(
-                          color:
-                              s.isMuted ? Colors.redAccent : Colors.greenAccent,
+                          color: s.isMuted
+                              ? PokeColors.pokeRed
+                              : PokeColors.pokeGreen,
                           fontWeight: FontWeight.w900,
                           fontSize: 11.5,
                         ),
@@ -112,13 +122,18 @@ void showSoundSettingsSheet(BuildContext context) {
                       width: 92,
                       child: Text(
                         "Music (BGM)",
-                        style: TextStyle(color: Colors.white70, fontSize: 12.5),
+                        style: TextStyle(
+                          color: PokeColors.inkMuted,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     Expanded(
                       child: Slider(
                         value: s.bgmVolume,
-                        activeColor: Colors.cyanAccent,
+                        activeColor: PokeColors.pokeBlue,
+                        inactiveColor: PokeColors.frameBorderSoft,
                         onChanged: s.isMuted ? null : (v) => s.setBgmVolume(v),
                       ),
                     ),
@@ -127,7 +142,9 @@ void showSoundSettingsSheet(BuildContext context) {
                         s.bgmToggle
                             ? Icons.music_off_rounded
                             : Icons.music_note_rounded,
-                        color: s.bgmToggle ? Colors.white38 : Colors.cyanAccent,
+                        color: s.bgmToggle
+                            ? PokeColors.inkSubtle
+                            : PokeColors.pokeBlue,
                         size: 18,
                       ),
                       onPressed: () => s.setBgmMuted(!s.bgmToggle),
@@ -140,13 +157,18 @@ void showSoundSettingsSheet(BuildContext context) {
                       width: 92,
                       child: Text(
                         "SFX & Cries",
-                        style: TextStyle(color: Colors.white70, fontSize: 12.5),
+                        style: TextStyle(
+                          color: PokeColors.inkMuted,
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     Expanded(
                       child: Slider(
                         value: s.sfxVolume,
-                        activeColor: const Color(0xFFFFD54F),
+                        activeColor: PokeColors.pokeRed,
+                        inactiveColor: PokeColors.frameBorderSoft,
                         onChanged: s.isMuted ? null : (v) => s.setSfxVolume(v),
                       ),
                     ),
@@ -156,8 +178,8 @@ void showSoundSettingsSheet(BuildContext context) {
                             ? Icons.notifications_off_rounded
                             : Icons.notifications_active_rounded,
                         color: s.sfxToggle
-                            ? Colors.white38
-                            : const Color(0xFFFFD54F),
+                            ? PokeColors.inkSubtle
+                            : PokeColors.pokeRed,
                         size: 18,
                       ),
                       onPressed: () {

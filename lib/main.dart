@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'models/trainer.dart';
 import 'screens/starter_select_screen.dart';
 import 'screens/home_screen.dart';
+import 'widgets/poke_theme.dart';
 import 'services/pvp_link_service.dart';
 import 'services/sound_service.dart';
 import 'services/step_counter_service.dart';
@@ -120,19 +121,37 @@ class _PocketBumpAppState extends State<PocketBumpApp> with WidgetsBindingObserv
           return MaterialApp(
             title: 'Pocket Bump',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.dark().copyWith(
-              scaffoldBackgroundColor: const Color(0xFF1E1E24),
-              primaryColor: Colors.red.shade700,
-              textTheme: ThemeData.dark().textTheme.copyWith(
+            theme: ThemeData.light().copyWith(
+              scaffoldBackgroundColor: PokeColors.canvasCream,
+              primaryColor: PokeColors.pokeRed,
+              textTheme: ThemeData.light().textTheme.copyWith(
                 bodyMedium: const TextStyle(
-                  color: Colors.white,
+                  color: PokeColors.inkDark,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              colorScheme: ColorScheme.dark(
-                primary: Colors.red.shade700,
-                secondary: Colors.amberAccent,
-                surface: const Color(0xFF2A2A35),
+              colorScheme: const ColorScheme.light(
+                primary: PokeColors.pokeRed,
+                secondary: PokeColors.badgeGold,
+                surface: PokeColors.creamSurface,
+              ),
+              dialogTheme: DialogThemeData(
+                backgroundColor: PokeColors.creamSurface,
+                surfaceTintColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              bottomSheetTheme: const BottomSheetThemeData(
+                backgroundColor: PokeColors.creamSurface,
+                surfaceTintColor: Colors.transparent,
+              ),
+              snackBarTheme: const SnackBarThemeData(
+                backgroundColor: PokeColors.inkDark,
+                contentTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             home: trainer.party.isEmpty

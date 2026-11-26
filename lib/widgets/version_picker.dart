@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/game_version.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
+import 'poke_theme.dart';
 
 class VersionChoiceCard extends StatelessWidget {
   final GameVersion version;
@@ -30,33 +31,20 @@ class VersionChoiceCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.all(compact ? 11 : 14),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isSelected
-                ? [
-                    primary.withOpacity(0.32),
-                    secondary.withOpacity(0.18),
-                    const Color(0xEE111524),
-                  ]
-                : [
-                    const Color(0xE2161B2B),
-                    const Color(0xE60F1320),
-                  ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: isSelected ? PokeColors.cardWhite : PokeColors.creamSurface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? primary : Colors.white12,
-            width: isSelected ? 2.0 : 1.1,
+            color: isSelected ? primary : PokeColors.frameBorderSoft,
+            width: isSelected ? 2.2 : 1.3,
           ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: primary.withOpacity(0.28),
-                    blurRadius: 12,
-                  ),
-                ]
-              : null,
+          boxShadow: [
+            BoxShadow(
+              color: (isSelected ? primary : PokeColors.frameBorder)
+                  .withOpacity(isSelected ? 0.22 : 0.08),
+              blurRadius: isSelected ? 12 : 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -67,12 +55,13 @@ class VersionChoiceCard extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    primary.withOpacity(0.34),
-                    secondary.withOpacity(0.10),
+                    primary.withOpacity(0.24),
+                    secondary.withOpacity(0.08),
                   ],
                 ),
                 border: Border.all(
-                  color: primary.withOpacity(isSelected ? 0.85 : 0.4),
+                  color: primary.withOpacity(isSelected ? 0.9 : 0.45),
+                  width: 1.5,
                 ),
               ),
               child: Center(
@@ -110,7 +99,7 @@ class VersionChoiceCard extends StatelessWidget {
                         child: Text(
                           version.displayName.toUpperCase(),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: PokeColors.inkDark,
                             fontWeight: FontWeight.w900,
                             fontSize: compact ? 13 : 14.5,
                             letterSpacing: 0.6,
@@ -141,9 +130,10 @@ class VersionChoiceCard extends StatelessWidget {
                   Text(
                     "Exclusives: ${version.exclusivesSummary}",
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: PokeColors.inkMuted,
                       fontSize: compact ? 10.2 : 11,
                       height: 1.32,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -154,7 +144,7 @@ class VersionChoiceCard extends StatelessWidget {
               isSelected
                   ? Icons.check_circle_rounded
                   : Icons.radio_button_unchecked_rounded,
-              color: isSelected ? primary : Colors.white24,
+              color: isSelected ? primary : PokeColors.inkSubtle,
               size: 22,
             ),
           ],
@@ -178,23 +168,23 @@ Future<void> showVersionMigrationDialog(
       builder: (dlgCtx, setDialogState) => PopScope(
         canPop: false,
         child: AlertDialog(
-          backgroundColor: const Color(0xFF131726),
+          backgroundColor: PokeColors.creamSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            side: BorderSide(color: selected.primaryColor.withOpacity(0.55)),
+            side: BorderSide(color: selected.primaryColor, width: 1.8),
           ),
           titlePadding: const EdgeInsets.fromLTRB(18, 18, 18, 6),
           contentPadding: const EdgeInsets.fromLTRB(18, 6, 18, 12),
           actionsPadding: const EdgeInsets.fromLTRB(18, 0, 18, 14),
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.catching_pokemon, color: Colors.amberAccent, size: 22),
-              SizedBox(width: 8),
-              Expanded(
+              Icon(Icons.catching_pokemon, color: selected.primaryColor, size: 22),
+              const SizedBox(width: 8),
+              const Expanded(
                 child: Text(
                   "Choose Your Version",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: PokeColors.inkDark,
                     fontWeight: FontWeight.w900,
                     fontSize: 16.5,
                   ),
@@ -210,7 +200,7 @@ Future<void> showVersionMigrationDialog(
                 const Text(
                   "Pocket Bump now features Red and Blue / Green versions! Your existing Pokémon, items, and badges are completely safe. Pick your version to set which version-exclusive Pokémon appear in wild encounters:",
                   style: TextStyle(
-                    color: Colors.white70,
+                    color: PokeColors.inkMuted,
                     fontSize: 12,
                     height: 1.38,
                   ),
@@ -235,7 +225,7 @@ Future<void> showVersionMigrationDialog(
                   "Trade with friends on the other version via Fist Bump to complete your Pokédex!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.amberAccent,
+                    color: PokeColors.pokeBlueDark,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w700,
                   ),

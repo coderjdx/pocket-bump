@@ -6,6 +6,7 @@ import '../models/trainer.dart';
 import '../models/trainer_avatar.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/type_badge.dart';
@@ -23,7 +24,8 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
   GameVersion _selectedVersion = GameVersion.red;
   bool _isFemale = false;
   TrainerAvatar _selectedAvatar = TrainerAvatar.presets.first;
-  final TextEditingController _nameController = TextEditingController(text: 'Red');
+  final TextEditingController _nameController =
+      TextEditingController(text: 'Red');
 
   int _selectedStarterId = 4; // Default to Charmander
   final List<int> _starters = [1, 4, 7]; // Bulbasaur, Charmander, Squirtle
@@ -51,35 +53,71 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
     });
   }
 
+  Widget _buildHeaderPill(String text, Color primary, Color secondary) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [primary, secondary]),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.white.withOpacity(0.6), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.14),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 1.1,
+          fontSize: 10.5,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(VoidCallback onPressed) {
+    return Container(
+      decoration: BoxDecoration(
+        color: PokeColors.cardWhite,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: PokeColors.frameBorderSoft, width: 1.4),
+      ),
+      child: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: PokeColors.inkDark,
+          size: 16,
+        ),
+        padding: const EdgeInsets.all(6),
+        constraints: const BoxConstraints(),
+        onPressed: onPressed,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C101B),
+      backgroundColor: PokeColors.canvasCream,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_starter_select.png',
-            fit: BoxFit.cover,
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_starter_select.png',
             alignment: Alignment.bottomCenter,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF0C1120).withOpacity(0.74),
-                  const Color(0xFF0F1322).withOpacity(0.58),
-                  const Color(0xFF090B14).withOpacity(0.88),
-                ],
-              ),
-            ),
+            topOpacity: 0.22,
+            midOpacity: 0.44,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
               child: _step == 0
                   ? _buildVersionStep()
                   : (_step == 1 ? _buildTrainerStep() : _buildStarterStep()),
@@ -95,50 +133,48 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 6),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                _selectedVersion.primaryColor,
-                _selectedVersion.secondaryColor,
-              ],
-            ),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
-          ),
-          child: const Text(
-            "WELCOME TO POCKET BUMP",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.3,
-              fontSize: 10.5,
-            ),
-          ),
+        _buildHeaderPill(
+          "WELCOME TO POCKET BUMP",
+          _selectedVersion.primaryColor,
+          _selectedVersion.secondaryColor,
         ),
         const SizedBox(height: 10),
-        const Text(
-          "Choose Your Game Version",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 19,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            letterSpacing: 0.4,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface.withOpacity(0.94),
+            border: _selectedVersion.primaryColor.withOpacity(0.45),
+            radius: 16,
+            borderWidth: 1.5,
+          ),
+          child: const Column(
+            children: [
+              Text(
+                "Choose Your Game Version",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.5,
+                  fontWeight: FontWeight.w900,
+                  color: PokeColors.inkDark,
+                  letterSpacing: 0.3,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Wild encounters follow your chosen version. Trade with friends on the other version via Fist Bump to catch them all!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: PokeColors.inkMuted,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  height: 1.35,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 6),
-        const Text(
-          "Wild encounters follow your chosen version. Trade with friends on the other version via Fist Bump to catch them all!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white70,
-            fontSize: 11.5,
-            height: 1.35,
-          ),
-        ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
@@ -163,15 +199,17 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
         const SizedBox(height: 12),
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: 50,
           child: ElevatedButton(
-            onPressed: () => setState(() => _step = 1),
+            onPressed: () {
+              SoundService.instance.playUiClick();
+              setState(() => _step = 1);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: _selectedVersion.primaryColor,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
-                side: BorderSide(color: Colors.white.withOpacity(0.22)),
               ),
               elevation: 4,
             ),
@@ -195,73 +233,78 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white70, size: 18),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () => setState(() => _step = 0),
+            _buildBackButton(() => setState(() => _step = 0)),
+            _buildHeaderPill(
+              "KANTO • ${_selectedVersion.shortLabel}",
+              _selectedVersion.primaryColor,
+              _selectedVersion.secondaryColor,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    _selectedVersion.primaryColor,
-                    _selectedVersion.secondaryColor,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
-              ),
-              child: Text(
-                "KANTO • ${_selectedVersion.shortLabel}",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.1,
-                  fontSize: 10.5,
-                ),
-              ),
+            const SoundToggleButton(
+              size: 16,
+              iconColor: PokeColors.inkDark,
+              bgColor: PokeColors.cardWhite,
+              borderColor: PokeColors.frameBorderSoft,
             ),
-            const SoundToggleButton(size: 16),
           ],
         ),
         const SizedBox(height: 8),
-        const Text(
-          "Choose Your Trainer Identity",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
-            letterSpacing: 0.4,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface.withOpacity(0.92),
+            border: PokeColors.frameBorderSoft,
+            radius: 12,
+            borderWidth: 1.2,
+          ),
+          child: const Text(
+            "Choose Your Trainer Identity",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16.5,
+              fontWeight: FontWeight.w900,
+              color: PokeColors.inkDark,
+              letterSpacing: 0.3,
+            ),
           ),
         ),
         const SizedBox(height: 10),
 
         // Gender Toggle
         Container(
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: const Color(0xE8121626),
-            borderRadius: BorderRadius.circular(13),
-            border: Border.all(color: Colors.white12),
+          padding: const EdgeInsets.all(4),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.frameBorderSoft,
+            radius: 14,
+            borderWidth: 1.4,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _genderTab("MALE", Icons.male, !_isFemale, () => _selectGender(false)),
-              _genderTab("FEMALE", Icons.female, _isFemale, () => _selectGender(true)),
+              _genderTab(
+                "MALE",
+                Icons.male,
+                !_isFemale,
+                PokeColors.pokeBlue,
+                () => _selectGender(false),
+              ),
+              const SizedBox(width: 4),
+              _genderTab(
+                "FEMALE",
+                Icons.female,
+                _isFemale,
+                PokeColors.centerRose,
+                () => _selectGender(true),
+              ),
             ],
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
 
         // 3 Trainer Versions for selected gender
         Row(
@@ -269,47 +312,44 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
             final isSelected = _selectedAvatar.id == avatar.id;
             return Expanded(
               child: GestureDetector(
-                onTap: () => setState(() => _selectedAvatar = avatar),
+                onTap: () {
+                  SoundService.instance.playUiClick();
+                  setState(() => _selectedAvatar = avatar);
+                },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 4),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isSelected
-                          ? [
-                              Colors.red.shade900.withOpacity(0.55),
-                              const Color(0xEA16192B),
-                            ]
-                          : [
-                              const Color(0xE0161A2A),
-                              const Color(0xE0101320),
-                            ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
+                    color: isSelected
+                        ? const Color(0xFFFFEFEF)
+                        : PokeColors.cardWhite,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSelected ? Colors.redAccent : Colors.white12,
-                      width: isSelected ? 2.0 : 1,
+                      color: isSelected
+                          ? PokeColors.pokeRed
+                          : PokeColors.frameBorderSoft,
+                      width: isSelected ? 2.2 : 1.3,
                     ),
-                    boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: Colors.redAccent.withOpacity(0.28),
-                              blurRadius: 10,
-                            ),
-                          ]
-                        : null,
+                    boxShadow: [
+                      BoxShadow(
+                        color: isSelected
+                            ? PokeColors.pokeRed.withOpacity(0.20)
+                            : Colors.black.withOpacity(0.06),
+                        blurRadius: isSelected ? 8 : 4,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Column(
                     children: [
                       TrainerSpriteWidget(
                         avatar: avatar,
                         isBackView: false,
-                        size: 78,
+                        size: 74,
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 5),
                       Text(
                         avatar.title,
                         textAlign: TextAlign.center,
@@ -318,7 +358,9 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w900,
-                          color: isSelected ? Colors.white : Colors.white70,
+                          color: isSelected
+                              ? PokeColors.pokeRedDark
+                              : PokeColors.inkDark,
                         ),
                       ),
                     ],
@@ -329,41 +371,53 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           }).toList(),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
 
         // Selected Preview + Trainer Name Input
         Expanded(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xE8171C2E), Color(0xEE101320)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: Colors.white12, width: 1.2),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface.withOpacity(0.96),
+              border: PokeColors.frameBorderSoft,
+              radius: 18,
+              borderWidth: 1.6,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TrainerSpriteWidget(
-                      avatar: _selectedAvatar,
-                      isBackView: false,
-                      size: 76,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xFFD8EEFC), Color(0xFFBFE4B6)],
                     ),
-                    const SizedBox(width: 14),
-                    TrainerSpriteWidget(
-                      avatar: _selectedAvatar,
-                      isBackView: true,
-                      pose: 1,
-                      size: 76,
-                    ),
-                  ],
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                        color: PokeColors.frameBorderSoft, width: 1.3),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TrainerSpriteWidget(
+                        avatar: _selectedAvatar,
+                        isBackView: false,
+                        size: 72,
+                      ),
+                      const SizedBox(width: 14),
+                      TrainerSpriteWidget(
+                        avatar: _selectedAvatar,
+                        isBackView: true,
+                        pose: 1,
+                        size: 72,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -371,42 +425,45 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w900,
-                    color: Color(0xFFFFD54F),
+                    color: PokeColors.pokeRedDark,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 TextField(
                   controller: _nameController,
                   maxLength: 14,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: PokeColors.inkDark,
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
                   ),
                   decoration: InputDecoration(
                     labelText: "TRAINER NAME",
                     labelStyle: const TextStyle(
-                      color: Colors.white60,
+                      color: PokeColors.inkMuted,
                       fontSize: 11,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       letterSpacing: 0.7,
                     ),
                     counterText: "",
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 10),
                     filled: true,
-                    fillColor: const Color(0xFF0A0D16),
+                    fillColor: PokeColors.cardWhite,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.white24),
+                      borderSide:
+                          const BorderSide(color: PokeColors.frameBorderSoft),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.white12),
+                      borderSide: const BorderSide(
+                          color: PokeColors.frameBorderSoft, width: 1.4),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.redAccent),
+                      borderSide: const BorderSide(
+                          color: PokeColors.pokeRed, width: 1.8),
                     ),
                   ),
                 ),
@@ -415,19 +472,21 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
 
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: 50,
           child: ElevatedButton(
-            onPressed: () => setState(() => _step = 2),
+            onPressed: () {
+              SoundService.instance.playUiClick();
+              setState(() => _step = 2);
+            },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
+              backgroundColor: PokeColors.pokeRed,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
-                side: BorderSide(color: Colors.white.withOpacity(0.22)),
               ),
               elevation: 4,
             ),
@@ -445,29 +504,28 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
     );
   }
 
-  Widget _genderTab(String label, IconData icon, bool active, VoidCallback onTap) {
+  Widget _genderTab(String label, IconData icon, bool active, Color activeColor,
+      VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          gradient: active
-              ? LinearGradient(colors: [Colors.red.shade600, Colors.red.shade800])
-              : null,
-          color: active ? null : Colors.transparent,
+          color: active ? activeColor : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           children: [
-            Icon(icon, size: 16, color: active ? Colors.white : Colors.white60),
+            Icon(icon,
+                size: 16, color: active ? Colors.white : PokeColors.inkMuted),
             const SizedBox(width: 6),
             Text(
               label,
               style: TextStyle(
                 fontSize: 11.5,
                 fontWeight: FontWeight.w900,
-                color: active ? Colors.white : Colors.white60,
+                color: active ? Colors.white : PokeColors.inkMuted,
               ),
             ),
           ],
@@ -486,93 +544,113 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white70, size: 18),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
-              onPressed: () => setState(() => _step = 1),
+            _buildBackButton(() => setState(() => _step = 1)),
+            _buildHeaderPill(
+              "PROFESSOR OAK'S LAB",
+              PokeColors.pokeGreen,
+              PokeColors.pokeGreenDark,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.red.shade700, Colors.red.shade900],
-                ),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.amberAccent.withOpacity(0.55)),
-              ),
-              child: const Text(
-                "PROFESSOR OAK'S LAB",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.2,
-                  fontSize: 10.5,
-                ),
-              ),
+            const SoundToggleButton(
+              size: 16,
+              iconColor: PokeColors.inkDark,
+              bgColor: PokeColors.cardWhite,
+              borderColor: PokeColors.frameBorderSoft,
             ),
-            const SoundToggleButton(size: 16),
           ],
         ),
         const SizedBox(height: 6),
-        const Text(
-          "Choose Your First Partner Pokémon!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16.5,
-            fontWeight: FontWeight.w900,
-            color: Colors.white,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface.withOpacity(0.92),
+            border: PokeColors.frameBorderSoft,
+            radius: 11,
+            borderWidth: 1.2,
+          ),
+          child: const Text(
+            "Choose Your First Partner Pokémon!",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15.5,
+              fontWeight: FontWeight.w900,
+              color: PokeColors.inkDark,
+            ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
 
-        // Starter Poké Ball Switcher Row
+        // 3 Portrait Starter Cards in a Row
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: _starters.map((id) {
             final mon = PokedexDatabase.species[id]!;
             final c = mon.types.first.color;
             final isSelected = _selectedStarterId == id;
-            return GestureDetector(
-              onTap: () {
-                SoundService.instance.playPokemonCry(id);
-                setState(() => _selectedStarterId = id);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                padding: const EdgeInsets.all(9),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isSelected
-                        ? [c.withOpacity(0.32), const Color(0xFF14182B)]
-                        : [const Color(0xE0161A2B), const Color(0xE0101320)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+            return Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  SoundService.instance.playPokemonCry(id);
+                  setState(() => _selectedStarterId = id);
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  height: 102,
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Color.lerp(PokeColors.cardWhite, c, 0.16)
+                        : PokeColors.cardWhite,
+                    border: Border.all(
+                      color: isSelected ? c : PokeColors.frameBorderSoft,
+                      width: isSelected ? 2.4 : 1.4,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isSelected
+                            ? c.withOpacity(0.28)
+                            : Colors.black.withOpacity(0.06),
+                        blurRadius: isSelected ? 8 : 4,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  border: Border.all(
-                    color: isSelected ? c : Colors.white12,
-                    width: isSelected ? 2.0 : 1,
-                  ),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: isSelected
-                      ? [BoxShadow(color: c.withOpacity(0.35), blurRadius: 10)]
-                      : null,
-                ),
-                child: Image.network(
-                  mon.spriteUrl,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.none,
-                  errorBuilder: (ctx, err, stack) => Image.network(
-                    mon.staticSpriteUrl,
-                    width: 50,
-                    height: 50,
-                    filterQuality: FilterQuality.none,
-                    errorBuilder: (c2, e2, s2) =>
-                        const Icon(Icons.catching_pokemon, color: Colors.white, size: 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Image.network(
+                          mon.spriteUrl,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                          errorBuilder: (ctx, err, stack) => Image.network(
+                            mon.staticSpriteUrl,
+                            fit: BoxFit.contain,
+                            filterQuality: FilterQuality.none,
+                            errorBuilder: (c2, e2, s2) => Icon(
+                              Icons.catching_pokemon,
+                              color: c,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        mon.name.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w900,
+                          color: isSelected
+                              ? PokeColors.darken(c, 0.25)
+                              : PokeColors.inkMuted,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -580,49 +658,45 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           }).toList(),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
 
         // Detailed Card for Selected Starter
         Expanded(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  typeColor.withOpacity(0.18),
-                  const Color(0xEA141828),
-                  const Color(0xEE0F121E),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: typeColor.withOpacity(0.6), width: 1.3),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface.withOpacity(0.96),
+              border: typeColor,
+              radius: 18,
+              borderWidth: 1.8,
             ),
             child: Column(
               children: [
                 Container(
-                  width: 90,
-                  height: 84,
+                  width: 88,
+                  height: 80,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
-                      colors: [typeColor.withOpacity(0.28), Colors.transparent],
+                      colors: [typeColor.withOpacity(0.26), Colors.transparent],
                     ),
                   ),
                   child: Image.network(
                     selectedMon.species.spriteUrl,
-                    height: 80,
+                    height: 76,
                     fit: BoxFit.contain,
                     filterQuality: FilterQuality.none,
                     errorBuilder: (ctx, err, stack) => Image.network(
                       selectedMon.species.staticSpriteUrl,
-                      height: 80,
+                      height: 76,
                       fit: BoxFit.contain,
                       filterQuality: FilterQuality.none,
-                      errorBuilder: (c2, e2, s2) =>
-                          const Icon(Icons.catching_pokemon, color: Colors.white, size: 70),
+                      errorBuilder: (c2, e2, s2) => Icon(
+                        Icons.catching_pokemon,
+                        color: typeColor,
+                        size: 66,
+                      ),
                     ),
                   ),
                 ),
@@ -631,10 +705,10 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: PokeColors.inkDark,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: selectedMon.species.types
@@ -644,9 +718,9 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                           ))
                       .toList(),
                 ),
-                const SizedBox(height: 9),
-                const Divider(color: Colors.white12, height: 1),
                 const SizedBox(height: 8),
+                const Divider(color: PokeColors.frameBorderSoft, height: 1),
+                const SizedBox(height: 7),
 
                 // Level 5 Calculated Stats
                 _buildStatRow("HP", selectedMon.maxHp),
@@ -659,26 +733,24 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(bottom: 6),
+                  margin: const EdgeInsets.only(bottom: 5),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF0A0D16),
-                    borderRadius: BorderRadius.circular(9),
-                    border: Border.all(
-                      color: selectedMon.isHiddenAbility
-                          ? const Color(0xFFFFD54F).withOpacity(0.6)
-                          : Colors.cyanAccent.withOpacity(0.28),
-                    ),
+                  decoration: PokeDecorations.inset(
+                    fill: PokeColors.cardWhite,
+                    border: selectedMon.isHiddenAbility
+                        ? PokeColors.badgeGold
+                        : PokeColors.pokeBlue.withOpacity(0.45),
+                    radius: 9,
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.bolt_rounded,
-                        size: 13,
+                        size: 14,
                         color: selectedMon.isHiddenAbility
-                            ? const Color(0xFFFFD54F)
-                            : Colors.cyanAccent,
+                            ? PokeColors.badgeGoldDark
+                            : PokeColors.pokeBlueDark,
                       ),
                       const SizedBox(width: 4),
                       Expanded(
@@ -688,8 +760,8 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                           style: TextStyle(
                             fontSize: 11,
                             color: selectedMon.isHiddenAbility
-                                ? const Color(0xFFFFE082)
-                                : Colors.cyanAccent,
+                                ? PokeColors.badgeGoldDark
+                                : PokeColors.pokeBlueDark,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -700,18 +772,19 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF0A0D16),
-                    borderRadius: BorderRadius.circular(9),
-                    border: Border.all(color: Colors.white10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: PokeDecorations.inset(
+                    fill: PokeColors.cardWhite,
+                    border: PokeColors.frameBorderSoft,
+                    radius: 9,
                   ),
                   child: Text(
                     "Lv.5 Moves: ${selectedMon.moves.map((m) => m.name).join(', ')}",
                     style: const TextStyle(
                       fontSize: 11,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
+                      color: PokeColors.inkMuted,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -725,20 +798,19 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFD54F).withOpacity(0.10),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: const Color(0xFFFFD54F).withOpacity(0.35),
-            ),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.badgeGold,
+            radius: 10,
+            borderWidth: 1.4,
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.card_giftcard_rounded,
-                size: 14,
-                color: Color(0xFFFFD54F),
+                size: 15,
+                color: PokeColors.badgeGoldDark,
               ),
               SizedBox(width: 6),
               Flexible(
@@ -746,8 +818,8 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
                   "WELCOME GIFT: 20 Poké Balls • 10 Potions • 5 Revives",
                   style: TextStyle(
                     fontSize: 10.5,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xFFFFE082),
+                    fontWeight: FontWeight.w900,
+                    color: PokeColors.badgeGoldDark,
                     letterSpacing: 0.25,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -761,7 +833,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: 50,
           child: ElevatedButton(
             onPressed: () {
               SoundService.instance.playUiConfirm();
@@ -777,18 +849,17 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
               Navigator.of(context).popUntil((r) => r.isFirst);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
+              backgroundColor: PokeColors.pokeRed,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
-                side: BorderSide(color: Colors.white.withOpacity(0.22)),
               ),
               elevation: 4,
             ),
             child: Text(
               "I CHOOSE ${selectedMon.species.name.toUpperCase()}!",
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 13.5,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.9,
               ),
@@ -801,33 +872,46 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
 
   Widget _buildStatRow(String label, int value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.5),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
           SizedBox(
             width: 65,
-            child: Text(label, style: const TextStyle(color: Colors.white60, fontSize: 12)),
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: PokeColors.inkMuted,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ),
           SizedBox(
             width: 28,
             child: Text(
               "$value",
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+              style: const TextStyle(
+                color: PokeColors.inkDark,
+                fontWeight: FontWeight.w900,
+                fontSize: 12,
+              ),
             ),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: (value / 25).clamp(0.0, 1.0),
-                backgroundColor: Colors.black26,
+                backgroundColor: PokeColors.panelSoft,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   value >= 14
-                      ? Colors.greenAccent
-                      : (value >= 11 ? Colors.amberAccent : Colors.redAccent),
+                      ? PokeColors.pokeGreen
+                      : (value >= 11
+                          ? PokeColors.badgeGold
+                          : PokeColors.pokeRed),
                 ),
-                minHeight: 6,
+                minHeight: 7,
               ),
             ),
           ),

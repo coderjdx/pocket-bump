@@ -7,8 +7,9 @@ import '../models/trainer.dart';
 import '../screens/pokemon_detail_screen.dart';
 import 'hp_bar.dart';
 import 'move_pp_picker_dialog.dart';
+import 'poke_theme.dart';
 
-/// Shared 2x2 command grid for multi-stage gauntlets with rest checkpoints:
+/// Shared row of 4 tall portrait buttons for multi-stage gauntlets with rest checkpoints:
 /// Next Battle, Bag, Pokémon, and Give Up.
 class GauntletCheckpointActionBar extends StatelessWidget {
   final Color nextBattleColor;
@@ -32,115 +33,61 @@ class GauntletCheckpointActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: busy ? null : onNextBattle,
-                icon: const Icon(Icons.play_arrow_rounded, size: 18),
-                label: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    nextBattleLabel,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 11.5,
-                      letterSpacing: 0.4,
-                    ),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: nextBattleColor,
-                  foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+    final Color nextTop = nextBattleColor;
+    final Color nextBottom = PokeColors.darken(nextBattleColor, 0.16);
+    return Opacity(
+      opacity: busy ? 0.65 : 1.0,
+      child: Row(
+        children: [
+          Expanded(
+            child: PokePortraitButton(
+              label: nextBattleLabel,
+              icon: Icons.play_arrow_rounded,
+              topColor: nextTop,
+              bottomColor: nextBottom,
+              height: 118,
+              iconSize: 34,
+              onTap: busy ? null : onNextBattle,
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: busy ? null : onBag,
-                icon: const Icon(Icons.backpack_rounded, size: 16),
-                label: const Text(
-                  'BAG',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11.5,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color(0xFF121828),
-                  foregroundColor: Colors.tealAccent,
-                  side: const BorderSide(color: Colors.tealAccent),
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: PokePortraitButton(
+              label: 'BAG',
+              icon: Icons.backpack_rounded,
+              topColor: PokeColors.bagOrange,
+              bottomColor: PokeColors.bagOrangeDark,
+              height: 118,
+              iconSize: 32,
+              onTap: busy ? null : onBag,
             ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: busy ? null : onPokemon,
-                icon: const Icon(Icons.catching_pokemon, size: 16),
-                label: const Text(
-                  'POKÉMON',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11.5,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color(0xFF121828),
-                  foregroundColor: Colors.cyanAccent,
-                  side: const BorderSide(color: Colors.cyanAccent),
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: PokePortraitButton(
+              label: 'POKÉMON',
+              icon: Icons.catching_pokemon,
+              topColor: PokeColors.pokeGreen,
+              bottomColor: PokeColors.pokeGreenDark,
+              height: 118,
+              iconSize: 32,
+              onTap: busy ? null : onPokemon,
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: busy ? null : onGiveUp,
-                icon: const Icon(Icons.flag_rounded, size: 16),
-                label: const Text(
-                  'GIVE UP',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11.5,
-                    letterSpacing: 0.4,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1C1219),
-                  foregroundColor: Colors.redAccent,
-                  side: const BorderSide(color: Colors.redAccent),
-                  padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: PokePortraitButton(
+              label: 'GIVE UP',
+              icon: Icons.flag_rounded,
+              topColor: PokeColors.pokeRed,
+              bottomColor: PokeColors.pokeRedDark,
+              height: 118,
+              iconSize: 32,
+              onTap: busy ? null : onGiveUp,
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -154,18 +101,26 @@ Future<bool> confirmGiveUpGauntletDialog(
   final bool? confirmed = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      backgroundColor: const Color(0xFF1E1E28),
+      backgroundColor: PokeColors.creamSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+        side: const BorderSide(color: PokeColors.pokeRed, width: 1.6),
+      ),
       title: Text(
         title,
         style: const TextStyle(
-          color: Colors.redAccent,
+          color: PokeColors.pokeRedDark,
           fontWeight: FontWeight.w900,
           fontSize: 15,
         ),
       ),
       content: Text(
         message,
-        style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+        style: const TextStyle(
+          color: PokeColors.inkMuted,
+          fontSize: 13,
+          height: 1.4,
+        ),
       ),
       actions: [
         TextButton(
@@ -176,18 +131,28 @@ Future<bool> confirmGiveUpGauntletDialog(
           },
           child: const Text(
             'STAY',
-            style: TextStyle(color: Colors.tealAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: PokeColors.pokeGreenDark,
+              fontWeight: FontWeight.w900,
+            ),
           ),
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: () {
             if (ModalRoute.of(ctx)?.isCurrent == true) {
               Navigator.pop(ctx, true);
             }
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: PokeColors.pokeRed,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
           child: const Text(
             'GIVE UP',
-            style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
       ],
@@ -226,9 +191,9 @@ Future<void> showCheckpointBagSheet(
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: const Color(0xFF1E1E28),
+    backgroundColor: PokeColors.creamSurface,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
     ),
     builder: (ctx) {
       bool isClosing = false;
@@ -244,36 +209,28 @@ Future<void> showCheckpointBagSheet(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'USE ITEMS ON POKÉMON',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white60),
-                      onPressed: () {
-                        if (isClosing) return;
-                        if (ModalRoute.of(ctx)?.isCurrent == true) {
-                          isClosing = true;
-                          Navigator.pop(ctx);
-                        }
-                      },
-                    ),
-                  ],
+                PokeSheetHeader(
+                  icon: Icons.backpack_rounded,
+                  accentColor: PokeColors.bagOrange,
+                  title: 'USE ITEMS ON POKÉMON',
+                  onClose: () {
+                    if (isClosing) return;
+                    if (ModalRoute.of(ctx)?.isCurrent == true) {
+                      isClosing = true;
+                      Navigator.pop(ctx);
+                    }
+                  },
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 if (available.isEmpty)
                   const Expanded(
                     child: Center(
                       child: Text(
                         "You don't have any usable medicine items in your Bag!",
-                        style: TextStyle(color: Colors.white38, fontSize: 13),
+                        style: TextStyle(
+                          color: PokeColors.inkMuted,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   )
@@ -286,19 +243,29 @@ Future<void> showCheckpointBagSheet(
                         final itemId = available[idx];
                         final itemDef = ItemDatabase.byId(itemId);
                         final count = liveTrainer.getItemCount(itemId);
+                        final itemColor = itemDef?.color ?? PokeColors.pokeGreen;
 
                         return Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF282836),
-                            borderRadius: BorderRadius.circular(12),
+                          padding: const EdgeInsets.all(11),
+                          decoration: PokeDecorations.card(
+                            border: itemColor.withOpacity(0.5),
+                            radius: 14,
+                            borderWidth: 1.4,
                           ),
                           child: Row(
                             children: [
-                              Icon(
-                                itemDef?.icon ?? Icons.medical_services,
-                                color: itemDef?.color ?? Colors.tealAccent,
-                                size: 24,
+                              Container(
+                                width: 38,
+                                height: 38,
+                                decoration: BoxDecoration(
+                                  color: itemColor.withOpacity(0.14),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  itemDef?.icon ?? Icons.medical_services,
+                                  color: PokeColors.darken(itemColor, 0.14),
+                                  size: 22,
+                                ),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
@@ -308,21 +275,22 @@ Future<void> showCheckpointBagSheet(
                                     Text(
                                       '${itemDef?.name ?? itemId} (x$count)',
                                       style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                                        color: PokeColors.inkDark,
+                                        fontWeight: FontWeight.w900,
                                         fontSize: 13,
                                       ),
                                     ),
                                     Text(
                                       itemDef?.description ?? '',
                                       style: const TextStyle(
-                                        color: Colors.white54,
+                                        color: PokeColors.inkMuted,
                                         fontSize: 10.5,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                              const SizedBox(width: 8),
                               ElevatedButton(
                                 onPressed: () => _selectPartyTargetAndApply(
                                   context,
@@ -331,16 +299,19 @@ Future<void> showCheckpointBagSheet(
                                   onUpdated,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.tealAccent,
-                                  foregroundColor: Colors.black,
+                                  backgroundColor: PokeColors.bagOrange,
+                                  foregroundColor: Colors.white,
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
+                                    horizontal: 14,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                                 child: const Text(
                                   'USE',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.w900),
                                 ),
                               ),
                             ],
@@ -369,13 +340,17 @@ void _selectPartyTargetAndApply(
     builder: (ctx) {
       bool isApplying = false;
       return AlertDialog(
-        backgroundColor: const Color(0xFF1E1E28),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: PokeColors.bagOrange, width: 1.5),
+        ),
         title: Text(
           "USE ${ItemDatabase.byId(itemId)?.name.toUpperCase() ?? itemId.replaceAll('_', ' ').toUpperCase()} ON:",
           style: const TextStyle(
-            color: Colors.white,
+            color: PokeColors.inkDark,
             fontSize: 13,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
           ),
         ),
         content: SizedBox(
@@ -387,31 +362,37 @@ void _selectPartyTargetAndApply(
             itemBuilder: (c, idx) {
               final mon = trainer.party[idx];
               return ListTile(
-                tileColor: const Color(0xFF282836),
+                tileColor: PokeColors.cardWhite,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(color: PokeColors.frameBorderSoft),
                 ),
                 title: Text(
                   '${mon.nickname} (HP ${mon.currentHp}/${mon.maxHp})',
                   style: TextStyle(
-                    color: mon.isFainted ? Colors.white38 : Colors.white,
-                    fontSize: 12,
+                    color: mon.isFainted
+                        ? PokeColors.inkSubtle
+                        : PokeColors.inkDark,
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 subtitle: ItemDatabase.isPpRestoreItem(itemId)
                     ? Text(
                         "Total PP ${mon.moves.fold<int>(0, (s, m) => s + m.currentPp)}/${mon.moves.fold<int>(0, (s, m) => s + m.maxPp)}",
                         style: const TextStyle(
-                          color: Colors.amberAccent,
-                          fontSize: 10,
+                          color: PokeColors.pokeBlueDark,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w700,
                         ),
                       )
                     : mon.status != StatusCondition.none
                         ? Text(
                             'Status: ${mon.status.name.toUpperCase()}',
                             style: const TextStyle(
-                              color: Colors.redAccent,
-                              fontSize: 10,
+                              color: PokeColors.pokeRed,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
                             ),
                           )
                         : null,
@@ -484,7 +465,7 @@ Future<void> showCheckpointPartySheet(
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: const Color(0xFF121624),
+    backgroundColor: PokeColors.creamSurface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -499,38 +480,19 @@ Future<void> showCheckpointPartySheet(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'MANAGE PARTY',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.8,
-                            ),
-                          ),
-                          Text(
-                            'Reorder squad, manage held items, or inspect moves & TMs',
-                            style: TextStyle(color: Colors.white60, fontSize: 11),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white60),
-                        onPressed: () {
-                          if (isClosing) return;
-                          if (ModalRoute.of(ctx)?.isCurrent == true) {
-                            isClosing = true;
-                            Navigator.pop(ctx);
-                          }
-                        },
-                      ),
-                    ],
+                  PokeSheetHeader(
+                    icon: Icons.catching_pokemon,
+                    accentColor: PokeColors.pokeGreen,
+                    title: 'MANAGE PARTY',
+                    subtitle:
+                        'Reorder squad, manage held items, or inspect moves & TMs',
+                    onClose: () {
+                      if (isClosing) return;
+                      if (ModalRoute.of(ctx)?.isCurrent == true) {
+                        isClosing = true;
+                        Navigator.pop(ctx);
+                      }
+                    },
                   ),
                   const SizedBox(height: 10),
                   Expanded(
@@ -544,15 +506,13 @@ Future<void> showCheckpointPartySheet(
 
                         return Container(
                           padding: const EdgeInsets.all(11),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1A2033),
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: isLead
-                                  ? Colors.amberAccent.withOpacity(0.6)
-                                  : typeColor.withOpacity(0.35),
-                              width: isLead ? 1.4 : 1.0,
-                            ),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.cardWhite,
+                            border: isLead
+                                ? PokeColors.badgeGold
+                                : typeColor.withOpacity(0.55),
+                            radius: 15,
+                            borderWidth: isLead ? 1.8 : 1.3,
                           ),
                           child: Column(
                             children: [
@@ -573,29 +533,33 @@ Future<void> showCheckpointPartySheet(
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             Container(
-                                              padding: const EdgeInsets.symmetric(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
                                                 horizontal: 6,
                                                 vertical: 2,
                                               ),
                                               decoration: BoxDecoration(
                                                 color: isLead
-                                                    ? Colors.amberAccent.withOpacity(0.2)
-                                                    : Colors.white10,
-                                                borderRadius: BorderRadius.circular(6),
+                                                    ? PokeColors.badgeGold
+                                                        .withOpacity(0.22)
+                                                    : PokeColors.panelSoft,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
                                               ),
                                               child: Text(
                                                 isLead ? 'LEAD' : '#${idx + 1}',
                                                 style: TextStyle(
                                                   color: isLead
-                                                      ? Colors.amberAccent
-                                                      : Colors.white60,
+                                                      ? PokeColors.badgeGoldDark
+                                                      : PokeColors.inkMuted,
                                                   fontSize: 9,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w900,
                                                 ),
                                               ),
                                             ),
@@ -605,8 +569,8 @@ Future<void> showCheckpointPartySheet(
                                                 mon.nickname,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
+                                                  color: PokeColors.inkDark,
+                                                  fontWeight: FontWeight.w900,
                                                   fontSize: 14,
                                                 ),
                                               ),
@@ -615,22 +579,30 @@ Future<void> showCheckpointPartySheet(
                                             Text(
                                               'Lv.${mon.level}',
                                               style: const TextStyle(
-                                                color: Colors.amberAccent,
-                                                fontWeight: FontWeight.bold,
+                                                color: PokeColors.badgeGoldDark,
+                                                fontWeight: FontWeight.w900,
                                                 fontSize: 11.5,
                                               ),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 5),
-                                        HpBar(currentHp: mon.currentHp, maxHp: mon.maxHp),
+                                        HpBar(
+                                          currentHp: mon.currentHp,
+                                          maxHp: mon.maxHp,
+                                          textColor: PokeColors.inkMuted,
+                                          hpLabelColor:
+                                              PokeColors.badgeGoldDark,
+                                        ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          mon.moves.map((m) => m.name).join(' • '),
+                                          mon.moves
+                                              .map((m) => m.name)
+                                              .join(' • '),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                            color: Colors.white60,
+                                            color: PokeColors.inkMuted,
                                             fontSize: 10,
                                           ),
                                         ),
@@ -640,25 +612,23 @@ Future<void> showCheckpointPartySheet(
                                             horizontal: 7,
                                             vertical: 3,
                                           ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black26,
-                                            borderRadius: BorderRadius.circular(6),
-                                            border: Border.all(
-                                              color: mon.hasHeldItem
-                                                  ? Colors.amberAccent.withOpacity(0.4)
-                                                  : Colors.white12,
-                                            ),
+                                          decoration: PokeDecorations.inset(
+                                            radius: 7,
+                                            border: mon.hasHeldItem
+                                                ? PokeColors.badgeGold
+                                                : PokeColors.frameBorderSoft,
                                           ),
                                           child: Row(
                                             children: [
                                               Icon(
                                                 mon.hasHeldItem
                                                     ? Icons.shopping_bag
-                                                    : Icons.shopping_bag_outlined,
+                                                    : Icons
+                                                        .shopping_bag_outlined,
                                                 size: 13,
                                                 color: mon.hasHeldItem
-                                                    ? Colors.amberAccent
-                                                    : Colors.white38,
+                                                    ? PokeColors.badgeGoldDark
+                                                    : PokeColors.inkSubtle,
                                               ),
                                               const SizedBox(width: 5),
                                               Expanded(
@@ -668,8 +638,9 @@ Future<void> showCheckpointPartySheet(
                                                       : 'No held item',
                                                   style: TextStyle(
                                                     color: mon.hasHeldItem
-                                                        ? Colors.amberAccent
-                                                        : Colors.white38,
+                                                        ? PokeColors
+                                                            .badgeGoldDark
+                                                        : PokeColors.inkSubtle,
                                                     fontSize: 10,
                                                     fontWeight: mon.hasHeldItem
                                                         ? FontWeight.bold
@@ -683,46 +654,55 @@ Future<void> showCheckpointPartySheet(
                                                     final unequipped =
                                                         mon.unequipHeldItem();
                                                     if (unequipped != null) {
-                                                      liveTrainer.adjustItemCount(
-                                                          unequipped, 1);
-                                                      liveTrainer.saveProgress();
+                                                      liveTrainer
+                                                          .adjustItemCount(
+                                                              unequipped, 1);
+                                                      liveTrainer
+                                                          .saveProgress();
                                                       onUpdated?.call();
                                                     }
                                                   },
                                                   child: const Padding(
-                                                    padding: EdgeInsets.symmetric(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
                                                       horizontal: 4,
                                                       vertical: 1,
                                                     ),
                                                     child: Text(
                                                       'TAKE',
                                                       style: TextStyle(
-                                                        color: Colors.redAccent,
+                                                        color:
+                                                            PokeColors.pokeRed,
                                                         fontSize: 9.5,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.w900,
                                                       ),
                                                     ),
                                                   ),
                                                 )
                                               else
                                                 InkWell(
-                                                  onTap: () => _openGiveHeldItemModal(
+                                                  onTap: () =>
+                                                      _openGiveHeldItemModal(
                                                     context,
                                                     liveTrainer,
                                                     mon,
                                                     onUpdated,
                                                   ),
                                                   child: const Padding(
-                                                    padding: EdgeInsets.symmetric(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
                                                       horizontal: 4,
                                                       vertical: 1,
                                                     ),
                                                     child: Text(
                                                       'GIVE',
                                                       style: TextStyle(
-                                                        color: Colors.cyanAccent,
+                                                        color:
+                                                            PokeColors.pokeBlue,
                                                         fontSize: 9.5,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.w900,
                                                       ),
                                                     ),
                                                   ),
@@ -753,15 +733,16 @@ Future<void> showCheckpointPartySheet(
                                         ),
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.amber.shade700,
-                                        foregroundColor: Colors.black,
+                                        backgroundColor: PokeColors.badgeGold,
+                                        foregroundColor: Colors.white,
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 9,
                                           vertical: 5,
                                         ),
                                         minimumSize: Size.zero,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(9),
+                                          borderRadius:
+                                              BorderRadius.circular(9),
                                         ),
                                       ),
                                     )
@@ -772,16 +753,18 @@ Future<void> showCheckpointPartySheet(
                                         vertical: 5,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: Colors.greenAccent.withOpacity(0.14),
+                                        color: PokeColors.pokeGreen
+                                            .withOpacity(0.14),
                                         borderRadius: BorderRadius.circular(9),
                                         border: Border.all(
-                                          color: Colors.greenAccent.withOpacity(0.4),
+                                          color: PokeColors.pokeGreen
+                                              .withOpacity(0.5),
                                         ),
                                       ),
                                       child: const Text(
                                         'Active Lead',
                                         style: TextStyle(
-                                          color: Colors.greenAccent,
+                                          color: PokeColors.pokeGreenDark,
                                           fontSize: 10.5,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -793,11 +776,12 @@ Future<void> showCheckpointPartySheet(
                                       tooltip: 'Move Up',
                                       icon: const Icon(
                                         Icons.arrow_upward,
-                                        color: Colors.white70,
+                                        color: PokeColors.inkMuted,
                                         size: 18,
                                       ),
                                       onPressed: () {
-                                        liveTrainer.swapPartySlots(idx, idx - 1);
+                                        liveTrainer.swapPartySlots(
+                                            idx, idx - 1);
                                         onUpdated?.call();
                                       },
                                     ),
@@ -806,11 +790,12 @@ Future<void> showCheckpointPartySheet(
                                       tooltip: 'Move Down',
                                       icon: const Icon(
                                         Icons.arrow_downward,
-                                        color: Colors.white70,
+                                        color: PokeColors.inkMuted,
                                         size: 18,
                                       ),
                                       onPressed: () {
-                                        liveTrainer.swapPartySlots(idx, idx + 1);
+                                        liveTrainer.swapPartySlots(
+                                            idx, idx + 1);
                                         onUpdated?.call();
                                       },
                                     ),
@@ -820,7 +805,8 @@ Future<void> showCheckpointPartySheet(
                                         context,
                                         MaterialPageRoute(
                                           builder: (_) =>
-                                              PokemonDetailScreen(partyIndex: idx),
+                                              PokemonDetailScreen(
+                                                  partyIndex: idx),
                                         ),
                                       );
                                     },
@@ -836,9 +822,9 @@ Future<void> showCheckpointPartySheet(
                                       ),
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.cyanAccent,
-                                      side: BorderSide(
-                                        color: Colors.cyanAccent.withOpacity(0.55),
+                                      foregroundColor: PokeColors.pokeBlue,
+                                      side: const BorderSide(
+                                        color: PokeColors.pokeBlue,
                                       ),
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 8,
@@ -882,7 +868,7 @@ void _openGiveHeldItemModal(
 
   showModalBottomSheet(
     context: hostContext,
-    backgroundColor: const Color(0xFF121624),
+    backgroundColor: PokeColors.creamSurface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -893,37 +879,22 @@ void _openGiveHeldItemModal(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'GIVE ITEM TO ${mon.nickname.toUpperCase()}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.6,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white60),
-                  onPressed: () => Navigator.pop(dlgCtx),
-                ),
-              ],
+            PokeSheetHeader(
+              icon: Icons.shopping_bag_rounded,
+              accentColor: PokeColors.bagOrange,
+              title: 'GIVE ITEM TO ${mon.nickname.toUpperCase()}',
+              onClose: () => Navigator.pop(dlgCtx),
             ),
             const SizedBox(height: 10),
             if (eligibleItems.isEmpty)
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.04),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: PokeDecorations.inset(radius: 12),
                 child: const Center(
                   child: Text(
                     'No Berries or Held Items in your Bag!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                    style: TextStyle(color: PokeColors.inkMuted, fontSize: 12),
                   ),
                 ),
               )
@@ -967,10 +938,10 @@ void _openGiveHeldItemModal(
                           horizontal: 12,
                           vertical: 10,
                         ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1A2033),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: item.color.withOpacity(0.35)),
+                        decoration: PokeDecorations.card(
+                          border: item.color.withOpacity(0.55),
+                          radius: 12,
+                          borderWidth: 1.4,
                         ),
                         child: Row(
                           children: [
@@ -983,15 +954,15 @@ void _openGiveHeldItemModal(
                                   Text(
                                     '${item.name} (x$count)',
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: PokeColors.inkDark,
                                       fontSize: 13,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                   Text(
                                     item.description,
                                     style: const TextStyle(
-                                      color: Colors.white54,
+                                      color: PokeColors.inkMuted,
                                       fontSize: 10.5,
                                     ),
                                   ),

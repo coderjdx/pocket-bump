@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/rival.dart';
 import '../models/trainer.dart';
+import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/trainer_sprite.dart';
 import 'bump_screen.dart';
 
@@ -28,6 +30,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
 
   Future<void> _handleFriendToggle(Trainer trainer, RivalRecord rival) async {
     if (!rival.isFriend) {
+      SoundService.instance.playUiConfirm();
       trainer.toggleRivalFriend(rival.id);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -42,30 +45,51 @@ class _RivalsScreenState extends State<RivalsScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF141828),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: PokeColors.frameBorderSoft, width: 1.5),
+        ),
         title: Text(
           "Remove ${rival.name}?",
           style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            color: PokeColors.inkDark,
+            fontWeight: FontWeight.w900,
+            fontSize: 16,
+          ),
         ),
         content: Text(
           "${rival.name} will still remain in your Rivals list with ${rival.matches} ${rival.matches == 1 ? 'match' : 'matches'} recorded.",
-          style: const TextStyle(color: Colors.white70, fontSize: 13),
+          style: const TextStyle(
+            color: PokeColors.inkMuted,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dlgCtx, false),
-            child: const Text("Cancel", style: TextStyle(color: Colors.white60)),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                color: PokeColors.inkMuted,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(dlgCtx, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent.shade700,
+              backgroundColor: PokeColors.pokeRed,
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-            child: const Text("Remove Friend",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text(
+              "Remove Friend",
+              style: TextStyle(fontWeight: FontWeight.w900),
+            ),
           ),
         ],
       ),
@@ -84,35 +108,24 @@ class _RivalsScreenState extends State<RivalsScreen> {
         : trainer.rivals;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0D16),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0F1424),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "RIVALS & FRIENDS",
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.1,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "RIVALS & FRIENDS",
+        barColor: PokeColors.pokeBlue,
+        bottomBorderColor: PokeColors.pokeBlueDark,
         actions: [
           IconButton(
             tooltip: "Fist-Bump Link",
             onPressed: () {
+              SoundService.instance.playUiClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const BumpScreen()),
               );
             },
             icon: const Icon(Icons.sports_mma_rounded,
-                color: Colors.amberAccent, size: 20),
+                color: Colors.white, size: 22),
           ),
         ],
       ),
@@ -139,22 +152,23 @@ class _RivalsScreenState extends State<RivalsScreen> {
                 width: double.infinity,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF121728),
-                  borderRadius: BorderRadius.circular(11),
-                  border: Border.all(color: Colors.white10),
+                decoration: PokeDecorations.inset(
+                  fill: PokeColors.cardWhite,
+                  border: PokeColors.frameBorderSoft,
+                  radius: 12,
                 ),
                 child: const Row(
                   children: [
                     Icon(Icons.info_outline_rounded,
-                        color: Colors.cyanAccent, size: 15),
+                        color: PokeColors.pokeBlue, size: 16),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         "Saved locally on this device. Social & friend features will expand with trainer accounts.",
                         style: TextStyle(
-                          color: Colors.white60,
+                          color: PokeColors.inkMuted,
                           fontSize: 10.5,
+                          fontWeight: FontWeight.w600,
                           height: 1.25,
                         ),
                       ),
@@ -178,26 +192,25 @@ class _RivalsScreenState extends State<RivalsScreen> {
     return Container(
       margin: const EdgeInsets.fromLTRB(14, 12, 14, 10),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF1A2138), Color(0xFF111626)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.cyanAccent.withOpacity(0.28)),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.creamSurface,
+        border: PokeColors.pokeBlue.withOpacity(0.55),
+        radius: 16,
+        borderWidth: 1.6,
       ),
       child: Row(
         children: [
-          _buildSummaryStat("RIVALS", "${trainer.rivals.length}", Colors.white),
-          _buildDivider(),
-          _buildSummaryStat("MATCHES", "$totalMatches", Colors.lightBlueAccent),
-          _buildDivider(),
-          _buildSummaryStat("WINS", "$totalWins ($winPct%)",
-              const Color(0xFF34EB8C)),
+          _buildSummaryStat(
+              "RIVALS", "${trainer.rivals.length}", PokeColors.inkDark),
           _buildDivider(),
           _buildSummaryStat(
-              "FRIENDS", "${trainer.friendCount}", Colors.amberAccent),
+              "MATCHES", "$totalMatches", PokeColors.pokeBlueDark),
+          _buildDivider(),
+          _buildSummaryStat(
+              "WINS", "$totalWins ($winPct%)", PokeColors.pokeGreenDark),
+          _buildDivider(),
+          _buildSummaryStat(
+              "FRIENDS", "${trainer.friendCount}", PokeColors.badgeGoldDark),
         ],
       ),
     );
@@ -210,9 +223,9 @@ class _RivalsScreenState extends State<RivalsScreen> {
           Text(
             label,
             style: const TextStyle(
-              color: Colors.white54,
+              color: PokeColors.inkSubtle,
               fontSize: 9,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w900,
               letterSpacing: 0.7,
             ),
           ),
@@ -237,7 +250,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
     return Container(
       width: 1,
       height: 26,
-      color: Colors.white12,
+      color: PokeColors.frameBorderSoft,
       margin: const EdgeInsets.symmetric(horizontal: 4),
     );
   }
@@ -251,7 +264,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
             child: _buildFilterButton(
               label: "ALL RIVALS (${trainer.rivals.length})",
               selected: !_friendsOnly,
-              accent: Colors.cyanAccent,
+              accent: PokeColors.pokeBlue,
               onTap: () => setState(() => _friendsOnly = false),
             ),
           ),
@@ -260,7 +273,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
             child: _buildFilterButton(
               label: "FRIENDS (${trainer.friendCount})",
               selected: _friendsOnly,
-              accent: Colors.amberAccent,
+              accent: PokeColors.badgeGoldDark,
               onTap: () => setState(() => _friendsOnly = true),
             ),
           ),
@@ -279,20 +292,29 @@ class _RivalsScreenState extends State<RivalsScreen> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
-        padding: const EdgeInsets.symmetric(vertical: 9),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? accent.withOpacity(0.18) : const Color(0xFF141828),
-          borderRadius: BorderRadius.circular(11),
+          color: selected ? accent : PokeColors.cardWhite,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected ? accent : Colors.white12,
-            width: 1.2,
+            color: selected
+                ? PokeColors.darken(accent, 0.15)
+                : PokeColors.frameBorderSoft,
+            width: 1.5,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(selected ? 0.12 : 0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: selected ? Colors.white : Colors.white54,
+            color: selected ? Colors.white : PokeColors.inkMuted,
             fontSize: 11,
             fontWeight: FontWeight.w900,
             letterSpacing: 0.7,
@@ -307,21 +329,13 @@ class _RivalsScreenState extends State<RivalsScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: rival.isFriend
-              ? [const Color(0xFF1B243B), const Color(0xFF13192B)]
-              : [const Color(0xFF171C2E), const Color(0xFF101423)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: rival.isFriend
-              ? Colors.amberAccent.withOpacity(0.5)
-              : Colors.white12,
-          width: 1.2,
-        ),
+      decoration: PokeDecorations.card(
+        fill: rival.isFriend ? PokeColors.creamSurface : PokeColors.cardWhite,
+        border: rival.isFriend
+            ? PokeColors.badgeGold
+            : PokeColors.frameBorderSoft,
+        radius: 16,
+        borderWidth: rival.isFriend ? 1.8 : 1.4,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -331,12 +345,13 @@ class _RivalsScreenState extends State<RivalsScreen> {
             height: 58,
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: const Color(0xFF0B0E18),
+              color: PokeColors.panelSoft,
               borderRadius: BorderRadius.circular(13),
               border: Border.all(
                 color: rival.isFriend
-                    ? Colors.amberAccent.withOpacity(0.55)
-                    : Colors.cyanAccent.withOpacity(0.3),
+                    ? PokeColors.badgeGold
+                    : PokeColors.pokeBlue.withOpacity(0.45),
+                width: 1.4,
               ),
             ),
             child: TrainerSpriteWidget(
@@ -357,7 +372,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: PokeColors.inkDark,
                           fontSize: 15,
                           fontWeight: FontWeight.w900,
                         ),
@@ -369,21 +384,20 @@ class _RivalsScreenState extends State<RivalsScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.amberAccent.withOpacity(0.18),
+                          color: PokeColors.badgeGold.withOpacity(0.22),
                           borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                              color: Colors.amberAccent.withOpacity(0.7)),
+                          border: Border.all(color: PokeColors.badgeGoldDark),
                         ),
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star_rounded,
-                                size: 11, color: Colors.amberAccent),
+                                size: 11, color: PokeColors.badgeGoldDark),
                             SizedBox(width: 2),
                             Text(
                               "FRIEND",
                               style: TextStyle(
-                                color: Colors.amberAccent,
+                                color: PokeColors.badgeGoldDark,
                                 fontSize: 8.5,
                                 fontWeight: FontWeight.w900,
                                 letterSpacing: 0.6,
@@ -400,7 +414,11 @@ class _RivalsScreenState extends State<RivalsScreen> {
                   "${rival.title} • ${_formatRelativeTime(rival.lastBattledAt)}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white54, fontSize: 10.5),
+                  style: const TextStyle(
+                    color: PokeColors.inkMuted,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 7),
                 Wrap(
@@ -409,15 +427,15 @@ class _RivalsScreenState extends State<RivalsScreen> {
                   children: [
                     _buildMetricChip(
                       "MATCHES ${rival.matches}",
-                      Colors.lightBlueAccent,
+                      PokeColors.pokeBlueDark,
                     ),
                     _buildMetricChip(
                       "WINS ${rival.wins}",
-                      const Color(0xFF34EB8C),
+                      PokeColors.pokeGreenDark,
                     ),
                     _buildMetricChip(
                       "LAST: ${lastWon ? 'WIN' : 'LOSS'}",
-                      lastWon ? const Color(0xFF34EB8C) : Colors.redAccent,
+                      lastWon ? PokeColors.pokeGreenDark : PokeColors.pokeRed,
                     ),
                   ],
                 ),
@@ -432,19 +450,24 @@ class _RivalsScreenState extends State<RivalsScreen> {
                   label: const Text(
                     "FRIEND",
                     style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.5),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.amberAccent,
-                    side: BorderSide(
-                        color: Colors.amberAccent.withOpacity(0.65)),
+                    backgroundColor: PokeColors.cardWhite,
+                    foregroundColor: PokeColors.badgeGoldDark,
+                    side: const BorderSide(
+                      color: PokeColors.badgeGoldDark,
+                      width: 1.4,
+                    ),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 8),
                     minimumSize: Size.zero,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 )
               : ElevatedButton.icon(
@@ -453,18 +476,20 @@ class _RivalsScreenState extends State<RivalsScreen> {
                   label: const Text(
                     "ADD FRIEND",
                     style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 0.4),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.4,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF00ACC1),
-                    foregroundColor: Colors.black,
+                    backgroundColor: PokeColors.linkTeal,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 9),
                     minimumSize: Size.zero,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
         ],
@@ -476,9 +501,9 @@ class _RivalsScreenState extends State<RivalsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withOpacity(0.11),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withOpacity(0.45)),
       ),
       child: Text(
         text,
@@ -499,10 +524,10 @@ class _RivalsScreenState extends State<RivalsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 28),
         child: Container(
           padding: const EdgeInsets.all(22),
-          decoration: BoxDecoration(
-            color: const Color(0xFF131829),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: Colors.white12),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface,
+            border: PokeColors.frameBorderSoft,
+            radius: 18,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -511,14 +536,16 @@ class _RivalsScreenState extends State<RivalsScreen> {
                 hasAnyRivals
                     ? Icons.star_border_rounded
                     : Icons.sports_mma_rounded,
-                size: 44,
-                color: hasAnyRivals ? Colors.amberAccent : Colors.cyanAccent,
+                size: 46,
+                color: hasAnyRivals
+                    ? PokeColors.badgeGoldDark
+                    : PokeColors.pokeBlue,
               ),
               const SizedBox(height: 12),
               Text(
                 hasAnyRivals ? "No Friends Added Yet" : "No Rivals Yet",
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: PokeColors.inkDark,
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
@@ -530,8 +557,9 @@ class _RivalsScreenState extends State<RivalsScreen> {
                     : "Complete a Fist-Bump Battle with another player to record your rivalry, match count, and wins here.",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: Colors.white60,
+                  color: PokeColors.inkMuted,
                   fontSize: 12,
+                  fontWeight: FontWeight.w600,
                   height: 1.4,
                 ),
               ),
@@ -540,11 +568,18 @@ class _RivalsScreenState extends State<RivalsScreen> {
                 OutlinedButton(
                   onPressed: () => setState(() => _friendsOnly = false),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.cyanAccent,
-                    side: const BorderSide(color: Colors.cyanAccent),
+                    backgroundColor: PokeColors.cardWhite,
+                    foregroundColor: PokeColors.pokeBlueDark,
+                    side: const BorderSide(
+                        color: PokeColors.pokeBlue, width: 1.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text("SHOW ALL RIVALS",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    "SHOW ALL RIVALS",
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  ),
                 )
               else
                 ElevatedButton.icon(
@@ -559,15 +594,18 @@ class _RivalsScreenState extends State<RivalsScreen> {
                   label: const Text(
                     "OPEN FIST-BUMP LINK",
                     style: TextStyle(
-                        fontWeight: FontWeight.w900, letterSpacing: 0.6),
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.6,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFD32F2F),
+                    backgroundColor: PokeColors.pokeRed,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 18, vertical: 12),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
             ],

@@ -8,6 +8,7 @@ import '../services/expedition_database.dart';
 import '../services/item_drop_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/trainer_sprite.dart';
 import 'battle_screen.dart';
@@ -21,51 +22,26 @@ class ExpeditionsScreen extends StatelessWidget {
     final bool unlocked = trainer.isExpeditionsUnlocked;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0D18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC090D18),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          "EXPEDITIONS",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.3,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "EXPEDITIONS",
+        barColor: PokeColors.linkTeal,
+        bottomBorderColor: PokeColors.linkTealDark,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_expeditions.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF080C18).withOpacity(0.58),
-                  const Color(0xFF0A0E1B).withOpacity(0.55),
-                  const Color(0xFF070A12).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_expeditions.png',
+            topOpacity: 0.22,
+            midOpacity: 0.45,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
+            top: false,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 24),
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 24),
               children: [
                 _buildOverviewBanner(trainer, unlocked),
                 const SizedBox(height: 12),
@@ -82,19 +58,15 @@ class ExpeditionsScreen extends StatelessWidget {
   }
 
   Widget _buildOverviewBanner(Trainer trainer, bool unlocked) {
+    final Color statusColor =
+        unlocked ? PokeColors.linkTealDark : PokeColors.pokeRed;
     return Container(
       padding: const EdgeInsets.all(13),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xE8131A2C), Color(0xEC0C101C)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: (unlocked ? Colors.cyanAccent : Colors.redAccent)
-              .withOpacity(0.45),
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.creamSurface,
+        border: statusColor,
+        radius: 16,
+        borderWidth: 1.6,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +75,7 @@ class ExpeditionsScreen extends StatelessWidget {
             children: [
               Icon(
                 unlocked ? Icons.explore_rounded : Icons.lock_rounded,
-                color: unlocked ? Colors.cyanAccent : Colors.redAccent,
+                color: statusColor,
                 size: 20,
               ),
               const SizedBox(width: 8),
@@ -113,7 +85,7 @@ class ExpeditionsScreen extends StatelessWidget {
                       ? "HIGH-RISK EXPEDITIONS"
                       : "LOCKED • REQUIRES ALL 8 GYM BADGES (${trainer.clearedGymIds.length}/8)",
                   style: TextStyle(
-                    color: unlocked ? Colors.cyanAccent : Colors.redAccent,
+                    color: statusColor,
                     fontWeight: FontWeight.w900,
                     fontSize: 11.5,
                     letterSpacing: 0.7,
@@ -126,8 +98,9 @@ class ExpeditionsScreen extends StatelessWidget {
           const Text(
             "Endure 3 Lv.99 wild battles with zero rest and defeat a Lv.99 Team Rocket ambush deep in uncharted Kanto.",
             style: TextStyle(
-              color: Colors.white70,
+              color: PokeColors.inkMuted,
               fontSize: 11,
+              fontWeight: FontWeight.w600,
               height: 1.35,
             ),
           ),
@@ -142,28 +115,20 @@ class ExpeditionsScreen extends StatelessWidget {
     ExpeditionDestination dest,
     bool unlocked,
   ) {
+    final Color darkAccent = PokeColors.darken(dest.accentColor, 0.16);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            dest.accentColor.withOpacity(0.18),
-            const Color(0xEB101524),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: dest.accentColor.withOpacity(unlocked ? 0.55 : 0.2),
-          width: 1.3,
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: unlocked ? darkAccent : PokeColors.frameBorderSoft,
+        radius: 18,
+        borderWidth: 1.6,
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            height: 92,
+            height: 94,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -178,9 +143,9 @@ class ExpeditionsScreen extends StatelessWidget {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
-                        const Color(0xFF0A0E1A).withOpacity(0.86),
-                        const Color(0xFF0A0E1A).withOpacity(0.35),
-                        const Color(0xFF0A0E1A).withOpacity(0.82),
+                        Colors.black.withOpacity(0.72),
+                        Colors.black.withOpacity(0.28),
+                        Colors.black.withOpacity(0.55),
                       ],
                     ),
                   ),
@@ -188,31 +153,25 @@ class ExpeditionsScreen extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              dest.name.toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                                letterSpacing: 0.7,
-                              ),
-                            ),
-                            Text(
-                              dest.subtitle,
-                              style: TextStyle(
-                                color: dest.accentColor,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
+                      Text(
+                        dest.name.toUpperCase(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      Text(
+                        dest.subtitle,
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 11,
                         ),
                       ),
                     ],
@@ -229,7 +188,7 @@ class ExpeditionsScreen extends StatelessWidget {
                 Text(
                   dest.description,
                   style: const TextStyle(
-                    color: Colors.white70,
+                    color: PokeColors.inkMuted,
                     fontSize: 11.5,
                     height: 1.32,
                   ),
@@ -273,10 +232,10 @@ class ExpeditionsScreen extends StatelessWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: dest.accentColor,
-                      foregroundColor: Colors.black,
-                      disabledBackgroundColor: Colors.white12,
-                      disabledForegroundColor: Colors.white38,
+                      backgroundColor: darkAccent,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: PokeColors.panelSoft,
+                      disabledForegroundColor: PokeColors.inkSubtle,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(11),
                       ),
@@ -440,7 +399,6 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
       return;
     }
 
-    // Team Rocket item drops (1–3 wild-tier items + 1 random Special Poké Ball)
     final rocketDrops = ItemDropService.rollExpeditionRocketDrops(
       isJessieOrJames: rocket.isJessieOrJames,
     );
@@ -450,7 +408,6 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     trainer.saveProgress();
     _rocketDrops = rocketDrops;
 
-    // 1% one-time Master Ball reward when defeating Jessie or James
     if (rocket.isJessieOrJames &&
         !trainer.hasEarnedExpeditionMasterBall &&
         Random().nextDouble() < 0.01) {
@@ -458,7 +415,6 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
       _earnedMasterBall = true;
     }
 
-    // Roll 0.01% Mew or 5% Location Legendary
     final boss = ExpeditionDatabase.rollPostRocketBoss(
       destination: widget.destination,
       trainer: trainer,
@@ -500,8 +456,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     if (!mounted) return;
     setState(() => _busyLaunching = false);
 
-    final bool caughtNow =
-        !alreadyCaughtBefore && trainer.hasCaughtExpeditionSpecies(boss.species.id);
+    final bool caughtNow = !alreadyCaughtBefore &&
+        trainer.hasCaughtExpeditionSpecies(boss.species.id);
     setState(() {
       _caughtBossThisRun = caughtNow;
       _bossEscapedThisRun = !caughtNow && won == true;
@@ -518,27 +474,15 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     return PopScope(
       canPop: _phase == _ExpeditionPhase.summary,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0A0D18),
+        backgroundColor: PokeColors.canvasCream,
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              dest.backgroundAsset,
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.none,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF090D18).withOpacity(0.68),
-                    const Color(0xFF0A0E1B).withOpacity(0.75),
-                    const Color(0xFF070A12).withOpacity(0.94),
-                  ],
-                ),
-              ),
+            PokeBackdrop(
+              assetPath: dest.backgroundAsset,
+              topOpacity: 0.24,
+              midOpacity: 0.48,
+              bottomOpacity: 0.88,
             ),
             SafeArea(
               child: Padding(
@@ -562,6 +506,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
   }
 
   Widget _buildTopStepHeader(ExpeditionDestination dest) {
+    final Color darkAccent = PokeColors.darken(dest.accentColor, 0.16);
     final String stageText;
     switch (_phase) {
       case _ExpeditionPhase.arrival:
@@ -584,33 +529,35 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xE0101626),
+        color: darkAccent,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: dest.accentColor.withOpacity(0.5)),
+        border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            dest.name.toUpperCase(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 13.5,
-              letterSpacing: 0.7,
+          Flexible(
+            child: Text(
+              dest.name.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: 13.5,
+                letterSpacing: 0.7,
+              ),
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: dest.accentColor.withOpacity(0.18),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: dest.accentColor.withOpacity(0.65)),
             ),
             child: Text(
               stageText,
               style: TextStyle(
-                color: dest.accentColor,
+                color: darkAccent,
                 fontWeight: FontWeight.w900,
                 fontSize: 9.5,
                 letterSpacing: 0.5,
@@ -625,10 +572,10 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
   Widget _buildPartyStatusStrip(Trainer trainer) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color(0xE00C111E),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white12),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.creamSurface,
+        border: PokeColors.frameBorderSoft,
+        radius: 14,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -636,7 +583,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           const Text(
             "PARTY CONDITION (NO REST BETWEEN BATTLES)",
             style: TextStyle(
-              color: Colors.amberAccent,
+              color: PokeColors.badgeGoldDark,
               fontSize: 9.5,
               fontWeight: FontWeight.w900,
               letterSpacing: 0.5,
@@ -660,8 +607,9 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                             mon.nickname,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color:
-                                  mon.isFainted ? Colors.redAccent : Colors.white,
+                              color: mon.isFainted
+                                  ? PokeColors.pokeRed
+                                  : PokeColors.inkDark,
                               fontSize: 10.5,
                               fontWeight: FontWeight.bold,
                             ),
@@ -670,14 +618,19 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                         Text(
                           mon.isFainted ? "FNT" : "Lv.${mon.level}",
                           style: const TextStyle(
-                            color: Colors.white60,
+                            color: PokeColors.inkMuted,
                             fontSize: 9.5,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 2),
-                    HpBar(currentHp: mon.currentHp, maxHp: mon.maxHp),
+                    HpBar(
+                      currentHp: mon.currentHp,
+                      maxHp: mon.maxHp,
+                      textColor: PokeColors.inkMuted,
+                      hpLabelColor: PokeColors.badgeGoldDark,
+                    ),
                   ],
                 ),
               );
@@ -689,6 +642,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
   }
 
   Widget _buildPhaseBody(Trainer trainer, ExpeditionDestination dest) {
+    final Color darkAccent = PokeColors.darken(dest.accentColor, 0.16);
     switch (_phase) {
       case _ExpeditionPhase.arrival:
         return Column(
@@ -696,10 +650,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xE0111626),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: dest.accentColor.withOpacity(0.45)),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.creamSurface,
+                  border: darkAccent,
+                  radius: 20,
+                  borderWidth: 1.6,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -718,7 +673,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     Text(
                       "Arriving at ${dest.name}",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 19,
                       ),
@@ -728,7 +683,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       dest.arrivalNarration,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: PokeColors.inkMuted,
                         fontSize: 13,
                         height: 1.4,
                       ),
@@ -754,8 +709,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: dest.accentColor,
-                  foregroundColor: Colors.black,
+                  backgroundColor: darkAccent,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -771,21 +726,22 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: const Color(0xE0111626),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: dest.accentColor.withOpacity(0.45)),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.creamSurface,
+                  border: darkAccent,
+                  radius: 20,
+                  borderWidth: 1.6,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.warning_amber_rounded,
-                        color: dest.accentColor, size: 48),
+                        color: darkAccent, size: 48),
                     const SizedBox(height: 12),
                     Text(
                       "Wild Encounter $_wildCompleted of 3 Cleared!",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 18,
                       ),
@@ -795,7 +751,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       "Another fierce Lv.99 wild Pokémon blocks the path deeper into ${dest.name}. Your team gets no rest!",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: PokeColors.inkMuted,
                         fontSize: 13,
                         height: 1.4,
                       ),
@@ -815,8 +771,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     ? null
                     : () => _startWildStage(_wildCompleted),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: dest.accentColor,
-                  foregroundColor: Colors.black,
+                  backgroundColor: darkAccent,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -840,10 +796,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color(0xE8171122),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.redAccent.withOpacity(0.6)),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.creamSurface,
+                  border: PokeColors.pokeRed,
+                  radius: 20,
+                  borderWidth: 1.8,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -859,7 +816,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                       child: Image.asset(
                         'assets/images/rocket_balloon.png',
-                        height: 128,
+                        height: 124,
                         fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
@@ -867,7 +824,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     const SizedBox(height: 8),
                     TrainerSpriteWidget(
                       spriteId: rocket.spriteId,
-                      size: 98,
+                      size: 96,
                     ),
                     const SizedBox(height: 8),
                     Container(
@@ -875,14 +832,9 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                           horizontal: 10, vertical: 3),
                       decoration: BoxDecoration(
                         color: rocket.isJessieOrJames
-                            ? Colors.purpleAccent.withOpacity(0.25)
-                            : Colors.red.withOpacity(0.25),
+                            ? const Color(0xFF7B1FA2)
+                            : PokeColors.pokeRed,
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: rocket.isJessieOrJames
-                              ? Colors.purpleAccent
-                              : Colors.redAccent,
-                        ),
                       ),
                       child: Text(
                         rocket.isJessieOrJames
@@ -901,7 +853,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       "\"${rocket.introDialogue}\"",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: PokeColors.inkMuted,
                         fontStyle: FontStyle.italic,
                         fontSize: 12.5,
                         height: 1.35,
@@ -911,7 +863,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     const Text(
                       "Full Party of 6 • Lv. 99",
                       style: TextStyle(
-                        color: Colors.amberAccent,
+                        color: PokeColors.badgeGoldDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 11,
                       ),
@@ -937,7 +889,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent.shade700,
+                  backgroundColor: PokeColors.pokeRed,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -951,24 +903,17 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
       case _ExpeditionPhase.legendaryReveal:
         final boss = _bossEncounter!;
         final bool isMew = boss.species.id == ExpeditionDatabase.mewSpeciesId;
+        final Color bossColor = isMew ? PokeColors.centerRose : darkAccent;
         return Column(
           children: [
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [
-                      (isMew ? Colors.pinkAccent : dest.accentColor)
-                          .withOpacity(0.28),
-                      const Color(0xEC0E1322),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isMew ? Colors.pinkAccent : dest.accentColor,
-                    width: 1.6,
-                  ),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.creamSurface,
+                  border: bossColor,
+                  radius: 20,
+                  borderWidth: 2.0,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -978,7 +923,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                           ? "MYTHICAL POKÉMON APPEARED!"
                           : "LEGENDARY POKÉMON APPEARED!",
                       style: TextStyle(
-                        color: isMew ? Colors.pinkAccent : Colors.amberAccent,
+                        color: bossColor,
                         fontWeight: FontWeight.w900,
                         fontSize: 13,
                         letterSpacing: 1.0,
@@ -1001,7 +946,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     Text(
                       "Wild ${boss.species.name} • Lv. ${boss.level}",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                       ),
@@ -1011,7 +956,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       "Poké Balls will be deflected while it can still fight! Knock it out to earn your chance to catch it (calms to Lv. 50 if caught).",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white70,
+                        color: PokeColors.inkMuted,
                         fontSize: 12,
                         height: 1.38,
                       ),
@@ -1043,8 +988,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isMew ? Colors.pinkAccent : dest.accentColor,
-                  foregroundColor: isMew ? Colors.white : Colors.black,
+                  backgroundColor: bossColor,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -1055,6 +1000,9 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
         );
 
       case _ExpeditionPhase.summary:
+        final Color summaryColor = _expeditionFailed
+            ? PokeColors.pokeRed
+            : (_caughtBossThisRun ? PokeColors.badgeGoldDark : darkAccent);
         final String headline = _expeditionFailed
             ? "Expedition Failed!"
             : _caughtBossThisRun
@@ -1075,16 +1023,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           children: [
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xEB111626),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: _expeditionFailed
-                      ? Colors.redAccent
-                      : (_caughtBossThisRun
-                          ? Colors.amberAccent
-                          : dest.accentColor),
-                ),
+              decoration: PokeDecorations.card(
+                fill: PokeColors.creamSurface,
+                border: summaryColor,
+                radius: 20,
+                borderWidth: 1.8,
               ),
               child: Column(
                 children: [
@@ -1095,17 +1038,13 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                             ? Icons.workspace_premium_rounded
                             : Icons.verified_rounded),
                     size: 52,
-                    color: _expeditionFailed
-                        ? Colors.redAccent
-                        : (_caughtBossThisRun
-                            ? Colors.amberAccent
-                            : dest.accentColor),
+                    color: summaryColor,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     headline,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: PokeColors.inkDark,
                       fontWeight: FontWeight.w900,
                       fontSize: 20,
                     ),
@@ -1115,7 +1054,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     body,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: PokeColors.inkMuted,
                       fontSize: 13,
                       height: 1.4,
                     ),
@@ -1138,8 +1077,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: dest.accentColor,
-                  foregroundColor: Colors.black,
+                  backgroundColor: darkAccent,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                   ),
@@ -1162,22 +1101,22 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFF172036).withOpacity(0.92),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.cyanAccent.withOpacity(0.45)),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: PokeColors.pokeBlue,
+        radius: 14,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
-              Icon(Icons.backpack_rounded, color: Colors.cyanAccent, size: 17),
+              Icon(Icons.backpack_rounded, color: PokeColors.pokeBlue, size: 17),
               SizedBox(width: 7),
               Text(
                 "TEAM ROCKET LOOT DROPPED",
                 style: TextStyle(
-                  color: Colors.cyanAccent,
+                  color: PokeColors.pokeBlueDark,
                   fontWeight: FontWeight.w900,
                   fontSize: 11,
                   letterSpacing: 0.5,
@@ -1194,12 +1133,10 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
               final bool isBall = itemDef?.isBall == true;
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black38,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: (itemDef?.color ?? Colors.cyanAccent).withOpacity(0.45),
-                  ),
+                decoration: PokeDecorations.inset(
+                  radius: 8,
+                  border:
+                      (itemDef?.color ?? PokeColors.pokeBlue).withOpacity(0.45),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -1209,14 +1146,14 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                     else
                       Icon(
                         itemDef?.icon ?? Icons.inventory_2_rounded,
-                        color: itemDef?.color ?? Colors.white70,
+                        color: itemDef?.color ?? PokeColors.inkDark,
                         size: 14,
                       ),
                     const SizedBox(width: 5),
                     Text(
                       "${drop.count}x ${drop.itemName}",
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
                       ),
@@ -1235,14 +1172,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.purple.shade900.withOpacity(0.85),
-            Colors.deepPurple.shade900.withOpacity(0.85),
-          ],
+        gradient: const LinearGradient(
+          colors: [Color(0xFF7B1FA2), Color(0xFF4A148C)],
         ),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.purpleAccent),
+        border: Border.all(color: const Color(0xFFFFD54F), width: 1.5),
       ),
       child: const Row(
         children: [
@@ -1255,7 +1189,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                 Text(
                   "RARE REWARD: MASTER BALL!",
                   style: TextStyle(
-                    color: Colors.amberAccent,
+                    color: Color(0xFFFFD54F),
                     fontWeight: FontWeight.w900,
                     fontSize: 11.5,
                   ),

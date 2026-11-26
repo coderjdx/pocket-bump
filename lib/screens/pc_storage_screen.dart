@@ -5,6 +5,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../widgets/poke_theme.dart';
 import 'pokemon_detail_screen.dart';
 
 class PcStorageScreen extends StatefulWidget {
@@ -15,7 +16,6 @@ class PcStorageScreen extends StatefulWidget {
 }
 
 class _PcStorageScreenState extends State<PcStorageScreen> {
-  // Selection state: either a PC slot or a Party slot (or none)
   bool _selectedInParty = false;
   int? _selectedBoxIndex;
   int? _selectedSlotIndex;
@@ -156,14 +156,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
         final PokemonInstance? selectedMon = _resolveSelectedPokemon(trainer);
 
         return Scaffold(
-          backgroundColor: const Color(0xFF0B0C18),
-          extendBodyBehindAppBar: true,
+          backgroundColor: PokeColors.canvasCream,
           appBar: AppBar(
-            backgroundColor: const Color(0xCC0D0E1B),
-            elevation: 0,
+            backgroundColor: PokeColors.pcTeal,
+            foregroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            elevation: 2,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white70, size: 18),
+                  color: Colors.white, size: 18),
               onPressed: () => Navigator.pop(context),
             ),
             title: Column(
@@ -180,10 +181,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ),
                 Text(
                   "${trainer.totalPcPokemon}/${trainer.maxPcCapacity} Stored • 16 Boxes × 20 Slots",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10,
-                    color: Colors.purpleAccent.shade100,
-                    fontWeight: FontWeight.w600,
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
@@ -191,7 +192,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
-                child: OutlinedButton.icon(
+                child: ElevatedButton.icon(
                   onPressed: () => _openBoxGridModal(trainer),
                   icon: const Icon(Icons.grid_view_rounded, size: 14),
                   label: const Text(
@@ -202,12 +203,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                       letterSpacing: 0.5,
                     ),
                   ),
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0A0B14),
-                    foregroundColor: Colors.purpleAccent.shade100,
-                    side: BorderSide(
-                      color: Colors.purpleAccent.withOpacity(0.6),
-                    ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: PokeColors.cardWhite,
+                    foregroundColor: PokeColors.pcTealDark,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -216,29 +214,22 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ),
               ),
             ],
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(3),
+              child: Container(height: 3, color: PokeColors.pcTealDark),
+            ),
           ),
           body: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(
-                'assets/images/bg_pc_storage.png',
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.none,
-              ),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      const Color(0xFF0E0C1D).withOpacity(0.74),
-                      const Color(0xFF100E22).withOpacity(0.60),
-                      const Color(0xFF090814).withOpacity(0.88),
-                    ],
-                  ),
-                ),
+              const PokeBackdrop(
+                assetPath: 'assets/images/bg_pc_storage.png',
+                topOpacity: 0.24,
+                midOpacity: 0.50,
+                bottomOpacity: 0.88,
               ),
               SafeArea(
+                top: false,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
                   child: Column(
@@ -247,21 +238,21 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                       _buildBoxHeaderBar(trainer, boxIdx, currentBox.length),
                       const SizedBox(height: 8),
 
-                      // 2. 5x4 (20-slot) Holographic PC Box Grid
+                      // 2. 5x4 (20-slot) Classic Sky-Blue PC Box Grid
                       Expanded(
                         flex: 5,
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xE8131426), Color(0xE80C0E1B)],
+                              colors: [Color(0xFFE3F2FD), Color(0xFFBBDEFB)],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ),
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
-                              color: Colors.purpleAccent.withOpacity(0.45),
-                              width: 1.2,
+                              color: PokeColors.pcTealDark,
+                              width: 1.8,
                             ),
                           ),
                           child: Column(
@@ -328,21 +319,18 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     return Container(
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.deepPurple.shade900.withOpacity(0.68),
-            const Color(0xEA141628),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(13),
-        border: Border.all(color: Colors.purpleAccent.withOpacity(0.55)),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: PokeColors.pcTeal,
+        radius: 13,
+        borderWidth: 1.6,
       ),
       child: Row(
         children: [
           IconButton(
             onPressed: () => _switchBox(trainer, boxIdx - 1),
-            icon: const Icon(Icons.chevron_left_rounded, color: Colors.white),
+            icon: const Icon(Icons.chevron_left_rounded,
+                color: PokeColors.pcTealDark),
             tooltip: "Previous Box",
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
@@ -358,10 +346,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0A0B16),
+                      color: PokeColors.pcTeal,
                       borderRadius: BorderRadius.circular(7),
-                      border: Border.all(
-                          color: Colors.purpleAccent.withOpacity(0.55)),
                     ),
                     child: Text(
                       "BOX ${boxIdx + 1}",
@@ -377,7 +363,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   Text(
                     "$count/${Trainer.maxPokemonPerBox}",
                     style: TextStyle(
-                      color: isFull ? Colors.amberAccent : Colors.white70,
+                      color: isFull
+                          ? PokeColors.pokeRed
+                          : PokeColors.inkDark,
                       fontWeight: FontWeight.w900,
                       fontSize: 12,
                     ),
@@ -387,16 +375,16 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.greenAccent.withOpacity(0.15),
+                      color: PokeColors.pokeGreen.withOpacity(0.14),
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
-                        color: Colors.greenAccent.withOpacity(0.55),
+                        color: PokeColors.pokeGreen,
                       ),
                     ),
                     child: const Text(
                       "ACTIVE",
                       style: TextStyle(
-                        color: Colors.greenAccent,
+                        color: PokeColors.pokeGreenDark,
                         fontSize: 8,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.5,
@@ -409,7 +397,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
           ),
           IconButton(
             onPressed: () => _switchBox(trainer, boxIdx + 1),
-            icon: const Icon(Icons.chevron_right_rounded, color: Colors.white),
+            icon: const Icon(Icons.chevron_right_rounded,
+                color: PokeColors.pcTealDark),
             tooltip: "Next Box",
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
@@ -428,15 +417,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     if (mon == null) {
       return Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF0B0C16),
+          color: Colors.white.withOpacity(0.55),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white.withOpacity(0.08)),
+          border: Border.all(color: const Color(0xFF90CAF9)),
         ),
         child: Center(
           child: Text(
             "${slotIdx + 1}",
             style: const TextStyle(
-              color: Colors.white24,
+              color: Color(0xFF5488B8),
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -456,20 +445,22 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isSelected
-                ? [typeColor.withOpacity(0.32), const Color(0xFF15182B)]
-                : [typeColor.withOpacity(0.12), const Color(0xFF141626)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: PokeColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
-                ? Colors.amberAccent
-                : typeColor.withOpacity(0.55),
-            width: isSelected ? 1.8 : 1.0,
+                ? PokeColors.pokeRed
+                : typeColor.withOpacity(0.85),
+            width: isSelected ? 2.2 : 1.3,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: PokeColors.pokeRed.withOpacity(0.28),
+                    blurRadius: 6,
+                  ),
+                ]
+              : null,
         ),
         child: Stack(
           children: [
@@ -489,7 +480,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   "Lv${mon.level}",
                   maxLines: 1,
                   style: const TextStyle(
-                    color: Color(0xFFFFD54F),
+                    color: PokeColors.inkDark,
                     fontSize: 8.5,
                     fontWeight: FontWeight.w900,
                   ),
@@ -502,7 +493,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 left: 2,
                 child: Icon(
                   Icons.auto_awesome_rounded,
-                  color: Colors.amberAccent,
+                  color: PokeColors.badgeGoldDark,
                   size: 11,
                 ),
               ),
@@ -513,7 +504,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 child: Icon(
                   Icons.shopping_bag,
                   size: 10,
-                  color: Colors.cyanAccent,
+                  color: PokeColors.bagOrangeDark,
                 ),
               ),
           ],
@@ -532,16 +523,16 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
       return Container(
         constraints: const BoxConstraints(minHeight: 104),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xE816172A), Color(0xE80E101D)],
-          ),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.white12),
+        decoration: PokeDecorations.card(
+          fill: PokeColors.creamSurface,
+          border: PokeColors.pcTeal,
+          radius: 15,
+          borderWidth: 1.5,
         ),
         child: const Row(
           children: [
-            Icon(Icons.computer_rounded, color: Colors.purpleAccent, size: 28),
+            Icon(Icons.computer_rounded,
+                color: PokeColors.pcTealDark, size: 28),
             SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -552,7 +543,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   Text(
                     "PC TERMINAL READY",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: PokeColors.inkDark,
                       fontWeight: FontWeight.w900,
                       fontSize: 12.5,
                       letterSpacing: 0.7,
@@ -561,7 +552,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   SizedBox(height: 3),
                   Text(
                     "Tap any Pokémon in the Box above or your Party below to view info, withdraw, deposit, swap, move between boxes, or release.",
-                    style: TextStyle(color: Colors.white60, fontSize: 10.5),
+                    style:
+                        TextStyle(color: PokeColors.inkMuted, fontSize: 10.5),
                   ),
                 ],
               ),
@@ -580,20 +572,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     return Container(
       constraints: const BoxConstraints(minHeight: 104),
       padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            primaryColor.withOpacity(0.22),
-            const Color(0xEA121423),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: primaryColor.withOpacity(0.65), width: 1.2),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: primaryColor,
+        radius: 15,
+        borderWidth: 1.6,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Top info row
           Row(
             children: [
               Expanded(
@@ -615,9 +602,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 1),
                                   decoration: BoxDecoration(
-                                    color: _selectedInParty
-                                        ? Colors.redAccent.withOpacity(0.22)
-                                        : Colors.purpleAccent.withOpacity(0.22),
+                                    color: (_selectedInParty
+                                            ? PokeColors.pokeRed
+                                            : PokeColors.pcTeal)
+                                        .withOpacity(0.14),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
@@ -626,10 +614,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                                         : "BOX ${boxIdx + 1}",
                                     style: TextStyle(
                                       color: _selectedInParty
-                                          ? Colors.redAccent.shade100
-                                          : Colors.purpleAccent.shade100,
+                                          ? PokeColors.pokeRedDark
+                                          : PokeColors.pcTealDark,
                                       fontSize: 8.5,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
@@ -639,8 +627,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                                     selectedMon.nickname,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                      color: PokeColors.inkDark,
+                                      fontWeight: FontWeight.w900,
                                       fontSize: 13.5,
                                     ),
                                   ),
@@ -649,8 +637,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                                 Text(
                                   "Lv.${selectedMon.level}",
                                   style: const TextStyle(
-                                    color: Colors.amberAccent,
-                                    fontWeight: FontWeight.bold,
+                                    color: PokeColors.badgeGoldDark,
+                                    fontWeight: FontWeight.w900,
                                     fontSize: 11.5,
                                   ),
                                 ),
@@ -662,8 +650,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white70,
+                                color: PokeColors.inkMuted,
                                 fontSize: 9.5,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -674,7 +663,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white54,
+                                color: PokeColors.inkSubtle,
                                 fontSize: 9.5,
                               ),
                             ),
@@ -697,8 +686,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.cyanAccent,
-                  side: BorderSide(color: Colors.cyanAccent.withOpacity(0.55)),
+                  foregroundColor: PokeColors.pokeBlue,
+                  side: const BorderSide(color: PokeColors.pokeBlue),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                   minimumSize: Size.zero,
@@ -710,7 +699,6 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          // Bottom action buttons row
           if (_selectedInParty)
             _buildPartyActionButtons(
               trainer,
@@ -756,13 +744,14 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
               icon: const Icon(Icons.download, size: 14),
               label: Text(
                 canWithdraw ? "Withdraw" : "Party Full",
-                style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.greenAccent.shade400,
-                foregroundColor: Colors.black,
-                disabledBackgroundColor: Colors.white10,
-                disabledForegroundColor: Colors.white38,
+                backgroundColor: PokeColors.pokeGreen,
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: PokeColors.panelSoft,
+                disabledForegroundColor: PokeColors.inkSubtle,
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
@@ -782,8 +771,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.cyanAccent,
-                side: BorderSide(color: Colors.cyanAccent.withOpacity(0.55)),
+                foregroundColor: PokeColors.pokeBlueDark,
+                side: const BorderSide(color: PokeColors.pokeBlue),
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
@@ -808,8 +797,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.purpleAccent.shade100,
-                side: BorderSide(color: Colors.purpleAccent.withOpacity(0.55)),
+                foregroundColor: PokeColors.pcTealDark,
+                side: const BorderSide(color: PokeColors.pcTeal),
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
@@ -833,8 +822,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
               },
             ),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.redAccent,
-              side: BorderSide(color: Colors.redAccent.withOpacity(0.55)),
+              foregroundColor: PokeColors.pokeRed,
+              side: const BorderSide(color: PokeColors.pokeRed),
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
@@ -888,10 +877,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     const TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purpleAccent.shade200,
-                foregroundColor: Colors.black,
-                disabledBackgroundColor: Colors.white10,
-                disabledForegroundColor: Colors.white38,
+                backgroundColor: PokeColors.pcTeal,
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: PokeColors.panelSoft,
+                disabledForegroundColor: PokeColors.inkSubtle,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
@@ -916,8 +905,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                   style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.bold),
                 ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.amberAccent,
-                  side: BorderSide(color: Colors.amberAccent.withOpacity(0.55)),
+                  foregroundColor: PokeColors.badgeGoldDark,
+                  side: const BorderSide(color: PokeColors.badgeGold),
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
@@ -942,8 +931,8 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 },
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.redAccent,
-                side: BorderSide(color: Colors.redAccent.withOpacity(0.55)),
+                foregroundColor: PokeColors.pokeRed,
+                side: const BorderSide(color: PokeColors.pokeRed),
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
@@ -958,10 +947,11 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
   Widget _buildPartyStrip(Trainer trainer) {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 6, 8, 6),
-      decoration: BoxDecoration(
-        color: const Color(0xE8131426),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.redAccent.withOpacity(0.32)),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.creamSurface,
+        border: PokeColors.pokeRed,
+        radius: 14,
+        borderWidth: 1.5,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -972,16 +962,16 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
               const Text(
                 "CARRIED POKÉMON",
                 style: TextStyle(
-                  color: Colors.redAccent,
+                  color: PokeColors.pokeRedDark,
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
                   letterSpacing: 0.7,
                 ),
               ),
               Text(
                 "${trainer.party.length}/6 Pokémon",
                 style: const TextStyle(
-                  color: Colors.white60,
+                  color: PokeColors.inkMuted,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),
@@ -1014,13 +1004,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     if (mon == null) {
       return Container(
         height: 54,
-        decoration: BoxDecoration(
-          color: const Color(0xFF0A0B15),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white10),
-        ),
+        decoration: PokeDecorations.inset(radius: 10),
         child: const Center(
-          child: Icon(Icons.catching_pokemon, size: 16, color: Colors.white12),
+          child: Icon(Icons.catching_pokemon,
+              size: 16, color: PokeColors.inkSubtle),
         ),
       );
     }
@@ -1037,17 +1024,13 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
         height: 54,
         padding: const EdgeInsets.symmetric(vertical: 3),
         decoration: BoxDecoration(
-          color: isSelected
-              ? typeColor.withOpacity(0.24)
-              : const Color(0xFF16192C),
+          color: PokeColors.cardWhite,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
-                ? Colors.amberAccent
-                : (idx == 0
-                    ? Colors.amberAccent.withOpacity(0.45)
-                    : typeColor.withOpacity(0.4)),
-            width: isSelected ? 1.8 : 1.0,
+                ? PokeColors.pokeRed
+                : (idx == 0 ? PokeColors.badgeGold : typeColor),
+            width: isSelected ? 2.2 : 1.3,
           ),
         ),
         child: Stack(
@@ -1067,9 +1050,9 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 Text(
                   "Lv${mon.level}",
                   style: const TextStyle(
-                    color: Colors.amberAccent,
+                    color: PokeColors.inkDark,
                     fontSize: 8.5,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ],
@@ -1080,7 +1063,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 right: 2,
                 child: Icon(
                   Icons.auto_awesome_rounded,
-                  color: Colors.amberAccent,
+                  color: PokeColors.badgeGoldDark,
                   size: 10,
                 ),
               ),
@@ -1091,15 +1074,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 3),
                   decoration: BoxDecoration(
-                    color: Colors.amberAccent.withOpacity(0.25),
+                    color: PokeColors.badgeGold,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   child: const Text(
                     "L",
                     style: TextStyle(
-                      color: Colors.amberAccent,
+                      color: Colors.white,
                       fontSize: 7.5,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                 ),
@@ -1118,7 +1101,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
   ) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF121423),
+      backgroundColor: PokeColors.creamSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1129,26 +1112,13 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "SWAP ${pcMon.nickname.toUpperCase()} WITH POKÉMON",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white60),
-                    onPressed: () => Navigator.pop(dlgCtx),
-                  ),
-                ],
+              PokeSheetHeader(
+                icon: Icons.swap_horiz_rounded,
+                accentColor: PokeColors.pokeBlue,
+                title: "SWAP ${pcMon.nickname.toUpperCase()} WITH POKÉMON",
+                onClose: () => Navigator.pop(dlgCtx),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               ...List.generate(trainer.party.length, (partyIdx) {
                 final partyMon = trainer.party[partyIdx];
                 return InkWell(
@@ -1170,14 +1140,12 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2E2E3B),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: partyIdx == 0
-                            ? Colors.amberAccent.withOpacity(0.45)
-                            : Colors.white12,
-                      ),
+                    decoration: PokeDecorations.card(
+                      border: partyIdx == 0
+                          ? PokeColors.badgeGold
+                          : PokeColors.frameBorderSoft,
+                      radius: 12,
+                      borderWidth: 1.4,
                     ),
                     child: Row(
                       children: [
@@ -1191,15 +1159,15 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                               Text(
                                 partyMon.nickname,
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  color: PokeColors.inkDark,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 13,
                                 ),
                               ),
                               Text(
                                 "Spot #${partyIdx + 1} • Lv.${partyMon.level}",
                                 style: const TextStyle(
-                                  color: Colors.white60,
+                                  color: PokeColors.inkMuted,
                                   fontSize: 11,
                                 ),
                               ),
@@ -1207,7 +1175,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                           ),
                         ),
                         const Icon(Icons.swap_horiz,
-                            color: Colors.cyanAccent, size: 20),
+                            color: PokeColors.pokeBlue, size: 20),
                       ],
                     ),
                   ),
@@ -1231,7 +1199,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF121423),
+      backgroundColor: PokeColors.creamSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -1242,27 +1210,13 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      isMoving
-                          ? "MOVE ${movingMon.nickname.toUpperCase()} TO BOX"
-                          : "ALL 16 PC BOXES (${trainer.totalPcPokemon}/320)",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        letterSpacing: 0.6,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white60),
-                    onPressed: () => Navigator.pop(dlgCtx),
-                  ),
-                ],
+              PokeSheetHeader(
+                icon: Icons.grid_view_rounded,
+                accentColor: PokeColors.pcTeal,
+                title: isMoving
+                    ? "MOVE ${movingMon.nickname.toUpperCase()} TO BOX"
+                    : "ALL 16 PC BOXES (${trainer.totalPcPokemon}/320)",
+                onClose: () => Navigator.pop(dlgCtx),
               ),
               const SizedBox(height: 10),
               GridView.builder(
@@ -1306,17 +1260,17 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: isCurrent
-                            ? Colors.purpleAccent.withOpacity(0.22)
-                            : const Color(0xFF2E2E3B),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: isCurrent
-                              ? Colors.purpleAccent
-                              : (isFull ? Colors.redAccent.withOpacity(0.4) : Colors.white12),
-                          width: isCurrent ? 1.6 : 1.0,
-                        ),
+                      decoration: PokeDecorations.card(
+                        fill: isCurrent
+                            ? const Color(0xFFE3F2FD)
+                            : PokeColors.cardWhite,
+                        border: isCurrent
+                            ? PokeColors.pcTeal
+                            : (isFull
+                                ? PokeColors.pokeRed.withOpacity(0.6)
+                                : PokeColors.frameBorderSoft),
+                        radius: 10,
+                        borderWidth: isCurrent ? 1.8 : 1.2,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1324,8 +1278,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                           Text(
                             "BOX ${idx + 1}",
                             style: TextStyle(
-                              color: canTap ? Colors.white : Colors.white38,
-                              fontWeight: FontWeight.bold,
+                              color: canTap
+                                  ? PokeColors.inkDark
+                                  : PokeColors.inkSubtle,
+                              fontWeight: FontWeight.w900,
                               fontSize: 11.5,
                             ),
                           ),
@@ -1334,10 +1290,10 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                             "$count/20",
                             style: TextStyle(
                               color: isFull
-                                  ? Colors.redAccent
+                                  ? PokeColors.pokeRed
                                   : (count > 0
-                                      ? Colors.greenAccent
-                                      : Colors.white54),
+                                      ? PokeColors.pokeGreenDark
+                                      : PokeColors.inkMuted),
                               fontWeight: FontWeight.bold,
                               fontSize: 10.5,
                             ),
@@ -1366,21 +1322,25 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF2A2A35),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: const BorderSide(color: PokeColors.pokeRed, width: 1.5),
+        ),
         title: Text(
           "Release ${mon.nickname}?",
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              color: PokeColors.inkDark, fontWeight: FontWeight.w900),
         ),
         content: Text(
           "Lv.${mon.level} ${mon.species.name} will be permanently released from $locationLabel.$heldNote",
-          style: const TextStyle(color: Colors.white70, fontSize: 13),
+          style: const TextStyle(color: PokeColors.inkMuted, fontSize: 13),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dlgCtx),
-            child:
-                const Text("Cancel", style: TextStyle(color: Colors.white60)),
+            child: const Text("Cancel",
+                style: TextStyle(color: PokeColors.inkMuted)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -1388,7 +1348,7 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
               onConfirm();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red.shade700,
+              backgroundColor: PokeColors.pokeRed,
               foregroundColor: Colors.white,
             ),
             child: const Text("Release"),

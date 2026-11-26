@@ -9,6 +9,7 @@ import '../services/pokedex_database.dart';
 import '../services/pvp_link_service.dart';
 import '../services/pvp_transport.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import 'battle_screen.dart';
 import 'rivals_screen.dart';
 import 'trade_screen.dart';
@@ -129,6 +130,7 @@ class _BumpScreenState extends State<BumpScreen>
         _linkState == _BumpLinkState.matched) {
       return;
     }
+    SoundService.instance.playUiClick();
     setState(() {
       _selectedMode = newMode;
       if (_linkState == _BumpLinkState.timedOut) {
@@ -316,25 +318,26 @@ class _BumpScreenState extends State<BumpScreen>
   Color _statusColorForState() {
     switch (_linkState) {
       case _BumpLinkState.matched:
-        return const Color(0xFF34EB8C);
+        return PokeColors.pokeGreen;
       case _BumpLinkState.linking:
-        return Colors.amberAccent;
+        return PokeColors.badgeGoldDark;
       case _BumpLinkState.timedOut:
-        return Colors.orangeAccent;
+        return PokeColors.bagOrange;
       case _BumpLinkState.scanning:
         final hasMatchingNearby =
             _nearbyTrainers.any((t) => t.mode == _selectedMode);
-        if (hasMatchingNearby) return Colors.cyanAccent;
+        if (hasMatchingNearby) return PokeColors.linkTeal;
         return _selectedMode == BumpLinkMode.trade
-            ? Colors.tealAccent
-            : Colors.redAccent;
+            ? PokeColors.linkTeal
+            : PokeColors.pokeRed;
     }
   }
 
   String _topBadgeText() {
     switch (_linkState) {
       case _BumpLinkState.matched:
-        final verb = _selectedMode == BumpLinkMode.trade ? "TRADING WITH" : "VS";
+        final verb =
+            _selectedMode == BumpLinkMode.trade ? "TRADING WITH" : "VS";
         return "LINK ESTABLISHED • $verb ${_matchedSession?.opponentName.toUpperCase() ?? 'TRAINER'}";
       case _BumpLinkState.linking:
         return "FIST-BUMP DETECTED • PAIRING DEVICES";
@@ -342,7 +345,8 @@ class _BumpScreenState extends State<BumpScreen>
         return "NO PARTNER RESPONDED";
       case _BumpLinkState.scanning:
         if (_nearbyTrainers.isNotEmpty) {
-          final matching = _nearbyTrainers.where((t) => t.mode == _selectedMode);
+          final matching =
+              _nearbyTrainers.where((t) => t.mode == _selectedMode);
           if (matching.isNotEmpty) {
             final names = matching.map((t) => t.name).join(', ');
             return "NEARBY ${_selectedMode.name.toUpperCase()} TRAINER: ${names.toUpperCase()}";
@@ -404,81 +408,51 @@ class _BumpScreenState extends State<BumpScreen>
   Widget _buildModeSelector() {
     final bool locked = _linkState == _BumpLinkState.linking ||
         _linkState == _BumpLinkState.matched;
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: const Color(0xE00C101C),
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.14)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildModeTab(
-              mode: BumpLinkMode.battle,
-              label: "BATTLE",
-              icon: Icons.sports_mma_rounded,
-              activeColor: const Color(0xFFE53935),
-              locked: locked,
-            ),
-          ),
-          const SizedBox(width: 6),
-          Expanded(
-            child: _buildModeTab(
-              mode: BumpLinkMode.trade,
-              label: "TRADE",
-              icon: Icons.swap_horiz_rounded,
-              activeColor: const Color(0xFF00ACC1),
-              locked: locked,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+    final bool battleSelected = _selectedMode == BumpLinkMode.battle;
+    final bool tradeSelected = _selectedMode == BumpLinkMode.trade;
 
-  Widget _buildModeTab({
-    required BumpLinkMode mode,
-    required String label,
-    required IconData icon,
-    required Color activeColor,
-    required bool locked,
-  }) {
-    final bool selected = _selectedMode == mode;
-    return GestureDetector(
-      onTap: locked ? null : () => _selectMode(mode),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          color: selected ? activeColor.withOpacity(0.24) : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: selected ? activeColor : Colors.transparent,
-            width: 1.3,
+    return Row(
+      children: [
+        Expanded(
+          child: PokePortraitButton(
+            label: "BATTLE LINK",
+            subtitle: battleSelected ? "ACTIVE MODE" : "VS TEAM",
+            icon: Icons.sports_mma_rounded,
+            topColor: battleSelected
+                ? PokeColors.pokeRed
+                : PokeColors.inkSubtle,
+            bottomColor: battleSelected
+                ? PokeColors.pokeRedDark
+                : PokeColors.frameBorder,
+            height: 108,
+            iconSize: 32,
+            selected: battleSelected,
+            locked: locked && !battleSelected,
+            badgeText: battleSelected ? "ON" : null,
+            onTap: locked ? null : () => _selectMode(BumpLinkMode.battle),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 16,
-              color: selected ? Colors.white : Colors.white54,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                color: selected ? Colors.white : Colors.white54,
-                fontSize: 11.5,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.9,
-              ),
-            ),
-          ],
+        const SizedBox(width: 10),
+        Expanded(
+          child: PokePortraitButton(
+            label: "TRADE LINK",
+            subtitle: tradeSelected ? "ACTIVE MODE" : "SWAP & EVOLVE",
+            icon: Icons.swap_horiz_rounded,
+            topColor: tradeSelected
+                ? PokeColors.linkTeal
+                : PokeColors.inkSubtle,
+            bottomColor: tradeSelected
+                ? PokeColors.linkTealDark
+                : PokeColors.frameBorder,
+            height: 108,
+            iconSize: 32,
+            selected: tradeSelected,
+            locked: locked && !tradeSelected,
+            badgeText: tradeSelected ? "ON" : null,
+            onTap: locked ? null : () => _selectMode(BumpLinkMode.trade),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -491,8 +465,8 @@ class _BumpScreenState extends State<BumpScreen>
         _motionPermissionState == 'denied';
 
     final Color badgeColor = _sensorReceivingData
-        ? const Color(0xFF34EB8C)
-        : (denied ? Colors.redAccent : Colors.amberAccent);
+        ? PokeColors.pokeGreenDark
+        : (denied ? PokeColors.pokeRed : PokeColors.badgeGoldDark);
 
     final String label = _sensorReceivingData
         ? "SENSOR ARMED • LIVE MOTION (${_liveMagnitude.toStringAsFixed(1)} m/s² • Δ${_liveDelta.toStringAsFixed(1)})"
@@ -511,10 +485,11 @@ class _BumpScreenState extends State<BumpScreen>
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xE60D111E),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: badgeColor.withOpacity(0.55)),
+        decoration: PokeDecorations.card(
+          fill: PokeColors.creamSurface.withOpacity(0.95),
+          border: badgeColor.withOpacity(0.65),
+          radius: 12,
+          borderWidth: 1.5,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -525,7 +500,7 @@ class _BumpScreenState extends State<BumpScreen>
                   _sensorReceivingData
                       ? Icons.sensors_rounded
                       : Icons.touch_app_rounded,
-                  size: 15,
+                  size: 16,
                   color: badgeColor,
                 ),
                 const SizedBox(width: 7),
@@ -536,9 +511,9 @@ class _BumpScreenState extends State<BumpScreen>
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: badgeColor,
-                      fontSize: 10,
+                      fontSize: 10.5,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 0.5,
+                      letterSpacing: 0.4,
                     ),
                   ),
                 ),
@@ -550,12 +525,12 @@ class _BumpScreenState extends State<BumpScreen>
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: barProgress,
-                  minHeight: 4,
-                  backgroundColor: Colors.white10,
+                  minHeight: 5,
+                  backgroundColor: PokeColors.panelSoft,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     barProgress > 0.75
-                        ? Colors.amberAccent
-                        : const Color(0xFF34EB8C),
+                        ? PokeColors.badgeGold
+                        : PokeColors.pokeGreen,
                   ),
                 ),
               ),
@@ -581,63 +556,40 @@ class _BumpScreenState extends State<BumpScreen>
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF0C0E18),
+        backgroundColor: PokeColors.canvasCream,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: const Color(0xCC0D0E18),
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                color: Colors.white70, size: 18),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text(
-            "LINK RADAR • FIST-BUMP",
-            style: TextStyle(
-              fontSize: 13.5,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.2,
-            ),
-          ),
-          centerTitle: true,
+        appBar: buildPokeAppBar(
+          context: context,
+          title: "FIST-BUMP LINK",
+          barColor: PokeColors.linkTeal,
+          bottomBorderColor: PokeColors.linkTealDark,
           actions: [
             IconButton(
               tooltip: "Rivals & Friends",
               onPressed: () {
+                SoundService.instance.playUiClick();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const RivalsScreen()),
                 );
               },
               icon: const Icon(Icons.people_alt_rounded,
-                  color: Colors.cyanAccent, size: 20),
+                  color: Colors.white, size: 22),
             ),
           ],
         ),
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'assets/images/bg_bump_radar.png',
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.none,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF0A0D18).withOpacity(0.76),
-                    const Color(0xFF0D101E).withOpacity(0.58),
-                    const Color(0xFF080A12).withOpacity(0.92),
-                  ],
-                ),
-              ),
+            const PokeBackdrop(
+              assetPath: 'assets/images/bg_bump_radar.png',
+              topOpacity: 0.24,
+              midOpacity: 0.48,
+              bottomOpacity: 0.88,
             ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(18, 8, 18, 14),
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
                 child: Column(
                   children: [
                     _buildModeSelector(),
@@ -647,23 +599,26 @@ class _BumpScreenState extends State<BumpScreen>
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xE00C101C),
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: statusColor.withOpacity(0.65)),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.cardWhite,
+                        border: statusColor,
+                        radius: 20,
+                        borderWidth: 1.8,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            width: 7,
-                            height: 7,
+                            width: 8,
+                            height: 8,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: statusColor,
                               boxShadow: [
-                                BoxShadow(color: statusColor, blurRadius: 6),
+                                BoxShadow(
+                                  color: statusColor.withOpacity(0.55),
+                                  blurRadius: 6,
+                                ),
                               ],
                             ),
                           ),
@@ -675,9 +630,9 @@ class _BumpScreenState extends State<BumpScreen>
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: statusColor,
-                                fontSize: 10,
+                                fontSize: 10.5,
                                 fontWeight: FontWeight.w900,
-                                letterSpacing: 0.9,
+                                letterSpacing: 0.7,
                               ),
                             ),
                           ),
@@ -685,7 +640,7 @@ class _BumpScreenState extends State<BumpScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     _buildMotionMeterBanner(),
 
                     const Spacer(),
@@ -707,46 +662,44 @@ class _BumpScreenState extends State<BumpScreen>
                               animation: _pulseController,
                               builder: (context, child) {
                                 return Container(
-                                  width: 196 + (_pulseController.value * 52),
-                                  height: 196 + (_pulseController.value * 52),
+                                  width: 176 + (_pulseController.value * 54),
+                                  height: 176 + (_pulseController.value * 54),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       color: statusColor.withOpacity(
-                                          0.35 * (1 - _pulseController.value)),
-                                      width: 2,
+                                          0.55 * (1 - _pulseController.value)),
+                                      width: 3,
                                     ),
                                     color: statusColor.withOpacity(
-                                        0.12 * (1 - _pulseController.value)),
+                                        0.16 * (1 - _pulseController.value)),
                                   ),
                                 );
                               },
                             ),
                             Container(
-                              width: 162,
-                              height: 162,
+                              width: 146,
+                              height: 146,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                gradient: RadialGradient(
-                                  colors: _linkState == _BumpLinkState.matched
-                                      ? [
-                                          const Color(0xFF1D6B42),
-                                          const Color(0xFF0E291C),
-                                        ]
-                                      : [
-                                          const Color(0xFF281825),
-                                          const Color(0xFF101220),
-                                        ],
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    statusColor,
+                                    PokeColors.darken(statusColor, 0.24),
+                                  ],
                                 ),
                                 border: Border.all(
-                                  color: statusColor,
-                                  width: 3,
+                                  color: Colors.white,
+                                  width: 4,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: statusColor.withOpacity(0.42),
-                                    blurRadius: 24,
-                                    spreadRadius: 4,
+                                    color: statusColor.withOpacity(0.38),
+                                    blurRadius: 18,
+                                    spreadRadius: 3,
+                                    offset: const Offset(0, 6),
                                   ),
                                 ],
                               ),
@@ -758,7 +711,7 @@ class _BumpScreenState extends State<BumpScreen>
                                         : (_selectedMode == BumpLinkMode.trade
                                             ? Icons.swap_horiz_rounded
                                             : Icons.sports_mma_rounded)),
-                                size: 68,
+                                size: 64,
                                 color: Colors.white,
                               ),
                             ),
@@ -767,16 +720,17 @@ class _BumpScreenState extends State<BumpScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 14),
 
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xE6111422),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white12),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.creamSurface.withOpacity(0.96),
+                        border: statusColor.withOpacity(0.65),
+                        radius: 16,
+                        borderWidth: 1.6,
                       ),
                       child: Column(
                         children: [
@@ -786,10 +740,8 @@ class _BumpScreenState extends State<BumpScreen>
                             style: TextStyle(
                               fontSize: 15.5,
                               fontWeight: FontWeight.w900,
-                              color: statusColor == Colors.redAccent
-                                  ? Colors.white
-                                  : statusColor,
-                              letterSpacing: 0.7,
+                              color: statusColor,
+                              letterSpacing: 0.5,
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -798,7 +750,8 @@ class _BumpScreenState extends State<BumpScreen>
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 11.5,
-                              color: Colors.white70,
+                              color: PokeColors.inkMuted,
+                              fontWeight: FontWeight.w600,
                               height: 1.35,
                             ),
                           ),
@@ -811,23 +764,25 @@ class _BumpScreenState extends State<BumpScreen>
                     if (_linkState == _BumpLinkState.timedOut) ...[
                       SizedBox(
                         width: double.infinity,
-                        height: 46,
+                        height: 48,
                         child: ElevatedButton.icon(
                           onPressed: _triggerBumpLink,
-                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          icon: const Icon(Icons.refresh_rounded, size: 19),
                           label: const Text(
                             "TRY BUMP AGAIN",
                             style: TextStyle(
                               fontWeight: FontWeight.w900,
-                              fontSize: 12,
+                              fontSize: 12.5,
                               letterSpacing: 0.7,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFD32F2F),
+                            backgroundColor: PokeColors.pokeRed,
                             foregroundColor: Colors.white,
+                            elevation: 3,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14)),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
                           ),
                         ),
                       ),
@@ -838,29 +793,32 @@ class _BumpScreenState extends State<BumpScreen>
                         child: OutlinedButton.icon(
                           onPressed: _launchSoloPracticeBattle,
                           icon: const Icon(Icons.smart_toy_outlined,
-                              color: Colors.amberAccent, size: 16),
+                              color: PokeColors.badgeGoldDark, size: 17),
                           label: const Text(
                             "PRACTICE VS RIVAL BLUE (SOLO AI)",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: PokeColors.inkDark,
                               fontWeight: FontWeight.w800,
-                              fontSize: 11,
-                              letterSpacing: 0.6,
+                              fontSize: 11.5,
+                              letterSpacing: 0.5,
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xDD141828),
-                            side: BorderSide(
-                                color: Colors.amberAccent.withOpacity(0.45)),
+                            backgroundColor: PokeColors.cardWhite,
+                            side: const BorderSide(
+                              color: PokeColors.badgeGold,
+                              width: 1.5,
+                            ),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
                     ] else ...[
                       SizedBox(
                         width: double.infinity,
-                        height: 46,
+                        height: 48,
                         child: ElevatedButton.icon(
                           onPressed: _linkState == _BumpLinkState.linking ||
                                   _linkState == _BumpLinkState.matched
@@ -870,8 +828,7 @@ class _BumpScreenState extends State<BumpScreen>
                             _linkState == _BumpLinkState.linking
                                 ? Icons.sync_rounded
                                 : Icons.link_rounded,
-                            color: Colors.black87,
-                            size: 18,
+                            size: 19,
                           ),
                           label: Text(
                             _linkState == _BumpLinkState.linking
@@ -881,47 +838,54 @@ class _BumpScreenState extends State<BumpScreen>
                                     : "BUMP / PAIR FOR LINK BATTLE"),
                             style: const TextStyle(
                               fontWeight: FontWeight.w900,
-                              fontSize: 11.5,
+                              fontSize: 12,
                               letterSpacing: 0.6,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFD54F),
-                            foregroundColor: Colors.black87,
-                            disabledBackgroundColor:
-                                Colors.amberAccent.withOpacity(0.35),
-                            disabledForegroundColor: Colors.white70,
+                            backgroundColor:
+                                _selectedMode == BumpLinkMode.trade
+                                    ? PokeColors.linkTeal
+                                    : PokeColors.pokeRed,
+                            foregroundColor: Colors.white,
+                            disabledBackgroundColor: PokeColors.panelSoft,
+                            disabledForegroundColor: PokeColors.inkMuted,
+                            elevation: 3,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14)),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
-                        height: 40,
+                        height: 42,
                         child: OutlinedButton.icon(
                           onPressed: _linkState == _BumpLinkState.linking ||
                                   _linkState == _BumpLinkState.matched
                               ? null
                               : _launchSoloPracticeBattle,
                           icon: const Icon(Icons.smart_toy_outlined,
-                              color: Colors.white70, size: 15),
+                              color: PokeColors.pokeBlueDark, size: 16),
                           label: const Text(
                             "PRACTICE VS RIVAL BLUE (SOLO AI)",
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: PokeColors.inkDark,
                               fontWeight: FontWeight.w800,
-                              fontSize: 10.5,
+                              fontSize: 11,
                               letterSpacing: 0.5,
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xCC121624),
-                            side: BorderSide(
-                                color: Colors.white.withOpacity(0.18)),
+                            backgroundColor: PokeColors.cardWhite,
+                            side: const BorderSide(
+                              color: PokeColors.frameBorderSoft,
+                              width: 1.4,
+                            ),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),

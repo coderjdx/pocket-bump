@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class HpBar extends StatelessWidget {
   final int currentHp;
   final int maxHp;
+  final Color textColor;
+  final Color hpLabelColor;
 
   const HpBar({
     super.key,
     required this.currentHp,
     required this.maxHp,
+    this.textColor = Colors.white70,
+    this.hpLabelColor = Colors.amber,
   });
 
   @override
@@ -20,12 +24,12 @@ class HpBar extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Text(
+            Text(
               "HP",
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: Colors.amber,
+                color: hpLabelColor,
               ),
             ),
             const SizedBox(width: 4),
@@ -83,10 +87,10 @@ class HpBar extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           "$currentHp / $maxHp",
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: Colors.white70,
+            color: textColor,
           ),
         ),
       ],

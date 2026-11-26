@@ -7,6 +7,7 @@ import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/type_badge.dart';
 
 enum _PokedexFilter {
@@ -33,7 +34,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
     final int total = PokedexDatabase.gen1TotalSpecies;
     final int caughtTotal = trainer.caughtCount;
     final int seenTotal = trainer.seenCount;
-    final int unseenTotal = allIds.where((id) => !trainer.isSpeciesSeen(id)).length;
+    final int unseenTotal =
+        allIds.where((id) => !trainer.isSpeciesSeen(id)).length;
 
     final List<int> filteredIds = allIds.where((id) {
       switch (_filter) {
@@ -49,94 +51,48 @@ class _PokedexScreenState extends State<PokedexScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF100E16),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC160B10),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "POKÉDEX",
+        barColor: PokeColors.pokeRed,
+        bottomBorderColor: PokeColors.pokeRedDark,
+        titleLeading: Container(
+          width: 14,
+          height: 14,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.cyanAccent,
+            border: Border.all(color: Colors.white, width: 2),
+            boxShadow: const [
+              BoxShadow(color: Colors.cyanAccent, blurRadius: 8),
+            ],
+          ),
         ),
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.cyanAccent,
-                border: Border.all(color: Colors.white, width: 1.5),
-                boxShadow: const [
-                  BoxShadow(color: Colors.cyanAccent, blurRadius: 8),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              "POKÉDEX",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.3,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_pokedex.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF1C0C12).withOpacity(0.76),
-                  const Color(0xFF140E18).withOpacity(0.60),
-                  const Color(0xFF0C0A12).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_pokedex.png',
+            topOpacity: 0.24,
+            midOpacity: 0.48,
+            bottomOpacity: 0.88,
           ),
           SafeArea(
+            top: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+              padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
               child: Column(
                 children: [
                   // ─── DEXTER SCANNER SUMMARY BANNER ───────────────────────
                   Container(
                     padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.red.shade900.withOpacity(0.55),
-                          const Color(0xEA161322),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                        color: Colors.redAccent.withOpacity(0.55),
-                        width: 1.3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.45),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.creamSurface,
+                      border: PokeColors.pokeRed,
+                      radius: 18,
+                      borderWidth: 1.8,
                     ),
                     child: Column(
                       children: [
@@ -150,7 +106,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 Text(
                                   "$caughtTotal/$total Caught",
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: PokeColors.inkDark,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 13.5,
                                   ),
@@ -160,12 +116,12 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             Row(
                               children: [
                                 const Icon(Icons.visibility_rounded,
-                                    color: Colors.amberAccent, size: 16),
+                                    color: PokeColors.badgeGoldDark, size: 16),
                                 const SizedBox(width: 5),
                                 Text(
                                   "$seenTotal Seen",
                                   style: const TextStyle(
-                                    color: Colors.amberAccent,
+                                    color: PokeColors.badgeGoldDark,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 13,
                                   ),
@@ -175,15 +131,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0A0910),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.white12),
-                              ),
+                              decoration: PokeDecorations.inset(radius: 8),
                               child: Text(
                                 "$total TOTAL",
                                 style: const TextStyle(
-                                  color: Colors.white70,
+                                  color: PokeColors.inkDark,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 10.5,
                                 ),
@@ -195,25 +147,25 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child: SizedBox(
-                            height: 8,
+                            height: 9,
                             child: Stack(
                               fit: StackFit.expand,
                               children: [
-                                Container(color: const Color(0xFF09080E)),
+                                Container(color: PokeColors.panelSoft),
                                 FractionallySizedBox(
                                   alignment: Alignment.centerLeft,
                                   widthFactor: total > 0
                                       ? (seenTotal / total).clamp(0.0, 1.0)
                                       : 0.0,
-                                  child: Container(
-                                      color: Colors.amberAccent.withOpacity(0.55)),
+                                  child:
+                                      Container(color: PokeColors.badgeGold),
                                 ),
                                 FractionallySizedBox(
                                   alignment: Alignment.centerLeft,
                                   widthFactor: total > 0
                                       ? (caughtTotal / total).clamp(0.0, 1.0)
                                       : 0.0,
-                                  child: Container(color: Colors.redAccent),
+                                  child: Container(color: PokeColors.pokeRed),
                                 ),
                               ],
                             ),
@@ -230,7 +182,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 Text(
                                   "= Caught Pokémon",
                                   style: TextStyle(
-                                      color: Colors.white60, fontSize: 10),
+                                      color: PokeColors.inkMuted, fontSize: 10),
                                 ),
                               ],
                             ),
@@ -241,7 +193,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 Text(
                                   "= Encountered Only",
                                   style: TextStyle(
-                                      color: Colors.white60, fontSize: 10),
+                                      color: PokeColors.inkMuted, fontSize: 10),
                                 ),
                               ],
                             ),
@@ -262,7 +214,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         _buildFilterChip(
                           label: "All ($total)",
                           selected: _filter == _PokedexFilter.all,
-                          onTap: () => setState(() => _filter = _PokedexFilter.all),
+                          onTap: () =>
+                              setState(() => _filter = _PokedexFilter.all),
                         ),
                         const SizedBox(width: 7),
                         _buildFilterChip(
@@ -295,11 +248,19 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   Expanded(
                     child: filteredIds.isEmpty
                         ? Center(
-                            child: Text(
-                              "No Pokémon in this filter yet.\nWalk or battle to discover more!",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  color: Colors.white54, fontSize: 13),
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              decoration: PokeDecorations.card(
+                                fill: PokeColors.creamSurface,
+                                border: PokeColors.frameBorderSoft,
+                                radius: 16,
+                              ),
+                              child: const Text(
+                                "No Pokémon in this filter yet.\nWalk or battle to discover more!",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: PokeColors.inkMuted, fontSize: 13),
+                              ),
                             ),
                           )
                         : GridView.builder(
@@ -348,21 +309,19 @@ class _PokedexScreenState extends State<PokedexScreen> {
         duration: const Duration(milliseconds: 160),
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
         decoration: BoxDecoration(
-          gradient: selected
-              ? LinearGradient(
-                  colors: [Colors.red.shade600, Colors.red.shade800],
-                )
-              : null,
-          color: selected ? null : const Color(0xDD171320),
+          color: selected ? PokeColors.pokeRed : PokeColors.cardWhite,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: selected ? Colors.redAccent : Colors.white12,
+            color: selected
+                ? PokeColors.pokeRedDark
+                : PokeColors.frameBorderSoft,
+            width: 1.4,
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: selected ? Colors.white : Colors.white70,
+            color: selected ? Colors.white : PokeColors.inkDark,
             fontSize: 10.5,
             fontWeight: FontWeight.w900,
           ),
@@ -391,30 +350,21 @@ class _PokedexScreenState extends State<PokedexScreen> {
           );
           return;
         }
-        _openEntryDetail(spec, isCaught: isCaught, isShinyCaught: isShinyCaught);
+        _openEntryDetail(spec,
+            isCaught: isCaught, isShinyCaught: isShinyCaught);
       },
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isCaught
-                ? [primaryColor.withOpacity(0.24), const Color(0xEA141624)]
-                : (isSeen
-                    ? [const Color(0xEA1D1D2B), const Color(0xEA13131E)]
-                    : [const Color(0xDD13121A), const Color(0xDD0D0C12)]),
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isCaught
-                ? primaryColor.withOpacity(0.7)
-                : (isSeen
-                    ? Colors.amberAccent.withOpacity(0.38)
-                    : Colors.white10),
-            width: isCaught ? 1.5 : 1.0,
-          ),
+        decoration: PokeDecorations.card(
+          fill: isSeen ? PokeColors.cardWhite : PokeColors.creamSurface,
+          border: isCaught
+              ? primaryColor
+              : (isSeen
+                  ? PokeColors.badgeGold
+                  : PokeColors.frameBorderSoft),
+          radius: 16,
+          borderWidth: isCaught ? 1.8 : 1.2,
         ),
         child: Column(
           children: [
@@ -428,7 +378,9 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     Text(
                       dexNum,
                       style: TextStyle(
-                        color: isSeen ? Colors.white70 : Colors.white30,
+                        color: isSeen
+                            ? PokeColors.inkMuted
+                            : PokeColors.inkSubtle,
                         fontWeight: FontWeight.w900,
                         fontSize: 10.5,
                       ),
@@ -437,7 +389,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                       const SizedBox(width: 3),
                       const Icon(
                         Icons.auto_awesome_rounded,
-                        color: Colors.amberAccent,
+                        color: PokeColors.badgeGoldDark,
                         size: 11,
                       ),
                     ],
@@ -448,10 +400,9 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0A0810),
+                      color: PokeColors.pokeRed.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(color: Colors.redAccent.withOpacity(0.7)),
+                      border: Border.all(color: PokeColors.pokeRed),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
@@ -461,7 +412,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         Text(
                           "CAUGHT",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: PokeColors.pokeRedDark,
                             fontSize: 8,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.4,
@@ -475,10 +426,9 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0A0810),
+                      color: PokeColors.badgeGold.withOpacity(0.18),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: Colors.amberAccent.withOpacity(0.55)),
+                      border: Border.all(color: PokeColors.badgeGoldDark),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
@@ -488,7 +438,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         Text(
                           "SEEN",
                           style: TextStyle(
-                            color: Colors.amberAccent,
+                            color: PokeColors.badgeGoldDark,
                             fontSize: 8,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.4,
@@ -501,7 +451,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   const Text(
                     "UNSEEN",
                     style: TextStyle(
-                      color: Colors.white24,
+                      color: PokeColors.inkSubtle,
                       fontSize: 8,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.5,
@@ -520,18 +470,19 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: isCaught
-                      ? [primaryColor.withOpacity(0.26), Colors.transparent]
-                      : [Colors.white.withOpacity(0.05), Colors.transparent],
+                      ? [primaryColor.withOpacity(0.22), Colors.transparent]
+                      : [PokeColors.panelSoft, Colors.transparent],
                 ),
               ),
               child: ColorFiltered(
                 colorFilter: !isSeen
-                    ? const ColorFilter.mode(Colors.black, BlendMode.srcIn)
+                    ? const ColorFilter.mode(
+                        PokeColors.inkSubtle, BlendMode.srcIn)
                     : (isCaught
                         ? const ColorFilter.mode(
                             Colors.transparent, BlendMode.dst)
                         : ColorFilter.mode(
-                            Colors.grey.shade800.withOpacity(0.35),
+                            Colors.grey.shade600.withOpacity(0.35),
                             BlendMode.srcATop)),
                 child: Opacity(
                   opacity: isSeen ? (isCaught ? 1.0 : 0.85) : 0.45,
@@ -542,7 +493,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     errorBuilder: (_, __, ___) => Icon(
                       Icons.catching_pokemon,
                       size: 44,
-                      color: isSeen ? primaryColor : Colors.black,
+                      color: isSeen ? primaryColor : PokeColors.inkSubtle,
                     ),
                   ),
                 ),
@@ -557,7 +508,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: isSeen ? Colors.white : Colors.white38,
+                color: isSeen ? PokeColors.inkDark : PokeColors.inkSubtle,
                 fontWeight: FontWeight.w900,
                 fontSize: 13.5,
               ),
@@ -576,9 +527,8 @@ class _PokedexScreenState extends State<PokedexScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: t.color.withOpacity(0.28),
+                      color: t.color,
                       borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: t.color.withOpacity(0.8)),
                     ),
                     child: Text(
                       t.displayName.toUpperCase(),
@@ -596,14 +546,15 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 7, vertical: 1.5),
                 decoration: BoxDecoration(
-                  color: spec.rarity.color.withOpacity(0.16),
+                  color: spec.rarity.color.withOpacity(0.14),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: spec.rarity.color.withOpacity(0.65)),
+                  border: Border.all(
+                      color: PokeColors.darken(spec.rarity.color, 0.14)),
                 ),
                 child: Text(
                   spec.rarity.displayName.toUpperCase(),
                   style: TextStyle(
-                    color: spec.rarity.color,
+                    color: PokeColors.darken(spec.rarity.color, 0.16),
                     fontSize: 7.5,
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.5,
@@ -613,14 +564,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
             ] else
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(6),
-                ),
+                decoration: PokeDecorations.inset(radius: 6),
                 child: const Text(
                   "???",
                   style: TextStyle(
-                      color: Colors.white24,
+                      color: PokeColors.inkSubtle,
                       fontSize: 8,
                       fontWeight: FontWeight.bold),
                 ),
@@ -637,6 +585,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
     bool isShinyCaught = false,
   }) {
     final primaryColor = spec.types.first.color;
+    final primaryDark = PokeColors.darken(primaryColor, 0.16);
     final dexNum = "#${spec.id.toString().padLeft(3, '0')}";
     bool showShiny = isShinyCaught;
     SoundService.instance.playPokemonCry(spec.id);
@@ -644,7 +593,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF12121E),
+      backgroundColor: PokeColors.creamSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -658,21 +607,16 @@ class _PokedexScreenState extends State<PokedexScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "$dexNum  ${spec.name}",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "$dexNum  ${spec.name}",
+                          style: const TextStyle(
+                            color: PokeColors.inkDark,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -680,13 +624,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             IconButton(
                               tooltip: "Play Cry",
                               icon: const Icon(Icons.volume_up_rounded,
-                                  color: Colors.cyanAccent, size: 21),
+                                  color: PokeColors.pokeBlue, size: 21),
                               onPressed: () =>
                                   SoundService.instance.playPokemonCry(spec.id),
                             ),
                             IconButton(
                               icon: const Icon(Icons.close,
-                                  color: Colors.white60),
+                                  color: PokeColors.inkMuted),
                               onPressed: () {
                                 SoundService.instance.playUiCancel();
                                 Navigator.pop(ctx);
@@ -696,8 +640,6 @@ class _PokedexScreenState extends State<PokedexScreen> {
                         ),
                       ],
                     ),
-
-                    // Status badge + optional Shiny toggle
                     Wrap(
                       spacing: 8,
                       runSpacing: 6,
@@ -708,13 +650,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                             color: isCaught
-                                ? Colors.greenAccent.withOpacity(0.14)
-                                : Colors.amberAccent.withOpacity(0.14),
+                                ? PokeColors.pokeGreen.withOpacity(0.14)
+                                : PokeColors.badgeGold.withOpacity(0.16),
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: isCaught
-                                  ? Colors.greenAccent.withOpacity(0.5)
-                                  : Colors.amberAccent.withOpacity(0.5),
+                                  ? PokeColors.pokeGreen
+                                  : PokeColors.badgeGoldDark,
                             ),
                           ),
                           child: Row(
@@ -724,7 +666,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                 const PokeBallSymbol(size: 16, isCaught: true)
                               else
                                 const Icon(Icons.visibility,
-                                    color: Colors.amberAccent, size: 16),
+                                    color: PokeColors.badgeGoldDark, size: 16),
                               const SizedBox(width: 7),
                               Text(
                                 isCaught
@@ -732,10 +674,10 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                     : "ENCOUNTERED ONLY (NOT YET CAUGHT)",
                                 style: TextStyle(
                                   color: isCaught
-                                      ? Colors.greenAccent
-                                      : Colors.amberAccent,
+                                      ? PokeColors.pokeGreenDark
+                                      : PokeColors.badgeGoldDark,
                                   fontSize: 11,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
                             ],
@@ -751,13 +693,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                   horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
                                 color: showShiny
-                                    ? Colors.amberAccent.withOpacity(0.22)
-                                    : Colors.white10,
+                                    ? PokeColors.badgeGold.withOpacity(0.22)
+                                    : PokeColors.panelSoft,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: showShiny
-                                      ? Colors.amberAccent
-                                      : Colors.white24,
+                                      ? PokeColors.badgeGoldDark
+                                      : PokeColors.frameBorderSoft,
                                 ),
                               ),
                               child: Row(
@@ -767,16 +709,16 @@ class _PokedexScreenState extends State<PokedexScreen> {
                                     Icons.auto_awesome_rounded,
                                     size: 14,
                                     color: showShiny
-                                        ? Colors.amberAccent
-                                        : Colors.white54,
+                                        ? PokeColors.badgeGoldDark
+                                        : PokeColors.inkMuted,
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
                                     showShiny ? "SHINY FORM" : "NORMAL FORM",
                                     style: TextStyle(
                                       color: showShiny
-                                          ? Colors.amberAccent
-                                          : Colors.white70,
+                                          ? PokeColors.badgeGoldDark
+                                          : PokeColors.inkDark,
                                       fontSize: 10.5,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -797,14 +739,13 @@ class _PokedexScreenState extends State<PokedexScreen> {
                           Container(
                             width: 156,
                             height: 132,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0A0B14),
-                              borderRadius: BorderRadius.circular(22),
-                              border: Border.all(
-                                color: showShiny
-                                    ? Colors.amberAccent.withOpacity(0.75)
-                                    : primaryColor.withOpacity(0.5),
-                              ),
+                            decoration: PokeDecorations.card(
+                              fill: PokeColors.cardWhite,
+                              border: showShiny
+                                  ? PokeColors.badgeGold
+                                  : primaryDark,
+                              radius: 22,
+                              borderWidth: 2.0,
                             ),
                             child: Center(
                               child: Builder(builder: (_) {
@@ -839,241 +780,245 @@ class _PokedexScreenState extends State<PokedexScreen> {
                               }),
                             ),
                           ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          ...spec.types.map((t) => TypeBadge(type: t)),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white10,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "${spec.heightMeters} m",
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white10,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "${spec.weightKg} kg",
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: spec.rarity.color.withOpacity(0.16),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: spec.rarity.color.withOpacity(0.65)),
-                            ),
-                            child: Text(
-                              spec.rarity == PokemonRarity.special
-                                  ? "SPECIAL • EVENT ONLY"
-                                  : "${spec.rarity.displayName.toUpperCase()} • ${(spec.rarity.encounterProbability * 100).round()}%",
-                              style: TextStyle(
-                                color: spec.rarity.color,
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.4,
-                              ),
-                            ),
-                          ),
-                          if (spec.exclusiveVersion != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: spec.exclusiveVersion!.primaryColor
-                                    .withOpacity(0.18),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: spec.exclusiveVersion!.primaryColor
-                                      .withOpacity(0.7),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 6,
+                            runSpacing: 6,
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              ...spec.types.map((t) => TypeBadge(type: t)),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: PokeDecorations.inset(radius: 8),
+                                child: Text(
+                                  "${spec.heightMeters} m",
+                                  style: const TextStyle(
+                                    color: PokeColors.inkDark,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                "${spec.exclusiveVersion!.shortLabel} EXCLUSIVE",
-                                style: TextStyle(
-                                  color: spec.exclusiveVersion!.primaryColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 0.4,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: PokeDecorations.inset(radius: 8),
+                                child: Text(
+                                  "${spec.weightKg} kg",
+                                  style: const TextStyle(
+                                    color: PokeColors.inkDark,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: spec.rarity.color.withOpacity(0.14),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: PokeColors.darken(
+                                          spec.rarity.color, 0.14)),
+                                ),
+                                child: Text(
+                                  spec.rarity == PokemonRarity.special
+                                      ? "SPECIAL • EVENT ONLY"
+                                      : "${spec.rarity.displayName.toUpperCase()} • ${(spec.rarity.encounterProbability * 100).round()}%",
+                                  style: TextStyle(
+                                    color: PokeColors.darken(
+                                        spec.rarity.color, 0.16),
+                                    fontSize: 10.5,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.4,
+                                  ),
+                                ),
+                              ),
+                              if (spec.exclusiveVersion != null)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: spec.exclusiveVersion!.primaryColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    "${spec.exclusiveVersion!.shortLabel} EXCLUSIVE",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 0.4,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Abilities
-                const Text(
-                  "ABILITIES",
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: [
-                    ...spec.standardAbilityIds.map((abId) => Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 9, vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.cyanAccent.withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Colors.cyanAccent.withOpacity(0.4),
-                            ),
-                          ),
-                          child: Text(
-                            AbilityDatabase.nameOf(abId),
-                            style: const TextStyle(
-                              color: Colors.cyanAccent,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        )),
-                    if (spec.hiddenAbilityId != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 9, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFD54F).withOpacity(0.14),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFFFFD54F).withOpacity(0.55),
-                          ),
-                        ),
-                        child: Text(
-                          "${AbilityDatabase.nameOf(spec.hiddenAbilityId)} (Hidden)",
-                          style: const TextStyle(
-                            color: Color(0xFFFFE082),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-
-                const SizedBox(height: 16),
-
-                // Base Stats
-                const Text(
-                  "BASE STATS",
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                _buildBaseStatRow("HP", spec.baseHp, Colors.greenAccent),
-                _buildBaseStatRow("ATK", spec.baseAtk, Colors.redAccent),
-                _buildBaseStatRow("DEF", spec.baseDef, Colors.orangeAccent),
-                _buildBaseStatRow("SPA", spec.baseSpA, Colors.lightBlueAccent),
-                _buildBaseStatRow("SPD", spec.baseSpD, Colors.tealAccent),
-                _buildBaseStatRow("SPE", spec.baseSpe, Colors.amberAccent),
-
-                if (PokedexDatabase.evolutionRequirementLabel(spec) != null) ...[
-                  const SizedBox(height: 14),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.06),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white12),
                     ),
-                    child: Row(
+
+                    const SizedBox(height: 16),
+
+                    // Abilities
+                    const Text(
+                      "ABILITIES",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
                       children: [
-                        const Icon(Icons.auto_awesome, color: Colors.amberAccent, size: 17),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            PokedexDatabase.evolutionRequirementLabel(spec)!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                        ...spec.standardAbilityIds.map((abId) => Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 9, vertical: 5),
+                              decoration: PokeDecorations.card(
+                                fill: PokeColors.cardWhite,
+                                border: PokeColors.pokeBlue,
+                                radius: 8,
+                                borderWidth: 1.2,
+                              ),
+                              child: Text(
+                                AbilityDatabase.nameOf(abId),
+                                style: const TextStyle(
+                                  color: PokeColors.pokeBlueDark,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            )),
+                        if (spec.hiddenAbilityId != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 9, vertical: 5),
+                            decoration: PokeDecorations.card(
+                              fill: PokeColors.cardWhite,
+                              border: PokeColors.badgeGoldDark,
+                              radius: 8,
+                              borderWidth: 1.3,
+                            ),
+                            child: Text(
+                              "${AbilityDatabase.nameOf(spec.hiddenAbilityId)} (Hidden)",
+                              style: const TextStyle(
+                                color: PokeColors.badgeGoldDark,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
-                  ),
-                ],
 
-                const SizedBox(height: 14),
+                    const SizedBox(height: 16),
 
-                // Level-Up Learnset
-                const Text(
-                  "LEVEL-UP LEARNSET",
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: spec.learnset.map((lm) {
-                    final move = PokedexDatabase.moves[lm.moveId];
-                    if (move == null) return const SizedBox.shrink();
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E1E24),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: move.type.color.withOpacity(0.5)),
+                    // Base Stats
+                    const Text(
+                      "BASE STATS",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1,
                       ),
-                      child: Text(
-                        "Lv.${lm.level}  ${move.name}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                    ),
+                    const SizedBox(height: 8),
+                    _buildBaseStatRow(
+                        "HP", spec.baseHp, PokeColors.pokeGreen),
+                    _buildBaseStatRow("ATK", spec.baseAtk, PokeColors.pokeRed),
+                    _buildBaseStatRow(
+                        "DEF", spec.baseDef, PokeColors.bagOrange),
+                    _buildBaseStatRow(
+                        "SPA", spec.baseSpA, PokeColors.pokeBlue),
+                    _buildBaseStatRow(
+                        "SPD", spec.baseSpD, PokeColors.linkTeal),
+                    _buildBaseStatRow(
+                        "SPE", spec.baseSpe, PokeColors.badgeGoldDark),
+
+                    if (PokedexDatabase.evolutionRequirementLabel(spec) !=
+                        null) ...[
+                      const SizedBox(height: 14),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        decoration: PokeDecorations.card(
+                          fill: PokeColors.cardWhite,
+                          border: PokeColors.badgeGold,
+                          radius: 12,
+                          borderWidth: 1.3,
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.auto_awesome,
+                                color: PokeColors.badgeGoldDark, size: 17),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                PokedexDatabase.evolutionRequirementLabel(
+                                    spec)!,
+                                style: const TextStyle(
+                                  color: PokeColors.inkDark,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  }).toList(),
+                    ],
+
+                    const SizedBox(height: 14),
+
+                    // Level-Up Learnset
+                    const Text(
+                      "LEVEL-UP LEARNSET",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: spec.learnset.map((lm) {
+                        final move = PokedexDatabase.moves[lm.moveId];
+                        if (move == null) return const SizedBox.shrink();
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 9, vertical: 5),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.cardWhite,
+                            border: move.type.color,
+                            radius: 10,
+                            borderWidth: 1.2,
+                          ),
+                          child: Text(
+                            "Lv.${lm.level}  ${move.name}",
+                            style: const TextStyle(
+                              color: PokeColors.inkDark,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
+              ),
+            );
           },
         );
       },
@@ -1089,14 +1034,20 @@ class _PokedexScreenState extends State<PokedexScreen> {
             width: 38,
             child: Text(
               label,
-              style: const TextStyle(color: Colors.white60, fontSize: 11, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: PokeColors.inkMuted,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900),
             ),
           ),
           SizedBox(
             width: 32,
             child: Text(
               "$val",
-              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: PokeColors.inkDark,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900),
             ),
           ),
           Expanded(
@@ -1105,7 +1056,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
               child: LinearProgressIndicator(
                 value: (val / 160.0).clamp(0.0, 1.0),
                 minHeight: 7,
-                backgroundColor: Colors.black38,
+                backgroundColor: PokeColors.panelSoft,
                 valueColor: AlwaysStoppedAnimation<Color>(color),
               ),
             ),
@@ -1148,24 +1099,22 @@ class _PokeBallSymbolPainter extends CustomPainter {
     final rect = Rect.fromCircle(center: center, radius: radius);
 
     if (!isCaught) {
-      // Muted outlined radar ring for Encountered-only Pokémon
       canvas.drawCircle(
         center,
         radius,
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.6
-          ..color = Colors.amberAccent.withOpacity(0.75),
+          ..color = PokeColors.badgeGoldDark,
       );
       canvas.drawCircle(
         center,
         radius * 0.34,
-        Paint()..color = Colors.amberAccent.withOpacity(0.75),
+        Paint()..color = PokeColors.badgeGoldDark,
       );
       return;
     }
 
-    // Authentic red top / white bottom Poké Ball for Caught Pokémon
     canvas.drawArc(
       rect,
       3.14159265,

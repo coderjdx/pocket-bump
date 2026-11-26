@@ -6,6 +6,7 @@ import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import 'move_tutor_screen.dart';
 import 'poke_mart_screen.dart';
@@ -48,7 +49,6 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
       _nurseMessage = "Okay, I'll take your Pokémon for a few seconds...";
     });
 
-    // Step 1: Place each party Pokémon's Poké Ball into the machine one-by-one
     for (int i = 1; i <= trainer.party.length; i++) {
       await Future.delayed(const Duration(milliseconds: 210));
       if (!mounted) return;
@@ -62,7 +62,6 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     await Future.delayed(const Duration(milliseconds: 180));
     if (!mounted) return;
 
-    // Step 2: 4 synchronized classic healing pulses ("doot-doot-doot-doot-da-da!")
     SoundService.instance.playCenterHealJingle();
     setState(() {
       _nurseMessage = "Restoring HP, PP, and curing status conditions...";
@@ -85,7 +84,6 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
 
     if (!mounted) return;
 
-    // Step 3: Complete full restoration
     trainer.healAndResetAllParty();
     trainer.saveProgress();
     HapticFeedback.heavyImpact();
@@ -123,100 +121,39 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFF100E18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0D0E18),
-        elevation: 0,
-        title: const Text(
-          "POKÉMON CENTER",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: _isHealing ? null : () => Navigator.pop(context),
-        ),
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "POKÉMON CENTER",
+        barColor: PokeColors.centerRose,
+        bottomBorderColor: PokeColors.centerRoseDark,
+        onBack: _isHealing ? () {} : null,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 14, top: 10, bottom: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0A0C14),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFFFD54F).withOpacity(0.55)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "₽",
-                  style: TextStyle(
-                    color: Color(0xFFFFD54F),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(width: 3),
-                Text(
-                  "${trainer.money}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          PokeCurrencyPill(trainer.money),
         ],
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_pokemon_center.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF180E1B).withOpacity(0.76),
-                  const Color(0xFF131120).withOpacity(0.62),
-                  const Color(0xFF0B0A14).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_pokemon_center.png',
+            topOpacity: 0.18,
+            midOpacity: 0.40,
+            bottomOpacity: 0.84,
           ),
           SafeArea(
+            top: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ─── CLASSIC HEALING MACHINE CONSOLE ──────────────────────
                   _buildHealingMachineConsole(trainer, needsHeal),
-
                   const SizedBox(height: 10),
-
-                  // ─── NURSE JOY CHARACTER STAGE ────────────────────────────
                   Expanded(
                     child: _buildNurseJoyStage(trainer, needsHeal),
                   ),
-
                   const SizedBox(height: 10),
-
-                  // 1. Heal Pokemon Button (triggers Classic Healing Sequence)
                   SizedBox(
                     height: 48,
                     child: ElevatedButton.icon(
@@ -238,85 +175,88 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.pinkAccent.shade400,
+                        backgroundColor: PokeColors.centerRose,
                         foregroundColor: Colors.white,
                         disabledBackgroundColor:
-                            Colors.pinkAccent.withOpacity(0.35),
-                        disabledForegroundColor: Colors.white70,
-                        elevation: 4,
+                            PokeColors.centerRose.withOpacity(0.4),
+                        disabledForegroundColor: Colors.white,
+                        elevation: 3,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
-                          side: BorderSide(
-                            color: Colors.white.withOpacity(0.28),
-                          ),
                         ),
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 10),
-
-                  // 2 & 3. Poke Mart and Pokemon Lab Options
                   Row(
                     children: [
                       Expanded(
-                        child: _buildFacilityTile(
+                        child: PokePortraitButton(
+                          label: "POKÉ MART",
+                          subtitle: "Items & Balls",
+                          icon: Icons.storefront_rounded,
+                          topColor: PokeColors.pokeBlue,
+                          bottomColor: PokeColors.pokeBlueDark,
+                          height: 112,
+                          iconSize: 30,
                           onTap: _isHealing
                               ? null
                               : () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PokeMartScreen(),
+                                      builder: (_) => const PokeMartScreen(),
                                     ),
                                   );
                                 },
-                          icon: Icons.storefront_rounded,
-                          accentColor: Colors.cyanAccent,
-                          title: "Poké Mart",
-                          subtitle: "Items & Medicine",
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       Expanded(
-                        child: _buildFacilityTile(
+                        child: PokePortraitButton(
+                          label: "POKÉ LAB",
+                          subtitle: "${fossils + vouchers} Items",
+                          icon: Icons.science_rounded,
+                          topColor: PokeColors.pokeGreen,
+                          bottomColor: PokeColors.pokeGreenDark,
+                          height: 112,
+                          iconSize: 30,
                           onTap: _isHealing
                               ? null
                               : () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PokemonLabScreen(),
+                                      builder: (_) => const PokemonLabScreen(),
                                     ),
                                   );
                                 },
-                          icon: Icons.science_rounded,
-                          accentColor: const Color(0xFF4DD0E1),
-                          title: "Pokémon Lab",
-                          subtitle: "$fossils Fossil • $vouchers Voucher",
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: PokePortraitButton(
+                          label: "MOVE TUTOR",
+                          subtitle: "Egg Moves",
+                          icon: Icons.favorite_rounded,
+                          topColor: PokeColors.centerRose,
+                          bottomColor: PokeColors.centerRoseDark,
+                          height: 112,
+                          iconSize: 30,
+                          badgeText: "x$heartScales",
+                          onTap: _isHealing
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const MoveTutorScreen(),
+                                    ),
+                                  );
+                                },
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 10),
-                  _buildFacilityTile(
-                    onTap: _isHealing
-                        ? null
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MoveTutorScreen(),
-                              ),
-                            );
-                          },
-                    icon: Icons.favorite_rounded,
-                    accentColor: const Color(0xFFFF6B9D),
-                    title: "Move Tutor (Egg Moves)",
-                    subtitle:
-                        "$heartScales Heart Scale${heartScales == 1 ? '' : 's'} • Teach special moves",
                   ),
                 ],
               ),
@@ -330,24 +270,16 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
   Widget _buildNurseJoyStage(Trainer trainer, bool needsHeal) {
     final bool glowing = _isHealing && _pulseLit;
     final Color statusColor = _isHealing
-        ? Colors.amberAccent
-        : (needsHeal ? Colors.orangeAccent : Colors.greenAccent);
+        ? PokeColors.badgeGoldDark
+        : (needsHeal ? PokeColors.bagOrange : PokeColors.pokeGreenDark);
 
     return Container(
       padding: const EdgeInsets.all(11),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xE0161826), Color(0xE80E101B)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: glowing
-              ? const Color(0xFFFFEE58).withOpacity(0.75)
-              : Colors.pinkAccent.withOpacity(0.32),
-          width: 1.2,
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.creamSurface.withOpacity(0.95),
+        border: glowing ? PokeColors.badgeGold : PokeColors.centerRose,
+        radius: 16,
+        borderWidth: 1.6,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -358,15 +290,15 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
               const Row(
                 children: [
                   Icon(Icons.medical_services_rounded,
-                      color: Colors.pinkAccent, size: 14),
+                      color: PokeColors.centerRose, size: 14),
                   SizedBox(width: 6),
                   Text(
                     "POKÉMON CENTER • NURSE JOY",
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: PokeColors.inkDark,
                       fontWeight: FontWeight.w900,
                       fontSize: 10.5,
-                      letterSpacing: 0.9,
+                      letterSpacing: 0.8,
                     ),
                   ),
                 ],
@@ -375,9 +307,9 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.16),
+                  color: statusColor.withOpacity(0.14),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: statusColor.withOpacity(0.5)),
+                  border: Border.all(color: statusColor.withOpacity(0.55)),
                 ),
                 child: Text(
                   _isHealing
@@ -407,12 +339,12 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                     gradient: RadialGradient(
                       colors: glowing
                           ? [
-                              const Color(0xFFFFEE58).withOpacity(0.34),
-                              Colors.pinkAccent.withOpacity(0.16),
+                              PokeColors.badgeGold.withOpacity(0.38),
+                              PokeColors.centerRose.withOpacity(0.16),
                               Colors.transparent,
                             ]
                           : [
-                              Colors.pinkAccent.withOpacity(0.22),
+                              PokeColors.centerRose.withOpacity(0.18),
                               Colors.transparent,
                             ],
                     ),
@@ -436,14 +368,11 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
           const SizedBox(height: 6),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A1E2F),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: glowing
-                    ? const Color(0xFFFFEE58).withOpacity(0.55)
-                    : Colors.pinkAccent.withOpacity(0.35),
-              ),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.cardWhite,
+              border: glowing ? PokeColors.badgeGold : PokeColors.centerRose,
+              radius: 12,
+              borderWidth: 1.4,
             ),
             child: Row(
               children: [
@@ -451,15 +380,13 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: Colors.pinkAccent.withOpacity(0.18),
+                    color: PokeColors.centerRose,
                     borderRadius: BorderRadius.circular(6),
-                    border:
-                        Border.all(color: Colors.pinkAccent.withOpacity(0.5)),
                   ),
                   child: const Text(
                     "NURSE JOY",
                     style: TextStyle(
-                      color: Colors.pinkAccent,
+                      color: Colors.white,
                       fontSize: 8.5,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 0.6,
@@ -473,9 +400,9 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: PokeColors.inkDark,
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       height: 1.25,
                     ),
                   ),
@@ -494,52 +421,32 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 160),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: glowing
-              ? [
-                  const Color(0xEE3C1A35),
-                  const Color(0xEE24162A),
-                ]
-              : [
-                  const Color(0xE8241928),
-                  const Color(0xEE141522),
-                ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: glowing
-              ? const Color(0xFFFFEE58)
-              : Colors.pinkAccent.withOpacity(0.55),
-          width: glowing ? 1.8 : 1.3,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: (glowing ? const Color(0xFFFFEE58) : Colors.pinkAccent)
-                .withOpacity(glowing ? 0.36 : 0.16),
-            blurRadius: glowing ? 18 : 10,
-            spreadRadius: glowing ? 2 : 0,
-          ),
-        ],
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: glowing ? PokeColors.badgeGold : PokeColors.centerRose,
+        radius: 18,
+        borderWidth: glowing ? 2.0 : 1.6,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Nurse Dialogue Strip
           Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(7),
                 decoration: BoxDecoration(
-                  color: Colors.pinkAccent.withOpacity(0.18),
+                  color: (glowing ? PokeColors.badgeGold : PokeColors.centerRose)
+                      .withOpacity(0.14),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.pinkAccent.withOpacity(0.55)),
+                  border: Border.all(
+                    color: glowing ? PokeColors.badgeGold : PokeColors.centerRose,
+                  ),
                 ),
                 child: Icon(
                   glowing ? Icons.auto_awesome : Icons.local_hospital_rounded,
-                  color: glowing ? const Color(0xFFFFEE58) : Colors.pinkAccent,
+                  color: glowing
+                      ? PokeColors.badgeGoldDark
+                      : PokeColors.centerRose,
                   size: 20,
                 ),
               ),
@@ -554,7 +461,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                         const Text(
                           "RECOVERY MACHINE",
                           style: TextStyle(
-                            color: Colors.pinkAccent,
+                            color: PokeColors.centerRoseDark,
                             fontWeight: FontWeight.w900,
                             fontSize: 9.5,
                             letterSpacing: 1.0,
@@ -563,12 +470,12 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                         if (_isHealing)
                           Text(
                             _pulseCount > 0
-                                ? "CHIME ${_pulseCount}/4"
+                                ? "CHIME $_pulseCount/4"
                                 : "LOADING $_placedBalls/${trainer.party.length}",
                             style: TextStyle(
                               color: glowing
-                                  ? const Color(0xFFFFEE58)
-                                  : Colors.pinkAccent.shade100,
+                                  ? PokeColors.badgeGoldDark
+                                  : PokeColors.centerRose,
                               fontWeight: FontWeight.w900,
                               fontSize: 9.5,
                               letterSpacing: 0.6,
@@ -580,7 +487,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                     Text(
                       _nurseMessage,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkMuted,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         height: 1.3,
@@ -591,23 +498,22 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
               ),
             ],
           ),
-
           const SizedBox(height: 10),
-
           // Classic 2x3 Metallic Recovery Tray with 6 Poké Ball Sockets
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF2B2435), Color(0xFF1A1725)],
+                colors: [Color(0xFFE5EAF2), Color(0xFFD2DAE6)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: glowing
-                    ? const Color(0xFFFFEE58).withOpacity(0.8)
-                    : Colors.white.withOpacity(0.16),
+                    ? PokeColors.badgeGold
+                    : PokeColors.frameBorder.withOpacity(0.45),
+                width: 1.4,
               ),
             ),
             child: Column(
@@ -652,26 +558,26 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
         gradient: RadialGradient(
           colors: isLit
               ? [
-                  const Color(0xFFFFEE58).withOpacity(0.55),
-                  const Color(0xFF281C32),
+                  const Color(0xFFFFF176),
+                  const Color(0xFFFFB300),
                 ]
               : [
-                  const Color(0xFF0E101A),
-                  const Color(0xFF1C2030),
+                  PokeColors.cardWhite,
+                  const Color(0xFFC7D0DF),
                 ],
         ),
         border: Border.all(
           color: isLit
-              ? const Color(0xFFFFEE58)
+              ? PokeColors.badgeGoldDark
               : (isPlaced
-                  ? Colors.pinkAccent.withOpacity(0.65)
-                  : Colors.white12),
-          width: isLit ? 2.0 : 1.2,
+                  ? PokeColors.centerRose
+                  : PokeColors.frameBorderSoft),
+          width: isLit ? 2.2 : 1.4,
         ),
         boxShadow: isLit
             ? [
                 BoxShadow(
-                  color: const Color(0xFFFFEE58).withOpacity(0.65),
+                  color: const Color(0xFFFFEE58).withOpacity(0.75),
                   blurRadius: 12,
                   spreadRadius: 1,
                 ),
@@ -688,8 +594,7 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                   child: PokeBallSpriteWidget(
                     ballType: mon.caughtBall,
                     size: 26,
-                    buttonGlowColor:
-                        isLit ? const Color(0xFFFFEE58) : null,
+                    buttonGlowColor: isLit ? const Color(0xFFFFEE58) : null,
                   ),
                 ),
               )
@@ -698,85 +603,10 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                 height: 12,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.04),
-                  border: Border.all(color: Colors.white12),
+                  color: PokeColors.panelSoft,
+                  border: Border.all(color: PokeColors.frameBorderSoft),
                 ),
               ),
-      ),
-    );
-  }
-
-  Widget _buildFacilityTile({
-    required VoidCallback? onTap,
-    required IconData icon,
-    required Color accentColor,
-    required String title,
-    required String subtitle,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
-      child: Opacity(
-        opacity: onTap == null ? 0.5 : 1.0,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                accentColor.withOpacity(0.16),
-                const Color(0xE8161928),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(14),
-            border:
-                Border.all(color: accentColor.withOpacity(0.55), width: 1.2),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0A0D16),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: accentColor.withOpacity(0.45)),
-                ),
-                child: Icon(icon, color: accentColor, size: 19),
-              ),
-              const SizedBox(width: 9),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12.5,
-                      ),
-                    ),
-                    Text(
-                      subtitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: accentColor,
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.chevron_right_rounded,
-                  color: accentColor.withOpacity(0.75), size: 18),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -844,18 +674,21 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     showDialog(
       context: context,
       builder: (dlgCtx) => AlertDialog(
-        backgroundColor: const Color(0xFF1F222D),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: PokeColors.pokeGreen, width: 1.6),
+        ),
         title: const Row(
           children: [
-            Icon(Icons.science, color: Color(0xFF4DD0E1), size: 24),
+            Icon(Icons.science, color: PokeColors.pokeGreenDark, size: 24),
             SizedBox(width: 8),
             Expanded(
               child: Text(
                 "FOSSIL RESTORATION COMPLETE!",
                 style: TextStyle(
-                  color: Color(0xFF4DD0E1),
-                  fontWeight: FontWeight.bold,
+                  color: PokeColors.pokeGreenDark,
+                  fontWeight: FontWeight.w900,
                   fontSize: 14.5,
                 ),
               ),
@@ -882,7 +715,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                   filterQuality: FilterQuality.none,
                   errorBuilder: (_, __, ___) => const Icon(
                     Icons.catching_pokemon,
-                    color: Colors.white54,
+                    color: PokeColors.pokeGreen,
                     size: 56,
                   ),
                 ),
@@ -893,9 +726,10 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
               "You went to a Poké Lab to get the fossil restored! The scientists revived a Lv. ${restoredMon.level} ${restoredMon.species.name}!",
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white,
+                color: PokeColors.inkDark,
                 fontSize: 13.5,
                 height: 1.4,
+                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 6),
@@ -904,8 +738,8 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: restoredMon.isHiddenAbility
-                    ? const Color(0xFFFFD54F)
-                    : Colors.cyanAccent,
+                    ? PokeColors.badgeGoldDark
+                    : PokeColors.pokeBlueDark,
                 fontSize: 11.5,
                 fontWeight: FontWeight.w800,
               ),
@@ -917,7 +751,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                   : "${restoredMon.species.name} was transferred to PC Box #$boxNum!",
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.amberAccent,
+                color: PokeColors.pokeGreenDark,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
@@ -931,8 +765,8 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
               setState(() {});
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4DD0E1),
-              foregroundColor: Colors.black,
+              backgroundColor: PokeColors.pokeGreen,
+              foregroundColor: Colors.white,
             ),
             child: const Text(
               "AWESOME!",
@@ -949,86 +783,54 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     final trainer = Provider.of<Trainer>(context);
     final int fossils = trainer.getItemCount('unknown_fossil');
     final int vouchers = trainer.getItemCount('fossil_restoration_voucher');
-    final int heartScales = trainer.getItemCount('heart_scale');
     final bool canRestore = fossils > 0 && vouchers > 0 && !trainer.isStorageFull;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0C121A),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0A1018),
-        elevation: 0,
-        title: const Text(
-          "POKÉMON LAB",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "POKÉMON LAB",
+        barColor: PokeColors.pokeGreen,
+        bottomBorderColor: PokeColors.pokeGreenDark,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_pokemon_lab.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF0A141E).withOpacity(0.72),
-                  const Color(0xFF0C1622).withOpacity(0.58),
-                  const Color(0xFF080E16).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_pokemon_lab.png',
+            topOpacity: 0.18,
+            midOpacity: 0.44,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
+            top: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xE8132232), Color(0xE80D1622)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF4DD0E1).withOpacity(0.55),
-                        width: 1.3,
-                      ),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.creamSurface,
+                      border: PokeColors.pokeGreen,
+                      radius: 16,
+                      borderWidth: 1.6,
                     ),
                     child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF091018),
+                            color: PokeColors.pokeGreen.withOpacity(0.14),
                             borderRadius: BorderRadius.circular(11),
                             border: Border.all(
-                              color: const Color(0xFF4DD0E1).withOpacity(0.5),
+                              color: PokeColors.pokeGreen.withOpacity(0.55),
                             ),
                           ),
                           child: const Icon(
                             Icons.science_rounded,
-                            color: Color(0xFF4DD0E1),
+                            color: PokeColors.pokeGreenDark,
                             size: 24,
                           ),
                         ),
@@ -1040,7 +842,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                               Text(
                                 "FOSSIL RESTORATION CHAMBER",
                                 style: TextStyle(
-                                  color: Color(0xFF4DD0E1),
+                                  color: PokeColors.pokeGreenDark,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 12,
                                   letterSpacing: 0.7,
@@ -1050,7 +852,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                               Text(
                                 "Combine 1 Unknown Fossil and 1 Fossil Restoration Voucher to revive a random Lv. 10 first-stage Fossil Pokémon!",
                                 style: TextStyle(
-                                  color: Colors.white70,
+                                  color: PokeColors.inkMuted,
                                   fontSize: 10.8,
                                   height: 1.35,
                                 ),
@@ -1061,16 +863,13 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
-                  // Counts of Unknown Fossil and Fossil Restoration Voucher
                   Row(
                     children: [
                       Expanded(
                         child: _buildCountCard(
                           icon: Icons.album_rounded,
-                          color: const Color(0xFFD7CCC8),
+                          color: PokeColors.bagOrangeDark,
                           title: "Unknown Fossils",
                           count: fossils,
                         ),
@@ -1079,31 +878,22 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                       Expanded(
                         child: _buildCountCard(
                           icon: Icons.confirmation_number_rounded,
-                          color: const Color(0xFF4DD0E1),
+                          color: PokeColors.pokeBlueDark,
                           title: "Restoration Vouchers",
                           count: vouchers,
                         ),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 12),
-
-                  // Possible Revived Fossil Species Card
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xE0141C29), Color(0xE80C121C)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.14),
-                          width: 1.2,
-                        ),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.creamSurface,
+                        border: PokeColors.frameBorderSoft,
+                        radius: 18,
+                        borderWidth: 1.5,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1111,7 +901,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                           const Text(
                             "PREHISTORIC REVIVAL SPECIMENS (LV. 10)",
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: PokeColors.inkDark,
                               fontWeight: FontWeight.w900,
                               fontSize: 10.5,
                               letterSpacing: 0.9,
@@ -1129,19 +919,11 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                   Container(
                                     width: 72,
                                     height: 72,
-                                    decoration: BoxDecoration(
-                                      gradient: const RadialGradient(
-                                        colors: [
-                                          Color(0x444DD0E1),
-                                          Color(0xFF0A1018),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: const Color(0xFF4DD0E1)
-                                            .withOpacity(0.55),
-                                        width: 1.3,
-                                      ),
+                                    decoration: PokeDecorations.card(
+                                      fill: PokeColors.cardWhite,
+                                      border: PokeColors.pokeGreen,
+                                      radius: 16,
+                                      borderWidth: 1.5,
                                     ),
                                     child: Center(
                                       child: Image.network(
@@ -1160,7 +942,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                           errorBuilder: (_, __, ___) =>
                                               const Icon(
                                             Icons.catching_pokemon,
-                                            color: Colors.white54,
+                                            color: PokeColors.pokeGreen,
                                           ),
                                         ),
                                       ),
@@ -1170,7 +952,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                   Text(
                                     spec.name,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: PokeColors.inkDark,
                                       fontWeight: FontWeight.w900,
                                       fontSize: 12.5,
                                     ),
@@ -1178,7 +960,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                                   const Text(
                                     "Lv. 10",
                                     style: TextStyle(
-                                      color: Color(0xFF4DD0E1),
+                                      color: PokeColors.pokeGreenDark,
                                       fontSize: 10,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -1191,16 +973,12 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.white10),
-                            ),
+                            decoration: PokeDecorations.inset(radius: 10),
                             child: const Text(
                               "Unknown Fossils and Fossil Restoration Vouchers drop as rare rewards when re-challenging Kanto Gym Leaders.",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.white60,
+                                color: PokeColors.inkMuted,
                                 fontSize: 10.5,
                                 height: 1.35,
                               ),
@@ -1210,9 +988,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
                   SizedBox(
                     height: 50,
                     child: ElevatedButton.icon(
@@ -1231,10 +1007,10 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4DD0E1),
-                        foregroundColor: Colors.black,
-                        disabledBackgroundColor: Colors.white12,
-                        disabledForegroundColor: Colors.white38,
+                        backgroundColor: PokeColors.pokeGreen,
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: PokeColors.panelSoft,
+                        disabledForegroundColor: PokeColors.inkSubtle,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -1258,20 +1034,11 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            color.withOpacity(count > 0 ? 0.16 : 0.04),
-            const Color(0xE8121924),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: count > 0 ? color.withOpacity(0.65) : Colors.white12,
-          width: 1.2,
-        ),
+      decoration: PokeDecorations.card(
+        fill: PokeColors.cardWhite,
+        border: count > 0 ? color : PokeColors.frameBorderSoft,
+        radius: 16,
+        borderWidth: count > 0 ? 1.6 : 1.2,
       ),
       child: Column(
         children: [
@@ -1280,7 +1047,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
           Text(
             "x$count",
             style: TextStyle(
-              color: count > 0 ? color : Colors.white38,
+              color: count > 0 ? color : PokeColors.inkSubtle,
               fontSize: 22,
               fontWeight: FontWeight.w900,
             ),
@@ -1290,7 +1057,7 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
             title,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: Colors.white,
+              color: PokeColors.inkDark,
               fontSize: 11,
               fontWeight: FontWeight.w900,
             ),

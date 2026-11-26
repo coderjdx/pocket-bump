@@ -9,7 +9,7 @@ import '../services/item_drop_service.dart';
 import '../services/sound_service.dart';
 import '../services/tm_service.dart';
 import '../widgets/gauntlet_checkpoint_sheets.dart';
-import '../widgets/hp_bar.dart';
+import '../widgets/poke_theme.dart';
 import 'battle_screen.dart';
 
 class PokemonLeagueScreen extends StatefulWidget {
@@ -38,111 +38,74 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0C0E18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0D0E18),
-        elevation: 0,
-        title: const Text(
-          "POKÉMON LEAGUE",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "POKÉMON LEAGUE",
+        barColor: PokeColors.leagueIndigo,
+        bottomBorderColor: PokeColors.leagueIndigoDark,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 14, top: 10, bottom: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFF0A0C14),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: const Color(0xFFFFD54F).withOpacity(0.55)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.stars_rounded,
-                    color: Color(0xFFFFD54F), size: 15),
-                const SizedBox(width: 4),
-                Text(
-                  "${trainer.clearedGymIds.length}/8 BADGES",
-                  style: const TextStyle(
-                    color: Color(0xFFFFD54F),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 10.5,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
+          PokeCounterPill(
+            icon: Icons.stars_rounded,
+            iconColor: PokeColors.badgeGoldDark,
+            text: "${trainer.clearedGymIds.length}/8 BADGES",
           ),
         ],
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_pokemon_league.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF140B12).withOpacity(0.76),
-                  const Color(0xFF100E1A).withOpacity(0.62),
-                  const Color(0xFF0A0A12).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_pokemon_league.png',
+            topOpacity: 0.22,
+            midOpacity: 0.45,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
+            top: false,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(14, 10, 14, 24),
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 24),
               children: [
-                // Velvet Kanto Badge Case
+                // Classic Kanto Badge Case
                 _buildBadgeShowcase(trainer),
                 const SizedBox(height: 16),
 
                 // Section Header
-                Row(
-                  children: [
-                    const Icon(Icons.military_tech_rounded,
-                        color: Color(0xFFFFD54F), size: 18),
-                    const SizedBox(width: 7),
-                    const Text(
-                      "KANTO GYM GAUNTLETS",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12,
-                        letterSpacing: 1.0,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: PokeDecorations.card(
+                    fill: PokeColors.creamSurface.withOpacity(0.95),
+                    border: PokeColors.leagueIndigo,
+                    radius: 11,
+                    borderWidth: 1.3,
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.military_tech_rounded,
+                          color: PokeColors.leagueIndigo, size: 18),
+                      const SizedBox(width: 7),
+                      const Text(
+                        "KANTO GYM GAUNTLETS",
+                        style: TextStyle(
+                          color: PokeColors.inkDark,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 12,
+                          letterSpacing: 0.9,
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      "WALK & CATCH TO UNLOCK",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                      const Spacer(),
+                      const Text(
+                        "WALK & CATCH",
+                        style: TextStyle(
+                          color: PokeColors.inkMuted,
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
 
@@ -164,7 +127,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     );
   }
 
-  // === VELVET KANTO BADGE CASE ===
+  // === ROYAL NAVY KANTO BADGE CASE ===
   Widget _buildBadgeShowcase(Trainer trainer) {
     const badgeNames = [
       "Boulder",
@@ -181,18 +144,18 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
       padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xEE1F1522), Color(0xEE110D18)],
+          colors: [PokeColors.leagueIndigo, PokeColors.leagueIndigoDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFFFFD54F).withOpacity(0.5),
-          width: 1.3,
+          color: PokeColors.badgeGold,
+          width: 1.8,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.5),
+            color: PokeColors.leagueIndigoDark.withOpacity(0.35),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -207,7 +170,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               const Row(
                 children: [
                   Icon(Icons.workspace_premium_rounded,
-                      color: Color(0xFFFFD54F), size: 14),
+                      color: Color(0xFFFFD54F), size: 15),
                   SizedBox(width: 5),
                   Text(
                     "KANTO BADGE CASE",
@@ -223,10 +186,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0A0810),
+                  color: Colors.black.withOpacity(0.28),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                      color: const Color(0xFFFFD54F).withOpacity(0.4)),
+                    color: const Color(0xFFFFD54F).withOpacity(0.65),
+                  ),
                 ),
                 child: Text(
                   "OBEY UP TO LV.${trainer.maxObedienceLevel}",
@@ -277,18 +241,18 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             shape: BoxShape.circle,
             gradient: RadialGradient(
               colors: isEarned
-                  ? [color.withOpacity(0.35), const Color(0xFF14111D)]
-                  : [const Color(0xFF0A0910), const Color(0xFF15121E)],
+                  ? [Colors.white.withOpacity(0.28), color.withOpacity(0.25)]
+                  : [const Color(0xFF151C52), const Color(0xFF0E133D)],
             ),
             border: Border.all(
-              color: isEarned ? color : Colors.white12,
-              width: isEarned ? 1.8 : 1.0,
+              color: isEarned ? color : Colors.white24,
+              width: isEarned ? 2.0 : 1.0,
             ),
             boxShadow: isEarned
                 ? [
                     BoxShadow(
-                      color: color.withOpacity(0.42),
-                      blurRadius: 9,
+                      color: color.withOpacity(0.45),
+                      blurRadius: 8,
                       spreadRadius: 1,
                     )
                   ]
@@ -325,7 +289,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           style: TextStyle(
             fontSize: 8.5,
             fontWeight: isEarned ? FontWeight.w900 : FontWeight.w500,
-            color: isEarned ? Colors.white : Colors.white30,
+            color: isEarned ? Colors.white : Colors.white38,
           ),
         ),
       ],
@@ -343,27 +307,20 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
     final bool caughtMet = caughtCount >= gym.requiredCaught;
     final bool stepsMet = isStepDone || (todaySteps >= gym.requiredSteps);
+    final Color gymAccentDark = PokeColors.darken(gym.elementColor, 0.16);
 
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isCleared
-              ? [gym.elementColor.withOpacity(0.18), const Color(0xEA121524)]
-              : (isUnlocked
-                  ? [gym.elementColor.withOpacity(0.10), const Color(0xEA121422)]
-                  : [const Color(0xDD10111B), const Color(0xDD0B0C14)]),
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isCleared
-              ? gym.elementColor.withOpacity(0.65)
-              : (isUnlocked
-                  ? gym.elementColor.withOpacity(0.35)
-                  : Colors.white.withOpacity(0.08)),
-          width: isCleared ? 1.5 : 1.1,
-        ),
+      decoration: PokeDecorations.card(
+        fill: isCleared || isUnlocked
+            ? PokeColors.cardWhite
+            : PokeColors.creamSurface,
+        border: isCleared
+            ? gymAccentDark
+            : (isUnlocked
+                ? gym.elementColor
+                : PokeColors.frameBorderSoft),
+        radius: 16,
+        borderWidth: isCleared ? 1.8 : 1.4,
       ),
       child: Padding(
         padding: const EdgeInsets.all(13),
@@ -373,15 +330,16 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             // Gym Header Row
             Row(
               children: [
-                // Gym Badge image icon medallion
                 Container(
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0A0D16),
+                    color: gym.elementColor.withOpacity(0.16),
                     borderRadius: BorderRadius.circular(11),
-                    border:
-                        Border.all(color: gym.elementColor.withOpacity(0.65)),
+                    border: Border.all(
+                      color: gymAccentDark.withOpacity(0.55),
+                      width: 1.3,
+                    ),
                   ),
                   child: Center(
                     child: Opacity(
@@ -407,7 +365,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                               gym.name,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: PokeColors.inkDark,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 14.5,
                               ),
@@ -418,15 +376,13 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 1.5),
                             decoration: BoxDecoration(
-                              color: gym.elementColor.withOpacity(0.22),
+                              color: gymAccentDark,
                               borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: gym.elementColor.withOpacity(0.7)),
                             ),
                             child: Text(
                               gym.element.toUpperCase(),
-                              style: TextStyle(
-                                color: gym.elementColor,
+                              style: const TextStyle(
+                                color: Colors.white,
                                 fontSize: 8.5,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -438,7 +394,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       Text(
                         "${gym.city} • Leader ${gym.leaderName}",
                         style: const TextStyle(
-                          color: Colors.white60,
+                          color: PokeColors.inkMuted,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
@@ -451,20 +407,20 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0B0E16),
+                      color: PokeColors.badgeGold.withOpacity(0.18),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.amber.withOpacity(0.75)),
+                      border: Border.all(color: PokeColors.badgeGoldDark),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.check_rounded,
-                            color: Color(0xFFFFD54F), size: 12),
+                            color: PokeColors.badgeGoldDark, size: 12),
                         SizedBox(width: 3),
                         Text(
                           "CLEARED",
                           style: TextStyle(
-                            color: Color(0xFFFFD54F),
+                            color: PokeColors.badgeGoldDark,
                             fontSize: 8.5,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.5,
@@ -480,22 +436,21 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
             // Badge & Reward Info
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0B0E17),
-                borderRadius: BorderRadius.circular(9),
-                border: Border.all(color: Colors.white10),
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              decoration: PokeDecorations.inset(radius: 9),
               child: Row(
                 children: [
                   Icon(Icons.emoji_events_rounded,
-                      color: gym.elementColor, size: 14),
+                      color: gymAccentDark, size: 15),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       "${gym.badgeName}: ${gym.badgeDescription}",
-                      style:
-                          const TextStyle(color: Colors.white70, fontSize: 10.5),
+                      style: const TextStyle(
+                        color: PokeColors.inkDark,
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -509,19 +464,19 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade900.withOpacity(0.18),
+                  color: PokeColors.pokeRed.withOpacity(0.10),
                   borderRadius: BorderRadius.circular(9),
-                  border: Border.all(color: Colors.redAccent.withOpacity(0.35)),
+                  border: Border.all(color: PokeColors.pokeRed.withOpacity(0.4)),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.lock_rounded,
-                        color: Colors.redAccent, size: 14),
+                        color: PokeColors.pokeRed, size: 14),
                     const SizedBox(width: 6),
                     Text(
                       "LOCKED: Clear Gym ${gym.id - 1} first to unlock entry permit.",
                       style: const TextStyle(
-                        color: Colors.redAccent,
+                        color: PokeColors.pokeRedDark,
                         fontSize: 10.5,
                         fontWeight: FontWeight.w700,
                       ),
@@ -564,13 +519,17 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       children: [
                         const Text(
                           "Gauntlet: 4 Gym Trainers + Gym Leader",
-                          style: TextStyle(color: Colors.white60, fontSize: 10),
+                          style: TextStyle(
+                            color: PokeColors.inkMuted,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         if (isCleared) ...[
                           Text(
                             "Re-challenge (On-Par Lv. • 2–5 Trainer / 6 Leader Mons)",
                             style: TextStyle(
-                              color: gym.elementColor,
+                              color: gymAccentDark,
                               fontSize: 9.5,
                               fontWeight: FontWeight.bold,
                             ),
@@ -579,6 +538,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(width: 8),
                   ElevatedButton.icon(
                     onPressed: (canChallenge && !_isLaunchingBattle)
                         ? () => _startGymGauntlet(context, trainer, gym)
@@ -598,10 +558,10 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: gym.elementColor,
-                      foregroundColor: Colors.black,
-                      disabledBackgroundColor: Colors.white10,
-                      disabledForegroundColor: Colors.white24,
+                      backgroundColor: gymAccentDark,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: PokeColors.panelSoft,
+                      disabledForegroundColor: PokeColors.inkSubtle,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 8),
                       shape: RoundedRectangleBorder(
@@ -626,16 +586,15 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     required bool isDone,
   }) {
     final double pct = (current / target).clamp(0.0, 1.0);
-    final color = isDone ? const Color(0xFF34EB8C) : Colors.amberAccent;
+    final color = isDone ? PokeColors.pokeGreen : PokeColors.badgeGoldDark;
 
     return Container(
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0B0E17),
-        borderRadius: BorderRadius.circular(9),
-        border: Border.all(
-          color: isDone ? color.withOpacity(0.45) : Colors.white10,
-        ),
+      decoration: PokeDecorations.inset(
+        radius: 9,
+        border: isDone
+            ? PokeColors.pokeGreen.withOpacity(0.55)
+            : PokeColors.frameBorderSoft,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -645,7 +604,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             children: [
               Text(
                 label,
-                style: const TextStyle(color: Colors.white60, fontSize: 9.5),
+                style: const TextStyle(
+                  color: PokeColors.inkMuted,
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               Icon(
                 isDone ? Icons.check_circle : Icons.radio_button_unchecked,
@@ -658,7 +621,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           Text(
             "$current / $target $unit",
             style: TextStyle(
-              color: isDone ? Colors.white : color,
+              color: isDone ? PokeColors.pokeGreenDark : PokeColors.inkDark,
               fontSize: 10.5,
               fontWeight: FontWeight.w900,
             ),
@@ -668,8 +631,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: pct,
-              minHeight: 3.5,
-              backgroundColor: Colors.white10,
+              minHeight: 4,
+              backgroundColor: PokeColors.cardWhite,
               valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),
@@ -685,17 +648,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
 
     return Container(
       padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: unlocked
-              ? [const Color(0xEE2B2012), const Color(0xEE141118)]
-              : [const Color(0xE0131522), const Color(0xE00C0D16)],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: unlocked ? Colors.amberAccent.withOpacity(0.65) : Colors.white12,
-          width: 1.2,
-        ),
+      decoration: PokeDecorations.card(
+        fill: unlocked ? PokeColors.cardWhite : PokeColors.creamSurface,
+        border: unlocked ? PokeColors.badgeGold : PokeColors.frameBorderSoft,
+        radius: 16,
+        borderWidth: 1.5,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -705,23 +662,23 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0A0C14),
+                  color: PokeColors.badgeGold.withOpacity(0.18),
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                      color: Colors.amberAccent.withOpacity(0.45)),
+                      color: PokeColors.badgeGoldDark.withOpacity(0.5)),
                 ),
                 child: const Icon(Icons.emoji_events_rounded,
-                    color: Colors.amberAccent, size: 22),
+                    color: PokeColors.badgeGoldDark, size: 22),
               ),
               const SizedBox(width: 12),
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "INDIGO PLATEAU",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 14,
                         letterSpacing: 0.9,
@@ -730,7 +687,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                     Text(
                       "Pokémon League Champion Road",
                       style: TextStyle(
-                          color: Colors.white.withOpacity(0.55), fontSize: 11),
+                        color: PokeColors.inkMuted,
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
@@ -739,17 +698,21 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: unlocked
-                      ? Colors.amber.withOpacity(0.22)
-                      : Colors.white.withOpacity(0.06),
+                      ? PokeColors.badgeGold.withOpacity(0.22)
+                      : PokeColors.panelSoft,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: unlocked ? Colors.amberAccent : Colors.white12,
+                    color: unlocked
+                        ? PokeColors.badgeGoldDark
+                        : PokeColors.frameBorderSoft,
                   ),
                 ),
                 child: Text(
                   unlocked ? "READY" : "LOCKED (8 BADGES)",
                   style: TextStyle(
-                    color: unlocked ? Colors.amberAccent : Colors.white38,
+                    color: unlocked
+                        ? PokeColors.badgeGoldDark
+                        : PokeColors.inkSubtle,
                     fontSize: 8.5,
                     fontWeight: FontWeight.w900,
                   ),
@@ -760,7 +723,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           const SizedBox(height: 10),
           const Text(
             "The Elite Four (Lorelei, Bruno, Agatha, Lance) and the Regional Champion await the master trainer who conquers all 8 Kanto Gyms. Keep training and collecting badges!",
-            style: TextStyle(color: Colors.white60, fontSize: 11, height: 1.4),
+            style: TextStyle(
+              color: PokeColors.inkMuted,
+              fontSize: 11,
+              height: 1.4,
+            ),
           ),
         ],
       ),
@@ -768,11 +735,14 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   }
 
   // === GAUNTLET RUNNER & BATTLE LOOP ===
-  Future<void> _startGymGauntlet(BuildContext context, Trainer trainer, GymDefinition gym) async {
+  Future<void> _startGymGauntlet(
+      BuildContext context, Trainer trainer, GymDefinition gym) async {
     if (_isLaunchingBattle) return;
     if (!trainer.hasConsciousPokemon) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("All Pokémon in your party are fainted! Heal first.")),
+        const SnackBar(
+            content:
+                Text("All Pokémon in your party are fainted! Heal first.")),
       );
       return;
     }
@@ -848,7 +818,6 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
       if (!mounted) return;
 
       if (won == true) {
-        // Advance to checkpoint
         setState(() {
           _isLaunchingBattle = false;
           _gauntletIndex++;
@@ -860,7 +829,6 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           }
         });
       } else {
-        // Lost or fled — preserve party HP/PP/status (heal at Pokémon Center)
         trainer.resetAllPartyStatStages();
         trainer.saveProgress();
         setState(() {
@@ -874,23 +842,33 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
-              backgroundColor: const Color(0xFF1E1E28),
+              backgroundColor: PokeColors.creamSurface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: const BorderSide(color: PokeColors.pokeRed, width: 1.5),
+              ),
               title: const Text(
                 "GAUNTLET FAILED",
-                style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: PokeColors.pokeRed, fontWeight: FontWeight.w900),
               ),
               content: const Text(
                 "Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",
-                style: TextStyle(color: Colors.white70, fontSize: 13),
+                style: TextStyle(color: PokeColors.inkMuted, fontSize: 13),
               ),
               actions: [
-                TextButton(
+                ElevatedButton(
                   onPressed: () {
                     if (ModalRoute.of(ctx)?.isCurrent == true) {
                       Navigator.pop(ctx);
                     }
                   },
-                  child: const Text("OK", style: TextStyle(color: Colors.amberAccent)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: PokeColors.leagueIndigo,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text("OK",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
@@ -938,6 +916,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         : (nextOpponent.team.fold<int>(0, (s, p) => s + p.level) /
                 nextOpponent.team.length)
             .round();
+    final Color gymAccentDark = PokeColors.darken(gym.elementColor, 0.16);
 
     return PopScope(
       canPop: false,
@@ -947,245 +926,231 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF0C0E18),
-        extendBodyBehindAppBar: true,
+        backgroundColor: PokeColors.canvasCream,
         appBar: AppBar(
-          backgroundColor: const Color(0xCC0D0E18),
-          elevation: 0,
+          backgroundColor: gymAccentDark,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          surfaceTintColor: Colors.transparent,
           title: Text(
             "${gym.name.toUpperCase()} CHECKPOINT",
             style: const TextStyle(
               fontWeight: FontWeight.w900,
               fontSize: 14,
               letterSpacing: 1.0,
+              color: Colors.white,
             ),
           ),
           centerTitle: true,
           automaticallyImplyLeading: false,
         ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            'assets/images/bg_pokemon_league.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF140B12).withOpacity(0.76),
-                  const Color(0xFF100E1A).withOpacity(0.62),
-                  const Color(0xFF0A0A12).withOpacity(0.88),
-                ],
-              ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            const PokeBackdrop(
+              assetPath: 'assets/images/bg_pokemon_league.png',
+              topOpacity: 0.24,
+              midOpacity: 0.50,
+              bottomOpacity: 0.88,
             ),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Checkpoint Status Banner
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          gym.elementColor.withOpacity(0.22),
-                          const Color(0xEA121624),
-                        ],
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Checkpoint Status Banner
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
+                      decoration: PokeDecorations.card(
+                        fill: PokeColors.creamSurface,
+                        border: gymAccentDark,
+                        radius: 16,
+                        borderWidth: 1.6,
                       ),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: gym.elementColor.withOpacity(0.6),
-                        width: 1.3,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.check_circle_rounded,
-                                color: gym.elementColor, size: 18),
-                            const SizedBox(width: 7),
-                            Text(
-                              "MATCH $_gauntletIndex OF 5 CLEARED",
-                              style: TextStyle(
-                                color: gym.elementColor,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 11,
-                                letterSpacing: 0.8,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          isLeaderNext
-                              ? "NEXT: FINAL BATTLE WITH LEADER ${gym.leaderName.toUpperCase()} (${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)!"
-                              : "NEXT: ${nextOpponent.name.toUpperCase()} (${nextOpponent.title} • ${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 13.0,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        const Text(
-                          "HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pokémon before the next match!",
-                          style: TextStyle(color: Colors.white70, fontSize: 10.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-
-                  // Party Status Header
-                  const Text(
-                    "POKÉMON CONDITION",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.9,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Party Pokémon Cards
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: trainer.party.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 7),
-                      itemBuilder: (ctx, idx) {
-                        final mon = trainer.party[idx];
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xE8141826),
-                            borderRadius: BorderRadius.circular(13),
-                            border: Border.all(
-                              color: mon.isFainted
-                                  ? Colors.redAccent.withOpacity(0.5)
-                                  : Colors.white.withOpacity(0.12),
-                            ),
-                          ),
-                          child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        mon.nickname,
-                                        style: TextStyle(
-                                          color: mon.isFainted
-                                              ? Colors.white38
-                                              : Colors.white,
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        "Lv.${mon.level}",
-                                        style: const TextStyle(
-                                          color: Color(0xFFFFD54F),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11,
-                                        ),
-                                      ),
-                                      if (mon.status != StatusCondition.none) ...[
-                                        const SizedBox(width: 6),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 1),
-                                          decoration: BoxDecoration(
-                                            color: Colors.redAccent
-                                                .withOpacity(0.22),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                          ),
-                                          child: Text(
-                                            mon.status.name.toUpperCase(),
-                                            style: const TextStyle(
-                                              color: Colors.redAccent,
-                                              fontSize: 8.5,
-                                              fontWeight: FontWeight.w900,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    "HP: ${mon.currentHp} / ${mon.maxHp}",
-                                    style: TextStyle(
-                                      color: mon.isFainted
-                                          ? Colors.redAccent
-                                          : Colors.white60,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                width: 105,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: LinearProgressIndicator(
-                                    value: (mon.currentHp / mon.maxHp)
-                                        .clamp(0.0, 1.0),
-                                    minHeight: 6,
-                                    backgroundColor: Colors.white10,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      mon.isFainted
-                                          ? Colors.transparent
-                                          : (mon.currentHp <= mon.maxHp / 5
-                                              ? Colors.redAccent
-                                              : (mon.currentHp <= mon.maxHp / 2
-                                                  ? Colors.amberAccent
-                                                  : const Color(0xFF34EB8C))),
-                                    ),
-                                  ),
+                              Icon(Icons.check_circle_rounded,
+                                  color: gymAccentDark, size: 18),
+                              const SizedBox(width: 7),
+                              Text(
+                                "MATCH $_gauntletIndex OF 5 CLEARED",
+                                style: TextStyle(
+                                  color: gymAccentDark,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 11,
+                                  letterSpacing: 0.8,
                                 ),
                               ),
                             ],
                           ),
-                        );
-                      },
+                          const SizedBox(height: 6),
+                          Text(
+                            isLeaderNext
+                                ? "NEXT: FINAL BATTLE WITH LEADER ${gym.leaderName.toUpperCase()} (${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)!"
+                                : "NEXT: ${nextOpponent.name.toUpperCase()} (${nextOpponent.title} • ${nextOpponent.team.length} Pokémon • Avg Lv.$nextAvgLvl)",
+                            style: const TextStyle(
+                              color: PokeColors.inkDark,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13.0,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            "HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pokémon before the next match!",
+                            style: TextStyle(
+                                color: PokeColors.inkMuted, fontSize: 10.5),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 14),
 
-                  const SizedBox(height: 12),
+                    // Party Status Header
+                    const Text(
+                      "POKÉMON CONDITION",
+                      style: TextStyle(
+                        color: PokeColors.inkDark,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.9,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
 
-                  // Action Buttons: Next Battle, Bag, Pokémon, Give Up
-                  GauntletCheckpointActionBar(
-                    nextBattleColor: gym.elementColor,
-                    nextBattleLabel: isLeaderNext ? 'NEXT: LEADER' : 'NEXT BATTLE',
-                    busy: _isLaunchingBattle,
-                    onNextBattle: () => _launchNextGauntletBattle(trainer),
-                    onBag: () => _openBagModal(context, trainer),
-                    onPokemon: () => _openPartyModal(context, trainer),
-                    onGiveUp: () => _confirmRetreatFromGauntlet(trainer),
-                  ),
-                ],
+                    // Party Pokémon Cards
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: trainer.party.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 7),
+                        itemBuilder: (ctx, idx) {
+                          final mon = trainer.party[idx];
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            decoration: PokeDecorations.card(
+                              fill: PokeColors.cardWhite,
+                              border: mon.isFainted
+                                  ? PokeColors.pokeRed
+                                  : PokeColors.frameBorderSoft,
+                              radius: 13,
+                              borderWidth: 1.4,
+                            ),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          mon.nickname,
+                                          style: TextStyle(
+                                            color: mon.isFainted
+                                                ? PokeColors.inkSubtle
+                                                : PokeColors.inkDark,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          "Lv.${mon.level}",
+                                          style: const TextStyle(
+                                            color: PokeColors.badgeGoldDark,
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                        if (mon.status != StatusCondition.none) ...[
+                                          const SizedBox(width: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 1),
+                                            decoration: BoxDecoration(
+                                              color: PokeColors.pokeRed
+                                                  .withOpacity(0.14),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Text(
+                                              mon.status.name.toUpperCase(),
+                                              style: const TextStyle(
+                                                color: PokeColors.pokeRed,
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      "HP: ${mon.currentHp} / ${mon.maxHp}",
+                                      style: TextStyle(
+                                        color: mon.isFainted
+                                            ? PokeColors.pokeRed
+                                            : PokeColors.inkMuted,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                SizedBox(
+                                  width: 105,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: LinearProgressIndicator(
+                                      value: (mon.currentHp / mon.maxHp)
+                                          .clamp(0.0, 1.0),
+                                      minHeight: 7,
+                                      backgroundColor: PokeColors.panelSoft,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        mon.isFainted
+                                            ? Colors.transparent
+                                            : (mon.currentHp <= mon.maxHp / 5
+                                                ? PokeColors.pokeRed
+                                                : (mon.currentHp <= mon.maxHp / 2
+                                                    ? PokeColors.badgeGold
+                                                    : PokeColors.pokeGreen)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Action Buttons: 4 portrait buttons in a row
+                    GauntletCheckpointActionBar(
+                      nextBattleColor: gymAccentDark,
+                      nextBattleLabel:
+                          isLeaderNext ? 'NEXT:\nLEADER' : 'NEXT\nBATTLE',
+                      busy: _isLaunchingBattle,
+                      onNextBattle: () => _launchNextGauntletBattle(trainer),
+                      onBag: () => _openBagModal(context, trainer),
+                      onPokemon: () => _openPartyModal(context, trainer),
+                      onGiveUp: () => _confirmRetreatFromGauntlet(trainer),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -1228,7 +1193,6 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     trainer.resetAllPartyStatStages();
     trainer.saveProgress();
 
-    // Guaranteed 1–3 drops on repeat clears (unique TMs, Adventure Maps, held items, stones, fossils/vouchers)
     List<ItemDrop> droppedItems = const [];
     if (!firstClear) {
       final Set<String> ownedTmIds = TmService.allTms
@@ -1250,20 +1214,29 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     }
 
     HapticFeedback.heavyImpact();
+    final Color gymAccentDark = PokeColors.darken(gym.elementColor, 0.16);
 
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E28),
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: gymAccentDark, width: 1.8),
+        ),
         title: Row(
           children: [
-            Icon(Icons.emoji_events, color: gym.elementColor, size: 28),
+            Icon(Icons.emoji_events, color: gymAccentDark, size: 28),
             const SizedBox(width: 8),
             const Expanded(
               child: Text(
                 "GAUNTLET CONQUERED!",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                  color: PokeColors.inkDark,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
@@ -1275,16 +1248,18 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             children: [
               Text(
                 "You successfully defeated all 4 Gym Trainers and Gym Leader ${gym.leaderName} of ${gym.city}!",
-                style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+                style: const TextStyle(
+                    color: PokeColors.inkMuted, fontSize: 13, height: 1.4),
               ),
               const SizedBox(height: 12),
               if (firstClear) ...[
                 Container(
                   padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: gym.elementColor.withOpacity(0.18),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: gym.elementColor.withOpacity(0.6)),
+                  decoration: PokeDecorations.card(
+                    fill: PokeColors.cardWhite,
+                    border: gymAccentDark,
+                    radius: 12,
+                    borderWidth: 1.5,
                   ),
                   child: Row(
                     children: [
@@ -1302,15 +1277,19 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                             Text(
                               "AWARDED: ${gym.badgeName.toUpperCase()}!",
                               style: TextStyle(
-                                color: gym.elementColor,
-                                fontWeight: FontWeight.bold,
+                                color: gymAccentDark,
+                                fontWeight: FontWeight.w900,
                                 fontSize: 13,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               gym.badgeDescription,
-                              style: const TextStyle(color: Colors.white, fontSize: 11),
+                              style: const TextStyle(
+                                color: PokeColors.inkDark,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ],
                         ),
@@ -1322,10 +1301,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.cyanAccent.withOpacity(0.14),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.cyanAccent.withOpacity(0.6)),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.cardWhite,
+                      border: PokeColors.pokeBlue,
+                      radius: 12,
+                      borderWidth: 1.6,
                     ),
                     child: Row(
                       children: [
@@ -1333,13 +1313,13 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                           width: 42,
                           height: 42,
                           decoration: BoxDecoration(
-                            color: Colors.cyanAccent.withOpacity(0.16),
+                            color: PokeColors.pokeBlue.withOpacity(0.14),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
                             Icons.share_rounded,
-                            color: Colors.cyanAccent,
-                            size: 28,
+                            color: PokeColors.pokeBlueDark,
+                            size: 26,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -1350,15 +1330,19 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                               Text(
                                 "KEY ITEM REWARD: EXP SHARE!",
                                 style: TextStyle(
-                                  color: Colors.cyanAccent,
-                                  fontWeight: FontWeight.bold,
+                                  color: PokeColors.pokeBlueDark,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 12.5,
                                 ),
                               ),
                               SizedBox(height: 4),
                               Text(
                                 "Giovanni handed over the EXP Share! Enabled automatically — toggle it anytime in Bag (Key & Special) or Trainer Info.",
-                                style: TextStyle(color: Colors.white, fontSize: 11),
+                                style: TextStyle(
+                                  color: PokeColors.inkMuted,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
@@ -1368,74 +1352,77 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   ),
                 ],
               ] else if (droppedItems.isNotEmpty) ...[
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.amberAccent.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.amberAccent.withOpacity(0.6)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      children: [
-                        Icon(Icons.card_giftcard, color: Colors.amberAccent, size: 18),
-                        SizedBox(width: 8),
-                        Text(
-                          "Gym Leader Rematch Rewards",
-                          style: TextStyle(
-                            color: Colors.amberAccent,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    ...droppedItems.map((d) {
-                      final itemDef = ItemDatabase.byId(d.itemId);
-                      final String badgeText = (itemDef?.isTm == true)
-                          ? 'REUSABLE'
-                          : (itemDef?.isAdventureMap == true
-                              ? 'UNLOCKED'
-                              : 'x${d.count}');
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 3),
-                        child: Row(
-                          children: [
-                            Icon(
-                              itemDef?.icon ?? Icons.inventory_2_rounded,
-                              color: itemDef?.color ?? Colors.amberAccent,
-                              size: 14,
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: PokeDecorations.card(
+                    fill: PokeColors.cardWhite,
+                    border: PokeColors.badgeGold,
+                    radius: 12,
+                    borderWidth: 1.5,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(Icons.card_giftcard,
+                              color: PokeColors.badgeGoldDark, size: 18),
+                          SizedBox(width: 8),
+                          Text(
+                            "Gym Leader Rematch Rewards",
+                            style: TextStyle(
+                              color: PokeColors.badgeGoldDark,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 12,
                             ),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                d.itemName,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 11.5,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      ...droppedItems.map((d) {
+                        final itemDef = ItemDatabase.byId(d.itemId);
+                        final String badgeText = (itemDef?.isTm == true)
+                            ? 'REUSABLE'
+                            : (itemDef?.isAdventureMap == true
+                                ? 'UNLOCKED'
+                                : 'x${d.count}');
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Row(
+                            children: [
+                              Icon(
+                                itemDef?.icon ?? Icons.inventory_2_rounded,
+                                color: itemDef?.color ??
+                                    PokeColors.badgeGoldDark,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  d.itemName,
+                                  style: const TextStyle(
+                                    color: PokeColors.inkDark,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11.5,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              badgeText,
-                              style: const TextStyle(
-                                color: Colors.amberAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
+                              Text(
+                                badgeText,
+                                style: const TextStyle(
+                                  color: PokeColors.badgeGoldDark,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 11,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ],
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
             ],
           ),
         ),
@@ -1451,10 +1438,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
               });
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: gym.elementColor,
-              foregroundColor: Colors.black,
+              backgroundColor: gymAccentDark,
+              foregroundColor: Colors.white,
             ),
-            child: const Text("CONTINUE", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text("CONTINUE",
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),

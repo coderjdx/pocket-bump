@@ -8,6 +8,7 @@ import '../models/trainer.dart';
 import '../services/egg_move_service.dart';
 import '../services/sound_service.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/type_badge.dart';
 
 class MoveTutorScreen extends StatefulWidget {
@@ -34,11 +35,11 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
   Color _categoryColor(MoveCategory cat) {
     switch (cat) {
       case MoveCategory.physical:
-        return Colors.orangeAccent;
+        return const Color(0xFFD84315);
       case MoveCategory.special:
-        return Colors.lightBlueAccent;
+        return PokeColors.pokeBlueDark;
       case MoveCategory.status:
-        return Colors.purpleAccent;
+        return const Color(0xFF7B1FA2);
     }
   }
 
@@ -105,103 +106,49 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
         : EggMoveService.eggMovesForSpecies(selectedMon.species);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF100E18),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC120D1A),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: Colors.white70,
-            size: 18,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'MOVE TUTOR',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: 'MOVE TUTOR',
+        barColor: PokeColors.centerRose,
+        bottomBorderColor: PokeColors.centerRoseDark,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 14, top: 10, bottom: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFF180C16),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xFFFF6B9D).withOpacity(0.65),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.favorite_rounded,
-                  color: Color(0xFFFF6B9D),
-                  size: 14,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  'x$heartScales',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+          PokeCounterPill(
+            icon: Icons.favorite_rounded,
+            iconColor: PokeColors.centerRose,
+            text: 'x$heartScales',
           ),
         ],
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_pokemon_center.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF1B0F1E).withOpacity(0.84),
-                  const Color(0xFF131122).withOpacity(0.76),
-                  const Color(0xFF0A0912).withOpacity(0.94),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_pokemon_center.png',
+            topOpacity: 0.22,
+            midOpacity: 0.48,
+            bottomOpacity: 0.88,
           ),
           SafeArea(
+            top: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xE8161124),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: const Color(0xFFFF6B9D).withOpacity(0.5),
-                      ),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.creamSurface,
+                      border: PokeColors.centerRose,
+                      radius: 15,
+                      borderWidth: 1.5,
                     ),
                     child: const Row(
                       children: [
                         Icon(
                           Icons.favorite_rounded,
-                          color: Color(0xFFFF6B9D),
+                          color: PokeColors.centerRose,
                           size: 24,
                         ),
                         SizedBox(width: 10),
@@ -209,8 +156,9 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                           child: Text(
                             'Trade 1 Heart Scale to awaken an Egg Move for any party Pokémon. Heart Scales drop from Gym Leader rematches and Team Rocket.',
                             style: TextStyle(
-                              color: Colors.white70,
+                              color: PokeColors.inkMuted,
                               fontSize: 11,
+                              fontWeight: FontWeight.w600,
                               height: 1.35,
                             ),
                           ),
@@ -224,7 +172,7 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                     const Text(
                       'CHOOSE PARTY POKÉMON',
                       style: TextStyle(
-                        color: Colors.white70,
+                        color: PokeColors.inkDark,
                         fontSize: 10.5,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 0.9,
@@ -232,7 +180,7 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                     ),
                     const SizedBox(height: 8),
                     SizedBox(
-                      height: 86,
+                      height: 92,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: trainer.party.length,
@@ -242,7 +190,8 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                           final bool selected = idx == safeIdx;
                           final typeColor = mon.species.types.first.color;
                           return InkWell(
-                            onTap: () => setState(() => _selectedPartyIdx = idx),
+                            onTap: () =>
+                                setState(() => _selectedPartyIdx = idx),
                             borderRadius: BorderRadius.circular(14),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 160),
@@ -250,23 +199,33 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                               padding: const EdgeInsets.all(7),
                               decoration: BoxDecoration(
                                 color: selected
-                                    ? const Color(0xFF281934)
-                                    : const Color(0xFF141726),
+                                    ? PokeColors.cardWhite
+                                    : PokeColors.creamSurface,
                                 borderRadius: BorderRadius.circular(14),
                                 border: Border.all(
                                   color: selected
-                                      ? const Color(0xFFFF6B9D)
-                                      : typeColor.withOpacity(0.32),
-                                  width: selected ? 1.6 : 1.0,
+                                      ? PokeColors.centerRose
+                                      : typeColor.withOpacity(0.55),
+                                  width: selected ? 2.2 : 1.2,
                                 ),
+                                boxShadow: selected
+                                    ? [
+                                        BoxShadow(
+                                          color: PokeColors.centerRose
+                                              .withOpacity(0.22),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ]
+                                    : null,
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.network(
                                     mon.spriteUrl,
-                                    width: 38,
-                                    height: 38,
+                                    width: 40,
+                                    height: 40,
                                     fit: BoxFit.contain,
                                     filterQuality: FilterQuality.none,
                                     errorBuilder: (_, __, ___) => Icon(
@@ -282,18 +241,18 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: selected
-                                          ? Colors.white
-                                          : Colors.white70,
+                                          ? PokeColors.inkDark
+                                          : PokeColors.inkMuted,
                                       fontSize: 10.5,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                   Text(
                                     'Lv.${mon.level}',
                                     style: const TextStyle(
-                                      color: Colors.amberAccent,
+                                      color: PokeColors.badgeGoldDark,
                                       fontSize: 9,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ],
@@ -313,7 +272,7 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                         Text(
                           "${selectedMon.nickname.toUpperCase()}'S EGG MOVES",
                           style: const TextStyle(
-                            color: Color(0xFFFF8BB3),
+                            color: PokeColors.centerRoseDark,
                             fontSize: 11,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.8,
@@ -322,8 +281,9 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                         Text(
                           '${eggMoves.length} Available',
                           style: const TextStyle(
-                            color: Colors.white54,
+                            color: PokeColors.inkMuted,
                             fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
@@ -336,17 +296,17 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                         ? Center(
                             child: Container(
                               padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: const Color(0xE0141726),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: Colors.white12),
+                              decoration: PokeDecorations.card(
+                                fill: PokeColors.creamSurface,
+                                border: PokeColors.frameBorderSoft,
+                                radius: 16,
                               ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   const Icon(
                                     Icons.egg_outlined,
-                                    color: Colors.white30,
+                                    color: PokeColors.inkSubtle,
                                     size: 40,
                                   ),
                                   const SizedBox(height: 10),
@@ -356,7 +316,7 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                         : '${selectedMon.species.name} has no Egg Moves to tutor.',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                      color: Colors.white70,
+                                      color: PokeColors.inkMuted,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13.5,
                                     ),
@@ -380,18 +340,17 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                   !alreadyActive && !alreadyLearned;
 
                               return Opacity(
-                                opacity: canTeach ? 1.0 : 0.62,
+                                opacity: canTeach ? 1.0 : 0.65,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 10,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xE815192B),
-                                    borderRadius: BorderRadius.circular(14),
-                                    border: Border.all(
-                                      color: move.type.color.withOpacity(0.45),
-                                    ),
+                                  decoration: PokeDecorations.card(
+                                    fill: PokeColors.cardWhite,
+                                    border: move.type.color,
+                                    radius: 14,
+                                    borderWidth: 1.4,
                                   ),
                                   child: Row(
                                     children: [
@@ -408,9 +367,9 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: const TextStyle(
-                                                      color: Colors.white,
+                                                      color: PokeColors.inkDark,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                          FontWeight.w900,
                                                       fontSize: 13,
                                                     ),
                                                   ),
@@ -424,7 +383,7 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                                     color: _categoryColor(
                                                         move.category),
                                                     fontSize: 9,
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight: FontWeight.w900,
                                                   ),
                                                 ),
                                               ],
@@ -435,14 +394,15 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                                   ? 'Remembered — swap freely in Pokémon Info'
                                                   : 'PWR ${move.powerLabel} • ACC ${move.accuracy}% • PP ${move.maxPp}',
                                               style: const TextStyle(
-                                                color: Colors.white70,
+                                                color: PokeColors.inkDark,
                                                 fontSize: 10,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                             ),
                                             Text(
                                               move.description,
                                               style: const TextStyle(
-                                                color: Colors.white54,
+                                                color: PokeColors.inkMuted,
                                                 fontSize: 10,
                                               ),
                                             ),
@@ -456,13 +416,12 @@ class _MoveTutorScreenState extends State<MoveTutorScreen> {
                                                 trainer, selectedMon, move)
                                             : null,
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xFFFF6B9D),
-                                          foregroundColor: Colors.black,
+                                          backgroundColor: PokeColors.centerRose,
+                                          foregroundColor: Colors.white,
                                           disabledBackgroundColor:
-                                              Colors.white10,
+                                              PokeColors.panelSoft,
                                           disabledForegroundColor:
-                                              Colors.white38,
+                                              PokeColors.inkSubtle,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 11,
                                             vertical: 8,

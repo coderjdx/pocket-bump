@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/trainer.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 
 class PokeMartScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
     final trainer = Provider.of<Trainer>(context);
     final int badgeCount = trainer.clearedGymIds.length;
 
-    // Only list items currently unlocked for purchase at this badge tier
     final allBuyable = ItemDatabase.getMartItems(badgeCount)
       ..sort((a, b) => a.requiredBadges.compareTo(b.requiredBadges));
     final allLocked = ItemDatabase.getLockedMartItems(badgeCount);
@@ -31,7 +31,6 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
             ? null
             : _selectedCategory;
 
-    // Filter by active category tab
     final filtered = activeCategory == null
         ? allBuyable
         : allBuyable.where((i) => i.category == activeCategory).toList();
@@ -40,116 +39,54 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
         : allLocked.where((i) => i.category == activeCategory).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0C121E),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: const Color(0xCC0A101C),
-        elevation: 0,
-        title: const Text(
-          "POKÉ MART",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () => Navigator.pop(context),
-        ),
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "POKÉ MART",
+        barColor: PokeColors.pokeBlue,
+        bottomBorderColor: PokeColors.pokeBlueDark,
         actions: [
-          // Currency balance chip
-          Container(
-            margin: const EdgeInsets.only(right: 14, top: 10, bottom: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFF080C14),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: const Color(0xFFFFD54F).withOpacity(0.55)),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "₽",
-                  style: TextStyle(
-                    color: Color(0xFFFFD54F),
-                    fontWeight: FontWeight.w900,
-                    fontSize: 13.5,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  "${trainer.money}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          PokeCurrencyPill(trainer.money),
         ],
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/bg_poke_mart.png',
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.none,
-          ),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF0B1424).withOpacity(0.72),
-                  const Color(0xFF0E1628).withOpacity(0.60),
-                  const Color(0xFF080D18).withOpacity(0.88),
-                ],
-              ),
-            ),
+          const PokeBackdrop(
+            assetPath: 'assets/images/bg_poke_mart.png',
+            topOpacity: 0.18,
+            midOpacity: 0.44,
+            bottomOpacity: 0.86,
           ),
           SafeArea(
+            top: false,
             child: Column(
               children: [
                 // Welcome & Stock Tier Banner
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 6),
+                  padding: const EdgeInsets.fromLTRB(14, 10, 14, 6),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 11),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xE8132036), Color(0xE80C1422)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: Colors.cyanAccent.withOpacity(0.5),
-                        width: 1.2,
-                      ),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.creamSurface,
+                      border: PokeColors.pokeBlue,
+                      radius: 16,
+                      borderWidth: 1.6,
                     ),
                     child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF09101C),
+                            color: PokeColors.pokeBlue.withOpacity(0.14),
                             borderRadius: BorderRadius.circular(11),
                             border: Border.all(
-                                color: Colors.cyanAccent.withOpacity(0.45)),
+                              color: PokeColors.pokeBlue.withOpacity(0.55),
+                            ),
                           ),
                           child: const Icon(Icons.storefront_rounded,
-                              color: Colors.cyanAccent, size: 22),
+                              color: PokeColors.pokeBlueDark, size: 22),
                         ),
                         const SizedBox(width: 11),
                         Expanded(
@@ -159,7 +96,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                               const Text(
                                 "KANTO DEPARTMENT COUNTER",
                                 style: TextStyle(
-                                  color: Colors.cyanAccent,
+                                  color: PokeColors.pokeBlueDark,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 10.5,
                                   letterSpacing: 0.9,
@@ -172,10 +109,10 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                                     : "$badgeCount Badges: Higher-tier goods unlock as you earn more Badges.",
                                 style: TextStyle(
                                   color: badgeCount >= 8
-                                      ? Colors.amberAccent
-                                      : Colors.white70,
+                                      ? PokeColors.badgeGoldDark
+                                      : PokeColors.inkMuted,
                                   fontSize: 11,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ],
@@ -226,21 +163,31 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                       ],
                       if (lockedFiltered.isNotEmpty) ...[
                         const SizedBox(height: 18),
-                        const Row(
-                          children: [
-                            Icon(Icons.lock_outline_rounded,
-                                color: Colors.amberAccent, size: 15),
-                            SizedBox(width: 6),
-                            Text(
-                              "BADGE PROGRESSION UNLOCKS",
-                              style: TextStyle(
-                                color: Colors.amberAccent,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 0.9,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
+                          decoration: PokeDecorations.card(
+                            fill: PokeColors.creamSurface,
+                            border: PokeColors.badgeGold,
+                            radius: 10,
+                            borderWidth: 1.2,
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.lock_outline_rounded,
+                                  color: PokeColors.badgeGoldDark, size: 15),
+                              SizedBox(width: 6),
+                              Text(
+                                "BADGE PROGRESSION UNLOCKS",
+                                style: TextStyle(
+                                  color: PokeColors.badgeGoldDark,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.9,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 8),
                         for (int idx = 0;
@@ -274,24 +221,17 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
   }) {
     final int userCount = trainer.getItemCount(item.id);
     final bool tmAlreadyOwned = item.isTm && trainer.hasTm(item.id);
+    final Color itemDark = PokeColors.darken(item.color, 0.14);
+
     return Opacity(
-      opacity: locked ? 0.58 : 1.0,
+      opacity: locked ? 0.72 : 1.0,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              item.color.withOpacity(locked ? 0.06 : 0.14),
-              const Color(0xEA141B2D),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: locked ? Colors.white12 : item.color.withOpacity(0.45),
-            width: 1.2,
-          ),
+        decoration: PokeDecorations.card(
+          fill: locked ? PokeColors.creamSurface : PokeColors.cardWhite,
+          border: locked ? PokeColors.frameBorderSoft : item.color,
+          radius: 15,
+          borderWidth: 1.4,
         ),
         child: Row(
           children: [
@@ -299,10 +239,14 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
               width: 46,
               height: 46,
               decoration: BoxDecoration(
-                color: const Color(0xFF0A0F1A),
+                color: locked
+                    ? PokeColors.panelSoft
+                    : item.color.withOpacity(0.14),
                 borderRadius: BorderRadius.circular(11),
                 border: Border.all(
-                  color: locked ? Colors.white12 : item.color.withOpacity(0.5),
+                  color: locked
+                      ? PokeColors.frameBorderSoft
+                      : item.color.withOpacity(0.6),
                 ),
               ),
               child: Center(
@@ -310,7 +254,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                     ? PokeBallSpriteWidget(ballType: item.id, size: 28)
                     : Icon(
                         locked ? Icons.lock_rounded : item.icon,
-                        color: locked ? Colors.white38 : item.color,
+                        color: locked ? PokeColors.inkSubtle : itemDark,
                         size: 23,
                       ),
               ),
@@ -327,7 +271,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                           item.name,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: PokeColors.inkDark,
                             fontWeight: FontWeight.w900,
                             fontSize: 13.5,
                           ),
@@ -338,15 +282,11 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 1.5),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF090D16),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.white12),
-                          ),
+                          decoration: PokeDecorations.inset(radius: 6),
                           child: Text(
                             item.isTm ? "BAG ∞" : "BAG x$userCount",
                             style: const TextStyle(
-                              color: Colors.cyanAccent,
+                              color: PokeColors.pokeBlueDark,
                               fontSize: 8.5,
                               fontWeight: FontWeight.w900,
                             ),
@@ -359,7 +299,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                   Text(
                     item.description,
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: PokeColors.inkMuted,
                       fontSize: 10.8,
                       height: 1.3,
                     ),
@@ -374,7 +314,8 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                 Text(
                   "₽${item.price}",
                   style: TextStyle(
-                    color: locked ? Colors.white54 : const Color(0xFFFFD54F),
+                    color:
+                        locked ? PokeColors.inkSubtle : PokeColors.badgeGoldDark,
                     fontWeight: FontWeight.w900,
                     fontSize: 13.5,
                   ),
@@ -385,15 +326,14 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0A0E18),
+                      color: PokeColors.panelSoft,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: Colors.amberAccent.withOpacity(0.45)),
+                      border: Border.all(color: PokeColors.badgeGold),
                     ),
                     child: Text(
                       "${item.requiredBadges} BADGE${item.requiredBadges == 1 ? '' : 'S'}",
                       style: const TextStyle(
-                        color: Colors.amberAccent,
+                        color: PokeColors.badgeGoldDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 9.5,
                       ),
@@ -404,14 +344,14 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0A0E18),
+                      color: PokeColors.pokeBlue.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(9),
-                      border: Border.all(color: Colors.cyanAccent.withOpacity(0.45)),
+                      border: Border.all(color: PokeColors.pokeBlue),
                     ),
                     child: const Text(
                       "OWNED",
                       style: TextStyle(
-                        color: Colors.cyanAccent,
+                        color: PokeColors.pokeBlueDark,
                         fontWeight: FontWeight.w900,
                         fontSize: 10.5,
                         letterSpacing: 0.6,
@@ -422,14 +362,13 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                   ElevatedButton(
                     onPressed: () => _openBuyDialog(context, trainer, item),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2E9E5B),
+                      backgroundColor: PokeColors.pokeGreen,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 14, vertical: 6),
                       minimumSize: Size.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(9),
-                        side: BorderSide(color: Colors.white.withOpacity(0.25)),
                       ),
                     ),
                     child: const Text(
@@ -458,22 +397,20 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
         duration: const Duration(milliseconds: 160),
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(
-                  colors: [Color(0xFF00E5FF), Color(0xFF00B0FF)],
-                )
-              : null,
-          color: isSelected ? null : const Color(0xDD131B2C),
+          color: isSelected ? PokeColors.pokeBlue : PokeColors.cardWhite,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: isSelected ? Colors.cyanAccent : Colors.white12,
+            color: isSelected
+                ? PokeColors.pokeBlueDark
+                : PokeColors.frameBorderSoft,
+            width: 1.4,
           ),
         ),
         child: Center(
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected ? Colors.black : Colors.white70,
+              color: isSelected ? Colors.white : PokeColors.inkDark,
               fontSize: 10.5,
               fontWeight: FontWeight.w900,
               letterSpacing: 0.4,
@@ -496,7 +433,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF0F1626),
+      backgroundColor: PokeColors.creamSurface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
@@ -518,9 +455,10 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                         width: 46,
                         height: 46,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF090D16),
+                          color: item.color.withOpacity(0.14),
                           borderRadius: BorderRadius.circular(11),
-                          border: Border.all(color: item.color.withOpacity(0.55)),
+                          border:
+                              Border.all(color: item.color.withOpacity(0.55)),
                         ),
                         child: Center(
                           child: item.isBall
@@ -536,7 +474,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                             Text(
                               "PURCHASE ${item.name.toUpperCase()}",
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: PokeColors.inkDark,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 14,
                                 letterSpacing: 0.6,
@@ -545,7 +483,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                             Text(
                               "Unit Price: ₽$itemPrice",
                               style: const TextStyle(
-                                color: Color(0xFFFFD54F),
+                                color: PokeColors.badgeGoldDark,
                                 fontSize: 11.5,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -554,20 +492,20 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close_rounded, color: Colors.white60),
+                        icon: const Icon(Icons.close_rounded,
+                            color: PokeColors.inkMuted),
                         onPressed: () => Navigator.pop(ctx),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Quantity Stepper
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF151E32),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: Colors.white12),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: PokeDecorations.card(
+                      fill: PokeColors.cardWhite,
+                      border: PokeColors.frameBorderSoft,
+                      radius: 14,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -575,7 +513,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                         const Text(
                           "QUANTITY",
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: PokeColors.inkMuted,
                             fontSize: 11,
                             fontWeight: FontWeight.w900,
                             letterSpacing: 0.8,
@@ -587,23 +525,33 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                               onPressed: quantity > 1
                                   ? () => setModalState(() => quantity--)
                                   : null,
-                              icon: const Icon(Icons.remove_circle_outline,
-                                  color: Colors.white70),
+                              icon: Icon(
+                                Icons.remove_circle_outline,
+                                color: quantity > 1
+                                    ? PokeColors.pokeBlue
+                                    : PokeColors.inkSubtle,
+                              ),
                             ),
                             Text(
                               "$quantity",
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: PokeColors.inkDark,
                                 fontWeight: FontWeight.w900,
                                 fontSize: 17,
                               ),
                             ),
                             IconButton(
-                              onPressed: (quantity < maxAffordable && quantity < 99)
-                                  ? () => setModalState(() => quantity++)
-                                  : null,
-                              icon: const Icon(Icons.add_circle_outline,
-                                  color: Colors.white70),
+                              onPressed:
+                                  (quantity < maxAffordable && quantity < 99)
+                                      ? () => setModalState(() => quantity++)
+                                      : null,
+                              icon: Icon(
+                                Icons.add_circle_outline,
+                                color: (quantity < maxAffordable &&
+                                        quantity < 99)
+                                    ? PokeColors.pokeBlue
+                                    : PokeColors.inkSubtle,
+                              ),
                             ),
                             if (maxAffordable > 1) ...[
                               TextButton(
@@ -612,7 +560,7 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                                 child: const Text(
                                   "MAX",
                                   style: TextStyle(
-                                    color: Colors.cyanAccent,
+                                    color: PokeColors.pokeBlueDark,
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
@@ -624,15 +572,13 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Cost calculation row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         "TOTAL COST",
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: PokeColors.inkMuted,
                           fontSize: 11.5,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 0.7,
@@ -641,7 +587,9 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                       Text(
                         "₽$totalCost",
                         style: TextStyle(
-                          color: canAfford ? const Color(0xFFFFD54F) : Colors.redAccent,
+                          color: canAfford
+                              ? PokeColors.badgeGoldDark
+                              : PokeColors.pokeRed,
                           fontWeight: FontWeight.w900,
                           fontSize: 17,
                         ),
@@ -649,8 +597,6 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Buy Button
                   SizedBox(
                     width: double.infinity,
                     height: 48,
@@ -674,9 +620,10 @@ class _PokeMartScreenState extends State<PokeMartScreen> {
                             }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2E9E5B),
+                        backgroundColor: PokeColors.pokeGreen,
                         foregroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.white10,
+                        disabledBackgroundColor: PokeColors.panelSoft,
+                        disabledForegroundColor: PokeColors.inkSubtle,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13)),
                       ),

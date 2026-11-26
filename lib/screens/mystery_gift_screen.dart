@@ -7,6 +7,7 @@ import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/mystery_gift_service.dart';
 import '../services/sound_service.dart';
+import '../widgets/poke_theme.dart';
 import '../widgets/type_badge.dart';
 
 class MysteryGiftScreen extends StatefulWidget {
@@ -65,20 +66,20 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
       showDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
-          backgroundColor: const Color(0xFF15192B),
+          backgroundColor: PokeColors.creamSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
-            side: BorderSide(color: Colors.redAccent.withOpacity(0.5)),
+            side: const BorderSide(color: PokeColors.pokeRed, width: 1.6),
           ),
           title: Row(
             children: [
-              const Icon(Icons.error_outline_rounded, color: Colors.redAccent),
+              const Icon(Icons.error_outline_rounded, color: PokeColors.pokeRed),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   result.title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: PokeColors.inkDark,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                   ),
@@ -88,17 +89,20 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
           ),
           content: Text(
             result.message,
-            style: const TextStyle(color: Colors.white70, fontSize: 13),
+            style: const TextStyle(color: PokeColors.inkMuted, fontSize: 13),
           ),
           actions: [
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 SoundService.instance.playUiTap();
                 Navigator.pop(ctx);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: PokeColors.pokeRed,
+                foregroundColor: Colors.white,
+              ),
               child: const Text("OK",
-                  style: TextStyle(
-                      color: Colors.amberAccent, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
@@ -116,22 +120,21 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF13182A),
+        backgroundColor: PokeColors.creamSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22),
-          side: BorderSide(
-              color: const Color(0xFFFFD54F).withOpacity(0.65), width: 1.4),
+          side: const BorderSide(color: PokeColors.badgeGold, width: 1.8),
         ),
         title: Row(
           children: [
             const Icon(Icons.card_giftcard_rounded,
-                color: Color(0xFFFFD54F), size: 22),
+                color: PokeColors.badgeGoldDark, size: 22),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 result.title,
                 style: const TextStyle(
-                  color: Color(0xFFFFE082),
+                  color: PokeColors.inkDark,
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                 ),
@@ -145,11 +148,11 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
             if (mon != null) ...[
               Container(
                 padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0B1020),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                      color: mon.species.types.first.color.withOpacity(0.55)),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.cardWhite,
+                  border: mon.species.types.first.color,
+                  radius: 16,
+                  borderWidth: 1.6,
                 ),
                 child: Column(
                   children: [
@@ -178,13 +181,13 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                       children: [
                         if (mon.isShiny) ...[
                           const Icon(Icons.auto_awesome_rounded,
-                              color: Colors.amberAccent, size: 16),
+                              color: PokeColors.badgeGoldDark, size: 16),
                           const SizedBox(width: 4),
                         ],
                         Text(
                           "${mon.species.name} • Lv.${mon.level}",
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: PokeColors.inkDark,
                             fontSize: 16,
                             fontWeight: FontWeight.w900,
                           ),
@@ -203,8 +206,8 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                       "Ability: ${mon.abilityDefinition?.name ?? mon.abilityId}${mon.isHiddenAbility ? ' (Hidden Ability!)' : ''}",
                       style: TextStyle(
                         color: mon.isHiddenAbility
-                            ? const Color(0xFFFFD54F)
-                            : Colors.cyanAccent,
+                            ? PokeColors.badgeGoldDark
+                            : PokeColors.pokeBlueDark,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w800,
                       ),
@@ -218,10 +221,10 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0C101E),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.cyanAccent.withOpacity(0.3)),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.cardWhite,
+                  border: PokeColors.pokeBlue,
+                  radius: 14,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,23 +236,25 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                         children: [
                           Icon(item?.icon ?? Icons.inventory_2_rounded,
                               size: 16,
-                              color: item?.color ?? Colors.cyanAccent),
+                              color: item?.color ?? PokeColors.pokeBlue),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               item?.name ?? e.key,
                               style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
+                                color: PokeColors.inkDark,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Text(
                             "×${e.value}",
                             style: const TextStyle(
-                                color: Colors.amberAccent,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 13),
+                              color: PokeColors.badgeGoldDark,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
@@ -263,7 +268,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
               result.message,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  color: Colors.white70, fontSize: 12.5, height: 1.4),
+                  color: PokeColors.inkMuted, fontSize: 12.5, height: 1.4),
             ),
           ],
         ),
@@ -274,8 +279,8 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
               Navigator.pop(ctx);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFFD54F),
-              foregroundColor: Colors.black87,
+              backgroundColor: PokeColors.badgeGold,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
@@ -295,51 +300,32 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
     final bool codeReady = charCount == 16;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0E1322),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF141A2E),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Colors.white70, size: 18),
-          onPressed: () {
-            SoundService.instance.playUiCancel();
-            Navigator.pop(context);
-          },
-        ),
-        title: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.card_giftcard_rounded,
-                color: Color(0xFFFFD54F), size: 20),
-            SizedBox(width: 8),
-            Text(
-              "MYSTERY GIFT",
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.1,
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
+      backgroundColor: PokeColors.canvasCream,
+      appBar: buildPokeAppBar(
+        context: context,
+        title: "MYSTERY GIFT",
+        barColor: PokeColors.giftCrimson,
+        bottomBorderColor: PokeColors.giftCrimsonDark,
+        titleLeading: const Icon(Icons.card_giftcard_rounded,
+            color: Color(0xFFFFE082), size: 20),
+        onBack: () {
+          SoundService.instance.playUiCancel();
+          Navigator.pop(context);
+        },
       ),
       body: SafeArea(
+        top: false,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             // 1. Check for Event Items / Distributions
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF17223B), Color(0xFF111629)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: Colors.cyanAccent.withOpacity(0.4)),
+              decoration: PokeDecorations.card(
+                fill: PokeColors.cardWhite,
+                border: PokeColors.pokeBlue,
+                radius: 18,
+                borderWidth: 1.6,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,13 +333,13 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                   const Row(
                     children: [
                       Icon(Icons.wifi_tethering_rounded,
-                          color: Colors.cyanAccent, size: 20),
+                          color: PokeColors.pokeBlue, size: 20),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           "EVENT DISTRIBUTIONS",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: PokeColors.inkDark,
                             fontWeight: FontWeight.w900,
                             fontSize: 13.5,
                             letterSpacing: 0.7,
@@ -365,7 +351,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                   const SizedBox(height: 8),
                   const Text(
                     "Scan for official Pocket Bump event items and seasonal distributions.",
-                    style: TextStyle(color: Colors.white60, fontSize: 12),
+                    style: TextStyle(color: PokeColors.inkMuted, fontSize: 12),
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
@@ -381,7 +367,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                               height: 16,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.black87,
+                                color: Colors.white,
                               ),
                             )
                           : const Icon(Icons.search_rounded, size: 18),
@@ -393,8 +379,8 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                             fontWeight: FontWeight.w900, fontSize: 12),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.cyanAccent,
-                        foregroundColor: Colors.black87,
+                        backgroundColor: PokeColors.pokeBlue,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
@@ -408,14 +394,13 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0C1020),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: claimed
-                                ? Colors.white12
-                                : const Color(0xFFFFD54F).withOpacity(0.5),
-                          ),
+                        decoration: PokeDecorations.card(
+                          fill: PokeColors.creamSurface,
+                          border: claimed
+                              ? PokeColors.frameBorderSoft
+                              : PokeColors.badgeGold,
+                          radius: 14,
+                          borderWidth: 1.4,
                         ),
                         child: Row(
                           children: [
@@ -427,8 +412,8 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                                     event.badgeLabel,
                                     style: TextStyle(
                                       color: claimed
-                                          ? Colors.white38
-                                          : const Color(0xFFFFD54F),
+                                          ? PokeColors.inkSubtle
+                                          : PokeColors.badgeGoldDark,
                                       fontSize: 9,
                                       fontWeight: FontWeight.w900,
                                       letterSpacing: 0.7,
@@ -439,8 +424,8 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                                     event.title,
                                     style: TextStyle(
                                       color: claimed
-                                          ? Colors.white54
-                                          : Colors.white,
+                                          ? PokeColors.inkMuted
+                                          : PokeColors.inkDark,
                                       fontSize: 13.5,
                                       fontWeight: FontWeight.w900,
                                     ),
@@ -449,7 +434,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                                   Text(
                                     event.subtitle,
                                     style: const TextStyle(
-                                      color: Colors.white60,
+                                      color: PokeColors.inkMuted,
                                       fontSize: 11,
                                     ),
                                   ),
@@ -467,10 +452,10 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                                       _presentResult(res);
                                     },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFFD54F),
-                                foregroundColor: Colors.black87,
-                                disabledBackgroundColor: Colors.white10,
-                                disabledForegroundColor: Colors.white38,
+                                backgroundColor: PokeColors.badgeGold,
+                                foregroundColor: Colors.white,
+                                disabledBackgroundColor: PokeColors.panelSoft,
+                                disabledForegroundColor: PokeColors.inkSubtle,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 padding: const EdgeInsets.symmetric(
@@ -498,15 +483,11 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
             // 2. Receive via 16-Character Code
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF241A2E), Color(0xFF131728)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                    color: const Color(0xFFFFD54F).withOpacity(0.45)),
+              decoration: PokeDecorations.card(
+                fill: PokeColors.cardWhite,
+                border: PokeColors.giftCrimson,
+                radius: 18,
+                borderWidth: 1.6,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,12 +495,12 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                   const Row(
                     children: [
                       Icon(Icons.confirmation_number_rounded,
-                          color: Color(0xFFFFD54F), size: 20),
+                          color: PokeColors.giftCrimson, size: 20),
                       SizedBox(width: 8),
                       Text(
                         "GET WITH CODE / PASSWORD",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: PokeColors.inkDark,
                           fontWeight: FontWeight.w900,
                           fontSize: 13.5,
                           letterSpacing: 0.7,
@@ -530,7 +511,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                   const SizedBox(height: 8),
                   const Text(
                     "Enter a 16-character alphanumeric event code (letters A–Z and numbers 0–9). Each code can only be used once.",
-                    style: TextStyle(color: Colors.white60, fontSize: 12),
+                    style: TextStyle(color: PokeColors.inkMuted, fontSize: 12),
                   ),
                   const SizedBox(height: 12),
                   TextField(
@@ -539,7 +520,7 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                     maxLength: 19,
                     onChanged: (_) => setState(() {}),
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: PokeColors.inkDark,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.8,
                       fontSize: 15,
@@ -547,26 +528,29 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                     decoration: InputDecoration(
                       hintText: "ENTER 16-CHAR CODE",
                       hintStyle: const TextStyle(
-                        color: Colors.white24,
+                        color: PokeColors.inkSubtle,
                         letterSpacing: 1.8,
                       ),
                       counterText: "",
                       filled: true,
-                      fillColor: const Color(0xFF0A0D18),
+                      fillColor: PokeColors.creamSurface,
                       suffixText: "$charCount/16",
                       suffixStyle: TextStyle(
-                        color: codeReady ? Colors.greenAccent : Colors.white54,
+                        color: codeReady
+                            ? PokeColors.pokeGreenDark
+                            : PokeColors.inkMuted,
                         fontWeight: FontWeight.w900,
                         fontSize: 11,
                       ),
-                      border: OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: Colors.white24),
+                        borderSide: const BorderSide(
+                            color: PokeColors.frameBorderSoft, width: 1.4),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(
-                            color: Color(0xFFFFD54F), width: 1.6),
+                            color: PokeColors.giftCrimson, width: 1.8),
                       ),
                     ),
                   ),
@@ -588,10 +572,10 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFD54F),
-                        foregroundColor: Colors.black87,
-                        disabledBackgroundColor: Colors.white10,
-                        disabledForegroundColor: Colors.white38,
+                        backgroundColor: PokeColors.giftCrimson,
+                        foregroundColor: Colors.white,
+                        disabledBackgroundColor: PokeColors.panelSoft,
+                        disabledForegroundColor: PokeColors.inkSubtle,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
@@ -606,22 +590,24 @@ class _MysteryGiftScreenState extends State<MysteryGiftScreen> {
             // 3. External Distribution Info
             Container(
               padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: const Color(0xFF101526),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white12),
+              decoration: PokeDecorations.card(
+                fill: PokeColors.creamSurface,
+                border: PokeColors.frameBorderSoft,
+                radius: 16,
               ),
               child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(Icons.info_outline_rounded,
-                      color: Colors.white54, size: 18),
+                      color: PokeColors.inkMuted, size: 18),
                   SizedBox(width: 9),
                   Expanded(
                     child: Text(
                       "Event items and 16-character Mystery Gift codes are announced through external channels and are not listed in-app.",
                       style: TextStyle(
-                          color: Colors.white60, fontSize: 11.5, height: 1.4),
+                          color: PokeColors.inkMuted,
+                          fontSize: 11.5,
+                          height: 1.4),
                     ),
                   ),
                 ],

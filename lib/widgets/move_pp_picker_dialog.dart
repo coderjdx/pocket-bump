@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
+import 'poke_theme.dart';
 
 /// Prompts the player to choose which move on [pokemon] should receive PP from [item].
 /// Returns the chosen move index (`0..pokemon.moves.length - 1`), or `null` if cancelled.
@@ -14,10 +15,10 @@ Future<int?> showMovePpPickerDialog(
     context: context,
     builder: (dlgCtx) {
       return AlertDialog(
-        backgroundColor: const Color(0xFF141828),
+        backgroundColor: PokeColors.creamSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
-          side: BorderSide(color: item.color.withOpacity(0.45)),
+          side: BorderSide(color: item.color.withOpacity(0.65), width: 1.6),
         ),
         title: Row(
           children: [
@@ -27,9 +28,9 @@ Future<int?> showMovePpPickerDialog(
               child: Text(
                 "RESTORE PP FOR ${pokemon.nickname.toUpperCase()}",
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: PokeColors.inkDark,
                   fontSize: 13.5,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
@@ -45,7 +46,11 @@ Future<int?> showMovePpPickerDialog(
                 item.id == 'max_ether'
                     ? "Choose a move to fully restore its PP:"
                     : "Choose a move to restore up to 10 PP:",
-                style: const TextStyle(color: Colors.white70, fontSize: 11.5),
+                style: const TextStyle(
+                  color: PokeColors.inkMuted,
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 10),
               ListView.separated(
@@ -60,18 +65,17 @@ Future<int?> showMovePpPickerDialog(
                     onTap: needsPp ? () => Navigator.pop(dlgCtx, idx) : null,
                     borderRadius: BorderRadius.circular(11),
                     child: Opacity(
-                      opacity: needsPp ? 1.0 : 0.42,
+                      opacity: needsPp ? 1.0 : 0.48,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1C2236),
-                          borderRadius: BorderRadius.circular(11),
-                          border: Border.all(
-                            color: needsPp
-                                ? typeColor.withOpacity(0.55)
-                                : Colors.white12,
-                          ),
+                        decoration: PokeDecorations.card(
+                          fill: PokeColors.cardWhite,
+                          border: needsPp
+                              ? typeColor.withOpacity(0.7)
+                              : PokeColors.frameBorderSoft,
+                          radius: 11,
+                          borderWidth: 1.4,
                         ),
                         child: Row(
                           children: [
@@ -91,7 +95,7 @@ Future<int?> showMovePpPickerDialog(
                                   Text(
                                     move.name,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: PokeColors.inkDark,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
                                     ),
@@ -99,7 +103,7 @@ Future<int?> showMovePpPickerDialog(
                                   Text(
                                     move.type.displayName.toUpperCase(),
                                     style: TextStyle(
-                                      color: typeColor,
+                                      color: PokeColors.darken(typeColor, 0.14),
                                       fontSize: 9.5,
                                       fontWeight: FontWeight.w800,
                                     ),
@@ -111,15 +115,22 @@ Future<int?> showMovePpPickerDialog(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Colors.black38,
+                                color: needsPp
+                                    ? PokeColors.badgeGold.withOpacity(0.16)
+                                    : PokeColors.panelSoft,
                                 borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: needsPp
+                                      ? PokeColors.badgeGold
+                                      : PokeColors.frameBorderSoft,
+                                ),
                               ),
                               child: Text(
                                 "PP ${move.currentPp}/${move.maxPp}",
                                 style: TextStyle(
                                   color: needsPp
-                                      ? Colors.amberAccent
-                                      : Colors.white54,
+                                      ? PokeColors.badgeGoldDark
+                                      : PokeColors.inkSubtle,
                                   fontWeight: FontWeight.w900,
                                   fontSize: 11.5,
                                 ),
@@ -138,8 +149,13 @@ Future<int?> showMovePpPickerDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dlgCtx, null),
-            child:
-                const Text("Cancel", style: TextStyle(color: Colors.white54)),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                color: PokeColors.inkMuted,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       );
