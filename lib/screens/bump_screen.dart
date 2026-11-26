@@ -130,7 +130,7 @@ class _BumpScreenState extends State<BumpScreen>
         _linkState == _BumpLinkState.matched) {
       return;
     }
-    SoundService.instance.playUiClick();
+    SoundService.instance.playUiTap();
     setState(() {
       _selectedMode = newMode;
       if (_linkState == _BumpLinkState.timedOut) {
@@ -567,7 +567,7 @@ class _BumpScreenState extends State<BumpScreen>
             IconButton(
               tooltip: "Rivals & Friends",
               onPressed: () {
-                SoundService.instance.playUiClick();
+                SoundService.instance.playUiTap();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const RivalsScreen()),

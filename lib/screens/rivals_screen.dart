@@ -118,7 +118,7 @@ class _RivalsScreenState extends State<RivalsScreen> {
           IconButton(
             tooltip: "Fist-Bump Link",
             onPressed: () {
-              SoundService.instance.playUiClick();
+              SoundService.instance.playUiTap();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const BumpScreen()),

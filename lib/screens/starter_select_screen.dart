@@ -202,7 +202,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           height: 50,
           child: ElevatedButton(
             onPressed: () {
-              SoundService.instance.playUiClick();
+              SoundService.instance.playUiTap();
               setState(() => _step = 1);
             },
             style: ElevatedButton.styleFrom(
@@ -313,7 +313,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
             return Expanded(
               child: GestureDetector(
                 onTap: () {
-                  SoundService.instance.playUiClick();
+                  SoundService.instance.playUiTap();
                   setState(() => _selectedAvatar = avatar);
                 },
                 child: AnimatedContainer(
@@ -479,7 +479,7 @@ class _StarterSelectScreenState extends State<StarterSelectScreen> {
           height: 50,
           child: ElevatedButton(
             onPressed: () {
-              SoundService.instance.playUiClick();
+              SoundService.instance.playUiTap();
               setState(() => _step = 2);
             },
             style: ElevatedButton.styleFrom(
