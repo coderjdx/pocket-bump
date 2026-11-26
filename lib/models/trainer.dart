@@ -19,6 +19,7 @@ class Trainer extends ChangeNotifier {
 
   bool _suppressAutoSave = false;
   String name;
+  String? accountId; // Reserved for live trainer accounts
   TrainerAvatar avatar;
   GameVersion? gameVersion;
   List<PokemonInstance> party;
@@ -62,6 +63,7 @@ class Trainer extends ChangeNotifier {
 
   Trainer({
     required this.name,
+    this.accountId,
     TrainerAvatar? avatar,
     this.gameVersion,
     List<PokemonInstance>? party,
@@ -254,6 +256,11 @@ class Trainer extends ChangeNotifier {
   /// added to party, `1..16` if sent to a PC Box, or `-1` if all storage is full.
   int? addPokemon(PokemonInstance mon) {
     mon.resetBattleStateAndHeal();
+    if (mon.originalTrainerName == null ||
+        mon.originalTrainerName!.trim().isEmpty) {
+      mon.originalTrainerName = name;
+      mon.originalTrainerId = accountId;
+    }
     seenSpeciesIds.add(mon.species.id);
     caughtSpeciesIds.add(mon.species.id);
     if (mon.isShiny) {
@@ -273,6 +280,15 @@ class Trainer extends ChangeNotifier {
     }
     notifyListeners();
     return -1;
+  }
+
+  /// Assigns a permanent nickname to [mon] if it has not been nicknamed yet.
+  bool setPokemonNickname(PokemonInstance mon, String rawName) {
+    final bool updated = mon.setPermanentNickname(rawName);
+    if (updated) {
+      notifyListeners();
+    }
+    return updated;
   }
 
   /// Replaces the traded Pokémon at [partyIndex] with [receivedMon], heals it,
@@ -974,6 +990,7 @@ class Trainer extends ChangeNotifier {
       'schemaVersion': currentSchemaVersion,
       'savedAt': DateTime.now().toUtc().toIso8601String(),
       'name': name,
+      'accountId': accountId,
       'avatarId': avatar.id,
       'gameVersion': gameVersion?.storageKey,
       'pokeBalls': pokeBalls,
@@ -1023,6 +1040,8 @@ class Trainer extends ChangeNotifier {
   void applyFromJson(Map<String, dynamic> json) {
     final rawName = (json['name'] as String?)?.trim() ?? 'Red';
     name = rawName.isEmpty ? 'Red' : rawName;
+    final rawAccId = (json['accountId'] as String?)?.trim();
+    accountId = (rawAccId != null && rawAccId.isNotEmpty) ? rawAccId : null;
     final avatarId = json['avatarId'] as String?;
     avatar = TrainerAvatar.presets.firstWhere(
       (a) => a.id == avatarId,
@@ -1146,6 +1165,11 @@ class Trainer extends ChangeNotifier {
             .map((n) => n.toInt())
             .toSet();
     for (final mon in party) {
+      if (mon.originalTrainerName == null ||
+          mon.originalTrainerName!.trim().isEmpty) {
+        mon.originalTrainerName = name;
+        mon.originalTrainerId = accountId;
+      }
       seenSpeciesIds.add(mon.species.id);
       caughtSpeciesIds.add(mon.species.id);
       if (mon.isShiny) {
@@ -1165,6 +1189,11 @@ class Trainer extends ChangeNotifier {
       for (final item in rawBox) {
         if (item is Map) {
           final mon = PokemonInstance.fromJson(Map<String, dynamic>.from(item));
+          if (mon.originalTrainerName == null ||
+              mon.originalTrainerName!.trim().isEmpty) {
+            mon.originalTrainerName = name;
+            mon.originalTrainerId = accountId;
+          }
           loadedBox.add(mon);
           seenSpeciesIds.add(mon.species.id);
           caughtSpeciesIds.add(mon.species.id);
@@ -1225,6 +1254,7 @@ class Trainer extends ChangeNotifier {
       await prefs.remove('pb_step_pending_hc_credit');
     } catch (_) {}
     name = 'Red';
+    accountId = null;
     avatar = TrainerAvatar.presets.first;
     gameVersion = null;
     party = [];

@@ -5,6 +5,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
 import 'pokemon_detail_screen.dart';
 
@@ -646,13 +647,13 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              "HP ${selectedMon.maxHp} • ATK ${selectedMon.atk} • DEF ${selectedMon.def} • SPA ${selectedMon.spa} • SPD ${selectedMon.spd} • SPE ${selectedMon.spe}",
+                              "OT: ${selectedMon.originalTrainerDisplay(fallbackName: trainer.name)} • HP ${selectedMon.currentHp}/${selectedMon.maxHp} • ATK ${selectedMon.atk} • SPE ${selectedMon.spe}",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: PokeColors.inkMuted,
                                 fontSize: 9.5,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -675,26 +676,91 @@ class _PcStorageScreenState extends State<PcStorageScreen> {
                 ),
               ),
               const SizedBox(width: 6),
-              OutlinedButton.icon(
-                onPressed: _openSelectedPokemonInfo,
-                icon: const Icon(Icons.auto_stories_rounded, size: 13),
-                label: const Text(
-                  "INFO",
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w900,
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: _openSelectedPokemonInfo,
+                    icon: const Icon(Icons.auto_stories_rounded, size: 13),
+                    label: const Text(
+                      "INFO",
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: PokeColors.pokeBlue,
+                      side: const BorderSide(color: PokeColors.pokeBlue),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9)),
+                    ),
                   ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: PokeColors.pokeBlue,
-                  side: const BorderSide(color: PokeColors.pokeBlue),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9)),
-                ),
+                  const SizedBox(height: 4),
+                  if (selectedMon.canSetNickname)
+                    OutlinedButton.icon(
+                      onPressed: () async {
+                        final chosen = await showNicknamePokemonDialog(
+                          context,
+                          pokemon: selectedMon,
+                        );
+                        if (!mounted || chosen == null) return;
+                        if (trainer.setPokemonNickname(selectedMon, chosen)) {
+                          _showToast(
+                              "${selectedMon.species.name} was nicknamed ${selectedMon.nickname}!");
+                        }
+                      },
+                      icon: const Icon(Icons.edit_rounded, size: 12),
+                      label: const Text(
+                        "NAME",
+                        style: TextStyle(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: PokeColors.pcTealDark,
+                        side: const BorderSide(color: PokeColors.pcTeal),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9)),
+                      ),
+                    )
+                  else
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: PokeColors.panelSoft,
+                        borderRadius: BorderRadius.circular(7),
+                        border:
+                            Border.all(color: PokeColors.frameBorderSoft),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.lock_rounded,
+                              size: 10, color: PokeColors.inkSubtle),
+                          SizedBox(width: 3),
+                          Text(
+                            "NAMED",
+                            style: TextStyle(
+                              color: PokeColors.inkSubtle,
+                              fontSize: 8.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ],
           ),

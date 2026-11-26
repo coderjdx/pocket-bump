@@ -12,6 +12,7 @@ import '../services/sound_service.dart';
 import '../services/tm_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
+import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/type_badge.dart';
@@ -479,16 +480,100 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                   ),
                                 ],
                                 Expanded(
-                                  child: Text(
-                                    mon.nickname,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: PokeColors.inkDark,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w900,
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        mon.nickname,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: PokeColors.inkDark,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                      if (mon.nickname != mon.species.name)
+                                        Text(
+                                          mon.species.name,
+                                          style: const TextStyle(
+                                            color: PokeColors.inkMuted,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
+                                if (mon.canSetNickname)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 6),
+                                    child: InkWell(
+                                      onTap: () async {
+                                        SoundService.instance.playUiTap();
+                                        final chosen =
+                                            await showNicknamePokemonDialog(
+                                          context,
+                                          pokemon: mon,
+                                        );
+                                        if (!mounted || chosen == null) return;
+                                        if (trainer.setPokemonNickname(
+                                            mon, chosen)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  "${mon.species.name} was permanently nicknamed ${mon.nickname}!"),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 7, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: PokeColors.pokeBlue
+                                              .withOpacity(0.12),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: PokeColors.pokeBlue),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(Icons.edit_rounded,
+                                                size: 11,
+                                                color: PokeColors.pokeBlueDark),
+                                            SizedBox(width: 3),
+                                            Text(
+                                              "NAME",
+                                              style: TextStyle(
+                                                color: PokeColors.pokeBlueDark,
+                                                fontSize: 9.5,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  const Padding(
+                                    padding: EdgeInsets.only(right: 6),
+                                    child: Tooltip(
+                                      message: "Nickname is permanent",
+                                      child: Icon(
+                                        Icons.lock_rounded,
+                                        size: 14,
+                                        color: PokeColors.inkSubtle,
+                                      ),
+                                    ),
+                                  ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 2),
@@ -825,6 +910,16 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const SizedBox(height: 10),
               _infoRow("Species",
                   "#${mon.species.id.toString().padLeft(3, '0')} ${mon.species.name}"),
+              _infoRow(
+                "Nickname",
+                mon.hasCustomNickname
+                    ? "${mon.nickname} (Permanent)"
+                    : "Not set",
+              ),
+              _infoRow(
+                "Original Trainer",
+                mon.originalTrainerDisplay(fallbackName: trainer.name),
+              ),
               _infoRow(
                 "Location",
                 widget.partyIndex != null

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,9 +14,12 @@ import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
 import '../services/step_counter_service.dart';
 import '../widgets/hp_bar.dart';
+import '../widgets/nickname_dialog.dart';
 import '../widgets/poke_theme.dart';
+import '../widgets/pokemon_head_portrait.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
+import '../widgets/trainer_bust_portrait.dart';
 import '../widgets/trainer_sprite.dart';
 import '../widgets/version_picker.dart';
 import 'adventure_screen.dart';
@@ -42,18 +44,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _leadBobController;
-
+class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
     SoundService.instance.playBgm(BgmTrack.hubTown);
-    _leadBobController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1400),
-    )..repeat(reverse: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _promptVersionChoiceIfNeeded();
@@ -251,12 +246,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  @override
-  void dispose() {
-    _leadBobController.dispose();
-    super.dispose();
-  }
-
   Future<void> _launchWildEncounter() async {
     final trainer = Provider.of<Trainer>(context, listen: false);
     if (!trainer.hasConsciousPokemon) {
@@ -318,8 +307,6 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
-    final PokemonInstance? leadPokemon =
-        trainer.party.isNotEmpty ? trainer.party.first : null;
 
     return Scaffold(
       backgroundColor: PokeColors.canvasCream,
@@ -342,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen>
                   _buildTopHudBar(trainer),
                   const SizedBox(height: 10),
                   Expanded(
-                    child: _buildTrainerHeroCard(trainer, leadPokemon),
+                    child: _buildTrainerHeroCard(trainer),
                   ),
                   const SizedBox(height: 12),
                   _buildMainCommandRow(trainer),
@@ -507,25 +494,14 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  // ─── 2. BRIGHT TRAINER PORTRAIT + BASIC INFO + LEAD STAGE CARD ────────────
-  Widget _buildTrainerHeroCard(Trainer trainer, PokemonInstance? lead) {
-    final Color accentColor =
-        lead != null ? lead.species.types.first.color : PokeColors.pokeBlue;
-    final int prevLvlExp = lead != null
-        ? (lead.level - 1) * (lead.level - 1) * (lead.level - 1)
-        : 0;
-    final int nextLvlExp = lead != null ? lead.expForNextLevel : 1;
-    final double expProgress = (lead != null && nextLvlExp > prevLvlExp)
-        ? ((lead.currentExp - prevLvlExp) / (nextLvlExp - prevLvlExp))
-            .clamp(0.0, 1.0)
-        : 0.0;
-
+  // ─── 2. 1/3 TRAINER BUST & BADGES + 2/3 SIX-SLOT PARTY SHOWCASE ────────────
+  Widget _buildTrainerHeroCard(Trainer trainer) {
     return Container(
       decoration: BoxDecoration(
-        color: PokeColors.creamSurface.withOpacity(0.95),
+        color: PokeColors.creamSurface.withOpacity(0.96),
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: PokeColors.frameBorder.withOpacity(0.75),
+          color: PokeColors.frameBorder.withOpacity(0.8),
           width: 2.0,
         ),
         boxShadow: [
@@ -537,55 +513,37 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 10),
         child: Column(
           children: [
-            // Trainer Identity Header Row
+            // Compact Top Trainer Meta Strip
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 3.5),
-                  decoration: BoxDecoration(
-                    color: PokeColors.pokeRed,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    trainer.avatar.title.toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 9,
-                      letterSpacing: 0.6,
-                    ),
-                  ),
+                _buildMiniMetaPill(
+                  icon: Icons.menu_book_rounded,
+                  color: PokeColors.pokeRed,
+                  text:
+                      "DEX ${trainer.caughtCount}/${PokedexDatabase.gen1TotalSpecies}",
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    trainer.name.toUpperCase(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: PokeColors.inkDark,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16,
-                      letterSpacing: 0.8,
-                    ),
-                  ),
+                const SizedBox(width: 6),
+                _buildMiniMetaPill(
+                  icon: Icons.directions_walk_rounded,
+                  color: PokeColors.pokeGreenDark,
+                  text: "${trainer.todaySteps} STEPS",
                 ),
+                const Spacer(),
                 InkWell(
                   onTap: () {
                     SoundService.instance.playUiTap();
                     _openTrainerInfoSheet(trainer);
                   },
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(9),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
                     decoration: BoxDecoration(
                       color: PokeColors.pokeBlue.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(9),
                       border: Border.all(
                         color: PokeColors.pokeBlue.withOpacity(0.55),
                       ),
@@ -595,420 +553,443 @@ class _HomeScreenState extends State<HomeScreen>
                       style: const TextStyle(
                         color: PokeColors.pokeBlueDark,
                         fontWeight: FontWeight.w900,
-                        fontSize: 9.5,
-                        letterSpacing: 0.4,
+                        fontSize: 9.2,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ),
                 ),
               ],
             ),
-
             const SizedBox(height: 8),
 
-            // Sunlit Sky & Meadow Trainer Portrait + Lead Partner Stage
+            // 1/3 Trainer Column + 2/3 Party 6-Slot Column
             Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0.0, 0.62, 0.63, 1.0],
-                    colors: [
-                      const Color(0xFFD8EEFC),
-                      const Color(0xFFEAF7FF),
-                      const Color(0xFFCDECC6),
-                      const Color(0xFFAAD8A1),
-                    ],
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: _buildHomeTrainerColumn(trainer),
                   ),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: PokeColors.frameBorderSoft,
-                    width: 1.5,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    flex: 2,
+                    child: _buildHomePartyColumn(trainer),
                   ),
-                ),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    // Soft sunlit sky highlight
-                    Positioned(
-                      top: 8,
-                      right: 12,
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.amberAccent.withOpacity(0.45),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              SoundService.instance.playUiTap();
-                              _openTrainerInfoSheet(trainer);
-                            },
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TrainerSpriteWidget(
-                                  avatar: trainer.avatar,
-                                  isBackView: false,
-                                  size: 108,
-                                ),
-                                Container(
-                                  width: 64,
-                                  height: 7,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.22),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          if (lead != null)
-                            Builder(builder: (_) {
-                              final double companionSize =
-                                  (lead.species.homeCompanionSize * 1.06)
-                                      .clamp(54.0, 118.0);
-                              final double shadowWidth =
-                                  (companionSize * 0.72).clamp(36.0, 86.0);
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  AnimatedBuilder(
-                                    animation: _leadBobController,
-                                    builder: (context, child) {
-                                      final dy =
-                                          -sin(_leadBobController.value * pi) *
-                                              4.0;
-                                      return Transform.translate(
-                                        offset: Offset(0, dy),
-                                        child: child,
-                                      );
-                                    },
-                                    child: GestureDetector(
-                                      onTap: () => SoundService.instance
-                                          .playPokemonCry(lead.species.id),
-                                      child: Opacity(
-                                        opacity: lead.isFainted ? 0.5 : 1.0,
-                                        child: Stack(
-                                          clipBehavior: Clip.none,
-                                          children: [
-                                            Image.network(
-                                              lead.spriteUrl,
-                                              width: companionSize * 1.35,
-                                              height: companionSize,
-                                              fit: BoxFit.contain,
-                                              alignment: Alignment.bottomCenter,
-                                              filterQuality: FilterQuality.none,
-                                              errorBuilder: (c, e, s) =>
-                                                  Image.network(
-                                                lead.staticSpriteUrl,
-                                                width: companionSize * 1.35,
-                                                height: companionSize,
-                                                fit: BoxFit.contain,
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                filterQuality:
-                                                    FilterQuality.none,
-                                                errorBuilder: (c2, e2, s2) =>
-                                                    Icon(
-                                                  Icons.catching_pokemon,
-                                                  color: accentColor,
-                                                  size: (companionSize * 0.62)
-                                                      .clamp(32.0, 62.0),
-                                                ),
-                                              ),
-                                            ),
-                                            if (lead.isShiny)
-                                              Positioned(
-                                                top: 0,
-                                                right: -2,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    color: PokeColors.cardWhite,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color:
-                                                          PokeColors.badgeGold,
-                                                    ),
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.auto_awesome_rounded,
-                                                    color: PokeColors
-                                                        .badgeGoldDark,
-                                                    size: 13,
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: shadowWidth,
-                                    height: 6,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.22),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
-
-            const SizedBox(height: 8),
-
-            // 4 Basic Info Stats Row (Badges, Pokédex, Steps Today, Party)
-            Row(
-              children: [
-                _buildInfoStatChip(
-                  icon: Icons.stars_rounded,
-                  color: PokeColors.badgeGoldDark,
-                  label: "BADGES",
-                  value: "${trainer.clearedGymIds.length}/8",
-                ),
-                const SizedBox(width: 6),
-                _buildInfoStatChip(
-                  icon: Icons.menu_book_rounded,
-                  color: PokeColors.pokeRed,
-                  label: "POKÉDEX",
-                  value:
-                      "${trainer.caughtCount}/${PokedexDatabase.gen1TotalSpecies}",
-                ),
-                const SizedBox(width: 6),
-                _buildInfoStatChip(
-                  icon: Icons.directions_walk_rounded,
-                  color: PokeColors.pokeGreenDark,
-                  label: "STEPS",
-                  value: "${trainer.todaySteps}",
-                ),
-                const SizedBox(width: 6),
-                _buildInfoStatChip(
-                  icon: Icons.catching_pokemon,
-                  color: PokeColors.pokeBlue,
-                  label: "PARTY",
-                  value: "${trainer.party.length}/6",
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 8),
-
-            // Lead Partner Nameplate & Party Status Dots
-            if (lead != null)
-              InkWell(
-                onTap: () {
-                  SoundService.instance.playUiTap();
-                  _openPartyManagerModal(trainer);
-                },
-                borderRadius: BorderRadius.circular(14),
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(11, 8, 11, 9),
-                  decoration: PokeDecorations.card(
-                    fill: PokeColors.cardWhite,
-                    border: accentColor.withOpacity(0.65),
-                    radius: 14,
-                    borderWidth: 1.5,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          PokeBallSpriteWidget(
-                              ballType: lead.caughtBall, size: 15),
-                          const SizedBox(width: 6),
-                          Flexible(
-                            child: Text(
-                              lead.nickname,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: PokeColors.inkDark,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 13.5,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 1),
-                            decoration: BoxDecoration(
-                              color: PokeColors.badgeGold.withOpacity(0.18),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              "Lv.${lead.level}",
-                              style: const TextStyle(
-                                color: PokeColors.badgeGoldDark,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 10.5,
-                              ),
-                            ),
-                          ),
-                          if (lead.status != StatusCondition.none) ...[
-                            const SizedBox(width: 5),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 1),
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                lead.status.shortLabel,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                          ],
-                          const Spacer(),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(6, (i) {
-                              if (i >= trainer.party.length) {
-                                return Container(
-                                  width: 8,
-                                  height: 8,
-                                  margin: const EdgeInsets.only(left: 3),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: PokeColors.frameBorderSoft),
-                                  ),
-                                );
-                              }
-                              final p = trainer.party[i];
-                              final dotColor = p.isFainted
-                                  ? PokeColors.pokeRed
-                                  : (p.hpPercent <= 0.25
-                                      ? PokeColors.pokeGold
-                                      : PokeColors.pokeGreen);
-                              return Container(
-                                width: 8,
-                                height: 8,
-                                margin: const EdgeInsets.only(left: 3),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: dotColor,
-                                ),
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      HpBar(
-                        currentHp: lead.currentHp,
-                        maxHp: lead.maxHp,
-                        textColor: PokeColors.inkMuted,
-                        hpLabelColor: PokeColors.badgeGoldDark,
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          const Text(
-                            "EXP",
-                            style: TextStyle(
-                              color: PokeColors.pokeBlueDark,
-                              fontSize: 8.5,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(3),
-                              child: LinearProgressIndicator(
-                                value: expProgress,
-                                minHeight: 4,
-                                backgroundColor: PokeColors.panelSoft,
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                  PokeColors.pokeBlue,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoStatChip({
+  Widget _buildMiniMetaPill({
     required IconData icon,
     required Color color,
-    required String label,
-    required String value,
+    required String text,
   }) {
-    return Expanded(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
+      decoration: BoxDecoration(
+        color: PokeColors.cardWhite,
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: color.withOpacity(0.45)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 11, color: color),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: const TextStyle(
+              color: PokeColors.inkDark,
+              fontSize: 9.2,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHomeTrainerColumn(Trainer trainer) {
+    final gyms = GymDatabase.gyms;
+    return InkWell(
+      onTap: () {
+        SoundService.instance.playUiTap();
+        _openTrainerInfoSheet(trainer);
+      },
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+        padding: const EdgeInsets.all(7),
         decoration: PokeDecorations.card(
           fill: PokeColors.cardWhite,
-          border: color.withOpacity(0.45),
-          radius: 11,
-          borderWidth: 1.3,
+          border: PokeColors.pokeRed.withOpacity(0.55),
+          radius: 16,
+          borderWidth: 1.6,
         ),
         child: Column(
           children: [
+            // 3/4 View Trainer Bust Portrait
+            Expanded(
+              flex: 5,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11),
+                  border: Border.all(
+                    color: PokeColors.pokeRed.withOpacity(0.45),
+                    width: 1.4,
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(9.6),
+                  child: TrainerBustPortrait(
+                    avatar: trainer.avatar,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+
+            // Trainer Nameplate
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [PokeColors.pokeRed, PokeColors.pokeRedDark],
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    trainer.name.toUpperCase(),
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 12,
+                      letterSpacing: 0.6,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+
+            // Collected Badges Header
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 11, color: color),
+                const Icon(
+                  Icons.stars_rounded,
+                  size: 11,
+                  color: PokeColors.badgeGoldDark,
+                ),
                 const SizedBox(width: 3),
                 Flexible(
                   child: Text(
-                    label,
+                    "BADGES ${trainer.clearedGymIds.length}/8",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 8,
+                    style: const TextStyle(
+                      color: PokeColors.inkMuted,
+                      fontSize: 8.5,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 0.3,
+                      letterSpacing: 0.4,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 3),
+
+            // 8 Kanto Gym Badges Grid (2 columns x 4 rows)
+            Expanded(
+              flex: 5,
+              child: Column(
+                children: List.generate(4, (rowIdx) {
+                  return Expanded(
+                    child: Row(
+                      children: List.generate(2, (colIdx) {
+                        final gymIdx = rowIdx * 2 + colIdx;
+                        final gym = gymIdx < gyms.length ? gyms[gymIdx] : null;
+                        if (gym == null) {
+                          return const Expanded(child: SizedBox.shrink());
+                        }
+                        final earned =
+                            trainer.clearedGymIds.contains(gym.id);
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: earned
+                                    ? gym.elementColor.withOpacity(0.14)
+                                    : PokeColors.panelSoft,
+                                borderRadius: BorderRadius.circular(7),
+                                border: Border.all(
+                                  color: earned
+                                      ? gym.elementColor.withOpacity(0.75)
+                                      : PokeColors.frameBorderSoft,
+                                  width: earned ? 1.2 : 0.9,
+                                ),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Opacity(
+                                    opacity: earned ? 1.0 : 0.24,
+                                    child: earned
+                                        ? Image.asset(
+                                            gym.badgeAsset,
+                                            fit: BoxFit.contain,
+                                            filterQuality: FilterQuality.none,
+                                            errorBuilder: (_, __, ___) => Icon(
+                                              Icons.stars_rounded,
+                                              size: 14,
+                                              color: gym.elementColor,
+                                            ),
+                                          )
+                                        : ColorFiltered(
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.grey,
+                                              BlendMode.saturation,
+                                            ),
+                                            child: Image.asset(
+                                              gym.badgeAsset,
+                                              fit: BoxFit.contain,
+                                              filterQuality: FilterQuality.none,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const Icon(
+                                                Icons.stars_rounded,
+                                                size: 13,
+                                                color: PokeColors.inkSubtle,
+                                              ),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHomePartyColumn(Trainer trainer) {
+    return Column(
+      children: List.generate(6, (idx) {
+        final PokemonInstance? mon =
+            idx < trainer.party.length ? trainer.party[idx] : null;
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: idx == 5 ? 0 : 4.5),
+            child: mon == null
+                ? _buildEmptyPartySlotTile(idx)
+                : _buildOccupiedPartySlotTile(idx, mon),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildOccupiedPartySlotTile(int idx, PokemonInstance mon) {
+    final Color typeColor = mon.species.types.first.color;
+    final bool isLead = idx == 0;
+    final Color hpColor = mon.hpPercent > 0.5
+        ? PokeColors.pokeGreen
+        : (mon.hpPercent > 0.2 ? PokeColors.badgeGold : PokeColors.pokeRed);
+    final String? statusTag = mon.isFainted
+        ? 'FNT'
+        : (mon.status != StatusCondition.none ? mon.status.shortLabel : null);
+    final Color statusBg = mon.isFainted
+        ? PokeColors.pokeRed
+        : statusConditionBadgeColor(mon.status);
+
+    return InkWell(
+      onTap: () {
+        SoundService.instance.playUiTap();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => PokemonDetailScreen(partyIndex: idx),
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(7, 4, 8, 4),
+        decoration: PokeDecorations.card(
+          fill: PokeColors.cardWhite,
+          border: mon.isFainted
+              ? PokeColors.pokeRed
+              : (isLead ? PokeColors.badgeGold : typeColor.withOpacity(0.75)),
+          radius: 12,
+          borderWidth: isLead ? 1.8 : 1.3,
+        ),
+        child: Row(
+          children: [
+            LayoutBuilder(
+              builder: (_, constraints) {
+                final double maxH = constraints.maxHeight.isFinite
+                    ? constraints.maxHeight
+                    : 40;
+                final double portraitSize = maxH.clamp(28.0, 42.0);
+                return PokemonHeadPortrait(
+                  pokemon: mon,
+                  size: portraitSize,
+                  borderRadius: 9,
+                );
+              },
+            ),
+            const SizedBox(width: 7),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      if (isLead) ...[
+                        const Icon(
+                          Icons.star_rounded,
+                          size: 12,
+                          color: PokeColors.badgeGoldDark,
+                        ),
+                        const SizedBox(width: 2),
+                      ],
+                      Expanded(
+                        child: Text(
+                          mon.nickname,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: mon.isFainted
+                                ? PokeColors.inkMuted
+                                : PokeColors.inkDark,
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      if (statusTag != null) ...[
+                        const SizedBox(width: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4.5, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: statusBg,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            statusTag,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 7.8,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                        ),
+                      ],
+                      const SizedBox(width: 5),
+                      Text(
+                        "Lv.${mon.level}",
+                        style: const TextStyle(
+                          color: PokeColors.badgeGoldDark,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 3.5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: mon.hpPercent,
+                            minHeight: 5.5,
+                            backgroundColor: PokeColors.panelSoft,
+                            valueColor: AlwaysStoppedAnimation<Color>(hpColor),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        "${mon.currentHp}/${mon.maxHp}",
+                        style: TextStyle(
+                          color: mon.isFainted
+                              ? PokeColors.pokeRed
+                              : PokeColors.inkMuted,
+                          fontSize: 9.2,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyPartySlotTile(int idx) {
+    return InkWell(
+      onTap: () {
+        SoundService.instance.playUiTap();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const PcStorageScreen()),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: PokeDecorations.inset(
+          fill: PokeColors.panelSoft.withOpacity(0.75),
+          border: PokeColors.frameBorderSoft,
+          radius: 12,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.catching_pokemon,
+              size: 16,
+              color: PokeColors.inkSubtle.withOpacity(0.6),
+            ),
+            const SizedBox(width: 7),
             Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              "EMPTY SLOT #${idx + 1}",
               style: const TextStyle(
-                color: PokeColors.inkDark,
-                fontSize: 12,
-                fontWeight: FontWeight.w900,
+                color: PokeColors.inkSubtle,
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.4,
               ),
             ),
           ],
@@ -2107,7 +2088,93 @@ class _HomeScreenState extends State<HomeScreen>
                                                     fontSize: 12,
                                                   ),
                                                 ),
+                                                const SizedBox(width: 6),
+                                                if (mon.canSetNickname)
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      SoundService.instance
+                                                          .playUiTap();
+                                                      final chosen =
+                                                          await showNicknamePokemonDialog(
+                                                        ctx,
+                                                        pokemon: mon,
+                                                      );
+                                                      if (!mounted ||
+                                                          chosen == null) {
+                                                        return;
+                                                      }
+                                                      trainer
+                                                          .setPokemonNickname(
+                                                              mon, chosen);
+                                                    },
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 6,
+                                                          vertical: 2.5),
+                                                      decoration: BoxDecoration(
+                                                        color: PokeColors
+                                                            .pokeBlue
+                                                            .withOpacity(0.12),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7),
+                                                        border: Border.all(
+                                                            color: PokeColors
+                                                                .pokeBlue),
+                                                      ),
+                                                      child: const Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                              Icons
+                                                                  .edit_rounded,
+                                                              size: 10,
+                                                              color: PokeColors
+                                                                  .pokeBlueDark),
+                                                          SizedBox(width: 2),
+                                                          Text(
+                                                            "NAME",
+                                                            style: TextStyle(
+                                                              color: PokeColors
+                                                                  .pokeBlueDark,
+                                                              fontSize: 8.5,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                else
+                                                  const Tooltip(
+                                                    message:
+                                                        "Nickname is permanent",
+                                                    child: Icon(
+                                                      Icons.lock_rounded,
+                                                      size: 13,
+                                                      color:
+                                                          PokeColors.inkSubtle,
+                                                    ),
+                                                  ),
                                               ],
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              "${mon.species.name} • OT: ${mon.originalTrainerDisplay(fallbackName: trainer.name)}",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: PokeColors.inkMuted,
+                                                fontSize: 9.5,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                             const SizedBox(height: 6),
                                             HpBar(

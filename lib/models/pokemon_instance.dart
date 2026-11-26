@@ -48,6 +48,9 @@ class LevelUpResult {
 class PokemonInstance {
   PokemonSpecies species;
   String nickname;
+  bool hasCustomNickname;
+  String? originalTrainerName;
+  String? originalTrainerId; // Reserved for live trainer accounts
   int level;
   int currentHp;
   int maxHp;
@@ -207,6 +210,33 @@ class PokemonInstance {
   AbilityDefinition? get effectiveAbilityDefinition =>
       AbilityDatabase.byId(effectiveAbilityId);
 
+  bool get canSetNickname => !hasCustomNickname;
+
+  /// Permanently sets this Pokémon's nickname. Once assigned, it cannot be changed.
+  bool setPermanentNickname(String rawName) {
+    if (hasCustomNickname) return false;
+    final trimmed = rawName.trim();
+    if (trimmed.isEmpty) return false;
+    nickname = trimmed.length > 14 ? trimmed.substring(0, 14) : trimmed;
+    hasCustomNickname = true;
+    return true;
+  }
+
+  /// Displays the Original Trainer (and future live account ID once available).
+  String originalTrainerDisplay({String? fallbackName}) {
+    final trimmedName = originalTrainerName?.trim();
+    final String baseName = (trimmedName != null && trimmedName.isNotEmpty)
+        ? trimmedName
+        : ((fallbackName != null && fallbackName.trim().isNotEmpty)
+            ? fallbackName.trim()
+            : 'Unknown');
+    final trimmedId = originalTrainerId?.trim();
+    if (trimmedId != null && trimmedId.isNotEmpty) {
+      return '$baseName (#$trimmedId)';
+    }
+    return baseName;
+  }
+
   static ({int slot, String id}) rollAbilityForSpecies(
     PokemonSpecies species, {
     double hiddenChance = 0.02,
@@ -227,6 +257,9 @@ class PokemonInstance {
   PokemonInstance({
     required this.species,
     String? nickname,
+    bool? hasCustomNickname,
+    this.originalTrainerName,
+    this.originalTrainerId,
     this.level = 5,
     int? currentHp,
     List<Move>? moves,
@@ -240,7 +273,10 @@ class PokemonInstance {
     int? abilitySlot,
   })  : _status = status,
         isShiny = isShiny && species.isShinyEligible,
-        nickname = nickname ?? species.name,
+        nickname = (nickname != null && nickname.trim().isNotEmpty)
+            ? nickname.trim()
+            : species.name,
+        hasCustomNickname = hasCustomNickname ?? false,
         abilitySlot = abilitySlot ??
             (abilityId != null
                 ? species.slotForAbility(abilityId)
@@ -557,7 +593,7 @@ class PokemonInstance {
     List<Move> unlockedEvolutionMoves, {
     List<Move>? pendingMovesOut,
   }) {
-    if (nickname == species.name) {
+    if (!hasCustomNickname) {
       nickname = nextSpecies.name;
     }
     species = nextSpecies;
@@ -699,6 +735,9 @@ class PokemonInstance {
     return {
       'speciesId': species.id,
       'nickname': nickname,
+      'hasCustomNickname': hasCustomNickname,
+      'originalTrainerName': originalTrainerName,
+      'originalTrainerId': originalTrainerId,
       'level': level,
       'currentHp': currentHp,
       'currentExp': currentExp,
@@ -756,6 +795,17 @@ class PokemonInstance {
     );
 
     final rawNickname = json['nickname'] as String?;
+    final String resolvedNickname =
+        (rawNickname != null && rawNickname.trim().isNotEmpty)
+            ? rawNickname.trim()
+            : spec.name;
+    final bool restoredHasCustomNickname = json['hasCustomNickname'] is bool
+        ? json['hasCustomNickname'] == true
+        : (rawNickname != null &&
+            rawNickname.trim().isNotEmpty &&
+            rawNickname.trim() != spec.name);
+    final String? rawOtName = json['originalTrainerName'] as String?;
+    final String? rawOtId = json['originalTrainerId'] as String?;
     final String? heldItem = json['heldItemId'] as String?;
     final String caughtBall = (json['caughtBall'] as String?) ?? 'poke_ball';
     final bool isShiny = json['isShiny'] == true;
@@ -781,9 +831,16 @@ class PokemonInstance {
         rawLearned?.whereType<String>().toList();
     final instance = PokemonInstance(
       species: spec,
-      nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
-          ? rawNickname
-          : spec.name,
+      nickname: resolvedNickname,
+      hasCustomNickname: restoredHasCustomNickname,
+      originalTrainerName:
+          (rawOtName != null && rawOtName.trim().isNotEmpty)
+              ? rawOtName.trim()
+              : null,
+      originalTrainerId:
+          (rawOtId != null && rawOtId.trim().isNotEmpty)
+              ? rawOtId.trim()
+              : null,
       level: lvl,
       currentHp: hp,
       moves: restoredMoves,

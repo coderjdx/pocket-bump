@@ -20,6 +20,7 @@ import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/move_pp_picker_dialog.dart';
 import '../widgets/move_vfx_effects.dart';
+import '../widgets/nickname_dialog.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
@@ -2107,12 +2108,30 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       await _awardExpForOpponent(explicitRecipients: captureExpRecipients);
       if (!mounted) return;
 
+      final String? chosenNickname = await showNicknamePokemonDialog(
+        context,
+        pokemon: _opponentPokemon,
+        isOnCatch: true,
+      );
+      if (!mounted) return;
+      bool nicknamedOnCatch = false;
+      if (chosenNickname != null) {
+        nicknamedOnCatch =
+            _trainer.setPokemonNickname(_opponentPokemon, chosenNickname);
+      }
+      final String updatedBoxNote = (sentToBox != null && sentToBox > 0)
+          ? "\n${_opponentPokemon.nickname} was sent to PC Box $sentToBox!"
+          : "";
+      final String nicknameNote = nicknamedOnCatch
+          ? "\nNicknamed ${_opponentPokemon.nickname}!"
+          : "";
+
       _playerWon = true;
       setState(() {
         _inLegendaryCapturePhase = false;
         _currentMessage = isLegendaryKoThrow
-            ? "Gotcha! ${_opponentPokemon.species.name} was caught (Lv. 50)!$healNote$boxNote"
-            : "Gotcha! ${_opponentPokemon.species.name} was caught!$healNote$boxNote$dropNote";
+            ? "Gotcha! ${_opponentPokemon.species.name} was caught (Lv. 50)!$nicknameNote$healNote$updatedBoxNote"
+            : "Gotcha! ${_opponentPokemon.species.name} was caught!$nicknameNote$healNote$updatedBoxNote$dropNote";
         _battleEnded = true;
         _isProcessingTurn = false;
       });
