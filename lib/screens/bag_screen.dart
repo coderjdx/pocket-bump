@@ -280,7 +280,85 @@ class _BagScreenState extends State<BagScreen> {
   }
 
   Widget _buildExpShareCard(Trainer trainer) {
-    final bool active = trainer.expShareEnabled;
+    final bool unlocked = trainer.hasExpShare;
+    final bool active = trainer.isExpShareActive;
+    if (!unlocked) {
+      return Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF151926),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.lock_outline_rounded,
+                color: Colors.white38,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'EXP Share',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 1.5),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.white24),
+                        ),
+                        child: const Text(
+                          'LOCKED',
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  const Text(
+                    'Defeat Giovanni at Viridian Gym (8th Gym) to unlock the EXP Share.',
+                    style: TextStyle(color: Colors.white38, fontSize: 11),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.lock_rounded,
+              color: Colors.white30,
+              size: 20,
+            ),
+          ],
+        ),
+      );
+    }
     const Color accent = Colors.cyanAccent;
     return Container(
       padding: const EdgeInsets.all(12),

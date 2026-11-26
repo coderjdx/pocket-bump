@@ -1855,39 +1855,93 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                     const SizedBox(height: 12),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: trainer.hasExpShare ? 6 : 10,
+                      ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A2033),
+                        color: trainer.hasExpShare
+                            ? const Color(0xFF1A2033)
+                            : const Color(0xFF141826),
                         borderRadius: BorderRadius.circular(13),
                         border: Border.all(color: Colors.white12),
                       ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.share_rounded,
-                              color: Colors.cyanAccent, size: 18),
-                          const SizedBox(width: 10),
-                          const Expanded(
-                            child: Text(
-                              "EXP Share",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
+                      child: trainer.hasExpShare
+                          ? Row(
+                              children: [
+                                const Icon(Icons.share_rounded,
+                                    color: Colors.cyanAccent, size: 18),
+                                const SizedBox(width: 10),
+                                const Expanded(
+                                  child: Text(
+                                    "EXP Share",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                                Switch.adaptive(
+                                  value: trainer.isExpShareActive,
+                                  activeColor: Colors.cyanAccent,
+                                  onChanged: (_) {
+                                    SoundService.instance.playUiTap();
+                                    trainer.toggleExpShare();
+                                    trainer.saveProgress();
+                                  },
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                const Icon(Icons.lock_outline_rounded,
+                                    color: Colors.white38, size: 18),
+                                const SizedBox(width: 10),
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "EXP Share",
+                                        style: TextStyle(
+                                          color: Colors.white60,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      SizedBox(height: 1),
+                                      Text(
+                                        "Defeat Giovanni (8th Gym) to unlock",
+                                        style: TextStyle(
+                                          color: Colors.white38,
+                                          fontSize: 10.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 7, vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.06),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: Colors.white24),
+                                  ),
+                                  child: const Text(
+                                    "LOCKED",
+                                    style: TextStyle(
+                                      color: Colors.white38,
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 0.4,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Switch.adaptive(
-                            value: trainer.expShareEnabled,
-                            activeColor: Colors.cyanAccent,
-                            onChanged: (_) {
-                              SoundService.instance.playUiTap();
-                              trainer.toggleExpShare();
-                              trainer.saveProgress();
-                            },
-                          ),
-                        ],
-                      ),
                     ),
                     const SizedBox(height: 10),
                     Row(

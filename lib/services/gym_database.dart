@@ -1048,7 +1048,7 @@ class GymDatabase {
       leaderTitle: "The Master of Earth & Legendary Boss",
       badgeName: "Earth Badge",
       badgeAsset: 'assets/images/badges/earth_badge.png',
-      badgeDescription: "Master Boost (+5% All Stats) • Commands Lv. 100 • Unlocks Expeditions",
+      badgeDescription: "Master Boost (+5% All Stats) • Commands Lv. 100 • Unlocks EXP Share & Expeditions",
       element: "Ground",
       elementColor: const Color(0xFFFFB300),
       backgroundAsset: 'assets/images/battle_bg_gym_ground.png',

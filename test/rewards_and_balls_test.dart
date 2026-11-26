@@ -635,4 +635,65 @@ void main() {
       expect(sawBossHeartScale, isTrue);
     });
   });
+
+  group('EXP Share Gym 8 Unlock Gate', () {
+    test('EXP Share is locked until defeating Giovanni (Gym 8)', () {
+      final trainer = Trainer(name: 'Red');
+      expect(trainer.hasExpShare, isFalse);
+      expect(trainer.expShareEnabled, isFalse);
+      expect(trainer.isExpShareActive, isFalse);
+
+      expect(trainer.toggleExpShare(), isFalse);
+      expect(trainer.toggleExpShare(true), isFalse);
+      expect(trainer.expShareEnabled, isFalse);
+      expect(trainer.isExpShareActive, isFalse);
+
+      for (int gymId = 1; gymId <= 7; gymId++) {
+        trainer.clearGym(gymId);
+        expect(trainer.hasExpShare, isFalse);
+        expect(trainer.toggleExpShare(true), isFalse);
+        expect(trainer.isExpShareActive, isFalse);
+      }
+
+      trainer.clearGym(8);
+      expect(trainer.hasEarthBadge, isTrue);
+      expect(trainer.hasExpShare, isTrue);
+      expect(trainer.expShareEnabled, isTrue);
+      expect(trainer.isExpShareActive, isTrue);
+
+      // Player can turn EXP Share off manually; a Gym 8 rematch won't force it back on
+      expect(trainer.toggleExpShare(false), isTrue);
+      expect(trainer.expShareEnabled, isFalse);
+      expect(trainer.isExpShareActive, isFalse);
+      trainer.clearGym(8);
+      expect(trainer.expShareEnabled, isFalse);
+
+      expect(trainer.toggleExpShare(), isTrue);
+      expect(trainer.expShareEnabled, isTrue);
+      expect(trainer.isExpShareActive, isTrue);
+    });
+
+    test('applyFromJson enforces Gym 8 gate on loaded saves', () {
+      final trainer = Trainer(name: 'Red');
+      final baseJson = trainer.toJson();
+
+      trainer.applyFromJson({
+        ...baseJson,
+        'clearedGymIds': [1, 2, 7],
+        'expShareEnabled': true,
+      });
+      expect(trainer.hasExpShare, isFalse);
+      expect(trainer.expShareEnabled, isFalse);
+      expect(trainer.isExpShareActive, isFalse);
+
+      trainer.applyFromJson({
+        ...baseJson,
+        'clearedGymIds': [8],
+        'expShareEnabled': true,
+      });
+      expect(trainer.hasExpShare, isTrue);
+      expect(trainer.expShareEnabled, isTrue);
+      expect(trainer.isExpShareActive, isTrue);
+    });
+  });
 }

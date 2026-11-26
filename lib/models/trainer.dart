@@ -558,10 +558,14 @@ class Trainer extends ChangeNotifier {
   }
 
   void clearGym(int gymId) {
+    final bool firstClear = !clearedGymIds.contains(gymId);
     clearedGymIds.add(gymId);
     badges = clearedGymIds.length;
     if (gymId < 8) {
       unlockedGymIds.add(gymId + 1);
+    }
+    if (gymId == 8 && firstClear) {
+      expShareEnabled = true;
     }
     notifyListeners();
   }
@@ -601,6 +605,10 @@ class Trainer extends ChangeNotifier {
   }
 
   bool get hasEarthBadge => clearedGymIds.contains(8);
+
+  bool get hasExpShare => hasEarthBadge;
+
+  bool get isExpShareActive => hasExpShare && expShareEnabled;
 
   double get atkBadgeMultiplier =>
       (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
@@ -714,9 +722,17 @@ class Trainer extends ChangeNotifier {
     return triggered;
   }
 
-  void toggleExpShare([bool? value]) {
+  bool toggleExpShare([bool? value]) {
+    if (!hasExpShare) {
+      if (expShareEnabled) {
+        expShareEnabled = false;
+        notifyListeners();
+      }
+      return false;
+    }
     expShareEnabled = value ?? !expShareEnabled;
     notifyListeners();
+    return true;
   }
 
   void resetEncounterSteps() {
@@ -1076,7 +1092,7 @@ class Trainer extends ChangeNotifier {
         customItems[k] = isUniqueUnlock ? 1 : v.toInt().clamp(0, 99);
       }
     });
-    expShareEnabled = json['expShareEnabled'] == true;
+    expShareEnabled = hasExpShare && (json['expShareEnabled'] == true);
     hasEarnedExpeditionMasterBall =
         json['hasEarnedExpeditionMasterBall'] == true;
     caughtExpeditionLegendaryIds =

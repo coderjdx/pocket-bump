@@ -2211,7 +2211,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   List<PokemonInstance> _resolveExpRecipients() {
-    final List<PokemonInstance> consciousParticipants = _trainer.expShareEnabled
+    final List<PokemonInstance> consciousParticipants = _trainer.isExpShareActive
         ? _trainer.party.where((p) => !p.isFainted).toList()
         : _participatedPokemon.where((p) => !p.isFainted).toList();
     if (consciousParticipants.isEmpty && !_playerPokemon.isFainted) {
@@ -2242,7 +2242,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     setState(() {
       if (recipients.length == 1) {
         _currentMessage = "${recipients.first.nickname} gained $share EXP!";
-      } else if (_trainer.expShareEnabled && recipients.length > 3) {
+      } else if (_trainer.isExpShareActive && recipients.length > 3) {
         _currentMessage =
             "All conscious party Pokémon each gained $share EXP (EXP Share)!";
       } else {

@@ -1268,56 +1268,106 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             ),
           ],
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "You successfully defeated all 4 Gym Trainers and Gym Leader ${gym.leaderName} of ${gym.city}!",
-              style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
-            ),
-            const SizedBox(height: 12),
-            if (firstClear) ...[
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: gym.elementColor.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: gym.elementColor.withOpacity(0.6)),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      gym.badgeAsset,
-                      width: 42,
-                      height: 42,
-                      filterQuality: FilterQuality.none,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "AWARDED: ${gym.badgeName.toUpperCase()}!",
-                            style: TextStyle(
-                              color: gym.elementColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            gym.badgeDescription,
-                            style: const TextStyle(color: Colors.white, fontSize: 11),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "You successfully defeated all 4 Gym Trainers and Gym Leader ${gym.leaderName} of ${gym.city}!",
+                style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
               ),
-            ] else if (droppedItems.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              if (firstClear) ...[
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: gym.elementColor.withOpacity(0.18),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: gym.elementColor.withOpacity(0.6)),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        gym.badgeAsset,
+                        width: 42,
+                        height: 42,
+                        filterQuality: FilterQuality.none,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "AWARDED: ${gym.badgeName.toUpperCase()}!",
+                              style: TextStyle(
+                                color: gym.elementColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              gym.badgeDescription,
+                              style: const TextStyle(color: Colors.white, fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (gym.id == 8) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.cyanAccent.withOpacity(0.14),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.cyanAccent.withOpacity(0.6)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            color: Colors.cyanAccent.withOpacity(0.16),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.share_rounded,
+                            color: Colors.cyanAccent,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "KEY ITEM REWARD: EXP SHARE!",
+                                style: TextStyle(
+                                  color: Colors.cyanAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "Giovanni handed over the EXP Share! Enabled automatically — toggle it anytime in Bag (Key & Special) or Trainer Info.",
+                                style: TextStyle(color: Colors.white, fontSize: 11),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ] else if (droppedItems.isNotEmpty) ...[
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -1386,7 +1436,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 ),
               ),
             ],
-          ],
+            ],
+          ),
         ),
         actions: [
           ElevatedButton(
