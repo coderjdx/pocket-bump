@@ -69,12 +69,12 @@ p=A.bkN(a)
 if(p!=null)return p
 if(typeof a=="function")return B.akJ
 s=Object.getPrototypeOf(a)
-if(s==null)return B.Sv
-if(s===Object.prototype)return B.Sv
+if(s==null)return B.Sw
+if(s===Object.prototype)return B.Sw
 if(typeof q=="function"){o=$.aFz
 if(o==null)o=$.aFz=A.aRo(n)
-Object.defineProperty(q,o,{value:B.xJ,enumerable:false,writable:true,configurable:true})
-return B.xJ}return B.xJ},
+Object.defineProperty(q,o,{value:B.xK,enumerable:false,writable:true,configurable:true})
+return B.xK}return B.xK},
 DU(a,b){if(a<0||a>4294967295)throw A.m(A.dp(a,0,4294967295,"length",null))
 return J.m5(new Array(a),b)},
 aUv(a,b){if(a>4294967295)throw A.m(A.dp(a,0,4294967295,"length",null))
@@ -320,7 +320,7 @@ s.toString
 return s},
 bkl(a){var s=J.mO(a)
 if(s.l(a,$.bC.bu().FillType.Winding))return B.Q
-if(s.l(a,$.bC.bu().FillType.EvenOdd))return B.OX
+if(s.l(a,$.bC.bu().FillType.EvenOdd))return B.OY
 throw A.m(A.ez("Unsupported SkFillType: "+A.u(a)))},
 aSR(a){var s=$.aXB()[a.a]
 return s},
@@ -329,11 +329,11 @@ aWX(a){var s,r,q,p=new Float32Array(16)
 for(s=0;s<4;++s)for(r=s*4,q=0;q<4;++q)p[q*4+s]=a[r+q]
 return p},
 aSQ(a){var s,r,q,p=new Float32Array(9)
-for(s=a.length,r=0;r<9;++r){q=B.IT[r]
+for(s=a.length,r=0;r<9;++r){q=B.IU[r]
 if(q<s)p[r]=a[q]
 else p[r]=0}return p},
 b42(a){var s,r,q,p=new Float32Array(9)
-for(s=a.length,r=0;r<9;++r){q=B.IT[r]
+for(s=a.length,r=0;r<9;++r){q=B.IU[r]
 if(q<s)p[r]=a[q]
 else p[r]=0}return p},
 aWV(a){var s,r,q
@@ -543,7 +543,7 @@ return s},
 aYz(a,b){var s,r,q
 for(s=a.$ti,r=new A.ck(a,a.gH(0),s.j("ck<au.E>")),s=s.j("au.E");r.C();){q=r.d
 if(q==null)q=s.a(q)
-if(b>=q.startIndex&&b<=q.endIndex)return new A.c4(J.b0(q.startIndex),J.b0(q.endIndex))}return B.d_},
+if(b>=q.startIndex&&b<=q.endIndex)return new A.c4(J.b0(q.startIndex),J.b0(q.endIndex))}return B.d0},
 aTI(a){var s,r,q,p,o=null
 t.m6.a(a)
 s=A.b([],t.n)
@@ -645,7 +645,7 @@ aZ3(a,b){var s=b.j("T<0>")
 return new A.Pg(a,A.b([],s),A.b([],s),b.j("Pg<0>"))},
 bcI(a,b){var s=A.aZ3(new A.ajO(),t.vA),r=A.cJ(v.G.document,"flt-scene")
 a.geJ().Rc(r)
-return new A.tX(b,s,a,new A.Tr(),B.yq,new A.OH(),r)},
+return new A.tX(b,s,a,new A.Tr(),B.yr,new A.OH(),r)},
 e7(){var s,r=$.b2y
 if(r==null){r=v.G.window.flutterConfiguration
 s=new A.ad1()
@@ -821,7 +821,7 @@ case 3:o=h.a(c)
 if(!o.gyG()){$.dA().$1("Font manifest does not exist at `"+o.a+"` - ignoring.")
 q=new A.Dv(A.b([],t.z8))
 s=1
-break}n=B.fW.Hx(B.CN)
+break}n=B.fW.Hx(B.CO)
 k.a=null
 m=n.le(new A.a2i(new A.aRj(k),[],t.kS))
 s=4
@@ -955,7 +955,7 @@ if(s<o)continue A
 for(n=0;n<o;++n){m=p[n]
 if(m==null)continue
 if(a[n]!==m)continue A}s=q.d
-if(s===B.CE)if(new A.aPC(J.a6b(B.b6.gcO(a))).Oo())return B.ai3
+if(s===B.CF)if(new A.aPC(J.a6b(B.b6.gcO(a))).Oo())return B.ai3
 if(s===B.nX)if(new A.aCW(J.a6b(B.b6.gcO(a))).Oo())return B.nX
 else return B.ai7
 return s}if(A.bkF(a))return B.ai5
@@ -966,7 +966,7 @@ if(n>=s)return!1
 if(a[n]!==o.charCodeAt(p))continue A}return!0}return!1},
 aRu(a){var s=0,r=A.C(t.H),q,p,o,n,m
 var $async$aRu=A.D(function(b,c){if(b===1)return A.z(c,r)
-for(;;)switch(s){case 0:if($.MD!==B.Aq){s=1
+for(;;)switch(s){case 0:if($.MD!==B.Ar){s=1
 break}$.MD=B.a8k
 p=A.e7()
 if(a!=null)p.b=a
@@ -982,12 +982,12 @@ m=$.AJ
 m.toString
 s=3
 return A.l(A.iz(A.b([p,n,A.a5K(m)],t.mo),t.H),$async$aRu)
-case 3:$.MD=B.Ar
+case 3:$.MD=B.As
 case 1:return A.A(q,r)}})
 return A.B($async$aRu,r)},
 aWG(){var s=0,r=A.C(t.H),q,p,o,n,m
 var $async$aWG=A.D(function(a,b){if(a===1)return A.z(b,r)
-for(;;)switch(s){case 0:if($.MD!==B.Ar){s=1
+for(;;)switch(s){case 0:if($.MD!==B.As){s=1
 break}$.MD=B.a8l
 p=$.bE().gd4()
 if($.SY==null)$.SY=A.bdx(p===B.dZ)
@@ -1075,7 +1075,7 @@ case 8:l=b9
 b3=B.fW.Hx(B.bK.gy4())
 k=A.MH(b3.a.eu(l),b3.b.a)
 if(typeof k!="string"){s=1
-break}j=B.yB.eu(k)
+break}j=B.yC.eu(k)
 i=B.eo.ht(A.O8(j))
 b3=t.f
 if(b3.b(i)){for(a3=J.a6e(i),a3=a3.gan(a3),b0=t.j;a3.C();){h=a3.gV(a3)
@@ -1140,7 +1140,7 @@ return s},
 bbg(a){var s
 A:{if(B.cd===a||B.dZ===a){s=new A.Ee(A.aWZ("M,2\u201ew\u2211wa2\u03a9q\u2021qb2\u02dbx\u2248xc3 c\xd4j\u2206jd2\xfee\xb4ef2\xfeu\xa8ug2\xfe\xff\u02c6ih3 h\xce\xff\u2202di3 i\xc7c\xe7cj2\xd3h\u02d9hk2\u02c7\xff\u2020tl5 l@l\xfe\xff|l\u02dcnm1~mn3 n\u0131\xff\u222bbo2\xaer\u2030rp2\xacl\xd2lq2\xc6a\xe6ar3 r\u03c0p\u220fps3 s\xd8o\xf8ot2\xa5y\xc1yu3 u\xa9g\u02ddgv2\u02dak\uf8ffkw2\xc2z\xc5zx2\u0152q\u0153qy5 y\xcff\u0192f\u02c7z\u03a9zz5 z\xa5y\u2021y\u2039\xff\u203aw.2\u221av\u25cav;4\xb5m\xcds\xd3m\xdfs/2\xb8z\u03a9z"))
 break A}if(B.wj===a){s=new A.Ee(A.aWZ(';b1{bc1&cf1[fg1]gm2<m?mn1}nq3/q@q\\qv1@vw3"w?w|wx2#x)xz2(z>y'))
-break A}if(B.lA===a||B.oX===a||B.OQ===a){s=new A.Ee(A.aWZ("8a2@q\u03a9qk1&kq3@q\xc6a\xe6aw2<z\xabzx1>xy2\xa5\xff\u2190\xffz5<z\xbby\u0141w\u0142w\u203ay;2\xb5m\xbam"))
+break A}if(B.lA===a||B.oX===a||B.OR===a){s=new A.Ee(A.aWZ("8a2@q\u03a9qk1&kq3@q\xc6a\xe6aw2<z\xabzx1>xy2\xa5\xff\u2190\xffz5<z\xbby\u0141w\u0142w\u203ay;2\xb5m\xbam"))
 break A}s=null}return s},
 bbf(a){var s
 if(a.length===0)return 98784247808
@@ -1438,12 +1438,12 @@ c.first()
 for(s=a.length,r=0;!J.i(c.next(),-1);r=q){q=J.b0(c.current())
 for(p=r,o=0,n=0;p<q;++p){m=a.charCodeAt(p)
 if(A.biw(m)){++o;++n}else if(A.biA(m))++n
-else if(n>0){k.push(new A.tu(r,p,B.IN,o,n))
+else if(n>0){k.push(new A.tu(r,p,B.IO,o,n))
 r=p
 o=0
 n=0}}if(o>0)l=B.vD
-else l=q===s?B.IO:B.IN
-k.push(new A.tu(r,q,l,o,n))}if(k.length===0||B.c.gak(k).c===B.vD)k.push(new A.tu(s,s,B.IO,0,0))
+else l=q===s?B.IP:B.IO
+k.push(new A.tu(r,q,l,o,n))}if(k.length===0||B.c.gak(k).c===B.vD)k.push(new A.tu(s,s,B.IP,0,0))
 return k},
 b3v(a){switch(a){case 0:return"100"
 case 1:return"200"
@@ -1483,15 +1483,15 @@ case"TextInputType.phone":return B.a1G
 case"TextInputType.emailAddress":return B.a1a
 case"TextInputType.url":return B.a1Z
 case"TextInputType.multiline":return B.a1z
-case"TextInputType.none":return c?B.a1A:B.yL
+case"TextInputType.none":return c?B.a1A:B.yM
 case"TextInputType.text":default:return B.a1X}},
 aWx(){var s=A.cJ(v.G.document,"textarea"),r=s.style
 r.setProperty("scrollbar-width","none","")
 return s},
 bf6(a){var s
-if(a==="TextCapitalization.words")s=B.Ul
-else if(a==="TextCapitalization.characters")s=B.Un
-else s=a==="TextCapitalization.sentences"?B.Um:B.xa
+if(a==="TextCapitalization.words")s=B.Um
+else if(a==="TextCapitalization.characters")s=B.Uo
+else s=a==="TextCapitalization.sentences"?B.Un:B.xa
 return new A.Hb(s)},
 bhU(a){},
 MK(a,b,c,d){var s=a.style
@@ -1529,12 +1529,12 @@ if(o==null)o=p.a(o)
 n=J.bi(o)
 m=r.a(n.i(o,"autofill"))
 l=A.c5(n.i(o,"textCapitalization"))
-if(l==="TextCapitalization.words")l=B.Ul
-else if(l==="TextCapitalization.characters")l=B.Un
-else l=l==="TextCapitalization.sentences"?B.Um:B.xa
+if(l==="TextCapitalization.words")l=B.Um
+else if(l==="TextCapitalization.characters")l=B.Uo
+else l=l==="TextCapitalization.sentences"?B.Un:B.xa
 k=A.aTv(m,new A.Hb(l))
-s.t(0,k.b,new A.Df(A.aZf(A.c5(J.b_(r.a(n.i(o,"inputType")),"name")),!1,!1),k))}else{k=A.aTv(b,B.Uk)
-s.t(0,k.b,new A.Df(B.yL,k))}r=A.ba1(s)
+s.t(0,k.b,new A.Df(A.aZf(A.c5(J.b_(r.a(n.i(o,"inputType")),"name")),!1,!1),k))}else{k=A.aTv(b,B.Ul)
+s.t(0,k.b,new A.Df(B.yM,k))}r=A.ba1(s)
 return A.aZe(!1,A.c5(J.b_(b,"uniqueIdentifier")),r,s,a)},
 ba1(a){var s,r=A.b([],t.s)
 for(s=new A.dc(a,a.r,a.e);s.C();)r.push(s.d.b.b)
@@ -1611,7 +1611,7 @@ o=A.j3(s.i(a,"obscureText"))
 n=A.j3(s.i(a,"readOnly"))
 m=A.j3(s.i(a,"autocorrect"))
 l=A.bf6(A.c5(s.i(a,"textCapitalization")))
-r=s.aC(a,h)?A.aTv(r.a(s.i(a,h)),B.Uk):null
+r=s.aC(a,h)?A.aTv(r.a(s.i(a,h)),B.Ul):null
 k=A.aUz(a,"viewId")
 if(k==null)k=0
 k=A.ba2(k,t.nA.a(s.i(a,h)),t.kc.a(s.i(a,"fields")))
@@ -1632,8 +1632,8 @@ if(s<=5e4)return a.a
 return null},
 b3W(a){var s,r,q,p,o=A.be9($.b79(),a),n=o==null,m=n?null:o.i(0,a)
 if(m!=null)s=m
-else{r=A.b3w(a,B.CI)
-q=A.b3w(a,B.CH)
+else{r=A.b3w(a,B.CJ)
+q=A.b3w(a,B.CI)
 s=new A.a0Z(A.bkh(a),q,r)}if(!n){n=o.c
 p=n.i(0,a)
 if(p==null)o.Sx(0,a,s)
@@ -1663,7 +1663,7 @@ if(s===B.Vi)return"matrix("+A.u(a[0])+","+A.u(a[1])+","+A.u(a[4])+","+A.u(a[5])+
 else if(s===B.Vj)return A.bkf(a)
 else return"none"},
 aWY(a){if(!(a[15]===1&&a[14]===0&&a[11]===0&&a[10]===1&&a[9]===0&&a[8]===0&&a[7]===0&&a[6]===0&&a[3]===0&&a[2]===0))return B.Vj
-if(a[0]===1&&a[1]===0&&a[4]===0&&a[5]===1&&a[12]===0&&a[13]===0)return B.xC
+if(a[0]===1&&a[1]===0&&a[4]===0&&a[5]===1&&a[12]===0&&a[13]===0)return B.xD
 else return B.Vi},
 bkf(a){var s=a[0]
 if(s===1&&a[1]===0&&a[2]===0&&a[3]===0&&a[4]===0&&a[5]===1&&a[6]===0&&a[7]===0&&a[8]===0&&a[9]===0&&a[10]===1&&a[11]===0&&a[14]===0&&a[15]===1)return"translate3d("+A.u(a[12])+"px, "+A.u(a[13])+"px, 0px)"
@@ -1763,10 +1763,10 @@ return s},
 aWf(a){var s=!1
 if($.bE().gd4()===B.cd||$.bE().gd4()===B.dZ)if(a!=null)s=a===".SF Pro Text"||a===".SF Pro Display"||a===".SF UI Text"||a===".SF UI Display"
 return s},
-b2t(){if(A.b3H())return B.IV
+b2t(){if(A.b3H())return B.IW
 if($.bE().gd4()===B.cd||$.bE().gd4()===B.dZ)return B.aFd
 throw A.m(A.at("Should only be called on Mac or iOS."))},
-biV(){if(A.b3H())return B.IV
+biV(){if(A.b3H())return B.IW
 if($.bE().gd4()===B.cd||$.bE().gd4()===B.dZ)return A.b2t()
 return B.aF9},
 b3l(a,b){var s,r,q,p,o=new A.dy("")
@@ -1963,7 +1963,7 @@ for(s=f*2,r=e.c-e.a,q=0,p=0;o=p+s,o<r;p=o){a.quadraticCurveTo(p,m+f*((q&1)===0?1
 if(n>0)a.quadraticCurveTo(p,m+f*((q&1)===0?1:-1),p+n,m)
 a.stroke()},
 b9t(a,b,c){var s,r,q,p,o,n,m,l,k,j,i,h,g
-if(!b.gbn(0).c.a3I(B.U7)||b.gbn(0).c.y==null)return
+if(!b.gbn(0).c.a3I(B.U8)||b.gbn(0).c.y==null)return
 s=b.gbn(0).c.a7e()
 A.b9y(a,A.a5Q(s.gk(s)))
 s=b.gbn(0).c
@@ -2039,7 +2039,7 @@ o=b.a
 n=b.b
 return new A.aC(new A.K(0,0,0+s*r,0+p*r),new A.K(o,n,o+s,n+p))},
 bcP(a,b){var s,r,q,p
-if(A.aWY(a)===B.xC)return new A.Sk(b,b,0,0,b)
+if(A.aWY(a)===B.xD)return new A.Sk(b,b,0,0,b)
 s=a[0]
 r=a[1]
 q=Math.sqrt(s*s+r*r)
@@ -2086,7 +2086,7 @@ n=n!=null?n:B.d}n=A.l7(A.a5Q(n.gk(n)))
 r.fillStyle=n
 p.Dn(r,0,0)}},
 b9u(a,b){var s,r,q,p,o,n,m,l,k
-if(!b.gbn(0).c.a3I(B.U6)||b.gbn(0).c.x==null)return
+if(!b.gbn(0).c.a3I(B.U7)||b.gbn(0).c.x==null)return
 for(s=new A.lz(b.H0(a).a());s.C();){r=s.b
 q=r.a
 r.b
@@ -4284,7 +4284,7 @@ return null}return s},
 SM(a){var s,r,q,p
 if(a instanceof A.a4)return A.jL(A.cC(a),null)
 s=J.mO(a)
-if(s===B.aic||s===B.akK||t.kk.b(a)){r=B.yI(a)
+if(s===B.aic||s===B.akK||t.kk.b(a)){r=B.yJ(a)
 if(r!=="Object"&&r!=="")return r
 q=a.constructor
 if(typeof q=="function"){p=q.name
@@ -4619,7 +4619,7 @@ s["-"+o]=l
 s["+"+o]=l
 s["*"+o]=l}}},
 bkw(){var s,r,q,p,o,n,m=B.a1s()
-m=A.AO(B.a1t,A.AO(B.a1u,A.AO(B.yJ,A.AO(B.yJ,A.AO(B.a1v,A.AO(B.a1w,A.AO(B.a1x(B.yI),m)))))))
+m=A.AO(B.a1t,A.AO(B.a1u,A.AO(B.yK,A.AO(B.yK,A.AO(B.a1v,A.AO(B.a1w,A.AO(B.a1x(B.yJ),m)))))))
 if(typeof dartNativeDispatchHooksTransformer!="undefined"){s=dartNativeDispatchHooksTransformer
 if(typeof s=="function")s=[s]
 if(Array.isArray(s))for(r=0;r<s.length;++r){q=s[r]
@@ -7384,7 +7384,7 @@ if(a==="https")return 443
 return 0},
 AD(a,b,c){throw A.m(A.d_(c,a,b))},
 bha(a){var s
-if(a.length===0)return B.Oo
+if(a.length===0)return B.Op
 s=A.b2k(a)
 s.a6w(s,A.b3o())
 return A.aTN(s,t.N,t.yp)},
@@ -8124,7 +8124,7 @@ switch(a.a){case 0:switch(b.a){case 0:s=B.kd
 break
 case 1:s=B.kd
 break
-case 2:s=B.yY
+case 2:s=B.yZ
 break}break
 case 1:switch(b.a){case 0:s=B.be4
 break
@@ -8134,7 +8134,7 @@ case 2:s=B.be6
 break}break
 case 2:switch(b.a){case 0:s=B.be5
 break
-case 1:s=B.yX
+case 1:s=B.yY
 break
 case 2:s=B.kd
 break}break}return s},
@@ -8300,9 +8300,9 @@ r=a<2.5?(a-2)*10:(a-2.5)*2+6-1
 q=B.l.A(B.b.ek(r),0,9)
 p=r-q
 s=1-p
-o=B.IU[q]
+o=B.IV[q]
 n=o[0]
-m=B.IU[q+1]
+m=B.IV[q+1]
 return new A.aC(s*n+p*m[0],1-1/(s*o[1]+p*m[1]))},
 a0I(a,b,c,d){var s,r=b.Z(0,a),q=new A.S(Math.abs(c.a),Math.abs(c.b)),p=q.geN(),o=p===0?B.pn:q.ec(0,p),n=r.a,m=Math.abs(n)/o.a,l=r.b,k=Math.abs(l)/o.b
 n/=m
@@ -8715,7 +8715,7 @@ else s=t.VI.b(a)?"AudioPlayers Exception: "+a.m(0):"AudioPlayers throw: "+A.u(a)
 A.b3R("\x1b[31m"+(b!=null&&b.m(0).length!==0?s+("\n"+b.m(0)):s)+"\x1b[0m")},
 NF:function NF(a,b){this.a=a
 this.b=b},
-aTu(){var s=null,r=$.aX1(),q=$.b45(),p=$.aO,o=B.yV.a6C()
+aTu(){var s=null,r=$.aX1(),q=$.b45(),p=$.aO,o=B.yW.a6C()
 r=new A.By(r,q,o,B.lI,B.lF,B.lF,new A.bD(new A.aJ(p,t.d),t.h),new A.fR(s,s,t.NV),new A.fR(s,s,t.tu))
 r.adA(s)
 return r},
@@ -9124,7 +9124,7 @@ ZA:function ZA(a,b){this.a=a
 this.b=b},
 aYO(a,b,c,d,e,f,g,h,i){return new A.Cm(c,h,d,e,g,f,i,b,a,null)},
 aYP(){var s,r=A.bn()
-A:{if(B.aI===r||B.bE===r||B.cZ===r){s=70
+A:{if(B.aI===r||B.bE===r||B.d_===r){s=70
 break A}if(B.ce===r||B.cN===r||B.cO===r){s=0
 break A}s=null}return s},
 a9t:function a9t(a,b){this.a=a
@@ -9239,7 +9239,7 @@ return new A.Il(s,r,new A.a9w(a),new A.a9x(a))},
 b8P(a,b,c,d,e,f){var s=a.b.cy.a
 return new A.Co(new A.zA(e,new A.a9y(a),new A.a9z(a,f),null,f.j("zA<0>")),c,d,s,null)},
 b8N(a,b,c,d,e){var s
-b=A.dj(B.rN,c,B.Ao)
+b=A.dj(B.rN,c,B.Ap)
 s=$.aXv()
 t.G.a(b)
 b.n()
@@ -10490,7 +10490,7 @@ a5z:function a5z(){},
 a5A:function a5A(){},
 a5B:function a5B(){},
 bax(a,b){var s=t.S
-return new A.kZ(B.xY,A.G(s,t.SP),A.eu(s),a,b,A.AZ(),A.G(s,t.Qd))},
+return new A.kZ(B.xZ,A.G(s,t.SP),A.eu(s),a,b,A.AZ(),A.G(s,t.Qd))},
 aZp(a,b,c){var s=(c-a)/(b-a)
 return!isNaN(s)?A.L(s,0,1):s},
 vw:function vw(a,b){this.a=a
@@ -11301,7 +11301,7 @@ k=a0.j("aJ<0?>")
 j=a0.j("bD<0?>")
 return h.cI(new A.Er(b,s,f,0.5625,a,i,g,i,i,r.ry.e,e,d,i,i,i,!1,i,"Close Bottom Sheet",new A.cH(B.ae,q),"Scrim",i,i,i,p,A.aL(t.f9),new A.c_(i,a0.j("c_<lv<0>>")),new A.c_(i,t.A),new A.u_(),i,0,new A.bD(new A.aJ(o,a0.j("aJ<0?>")),a0.j("bD<0?>")),n,m,i,B.lK,new A.cH(i,q),new A.bD(new A.aJ(l,k),j),new A.bD(new A.aJ(l,k),j),a0.j("Er<0>")))},
 aVK(a){var s=null
-return new A.ayX(a,s,s,1,s,s,s,1,B.aWZ,s,s,s,s,B.yy)},
+return new A.ayX(a,s,s,1,s,s,s,1,B.aWZ,s,s,s,s,B.yz)},
 BK:function BK(a,b,c,d,e,f,g,h,i,j,k,l,m){var _=this
 _.c=a
 _.d=b
@@ -12274,8 +12274,8 @@ break
 case 4:s=l.a
 s===$&&A.c()
 s=A.cf(s,200)
-r=A.cf(A.aaM(l,B.IW,B.aFk),24)
-q=A.cf(A.aaM(l,B.IW,B.aIZ),32)
+r=A.cf(A.aaM(l,B.IX,B.aFk),24)
+q=A.cf(A.aaM(l,B.IX,B.aIZ),32)
 p=A.cf(l.a,10)
 o=A.cf(l.a,12)
 l.d===$&&A.c()
@@ -12285,8 +12285,8 @@ break
 case 5:s=l.a
 s===$&&A.c()
 s=A.cf(A.Em(s+240),40)
-r=A.cf(A.aaM(l,B.IY,B.aLq),24)
-q=A.cf(A.aaM(l,B.IY,B.aLu),32)
+r=A.cf(A.aaM(l,B.IZ,B.aLq),24)
+q=A.cf(A.aaM(l,B.IZ,B.aLu),32)
 p=A.cf(l.a+15,8)
 o=A.cf(l.a+15,12)
 l.d===$&&A.c()
@@ -12804,7 +12804,7 @@ i=a7==null?h:new A.bO(a7,t.dy)
 return A.BP(a,b,h,r,q,a0,h,h,p,h,n,h,k,l,new A.ic(A.aK([B.ax,f,B.k9,a1],t.Ag,t.WV),t.ZX),s,m,o,i,j,a9,h,b0,new A.bO(b1,t.RP),b2)},
 bj_(a){var s=A.al(a),r=s.ok.as,q=r==null?null:r.r
 if(q==null)q=14
-r=A.c1(a,B.d3)
+r=A.c1(a,B.d4)
 r=r==null?null:r.gcR()
 return A.BR(new A.a5(24,0,24,0),new A.a5(12,0,12,0),new A.a5(6,0,6,0),(r==null?B.c5:r).aW(0,q)/14)},
 CZ:function CZ(a,b,c,d,e,f,g,h,i,j,k,l,m,n){var _=this
@@ -12873,7 +12873,7 @@ aZc(a,b,c){if(b!=null&&!b.l(0,B.a6))return A.OC(b.b3(A.ba0(c)),a)
 return a},
 ba0(a){var s,r,q,p,o,n
 if(a<0)return 0
-for(s=0;r=B.IX[s],q=r.a,a>=q;){if(a===q||s+1===6)return r.b;++s}p=B.IX[s-1]
+for(s=0;r=B.IY[s],q=r.a,a>=q;){if(a===q||s+1===6)return r.b;++s}p=B.IY[s-1]
 o=p.a
 n=p.b
 return n+(a-o)/(q-o)*(r.b-n)},
@@ -14184,7 +14184,7 @@ h=a8==null?g:new A.bO(a8,t.dy)
 return A.BP(a,b,g,s,m,a1,g,g,p,g,n,g,j,k,new A.ic(A.aK([B.ax,f,B.k9,a2],t.Ag,t.WV),t.ZX),r,l,o,h,i,b0,g,b1,q,b3)},
 bj0(a){var s=A.al(a),r=s.ok.as,q=r==null?null:r.r
 if(q==null)q=14
-r=A.c1(a,B.d3)
+r=A.c1(a,B.d4)
 r=r==null?null:r.gcR()
 return A.BR(new A.a5(24,0,24,0),new A.a5(12,0,12,0),new A.a5(6,0,6,0),(r==null?B.c5:r).aW(0,q)/14)},
 ET:function ET(a,b,c,d,e,f,g,h,i,j,k,l,m,n){var _=this
@@ -15796,10 +15796,10 @@ h=a8==null?g:new A.bO(a8,t.dy)
 return A.BP(a,b,g,s,m,a1,g,g,o,g,r,g,j,k,new A.ic(A.aK([B.ax,f,B.k9,a2],t.Ag,t.WV),t.ZX),q,l,n,h,i,b0,g,b1,p,b3)},
 bj1(a){var s=A.al(a).ok.as,r=s==null?null:s.r
 if(r==null)r=14
-s=A.c1(a,B.d3)
+s=A.c1(a,B.d4)
 s=s==null?null:s.gcR()
 s=(s==null?B.c5:s).aW(0,r)
-return A.BR(B.hr,B.B1,B.ht,s/14)},
+return A.BR(B.hr,B.B2,B.ht,s/14)},
 H9:function H9(a,b,c,d,e,f,g,h,i,j,k,l,m,n){var _=this
 _.ch=a
 _.c=b
@@ -16062,11 +16062,11 @@ _.e=c
 _.a=d},
 a54:function a54(){},
 a5i:function a5i(){},
-bfk(a){if(a===B.VV||a===B.y9)return 14.5
+bfk(a){if(a===B.VV||a===B.ya)return 14.5
 return 9.5},
-bfh(a){if(a===B.VW||a===B.y9)return 14.5
+bfh(a){if(a===B.VW||a===B.ya)return 14.5
 return 9.5},
-bfj(a,b){if(a===0)return b===1?B.y9:B.VV
+bfj(a,b){if(a===0)return b===1?B.ya:B.VV
 if(a===b-1)return B.VW
 return B.bft},
 bfi(a){var s,r=null,q=a.a.a
@@ -16123,8 +16123,8 @@ _.as=m
 _.at=n
 _.ax=o},
 a3p:function a3p(){},
-al(a){var s,r,q,p,o,n,m=null,l=a.a4(t.Nr),k=A.hB(a,B.dh,t.c4)==null?m:B.SS
-if(k==null)k=B.SS
+al(a){var s,r,q,p,o,n,m=null,l=a.a4(t.Nr),k=A.hB(a,B.dh,t.c4)==null?m:B.ST
+if(k==null)k=B.ST
 s=a.a4(t.ri)
 r=l==null?m:l.w.c
 if(r==null)if(s!=null){q=s.w.c
@@ -16194,16 +16194,16 @@ d=e
 k=d
 i=k}if(g==null)g=n?B.qI:B.oU
 c=A.as2(g)
-b=n?B.A8:B.A3
-a=n?B.A:B.A7
+b=n?B.A9:B.A4
+a=n?B.A:B.A8
 a0=c===B.bW
 a1=n?A.d(31,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255):A.d(31,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
 a2=n?A.d(10,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255):A.d(10,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
-if(k==null)k=n?B.r8:B.zR
+if(k==null)k=n?B.r8:B.zS
 if(h==null)h=k
 if(d==null)d=n?B.e5:B.d
-if(j==null)j=n?B.a4:B.zS
-if(d2==null){a3=n?B.qG:B.zq
+if(j==null)j=n?B.a4:B.zT
+if(d2==null){a3=n?B.qG:B.zr
 p=n?B.ix:B.iD
 a4=A.as2(B.oU)===B.bW
 a5=A.as2(a3)
@@ -16212,12 +16212,12 @@ a5=a5===B.bW?B.d:B.A
 a7=n?B.d:B.A
 a8=n?B.A:B.d
 d2=A.a9k(p,o,B.cq,c7,c7,c7,a4?B.d:B.A,a8,c7,c7,a6,c7,c7,c7,a5,c7,c7,c7,a7,c7,c7,c7,c7,c7,c7,c7,B.oU,c7,c7,c7,c7,a3,c7,c7,c7,c7,d,c7,c7,c7,c7,c7,c7,c7,c7,c7,c7,c7,c7,c7)}a9=n?B.S:B.aT
-b0=n?B.ix:B.z8
+b0=n?B.ix:B.z9
 b1=n?B.b1:A.d(153,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
 b2=new A.O7(n?B.es:B.hh,c7,a1,a2,c7,c7,d2,s)
 b3=n?B.aQ:B.hj
-b4=n?B.zM:B.re
-b5=n?B.zM:B.a38
+b4=n?B.zN:B.re
+b5=n?B.zN:B.a38
 if(d3){b6=A.b1d(d0,c7,c7,B.b8t,B.b8B,B.b8D)
 p=d2.a===B.c7
 b7=p?d2.k3:d2.k2
@@ -16369,9 +16369,9 @@ g9.toString
 return A.aVu(b5,r,b6,q,b7,new A.Ek(c0,c1,c2,c3,c4,c5,c6,b8),b9,c7,c8,g7,s,g,f,c9,d0,d1,d2,e,p,d3,d4,g8,d5,d,c,d6,d7,d8,d9,e0,o,e1,e2,b,a,a0,a1,e3,b0,g9,n,e4,m,e5,e6,e7,e8,e9,f0,f1,l,k,f2,a2,a3,a4,b1,b2,f3,f4,a5,j,f5,f6,a6,f7,a7,f8,f9,a8,i,g0,g1,g2,g3,b3,g4,g5,g6,b4,a9,!0,h)},
 bbE(a,b){var s=b.r
 if(s==null)s=a.dl.c
-return new A.Rr(a,b,B.xV,b.a,b.b,b.c,b.d,b.e,b.f,s,b.w)},
+return new A.Rr(a,b,B.xW,b.a,b.b,b.c,b.d,b.e,b.f,s,b.w)},
 bfM(a){var s
-A:{if(B.bE===a||B.aI===a||B.cZ===a){s=B.me
+A:{if(B.bE===a||B.aI===a||B.d_===a){s=B.me
 break A}if(B.cN===a||B.ce===a||B.cO===a){s=B.bdP
 break A}s=null}return s},
 bfN(a,b,c){var s,r
@@ -16596,7 +16596,7 @@ a3x:function a3x(){},
 aVx(a,b){return new A.v6(b,a,null)},
 b16(a){var s
 A:{if(B.ce===a||B.cN===a||B.cO===a){s=12
-break A}if(B.bE===a||B.cZ===a||B.aI===a){s=14
+break A}if(B.bE===a||B.d_===a||B.aI===a){s=14
 break A}s=null}return s},
 v6:function v6(a,b,c){this.c=a
 this.Q=b
@@ -16650,7 +16650,7 @@ a3A:function a3A(){},
 bfB(a){return A.b1d(a,null,null,B.b8E,B.b8x,B.b8z)},
 b1d(a,b,c,d,e,f){var s,r,q,p,o
 A:{if(B.aI===a){s=new A.aC(B.b8u,B.b8C)
-break A}if(B.bE===a||B.cZ===a){s=new A.aC(B.b8H,B.b8A)
+break A}if(B.bE===a||B.d_===a){s=new A.aC(B.b8H,B.b8A)
 break A}if(B.cO===a){s=new A.aC(B.b8F,B.b8y)
 break A}if(B.ce===a){s=new A.aC(B.b8I,B.b8w)
 break A}if(B.cN===a){s=new A.aC(B.b8v,B.b8G)
@@ -16909,10 +16909,10 @@ break
 default:s=null}return s},
 bM(a){var s
 A:{if(B.dB===a||B.dm===a){s=B.ad
-break A}if(B.d4===a||B.eR===a){s=B.ao
+break A}if(B.d5===a||B.eR===a){s=B.ao
 break A}s=null}return s},
 aSP(a){var s
-switch(a.a){case 0:s=B.d4
+switch(a.a){case 0:s=B.d5
 break
 case 1:s=B.eR
 break
@@ -16920,7 +16920,7 @@ default:s=null}return s},
 bkd(a){var s
 switch(a.a){case 0:s=B.dm
 break
-case 1:s=B.d4
+case 1:s=B.d5
 break
 case 2:s=B.dB
 break
@@ -16928,7 +16928,7 @@ case 3:s=B.eR
 break
 default:s=null}return s},
 AQ(a){var s
-A:{if(B.dB===a||B.d4===a){s=!0
+A:{if(B.dB===a||B.d5===a){s=!0
 break A}if(B.dm===a||B.eR===a){s=!1
 break A}s=null}return s},
 Fs:function Fs(a,b){this.a=a
@@ -17776,12 +17776,12 @@ a1I:function a1I(){},
 a1J:function a1J(){},
 b0q(a){var s,r,q
 switch(a.w.a){case 1:s=a.c
-r=s!=null?new A.eO(0,s.gvc(s)):B.yZ
+r=s!=null?new A.eO(0,s.gvc(s)):B.z_
 break
 case 0:s=a.d
 r=a.c
 if(s!=null){q=r==null?null:r.gvc(r)
-r=new A.aZ(s,q==null?B.I:q)}else if(r==null)r=B.yw
+r=new A.aZ(s,q==null?B.I:q)}else if(r==null)r=B.yx
 break
 default:r=null}return new A.km(a.a,a.f,a.b,a.e,r)},
 apR(a,b,c){var s,r,q,p,o,n,m,l,k=null
@@ -18200,7 +18200,7 @@ _.c=c
 _.d=d},
 Hw:function Hw(a,b){this.a=a
 this.c=b},
-bdF(a,b,c,d,e,f,g,h){var s=null,r=new A.Fq(new A.Ur(s,s),B.SJ,b,h,A.aH(),a,g,s,new A.bj(),A.aH())
+bdF(a,b,c,d,e,f,g,h){var s=null,r=new A.Fq(new A.Ur(s,s),B.SK,b,h,A.aH(),a,g,s,new A.bj(),A.aH())
 r.aR()
 r.sb7(s)
 r.adR(a,s,b,c,d,e,f,g,h)
@@ -19477,8 +19477,8 @@ else{o=c.$2(a,b)
 r=s.b
 q=s.c
 A:{p=null
-if(B.Sr===r||B.Ss===r||B.jx===r||B.Su===r||B.St===r)break A
-if(B.Sq===r){q.toString
+if(B.Ss===r||B.St===r||B.jx===r||B.Sv===r||B.Su===r)break A
+if(B.Sr===r){q.toString
 p=d.$3(a,b,q)
 break A}}q=new A.y_(o,r,p,q)
 o=q}return o},
@@ -19492,7 +19492,7 @@ if(s<r)return 1
 else if(s>r)return-1
 else{s=a.b
 if(s===b.b)return 0
-else return s===B.bo?1:-1}},
+else return s===B.bp?1:-1}},
 nP:function nP(a,b){this.b=a
 this.a=b},
 ko:function ko(a,b){var _=this
@@ -21659,7 +21659,7 @@ _.b=f},
 bjd(a){var s
 switch(a){case"TextAffinity.downstream":s=B.J
 break
-case"TextAffinity.upstream":s=B.bo
+case"TextAffinity.upstream":s=B.bp
 break
 default:s=null
 break}return s},
@@ -21728,7 +21728,7 @@ o=o.qc(Math.min(o.a,r),Math.min(o.b,r))
 q=a.c
 p=q.a
 q=q.b
-return new A.dF(s,o,p!==q&&r>p?new A.c4(p,Math.min(q,r)):B.d_)},
+return new A.dF(s,o,p!==q&&r>p?new A.c4(p,Math.min(q,r)):B.d0)},
 Rv:function Rv(a,b){this.a=a
 this.b=b},
 qp:function qp(){},
@@ -21751,7 +21751,7 @@ b0R(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s){return new A.Vg(s,l,o,!1,c,d,p,q,!0,h
 bje(a){var s
 switch(a){case"TextAffinity.downstream":s=B.J
 break
-case"TextAffinity.upstream":s=B.bo
+case"TextAffinity.upstream":s=B.bp
 break
 default:s=null
 break}return s},
@@ -21793,13 +21793,13 @@ case"TextInputAction.route":s=B.b1i
 break
 case"TextInputAction.emergencyCall":s=B.b1j
 break
-case"TextInputAction.done":s=B.Us
+case"TextInputAction.done":s=B.Ut
 break
-case"TextInputAction.newline":s=B.Ur
+case"TextInputAction.newline":s=B.Us
 break
 default:s=A.aE(A.t_(A.b([A.ne("Unknown text input action: "+a)],t.F)))}return s},
 bjf(a){var s
-switch(a){case"FloatingCursorDragState.start":s=B.Bs
+switch(a){case"FloatingCursorDragState.start":s=B.Bt
 break
 case"FloatingCursorDragState.update":s=B.nK
 break
@@ -22964,7 +22964,7 @@ case 7:s=B.na
 break
 case 8:s=B.ry
 break
-case 9:s=B.An
+case 9:s=B.Ao
 break
 default:s=null}return s},
 jT:function jT(a,b){this.a=a
@@ -23119,7 +23119,7 @@ m.a=B.aRz
 s=A.b([],t.RW)
 r=A.bn()
 A:{if(B.bE===r||B.aI===r){q=!0
-break A}if(B.cZ===r||B.cN===r||B.ce===r||B.cO===r){q=!1
+break A}if(B.d_===r||B.cN===r||B.ce===r||B.cO===r){q=!1
 break A}q=p}return new A.pj(new A.cH(!0,o),new A.c_(p,n),new A.a4d(B.qn,B.qo,o),new A.c_(p,n),new A.xz(),new A.xz(),new A.xz(),m,s,q,p,p,p)},
 aZ9(a,b,c,d){var s,r,q=a.a
 if(!A.b9Q(b,c,!1))s=a.l(0,B.m3)
@@ -23502,7 +23502,7 @@ bar(a){return a.ghu()},
 adf(a,b,c){var s=t.bp
 return new A.nm(B.Vk,B.Vl,A.b([],s),c,a,!0,!0,null,null,A.b([],s),$.b5())},
 J5(){switch(A.bn().a){case 0:case 1:case 2:if($.am.ay$.c.a!==0)return B.tO
-return B.Bu
+return B.Bv
 case 3:case 4:case 5:return B.tO}},
 k2:function k2(a,b){this.a=a
 this.b=b},
@@ -24226,12 +24226,12 @@ if(q==null)q=48
 p=m.f
 if(p==null)p=B.A
 o=m.gdR(0)
-if(o==null)o=B.Ct.gdR(0)
+if(o==null)o=B.Cu.gdR(0)
 n=m.w
 if(n==null)n=null
 l=m.qd(m.x===!0,p,k,r,o,q,n,l,s)}return l},
 aZE(a){var s=a.a4(t.Oh),r=s==null?null:s.w
-return r==null?B.Ct:r},
+return r==null?B.Cu:r},
 tl:function tl(a,b,c){this.w=a
 this.b=b
 this.a=c},
@@ -24286,7 +24286,7 @@ r.a=s
 n.aa(0,s)
 return p},
 cv(a,b,c,d,e,f,g){var s=null
-return new A.m0(A.b0d(s,s,new A.pM(a,1,s,B.xM),!1),c,g,f,d,e,b,!1,s)},
+return new A.m0(A.b0d(s,s,new A.pM(a,1,s,B.xN),!1),c,g,f,d,e,b,!1,s)},
 dU(a,b,c,d,e,f,g,h,i){var s=null
 return new A.m0(A.b0d(s,s,new A.iq(a,s,s),!1),c,i,g,d,e,b,f,h)},
 aRK:function aRK(a,b,c){this.a=a
@@ -24914,7 +24914,7 @@ _.b=null},
 b_K(a,b){},
 aZA(a){return new A.th(null,a,null)},
 b_x(a,b,c,d,e,f,g,h,i,j,k,l){return new A.EL(i,g,b,f,h,d,k,l,e,j,a,c)},
-aUQ(a,b){var s=A.aM(a,!1),r=A.aVY(b,B.y2,!1,null),q=s.e
+aUQ(a,b){var s=A.aM(a,!1),r=A.aVY(b,B.y3,!1,null),q=s.e
 q.a4H(0,A.jO()).ME(0,null,!0,!0)
 q.a.push(r)
 q.a9()
@@ -24978,7 +24978,7 @@ r.toString
 A.f0(r)
 q=s[1]
 q.toString
-return new A.a_n(r,A.c5(q),A.aZR(s,2),B.y4)
+return new A.a_n(r,A.c5(q),A.aZR(s,2),B.y5)
 case 1:s=s.hP(a,1)
 r=s[0]
 r.toString
@@ -25209,7 +25209,7 @@ l=b.b-m-a.aA(B.aG,s,a.gce()).b
 break A}l=d.jL(t.B.a(b.Z(0,a.aA(B.aG,s,a.gce())))).b
 break A}return r+l},
 bgG(a){return a.ar(0)},
-bcN(a,b,c){return new A.xV(b,new A.ajT(c),a,B.OT,null)},
+bcN(a,b,c){return new A.xV(b,new A.ajT(c),a,B.OU,null)},
 bgF(a,b){var s,r=A.b1U(a,!0,b)
 if(r!=null)return r
 s=A.b([A.ne("No Overlay widget found."),A.bk(A.P(a.gbA()).m(0)+" widgets require an Overlay widget ancestor.\nAn overlay lets widgets float on top of other widget children."),A.PF("To introduce an Overlay widget, you can either directly include one, or use a widget that contains an Overlay itself, such as a Navigator or WidgetsApp.")],t.F)
@@ -27016,7 +27016,7 @@ m.push(new A.fP(o,n,n,B.bP,n,n,n,n,n,n,s));++g
 j=p}}h=l.length
 if(j<h)m.push(A.ey(n,n,n,n,n,n,n,n,n,c,B.m.aq(l,j,h)))
 return m},
-bhs(a,b,a0,a1,a2){var s,r,q,p,o=null,n=A.b([],t.Ne),m=b.a,l=b.c,k=a0.b4(B.UB),j=a0.b4(a1),i=0,h=l.a,g=m.length,f=J.bi(a),e=l.b,d=!a2,c=0
+bhs(a,b,a0,a1,a2){var s,r,q,p,o=null,n=A.b([],t.Ne),m=b.a,l=b.c,k=a0.b4(B.UC),j=a0.b4(a1),i=0,h=l.a,g=m.length,f=J.bi(a),e=l.b,d=!a2,c=0
 for(;;){if(!(i<g&&c<f.gH(a)))break
 s=f.i(a,c).a
 r=s.a
@@ -27540,10 +27540,10 @@ b1_(a,b){return new A.Hp(b,a,null)},
 aVw(a){var s=a.a4(t.l3),r=s==null?null:s.f
 return r!==!1},
 b10(a){var s,r
-if(a.e==null)return B.yW
+if(a.e==null)return B.yX
 s=a.vp(t.l3)
 r=s==null?null:s.x
-return r==null?B.yW:r},
+return r==null?B.yX:r},
 Hp:function Hp(a,b,c){this.c=a
 this.e=b
 this.a=c},
@@ -27866,7 +27866,7 @@ return B.x9},
 bfQ(a){if(a.q(0,B.ax))return B.i9
 return B.x9},
 bfR(a){if(a.q(0,B.ax))return B.i9
-return B.Ua},
+return B.Ub},
 aVF(a,b,c){if(a==null&&b==null)return null
 if(a==b)return a
 return new A.ZL(a,b,c)},
@@ -28816,11 +28816,11 @@ case 5:return"SLP"}},
 aUY(a,b,c){var s,r
 if(c==null)s=B.dp
 else s=c
-r=a.fy
+r=a.go
 if(r!=null&&b>0&&s.eo()<b)return new A.Ai(r,3)
-r=a.fx
+r=a.fy
 if(r!=null&&s.za())return new A.Ai(r,2)
-return new A.Ai(a.fr,1)},
+return new A.Ai(a.fx,1)},
 aUX(a,b,c,d,e,f,g,h,i,j,k,l,m){var s,r,q,p=k==null?l.b:k,o=A.lj(j,0,A.AR(4,"count",t.S),A.a8(j).c).f7(0),n=A.b([],t.s)
 if(d==null){s=i-1
 s=s*s*s}else s=d
@@ -28863,7 +28863,7 @@ e=A.SC(s.d,r)
 l=A.cb(b3.i(b6,"currentHp"))
 d=l==null?b1:B.b.aT(l)
 c=B.l.A(d==null?e:d,0,e)
-b=B.c.qF(B.Je,new A.al0(A.be(b3.i(b6,"status"))),new A.al1())
+b=B.c.qF(B.Jf,new A.al0(A.be(b3.i(b6,"status"))),new A.al1())
 a=A.be(b3.i(b6,"nickname"))
 a0=A.be(b3.i(b6,"heldItemId"))
 a1=A.be(b3.i(b6,"caughtBall"))
@@ -28981,7 +28981,7 @@ y4:function y4(a,b){this.a=a
 this.b=b},
 a:function a(a,b){this.a=a
 this.b=b},
-ab:function ab(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,a0,a1,a2,a3,a4,a5,a6){var _=this
+ab:function ab(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,a0,a1,a2,a3,a4,a5,a6,a7){var _=this
 _.a=a
 _.b=b
 _.c=c
@@ -29000,21 +29000,22 @@ _.ax=o
 _.ay=p
 _.ch=q
 _.CW=r
-_.cy=s
+_.cx=s
 _.db=a0
 _.dx=a1
 _.dy=a2
 _.fr=a3
 _.fx=a4
 _.fy=a5
-_.go=a6},
+_.go=a6
+_.id=a7},
 pV(a){var s=a.b
 return s[0].toUpperCase()+B.m.d6(s,1)},
 bU(a){switch(a.a){case 0:return B.a4S
 case 1:return B.a3H
 case 2:return B.a5A
 case 3:return B.a53
-case 4:return B.z7
+case 4:return B.z8
 case 5:return B.a7C
 case 6:return B.a5_
 case 7:return B.a2U
@@ -30893,7 +30894,7 @@ s=1
 break}a=A.be(J.b_(m,"tag_name"))
 a0=a==null?null:B.m.d9(a)
 l=a0==null?"":a0
-if(J.cU(l)===0||!A.b7P(l,"1.0.87")){q=null
+if(J.cU(l)===0||!A.b7P(l,"1.0.88")){q=null
 s=1
 break}s=!a5?8:9
 break
@@ -30918,7 +30919,7 @@ break}}}b=A.be(J.b_(m,"name"))
 c=b==null?null:B.m.d9(b)
 b=h
 if(!(c!=null&&c.length!==0))A.u(l)
-q=new A.Ns("1.0.87",l,b)
+q=new A.Ns("1.0.88",l,b)
 s=1
 break
 p=2
@@ -31216,17 +31217,18 @@ if(r<3)return 2
 if(r<6)return 3
 return r===6?4:5}return s+c.bs(q-s+1)},
 b7Z(a,b,c,d,e){var s,r,q,p,o,n,m,l,k,j,i
-switch(b.a){case"low_kick":case"grass_knot":s=c.a.Q
-if(s>=2.2)return 120
-if(s>=1.6)return 100
-if(s>=1.1)return 80
-if(s>=0.7)return 60
-return s>=0.4?40:20
-case"heavy_slam":case"heat_crash":r=a.a.Q/Math.max(0.1,c.a.Q)
-if(r>=3)return 120
-if(r>=2)return 100
-if(r>=1.4)return 80
-return 60
+switch(b.a){case"low_kick":case"grass_knot":s=c.a.as
+if(s>=200)return 120
+if(s>=100)return 100
+if(s>=50)return 80
+if(s>=25)return 60
+return s>=10?40:20
+case"heavy_slam":case"heat_crash":r=a.a.as/Math.max(0.1,c.a.as)
+if(r>=5)return 120
+if(r>=4)return 100
+if(r>=3)return 80
+if(r>=2)return 60
+return 40
 case"eruption":case"water_spout":return Math.max(1,B.b.p(150*a.guD()))
 case"gyro_ball":return B.l.A(B.b.p(25*c.gNu()/Math.max(1,a.gNu())),1,150)
 case"flail":case"reversal":q=a.guD()
@@ -31282,7 +31284,7 @@ if(b3.br&&b8.c===B.bg)n*=2
 if(b3.ex)n*=1.5
 if(b2==="technician"&&n<=60)n*=1.5
 if(b2==="iron_fist"&&B.aZg.q(0,b8.a))n*=1.2
-if(b2==="reckless"&&B.Oq.aC(0,b8.a))n*=1.2
+if(b2==="reckless"&&B.Or.aC(0,b8.a))n*=1.2
 if(b2==="sheer_force"&&A.aYg(b8))n*=1.3
 if(b2==="analytic"&&!b3.x2)n*=1.3
 m=!1
@@ -31361,7 +31363,7 @@ if(b1<1&&h>0)b1=1
 return new A.a1_(h===0?0:b1,g,h)},
 aYg(a){var s,r,q=!0
 if(!(a.at>0&&a.as!=null)){s=a.a
-r=B.Oi.i(0,s)
+r=B.Oj.i(0,s)
 if((r==null?0:r)<=0)if(s!=="tri_attack")if(s!=="ancient_power")if(s!=="silver_wind")q=B.lv.aC(0,s)&&B.lv.i(0,s).a[1]!==0&&!B.lv.i(0,s).a[2]}return q},
 aTx(a,b,c,d,e){var s,r=null,q=a.a,p=!0
 if(!(q!=="jump_kick"&&q!=="high_jump_kick"))if(b.d>0){q=b.id
@@ -31423,7 +31425,7 @@ j=l7.aF===l
 i=l7.W>0
 h=l7.a2===l&&l7.ah>0
 g=l8.ch
-f=g===B.OB
+f=g===B.OC
 e=f&&l7.a7>0
 d=l7.y1
 if(p&&!j&&!i&&!h&&!e){l7.cq=l7.to=!1
@@ -31476,7 +31478,7 @@ p=l8.d
 if(l==="endure"){l7.ok=!0
 l6.push(A.N(k8,0,1,0,!1,0,!1,!1,!1,!1,m3,!1,!1,s+" braced itself!",p,l,r,!1,k8,!0,"ENDURE",!1,!1,!1,0,0))}else{l7.k4=!0
 l6.push(A.N(k8,0,1,0,!1,0,!1,!1,!1,!1,m3,!1,!1,s+l1,p,l,r,!1,k8,!0,"PROTECTED",!1,!1,!1,0,0))}}else{l7.p1=0
-l6.push(A.N(k8,0,1,0,!1,0,!1,!1,!1,!1,m3,!1,!1,s+" used "+l8.b+", but it failed!",l8.d,l,l8.c,!1,k8,!1,k8,!1,!1,!1,0,0))}return l6}if(g===B.OA){if(!i){l7.W=2
+l6.push(A.N(k8,0,1,0,!1,0,!1,!1,!1,!1,m3,!1,!1,s+" used "+l8.b+", but it failed!",l8.d,l,l8.c,!1,k8,!1,k8,!1,!1,!1,0,0))}return l6}if(g===B.OB){if(!i){l7.W=2
 l7.a1=0
 l6.push(A.N(k8,0,1,0,!1,0,!0,!1,!1,!1,m3,!1,!1,s+" is storing energy!",l8.d,l,l8.c,!1,k8,!0,"BIDE!",!1,!1,!1,0,0))
 return l6}p=l7.W
@@ -31724,12 +31726,12 @@ a=l7.e
 if(b<a){j7=Math.min(j6,a-b)
 b+=j7
 l7.d=b
-l6.push(A.N(k8,0,1,j7,!0,0,!1,!1,!1,!1,m3,!1,!0,q+" had its energy drained! (+"+A.u(j7)+" HP)",k8,k8,k8,!1,k8,!1,k8,!1,!1,!1,b,0))}}}j8=B.Oq.i(0,l)
+l6.push(A.N(k8,0,1,j7,!0,0,!1,!1,!1,!1,m3,!1,!0,q+" had its energy drained! (+"+A.u(j7)+" HP)",k8,k8,k8,!1,k8,!1,k8,!1,!1,!1,b,0))}}}j8=B.Or.i(0,l)
 if(j8!=null&&p&&l7.d>0&&o!=="rock_head"&&o!=="magic_guard"){j9=Math.max(1,B.b.p(g8*j8))
 b=l7.d=B.l.A(l7.d-j9,0,l7.e)
 l6.push(A.N(k8,j9,1,0,!0,0,!1,!1,!1,!1,m3,!0,!1,s+" was damaged by the recoil!",k8,k8,k8,!1,k8,!1,k8,!1,!1,b<=0,b,0))
 if(l7.d<=0)l6.push(A.N(k8,0,1,0,!1,0,!1,!1,!1,!1,r,!1,!1,s+" fainted!",k8,k8,k8,!1,k8,!1,k8,!1,!1,!0,0,0))}if(p)A.b7Y(l7,s,m,l9,q,l6,m2,m3,m5,l8,l5)
-k0=B.Oi.i(0,l)
+k0=B.Oj.i(0,l)
 if(k0==null)k0=0
 k1=o==="stench"&&k0===0&&e6?10:0
 if(d6)k2=0
@@ -32018,7 +32020,7 @@ if(f5.dl)f2.push(A.N(e5,0,1,0,!1,0,!1,!1,!1,!1,f8,!1,!1,s+" used Torment, but it
 else{f5.dl=!0
 f2.push(A.N(e5,0,1,0,!1,0,!1,!1,!1,!1,f8,!1,!1,q+" was subjected to Torment!",k,p,r,!1,e5,!1,e5,!1,!1,!1,0,0))}return f2
 case"spite":a4=f5.y1
-if(a4==null)a6=B.Jh
+if(a4==null)a6=B.Ji
 else{r=f5.geh()
 k=A.a8(r).j("af<1>")
 a6=A.a1(new A.af(r,new A.a7Q(a4),k),k.j("t.E"))}r=a6.length!==0&&B.c.gS(a6).w>0
@@ -32171,7 +32173,7 @@ k=s+" used "+g0.b
 if(r)f2.push(A.N(e5,0,1,0,!1,0,!1,!1,!1,!1,f8,!1,!1,k+e7,g0.d,p,g0.c,!1,e5,!1,e5,!1,!1,!1,0,0))
 else{f2.push(A.N(e5,0,1,0,!0,0,!1,!1,!1,!1,f8,!1,!1,k+"! ("+b8.b+")",e5,e5,e5,!1,e5,!1,e5,!1,!1,!1,0,0))
 B.c.J(f2,A.kN(f4,b8.eF(),f5,!1,f6,f7,f8,!0,f9,g1,e5,g2))}return f2
-case"me_first":if(f6!=null&&f6.d!==B.D&&f6.e>0&&!B.Ts.q(0,f6.a))b9=f6
+case"me_first":if(f6!=null&&f6.d!==B.D&&f6.e>0&&!B.Tt.q(0,f6.a))b9=f6
 else{r=f5.geh()
 k=A.a8(r).j("af<1>")
 c0=A.a1(new A.af(r,new A.a7U(),k),k.j("t.E"))
@@ -32734,7 +32736,7 @@ case"acc":return"Accuracy"
 case"eva":return"Evasiveness"
 default:return a.toUpperCase()}},
 aYi(a,b,c,d,e,f,g){var s,r,q=f.a
-if((q.ch||q.CW)&&B.c.q(B.lh,a))return 1
+if((q.CW||q.cx)&&B.c.q(B.lh,a))return 1
 switch(a){case"great_ball":return 1.5
 case"ultra_ball":return 2
 case"master_ball":return 255
@@ -32991,9 +32993,9 @@ case 5:return A.b([B.l.A(b-2,2,100),B.l.A(r,2,100),B.l.A(b,2,100),B.l.A(q,2,100)
 default:return A.b([B.l.A(b-2,2,100),B.l.A(r,2,100),B.l.A(b,2,100),B.l.A(b,2,100),B.l.A(q,2,100),B.l.A(b+2,2,100)],s)}},
 baJ(a,b){var s,r,q,p
 for(s=a,r=0;r<3;++r,s=p){q=$.e9().i(0,s)
-if(q==null||q.dx==null)break
-p=q.db
-if(p!=null&&b>=p){p=q.dx
+if(q==null||q.dy==null)break
+p=q.dx
+if(p!=null&&b>=p){p=q.dy
 p.toString}else break}return s},
 baK(a7,a8){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4=$.b4r(),a5=B.l.A(B.b.p(a8),5,100),a6=A.b([],t.J2)
 for(s=1+a5/25,r=a7.cy,q=a7.CW,p=t.S,o=t.T,n=0;n<4;++n){m=r[n]
@@ -33091,16 +33093,16 @@ case 1:if(r<0.25)return B.aiL
 else if(r<0.5)return B.aiO
 else if(r<0.65)return B.aiM
 else if(r<0.72)return B.aiJ
-else if(r<0.8)return B.CK
+else if(r<0.8)return B.CL
 else return B.aLk[b.bs(2)]
 case 2:if(r<0.25)return B.aiV
 else if(r<0.5)return B.aiy
 else if(r<0.65)return B.aiH
-else if(r<0.75)return B.CK
+else if(r<0.75)return B.CL
 else if(r<0.84)return B.aiQ
 else if(r<0.9)return B.aiK
 else{s=b.bs(3)
-if(s===0)return B.CL
+if(s===0)return B.CM
 else if(s===1)return B.aiE
 return B.aiC}case 3:if(r<0.3)return B.aiv
 else if(r<0.6)return B.aiB
@@ -33158,7 +33160,7 @@ afa:function afa(){},
 afb:function afb(a,b){this.a=a
 this.b=b},
 bcs(a){var s=t.NI
-s=A.a1(new A.af(B.Jl,new A.ajn(a),s),s.j("t.E"))
+s=A.a1(new A.af(B.Jm,new A.ajn(a),s),s.j("t.E"))
 return s},
 bcq(a,b){var s,r,q,p,o=b.a
 if(a.to.q(0,o))return B.abg
@@ -33207,37 +33209,37 @@ return s},
 bd7(a){var s,r,q=B.aOV.i(0,a)
 if(q!=null)return q
 for(s=$.e9(),s=new A.dc(s,s.r,s.e);s.C();){r=s.d
-if(r.dx===a)return r.a}return null},
+if(r.dy===a)return r.a}return null},
 bd8(a){var s,r=A.b([],t.FG),q=A.aL(t.S),p=a
 for(;;){if(!(p!=null&&q.E(0,p.a)))break
 B.c.jl(r,0,p)
 s=A.bd7(p.a)
 p=s!=null?$.e9().i(0,s):null}return r},
 akW(a,b){var s,r,q,p,o,n=A.b([],t.je)
-for(s=a.dy,r=s.length,q=n.$flags|0,p=0;p<r;++p){o=s[p]
+for(s=a.fr,r=s.length,q=n.$flags|0,p=0;p<r;++p){o=s[p]
 if(o.a<=b&&$.eA().aC(0,o.b)){q&1&&A.bb(n,16)
 B.c.Yv(n,new A.akX(o),!0)
 n.push($.eA().i(0,o.b).eF())}}s=n.length
 if(s>4)return B.c.hP(n,s-4)
 return n},
-akY(a,b){var s=a.dy,r=A.a8(s),q=r.j("em<1,dw>")
+akY(a,b){var s=a.fr,r=A.a8(s),q=r.j("em<1,dw>")
 s=A.a1(new A.em(new A.af(s,new A.akZ(b),r.j("af<1>")),new A.al_(),q),q.j("t.E"))
 return s},
 akV(a,b){var s,r,q,p,o,n,m,l,k=A.b([],t.s)
-for(s=A.bd8(a),r=s.length,q=0;q<s.length;s.length===r||(0,A.H)(s),++q)for(p=s[q].dy,o=p.length,n=0;n<o;++n){m=p[n]
+for(s=A.bd8(a),r=s.length,q=0;q<s.length;s.length===r||(0,A.H)(s),++q)for(p=s[q].fr,o=p.length,n=0;n<o;++n){m=p[n]
 if(m.a<=b){l=m.b
 l=$.eA().aC(0,l)&&!B.c.q(k,l)}else l=!1
 if(l)k.push(m.b)}return k},
-aUW(a){var s,r=a.dx
-if(r!=null&&a.db!=null){s=$.e9().i(0,r)
+aUW(a){var s,r=a.dy
+if(r!=null&&a.dx!=null){s=$.e9().i(0,r)
 r=s==null?null:s.b
-return"Evolves into "+(r==null?"next form":r)+" at Level "+A.u(a.db)}return B.aO9.i(0,a.a)},
-bdc(a){if(a.ch||a.CW)return 8192
+return"Evolves into "+(r==null?"next form":r)+" at Level "+A.u(a.dx)}return B.aO9.i(0,a.a)},
+bdc(a){if(a.CW||a.cx)return 8192
 return 4096},
 F8(a){return $.N4().bs(A.bdc(a))===0},
 mj(a,b,c,d,e,f,g,h){var s,r,q,p,o,n,m=null,l=$.e9().i(0,a)
 l.toString
-s=g&&e<l.cy?l.cy:e
+s=g&&e<l.db?l.db:e
 r=A.aUY(l,c,$.N4())
 q=r.b
 p=l.a0r(q)
@@ -33256,7 +33258,7 @@ else k=A.a1(new A.af(new A.bu(i,h),new A.akS(b),g),f)
 s=k}r=s[m.bs(s.length)]
 q=B.l.A(a0-2,2,99)
 p=B.l.A(a0+1,q,100)
-o=B.b.A(Math.max(q,r.cy),2,100)
+o=B.b.A(Math.max(q,r.db),2,100)
 k=m.bs(B.b.A(Math.max(p,o),o,100)-o+1)
 n=A.F8(r)
 i=l?0.25:0.15
@@ -33495,7 +33497,7 @@ bkt(a,b){var s=0,r=A.C(t.ob),q,p=2,o=[],n,m,l,k,j,i
 var $async$vZ=A.D(function(c,d){if(c===1){o.push(d)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.l(A.aZD(a,"POST",B.aOA,b).PH(0,B.AG),$async$vZ)
+return A.l(A.aZD(a,"POST",B.aOA,b).PH(0,B.AH),$async$vZ)
 case 7:n=d
 l=n.status
 m=l==null?0:l
@@ -33522,7 +33524,7 @@ bks(a){var s=0,r=A.C(t.ob),q,p=2,o=[],n,m,l,k,j,i
 var $async$AT=A.D(function(b,c){if(b===1){o.push(c)
 s=p}for(;;)switch(s){case 0:p=4
 s=7
-return A.l(A.aZD(a,"GET",null,null).PH(0,B.AG),$async$AT)
+return A.l(A.aZD(a,"GET",null,null).PH(0,B.AH),$async$AT)
 case 7:n=c
 l=n.status
 m=l==null?0:l
@@ -33670,7 +33672,7 @@ var $async$US=A.D(function(a,b){if(a===1)return A.z(b,r)
 for(;;)switch(s){case 0:s=2
 return A.l(A.eR(),$async$US)
 case 2:s=3
-return A.l(A.yQ(B.Uc),$async$US)
+return A.l(A.yQ(B.Ud),$async$US)
 case 3:return A.A(null,r)}})
 return A.B($async$US,r)},
 UT:function UT(a,b){this.a=a
@@ -33695,7 +33697,7 @@ if(B.aZa.q(0,s))return!1
 r=A.pY(B.m.v4(b.a,"tm_",""),null)
 if(r==null)return!1
 if(B.aYD.q(0,r))return!0
-if(B.c.bB(a.dy,new A.as8(b)))return!0
+if(B.c.bB(a.fr,new A.as8(b)))return!0
 q=a.c
 switch(r){case 1:case 5:case 17:case 18:case 19:return B.c.q(q,B.aA)||B.aZd.q(0,s)
 case 2:case 4:case 43:return B.c.q(q,B.aM)||B.aZG.q(0,s)
@@ -33703,7 +33705,7 @@ case 3:return B.c.q(q,B.ak)||B.aZJ.q(0,s)
 case 7:return B.aZ6.q(0,s)
 case 11:case 12:return B.c.q(q,B.ar)||B.aYA.q(0,s)
 case 13:case 14:return B.c.q(q,B.ar)||B.c.q(q,B.bh)||B.aYJ.q(0,s)
-case 15:return a.dx==null||a.ay||a.ch
+case 15:return a.dy==null||a.ch||a.CW
 case 16:return B.aZE.q(0,s)
 case 21:return B.c.q(q,B.ak)||B.aZH.q(0,s)
 case 22:return B.c.q(q,B.ak)||B.aYF.q(0,s)
@@ -33866,7 +33868,7 @@ case 1:return B.a9
 case 2:return B.R}},
 oS(a,b,c,d,e){var s=0,r=A.C(t.SZ),q,p,o
 var $async$oS=A.D(function(f,g){if(f===1)return A.z(g,r)
-for(;;)switch(s){case 0:if(B.c.bB(d.z,new A.aSs(c))){q=B.Oz
+for(;;)switch(s){case 0:if(B.c.bB(d.z,new A.aSs(c))){q=B.OA
 s=1
 break}if(d.z.length<4){d.iJ(c.a)
 B.c.E(d.z,c.eF())
@@ -33880,7 +33882,7 @@ if(o>=0){d.Sp(o,c)
 q=new A.xN(!0,p)
 s=1
 break}}if(e)d.iJ(c.a)
-q=B.Oz
+q=B.OA
 s=1
 break
 case 1:return A.A(q,r)}})
@@ -33925,7 +33927,7 @@ _.d=c
 _.e=d
 _.a=e},
 bla(a){$.bV().ca("audio/sfx/sfx_ui_tap.wav",0.65)
-A.j8(B.ep,new A.aSG(),a,!0,!0,!1,B.SM,t.z)},
+A.j8(B.ep,new A.aSG(),a,!0,!0,!1,B.SN,t.z)},
 GG:function GG(a,b){this.d=a
 this.a=b},
 aqy:function aqy(a){this.a=a},
@@ -34499,7 +34501,7 @@ return A.B($async$ag2,r)},
 anT(){var s=0,r=A.C(t.y),q,p
 var $async$anT=A.D(function(a,b){if(a===1)return A.z(b,r)
 for(;;)switch(s){case 0:s=3
-return A.l(B.OR.jm("Scribe.isFeatureAvailable",t.X7),$async$anT)
+return A.l(B.OS.jm("Scribe.isFeatureAvailable",t.X7),$async$anT)
 case 3:p=b
 if(p==null)throw A.m(A.ji("MethodChannel.invokeMethod unexpectedly returned null."))
 q=p
@@ -34526,8 +34528,8 @@ aVr(a){switch(a){case 10:case 11:case 12:case 13:case 133:case 8232:case 8233:re
 default:return!1}},
 PL(a){var s=0,r=A.C(t.H),q
 var $async$PL=A.D(function(b,c){if(b===1)return A.z(c,r)
-for(;;)A:switch(s){case 0:a.gab().Aa(B.Uh)
-switch(A.bn().a){case 0:case 1:q=A.yQ(B.Ub)
+for(;;)A:switch(s){case 0:a.gab().Aa(B.Ui)
+switch(A.bn().a){case 0:case 1:q=A.yQ(B.Uc)
 s=1
 break A
 case 2:case 3:case 4:case 5:q=A.ef(null,t.H)
@@ -34536,7 +34538,7 @@ break A}case 1:return A.A(q,r)}})
 return A.B($async$PL,r)},
 acS(a){a.gab().Aa(B.aO6)
 switch(A.bn().a){case 0:case 1:return A.aea()
-case 2:return A.iz(A.b([A.yQ(B.Ub),A.eR()],t.mo),t.H)
+case 2:return A.iz(A.b([A.yQ(B.Uc),A.eR()],t.mo),t.H)
 case 3:case 4:case 5:return A.ef(null,t.H)}},
 blt(a){return a},
 blq(a){return new A.wt(a)},
@@ -34819,8 +34821,8 @@ return!0
 case"poison_fang":A.RL(c,d,a4,h,"poison",B.R,!1,B.dR)
 return!0
 case"bite":case"crunch":case"hyper_fang":case"bug_bite":s=a0==="bug_bite"
-if(s)r=B.zv
-else r=a0==="crunch"?B.kp:B.zE
+if(s)r=B.zw
+else r=a0==="crunch"?B.kp:B.zF
 if(s)s=B.au
 else s=a0==="crunch"?B.cE:B.d
 q=a0==="crunch"
@@ -35194,7 +35196,7 @@ r.d=B.K
 a.av(s,o,r)
 A.aUJ(a,o.Z(0,f.a8(0,24)),f,g,48,p,e)
 if(d>0.42){q=B.b.A((d-0.42)/0.58,0,1)
-o=A.bs(c.N(0,B.OI),(14+q*30)*e,(30+q*88)*e)
+o=A.bs(c.N(0,B.OJ),(14+q*30)*e,(30+q*88)*e)
 s=A.x()
 s.b=B.B
 s.c=4*e
@@ -35240,8 +35242,8 @@ h.c=m
 h.r=A.d(B.b.p(l),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255).gk(0)
 a.bh(j,h)}},
 bca(a2,a3,a4,a5,a6,a7,a8,a9,b0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1=a9!=="snore"
-if(!a1||a9==="sleep_talk")s=B.zG
-else s=a9==="bug_buzz"?B.zv:A.bU(b0)
+if(!a1||a9==="sleep_talk")s=B.zH
+else s=a9==="bug_buzz"?B.zw:A.bU(b0)
 r=a9==="perish_song"
 q=r||a9==="sleep_talk"||a9==="uproar"
 p=q&&a9==="sleep_talk"?a3:a4
@@ -35362,7 +35364,7 @@ m.d=B.K
 a.av(new A.e(d,c),new A.e(d-8,c+18),m)}else for(s=a2*1.4,r=b.b,p=b.a,o=22*a3,n=7*a3,m=255*(0.65*a3),l=0;l<14;++l){j=A.bs(new A.e(B.b.aO(s+l*0.09,1)*p,r*(0.2+B.l.aO(l,7)*0.11)),n,o)
 $.p()
 i=new A.a2(B.t,B.u,B.v,B.w,B.q)
-i.r=A.d(B.b.p(m),B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255).gk(0)
+i.r=A.d(B.b.p(m),B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255).gk(0)
 a.bh(j,i)}},
 bc1(a,b,c,d,e){var s,r,q,p,o,n,m=b.b,l=m+26
 if(e==="stealth_rock")for(s=c*3.5,r=b.a,q=10*d,p=0;p<5;++p){o=p/5*3.141592653589793*2+s
@@ -35417,7 +35419,7 @@ bbW(a,b,c,d,e,f,g,h,i,j){var s,r,q,p,o=A.bU(i)
 if(j==="rock_polish"||j==="iron_defense"||j==="mud_sport"){A.tM(a,c,e,f,o,!0)
 return}s=B.b.A(Math.sin(Math.min(1,e*1.4)*3.141592653589793),0,1)
 for(r=d.a,q=d.b+26,p=-2;p<=2;++p)A.aUI(a,new A.e(r+p*14,q),Math.max(8,(32-Math.abs(p)*6)*s*f),o,f)
-r=A.bs(d.N(0,B.OJ),(14+e*26)*f,(36+e*82)*f)
+r=A.bs(d.N(0,B.OK),(14+e*26)*f,(36+e*82)*f)
 $.p()
 q=A.x()
 q.b=B.B
@@ -35447,7 +35449,7 @@ bc2(a,b,c,d,e,f,g,h){var s,r,q,p,o,n,m,l,k=h==="eruption"||h==="lava_plume"?b:c
 if(h==="will_o_wisp"){for(s=d*9,r=d*1.4,q=9*e,p=0;p<4;++p){o=p/4*3.141592653589793*2+s
 n=A.an(b,c,Math.min(1,r))
 n.toString
-A.RJ(a,new A.e(n.a+Math.cos(o)*24,n.b+Math.sin(o)*18),q,B.zb,B.r,e)}return}if(h==="flame_charge"){A.aja(a,b,c,d,e,f,g,h,B.aj)
+A.RJ(a,new A.e(n.a+Math.cos(o)*24,n.b+Math.sin(o)*18),q,B.zc,B.r,e)}return}if(h==="flame_charge"){A.aja(a,b,c,d,e,f,g,h,B.aj)
 return}for(s=d*5,r=k.a,q=k.b,n=11*e,p=0;p<10;++p){m=p/10*3.141592653589793*2+s
 l=12+B.dC.ae(0,d)*44
 A.RJ(a,new A.e(r+Math.cos(m)*l,q+Math.sin(m)*l*0.78),n,B.av,B.E,e)}if(!b.l(0,c)&&h!=="lava_plume"){s=A.an(b,c,Math.min(1,d*1.9))
@@ -35699,10 +35701,10 @@ for(s=0;s<a.length;++s){r=a.key(s)
 r.toString
 q.push(r)}return q},
 bjS(a){switch(a.a){case 0:return B.ws
-case 2:return B.Sz
-case 1:return B.Sy
+case 2:return B.SA
+case 1:return B.Sz
 case 3:return B.aVT
-case 4:return B.SA}},
+case 4:return B.SB}},
 aWJ(a,b){var s=0,r=A.C(t.y),q,p
 var $async$aWJ=A.D(function(c,d){if(c===1)return A.z(d,r)
 for(;;)switch(s){case 0:if(b===B.akS||b===B.akT)p=!(a.gkn()==="https"||a.gkn()==="http")
@@ -36185,7 +36187,7 @@ f.setMaskFilter(s)}}i=g.at
 if(i!=null){h=i.m8(a).a
 if(h!=null)f.setImageFilter(h)}if(q!=null)q.delete()
 return f},
-hd(){return this.a6m(B.xB)},
+hd(){return this.a6m(B.xC)},
 svH(a){if(this.x==a)return
 this.x=a},
 sa3Y(a){if(J.i(this.at,a))return
@@ -36296,12 +36298,12 @@ p={width:r,height:q,colorType:$.bC.bu().ColorType.RGBA_8888,alphaType:p,colorSpa
 s=n.MakeLazyImageFromTextureSource(A.l7(o),p)}}if(s==null)throw A.m(A.et("Failed to convert image source to an SkImage."))
 return new A.n4(s)}}
 A.a8J.prototype={
-$1(a){var s=new A.wC(A.cJ(v.G.document,"flt-canvas-container"),a,B.yr,new A.bD(new A.aJ($.aO,t.d),t.h))
+$1(a){var s=new A.wC(A.cJ(v.G.document,"flt-canvas-container"),a,B.ys,new A.bD(new A.aJ($.aO,t.d),t.h))
 s.Su(a)
 return s},
 $S:698}
 A.a8K.prototype={
-$1(a){var s=new A.wB(a,B.yr,new A.bD(new A.aJ($.aO,t.d),t.h))
+$1(a){var s=new A.wB(a,B.ys,new A.bD(new A.aJ($.aO,t.d),t.h))
 s.Su(a)
 return s},
 $S:556}
@@ -36912,7 +36914,7 @@ a1Y(){return this.a.E6()}}
 A.ajl.prototype={
 $0(){var s=this.b,r=A.cJ(v.G.document,"flt-scene")
 s.geJ().Rc(r)
-return new A.tN(this.a.a,s,new A.Tr(),B.yq,new A.OH(),r)},
+return new A.tN(this.a.a,s,new A.Tr(),B.yr,new A.OH(),r)},
 $S:406}
 A.tN.prototype={
 gEp(){var s=this.y
@@ -38032,9 +38034,9 @@ $0(){var s,r,q,p,o,n,m=this,l=m.b,k=B.aOx.i(0,l)
 if(k!=null)return k
 s=m.c
 r=s.a
-if(B.Op.aC(0,r.key)){l=r.key
+if(B.Oq.aC(0,r.key)){l=r.key
 l.toString
-l=B.Op.i(0,l)
+l=B.Oq.i(0,l)
 q=l==null?null:l[J.b0(r.location)]
 q.toString
 return q}if(m.d){p=m.a.c.a7h(r.code,r.key,J.b0(r.keyCode))
@@ -38207,13 +38209,13 @@ if(!(o.a>=o.c||o.b>=o.d))q=q.hw(o)}}return q},
 p_(a){a.b=this.na(a)},
 Q0(a){a.b=this.na(a).hw(this.gayU())},
 Q1(a){var s,r,q=null,p=a.f,o=this.a.a
-o.push(new A.kb(B.OE,q,q,p,q,q))
+o.push(new A.kb(B.OF,q,q,p,q,q))
 s=this.na(a)
 r=A.aRn(p.gjB().a.getBounds())
 if(s.h7(r))a.b=s.el(r)
 o.pop()},
 Q2(a){var s,r,q,p,o=null,n=a.f,m=this.a.a
-m.push(new A.kb(B.OD,o,n,o,o,o))
+m.push(new A.kb(B.OE,o,n,o,o,o))
 s=this.na(a)
 r=n.a
 q=n.b
@@ -38222,7 +38224,7 @@ n=n.d
 if(s.h7(new A.K(r,q,p,n)))a.b=s.el(new A.K(r,q,p,n))
 m.pop()},
 Q3(a){var s,r=null,q=a.f,p=this.a.a
-p.push(new A.kb(B.OC,q,r,r,r,r))
+p.push(new A.kb(B.OD,q,r,r,r,r))
 s=this.na(a)
 if(s.h7(q))a.b=s.el(q)
 p.pop()},
@@ -38234,7 +38236,7 @@ s.pf(o,p,0)
 r=this.a.a
 r.push(A.aUM(s))
 q=this.na(a).l7(0,o,p)
-a.b=a.r.m8(B.xB).a2R(q)
+a.b=a.r.m8(B.xC).a2R(q)
 r.pop()},
 Q6(a){this.vh(a)},
 Q7(a){var s,r,q=null,p=a.r,o=p.a
@@ -38357,7 +38359,7 @@ r=m.a
 r===$&&A.c()
 p=A.MT(new A.iH(q),A.aRn(r.a.cullRect()))
 for(r=this.a,o=A.a8(r).j("cV<1>"),r=new A.cV(r,o),r=new A.ck(r,r.gH(0),o.j("ck<aW.E>")),o=o.j("aW.E");r.C();){n=r.d
-p=(n==null?o.a(n):n).m8(B.xB).a2R(p)}a.r=p
+p=(n==null?o.a(n):n).m8(B.xC).a2R(p)}a.r=p
 m=m.a
 m===$&&A.c()
 a.w=s.c.quickReject(A.dY(A.aRn(m.a.cullRect())))
@@ -39058,7 +39060,7 @@ q.p2=p
 o=q.p3
 o.toString
 p.observe(o)},
-at7(a){this.iF("flutter/lifecycle",B.yS.cn(a.K()),new A.acd())},
+at7(a){this.iF("flutter/lifecycle",B.yT.cn(a.K()),new A.acd())},
 avj(a){var s=this,r=a?B.bW:B.c7,q=s.f
 if(q.d!==r){s.f=q.ayd(r)
 A.jN(null,null)
@@ -39333,7 +39335,7 @@ if(p==o)return
 if(p==null){o.toString
 s=new A.zh(o,B.bdM,B.Vs)}else{o=q.a.b.i(0,p)
 r=o==null?null:o.geJ().a
-s=new A.zh(p,B.xL,a!=null&&J.i(a,r)?q.d:B.Vs)}q.LT(q.c,!0)
+s=new A.zh(p,B.xM,a!=null&&J.i(a,r)?q.d:B.Vs)}q.LT(q.c,!0)
 q.LT(p,!1)
 q.c=p
 q.b.$1(s)},
@@ -39438,7 +39440,7 @@ q.c=s}r.aeY(b,p,a)},
 aho(a){var s,r,q,p
 for(s=a.a,r=A.a8(s).j("cV<1>"),s=new A.cV(s,r),s=new A.ck(s,s.gH(0),r.j("ck<aW.E>")),r=r.j("aW.E"),q=0;s.C();){p=s.d
 p=(p==null?r.a(p):p).a
-if(p===B.OC||p===B.OD||p===B.OE)++q}return q},
+if(p===B.OD||p===B.OE||p===B.OF)++q}return q},
 arB(a,b,c){var s,r,q,p,o,n=c.parentNode!=null
 if(n){s=c.nextSibling
 c.remove()}else s=null
@@ -39990,13 +39992,13 @@ if(r===0&&s!==0)return new A.mI(B.i0,r)
 this.a=s
 return new A.mI(s===0?B.i0:B.p0,s)},
 QL(a){if(this.a!==0&&(a&1073741823)===0){this.a=0
-return new A.mI(B.Sw,0)}return null},
+return new A.mI(B.Sx,0)}return null},
 a7B(a){if((a&1073741823)===0){this.a=0
 return new A.mI(B.i0,0)}return null},
 a7C(a){var s
 if(this.a===0)return null
 s=this.a=(a==null?0:a)&1073741823
-if(s===0)return new A.mI(B.Sw,s)
+if(s===0)return new A.mI(B.Sx,s)
 else return new A.mI(B.p0,s)}}
 A.aIw.prototype={
 J8(a){return this.r.bJ(0,a,new A.aIy())},
@@ -40068,7 +40070,7 @@ if(!r.gaf(r))return r}return A.b([a],t.W)},
 XX(a){var s
 switch(a){case"mouse":s=B.dI
 break
-case"pen":s=B.cY
+case"pen":s=B.cZ
 break
 case"touch":s=B.bY
 break
@@ -40078,7 +40080,7 @@ pC(a){var s,r=a.pointerType
 r.toString
 s=this.XX(r)
 A:{if(B.dI===s){r=-1
-break A}if(B.cY===s||B.eJ===s){r=-4
+break A}if(B.cZ===s||B.eJ===s){r=-4
 break A}r=B.de===s?A.aE(A.et("Unreachable")):null
 if(B.bY===s||B.dJ===s){r=a.pointerId
 r.toString
@@ -40128,7 +40130,7 @@ if(J.i(a.target,q.a.b.geJ().a)){a.preventDefault()
 A.cu(B.ap,new A.aIz(q))}},
 $S:47}
 A.aIz.prototype={
-$0(){$.bq().gD7().a1i(this.a.a.b.a,B.xL)},
+$0(){$.bq().gD7().a1i(this.a.a.b.a,B.xM)},
 $S:0}
 A.aIB.prototype={
 $1(a){var s,r,q,p,o=this.a,n=o.pC(a),m=o.J8(n),l=A.b([],t.D9)
@@ -42233,18 +42235,18 @@ case 32:return B.tC
 case 20:return B.tD
 case 22:return B.tt
 case 23:return B.ts
-case 33:return B.B9
+case 33:return B.Ba
 case 10:case 11:case 12:case 21:case 24:case 0:break}if(q.id===0){s=!1
 if(q.a.z){r=q.z
 if(r!=null&&r.length!==0){s=q.dy
 s=!(s!=null&&!B.dH.gaf(s))}}}else s=!0
-if(s)return B.Ba
+if(s)return B.Bb
 else{s=q.a
-if(s.x)return B.B8
+if(s.x)return B.B9
 else{r=q.b
 r.toString
-if((r&64)!==0||(r&128)!==0)return B.B7
-else if(q.gOz())return B.Bb
+if((r&64)!==0||(r&128)!==0)return B.B8
+else if(q.gOz())return B.Bc
 else if(q.gOq())return B.tF
 else if(s.db)return B.td
 else if(s.w)return B.nz
@@ -42256,7 +42258,7 @@ s=!(s!=null&&!B.dH.gaf(s))}else s=!1
 if(s)return B.nz
 else return B.tu}}}},
 ahy(a){var s,r,q,p=this
-switch(a.a){case 3:s=new A.ap4(B.B8,p)
+switch(a.a){case 3:s=new A.ap4(B.B9,p)
 r=A.uK(s.cj(0),p)
 s.a!==$&&A.bt()
 s.a=r
@@ -42270,9 +42272,9 @@ q=A.aq("group")
 q.toString
 r.setAttribute("role",q)
 break
-case 39:s=A.b0k(p,B.B9)
+case 39:s=A.b0k(p,B.Ba)
 break
-case 0:s=A.b0k(p,B.B7)
+case 0:s=A.b0k(p,B.B8)
 break
 case 2:s=new A.aoq(B.nz,p)
 s.dc(B.nz,p,B.o0)
@@ -42297,7 +42299,7 @@ s.dj(new A.mv(p,s))
 break
 case 8:s=A.bee(p)
 break
-case 7:s=new A.aoz(B.Bb,p)
+case 7:s=new A.aoz(B.Bc,p)
 r=A.uK(s.cj(0),p)
 s.a!==$&&A.bt()
 s.a=r
@@ -42332,7 +42334,7 @@ q=A.aq("listitem")
 q.toString
 r.setAttribute("role",q)
 break
-case 6:s=new A.aoy(B.Ba,p)
+case 6:s=new A.aoy(B.Bb,p)
 r=A.uK(s.cj(0),p)
 s.a!==$&&A.bt()
 s.a=r
@@ -42586,7 +42588,7 @@ a6=a5.y
 q=a6.b===0&&a6.a===0
 p=a5.dx
 a6=p==null
-o=a6||A.aWY(p)===B.xC
+o=a6||A.aWY(p)===B.xD
 if(q&&o&&a5.aF===0&&a5.u===0){a6=a5.y1.a
 a6===$&&A.c()
 A.b0m(a6)
@@ -42684,7 +42686,7 @@ o=B.l.ba(q-p,1000)
 n=r.a
 r=r.c
 s.sayY(new A.dH(A.OY(n+o+500,p),p,r))
-if(m.f!==B.Bx){m.f=B.Bx
+if(m.f!==B.By){m.f=B.By
 m.Xr()}}return m.d.a.a8C(a)},
 Xr(){var s,r
 for(s=this.w,r=0;r<s.length;++r)s[r].$1(this.f)},
@@ -42815,7 +42817,7 @@ m.x1=(m.x1|268435456)>>>0}m.avn()
 if(m.y1.gDb()){o=m.y1.a
 o===$&&A.c()
 o=o.style
-o.setProperty("pointer-events","all","")}else{if(m.k4!==B.Tl){o=m.dy
+o.setProperty("pointer-events","all","")}else{if(m.k4!==B.Tm){o=m.dy
 o=o!=null&&!B.dH.gaf(o)}else o=!0
 l=m.y1
 if(o){o=l.a
@@ -43333,7 +43335,7 @@ $ida:1}
 A.aqV.prototype={
 cn(a){return J.a6b(B.b6.gcO(B.iu.eu(a)))}}
 A.afc.prototype={
-cn(a){return B.yS.cn(B.bK.Ew(a))},
+cn(a){return B.yT.cn(B.bK.Ew(a))},
 ht(a){if(a==null)return a
 return B.bK.je(0,B.fW.eu(J.rd(B.ci.gcO(a))))}}
 A.afe.prototype={
@@ -43507,7 +43509,7 @@ s=new A.T1(a)
 r=B.eo.kk(0,s)
 q=B.eo.kk(0,s)
 if(typeof r=="string"&&s.b>=a.byteLength)return new A.jq(r,q)
-else throw A.m(B.Bw)},
+else throw A.m(B.Bx)},
 yg(a){var s=A.aVI()
 s.b.fI(0,0)
 B.eo.fE(0,s,a)
@@ -44852,7 +44854,7 @@ $S:517}
 A.a6G.prototype={
 gH(a){return this.b.length},
 aiK(){var s,r,q,p,o,n,m,l=this.b,k=l.length
-B.OF.a2P(l,0,k,0)
+B.OG.a2P(l,0,k,0)
 for(--k,s=this.a,r=l.$flags|0,q=0;q<k;++q)if(B.aZz.q(0,s.charCodeAt(q))){r&2&&A.bb(l)
 l[q]=1}p=A.b3W(s)
 for(k=p.b,s=k.length,o=0;o<s;++o){n=k[o]
@@ -45087,7 +45089,7 @@ b8=b4.b4(b7).b4(new A.he(b3,b2))
 b9=b4.b4(b7)
 c0=e2.ri(b8)
 c1=e2.ri(b9)
-c2=b5<b6?e2.ri(b7):B.d_
+c2=b5<b6?e2.ri(b7):B.d0
 for(b2=a3.length,b1=b1.a,b3=c2.a,b5=c2.b,b6=(b1&1)===0,c3=c0.a,c4=c0.b,c5=c1.a,c6=c1.b,c7=c3!==c4,c8=0;c8<a3.length;a3.length===b2||(0,A.H)(a3),++c8){c9=a3[c8]
 d0=c9.a
 d1=c9.b
@@ -45249,7 +45251,7 @@ i=j.gdG(j)
 if(j.gdG(j).c+l<q)continue
 else if(i.a+l>q){h=B.c.gS(s)
 s=h.f
-return(h.d&1)===0?new A.aN(s.a,B.J):new A.aN(s.b,B.bo)}i=(j.d&1)===0
+return(h.d&1)===0?new A.aN(s.a,B.J):new A.aN(s.b,B.bp)}i=(j.d&1)===0
 g=j.e
 f=i?g.a:g.b-1
 e=i?g.b:g.a-1
@@ -45257,11 +45259,11 @@ d=i?1:-1
 for(c=f;c!==e;c+=d){b=m[c]
 a=b.gdG(b).a+l+j.gpl()-0.001
 a0=b.gdG(b).c+l+j.gpl()+0.001
-if(a<=q&&a0>q){if(q<(a+a0)/2)a1=i?new A.aN(b.gbn(b).a+b.gfW(),B.J):new A.aN(b.gbn(b).a+b.ghv(),B.bo)
-else a1=i?new A.aN(b.gbn(b).a+b.ghv(),B.bo):new A.aN(b.gbn(b).a+b.gfW(),B.J)
+if(a<=q&&a0>q){if(q<(a+a0)/2)a1=i?new A.aN(b.gbn(b).a+b.gfW(),B.J):new A.aN(b.gbn(b).a+b.ghv(),B.bp)
+else a1=i?new A.aN(b.gbn(b).a+b.ghv(),B.bp):new A.aN(b.gbn(b).a+b.gfW(),B.J)
 return a1}}}a2=A.iF(s)
-if(a2==null)s=new A.aN(n.r.a,B.bo)
-else s=(a2.d&1)===0?new A.aN(n.d.b,B.bo):new A.aN(a2.f.a,B.J)
+if(a2==null)s=new A.aN(n.r.a,B.bp)
+else s=(a2.d&1)===0?new A.aN(n.d.b,B.bp):new A.aN(a2.f.a,B.J)
 return s}return B.ia},
 rt(a2){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b=this,a=null,a0=b.a,a1=a0.c.length
 if(a1===0||a2<0||a2>=a1)return a
@@ -45321,7 +45323,7 @@ return r},
 Xa(a){var s,r,q,p,o
 for(s=this.e,r=s.length,q=0;q<r;++q){p=s[q].r
 o=p.a
-if(o<=a&&p.b>=a)return new A.c4(o,p.b)}return B.d_}}
+if(o<=a&&p.b>=a)return new A.c4(o,p.b)}return B.d0}}
 A.arP.prototype={
 $2(a,b){return B.l.bF(a.gbn(a).a+a.gfW(),b.gbn(b).a+b.gfW())},
 $S:537}
@@ -45610,9 +45612,9 @@ r.scale(q.a,q.b)
 q=s.a
 r.translate(q.a,q.b)
 q=this.c
-A.aU0(B.U6,q)
-A.aU0(B.b0N,q)
 A.aU0(B.U7,q)
+A.aU0(B.b0N,q)
+A.aU0(B.U8,q)
 q=s.b
 q=B.b.hr(q.c-q.a)
 s=s.b
@@ -47465,14 +47467,14 @@ for(o=0;o<q;++o)p.push(r.i(s,o))
 p.$flags=3
 return p},
 gaDo(){var s,r,q,p,o,n,m,l,k=this
-if(k.c!==0)return B.On
+if(k.c!==0)return B.Oo
 s=k.e
 r=J.bi(s)
 q=r.gH(s)
 p=k.d
 o=J.bi(p)
 n=o.gH(p)-q-k.f
-if(q===0)return B.On
+if(q===0)return B.Oo
 m=new A.hi(t.Hf)
 for(l=0;l<q;++l)m.t(0,new A.h4(r.i(s,l)),o.i(p,n+l))
 return new A.rI(m,t.qO)}}
@@ -50411,7 +50413,7 @@ qw(a,b){var s=A.bgh(a,this.gazC().b,null)
 return s},
 Ew(a){return this.qw(a,null)},
 gazC(){return B.akL},
-gy4(){return B.CN}}
+gy4(){return B.CO}}
 A.afl.prototype={
 eu(a){var s,r=new A.dy("")
 A.aVQ(a,r,this.b,null)
@@ -51554,7 +51556,7 @@ s=A.b([],t.s)
 for(r=q;r<p;++r)if(o.charCodeAt(r)===47){s.push(B.m.aq(o,q,r))
 q=r+1}s.push(B.m.aq(o,q,p))
 return A.Ri(s,t.N)},
-gzo(){if(this.f>=this.r)return B.Oo
+gzo(){if(this.f>=this.r)return B.Op
 var s=A.b2k(this.gr5(0))
 s.a6w(s,A.b3o())
 return A.aTN(s,t.N,t.yp)},
@@ -53050,10 +53052,10 @@ e=s.f
 s=s.Q
 d=A.aKW(m,l,e,s)
 c.U(new A.br(n,m))
-A.a0I(new A.e(n,i),new A.e(q,m),new A.ba(o,k),B.TX).xv(c,!1)
+A.a0I(new A.e(n,i),new A.e(q,m),new A.ba(o,k),B.TY).xv(c,!1)
 A.a0I(new A.e(f,i),new A.e(q,l),new A.ba(g,j),B.pn).xv(c,!0)
-A.a0I(new A.e(f,d),new A.e(r,l),new A.ba(h,s),B.TZ).xv(c,!1)
-A.a0I(new A.e(n,d),new A.e(r,m),new A.ba(p,e),B.U_).xv(c,!0)
+A.a0I(new A.e(f,d),new A.e(r,l),new A.ba(h,s),B.U_).xv(c,!1)
+A.a0I(new A.e(n,d),new A.e(r,m),new A.ba(p,e),B.U0).xv(c,!0)
 c.U(new A.aA(n,m))
 c.U(new A.cy())
 return new A.aC(c,B.C)}},
@@ -53337,8 +53339,8 @@ a1=B.b.A((a0-2)/1,0,12)
 a2=B.l.A(B.b.ek(a1),0,11)
 a3=a1-a2
 r=1-a3
-o=B.Jo[a2]
-l=B.Jo[a2+1]
+o=B.Jp[a2]
+l=B.Jp[a2+1]
 a4=Math.sqrt(a0)
 a5=(r*o.a+a3*l.a)*Math.sqrt(a0)
 a6=(r*o.b+a3*l.b)*(k/p)
@@ -53399,9 +53401,9 @@ p=p/100/2
 r=A.a0I(B.C,new A.e(q/100/2,p),new A.ba(o/100,n/100),B.pn)
 s.U(new A.br(0,p))
 r.xv(s,!1)
-r.Do(s,B.TX,!0)
-r.Do(s,B.U_,!1)
-r.Do(s,B.TZ,!0)
+r.Do(s,B.TY,!0)
+r.Do(s,B.U0,!1)
+r.Do(s,B.U_,!0)
 s.U(new A.aA(0,p))
 s.U(new A.cy())
 l.t(0,m,s)
@@ -53662,7 +53664,7 @@ else{q=this.gmB()
 if(B.m.q(q,"Android"))return B.lA
 else if(B.m.c6(s,"Linux"))return B.oX
 else if(B.m.c6(s,"Win"))return B.wj
-else return B.OQ}}}
+else return B.OR}}}
 A.aR4.prototype={
 $1(a){return this.a6Y(a)},
 $0(){return this.$1(null)},
@@ -53696,7 +53698,7 @@ $0(){return this.a},
 $S:307}
 A.Qi.prototype={
 M8(a){var s=new A.aee(a)
-v.G.window.addEventListener("popstate",B.yC.Qy(s))
+v.G.window.addEventListener("popstate",B.yD.Qy(s))
 return new A.aed(this,s)},
 a7o(){var s=v.G.window.location.hash
 if(s.length===0||s==="#")return"/"
@@ -53730,7 +53732,7 @@ s.toString}this.a.$1(s)},
 $S:64}
 A.aed.prototype={
 $0(){var s=this.b
-v.G.window.removeEventListener("popstate",B.yC.Qy(s))
+v.G.window.removeEventListener("popstate",B.yD.Qy(s))
 $.b30.I(0,s)
 return null},
 $S:0}
@@ -54033,7 +54035,7 @@ break
 case 1:return A.A(q,r)}})
 return A.B($async$vl,r)}}
 A.a7j.prototype={
-$1(a){return a.a===B.yj},
+$1(a){return a.a===B.yk},
 $S:109}
 A.a7c.prototype={
 $1(a){return a.a===B.qe},
@@ -54203,8 +54205,8 @@ if(b==null)return!1
 if(r!==b)s=b instanceof A.NC&&A.P(r)===A.P(b)&&r.a===b.a&&r.e===b.e&&r.f===b.f
 else s=!0
 return s},
-gF(a){return A.a9(this.a,B.yd,!1,B.ye,this.e,this.f,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a)},
-m(a){return"AudioContextAndroid(isSpeakerphoneOn: "+this.a+", audioMode: "+B.yd.m(0)+", stayAwake: false, contentType: "+B.ye.m(0)+", usageType: "+this.e.m(0)+", audioFocus: "+this.f.m(0)+")"}}
+gF(a){return A.a9(this.a,B.ye,!1,B.yf,this.e,this.f,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a)},
+m(a){return"AudioContextAndroid(isSpeakerphoneOn: "+this.a+", audioMode: "+B.ye.m(0)+", stayAwake: false, contentType: "+B.yf.m(0)+", usageType: "+this.e.m(0)+", audioFocus: "+this.f.m(0)+")"}}
 A.Bx.prototype={
 dt(){var s=this.b,r=A.y(s).j("hW<1,E>")
 s=A.a1(new A.hW(s,new A.a77(),r),r.j("t.E"))
@@ -54234,11 +54236,11 @@ K(){return"AVAudioSessionOptions."+this.b}}
 A.a75.prototype={
 awX(){var s,r,q
 if(A.bn()!==B.aI)return null
-s=B.ya
+s=B.yb
 r=A.aL(t.oT)
 q=this.b
 if(q===B.Y6)r.E(0,B.VY)
-if(q===B.yi)r.E(0,B.VX)
+if(q===B.yj)r.E(0,B.VX)
 return new A.Bx(s,r)},
 m(a){return"AudioContextConfig(route: "+B.Y7.m(0)+", focus: "+this.b.m(0)+", respectSilence: false, stayAwake: false)"}}
 A.a76.prototype={
@@ -54298,7 +54300,7 @@ var $async$nA=A.D(function(e,f){if(e===1)return A.z(f,r)
 for(;;)switch(s){case 0:p=A.G(t.N,t.z)
 p.t(0,"playerId",c)
 p.J(0,d)
-q=A.UQ(B.Ox,b,p)
+q=A.UQ(B.Oy,b,p)
 s=1
 break
 case 1:return A.A(q,r)}})
@@ -54309,7 +54311,7 @@ var $async$IF=A.D(function(e,f){if(e===1)return A.z(f,r)
 for(;;)switch(s){case 0:p=A.G(t.N,t.z)
 p.t(0,"playerId",b)
 p.J(0,B.jj)
-q=A.aVi(B.Ox,a,p,c)
+q=A.aVi(B.Oy,a,p,c)
 s=1
 break
 case 1:return A.A(q,r)}})
@@ -54327,8 +54329,8 @@ s=J.bi(a)
 r=A.be(s.i(a,"event"))
 switch(r){case"audio.onDuration":q=A.ij(s.i(a,o))
 return new A.f4(B.qd,q!=null?A.ed(0,q):B.ap,p,p)
-case"audio.onComplete":return B.ym
-case"audio.onSeekComplete":return B.yl
+case"audio.onComplete":return B.yn
+case"audio.onSeekComplete":return B.ym
 case"audio.onPrepared":return new A.f4(B.qe,p,p,A.j3(s.i(a,o)))
 case"audio.onLog":return new A.f4(B.qc,p,A.be(s.i(a,o)),p)
 default:throw A.m(A.ez("Event Method does not exist "+A.u(r)))}},
@@ -54338,8 +54340,8 @@ A.WE.prototype={}
 A.a7m.prototype={}
 A.ae5.prototype={}
 A.aiF.prototype={
-h5(){return A.UQ(B.Ov,"init",B.jj)},
-Ae(a){return A.UQ(B.Ov,"setAudioContext",A.G(t.N,t.z))}}
+h5(){return A.UQ(B.Ow,"init",B.jj)},
+Ae(a){return A.UQ(B.Ow,"setAudioContext",A.G(t.N,t.z))}}
 A.act.prototype={
 Qo(){var s=B.aaw.Pp()
 return new A.hp(new A.acu(),s,A.y(s).j("hp<cq.T,jj>"))}}
@@ -54464,7 +54466,7 @@ A.zn.prototype={
 vG(a){return this.a8t(a)},
 a8t(a){var s=0,r=A.C(t.H),q,p=this
 var $async$vG=A.D(function(b,c){if(b===1)return A.z(c,r)
-for(;;)switch(s){case 0:if(p.r===a){p.b.E(0,B.yk)
+for(;;)switch(s){case 0:if(p.r===a){p.b.E(0,B.yl)
 s=1
 break}p.r=a
 s=3
@@ -54614,14 +54616,14 @@ case 4:return A.A(null,r)}})
 return A.B($async$n,r)}}
 A.atY.prototype={
 $1(a){var s=this.a.b
-s.E(0,B.yk)
+s.E(0,B.yl)
 s.E(0,new A.f4(B.qd,A.b_A(this.b.duration),null,null))},
 $S:2}
 A.atZ.prototype={
 $1(a){this.a.b.E(0,new A.f4(B.qd,A.b_A(this.b.duration),null,null))},
 $S:2}
 A.au_.prototype={
-$1(a){this.a.b.E(0,B.yl)},
+$1(a){this.a.b.E(0,B.ym)},
 $S:2}
 A.au0.prototype={
 $1(a){return this.a6V(a)},
@@ -54636,7 +54638,7 @@ case 5:s=3
 break
 case 4:s=6
 return A.l(p.cg(0),$async$$1)
-case 6:case 3:p.b.E(0,B.ym)
+case 6:case 3:p.b.E(0,B.yn)
 return A.A(null,r)}})
 return A.B($async$$1,r)},
 $S:359}
@@ -54834,7 +54836,7 @@ m=q.i(0,n)
 if(m==null||m===0)return!1
 q.t(0,n,m-1)}return!0},
 i1(a,b){var s,r,q,p,o,n,m,l,k
-if(b==null)return B.CM.gF(null)
+if(b==null)return B.CN.gF(null)
 for(s=J.er(b),r=J.bF(s.gcr(b)),q=this.a,p=this.b,o=this.$ti.y[1],n=0;r.C();){m=r.gV(r)
 l=q.i1(0,m)
 k=s.i(b,m)
@@ -55476,7 +55478,7 @@ if(q.x&&r!==q.w){q.w=r
 q.w1(0)}},
 Tt(a){var s=this.a.w
 if(s!=null){s.$0()
-this.c.gab().Aa(B.Uh)}},
+this.c.gab().Aa(B.Ui)}},
 Ts(){return this.Tt(null)},
 w1(a){var s,r,q,p=this.e
 p===$&&A.c()
@@ -55484,7 +55486,7 @@ s=p.r
 if(s!=null&&s.a!=null)return
 r=this.w
 if(r){p.z=B.cm
-q=p.kr(1,B.jR,B.Ax)}else{p.z=B.cm
+q=p.kr(1,B.jR,B.Ay)}else{p.z=B.cm
 q=p.kr(0,B.f3,B.fD)}q.cc(new A.aAv(this,r),t.H)},
 apF(a){this.G(new A.aAA(this,a))},
 R(b0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5=this,a6=null,a7=a5.a,a8=a7.w==null,a9=!a8
@@ -55785,7 +55787,7 @@ vn(a,b){return B.C}}
 A.a4u.prototype={}
 A.OP.prototype={
 R(a){var s=null,r=A.bH(a,B.e3,t.w).w.r.b+8,q=this.c.Z(0,new A.e(8,r)),p=A.ad(this.d,B.o,B.j,B.Y),o=A.baW(new A.D4(20,20,s),new A.hX(s,s,A.b([2.574,-1.43,-0.144,0,0,-0.426,1.57,-0.144,0,0,-0.426,-1.43,2.856,0,0,0,0,0,1,0],t.n),B.qp))
-return new A.aG(new A.a5(8,r,8,8),new A.n7(new A.Pa(q),A.I(s,A.b7T(A.eF(new A.aG(B.nw,p,s),new A.km(B.a8b.dr(a),s,s,s,A.FX(B.ys,new A.aT(B.a8f.dr(a),1,B.U,-1))),B.bQ),o),B.O,s,s,B.aZR,s,s,s,s,s,s,222),s),s)}}
+return new A.aG(new A.a5(8,r,8,8),new A.n7(new A.Pa(q),A.I(s,A.b7T(A.eF(new A.aG(B.nw,p,s),new A.km(B.a8b.dr(a),s,s,s,A.FX(B.yt,new A.aT(B.a8f.dr(a),1,B.U,-1))),B.bQ),o),B.O,s,s,B.aZR,s,s,s,s,s,s,222),s),s)}}
 A.rM.prototype={
 am(){return new A.In()}}
 A.In.prototype={
@@ -55945,7 +55947,7 @@ if(r!=null)r.n()
 s.x=s.w=s.r=null},
 Zo(){var s,r,q=this,p=q.a
 if(!p.f){q.r=A.dj(B.pB,p.d,new A.nl(B.pB))
-q.w=A.dj(B.rN,q.a.e,B.Ao)
+q.w=A.dj(B.rN,q.a.e,B.Ap)
 q.x=A.dj(B.rN,q.a.d,null)}p=q.r
 if(p==null)p=q.a.d
 s=$.b6C()
@@ -56223,7 +56225,7 @@ case 1:return new A.e(6,s-12+1.5)
 case 2:return new A.e(6,b+(s-b)/2)}}}
 A.XD.prototype={}
 A.OU.prototype={
-R(a){var s,r,q=null,p=t.w,o=A.bH(a,B.e3,p).w.r,n=o.b+8,m=26+o.a,l=A.bH(a,B.xZ,p).w.a.a-o.c-26
+R(a){var s,r,q=null,p=t.w,o=A.bH(a,B.e3,p).w.r,n=o.b+8,m=26+o.a,l=A.bH(a,B.y_,p).w.a.a-o.c-26
 p=this.c
 s=new A.e(A.L(p.a,m,l),p.b-8-n)
 p=this.d
@@ -56364,7 +56366,7 @@ n(){var s=this.d
 s===$&&A.c()
 s.n()
 this.acV()},
-R(a){var s,r,q,p=this,o=null,n=B.nd.dr(a),m=A.cO(A.aYR(new A.dT(!0,A.ec(o,o,o,new A.ZI(n,!0,o),B.TW),o),p.gamd()),1,1),l=A.cO(A.aYR(new A.dT(!0,A.ec(o,o,o,new A.a1F(n,!1,o),B.TW),o),p.galQ()),1,1),k=p.a.e,j=A.a8(k).j("a7<1,fC>"),i=A.a1(new A.a7(k,new A.aAT(),j),j.j("aW.E"))
+R(a){var s,r,q,p=this,o=null,n=B.nd.dr(a),m=A.cO(A.aYR(new A.dT(!0,A.ec(o,o,o,new A.ZI(n,!0,o),B.TX),o),p.gamd()),1,1),l=A.cO(A.aYR(new A.dT(!0,A.ec(o,o,o,new A.a1F(n,!1,o),B.TX),o),p.galQ()),1,1),k=p.a.e,j=A.a8(k).j("a7<1,fC>"),i=A.a1(new A.a7(k,new A.aAT(),j),j.j("aW.E"))
 k=p.a
 j=k.c
 s=k.d
@@ -56412,10 +56414,10 @@ A.XF.prototype={
 gab(){return t.l0.a(A.bG.prototype.gab.call(this))},
 a_W(a,b){var s
 switch(b.a){case 0:s=t.l0.a(A.bG.prototype.gab.call(this))
-s.a7=s.a_9(s.a7,a,B.xT)
+s.a7=s.a_9(s.a7,a,B.xU)
 break
 case 1:s=t.l0.a(A.bG.prototype.gab.call(this))
-s.O=s.a_9(s.O,a,B.xU)
+s.O=s.a_9(s.O,a,B.xV)
 break}},
 k9(a,b){var s,r
 if(b instanceof A.vp){this.a_W(t.x.a(a),b)
@@ -56456,8 +56458,8 @@ r.pt(a,b)
 s=r.e
 s.toString
 t.bY.a(s)
-r.C0(s.c,B.xT)
-r.C0(s.r,B.xU)
+r.C0(s.c,B.xU)
+r.C0(s.r,B.xV)
 q.a=null
 r.p1=A.l3(s.d.length,new A.aAU(q,r,s),!1,t.e)},
 cY(a,b){var s,r,q,p=this
@@ -56465,8 +56467,8 @@ p.nt(0,b)
 s=p.e
 s.toString
 t.bY.a(s)
-p.C0(s.c,B.xT)
-p.C0(s.r,B.xU)
+p.C0(s.c,B.xU)
+p.C0(s.r,B.xV)
 r=p.p1
 r===$&&A.c()
 q=p.p3
@@ -56692,7 +56694,7 @@ q=-q/2
 p=new A.aQ($.p().r,B.Q,null,null,A.b([],t.v))
 p.U(new A.br(r,q+3.5))
 p.U(new A.aA(r,q+1))
-p.U(new A.Nw(new A.e(r+1,q),B.SB,0,!1,!0))
+p.U(new A.Nw(new A.e(r+1,q),B.SC,0,!1,!0))
 p.U(new A.aA(r+3.5,q))
 o=A.eT()
 o.a67(1.5707963267948966)
@@ -57634,7 +57636,7 @@ A.kZ.prototype={
 j6(a){var s=this
 if(a.gzm()<=1)s.ad(B.c9)
 else{s.vR(a)
-if(s.dy===B.xY){s.dy=B.pK
+if(s.dy===B.xZ){s.dy=B.pK
 s.db=new A.fL(a.gdJ(),a.gc9(a))}}},
 i_(a){var s,r=this
 if(t.n2.b(a)||t.pY.b(a)){s=A.aZp(a.gG5(),a.gzm(),a.ga5n(a))
@@ -57650,7 +57652,7 @@ if(s.at!=null&&r===B.pL)s.dn("onStart",new A.adm(s))},
 uc(a){var s=this,r=s.dy,q=r===B.pL||r===B.ber
 if(r===B.pK){s.ad(B.c9)
 return}if(q&&s.ch!=null)if(s.ch!=null)s.dn("onEnd",new A.adn(s))
-s.dy=B.xY},
+s.dy=B.xZ},
 fS(a){this.hO(a)
 this.uc(a)}}
 A.ado.prototype={
@@ -57879,7 +57881,7 @@ r.p2.t(0,a.gbN(),r.fx.$1(a))
 switch(r.fy.a){case 0:r.fy=B.VE
 s=a.gc9(a)
 r.k1=r.go=new A.fL(a.gdJ(),s)
-r.id=B.OH
+r.id=B.OI
 r.ok=0
 r.k2=a.gl5(a)
 r.k4=a.gcz(a)
@@ -58039,7 +58041,7 @@ o=B.C
 break
 case 0:o=k.wy(s.a)
 break
-default:o=null}k.id=B.OH
+default:o=null}k.id=B.OI
 k.k4=k.k2=null
 k.agH(r,a)
 if(!J.i(o,B.C)&&k.CW!=null){n=q!=null?A.tJ(q):null
@@ -58546,7 +58548,7 @@ j6(a){var s,r=this
 if(r.k2===B.mg){r.abE(a)
 r.go=a.gbN()
 r.p2=r.p1=0
-r.k2=B.xW
+r.k2=B.xX
 s=a.gc9(a)
 r.ok=r.k4=new A.fL(a.gdJ(),s)
 r.id=A.cu(B.cA,new A.a7G(r,a))}},
@@ -58591,7 +58593,7 @@ r=A.b2K(a,r)>s}else r=!0
 m.fr=r
 r=m.k2
 if(r===B.jY){m.ok=new A.fL(a.gdJ(),a.gc9(a))
-m.agw(a)}else if(r===B.xW){if(m.k3==null){if(a.gcz(a)==null)q=null
+m.agw(a)}else if(r===B.xX){if(m.k3==null){if(a.gcz(a)==null)q=null
 else{r=a.gcz(a)
 r.toString
 q=A.tJ(r)}p=m.ZU(a.gqU())
@@ -58610,7 +58612,7 @@ if(m.ch){m.k2=B.jY
 if(!m.fy)m.ad(B.ew)}}}r=m.k3
 if(r!=null&&m.fy){m.k2=B.jY
 m.AR(r)}}}else if(t.oN.b(a)){r=m.k2
-if(r===B.xW)m.Ax(a)
+if(r===B.xX)m.Ax(a)
 else if(r===B.jY)m.Lo(a.gbN())}else if(t.Ko.b(a)){m.k2=B.mg
 m.Lo(a.gbN())}},
 fS(a){var s=this
@@ -58823,7 +58825,7 @@ s=++r.d
 if(s===20)s=r.d=0
 r.c[s]=new A.JT(a,b)},
 A0(){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a
-if(this.gpU().gNv()>40)return B.xK
+if(this.gpU().gNv()>40)return B.xL
 s=t.n
 r=A.b([],s)
 q=A.b([],s)
@@ -58882,7 +58884,7 @@ if(s==null||r==null)return B.C
 q=s.a.a-r.a.a
 return q>0?s.b.Z(0,r.b).a8(0,1000).ec(0,q/1000):B.C},
 A0(){var s,r,q,p,o,n,m=this
-if(m.gpU().gNv()>40)return B.xK
+if(m.gpU().gNv()>40)return B.xL
 s=m.ts(-2).a8(0,0.6).N(0,m.ts(-1).a8(0,0.35)).N(0,m.ts(0).a8(0,0.05))
 r=m.e
 q=m.d
@@ -58892,7 +58894,7 @@ if(o!=null)break}if(o==null||p==null)return B.Vr
 else return new A.qw(s,1,new A.aP(p.a.a-o.a.a),p.b.Z(0,o.b))}}
 A.xI.prototype={
 A0(){var s,r,q,p,o,n,m=this
-if(m.gpU().gNv()>40)return B.xK
+if(m.gpU().gNv()>40)return B.xL
 s=m.ts(-2).a8(0,0.15).N(0,m.ts(-1).a8(0,0.65)).N(0,m.ts(0).a8(0,0.2))
 r=m.e
 q=m.d
@@ -58928,7 +58930,7 @@ A.a7o.prototype={
 $1(a){return a==null?null:a.a},
 $S:94}
 A.a7p.prototype={
-$1(a){return B.BW},
+$1(a){return B.BX},
 $S:98}
 A.a7q.prototype={
 $1(a){return"Back"},
@@ -58958,7 +58960,7 @@ A.aaH.prototype={
 $1(a){return a==null?null:a.c},
 $S:94}
 A.aaI.prototype={
-$1(a){return B.C0},
+$1(a){return B.C1},
 $S:98}
 A.aaJ.prototype={
 $1(a){return"Open navigation menu"},
@@ -58980,7 +58982,7 @@ A.abS.prototype={
 $1(a){return a==null?null:a.d},
 $S:94}
 A.abT.prototype={
-$1(a){return B.C0},
+$1(a){return B.C1},
 $S:98}
 A.abU.prototype={
 $1(a){return"Open navigation menu"},
@@ -59069,7 +59071,7 @@ if(q)j.a.toString
 if(p)j.a.toString
 o=j.a.db
 s=o.ax
-A.aVo(s.a===B.bW?B.Ue:B.Ud)
+A.aVo(s.a===B.bW?B.Uf:B.Ue)
 n=o.dl
 m=n.b
 if(m==null)m=s.b.b3(0.4)
@@ -59087,7 +59089,7 @@ n=o.e
 o=o.cx
 r=q.gaot()
 q.a.toString
-return new A.HO(p,p,p,new A.aG_(),p,p,p,p,p,n,B.aOF,p,p,p,B.Jg,q.gaoA(),o,p,B.b5j,s,p,r,p,p,B.vG,!1,!1,p,p,p,new A.tc(q,t.bT))},
+return new A.HO(p,p,p,new A.aG_(),p,p,p,p,p,n,B.aOF,p,p,p,B.Jh,q.gaoA(),o,p,B.b5j,s,p,r,p,p,B.vG,!1,!1,p,p,p,new A.tc(q,t.bT))},
 R(a){var s,r=this.ag7(a)
 this.a.toString
 s=this.d
@@ -59116,7 +59118,7 @@ A.a6O.prototype={
 $0(){var s,r=this.b.w
 A:{if(B.aI===r||B.ce===r){s=this.a.f
 s=s==null||s.length<2
-break A}if(B.bE===r||B.cZ===r||B.cN===r||B.cO===r){s=!1
+break A}if(B.bE===r||B.d_===r||B.cN===r||B.cO===r){s=!1
 break A}s=null}return s},
 $S:48}
 A.HZ.prototype={
@@ -59155,7 +59157,7 @@ R(c3){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0
 c3.a4(t.N8)
 s=A.aL(t.EK)
 r=b5.e
-if(r)s.E(0,B.xP)
+if(r)s.E(0,B.xQ)
 r=c1==null
 if(r)q=b6
 else{c1.a.toString
@@ -59174,14 +59176,14 @@ k=b9.gcb(b9)
 j=A.al(c3).ax
 i=j.p4
 h=b5.YA(s,n,k,i==null?j.k2:i)
-g=s.q(0,B.xP)?h:l
+g=s.q(0,B.xQ)?h:l
 b5.a.toString
 f=b9.gdm()
 if(f==null)f=c0.gdm()
 n=b5.a.y
 e=n==null?b9.c:n
 if(e==null)e=0
-if(s.q(0,B.xP)){b5.a.toString
+if(s.q(0,B.xQ)){b5.a.toString
 s=b9.d
 if(s==null)s=3
 d=s==null?e:s}else d=e
@@ -59223,7 +59225,7 @@ a6=s.e
 a7=new A.Ww(a6,b6)
 a8=A.bn()
 A:{q=b6
-if(B.bE===a8||B.cZ===a8||B.cN===a8||B.cO===a8){q=!0
+if(B.bE===a8||B.d_===a8||B.cN===a8||B.cO===a8){q=!0
 break A}if(B.aI===a8||B.ce===a8)break A}a6=A.cs(b6,a7,!1,b6,b6,!1,b6,b6,!0,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,q,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6)
 a2.toString
 a6=A.bbL(A.kT(a6,b6,b6,B.a_,!1,a2,b6,b6,B.bT),1.34)
@@ -59242,7 +59244,7 @@ a1.toString
 b2=A.C8(new A.n7(new A.aOQ(m),A.aeD(A.kT(new A.RR(a3,a6,a9,s,r,b6),b6,b6,B.eM,!0,a1,b6,b6,B.bT),c),b6),B.O,b6)
 b2=A.e4(!1,b2,B.ae,!0)
 s=A.as2(g)
-b3=s===B.bW?B.Ue:B.Ud
+b3=s===B.bW?B.Uf:B.Ue
 b4=new A.ms(b6,b6,b6,b6,B.a6,b3.f,b3.r,b3.w)
 b5.a.toString
 s=b9.gcd(b9)
@@ -59254,7 +59256,7 @@ q=r.aU
 r=q==null?r.b:q}b5.a.toString
 q=b9.r
 if(q==null)q=b6
-return A.cs(b6,new A.Bp(b4,A.fY(!1,B.az,!0,b6,A.cs(b6,new A.hu(B.bs,b6,b6,b2,b6),!1,b6,b6,!0,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6),B.n,g,d,b6,s,q,r,b6,B.cX),b6,t.ph),!0,b6,b6,!1,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6)}}
+return A.cs(b6,new A.Bp(b4,A.fY(!1,B.az,!0,b6,A.cs(b6,new A.hu(B.bs,b6,b6,b2,b6),!1,b6,b6,!0,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6),B.n,g,d,b6,s,q,r,b6,B.cY),b6,t.ph),!0,b6,b6,!1,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6,b6)}}
 A.av8.prototype={
 $0(){},
 $S:0}
@@ -59561,7 +59563,7 @@ if(j){i=new A.Yi(q.d,g.gakM(),g.e,f,f,f)
 if(!q.f)i=new A.I5(i,g.gT3(),g.gT4(),g.gT2(),f)}else i=f
 if(!j)q=q.a19(a)
 else{i.toString
-q=A.ct(B.bs,A.b([i,new A.aG(B.a9k,q.a19(a),f)],t.p),B.O,B.bH)}h=A.fY(!1,B.az,!0,f,new A.dV(g.gazV(),q,f,t.K3),B.n,p,l,g.d,n,k,o,f,B.cX)
+q=A.ct(B.bs,A.b([i,new A.aG(B.a9k,q.a19(a),f)],t.p),B.O,B.bH)}h=A.fY(!1,B.az,!0,f,new A.dV(g.gazV(),q,f,t.K3),B.n,p,l,g.d,n,k,o,f,B.cY)
 h=new A.hu(B.am,f,1,new A.eb(r,h,f),f)
 return!g.a.f?h:new A.I5(h,g.gT3(),g.gT4(),g.gT2(),f)}}
 A.az1.prototype={
@@ -59577,7 +59579,7 @@ else s.I(0,B.as)},
 $S:0}
 A.Yi.prototype={
 R(a){var s,r,q,p,o,n,m,l,k=this,j=null,i=A.al(a).ry,h=A.aVK(a),g=i.z
-if(g==null)g=B.TY
+if(g==null)g=B.TZ
 A.hB(a,B.dh,t.c4).toString
 s=g.a
 r=Math.max(s,48)
@@ -59676,7 +59678,7 @@ s.n()
 this.aQ()},
 ajV(a){var s,r=A.bn()
 A:{if(B.aI===r||B.ce===r){s=""
-break A}if(B.bE===r||B.cZ===r||B.cN===r||B.cO===r){s="Dialog"
+break A}if(B.bE===r||B.d_===r||B.cN===r||B.cO===r){s="Dialog"
 break A}s=null}return s},
 aAz(a){var s=this.d
 s===$&&A.c()
@@ -59732,7 +59734,7 @@ s=A.b8a(s,this.ft)
 this.yl=s
 return s},
 DH(a,b,c){var s,r=null,q=A.b_o(new A.CI(this.ff,new A.dM(new A.aiY(this),r),r),a,!1,!1,!1,!0)
-q=A.cs(r,q,!1,r,r,!1,r,r,r,r,B.Tk,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r)
+q=A.cs(r,q,!1,r,r,!1,r,r,r,r,B.Tl,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r)
 s=new A.os(this.hZ.a,q,r)
 return s},
 DF(){var s,r,q=this,p=q.dB,o=p==null
@@ -59777,8 +59779,8 @@ gcL(){return B.a6},
 gcd(a){return B.a6},
 gEr(){var s=this.gIe(),r=s.rx
 return r==null?s.k3:r},
-gEs(){return B.TY},
-ga0(){return B.yy}}
+gEs(){return B.TZ},
+ga0(){return B.yz}}
 A.wo.prototype={
 gF(a){var s=this
 return A.a9(s.gcb(s),s.gcL(),s.c,s.d,s.e,s.gcd(s),s.r,s.w,s.x,s.gEr(),s.gEs(),s.Q,s.ga0(),B.a,B.a,B.a,B.a,B.a,B.a,B.a)},
@@ -60200,9 +60202,9 @@ A.a8x.prototype={
 K(){return"ButtonTextTheme."+this.b}}
 A.O7.prototype={
 gcV(a){var s
-switch(0){case 0:break}s=B.AV
+switch(0){case 0:break}s=B.AW
 return s},
-gdv(a){A:{break A}return B.SN},
+gdv(a){A:{break A}return B.SO},
 l(a,b){var s=this
 if(b==null)return!1
 if(J.ag(b)!==A.P(s))return!1
@@ -60664,9 +60666,9 @@ r=A.b1v(a)
 q=A.bn()
 A:{p=c
 if(B.aI===q||B.ce===q)break A
-if(B.bE===q||B.cZ===q||B.cN===q||B.cO===q){A.hB(a,B.dh,t.c4).toString
+if(B.bE===q||B.d_===q||B.cN===q||B.cO===q){A.hB(a,B.dh,t.c4).toString
 p="Alert"
-break A}}o=A.c1(a,B.d3)
+break A}}o=A.c1(a,B.d4)
 o=o==null?c:o.gcR()
 o=A.aj(1,0.3333333333333333,A.L((o==null?B.c5:o).aW(0,14)/14,1,2)-1)
 o.toString
@@ -60712,7 +60714,7 @@ return new A.A4(s.d,s.c,null)},
 $S:615}
 A.A4.prototype={
 R(a){var s=null
-return A.aZA(A.b_x(B.O,s,s,B.Jg,A.b3L(),s,new A.aGV(this),s,A.b([new A.vr(this.d,s,s)],t.Ql),!1,s,B.bct))}}
+return A.aZA(A.b_x(B.O,s,s,B.Jh,A.b3L(),s,new A.aGV(this),s,A.b([new A.vr(this.d,s,s)],t.Ql),!1,s,B.bct))}}
 A.aGV.prototype={
 $2(a,b){this.a.c.$1(b)
 return!1},
@@ -60750,7 +60752,7 @@ this.Sl()}}
 A.aa7.prototype={
 $3(a,b,c){var s=null,r=new A.dM(this.a,s),q=new A.os(this.b.a,r,s)
 q=A.e4(!0,q,B.ae,!0)
-return A.cs(s,q,!1,s,s,!1,s,s,s,s,B.Tk,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s)},
+return A.cs(s,q,!1,s,s,!1,s,s,s,s,B.Tl,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s)},
 $C:"$3",
 $R:3,
 $S:140}
@@ -60856,9 +60858,9 @@ if(this.ch){r=s.gie().ad(B.cK)
 r=r==null?o:r.r
 q=r
 if(q==null)q=14
-r=A.c1(a,B.d3)
+r=A.c1(a,B.d4)
 r=r==null?o:r.gcR()
-p=A.BR(B.nk,B.AM,B.AL,(r==null?B.c5:r).aW(0,q)/14)
+p=A.BR(B.nk,B.AN,B.AM,(r==null?B.c5:r).aW(0,q)/14)
 return s.ob(new A.bO(p,t.mD))}return s},
 Gp(a){return A.aZb(a).a}}
 A.Yv.prototype={
@@ -60867,7 +60869,7 @@ if(q==null)q=p
 else{q=q.ad(B.cK)
 q=q==null?r:q.r}s=q
 if(s==null)s=14
-q=A.c1(a,B.d3)
+q=A.c1(a,B.d4)
 q=q==null?r:q.gcR()
 q=A.L((q==null?B.c5:q).aW(0,s)/14,1,2)
 A.aZb(a)
@@ -60890,8 +60892,8 @@ return new A.bO(s,t.De)},
 gcL(){return B.di},
 ge9(a){return new A.cB(new A.aBn(),t.N5)},
 gcV(a){return new A.bO(A.bj_(this.fy),t.mD)},
-ghI(){return B.xO},
-ghE(){return B.xN},
+ghI(){return B.xP},
+ghE(){return B.xO},
 gdi(){return new A.cB(new A.aBp(this),t.mN)},
 ghH(){return B.ii},
 gdv(a){return B.ij},
@@ -61460,7 +61462,7 @@ p=t.Y
 k=$.b4s()
 j=p.j("id<b8.T>")
 h.ay=new A.bc(m.a(n),new A.id(k,new A.b1(s*0.3,s+5,p),j),j.j("bc<b8.T>"))
-q=A.c3(i,B.AD,i,i,q)
+q=A.c3(i,B.AE,i,i,q)
 q.bz()
 q.ck$.E(0,o)
 q.bz()
@@ -61485,7 +61487,7 @@ s.c5(0)
 s=this.db
 s===$&&A.c()
 s.z=B.cm
-s.kr(1,B.ah,B.AD)},
+s.kr(1,B.ah,B.AE)},
 al(a){var s,r=this,q=r.cx
 q===$&&A.c()
 q.cg(0)
@@ -62043,7 +62045,7 @@ gqP(){return!1},
 MQ(a){var s=a==null?this.a:a
 return new A.lm(this.b,s)},
 gkN(){return new A.a5(0,0,0,this.a.b)},
-aW(a,b){return new A.lm(B.yt,this.a.aW(0,b))},
+aW(a,b){return new A.lm(B.yu,this.a.aW(0,b))},
 iO(a,b){var s=new A.aQ($.p().r,B.Q,null,null,A.b([],t.v)),r=a.a,q=a.b
 s.U(new A.hQ(new A.K(r,q,r+(a.c-r),q+Math.max(0,a.d-q-this.a.b))))
 return s},
@@ -62356,7 +62358,7 @@ A.aLc.prototype={}
 A.K8.prototype={
 gjc(a){var s=this.e1$,r=s.i(0,B.ek),q=A.b([],t.Ik),p=s.i(0,B.cH)
 if(p!=null)q.push(p)
-p=s.i(0,B.d2)
+p=s.i(0,B.d3)
 if(p!=null)q.push(p)
 p=s.i(0,B.bM)
 if(p!=null)q.push(p)
@@ -62405,7 +62407,7 @@ a.$1(s)}if(r.i(0,B.dj)!=null)if(this.a2){s=r.i(0,B.dj)
 s.toString
 a.$1(s)}else if(r.i(0,B.bV)==null){s=r.i(0,B.dj)
 s.toString
-a.$1(s)}if(r.i(0,B.d2)!=null){s=r.i(0,B.d2)
+a.$1(s)}if(r.i(0,B.d3)!=null){s=r.i(0,B.d3)
 s.toString
 a.$1(s)}if(r.i(0,B.cP)!=null){s=r.i(0,B.cP)
 s.toString
@@ -62493,7 +62495,7 @@ p=c6.u
 h=p.a
 p=p.z
 a3=c9.qf(new A.a5(0,h.gd_(0)+h.gd7(0)+a1+a2+new A.e(p.a,p.b).a8(0,4).b,0,0)).zC(d)
-p=d0.i(0,B.d2)
+p=d0.i(0,B.d3)
 d0=d0.i(0,B.dj)
 h=p==null
 a4=h?B.a2:d6.$2(p,a3)
@@ -62522,18 +62524,18 @@ b7=Math.min(Math.max(b5,48),b6)
 b8=48>b5?(48-b5)/2:0
 b9=Math.max(0,b5-b6)
 c8=c6.a1
-d0=c6.gK8()?B.Ui:B.Uj
+d0=c6.gK8()?B.Uj:B.Uk
 c0=(d0.a+1)/2
 c1=b2-b9*(1-c0)
 c2=p+a1+a9+c1+b8+new A.e(l,m).a8(0,4).b/2
 c3=b7-(s.gd_(0)+s.gd7(0))-a1-new A.e(l,m).a8(0,4).b-(b2+a8+b3)
 if(c6.gK8()){c4=a9+c1/2+(b7-a8)/2
-c8=c6.gK8()?B.Ui:B.Uj
+c8=c6.gK8()?B.Uj:B.Uk
 c8=c8.a
 c5=c4+(c8<=0?Math.max(c4-c2,0):Math.max(c2+c3-c4,0))*c8}else c5=c2+c3*c0
 c8=d1?null:q.c
 return new A.aLc(a3,c5,b7,q,new A.S(c7,b7+(c8==null?0:c8)))},
-bp(a){var s,r,q,p,o,n=this,m=n.e1$,l=m.i(0,B.d2),k=Math.max(A.kx(l,a),A.kx(m.i(0,B.dj),a))
+bp(a){var s,r,q,p,o,n=this,m=n.e1$,l=m.i(0,B.d3),k=Math.max(A.kx(l,a),A.kx(m.i(0,B.dj),a))
 l=A.kx(m.i(0,B.cH),a)
 if(m.i(0,B.bM)!=null)s=n.a7?4:0
 else{s=n.u
@@ -62544,7 +62546,7 @@ o=A.kx(m.i(0,B.cP),a)
 if(m.i(0,B.cP)!=null)m=n.a7?4:0
 else{m=n.u
 m=m.a.c+m.Q}return l+s+r+q+k+p+o+m},
-bj(a){var s,r,q,p,o,n=this,m=n.e1$,l=m.i(0,B.d2),k=Math.max(A.Ak(l,a),A.Ak(m.i(0,B.dj),a))
+bj(a){var s,r,q,p,o,n=this,m=n.e1$,l=m.i(0,B.d3),k=Math.max(A.Ak(l,a),A.Ak(m.i(0,B.dj),a))
 l=A.Ak(m.i(0,B.cH),a)
 if(m.i(0,B.bM)!=null)s=n.a7?4:0
 else{s=n.u
@@ -62583,7 +62585,7 @@ i=A.Al(a1.i(0,B.dk),a3)
 h=A.kx(a1.i(0,B.dk),i)
 g=A.Al(a1.i(0,B.dl),a3)
 f=Math.max(a3-h-A.kx(a1.i(0,B.dl),g)-r-p,0)
-o=A.b([a1.i(0,B.d2)],t.Rs)
+o=A.b([a1.i(0,B.d3)],t.Rs)
 if(a0.u.y)o.push(a1.i(0,B.dj))
 e=t.n
 d=B.c.zs(A.b([a0.aok(0,f,o),i,g],e),B.mx)
@@ -62595,7 +62597,7 @@ a=B.c.zs(A.b([a2,o.a.b+a1+d+c.a.d+new A.e(b.a,b.b).a8(0,4).b,s,q],e),B.mx)
 a0.u.x.toString
 return Math.max(a,48)+j},
 bi(a){return this.aA(B.co,a,this.gbU())},
-h2(a){var s,r,q=this.e1$.i(0,B.d2)
+h2(a){var s,r,q=this.e1$.i(0,B.d3)
 if(q==null)return 0
 s=q.b
 s.toString
@@ -62603,7 +62605,7 @@ s=t.r.a(s).a
 r=q.l8(a)
 q=r==null?q.gv(0).b:r
 return s.b+q},
-dz(a,b){var s,r,q,p,o=this.e1$.i(0,B.d2)
+dz(a,b){var s,r,q,p,o=this.e1$.i(0,B.d3)
 if(o==null)return 0
 s=this.K4(a,A.b3D(),A.hP())
 switch(b.a){case 0:o=0
@@ -62693,9 +62695,9 @@ if(r.i(0,B.bV)!=null){o=r.i(0,B.bV)
 o.toString
 l.$2(o,g-r.i(0,B.bV).gv(0).a)}if(r.i(0,B.dk)!=null){o=r.i(0,B.dk)
 o.toString
-g-=b.$2(o,g-r.i(0,B.dk).gv(0).a)}if(r.i(0,B.d2)!=null){o=r.i(0,B.d2)
+g-=b.$2(o,g-r.i(0,B.dk).gv(0).a)}if(r.i(0,B.d3)!=null){o=r.i(0,B.d3)
 o.toString
-b.$2(o,g-r.i(0,B.d2).gv(0).a)}if(r.i(0,B.dj)!=null){o=r.i(0,B.dj)
+b.$2(o,g-r.i(0,B.d3).gv(0).a)}if(r.i(0,B.dj)!=null){o=r.i(0,B.dj)
 o.toString
 b.$2(o,g-r.i(0,B.dj).gv(0).a)}o=r.i(0,B.cP)
 n=a2.u
@@ -62720,7 +62722,7 @@ if(r.i(0,B.bV)!=null){o=r.i(0,B.bV)
 o.toString
 l.$2(o,g)}if(r.i(0,B.dk)!=null){o=r.i(0,B.dk)
 o.toString
-g+=b.$2(o,g)}if(r.i(0,B.d2)!=null){o=r.i(0,B.d2)
+g+=b.$2(o,g)}if(r.i(0,B.d3)!=null){o=r.i(0,B.d3)
 o.toString
 b.$2(o,g)}if(r.i(0,B.dj)!=null){o=r.i(0,B.dj)
 o.toString
@@ -62807,7 +62809,7 @@ d.$1(c.i(0,B.dl))
 d.$1(c.i(0,B.bM))
 d.$1(c.i(0,B.cP))
 if(e.u.y)d.$1(c.i(0,B.dj))
-d.$1(c.i(0,B.d2))
+d.$1(c.i(0,B.d3))
 s=c.i(0,B.ek)
 s.toString
 d.$1(s)
@@ -62826,7 +62828,7 @@ for(s=this.gjc(0),r=s.length,q=t.r,p=0;p<s.length;s.length===r||(0,A.H)(s),++p){
 n=o.b
 n.toString
 if(a.kC(new A.aLf(o),q.a(n).a,b))return!0}return!1},
-agJ(a){var s,r,q,p=A.b([],t.q1),o=A.b([],t.X_),n=t.g3,m=A.G(n,t.lD),l=A.cQ([B.aYr,B.aYs,B.Tp,B.aYp],n)
+agJ(a){var s,r,q,p=A.b([],t.q1),o=A.b([],t.X_),n=t.g3,m=A.G(n,t.lD),l=A.cQ([B.aYr,B.aYs,B.Tq,B.aYp],n)
 for(n=a.length,s=0;s<a.length;a.length===n||(0,A.H)(a),++s){r=a[s]
 q=A.bb7(l,new A.aLd(r))
 if(q!=null)J.eB(m.bJ(0,q,new A.aLe()),r)
@@ -63026,7 +63028,7 @@ return q.MQ(A.dz(s,r.ghM(),t.oI))}else return q.MQ(A.dz(b.gzh(),r.ghM(),t.oI))},
 R(d2){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9=this,d0=null,d1=A.al(d2)
 c9.gaM()
 A.al(d2)
-s=new A.aFi(d2,d0,d0,d0,d0,d0,d0,d0,d0,d0,B.Bt,B.yH,!1,d0,!1,d0,d0,d0,d0,d0,d0,d0,d0,!1,d0,d0,d0,d0,d0,d0,d0,d0,d0,d0,d0,!1,d0,d0)
+s=new A.aFi(d2,d0,d0,d0,d0,d0,d0,d0,d0,d0,B.Bu,B.yI,!1,d0,!1,d0,d0,d0,d0,d0,d0,d0,d0,!1,d0,d0,d0,d0,d0,d0,d0,d0,d0,d0,d0,!1,d0,d0)
 A.QI(d2)
 r=t.em
 q=A.dz(s.gkW(),c9.ghM(),r)
@@ -63110,7 +63112,7 @@ if(a8===$){a9=new A.nJ(2,B.l.m(A.hE(c9)))
 c9.y!==$&&A.b2()
 c9.y=a9
 a8=a9}a2=a8}else a2=d0
-b0=new A.Wa(m,a0.p4,a1,c9.gaM().p3,a2,B.Tp,d0)}else b0=d0
+b0=new A.Wa(m,a0.p4,a1,c9.gaM().p3,a2,B.Tq,d0)}else b0=d0
 if(a6!=null&&a7){a8=c9.x
 if(a8===$){m=B.l.m(A.hE(c9))
 c9.x!==$&&A.b2()
@@ -63147,7 +63149,7 @@ b8=c0.b
 p=p?c0.a:c0.c
 c1=new A.e1(b7,b8,p,c0.d)}c9.gaM().id.toString
 c2=0
-if(!c.gqP()){p=A.c1(d2,B.d3)
+if(!c.gqP()){p=A.c1(d2,B.d4)
 p=p==null?d0:p.gcR()
 if(p==null)p=B.c5
 b7=l.r
@@ -63472,13 +63474,13 @@ for(s=this.gjc(0),r=s.length,q=0;q<s.length;s.length===r||(0,A.H)(s),++q)s[q].ar
 A.tx.prototype={
 K(){return"ListTileTitleAlignment."+this.b},
 M0(a,b,c,d){var s,r,q=this
-A:{if(B.IP===q){s=B.IQ.M0(a,b,c,d)
+A:{if(B.IQ===q){s=B.IR.M0(a,b,c,d)
 break A}r=B.aCF===q
 if(r&&b>72){s=16
 break A}if(r){s=(b-a)/2
 if(d)s=Math.min(s,16)
 break A}if(B.aCG===q){s=c.O
-break A}if(B.IQ===q){s=(b-a)/2
+break A}if(B.IR===q){s=(b-a)/2
 break A}if(B.aCH===q){s=b-a-c.O
 break A}s=null}return s}}
 A.xB.prototype={
@@ -63559,7 +63561,7 @@ o=p?b0.b:b2
 m=a6.cy
 k=m!=null
 if(p)b2=b0.b
-if(b2==null)b2=B.yw
+if(b2==null)b2=B.yx
 a6.K7(a8,b0)
 p=f.Q
 if(p==null){p=b1.gf6().Q
@@ -63571,7 +63573,7 @@ a4=b0.at
 if(a4==null)a4=8
 a5=b0.ax
 if(a5==null)a5=24
-return A.cw(!1,a7,!0,A.cs(k,A.xr(A.e4(!1,A.aeD(A.aeC(new A.ZQ(g,e,c,b,!1,!1,a8.Q,a,p,a2,a3,a4,a5,b0.ay,B.IP,a7),new A.ps(q)),new A.ev(a7,a7,a7,a7,a7,n,a7,a7,a7)),a0,!1),new A.km(s,a7,a7,a7,b2),a7),!1,a7,!0,!1,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,!1,a7,a7,a7,a7,a7,a7),o,!0,a7,a7,a7,a7,a1,a7,a7,a7,m,a7,a7,a7,a7)}}
+return A.cw(!1,a7,!0,A.cs(k,A.xr(A.e4(!1,A.aeD(A.aeC(new A.ZQ(g,e,c,b,!1,!1,a8.Q,a,p,a2,a3,a4,a5,b0.ay,B.IQ,a7),new A.ps(q)),new A.ev(a7,a7,a7,a7,a7,n,a7,a7,a7)),a0,!1),new A.km(s,a7,a7,a7,b2),a7),!1,a7,!0,!1,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,a7,!1,a7,a7,a7,a7,a7,a7),o,!0,a7,a7,a7,a7,a1,a7,a7,a7,m,a7,a7,a7,a7)}}
 A.afY.prototype={
 $4(a,b,c,d){return new A.Zs(a,c,b,d).ad(this.a)},
 $3(a,b,c){return this.$4(a,b,c,null)},
@@ -63875,10 +63877,10 @@ j=q.gbg()
 m=k.a=l.e
 p=l.d
 if(p!=null&&r!==p.b){if(m!=null&&m.b!=null)m.al(0)
-k.a=A.cu(B.AI,new A.aOy(l))}l.G(new A.aOz(k,l,new A.e(q.a,r),new A.e(n-j.a,s-r)))},
+k.a=A.cu(B.AJ,new A.aOy(l))}l.G(new A.aOz(k,l,new A.e(q.a,r),new A.e(n-j.a,s-r)))},
 R(a){var s,r=this.d,q=r.b
 r=r.a
-s=this.e!=null?B.AI:B.ap
+s=this.e!=null?B.AJ:B.ap
 return A.aXX(new A.Rp(this.f,null),B.ah,s,r,q)}}
 A.aOy.prototype={
 $0(){var s=this.a
@@ -63904,9 +63906,9 @@ A.a_3.prototype={
 R(a){var s,r,q,p,o,n,m,l,k=this,j=null,i=A.al(a),h=k.a,g=h.r
 if(g==null){s=h.d
 A:{g=j
-if(B.cX===s){r=i.as
+if(B.cY===s){r=i.as
 break A}if(B.jl===s){r=i.at
-break A}if(B.w5===s||B.Ou===s||B.lx===s){r=g
+break A}if(B.w5===s||B.Ov===s||B.lx===s){r=g
 break A}r=g}g=r}q=h.w
 if(q==null){r=i.ax.x1
 if(r==null)r=B.A
@@ -63922,13 +63924,13 @@ o=r===B.lx
 p=new A.dV(new A.aGg(k),new A.Zu(g,k,!o,p,k.d),j,t.Tm)
 n=h.ax
 m=n!=null?new A.aZ(n,B.I):h.z
-if(r===B.cX&&m==null){g.toString
+if(r===B.cY&&m==null){g.toString
 l=A.aZc(g,h.x,h.f)
 h=k.a
 r=h.at
-return new A.Bf(p,h.as,h.f,l,!1,q,B.bF,r,j,j)}if(m==null){B:{if(B.Ou===r){r=B.yZ
-break B}if(B.cX===r||B.lx===r){r=B.jD
-break B}if(B.jl===r||B.w5===r){r=B.SN
+return new A.Bf(p,h.as,h.f,l,!1,q,B.bF,r,j,j)}if(m==null){B:{if(B.Ov===r){r=B.z_
+break B}if(B.cY===r||B.lx===r){r=B.jD
+break B}if(B.jl===r||B.w5===r){r=B.SO
 break B}r=j}m=r}if(o){h=A.e0(a)
 return A.a98(new A.KQ(p,m,!0,j),k.a.as,new A.qi(m,h,j))}g.toString
 return new A.Jq(p,m,h.Q,h.as,h.f,g,q,h.x,B.bF,h.at,j,j)}}
@@ -64107,9 +64109,9 @@ if(this.ch){r=s.gie().ad(B.cK)
 r=r==null?p:r.r
 q=r
 if(q==null)q=14
-r=A.c1(a,B.d3)
+r=A.c1(a,B.d4)
 r=r==null?p:r.gcR()
-return s.ob(new A.bO(A.BR(B.nk,B.AM,B.AL,(r==null?B.c5:r).aW(0,q)/14),t.mD))}return s},
+return s.ob(new A.bO(A.BR(B.nk,B.AN,B.AM,(r==null?B.c5:r).aW(0,q)/14),t.mD))}return s},
 Gp(a){return A.b_F(a).a}}
 A.a_F.prototype={
 R(a){var s,r=null,q=this.e.a,p=r
@@ -64117,7 +64119,7 @@ if(q==null)q=p
 else{q=q.ad(B.cK)
 q=q==null?r:q.r}s=q
 if(s==null)s=14
-q=A.c1(a,B.d3)
+q=A.c1(a,B.d4)
 q=q==null?r:q.gcR()
 q=A.L((q==null?B.c5:q).aW(0,s)/14,1,2)
 A.b_F(a)
@@ -64138,8 +64140,8 @@ gcd(a){return B.di},
 gcL(){return B.di},
 ge9(a){return B.jT},
 gcV(a){return new A.bO(A.bj0(this.fy),t.mD)},
-ghI(){return B.xO},
-ghE(){return B.xN},
+ghI(){return B.xP},
+ghE(){return B.xO},
 gdi(){return new A.cB(new A.aH_(this),t.mN)},
 ghH(){return B.ii},
 gir(){return new A.cB(new A.aH1(this),t.GD)},
@@ -64202,7 +64204,7 @@ VM(a){var s,r=A.al(a).w
 A.al(a)
 s=B.oP.i(0,r)
 if(s==null)A:{if(B.aI===r||B.ce===r){s=B.my
-break A}if(B.bE===r||B.cZ===r||B.cO===r||B.cN===r){s=B.k7
+break A}if(B.bE===r||B.d_===r||B.cO===r||B.cN===r){s=B.k7
 break A}s=null}return s},
 gq4(){return null},
 gxD(){return null},
@@ -64281,7 +64283,7 @@ s.n()
 r.adw()},
 R(a){var s=this.d
 s===$&&A.c()
-return A.b0G(!0,this.a.d,this.qD$,B.U3,s)}}
+return A.b0G(!0,this.a.d,this.qD$,B.U4,s)}}
 A.r1.prototype={
 am(){return new A.a4m(new A.GE($.b5()),$,$)}}
 A.a4m.prototype={
@@ -64329,7 +64331,7 @@ s.n()
 r.adx()},
 R(a){var s=this.d
 s===$&&A.c()
-return A.b0G(!0,this.a.f,this.qD$,B.U3,s)}}
+return A.b0G(!0,this.a.f,this.qD$,B.U4,s)}}
 A.YF.prototype={
 R(a){var s=this
 return new A.pi(s.c,new A.aCc(),new A.aCd(),A.bag(a,s.d,s.e,s.f),null)}}
@@ -64396,7 +64398,7 @@ if(s==null)q.d=p
 else p=s}else q.d=null
 r=o.c.i(0,p)
 if(r==null){A:{if(B.aI===p){o=B.my
-break A}if(B.bE===p||B.cZ===p||B.cO===p||B.ce===p||B.cN===p){o=B.k7
+break A}if(B.bE===p||B.d_===p||B.cO===p||B.ce===p||B.cN===p){o=B.k7
 break A}o=null}r=o}o=q.a
 return r.Mn(o.d,a,o.e,o.f,o.r,q.$ti.c)}}
 A.AH.prototype={
@@ -64524,7 +64526,7 @@ if(J.ag(b)!==A.P(s))return!1
 return b instanceof A.Fb&&J.i(b.a,s.a)&&J.i(b.b,s.b)&&J.i(b.c,s.c)&&b.d==s.d&&J.i(b.e,s.e)&&J.i(b.f,s.f)&&J.i(b.r,s.r)&&b.w==s.w&&J.i(b.Q,s.Q)&&b.as==s.as}}
 A.a0y.prototype={}
 A.SG.prototype={
-gl6(a){return B.AE},
+gl6(a){return B.AF},
 Mn(a,b,c,d,e,f){return new A.JV(new A.alf(this,a,c,d,e,f),a,null)}}
 A.alf.prototype={
 $4(a,b,c,d){var s=this
@@ -64631,9 +64633,9 @@ n=p.a
 switch(n.f.a){case 3:n=new A.b1(p.at,new A.e(a.b*0.1,0),t.Ni)
 break
 default:n=n.w
-switch(n==null?null:n.c){case B.U8:n=new A.e(q,p.BA(a.b))
+switch(n==null?null:n.c){case B.U9:n=new A.e(q,p.BA(a.b))
 break
-case B.U9:n=new A.e(-q,p.BA(a.b))
+case B.Ua:n=new A.e(-q,p.BA(a.b))
 break
 case null:case void 0:n=new A.e(q,p.BA(a.b))
 break
@@ -64643,8 +64645,8 @@ a_F(){var s=this,r=s.z
 if(r!=null)r.n()
 r=s.Q
 if(r!=null)r.n()
-s.z=A.dj(B.CF,s.a.d,null)
-s.Q=A.dj(B.CF,new A.hF(s.a.d,new A.bQ(A.b([],t.g),t.l),0),null)},
+s.z=A.dj(B.CG,s.a.d,null)
+s.Q=A.dj(B.CG,new A.hF(s.a.d,new A.bQ(A.b([],t.g),t.l),0),null)},
 aJ(){this.aY()},
 b1(a){var s,r=this
 r.bk(a)
@@ -64774,7 +64776,7 @@ am(){return new A.ZO(null,null)}}
 A.ZO.prototype={
 aJ(){var s,r=this
 r.aY()
-s=A.c3(null,B.Az,null,null,r)
+s=A.c3(null,B.AA,null,null,r)
 r.d!==$&&A.bt()
 r.d=s
 r.xm()},
@@ -64873,7 +64875,7 @@ J.b0(r.save())
 a.vw(0,-1,1)
 r.translate(-p,0)
 a.dY(new A.K(q,q,q+n,q+o),-1.5707963267948966+h,f,!1,j)
-r.restore()}else a.dY(new A.K(q,q,q+n,q+o),0,6.282185307179586,!1,j)}if(e.d==null)s.d=B.U5
+r.restore()}else a.dY(new A.K(q,q,q+n,q+o),0,6.282185307179586,!1,j)}if(e.d==null)s.d=B.U6
 else s.d=B.v
 a.dY(new A.K(q,q,q+n,q+o),e.z,e.Q,!1,s)},
 dF(a){var s=this,r=!0
@@ -65055,7 +65057,7 @@ return new A.G2(A.nz(t.Np),A.tw(s,t.nY),A.tw(s,t.BL),s,s)}}
 A.G2.prototype={
 bK(){var s=this.c
 s.toString
-this.y=A.bH(s,B.y_,t.w).w.z
+this.y=A.bH(s,B.y0,t.w).w.z
 this.dM()},
 LM(){var s,r,q,p,o,n
 for(s=this.d,r=A.cr(s,s.r,A.y(s).c),q=t.Np,p=r.$ti.c;r.C();){o=r.d
@@ -65112,7 +65114,7 @@ if(p!=null)p.al(0)
 q.x=null},
 aBE(){return this.a3Q(B.b0a)},
 R(a){var s,r,q,p=this
-p.y=A.bH(a,B.y_,t.w).w.z
+p.y=A.bH(a,B.y0,t.w).w.z
 s=p.r
 if(!s.gaf(0)){r=A.jr(a,null,t.X)
 if(r==null||r.gfg())if(p.w.gaL(0)===B.bz&&p.x==null){q=s.gS(0).a
@@ -65181,11 +65183,11 @@ a5e(a8){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3=this,a4=A.a8e(a8),
 if(a3.b.i(0,B.pY)!=null){s=a3.f3(B.pY,a6).b
 r=a3.e?0:s
 a3.i7(B.pY,B.C)}else{r=0
-s=0}if(a3.b.i(0,B.y7)!=null){q=0+a3.f3(B.y7,a6).b
+s=0}if(a3.b.i(0,B.y8)!=null){q=0+a3.f3(B.y8,a6).b
 p=Math.max(0,a7-q)
-a3.i7(B.y7,new A.e(0,p))}else{q=0
-p=null}if(a3.b.i(0,B.y6)!=null){q+=a3.f3(B.y6,new A.av(0,a6.b,0,Math.max(0,a7-q-r))).b
-a3.i7(B.y6,new A.e(0,Math.max(0,a7-q)))}if(a3.b.i(0,B.q1)!=null){o=a3.f3(B.q1,a6)
+a3.i7(B.y8,new A.e(0,p))}else{q=0
+p=null}if(a3.b.i(0,B.y7)!=null){q+=a3.f3(B.y7,new A.av(0,a6.b,0,Math.max(0,a7-q-r))).b
+a3.i7(B.y7,new A.e(0,Math.max(0,a7-q)))}if(a3.b.i(0,B.q1)!=null){o=a3.f3(B.q1,a6)
 a3.i7(B.q1,new A.e(0,s))
 if(!a3.ay)r+=o.b}else o=B.a2
 n=a3.f
@@ -65219,9 +65221,9 @@ if(!new A.S(a0.c-a0.a,a0.d-a0.b).l(0,B.a2)&&a3.at&&b)a1=p!=null?Math.min(p,i.b_(
 else a1=a3.at?Math.min(m,a7-a3.r.d):m
 a2=a?(a5-d)/2:0
 a3.i7(B.k1,new A.e(a2,a1-k.b))}if(a3.b.i(0,B.pZ)!=null){a3.f3(B.pZ,a6.a6c(n.b))
-a3.i7(B.pZ,B.C)}if(a3.b.i(0,B.y8)!=null){a3.f3(B.y8,A.p7(a8))
-a3.i7(B.y8,B.C)}if(a3.b.i(0,B.y5)!=null){a3.f3(B.y5,A.p7(a8))
-a3.i7(B.y5,B.C)}a3.x.avK(p,i.b_())},
+a3.i7(B.pZ,B.C)}if(a3.b.i(0,B.y9)!=null){a3.f3(B.y9,A.p7(a8))
+a3.i7(B.y9,B.C)}if(a3.b.i(0,B.y6)!=null){a3.f3(B.y6,A.p7(a8))
+a3.i7(B.y6,B.C)}a3.x.avK(p,i.b_())},
 ph(a){var s=this,r=!0
 if(a.f.l(0,s.f))if(a.r.l(0,s.r))if(a.w===s.w)if(a.y===s.y)if(a.z===s.z)r=a.e!==s.e
 return r}}
@@ -65289,7 +65291,7 @@ n=t.HY.j("bc<b8.T>")
 m=t.g
 l=t.l
 k=t.i
-j=A.b1q(new A.hF(new A.bc(r,new A.jU(new A.nl(B.CG)),n),new A.bQ(A.b([],m),l),0),new A.bc(r,new A.jU(B.CG),n),r,0.5,k)
+j=A.b1q(new A.hF(new A.bc(r,new A.jU(new A.nl(B.CH)),n),new A.bQ(A.b([],m),l),0),new A.bc(r,new A.jU(B.CH),n),r,0.5,k)
 r=f.a.d
 i=$.b5T()
 o.a(r)
@@ -65485,7 +65487,7 @@ o=i.w
 A:{f=k
 if(B.aI===o||B.ce===o){l.a.toString
 f=new A.Zb(l.gZJ(),k)
-break A}if(B.bE===o||B.cZ===o||B.cN===o||B.cO===o)break A}l.w_(g,f,B.pZ,!0,!1,!1,!0)
+break A}if(B.bE===o||B.d_===o||B.cN===o||B.cO===o)break A}l.w_(g,f,B.pZ,!0,!1,!1,!0)
 f=l.y
 e=f.y
 if(e==null?A.y(f).j("d0.T").a(e):e){l.Tb(g,h)
@@ -65501,7 +65503,7 @@ f=A.bH(a,B.pT,f).w
 f=f.f.d!==0?0:k
 m=e.w.E_(f)
 f=l.a.cy
-return new A.a1O(!1,new A.G7(A.fY(!1,B.az,!0,k,new A.dM(new A.anI(j,l,n,m,h,g),k),B.n,f,0,k,k,k,k,k,B.cX),k),k)}}
+return new A.a1O(!1,new A.G7(A.fY(!1,B.az,!0,k,new A.dM(new A.anI(j,l,n,m,h,g),k),B.n,f,0,k,k,k,k,k,B.cY),k),k)}}
 A.anH.prototype={
 $0(){this.a.Q=this.b},
 $S:0}
@@ -65509,7 +65511,7 @@ A.anG.prototype={
 $0(){this.a.as=this.b},
 $S:0}
 A.anI.prototype={
-$1(a){var s,r,q,p,o,n,m=this,l=A.aK([B.xD,new A.Y7(a,new A.bQ(A.b([],t.ot),t.wS))],t.C,t.od),k=m.b,j=k.a.e,i=k.db
+$1(a){var s,r,q,p,o,n,m=this,l=A.aK([B.xE,new A.Y7(a,new A.bQ(A.b([],t.ot),t.wS))],t.C,t.od),k=m.b,j=k.a.e,i=k.db
 i.toString
 s=k.CW
 s===$&&A.c()
@@ -65537,7 +65539,7 @@ A.G0.prototype={}
 A.a1O.prototype={
 da(a){return this.f!==a.f}}
 A.Zb.prototype={
-R(a){return new A.RC(B.eb,B.U1,this.c)}}
+R(a){return new A.RC(B.eb,B.U2,this.c)}}
 A.aD8.prototype={
 $1(a){return a.a.l(0,this.a)},
 $S:216}
@@ -66015,7 +66017,7 @@ default:c0=b6}s=b7.a.id
 b0=s==null?b6:s.r
 if(b0==null)b0=14
 b1=b0===0?14:b0
-s=A.c1(c1,B.d3)
+s=A.c1(c1,B.d4)
 s=s==null?b6:s.gcR()
 b2=(s==null?B.c5:s).DP(0,1.3)
 s=b2.aW(0,b1)
@@ -66030,14 +66032,14 @@ b4=b7.a.ok
 if(b4!=null)b3=new A.aG(b4,b3,b6)
 s=b5.y
 s===$&&A.c()
-return A.aZm(s,!1,new A.xV(b5.ax,new A.aN3(b7,b5),b3,B.OT,b6),l,b5.gcv(0),!1,a8,b6,b5.gal6(),b5.galk(),c0)},
+return A.aZm(s,!1,new A.xV(b5.ax,new A.aN3(b7,b5),b3,B.OU,b6),l,b5.gcv(0),!1,a8,b6,b5.gal6(),b5.galk(),c0)},
 ag4(a){var s,r=this,q=A.aTM(new A.a49(r,null),r.CW,B.C,!0)
-A:{if(B.TA===a){s=B.bD
+A:{if(B.TB===a){s=B.bD
 break A}if(B.wQ===a){r.a.toString
 s=B.bD
-break A}if(B.Tw===a){r.a.toString
+break A}if(B.Tx===a){r.a.toString
 s=q
-break A}if(B.Tz===a||B.Tx===a||B.Ty===a){s=q
+break A}if(B.TA===a||B.Ty===a||B.Tz===a){s=q
 break A}s=null}return s}}
 A.aN7.prototype={
 $0(){this.a.Q=!0},
@@ -66216,9 +66218,9 @@ gAt(){var s,r=this.aN.go
 r.toString
 A:{s=!1
 if(B.wQ===r){r=s
-break A}if(B.Tw===r){r=!0
-break A}if(B.Tx===r||B.Ty===r){r=!0
-break A}if(B.TA===r||B.Tz===r){r=s
+break A}if(B.Tx===r){r=!0
+break A}if(B.Ty===r||B.Tz===r){r=!0
+break A}if(B.TB===r||B.TA===r){r=s
 break A}r=null}return r},
 gaeI(){switch(this.bx.a){case 2:case 4:return 0.1
 case 0:case 1:case 3:case 5:return 0.05}},
@@ -66577,10 +66579,10 @@ o=s}if(o.dx instanceof A.anq){r=p.gcZ()
 q=r.xr
 return q==null?r.k3:q}return p.gcZ().b},
 gro(){return B.a1K},
-grg(){return B.yP},
-grj(){return B.yQ},
-gr0(){return B.yO},
-grh(){return B.SL}}
+grg(){return B.yQ},
+grj(){return B.yR},
+gr0(){return B.yP},
+grh(){return B.SM}}
 A.aN0.prototype={
 gcZ(){var s,r=this,q=r.R8
 if(q===$){s=A.al(r.p4)
@@ -66613,10 +66615,10 @@ s.toString
 return s.cm(this.gcZ().c)},
 gvf(){return this.gcZ().b},
 gro(){return B.a19},
-grg(){return B.yP},
-grj(){return B.yQ},
-gr0(){return B.yO},
-grh(){return B.SL}}
+grg(){return B.yQ},
+grj(){return B.yR},
+gr0(){return B.yP},
+grh(){return B.SM}}
 A.aN1.prototype={
 $1(a){if(a.q(0,B.jU))return this.a.gcZ().b.b3(0.1)
 if(a.q(0,B.as))return this.a.gcZ().b.b3(0.08)
@@ -66835,7 +66837,7 @@ s.UO()
 s.aQ()},
 ap7(a){if(a===B.bz){this.a.toString
 this.d=!0}},
-R(a7){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a=this,a0=null,a1=t.w,a2=A.bH(a7,B.y_,a1).w,a3=A.al(a7),a4=A.b0F(a7),a5=new A.aNf(a7,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0),a6=a4.d
+R(a7){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a=this,a0=null,a1=t.w,a2=A.bH(a7,B.y0,a1).w,a3=A.al(a7),a4=A.b0F(a7),a5=new A.aNf(a7,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0),a6=a4.d
 if(a6==null)a6=a5.gkI()
 s=a.a
 s.toString
@@ -66858,7 +66860,7 @@ a.a.toString
 k=a4.x
 s=k==null
 if(s)k=a5.gyP()
-j=A.bH(a7,B.xZ,a1).w.a.a-(k.a+k.c)
+j=A.bH(a7,B.y_,a1).w.a.a-(k.a+k.c)
 a.a.toString
 i=a4.Q
 if(i==null)i=a5.gxq()
@@ -66871,7 +66873,7 @@ if(!h)B.c.J(g,l)
 if(h)g.push(A.b6(a0,a0,j*0.4))
 a1=A.b([A.X(g,B.o,B.j,B.k,0)],a1)
 if(h)a1.push(new A.aG(B.a99,A.X(l,B.o,B.hT,B.k,0),a0))
-f=new A.aG(n,A.ks(B.d1,a1,B.ei,0,0),a0)
+f=new A.aG(n,A.ks(B.d2,a1,B.ei,0,0),a0)
 if(!p)f=A.e4(!0,f,B.ae,!1)
 a.a.toString
 e=a4.e
@@ -66882,11 +66884,11 @@ a1=a.a
 a1.toString
 c=a4.f
 if(c==null)c=p?a5.gdv(0):a0
-f=A.fY(!1,B.az,!0,a0,new A.qr(a3,f,a0),a1.db,d,e,a0,a0,c,a0,a0,B.cX)
+f=A.fY(!1,B.az,!0,a0,new A.qr(a3,f,a0),a1.db,d,e,a0,a0,c,a0,a0,B.cY)
 if(p)f=A.e4(!1,q!=null?new A.aG(new A.a5(0,k.b,0,k.d),A.b6(f,a0,q),a0):new A.aG(k,f,a0),B.ae,!1)
 l=a1.y
 s=!s?B.ex:B.ca
-f=A.cs(a0,new A.CH(f,new A.aNb(a7),B.Av,a0,s,a.y),!0,a0,a0,!1,a0,a0,a0,a0,a0,a0,a0,a0,a0,!0,a0,a0,a0,a0,a0,a0,a0,a0,a0,new A.aNc(a7),a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0)
+f=A.cs(a0,new A.CH(f,new A.aNb(a7),B.Aw,a0,s,a.y),!0,a0,a0,!1,a0,a0,a0,a0,a0,a0,a0,a0,a0,!0,a0,a0,a0,a0,a0,a0,a0,a0,a0,new A.aNc(a7),a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0,a0)
 if(a2.z)b=f
 else{a2=t.j3
 if(p){s=a.r
@@ -67118,7 +67120,7 @@ p=o.a
 n=o.b
 s=o.d
 a.dZ(A.alH(q,o.c,s,p,n),r)}else{r=s.hc()
-r.d=B.U5
+r.d=B.U6
 q=n.BI(m,p).cH(-(s.b/2))
 p=q.d
 a.av(new A.e(q.a,p),new A.e(q.c,p),r)}}}
@@ -67145,14 +67147,14 @@ n.a=r
 n.b=null
 if(r instanceof A.vS){q=r.z
 n.b=q.$1(B.cK)
-n.a=q.$1(B.Tv)}else{q=o.y
+n.a=q.$1(B.Tw)}else{q=o.y
 if(q===null){q=b==null?null:b.f
 p=q}else p=q
 if(p==null){q=o.z.gzH()
 q.toString
 p=q}n.b=p}return A.AG(new A.aO7(n,s))},
 as5(a){return this.YK(a,null)},
-R(a){var s,r,q,p=this,o=null,n=A.al(a),m=A.V3(a),l=t.G.a(p.c),k=p.r,j=k?B.Tv:B.cK,i=p.z,h=i.gkW(),g=p.e,f=h.b4(g).a1I(!0)
+R(a){var s,r,q,p=this,o=null,n=A.al(a),m=A.V3(a),l=t.G.a(p.c),k=p.r,j=k?B.Tw:B.cK,i=p.z,h=i.gkW(),g=p.e,f=h.b4(g).a1I(!0)
 i=i.gzI()
 i.toString
 h=m.y
@@ -67227,7 +67229,7 @@ s=new A.aC(s[b],s[b+1])
 break
 default:s=null}r=s.a
 q=s.b
-if(i.d===B.Ug){s=i.f[b]
+if(i.d===B.Uh){s=i.f[b]
 p=$.am.ag$.x.i(0,s).gv(0).a
 o=i.r[b].ad(i.ay)
 r+=(q-r-(p+o.gfv()))/2+o.a
@@ -67383,7 +67385,7 @@ A.al(r)
 this.a.toString
 r=this.c
 r.toString
-return new A.aO8(r,!1,s,s,B.Ug,s,s,s,s,s,s,s,s,s,s,s,s,s,s)},
+return new A.aO8(r,!1,s,s,B.Uh,s,s,s,s,s,s,s,s,s,s,s,s,s,s)},
 ajE(a){var s,r,q,p,o,n=this,m=null,l=n.c
 l.toString
 A.al(l)
@@ -67522,7 +67524,7 @@ s=this.f
 if(s!=null){s.ax=a
 s.ay=b}},
 w6(a,b,c,d){this.a.toString
-return A.b20(c,a,d,!0,b,B.h,B.xy,B.b1,null)},
+return A.b20(c,a,d,!0,b,B.h,B.xz,B.b1,null)},
 R(a5){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3=this,a4=null
 A.al(a5)
 s=A.V3(a5)
@@ -67555,7 +67557,7 @@ p=a3.e
 p.toString
 n=A.b([],t.g)
 q[k]=a3.w6(q[k],!1,new A.hF(new A.zE(p,k),new A.bQ(n,t.l),0),a3.giY())}}}a3.a.toString
-for(p=r===B.Uf,n=t.p,m=s.ch,j=s.z,i=t.J,h=t.WV,g=t.EK,f=m==null,e=j==null,d=0;d<3;++d){c=A.aL(g)
+for(p=r===B.Ug,n=t.p,m=s.ch,j=s.z,i=t.J,h=t.WV,g=t.EK,f=m==null,e=j==null,d=0;d<3;++d){c=A.aL(g)
 if(d===a3.r)c.E(0,B.cl)
 a3.a.toString
 b=A.dz(a4,c,h)
@@ -67569,7 +67571,7 @@ b=a3.giY().geO()
 a3.a.toString
 a1=f?a3.giY().ch:m
 a3.a.toString
-b=A.cw(!1,a1,!0,new A.aG(new A.a5(0,0,0,2),A.cs(a4,new A.og(B.aX,B.bH,B.O,A.b([q[d],A.cs(a4,a4,!1,a4,a4,!1,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,d===a3.r,a4,a4,a4,a4,a4,a4)],n),a4),!1,a4,a4,!1,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,B.Tn,a4,a4,a4,a4,a4,a4,a4,a4),a4),a4,!0,a4,a4,a4,a4,a,new A.aO_(a3,d),new A.aO0(a3,d),a4,new A.aO1(a3,d),c,a4,b,a4)
+b=A.cw(!1,a1,!0,new A.aG(new A.a5(0,0,0,2),A.cs(a4,new A.og(B.aX,B.bH,B.O,A.b([q[d],A.cs(a4,a4,!1,a4,a4,!1,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,d===a3.r,a4,a4,a4,a4,a4,a4)],n),a4),!1,a4,a4,!1,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,B.To,a4,a4,a4,a4,a4,a4,a4,a4),a4),a4,!0,a4,a4,a4,a4,a,new A.aO_(a3,d),new A.aO0(a3,d),a4,new A.aO1(a3,d),c,a4,b,a4)
 q[d]=b
 b=new A.RA(b,a4)
 q[d]=b
@@ -67577,7 +67579,7 @@ a3.a.toString
 if(p)q[d]=new A.dJ(1,B.c_,b,a4)}n=a3.f
 m=a3.giY()
 p=p?B.k:B.Y
-a2=A.cs(a4,A.ec(A.b20(B.dM,new A.a2Z(a3.gasw(),B.ao,B.j,p,B.o,a4,B.aE,a4,0,q,a4),m,!0,!1,B.h,B.xy,B.b1,a4),a4,a4,n,B.a2),!0,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,B.aYi,a4,a4,a4,a4,a4,a4,a4,a4)
+a2=A.cs(a4,A.ec(A.b20(B.dM,new A.a2Z(a3.gasw(),B.ao,B.j,p,B.o,a4,B.aE,a4,0,q,a4),m,!0,!1,B.h,B.xz,B.b1,a4),a4,a4,n,B.a2),!0,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,a4,B.aYi,a4,a4,a4,a4,a4,a4,a4,a4)
 a3.a.toString
 p=A.bH(a5,a4,t.w).w
 a3.a.toString
@@ -67592,7 +67594,7 @@ A.aNY.prototype={
 $1(a){var s,r,q=this.a,p=q.a
 p.toString
 s=this.b.r
-if(s==null)s=B.AV
+if(s==null)s=B.AW
 r=B.oF[a]
 if(r.gG3().b===46&&p.gaG9())s=s.E(0,B.a9g)
 p=q.y
@@ -67754,7 +67756,7 @@ return!1},
 R(a){var s,r,q,p,o=this
 o.a.toString
 s=o.e
-r=B.OW.jP(B.z_)
+r=B.OX.jP(B.z0)
 q=o.f
 q===$&&A.c()
 p=new A.a4b(0)
@@ -67803,7 +67805,7 @@ return r==null?s.k3:r},
 gzI(){return this.gZS().x},
 gdD(){return new A.cB(new A.aO9(this),t.J)},
 geO(){return A.al(this.CW).y},
-gzB(){return B.Uf}}
+gzB(){return B.Ug}}
 A.aO9.prototype={
 $1(a){var s,r=this
 if(a.q(0,B.cl)){if(a.q(0,B.bd))return r.a.gls().b.b3(0.1)
@@ -67824,13 +67826,13 @@ if(this.ch){r=s.gie().ad(B.cK)
 r=r==null?p:r.r
 q=r
 if(q==null)q=14
-r=A.c1(a,B.d3)
+r=A.c1(a,B.d4)
 r=r==null?p:r.gcR()
 r=(r==null?B.c5:r).aW(0,q)
 return s.ob(new A.bO(A.BR(B.a98,B.ht,B.ht,r/14),t.mD))}return s},
 Gp(a){return A.b0N(a).a}}
 A.a3a.prototype={
-R(a){var s,r=A.c1(a,B.d3)
+R(a){var s,r=A.c1(a,B.d4)
 r=r==null?null:r.gcR()
 r=A.L((r==null?B.c5:r).aW(0,14)/14,1,2)
 A.b0N(a)
@@ -67851,8 +67853,8 @@ gcd(a){return B.di},
 gcL(){return B.di},
 ge9(a){return B.jT},
 gcV(a){return new A.bO(A.bj1(this.fy),t.mD)},
-ghI(){return B.xO},
-ghE(){return B.xN},
+ghI(){return B.xP},
+ghE(){return B.xO},
 gdi(){return new A.cB(new A.aOb(this),t.mN)},
 ghH(){return B.ii},
 gdv(a){return B.ij},
@@ -68053,7 +68055,7 @@ r.toString
 r=A.hE(r)
 q=n.gln().a
 p=n.a.r
-o=new A.wi(!0,"EditableText-"+r,s,q,p.z)}else o=B.yn
+o=new A.wi(!0,"EditableText-"+r,s,q,p.z)}else o=B.yo
 r=n.y.ga_().gm1()
 return A.b0R(r.z,r.ay,r.e,o,!1,!0,r.CW,r.y,!0,r.ch,r.Q,r.b,r.at,!1,r.c,r.r,r.w,r.as,r.a)},
 R(b6){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0,b1=this,b2=null,b3={},b4=A.al(b6),b5=b6.a4(t.Uf)
@@ -68353,8 +68355,8 @@ q=k.d
 p=k.a
 o=p.d
 n=t.A9
-n=q?new A.eq(B.U4,n):new A.eq(B.b0E,n)
-m=A.bg(q?B.BW:B.aeX,j,j,j)
+n=q?new A.eq(B.U5,n):new A.eq(B.b0E,n)
+m=A.bg(q?B.BX:B.aeX,j,j,j)
 l=q?"Back":"More"
 n=A.b([new A.a3k(m,new A.aOM(k),l,n)],t.p)
 B.c.J(n,k.a.c)
@@ -68724,7 +68726,7 @@ n=B.f4.f
 m=B.f4.r
 l=B.f4.w
 k=m==null?f.dl.c:m
-l=new A.Rr(f,new A.tU(s,r,q,p,o,n,m,l),B.xV,s,r,q,p,o,n,k,l)
+l=new A.Rr(f,new A.tU(s,r,q,p,o,n,m,l),B.xW,s,r,q,p,o,n,k,l)
 f=l}f=f.dr(a)
 j=a.a4(t.Uf)
 if(j==null)j=B.iN
@@ -68966,13 +68968,13 @@ aju(){var s,r=this.c
 r.toString
 s=A.al(r).w
 A:{if(B.ce===s||B.cN===s||B.cO===s){r=24
-break A}if(B.bE===s||B.cZ===s||B.aI===s){r=32
+break A}if(B.bE===s||B.d_===s||B.aI===s){r=32
 break A}r=null}return r},
 ajr(){var s,r=this.c
 r.toString
 s=A.al(r).w
 A:{if(B.ce===s||B.cN===s||B.cO===s){r=B.iT
-break A}if(B.bE===s||B.cZ===s||B.aI===s){r=B.a9U
+break A}if(B.bE===s||B.d_===s||B.aI===s){r=B.a9U
 break A}r=null}return r},
 ajt(a){var s,r
 this.a.toString
@@ -69039,7 +69041,7 @@ a3.e===$&&A.c()
 b=a3.ga_h()
 a2=a3.a
 a2=a2.c
-a1=new A.Fi(b,new A.asa(new A.a3y(k,d,B.c3,c,s,a,a0,a4)),B.ap,B.Ay,B.cA,!0,B.bcl,!0,a4,a3.gajs(),a2!=null,a1,a3.d)
+a1=new A.Fi(b,new A.asa(new A.a3y(k,d,B.c3,c,s,a,a0,a4)),B.ap,B.Az,B.cA,!0,B.bcl,!0,a4,a3.gajs(),a2!=null,a1,a3.d)
 return a1}}
 A.asa.prototype={
 $2(a,b){return new A.dK(b,!1,this.a,null)},
@@ -71221,8 +71223,8 @@ return s},
 gF(a){var s=this
 return A.a9(s.a,s.b,s.d,s.c,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a)},
 m(a){var s,r=this,q="PlaceholderDimensions(",p=r.b
-A:{if(B.St===p||B.jx===p||B.Su===p||B.Sr===p||B.Ss===p){s=q+r.a.m(0)+", "+p.m(0)+")"
-break A}if(B.Sq===p){s=q+r.a.m(0)+", "+p.m(0)+"("+A.u(r.c)+" from top))"
+A:{if(B.Su===p||B.jx===p||B.Sv===p||B.Ss===p||B.St===p){s=q+r.a.m(0)+", "+p.m(0)+")"
+break A}if(B.Sr===p){s=q+r.a.m(0)+", "+p.m(0)+"("+A.u(r.c)+" from top))"
 break A}s=null}return s}}
 A.arY.prototype={
 K(){return"TextWidthBasis."+this.b}}
@@ -71504,7 +71506,7 @@ break A}return s},
 Qn(a,b){var s,r,q,p=this
 if(p.gau2()){s=p.B8(a)
 r=s==null?null:s.c
-if(r!=null)return r}q=p.dd().GP(0,1,B.yA)
+if(r!=null)return r}q=p.dd().GP(0,1,B.yB)
 if(q.length===0){s=p.dd()
 return s.gbf(s)}s=B.c.gcs(q)
 return s.d-s.b},
@@ -71519,7 +71521,7 @@ r=B.J===q
 if(r){r=new A.aC(s,!0)
 break A}p=b
 r=!1
-p=B.bo===q
+p=B.bp===q
 o=p
 if(o){r=s-1
 r=0<=r&&r<c.goI().length&&A.aVH(c.goI().charCodeAt(r))}if(r){r=new A.aC(s,!0)
@@ -71545,7 +71547,7 @@ r=f.a
 o=f.b
 if(r===o)return c.B8(new A.aN(n+1,B.J))
 if(m&&r!==n)return c.B8(new A.aN(o,B.J))
-e=a0.c.GP(r,o,B.yA)
+e=a0.c.GP(r,o,B.yB)
 switch(j.c.a){case 1:a0=m
 break
 case 0:a0=!m
@@ -71642,7 +71644,7 @@ r=a.a
 q=b.a
 p=q+n.length
 o=!0
-if(!(q===r&&s===B.J))if(!(q<r&&r<p))q=p===r&&s===B.bo
+if(!(q===r&&s===B.J))if(!(q<r&&r<p))q=p===r&&s===B.bp
 else q=o
 else q=o
 if(q)return this
@@ -71976,7 +71978,7 @@ else q=!0
 if(q){o.cg(0)
 o=p.co
 p.fy=p.qA=o.a=o.b=new A.S(A.L(0,r.a,r.b),A.L(0,r.c,r.d))
-p.hx=B.SJ
+p.hx=B.SK
 o=p.B$
 if(o!=null)o.fw(r)
 return}s.cl(r,!0)
@@ -72568,8 +72570,8 @@ s=r.X
 r.cq=s==null?null:s.gR_()
 a.a=!1},
 o4(a,b,c){var s,r,q,p,o=this
-o.ex=A.b08(o.ex,B.Ji)
-o.ea=A.b08(o.ea,B.Ji)
+o.ex=A.b08(o.ex,B.Jj)
+o.ea=A.b08(o.ea,B.Jj)
 s=o.ex
 r=s!=null&&!s.gaf(s)
 s=o.ea
@@ -72861,7 +72863,7 @@ a.sqO(e.B)
 a.sFm(!0)
 a.sa4z(!0)
 a.sa4u(e.bM)
-a.aN=B.Tm
+a.aN=B.Tn
 a.r=!0
 if(e.B&&e.gQX())a.sFR(e.gamJ())
 if(e.B&&!e.bM)a.sFS(e.gamL())
@@ -72873,7 +72875,7 @@ a.r=!0
 if(s.Qx(r.d)!=null){a.sFJ(e.galI())
 a.sFI(e.galG())}if(s.Qw(e.D.d)!=null){a.sFL(e.galM())
 a.sFK(e.galK())}}},
-amM(a){this.bx.ii(new A.dF(a,A.ok(B.J,a.length),B.d_),B.c2)},
+amM(a){this.bx.ii(new A.dF(a,A.ok(B.J,a.length),B.d0),B.c2)},
 o4(b8,b9,c0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0,b1,b2,b3=this,b4=null,b5=A.b([],t.QF),b6=b3.az,b7=b6.w
 b7.toString
 s=b3.ac$
@@ -73174,7 +73176,7 @@ m=n?o.gej().a:o.go7().a
 l.nY(A.d1(q.e,s,m,!1),a)},
 mb(a,b){return this.A7(a,b,null)},
 QG(a){var s,r,q,p,o=this,n=a.a,m=o.az
-if(n>=m.goI().length)return A.qq(new A.aN(m.goI().length,B.bo))
+if(n>=m.goI().length)return A.qq(new A.aN(m.goI().length,B.bp))
 s=m.b.a.c.fV(a)
 switch(a.b.a){case 0:r=n-1
 break
@@ -73300,9 +73302,9 @@ q.lI=q.om=q.kR=!1}p=!p
 q.ea=p
 q.c2=d
 if(p){q.iC=c
-if(d!=null){p=A.CX(B.B5,B.ae,d)
+if(d!=null){p=A.CX(B.B6,B.ae,d)
 p.toString
-s=p}else s=B.B5
+s=p}else s=B.B6
 p=q.giV()
 r=q.k0
 r===$&&A.c()
@@ -73470,7 +73472,7 @@ p=o}if(q!=null)l.aEA(a,c,q,p)
 o=l.z
 n=o==null?null:A.d(191,o.h()>>>16&255,o.h()>>>8&255,o.h()&255)
 if(r||n==null||!l.r)return
-r=A.lb(s,B.SB)
+r=A.lb(s,B.SC)
 m=l.y
 if(m===$){$.p()
 m=l.y=A.x()}m.r=n.gk(0)
@@ -73573,7 +73575,7 @@ A:{if(B.j===p){s=c?new A.aC(a,d):new A.aC(0,d)
 break A}if(B.hT===p){s=B.j.wv(a,b,!c,d)
 break A}r=B.aP===p
 if(r&&b<2){s=B.j.wv(a,b,c,d)
-break A}q=B.Og===p
+break A}q=B.Oh===p
 if(q&&b===0){s=B.j.wv(a,b,c,d)
 break A}if(B.b9===p){s=new A.aC(a/2,d)
 break A}if(r){s=new A.aC(0,a/(b-1)+d)
@@ -74467,7 +74469,7 @@ s=a.b
 r=A.y(s).j("bL<1>")
 this.b.aAv(a.gkM(0),a.d,A.k7(new A.bL(s,r),new A.aj5(),r.j("t.E"),t.Pb))},
 aGN(a,b){var s,r,q,p,o,n=this
-if(a.gcB(a)!==B.dI&&a.gcB(a)!==B.cY)return
+if(a.gcB(a)!==B.dI&&a.gcB(a)!==B.cZ)return
 if(t.ks.b(a))return
 A:{if(t.PB.b(a)){s=A.Ql()
 break A}s=b==null?n.a.$2(a.gc9(a),a.gvg()):b
@@ -75975,9 +75977,9 @@ k=g
 j=f.b
 k=j
 i=l
-h.aX=A.aUk(new A.e(i,0),new A.e(k,0),A.b([B.d,B.zk],t.O),g,B.V,g)}else{k=h.gv(0).b
+h.aX=A.aUk(new A.e(i,0),new A.e(k,0),A.b([B.d,B.zl],t.O),g,B.V,g)}else{k=h.gv(0).b
 f=m.b.a.c
-h.aX=A.aUk(new A.e(0,k-f.gbf(f)/2),new A.e(0,k),A.b([B.d,B.zk],t.O),g,B.V,g)}m.n()
+h.aX=A.aUk(new A.e(0,k-f.gbf(f)/2),new A.e(0,k),A.b([B.d,B.zl],t.O),g,B.V,g)}m.n()
 break}else{h.a5=!1
 h.aX=null}},
 dH(a,b){this.a24(a,b)},
@@ -76169,7 +76171,7 @@ if(q.l(0,r))return
 s.x=r
 s.a9()},
 VT(){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b=this,a=null,a0=b.d
-if(a0==null||b.e==null)return B.T2
+if(a0==null||b.e==null)return B.T3
 s=a0.a
 r=b.e.a
 q=b.b
@@ -76271,7 +76273,7 @@ r.hY(r)
 q=A.c8(r,a)
 if(j.gj2().gaf(0)){p=A.Gi(j.gj2(),q)
 s=j.a
-s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bo)
+s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bp)
 if(c)j.e=s
 else j.d=s
 return p}o=j.gj2()
@@ -76302,7 +76304,7 @@ r.hY(r)
 q=A.c8(r,a)
 if(l.gj2().gaf(0)){p=A.Gi(l.gj2(),q)
 s=l.a
-s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bo)
+s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bp)
 if(b)l.e=s
 else l.d=s
 return p}o=l.gj2()
@@ -76584,7 +76586,7 @@ r.hY(r)
 q=A.c8(r,a)
 if(f.gj2().gaf(0)){p=A.Gi(f.gj2(),q)
 s=f.a
-s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bo)
+s=p===B.aB?new A.aN(s.b,B.J):new A.aN(s.a,B.bp)
 if(a0)f.e=s
 else f.d=s
 return p}o=f.gj2()
@@ -76644,13 +76646,13 @@ return!1},
 fd(a){var s,r=a.a,q=this.a,p=q.b
 if(r<=p)s=r===p&&a.b===B.J
 else s=!0
-if(s)return new A.aN(p,B.bo)
+if(s)return new A.aN(p,B.bp)
 q=q.a
 if(r<q)return new A.aN(q,B.J)
 return a},
 Ws(){var s=this.a
 this.d=new A.aN(s.a,B.J)
-this.e=new A.aN(s.b,B.bo)
+this.e=new A.aN(s.b,B.bp)
 return B.lN},
 amq(a){var s=this,r=a.b,q=r.a,p=s.a,o=p.a
 if(q<o&&a.a.a<=o)return B.aR
@@ -76663,7 +76665,7 @@ I5(a,b){var s=A.cE(),r=A.cE(),q=b.a,p=a.b
 if(q>p){q=new A.aN(q,B.J)
 r.sdh(q)
 s.sdh(q)}else{s.sdh(new A.aN(a.a,B.J))
-r.sdh(new A.aN(p,B.bo))}q=s.b_()
+r.sdh(new A.aN(p,B.bp))}q=s.b_()
 return new A.a0R(r.b_(),q)},
 amr(a){var s=this,r=s.b,q=r.dE(r.ed(a))
 if(s.arg(q)&&!J.i(s.d,s.e))return B.b0
@@ -76672,11 +76674,11 @@ VZ(a){return this.I5(this.b.fV(a),a)},
 nG(a){var s=this.b,r=s.b5(0,a)
 s=s.gv(0)
 return a.dE(A.c8(r,new A.K(0,0,0+s.a,0+s.b).ga1g()))},
-ajO(a,b){var s,r=new A.pO(b),q=a.a,p=b.length,o=r.fF(q===p||a.b===B.bo?q-1:q)
+ajO(a,b){var s,r=new A.pO(b),q=a.a,p=b.length,o=r.fF(q===p||a.b===B.bp?q-1:q)
 if(o==null)o=0
 s=r.fH(q)
 return this.I5(new A.c4(o,s==null?p:s),a)},
-ajn(a){var s,r,q=this.c,p=new A.pO(q),o=a.a,n=q.length,m=p.fF(o===n||a.b===B.bo?o-1:o)
+ajn(a){var s,r,q=this.c,p=new A.pO(q),o=a.a,n=q.length,m=p.fF(o===n||a.b===B.bp?o-1:o)
 if(m==null)m=0
 s=p.fH(o)
 n=s==null?n:s
@@ -76700,7 +76702,7 @@ p=q.a
 o=q.b
 break
 case B.pc:case B.pd:n=k.e
-if(n==null){n=new A.aN(k.a.b,B.bo)
+if(n==null){n=new A.aN(k.a.b,B.bp)
 k.e=n
 r=n}else r=n
 n=k.d
@@ -76717,7 +76719,7 @@ else k.d=p
 return o},
 ali(a,b,c){var s,r,q,p,o,n,m=this,l=m.e
 if(l==null){l=m.a
-l=a?new A.aN(l.a,B.J):new A.aN(l.b,B.bo)
+l=a?new A.aN(l.a,B.J):new A.aN(l.b,B.bp)
 m.e=l
 s=l}else s=l
 l=m.d
@@ -76737,7 +76739,7 @@ o.toString
 q=m.C1(s,a,new A.zm(o,l.b.a.c).ga4Y())
 p=B.b0
 break
-case B.Up:l=m.a
+case B.Uq:l=m.a
 q=m.C1(s,a,new A.pO(B.m.aq(m.c,l.a,l.b)))
 p=B.b0
 break
@@ -76775,7 +76777,7 @@ p=s==null?o.a.a:s}return new A.aN(p,B.J)},
 ans(a,b,c){var s,r,q,p,o,n=this,m=n.b,l=m.u.b.gOG(),k=m.m9(a,B.bb),j=l.length,i=j-1
 for(s=k.b,r=0;r<l.length;l.length===j||(0,A.H)(l),++r){q=l[r]
 if(q.gjN()>s){i=q.gFp(q)
-break}}if(b&&i===l.length-1)p=new A.aN(n.a.b,B.bo)
+break}}if(b&&i===l.length-1)p=new A.aN(n.a.b,B.bp)
 else if(!b&&i===0)p=new A.aN(n.a.a,B.J)
 else p=n.fd(m.dE(new A.e(c,l[b?i+1:i-1].gjN())))
 m=p.a
@@ -76934,7 +76936,7 @@ a.a.Dw(0,s)},
 dX(a){this.hj(a)
 a.a=!0
 a.saEL(this.u.a)
-a.az=B.Tl
+a.az=B.Tm
 a.r=!0},
 $ik9:1}
 A.akA.prototype={
@@ -77418,7 +77420,7 @@ if(q.aj===B.bQ){r=q.D
 r.toString
 r.jq(a.gc7(0),b,s)
 if(q.X.gFl())a.R6()}q.iU(a,b)
-if(q.aj===B.As){r=q.D
+if(q.aj===B.At){r=q.D
 r.toString
 r.jq(a.gc7(0),b,s)
 if(q.X.gFl())a.R6()}}}
@@ -78637,7 +78639,7 @@ s=a6.d
 r=s+a6.z
 q=r+a6.Q
 p=a6.awF()
-if(a3.ac$==null)if(!a3.a0y()){a3.dy=B.U2
+if(a3.ac$==null)if(!a3.a0y()){a3.dy=B.U3
 a7.qm()
 return}a5.a=null
 o=a3.ac$
@@ -78653,7 +78655,7 @@ if(!k)break
 k=o.b
 k.toString
 o=n.a(k).aD$;++l}a3.qb(l,0)
-if(a3.ac$==null)if(!a3.a0y()){a3.dy=B.U2
+if(a3.ac$==null)if(!a3.a0y()){a3.dy=B.U3
 a7.qm()
 return}}o=a3.ac$
 n=o.b
@@ -78944,7 +78946,7 @@ if(c.ac$==null)return
 s=t.u
 r=!0
 switch(A.oN(s.a(A.J.prototype.ga0.call(c)).a,s.a(A.J.prototype.ga0.call(c)).b).a){case 0:q=a0.N(0,new A.e(0,c.dy.c))
-p=B.OK
+p=B.OL
 o=B.lz
 break
 case 1:q=a0
@@ -79479,7 +79481,7 @@ A.q8.prototype={
 m(a){return"RevealedOffset(offset: "+A.u(this.a)+", rect: "+this.b.m(0)+")"}}
 A.yl.prototype={
 dX(a){this.hj(a)
-a.Dm(B.To)},
+a.Dm(B.Tp)},
 ik(a){var s=this.ga1k()
 new A.af(s,new A.an_(),A.a8(s).j("af<1>")).aG(0,a)},
 shX(a){if(a===this.u)return
@@ -79776,7 +79778,7 @@ j.toString
 i=A.y(e).j("az.1").a(j).cP$
 j=i==null
 if(!j){h=Math.max(a,s)
-g=e.OE(e.gtW(),A.L(q,-o,0),i,b,B.By,p,a,0,l,r,h-a)
+g=e.OE(e.gtW(),A.L(q,-o,0),i,b,B.Bz,p,a,0,l,r,h-a)
 if(g!==0)return-g}q=e.cG
 o=-s
 h=Math.max(0,o)
@@ -79927,7 +79929,7 @@ s=t.u
 r=A.oN(s.a(A.J.prototype.ga0.call(a)).a,s.a(A.J.prototype.ga0.call(a)).b)
 A:{if(B.dm===r||B.eR===r){q=b-q
 break A}if(B.dB===r){q=this.gv(0).b-b-q
-break A}if(B.d4===r){q=this.gv(0).a-b-q
+break A}if(B.d5===r){q=this.gv(0).a-b-q
 break A}q=null}return q}}
 A.ky.prototype={
 aB(a){var s,r,q
@@ -79964,11 +79966,11 @@ if(s!=null)a.push("offset: "+B.b.ao(s,1))}}
 A.qA.prototype={
 K(){return"WrapAlignment."+this.b},
 Bi(a,b,c,d){var s,r,q=this
-A:{if(B.d1===q){s=new A.aC(d?a:0,b)
-break A}if(B.bdR===q){s=B.d1.Bi(a,b,c,!d)
+A:{if(B.d2===q){s=new A.aC(d?a:0,b)
+break A}if(B.bdR===q){s=B.d2.Bi(a,b,c,!d)
 break A}r=B.bdS===q
-if(r&&c<2){s=B.d1.Bi(a,b,c,d)
-break A}if(B.xQ===q){s=new A.aC(a/2,b)
+if(r&&c<2){s=B.d2.Bi(a,b,c,d)
+break A}if(B.xR===q){s=new A.aC(a/2,b)
 break A}if(r){s=new A.aC(0,a/(c-1)+b)
 break A}if(B.bdT===q){s=a/c
 s=new A.aC(s/2,s+b)
@@ -80367,11 +80369,11 @@ r=a==null
 q.to$=q.SJ(r?q.ry$:a)
 if(!r)q.ry$=a
 q.p2$=!1
-try{q.p3$=B.SQ
+try{q.p3$=B.SR
 s=q.k2$
 q.k2$=A.G(t.S,t.h1)
 J.kI(s,new A.anN(q))
-q.k3$.a3(0)}finally{q.p3$=B.SR}},
+q.k3$.a3(0)}finally{q.p3$=B.SS}},
 aFV(a){var s=this,r=s.y2$,q=r==null
 if(!q&&r!==a)return null
 if(r===a)++s.aU$
@@ -80584,7 +80586,7 @@ return J.ag(b)===A.P(this)&&b instanceof A.dt&&b.a===this.a&&A.d4(b.b,this.b)},
 gF(a){return A.a9(this.a,this.b,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a)},
 m(a){return"AttributedString('"+this.a+"', attributes: "+A.u(this.b)+")"}}
 A.Ue.prototype={
-dt(){var s,r,q,p,o,n=this,m=t.s,l=A.b([],m),k=B.Ok.gdK(B.Ok)
+dt(){var s,r,q,p,o,n=this,m=t.s,l=A.b([],m),k=B.Ol.gdK(B.Ol)
 k=A.a1(k,A.y(k).j("t.E"))
 k.$flags=1
 k=k
@@ -80593,7 +80595,7 @@ r=n.a
 q=0
 for(;q<k.length;k.length===s||(0,A.H)(k),++q){p=k[q]
 if((A.aR_(r)&p.a)!==0)l.push(p.b)}m=A.b([],m)
-k=B.Os.gdK(B.Os)
+k=B.Ot.gdK(B.Ot)
 k=A.a1(k,A.y(k).j("t.E"))
 k.$flags=1
 k=k
@@ -80720,7 +80722,7 @@ r.db=!0
 s=r.ay
 if(s!=null)s.b.E(0,r)},
 Ip(a,b){var s,r
-if(a===B.T5){if(A.mN(b)){s=$.aTS.i(0,b)
+if(a===B.T6){if(A.mN(b)){s=$.aTS.i(0,b)
 r=s!=null&&this.dy.aC(0,s)}else r=!1
 return r}return this.dx.aC(0,a)},
 m5(a,b,c){var s,r,q=this
@@ -81013,8 +81015,8 @@ n.fy=s}if(n.k2==null)n.k2=a.a1
 if(n.k3==null)n.k3=a.a2
 s=n.go
 if(s===B.jH)n.go=a.ah
-else if(s===B.Tq){s=a.ah
-if(s!==B.jH&&s!==B.Tq)n.go=s}return!0},
+else if(s===B.Tr){s=a.ah
+if(s!==B.jH&&s!==B.Tr)n.go=s}return!0},
 $S:69}
 A.apn.prototype={
 $1(a){return a.b},
@@ -81169,7 +81171,7 @@ r=s.a}if(r==null||!r.Ip(b,c))return null
 return r.dx.i(0,b)},
 aEH(a,b,c){var s,r=this.ajX(a,b,c)
 if(r!=null){r.$1(c)
-return}if(b===B.Tb){s=this.c.i(0,a)
+return}if(b===B.Tc){s=this.c.i(0,a)
 s=(s==null?null:s.c)!=null}else s=!1
 if(s)this.c.i(0,a).c.$0()},
 m(a){return"<optimized out>#"+A.c2(this)}}
@@ -81209,28 +81211,28 @@ this.fX(B.i4,a)},
 sn6(a){a.toString
 this.fX(B.pe,a)},
 sFO(a){this.fX(B.lR,a)},
-sFF(a){this.fX(B.Tc,a)},
+sFF(a){this.fX(B.Td,a)},
 sFP(a){this.fX(B.lS,a)},
 sFQ(a){this.fX(B.lO,a)},
 sFN(a){this.fX(B.lP,a)},
 saDV(a){this.nx(B.wM,new A.apf(a))},
 sFG(a){this.fX(B.wL,a)},
 sFD(a){this.fX(B.wK,a)},
-sFB(a,b){this.fX(B.Tf,b)},
-sFC(a,b){this.fX(B.Tj,b)},
-sFM(a,b){this.fX(B.T6,b)},
-sFK(a){this.nx(B.Tg,new A.apd(a))},
-sFI(a){this.nx(B.T8,new A.apb(a))},
-sFL(a){this.nx(B.Th,new A.ape(a))},
-sFJ(a){this.nx(B.T4,new A.apc(a))},
-sFR(a){this.nx(B.T9,new A.apg(a))},
-sFS(a){this.nx(B.Ta,new A.aph(a))},
+sFB(a,b){this.fX(B.Tg,b)},
+sFC(a,b){this.fX(B.Tk,b)},
+sFM(a,b){this.fX(B.T7,b)},
+sFK(a){this.nx(B.Th,new A.apd(a))},
+sFI(a){this.nx(B.T9,new A.apb(a))},
+sFL(a){this.nx(B.Ti,new A.ape(a))},
+sFJ(a){this.nx(B.T5,new A.apc(a))},
+sFR(a){this.nx(B.Ta,new A.apg(a))},
+sFS(a){this.nx(B.Tb,new A.aph(a))},
 sze(a){a.toString
-this.fX(B.Td,a)},
-sFE(a){this.fX(B.Ti,a)},
+this.fX(B.Te,a)},
+sFE(a){this.fX(B.Tj,a)},
 szf(a,b){this.fX(B.lQ,b)},
-sP4(a){this.fX(B.T7,a)},
-sP0(a){this.fX(B.Te,a)},
+sP4(a){this.fX(B.T8,a)},
+sP0(a){this.fX(B.Tf,a)},
 sa7J(a){if(a==this.R8)return
 this.R8=a
 this.r=!0},
@@ -81414,7 +81416,7 @@ r.toString
 s.J(0,r)
 p.bm=s}s=a.b8
 r=p.b8
-if(s!==r)if(s===B.Tr)p.b8=B.Tr
+if(s!==r)if(s===B.Ts)p.b8=B.Ts
 else if(r===B.jH)p.b8=s
 p.O=p.O.aoI(a.O)
 if(p.bC==null)p.bC=a.bC
@@ -81566,7 +81568,7 @@ A.a73.prototype={
 $1(a){return this.a6Q(a)},
 a6Q(a){var s=0,r=A.C(t.CL),q
 var $async$$1=A.D(function(b,c){if(b===1)return A.z(c,r)
-for(;;)switch(s){case 0:q=A.bfV(A.O8(B.yB.eu(A.c5(B.bK.je(0,a)))))
+for(;;)switch(s){case 0:q=A.bfV(A.O8(B.yC.eu(A.c5(B.bK.je(0,a)))))
 s=1
 break
 case 1:return A.A(q,r)}})
@@ -82154,7 +82156,7 @@ s=new A.Fj(a)
 r=B.cx.kk(0,s)
 q=B.cx.kk(0,s)
 if(typeof r=="string"&&s.b>=a.byteLength)return new A.l5(r,q)
-else throw A.m(B.Bw)},
+else throw A.m(B.Bx)},
 yg(a){var s=A.au4(64)
 s.h_(0,0)
 B.cx.fE(0,s,a)
@@ -82324,7 +82326,7 @@ break
 case 1:return A.A(q,r)}})
 return A.B($async$d3,r)}}
 A.Da.prototype={
-Pp(){var s=new A.k8(this.a,B.d6),r=A.cE()
+Pp(){var s=new A.k8(this.a,B.d7),r=A.cE()
 r.b=new A.fR(new A.acw(this,r,s,null),new A.acx(this,s,null),t.zr)
 return J.aXO(r.b_())}}
 A.acw.prototype={
@@ -82365,7 +82367,7 @@ case 3:s=6
 return A.l(J.a6d(p.b.b_()),$async$$1)
 case 6:s=4
 break
-case 5:try{J.eB(p.b.b_(),B.d6.y3(a))}catch(l){m=A.ay(l)
+case 5:try{J.eB(p.b.b_(),B.d7.y3(a))}catch(l){m=A.ay(l)
 if(m instanceof A.u2){o=m
 p.b.b_().tM(o)}else throw l}case 4:q=null
 s=1
@@ -82481,7 +82483,7 @@ A.js.prototype={
 K(){return"ModifierKey."+this.b}}
 A.Fh.prototype={
 gaDk(){var s,r,q=A.G(t.xS,t.Dk)
-for(s=0;s<9;++s){r=B.Jn[s]
+for(s=0;s<9;++s){r=B.Jo[s]
 if(this.aCn(r))q.t(0,r,B.j7)}return q}}
 A.o_.prototype={}
 A.alM.prototype={
@@ -82519,11 +82521,11 @@ i=$.ee
 if(i!=null)i.$1(new A.bB(r,q,"services library",j,p,!1))}}return!1},
 au5(a1){var s,r,q,p,o,n,m,l,k,j,i,h,g=a1.c,f=g.gaDk(),e=t.v3,d=A.G(e,t.bd),c=A.aL(e),b=this.d,a=A.cR(new A.bL(b,A.y(b).j("bL<1>")),e),a0=a1 instanceof A.q_
 if(a0)a.E(0,g.gkY())
-for(s=g.a,r=null,q=0;q<9;++q){p=B.Jn[q]
+for(s=g.a,r=null,q=0;q<9;++q){p=B.Jo[q]
 o=$.b56()
 n=o.i(0,new A.eh(p,B.fb))
 if(n==null)continue
-m=B.Or.i(0,s)
+m=B.Os.i(0,s)
 if(n.q(0,m==null?new A.M(98784247808+B.m.gF(s)):m))r=p
 if(f.i(0,p)===B.j7){c.J(0,n)
 if(n.bB(0,a.gkH(a)))continue}l=f.i(0,p)==null?A.aL(e):o.i(0,new A.eh(p,f.i(0,p)))
@@ -82547,7 +82549,7 @@ gF(a){return A.a9(this.a,this.b,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,B.a,
 A.a0L.prototype={}
 A.a0K.prototype={}
 A.SX.prototype={
-gkY(){var s=this.a,r=B.Or.i(0,s)
+gkY(){var s=this.a,r=B.Os.i(0,s)
 return r==null?new A.M(98784247808+B.m.gF(s)):r},
 gOK(){var s,r=this.b,q=B.aOG.i(0,r),p=q==null?null:q[this.c]
 if(p!=null)return p
@@ -82563,7 +82565,7 @@ break A}if(B.jp===a){s=(r.d&8)!==0
 break A}if(B.w8===a){s=(r.d&16)!==0
 break A}if(B.w7===a){s=(r.d&32)!==0
 break A}if(B.w9===a){s=(r.d&64)!==0
-break A}if(B.wa===a||B.Oy===a){s=!1
+break A}if(B.wa===a||B.Oz===a){s=!1
 break A}s=null}return s},
 l(a,b){var s=this
 if(b==null)return!1
@@ -82848,11 +82850,11 @@ return a>=s?null:s}}
 A.i9.prototype={
 go7(){var s,r=this
 if(!r.gbY()||r.c===r.d)s=r.e
-else s=r.c<r.d?B.J:B.bo
+else s=r.c<r.d?B.J:B.bp
 return new A.aN(r.c,s)},
 gej(){var s,r=this
 if(!r.gbY()||r.c===r.d)s=r.e
-else s=r.c<r.d?B.bo:B.J
+else s=r.c<r.d?B.bp:B.J
 return new A.aN(r.d,s)},
 m(a){var s,r,q=this,p=", isDirectional: "
 if(!q.gbY())return"TextSelection.invalid"
@@ -82914,7 +82916,7 @@ m.KI(!0,n,n+p.c.length,f)}r=q==null?l:q.a+q.c.length
 if(r==null)r=0
 m.KI(!1,r,h.length,f)
 k=k.a
-h=g==null||g.a===g.b?B.d_:new A.c4(g.a,g.b)
+h=g==null||g.a===g.b?B.d0:new A.c4(g.a,g.b)
 j=i==null?B.pt:A.d1(j.e,i.a,i.b,j.f)
 return new A.dF(k.charCodeAt(0)==0?k:k,j,h)},
 KI(a,b,c,d){var s,r,q,p
@@ -82955,9 +82957,9 @@ A.aqv.prototype={
 K(){return"SmartQuotesType."+this.b}}
 A.mx.prototype={
 dt(){var s=this
-return A.aK(["name","TextInputType."+B.IR[s.a],"signed",s.b,"decimal",s.c,"password",s.d],t.N,t.z)},
+return A.aK(["name","TextInputType."+B.IS[s.a],"signed",s.b,"decimal",s.c,"password",s.d],t.N,t.z)},
 m(a){var s=this
-return"TextInputType(name: "+("TextInputType."+B.IR[s.a])+", signed: "+A.u(s.b)+", decimal: "+A.u(s.c)+", password: "+A.u(s.d)+")"},
+return"TextInputType(name: "+("TextInputType."+B.IS[s.a])+", signed: "+A.u(s.b)+", decimal: "+A.u(s.c)+", password: "+A.u(s.d)+")"},
 l(a,b){var s=this
 if(b==null)return!1
 return b instanceof A.mx&&b.a===s.a&&b.b==s.b&&b.c==s.c&&b.d==s.d},
@@ -83289,7 +83291,7 @@ A.Hg.prototype={}
 A.a_P.prototype={
 Ul(a){var s,r=a.dt()
 if($.cY().a!==$.aT6()){s=B.b1s.dt()
-s.t(0,"isMultiline",a.b.l(0,B.Ut))
+s.t(0,"isMultiline",a.b.l(0,B.Uu))
 r.t(0,"inputType",s)}return r},
 Me(a,b){var s=$.cY(),r=s.c
 r===$&&A.c()
@@ -83534,7 +83536,7 @@ A.vz.prototype={
 AQ(){var s=0,r=A.C(t.H),q=this
 var $async$AQ=A.D(function(a,b){if(a===1)return A.z(b,r)
 for(;;)switch(s){case 0:s=2
-return A.l(B.Ow.hm("create",A.aK(["id",q.a,"viewType",q.b,"params",q.c],t.N,t.z),!1,t.H),$async$AQ)
+return A.l(B.Ox.hm("create",A.aK(["id",q.a,"viewType",q.b,"params",q.c],t.N,t.z),!1,t.H),$async$AQ)
 case 2:q.d=!0
 return A.A(null,r)}})
 return A.B($async$AQ,r)},
@@ -83552,7 +83554,7 @@ var $async$n=A.D(function(a,b){if(a===1)return A.z(b,r)
 for(;;)switch(s){case 0:s=q.d?2:3
 break
 case 2:s=4
-return A.l(B.Ow.hm("dispose",q.a,!1,t.H),$async$n)
+return A.l(B.Ox.hm("dispose",q.a,!1,t.H),$async$n)
 case 4:case 3:return A.A(null,r)}})
 return A.B($async$n,r)}}
 A.QR.prototype={
@@ -84237,7 +84239,7 @@ k.c=new A.Hu(s.cx,s.dx.b3(1),k.b,l)
 s=m.a.p4
 r=A.bfT()
 q=A.ny($.b5B(),t.C,t.od)
-q.t(0,B.xF,new A.G4(new A.bQ(A.b([],t.ot),t.wS)).eg(a))
+q.t(0,B.xG,new A.G4(new A.bQ(A.b([],t.ot),t.wS)).eg(a))
 n=A.am5()
 return new A.FV(new A.Gr(new A.dV(m.gahI(),A.aq0(new A.P6(A.wa(q,A.aUe(new A.V6(new A.Gs(new A.k6(new A.aPI(k,m),l,m.gBS(),l),l),l),l,n)),l),"<Default WidgetsApp Shortcuts>",r),l,t.w3),l),s,l)}}
 A.aPF.prototype={
@@ -84698,7 +84700,7 @@ if(q!=null)q.a6()}}}
 A.dJ.prototype={}
 A.W2.prototype={
 aS(a){var s=this,r=A.e0(a)
-r=new A.FM(B.ao,s.f,s.r,B.d1,s.x,s.y,r,B.aE,B.n,A.aH(),0,null,null,new A.bj(),A.aH())
+r=new A.FM(B.ao,s.f,s.r,B.d2,s.x,s.y,r,B.aE,B.n,A.aH(),0,null,null,new A.bj(),A.aH())
 r.aR()
 r.J(0,null)
 return r},
@@ -84706,7 +84708,7 @@ aV(a,b){var s,r=this
 b.sEm(0,B.ao)
 b.sfe(r.f)
 b.svM(0,r.r)
-b.saG5(B.d1)
+b.saG5(B.d2)
 b.saG7(r.x)
 b.sayS(r.y)
 s=A.e0(a)
@@ -84965,7 +84967,7 @@ if(!B.c.q(f,m)){s=4
 break}p=7
 s=10
 return A.l(m.ua(),$async$EZ)
-case 10:if(a0===B.yg)g=!0
+case 10:if(a0===B.yh)g=!0
 p=2
 s=9
 break
@@ -84983,7 +84985,7 @@ break
 case 9:case 4:e.length===d||(0,A.H)(e),++c
 s=3
 break
-case 5:q=g?B.yg:B.q9
+case 5:q=g?B.yh:B.q9
 s=1
 break
 case 1:return A.A(q,r)
@@ -85401,8 +85403,8 @@ s.p1=$.aO
 B.wm.no(l.galO())
 B.aRA.no(l.gake())
 B.aRC.no(l.gamX())
-s=new A.P5(A.G(p,t.qa),B.OS)
-B.OS.no(s.gaoK())
+s=new A.P5(A.G(p,t.qa),B.OT)
+B.OT.no(s.gaoK())
 l.dl$=s
 l.ex$=A.bjV()},
 NU(){var s,r,q,p,o,n,m,l,k
@@ -85552,7 +85554,7 @@ p.toString
 m=A.a98(m,s,new A.XR(q==null?B.aN:q,p,n))}s=o.w
 if(s!=null)m=A.eF(m,s,B.bQ)
 s=o.x
-if(s!=null)m=A.eF(m,s,B.As)
+if(s!=null)m=A.eF(m,s,B.At)
 s=o.y
 if(s!=null)m=new A.eb(s,m,n)
 s=o.z
@@ -85573,7 +85575,7 @@ gcB(a){var s=this.c
 if(s!=null)return s
 s=this.b
 if(s!=null)return A.b8K(s)
-return B.An},
+return B.Ao},
 gm4(a){var s=this.b
 return s==null?this.gcB(0).b:s},
 l(a,b){var s=this
@@ -85619,7 +85621,7 @@ switch(A.bn().a){case 3:s=A.ny($.aX7(),t.Vz,t.vz)
 for(r=$.aX5(),r=new A.fI(r,r.r,r.e);r.C();)s.t(0,r.d,B.a1)
 return s
 case 0:case 1:case 5:case 2:case 4:return $.aX7()}switch(A.bn().a){case 0:case 1:case 3:case 5:return null
-case 2:return B.Oj
+case 2:return B.Ok
 case 4:return $.b4h()}},
 R(a){var s=this.c,r=this.ajw()
 if(r!=null)s=A.aq0(s,"<Web Disabling Text Editing Shortcuts>",r)
@@ -85672,9 +85674,9 @@ var s=this.f
 if(s!=null)s.n()
 this.acX()},
 gjF(){var s=this.a.x
-return s===B.a8A||s===B.Au||s===B.rT},
+return s===B.a8A||s===B.Av||s===B.rT},
 wq(a){var s,r,q,p
-if(a===0)return B.Aw
+if(a===0)return B.Ax
 if(this.gjF()){s=this.c.a4(t.I).w
 A:{r=B.bI===s
 if(r&&a<0){q=B.rT
@@ -85682,8 +85684,8 @@ break A}p=B.aN===s
 if(p&&a>0){q=B.rT
 break A}if(!r)q=p
 else q=!0
-if(q){q=B.Au
-break A}q=null}return q}return a>0?B.Av:B.a8B},
+if(q){q=B.Av
+break A}q=null}return q}return a>0?B.Aw:B.a8B},
 gJ0(){this.a.toString
 B.aOE.i(0,this.wq(this.w))
 return 0.4},
@@ -85739,14 +85741,14 @@ p=new A.e(r,0)}else{o.toString
 p=new A.e(0,r)}o=t.Ni
 s.e=new A.bc(t.G.a(q),new A.b1(B.C,p,o),o.j("bc<b8.T>"))},
 ahK(a){var s,r,q,p,o=this
-if(o.w===0)return B.xX
+if(o.w===0)return B.xY
 s=a.a
 r=s.a
 q=s.b
 if(o.gjF()){s=Math.abs(r)
-if(s-Math.abs(q)<400||s<700)return B.xX
+if(s-Math.abs(q)<400||s<700)return B.xY
 p=o.wq(r)}else{s=Math.abs(q)
-if(s-Math.abs(r)<400||s<700)return B.xX
+if(s-Math.abs(r)<400||s<700)return B.xY
 p=o.wq(q)}if(p===o.wq(o.w))return B.bep
 return B.beq},
 akL(a){var s,r,q,p,o=this
@@ -85814,7 +85816,7 @@ p=q.a
 return new A.Uq(s,A.b6(j,q.b,p),r,j)}r=k.e
 r===$&&A.c()
 o=A.qk(new A.k3(s.c,k.as),r,j,!0)
-if(s.x===B.Aw)return o
+if(s.x===B.Ax)return o
 r=k.gjF()?k.gWa():j
 q=k.gjF()?k.gWb():j
 p=k.gjF()?k.gW9():j
@@ -85927,7 +85929,7 @@ s.iU(a,b)}}
 A.Hd.prototype={
 awZ(a,b,c){var s,r,q,p=null,o=this.a
 if(!o.ga4m()||!c)return A.ey(p,p,p,p,p,p,p,p,p,b,o.a)
-s=b.b4(B.UB)
+s=b.b4(B.UC)
 o=this.a
 r=o.c
 o=o.a
@@ -85937,7 +85939,7 @@ return A.ey(A.b([A.ey(p,p,p,p,p,p,p,p,p,p,B.m.aq(o,0,q)),A.ey(p,p,p,p,p,p,p,p,p,
 svz(a){var s,r=this.a,q=r.a.length,p=a.b
 if(q<p||q<a.a)throw A.m(A.ji("invalid text selection: "+a.m(0)))
 s=r.c
-this.rS(0,r.ayn(a.a>=s.a&&p<=s.b?s:B.d_,a))}}
+this.rS(0,r.ayn(a.a>=s.a&&p<=s.b?s:B.d0,a))}}
 A.Vt.prototype={}
 A.j_.prototype={}
 A.aBe.prototype={
@@ -86044,7 +86046,7 @@ if(a===B.bZ){s.kG(s.a.c.a.b.gej())
 s.kS(!1)
 switch(A.bn().a){case 2:case 4:case 3:case 5:break
 case 0:case 1:r=s.a.c.a
-s.ii(new A.dF(r.a,A.ok(B.J,r.b.b),B.d_),B.bZ)
+s.ii(new A.dF(r.a,A.ok(B.J,r.b.b),B.d0),B.bZ)
 break}}A.ef(null,t.H)},
 Ea(a){var s,r,q=this,p=q.a,o=p.x
 if(o)return
@@ -86507,7 +86509,7 @@ s.toString
 q.toString
 n.R2(B.nK,new A.e(p,s),q,m)}},
 Jd(a,b){var s,r,q,p,o,n=this,m=n.a.c
-m.rS(0,m.a.MR(B.d_))
+m.rS(0,m.a.MR(B.d0))
 if(b)switch(a.a){case 0:case 1:case 2:case 3:case 4:case 5:case 8:case 9:case 10:case 11:case 12:n.a.d.ih()
 break
 case 6:m=n.a.d
@@ -86692,7 +86694,7 @@ return h},
 Bm(a,b){var s,r,q,p=this,o=p.a.c,n=o.a.a.length
 if(n<a.b||n<a.a)return
 o.svz(a)
-switch(b){case null:case void 0:case B.T1:case B.bR:case B.lL:case B.dK:case B.lM:case B.cv:case B.bZ:p.Gn()
+switch(b){case null:case void 0:case B.T2:case B.bR:case B.lL:case B.dK:case B.lM:case B.cv:case B.bZ:p.Gn()
 break
 case B.c2:break}o=p.a
 o.toString
@@ -86873,7 +86875,7 @@ aik(){var s,r,q,p=this
 if(p.a.d.gc0()&&p.a.d.axB())p.C7()
 else if(!p.a.d.gc0()){p.U2()
 s=p.a.c
-s.rS(0,s.a.MR(B.d_))}p.Lh()
+s.rS(0,s.a.MR(B.d0))}p.Lh()
 p.a_S()
 s=p.a.d.gc0()
 r=$.am
@@ -86923,7 +86925,7 @@ p=q==null?b:q.dy
 c.a.toString
 A:{q=c.c
 q.toString
-q=A.c1(q,B.d3)
+q=A.c1(q,B.d4)
 q=q==null?b:q.gcR()
 if(q==null)q=B.c5
 break A}o=c.a.db
@@ -87034,7 +87036,7 @@ aEJ(a){var s,r,q=B.aOW.i(0,a)
 if(q!=null){s=$.am.ag$.d.c
 r=s==null?null:s.e
 if(r!=null)A.mT(r,q,t.vz)}},
-gm1(){var s,r,q,p,o,n,m,l,k,j,i,h=this,g=h.a.aN,f=J.m5(g.slice(0),A.a8(g).c),e=f!=null?new A.wi(!0,"EditableText-"+A.hE(h),f,h.a.c.a,null):B.yn
+gm1(){var s,r,q,p,o,n,m,l,k,j,i,h=this,g=h.a.aN,f=J.m5(g.slice(0),A.a8(g).c),e=f!=null?new A.wi(!0,"EditableText-"+A.hE(h),f,h.a.c.a,null):B.yo
 g=h.c
 g.toString
 g=A.qx(g).a
@@ -87047,7 +87049,7 @@ o=s.ax
 n=s.ay
 m=s.a5
 s=s.p4
-s=r.l(0,B.Ut)?B.Ur:B.Us
+s=r.l(0,B.Uu)?B.Us:B.Ut
 l=h.a
 k=l.dy
 j=l.Y
@@ -87088,7 +87090,7 @@ break
 case 1:r=a.a
 break
 default:r=null}if(b){s=c.fH(r)
-s=new A.aN(s==null?this.a.c.a.a.length:s,B.bo)}else{s=c.fF(r)
+s=new A.aN(s==null?this.a.c.a.a.length:s,B.bp)}else{s=c.fF(r)
 s=new A.aN(s==null?0:s,B.J)}return s},
 TB(){var s=this.a.c.a
 return new A.wx(s.a)},
@@ -87116,7 +87118,7 @@ q=r.b
 if(o===s.length)r.YM(2,q)
 else{r.YM(1,q)
 r.AS(1,r.b)}o=r.a
-p.ii(new A.dF(B.m.aq(o,0,r.b)+new A.eZ(r.gV(0)).gak(0)+new A.eZ(r.gV(0)).gS(0)+B.m.d6(o,r.c),A.ok(B.J,r.b+r.gV(0).length),B.d_),B.c2)},
+p.ii(new A.dF(B.m.aq(o,0,r.b)+new A.eZ(r.gV(0)).gak(0)+new A.eZ(r.gV(0)).gS(0)+B.m.d6(o,r.c),A.ok(B.J,r.b+r.gV(0).length),B.d0),B.c2)},
 Yw(a){var s=this.a.c.a,r=a.a.PA(a.c,a.b)
 this.ii(r,a.d)
 if(r.l(0,s))this.UI()},
@@ -87169,7 +87171,7 @@ A.mT(a,new A.lW(),t.Rz)},
 R(c2){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,b0,b1,b2,b3,b4,b5,b6,b7,b8,b9=this,c0=null,c1={}
 b9.AC(c2)
 s=b9.a.p2
-A:{r=A.c1(c2,B.d3)
+A:{r=A.c1(c2,B.d4)
 r=r==null?c0:r.gcR()
 if(r==null)r=B.c5
 break A}q=A.c1(c2,B.pP)
@@ -87183,7 +87185,7 @@ B:{m=b9.a.p3
 if(B.b1t.l(0,m)){c1.a=B.aYd
 break B}if(B.b1v.l(0,m)){c1.a=B.aYc
 break B}if(B.b1u.l(0,m)){c1.a=B.aYe
-break B}c1.a=B.Tm}q=b9.ghl()
+break B}c1.a=B.Tn}q=b9.ghl()
 l=b9.O
 if(l===$){k=t.ot
 j=A.b([],k)
@@ -87262,7 +87264,7 @@ b7=new A.Yr(new A.bQ(b6,i)).eg(b7)
 k=A.b([],k)
 b6=b9.c
 b6.toString
-b8=A.aK([B.bcy,new A.CJ(!1,new A.bQ(j,i)),B.bd4,l,B.bdi,g,B.Vn,new A.CG(!0,new A.bQ(h,i)),B.xD,new A.ea(b9.ganE(),new A.bQ(f,i),t.OY),B.bcG,b,B.bdp,a0,B.bcH,a2,B.bcR,e,B.bdq,a4,B.bdx,a6,B.bdw,a3,B.bdb,a9,B.bdc,a7,B.bd2,a5,B.bdr,b1,B.bdv,a8,B.bdt,c,B.xF,new A.ea(b9.gaio(),new A.bQ(d,i),t.fn),B.bcw,a,B.bcx,b2,B.bd6,b0,B.bcE,b3,B.bd_,b4,B.bda,a1,B.bcK,b7,B.bcv,new A.Ys(new A.bQ(k,i)).eg(b6)],t.C,t.od)
+b8=A.aK([B.bcy,new A.CJ(!1,new A.bQ(j,i)),B.bd4,l,B.bdi,g,B.Vn,new A.CG(!0,new A.bQ(h,i)),B.xE,new A.ea(b9.ganE(),new A.bQ(f,i),t.OY),B.bcG,b,B.bdp,a0,B.bcH,a2,B.bcR,e,B.bdq,a4,B.bdx,a6,B.bdw,a3,B.bdb,a9,B.bdc,a7,B.bd2,a5,B.bdr,b1,B.bdv,a8,B.bdt,c,B.xG,new A.ea(b9.gaio(),new A.bQ(d,i),t.fn),B.bcw,a,B.bcx,b2,B.bd6,b0,B.bcE,b3,B.bd_,b4,B.bda,a1,B.bcK,b7,B.bcv,new A.Ys(new A.bQ(k,i)).eg(b6)],t.C,t.od)
 b9.O!==$&&A.b2()
 b9.O=b8
 l=b8}return new A.Xc(b9.gagY(),q,A.wa(l,new A.dM(new A.abf(c1,b9,s,p,o,n,r),c0)),c0)},
@@ -87537,7 +87539,7 @@ break
 case 0:break}return a.a!==b.a||!a.c.l(0,b.c)},
 $S:454}
 A.aba.prototype={
-$1(a){return A.bn()===B.bE?a.MR(B.d_):a},
+$1(a){return A.bn()===B.bE?a.MR(B.d0):a},
 $S:455}
 A.abc.prototype={
 $1(a){var s=this.a
@@ -87685,7 +87687,7 @@ A.aMC.prototype={
 axu(a){var s,r,q=this
 if(a===q)return B.fg
 s=!0
-if(q.a===a.a)if(q.b===a.b){if(q.c.l(0,a.c))r=!B.Uq.l(0,B.Uq)||!q.f.l(0,a.f)||q.r!==a.r||!q.w.l(0,a.w)
+if(q.a===a.a)if(q.b===a.b){if(q.c.l(0,a.c))r=!B.Ur.l(0,B.Ur)||!q.f.l(0,a.f)||q.r!==a.r||!q.w.l(0,a.w)
 else r=s
 s=r}return s?B.dy:q.x.bF(0,a.x)}}
 A.KA.prototype={
@@ -87777,11 +87779,11 @@ return A.mT(b,new A.kq(h,A.ok(B.J,a.a?s:i),B.c2),t.gU)}q=g.gej()
 if(a.d){i=a.a
 h=!1
 if(i){s=j.gaE().vq(q).b
-if(new A.aN(s,B.bo).l(0,q)){h=j.a.c.a.a
+if(new A.aN(s,B.bp).l(0,q)){h=j.a.c.a.a
 h=s!==h.length&&h.charCodeAt(q.a)!==10}}if(h)q=new A.aN(q.a,B.J)
 else{if(!i){i=j.gaE().vq(q).a
 i=new A.aN(i,B.J).l(0,q)&&i!==0&&j.a.c.a.a.charCodeAt(q.a-1)!==10}else i=!1
-if(i)q=new A.aN(q.a,B.bo)}}i=k.r
+if(i)q=new A.aN(q.a,B.bp)}}i=k.r
 if(i){h=g.c
 s=g.d
 p=a.a?h>s:h<s}else p=!1
@@ -87904,7 +87906,7 @@ A.adb.prototype={
 ar(a){var s,r=this.a
 if(r.ax===this){if(!r.gk7()){s=r.w
 s=s!=null&&s.r===r}else s=!0
-if(s)r.GC(B.xI)
+if(s)r.GC(B.xJ)
 s=r.w
 if(s!=null){if(s.c===r)s.c=null
 if(s.f===r)s.f=null
@@ -87929,7 +87931,7 @@ if(s!=null){s.wS()
 s.d.E(0,r)}}},
 slB(a){var s,r=this
 if(a!==r.b){r.b=a
-if(r.gc0()&&!a)r.GC(B.xI)
+if(r.gc0()&&!a)r.GC(B.xJ)
 s=r.w
 if(s!=null){s.wS()
 s.d.E(0,r)}}},
@@ -87937,7 +87939,7 @@ ghu(){return this.c},
 shu(a){var s,r=this
 if(a===r.c)return
 r.c=a
-if(!a&&r.gc0())r.GC(B.xI)
+if(!a&&r.gc0())r.GC(B.xJ)
 s=r.w
 if(s!=null){s.wS()
 s.d.E(0,r)}},
@@ -87948,7 +87950,7 @@ for(o=this.as,r=o.length,q=0;q<o.length;o.length===r||(0,A.H)(o),++q){p=o[q]
 B.c.J(s,p.gy7())
 s.push(p)}this.y=s
 o=s}return o},
-grk(){if(!this.ghu())return B.yG
+grk(){if(!this.ghu())return B.yH
 var s=this.gy7()
 return new A.af(s,new A.ade(),A.a8(s).j("af<1>"))},
 gdk(){var s,r,q=this.x
@@ -88084,7 +88086,7 @@ $S:45}
 A.nm.prototype={
 glT(){return this},
 ghu(){return this.b&&A.dQ.prototype.ghu.call(this)},
-grk(){if(!(this.b&&B.c.e0(this.gdk(),A.fj())))return B.yG
+grk(){if(!(this.b&&B.c.e0(this.gdk(),A.fj())))return B.yH
 return A.dQ.prototype.grk.call(this)},
 Hd(a){if(a.Q==null)this.Cj(a)
 if(this.gc0())a.lm(!0)
@@ -88213,7 +88215,7 @@ this.PU()}},
 PU(){var s,r,q,p=this
 switch(0){case 0:s=p.a
 if(s==null)return
-r=s?B.Bu:B.tO
+r=s?B.Bv:B.tO
 break}q=p.b
 if(q==null)q=A.J5()
 p.b=r
@@ -89411,11 +89413,11 @@ if(q)r.t(0,B.pD,new A.db(new A.adP(s),new A.adQ(s,p),t.UN))
 if(s.ch!=null)r.t(0,B.bcJ,new A.db(new A.adR(s),new A.adT(s,p),t.uA))
 q=!0
 if(s.db==null)q=s.fr!=null
-if(q)r.t(0,B.xE,new A.db(new A.adU(s),new A.adV(s,p),t.jn))
+if(q)r.t(0,B.xF,new A.db(new A.adU(s),new A.adV(s,p),t.jn))
 q=!0
 if(s.ry==null)if(s.to==null)q=s.x1!=null
 if(q)r.t(0,B.pE,new A.db(new A.adW(s),new A.adX(s,o,a,p),t.ok))
-if(s.xr!=null||s.y1!=null||s.y2!=null||s.aU!=null||s.aF!=null)r.t(0,B.xH,new A.db(new A.adY(s),new A.adZ(s,o,a,p),t.Uv))
+if(s.xr!=null||s.y1!=null||s.y2!=null||s.aU!=null||s.aF!=null)r.t(0,B.xI,new A.db(new A.adY(s),new A.adZ(s,o,a,p),t.Uv))
 q=!0
 q=s.a1!=null
 if(q)r.t(0,B.pC,new A.db(new A.ae_(s),new A.adS(s,o,a,p),t.YC))
@@ -89584,10 +89586,10 @@ a.sa57(s.VY(a,r))},
 VU(a,b){var s=t.f3.a(b.i(0,B.pD))
 if(s==null)return null
 return new A.aB5(a,s)},
-VG(a,b){var s=t.qA.a(b.i(0,B.xE))
+VG(a,b){var s=t.qA.a(b.i(0,B.xF))
 if(s==null)return null
 return new A.aB4(a,s)},
-VF(a,b){var s=t.gx.a(b.i(0,B.xH)),r=t.uR.a(b.i(0,B.pC)),q=s==null?null:new A.aB1(a,s),p=r==null?null:new A.aB2(a,r)
+VF(a,b){var s=t.gx.a(b.i(0,B.xI)),r=t.uR.a(b.i(0,B.pC)),q=s==null?null:new A.aB1(a,s),p=r==null?null:new A.aB2(a,r)
 if(q==null&&p==null)return null
 return new A.aB3(q,p)},
 VY(a,b){var s=t.Wn.a(b.i(0,B.pE)),r=t.uR.a(b.i(0,B.pC)),q=s==null?null:new A.aB6(a,s),p=r==null?null:new A.aB7(a,r)
@@ -89942,9 +89944,9 @@ else{p=s.d
 p===$&&A.c()
 q=p.ga_()}if(r||q==null)return
 o=$.am.ag$.x.i(0,b1.ry)
-n=o!=null?A.aZB(o,b4,s):B.Om
+n=o!=null?A.aZB(o,b4,s):B.On
 m=$.am.ag$.x.i(0,b2.ry)
-l=m!=null?A.aZB(m,b4,s):B.Om
+l=m!=null?A.aZB(m,b4,s):B.On
 for(s=n.gjg(n),s=s.gan(s),r=b0.gahG(),p=b0.a,k=b0.b,j=b3==null,i=b0.gal2(),h=t.g,g=t.l,f=t.Q,e=t.S,d=t.PD,c=t.Y,b=t.G,a=c.j("bc<b8.T>"),a0=t.k2;s.C();){a1=s.gV(s)
 a2=a1.a
 a3=a1.b
@@ -90033,7 +90035,7 @@ $S:491}
 A.ar.prototype={
 R(a){var s,r,q,p,o,n,m,l,k,j=this,i=null,h=a.a4(t.I).w,g=A.QK(a),f=j.d,e=f==null?g.a:f
 if(e==null)e=14
-if(g.x===!0){f=A.c1(a,B.d3)
+if(g.x===!0){f=A.c1(a,B.d4)
 f=f==null?i:f.gcR()
 s=(f==null?B.c5:f).aW(0,e)}else s=e
 r=g.b
@@ -90708,7 +90710,7 @@ if(p.p3)return
 s=$.ca
 r=s.p3$
 A:{if(B.i3===r||B.wC===r){q=!0
-break A}if(B.SQ===r||B.SR===r||B.jF===r){q=!1
+break A}if(B.SR===r||B.SS===r||B.jF===r){q=!1
 break A}q=null}if(!q){p.$ti.j("fa<1,J>").a(A.bG.prototype.gab.call(p)).pc()
 return}p.p3=!0
 s.vx(p.gajf())},
@@ -90983,7 +90985,7 @@ R(a){var s=this,r=null,q=s.d,p=q.c,o=q.a,n=s.w
 return A.ct(B.H,A.b([A.b8y(A.hl(new A.ZY(s.f,s.r,A.Us(s.c,n),r),o),p),new A.dT(!0,A.hl(A.a98(A.eF(A.Us(r,n),new A.km(r,r,r,q.b,p),B.bQ),s.e,new A.a_r(p,r)),o),r)],t.p),B.n,B.bH)}}
 A.a_r.prototype={
 GR(a){var s=new A.aQ($.p().r,B.Q,null,null,A.b([],t.v))
-s.sEM(B.OX)
+s.sEM(B.OY)
 s.U(new A.hQ(B.jC))
 s.M7(0,this.b.a7f(new A.K(0,0,0+a.a,0+a.b)),B.C)
 return s},
@@ -91305,7 +91307,7 @@ p.toString
 k=new A.a26(p,k,i)}return A.b85(new A.pl(!r,new A.a_d(k,q,i),i))}}
 A.aiX.prototype={
 $0(){if(this.a.d)A.aUP(this.b)
-else A.yQ(B.Uc)},
+else A.yQ(B.Ud)},
 $S:0}
 A.Nn.prototype={
 R(a){var s=this,r=t.Bs.a(s.c)
@@ -91381,13 +91383,13 @@ Nb(){if(this.gv5())A.aVv().cc(new A.ant(this),t.H)},
 azf(a){},
 km(){var s=0,r=A.C(t.oj),q,p=this
 var $async$km=A.D(function(a,b){if(a===1)return A.z(b,r)
-for(;;)switch(s){case 0:q=p.guK()?B.SP:B.p8
+for(;;)switch(s){case 0:q=p.guK()?B.SQ:B.p8
 s=1
 break
 case 1:return A.A(q,r)}})
 return A.B($async$km,r)},
 glU(){this.c instanceof A.vr
-return this.guK()?B.SP:B.p8},
+return this.guK()?B.SQ:B.p8},
 zg(a,b){var s=this.c
 if(s instanceof A.vr){A.y(this).j("me<1>").a(s)
 A.b_K(a,b)}},
@@ -91452,7 +91454,7 @@ aFX(a,b,c){var s,r,q,p,o=A.b([],t.Fm),n=new A.aa0(a,c,o)
 n.$2(null,b.length===0)
 for(s=b.length,r=0;r<b.length;b.length===s||(0,A.H)(b),++r){q=b[r]
 p=B.c.gak(b)===q
-if(q.d===B.VS)if(!a.aC(0,q)&&p)q.d=B.y1
+if(q.d===B.VS)if(!a.aC(0,q)&&p)q.d=B.y2
 else q.d=B.pU
 o.push(q)
 n.$2(q,p)}return o}}
@@ -91497,7 +91499,7 @@ aB_(a,b,c,d){var s,r,q,p=this,o=p.d,n=p.a
 n.b=b
 n.qL()
 s=p.d
-if(s===B.y1||s===B.y2){r=n.qn()
+if(s===B.y2||s===B.y3){r=n.qn()
 p.d=B.VT
 r.a6G(new A.aMp(p,b))}else{if(c instanceof A.f9){s=n.CW
 s.toString
@@ -91505,7 +91507,7 @@ q=c.CW.x
 q===$&&A.c()
 s.sk(0,q)}n.ab0(c)
 p.d=B.ml}if(a)n.ql(null)
-s=o===B.bfl||o===B.y2
+s=o===B.bfl||o===B.y3
 q=b.w
 if(s){q.hk(0,new A.JF(n,d))
 if(d!=null&&d.c instanceof A.vr){t.sd.a(d.c)
@@ -91528,7 +91530,7 @@ if(r.c&&r.x){t.sd.a(s.c)
 a.a.toString}r.y=null
 return!0},
 aEW(a,b){this.y=a
-this.d=B.y3
+this.d=B.y4
 this.x=b},
 a5j(a,b){return this.aEW(a,b,t.z)},
 axw(a,b,c,d){var s=this
@@ -91581,13 +91583,13 @@ case 3:o=q.a.w
 s=5
 return A.l(A.b9(B.f7,null,t.H),$async$$1)
 case 5:s=6
-return A.l(B.k4.iQ(0,B.Bv.Gu(o)),$async$$1)
+return A.l(B.k4.iQ(0,B.Bw.Gu(o)),$async$$1)
 case 6:s=2
 break
 case 4:s=B.aI===p?7:8
 break
 case 7:s=9
-return A.l(B.k4.iQ(0,B.Bv.Gu(q.a.w)),$async$$1)
+return A.l(B.k4.iQ(0,B.Bw.Gu(q.a.w)),$async$$1)
 case 9:s=2
 break
 case 8:s=2
@@ -91982,7 +91984,7 @@ aF6(a,b){var s=this.KZ(a,null)
 s.toString
 return this.cI(s).cc(new A.ajz(b),b.j("0?"))},
 aF1(a){var s=this.e
-s.a.push(A.aVY(a,B.y1,!1,null))
+s.a.push(A.aVY(a,B.y2,!1,null))
 s.a9()
 this.ww()
 this.Ir()
@@ -92024,9 +92026,9 @@ aDa(a){return this.z5(a,t.X)},
 a4U(){return this.z5(null,t.X)},
 G1(a){var s,r=this,q=r.e.a4H(0,A.jO())
 if(q.c&&r.a.d!=null){s=q.a
-if(r.a.d.$2(s,a)){if(q.d.a<=7)q.d=B.y3
+if(r.a.d.$2(s,a)){if(q.d.a<=7)q.d=B.y4
 s.zg(!0,a)}}else q.a5j(a,!0)
-if(q.d===B.y3)r.Jj(!1)
+if(q.d===B.y4)r.Jj(!1)
 r.Ir()},
 eL(){return this.G1(null,t.X)},
 aEV(){return this.G1(null)},
@@ -92095,7 +92097,7 @@ if(q!=null){s=this.a.at
 r=s.y
 if(r==null)r=s.$ti.j("d0.T").a(r)
 s.aaS(0,r+1)
-q=new A.a_n(r,q,null,B.y4)}else q=null
+q=new A.a_n(r,q,null,B.y5)}else q=null
 return A.aVY(a,B.pU,!1,q)},
 $S:516}
 A.ajs.prototype={
@@ -92480,7 +92482,7 @@ break
 case B.aP:a=(a3.gv(0).a-o)/(a3.cp$-1)
 b.b=k?a3.gv(0).a-d:0
 break
-case B.Og:a=a3.cp$>0?(a3.gv(0).a-o)/a3.cp$:0
+case B.Oh:a=a3.cp$>0?(a3.gv(0).a-o)/a3.cp$:0
 s=a/2
 b.b=k?a3.gv(0).a-s-d:s
 break
@@ -93070,7 +93072,7 @@ aV(a,b){b.saxf(this.e)}}
 A.oF.prototype={
 saxf(a){return},
 mn(){var s=this.B$
-return s==null?B.yF:A.aZS(1,new A.aLj(s),t.x)},
+return s==null?B.yG:A.aZS(1,new A.aLj(s),t.x)},
 B2(){return this.mn()},
 gre(){var s,r=this.d
 A:{if(r instanceof A.vK){s=r
@@ -93153,7 +93155,7 @@ return s},
 gDK(){return this.d}}
 A.Kf.prototype={
 mn(){var s=this.B$
-return s==null?B.yF:A.aZS(1,new A.aLm(s),t.x)},
+return s==null?B.yG:A.aZS(1,new A.aLm(s),t.x)},
 B2(){return this.mn()},
 gre(){var s,r=this.d
 A:{if(r instanceof A.oF){s=r.gre()
@@ -93484,7 +93486,7 @@ c.aK(a,new A.S(b.b,r))
 s.restore()
 break}},
 aK(a,b){var s=this,r=s.d
-s.XL(a,b,s.b,r,B.By)
+s.XL(a,b,s.b,r,B.Bz)
 s.XL(a,b,s.c,r,B.nP)},
 dF(a){return a.b!=this.b||a.c!=this.c},
 m(a){return"_GlowingOverscrollIndicatorPainter("+A.u(this.b)+", "+A.u(this.c)+")"}}
@@ -93530,7 +93532,7 @@ case 0:s=a.d
 s=s==null?null:s.c.a.a
 if(s==null)s=0
 break
-default:s=null}m=r===B.d4||r===B.dB?-s:s
+default:s=null}m=r===B.d5||r===B.dB?-s:s
 l.r=0
 l.gpV().QU(m)}else if(a instanceof A.kj){l.r=0
 l.gpV().QU(0)}l.e=a
@@ -93545,7 +93547,7 @@ this.adr()},
 R(a){return new A.dV(this.gJQ(),A.ei(this.gpV(),new A.aNP(this),null),null,t.WA)}}
 A.aNP.prototype={
 $2(a,b){var s,r,q,p,o,n=null,m=this.a,l=m.gpV().c.a
-switch(A.bM(m.a.c).a){case 0:s=A.bH(a,B.xZ,t.w).w.a.a
+switch(A.bM(m.a.c).a){case 0:s=A.bH(a,B.y_,t.w).w.a.a
 break
 case 1:s=A.bH(a,B.VL,t.w).w.a.b
 break
@@ -93557,7 +93559,7 @@ q=r}if(q==null)q=s
 p=-l
 m=m.a
 r=m.c
-if(r===B.dB||r===B.d4)p=-p
+if(r===B.dB||r===B.d5)p=-p
 r=A.bM(r)
 o=m.f
 m=l!==0&&q!==s?m.e:B.n
@@ -93833,7 +93835,7 @@ switch(0){case 0:s=A.aSP(a.a4(t.I).w)
 this.a.toString
 return s}},
 R(a){var s,r,q=this,p=null,o=q.ajv(a),n=q.a,m=n.x
-m=new A.xX(B.OW.jP(m))
+m=new A.xX(B.OX.jP(m))
 m=new A.IY(!1,p).jP(m)
 n=n.as
 s=q.e
@@ -93896,7 +93898,7 @@ au4(a,b){return this.c.$2(a,b)},
 apa(a){return this.d.$1(a)}}
 A.JS.prototype={
 R(a){var s,r,q=this,p=null,o=q.e
-if(o==null)return B.U1
+if(o==null)return B.U2
 if(!q.f)return new A.a_Q(new A.aIq(o),p,p)
 s=q.r
 if(s==null)s=q.r=q.a.au4(a,o)
@@ -94093,14 +94095,14 @@ s.e=A.cu(a,r.ga66(r))}else s.gmo().ds(0)},
 L0(){return this.L1(B.ap)},
 aru(a){var s,r=this
 switch(r.a.x.a){case 1:s=r.w
-if(s==null)s=r.w=A.ag8(r,B.Tt)
+if(s==null)s=r.w=A.ag8(r,B.Tu)
 s.p1=r.gWx()
 s.p2=r.galr()
 s.R8=r.gam9()
 s.o2(a)
 break
 case 2:s=r.x
-if(s==null)s=r.x=A.H5(r,-1,B.Tt)
+if(s==null)s=r.x=A.H5(r,-1,B.Tu)
 s.a2=r.gWx()
 s.W=r.gan1()
 s.o2(a)
@@ -94147,7 +94149,7 @@ $.fW.u$.b.t(0,this.gWf(),null)},
 b1(a){var s,r=this
 r.bk(a)
 r.a.toString
-if(!B.yf.l(0,B.yf)){s=r.f
+if(!B.yg.l(0,B.yg)){s=r.f
 if(s!=null){s.e=r.gZx()
 s.f=r.gWG()}s=r.r
 if(s!=null){s.b=r.gZw()
@@ -94434,13 +94436,13 @@ r=p.a.c
 r.toString
 q=p.e
 q.toString
-r.aHE(s,q)}p.e=B.SO},
+r.aHE(s,q)}p.e=B.SP},
 asf(){this.a.e.gaHp()
 this.a.toString
 return null},
 BZ(){var s=this
 s.f.sk(0,s.asf())
-if(s.e==null)s.e=B.SO
+if(s.e==null)s.e=B.SP
 s.asG()},
 bK(){var s,r,q,p=this
 p.r=!0
@@ -94819,7 +94821,7 @@ b.toString
 return new A.q7(b,s,null)},
 $S:533}
 A.aGq.prototype={
-$1(a){var s,r=null,q=A.aK([B.xD,new A.Y8(a,new A.bQ(A.b([],t.ot),t.wS))],t.C,t.od),p=this.a,o=p.e
+$1(a){var s,r=null,q=A.aK([B.xE,new A.Y8(a,new A.bQ(A.b([],t.ot),t.wS))],t.C,t.od),p=this.a,o=p.e
 o===$&&A.c()
 s=p.d
 if(s==null)s=p.d=new A.kh(new A.dM(new A.aGn(p),r),p.a.c.ry)
@@ -95195,7 +95197,7 @@ return this.u7(s,s,s,a,s,s,s,b)},
 a1L(a){var s=null
 return this.u7(s,s,s,s,s,s,s,a)},
 jv(a){return A.bn()},
-gog(){return B.Tu},
+gog(){return B.Tv},
 p9(a){switch(this.jv(a).a){case 4:case 2:return B.wd
 case 3:case 5:case 0:case 1:return B.jq}},
 gzj(){return A.cQ([B.fO,B.hN],t.bd)},
@@ -95211,7 +95213,7 @@ rz(a){switch(this.jv(a).a){case 2:return B.a0M
 case 4:return B.a0N
 case 0:case 1:case 3:case 5:return B.a2q}},
 Hi(a){return!1},
-GW(a){return B.SX},
+GW(a){return B.SY},
 m(a){return"ScrollBehavior"}}
 A.anX.prototype={
 $1(a){return A.baU(a.gcB(a))},
@@ -95225,7 +95227,7 @@ $1(a){return new A.lo(a.gcB(a),A.cp(20,null,!1,t.av))},
 $S:207}
 A.aPO.prototype={
 gog(){var s=this.r
-return s==null?B.Tu:s},
+return s==null?B.Tv:s},
 gzj(){var s=this.x
 return s==null?A.cQ([B.fO,B.hN],t.bd):s},
 p9(a){var s=this.a.p9(a)
@@ -95244,7 +95246,7 @@ jv(a){var s=this.a.jv(a)
 return s},
 rz(a){var s=this.a.rz(a)
 return s},
-GW(a){return B.SX},
+GW(a){return B.SY},
 Hi(a){var s=this,r=!0
 if(A.P(a.a)===A.P(s.a))if(a.b===s.b)if(a.c===s.c)if(A.w1(a.gog(),s.gog())){r=A.w1(a.gzj(),s.gzj())
 r=!r}return r},
@@ -95646,7 +95648,7 @@ s=a.ax
 if(n){s.toString
 m=this.a3g((o-Math.abs(b))/s)}else{s.toString
 m=this.a3g(o/s)}l=J.f2(b)
-if(n&&this.b===B.SU)return l*Math.abs(b)
+if(n&&this.b===B.SV)return l*Math.abs(b)
 return l*A.b8b(o,Math.abs(b),m)},
 xz(a,b){return 0},
 u8(a,b){var s,r,q,p,o,n,m,l=this.zF(a),k=Math.abs(b)<l.c,j=k&&a.guW()
@@ -95898,7 +95900,7 @@ case 2:s=B.fh
 break
 default:s=null}return s},
 aeU(a){var s,r=this.w.a.c
-A:{if(B.dB===r||B.d4===r){s=this.aoF(a)
+A:{if(B.dB===r||B.d5===r){s=this.aoF(a)
 break A}if(B.dm===r||B.eR===r){s=a
 break A}s=null}return s},
 yi(a,b,c,d,e,f){return this.azK(a,b,c,d,e,f)},
@@ -96166,7 +96168,7 @@ l=m?A.SJ(a):h.e
 k=A.ao8(n,h.cx,l,h.ay,!1,h.cy,g,h.r,h.CW,g,h.at,new A.ao6(h,n,o))
 j=m&&l!=null?A.b_T(k):k
 i=A.o5(a).GW(a)
-if(i===B.SY)return new A.dV(new A.ao7(a),j,g,t.kj)
+if(i===B.SZ)return new A.dV(new A.ao7(a),j,g,t.kj)
 else return j}}
 A.ao6.prototype={
 $2(a,b){return this.a.ax_(a,b,this.b,this.c)},
@@ -96194,7 +96196,7 @@ $2(a,b){if(!a.a)a.P(0,b)},
 $S:68}
 A.G8.prototype={
 am(){var s=null,r=t.A
-return new A.uG(new A.a1y($.b5()),new A.c_(s,r),new A.c_(s,t.LZ),new A.c_(s,r),B.Ol,s,A.G(t.yb,t.Q),s,!0,s,s,s)},
+return new A.uG(new A.a1y($.b5()),new A.c_(s,r),new A.c_(s,t.LZ),new A.c_(s,r),B.Om,s,A.G(t.yb,t.Q),s,!0,s,s,s)},
 aGQ(a,b){return this.f.$2(a,b)}}
 A.aoe.prototype={
 $1(a){return null},
@@ -96331,10 +96333,10 @@ a87(a){var s,r,q=this
 if(a===q.ay)s=!a||A.bM(q.a.c)===q.ch
 else s=!1
 if(s)return
-if(!a){q.at=B.Ol
+if(!a){q.at=B.Om
 q.Z3()}else{switch(A.bM(q.a.c).a){case 1:q.at=A.aK([B.pE,new A.db(new A.aoa(q),new A.aob(q),t.ok)],t.C,t.xR)
 break
-case 0:q.at=A.aK([B.xH,new A.db(new A.aoc(q),new A.aod(q),t.Uv)],t.C,t.xR)
+case 0:q.at=A.aK([B.xI,new A.db(new A.aoc(q),new A.aod(q),t.Uv)],t.C,t.xR)
 break}a=!0}q.ay=a
 q.ch=A.bM(q.a.c)
 s=q.Q
@@ -96508,7 +96510,7 @@ r=s.c
 s=s.d
 q=t.x9
 p=t.i
-q=new A.KF(r,new A.aaN(r,30),s,A.G(q,p),A.G(q,p),A.b([],t.D1),A.aL(q),B.T3,$.b5())
+q=new A.KF(r,new A.aaN(r,30),s,A.G(q,p),A.G(q,p),A.b([],t.D1),A.aL(q),B.T4,$.b5())
 s.aa(0,q.gYT())
 this.d=q},
 b1(a){var s,r
@@ -96792,7 +96794,7 @@ s.toString
 if(r>s&&q.X)a.saDV(q.gapC())}},
 o4(a,b,c){var s,r,q,p,o,n,m,l=this
 if(c.length!==0){s=B.c.gS(c).fx
-s=!(s!=null&&s.q(0,B.To))}else s=!0
+s=!(s!=null&&s.q(0,B.Tp))}else s=!0
 if(s){l.bv=null
 l.S5(a,b,c)
 return}s=l.bv
@@ -97054,12 +97056,12 @@ r=r===B.dm||r===B.dB
 s=this.CW
 return r?s.gd_(0)+s.gd7(0):s.gfv()},
 gwO(){var s,r=this.gKX()
-A:{if(B.SZ===r||B.T_===r){s=this.CW.b
-break A}if(B.aXA===r||B.T0===r){s=this.CW.a
+A:{if(B.T_===r||B.T0===r){s=this.CW.b
+break A}if(B.aXA===r||B.T1===r){s=this.CW.a
 break A}s=null}return s},
 gKX(){var s=this.dy
-if(s===B.dm||s===B.dB)return this.e===B.aN?B.T_:B.SZ
-return B.T0},
+if(s===B.dm||s===B.dB)return this.e===B.aN?B.T0:B.T_
+return B.T1},
 dT(a,b,c){var s=this,r=s.dx
 if(r!=null&&Math.max(r.geX()-r.gkd(),0)===Math.max(b.geX()-b.gkd(),0)&&r.gqz()===b.gqz()&&Math.max(r.gkc()-r.geX(),0)===Math.max(b.gkc()-b.geX(),0)&&s.dy===c)return
 s.dx=b
@@ -97215,7 +97217,7 @@ j=Math.max(Math.min(r-e.gfL()-o,e.at),(r-e.gfL()-o)*k)
 m=s.gqz()
 i=Math.min(e.as,r-e.gfL()-o)
 n=d!==B.dB
-if((!n||d===B.d4?Math.max(s.gkc()-s.geX(),0):Math.max(s.geX()-s.gkd(),0))>0)h=(!n||d===B.d4?Math.max(s.geX()-s.gkd(),0):Math.max(s.gkc()-s.geX(),0))>0
+if((!n||d===B.d5?Math.max(s.gkc()-s.geX(),0):Math.max(s.geX()-s.gkd(),0))>0)h=(!n||d===B.d5?Math.max(s.geX()-s.gkd(),0):Math.max(s.gkc()-s.geX(),0))>0
 else h=!1
 g=h?i:i*(1-A.L(1-m/r,0,0.2)/0.2)
 m=A.L(j,g,r-e.gfL()-o)
@@ -97223,7 +97225,7 @@ e.db=m
 if(q>0){s=s.c
 s.toString
 f=A.L((s-l)/q,0,1)}else f=0
-d=!n||d===B.d4?1-f:f
+d=!n||d===B.d5?1-f:f
 e.cy=d*(r-e.gfL()-o-m)+(e.gwO()+p)
 return e.aqt(a,b)},
 QF(a){var s,r,q,p,o=this,n=o.dx,m=n.b
@@ -97520,7 +97522,7 @@ case 0:r=n.db
 r===$&&A.c()
 r=r.cy
 r===$&&A.c()
-q=a.b.a>r?B.eR:B.d4
+q=a.b.a>r?B.eR:B.d5
 break
 default:q=null}m=$.am.ag$.x.i(0,m.Q)
 m.toString
@@ -98297,7 +98299,7 @@ this.d.I(0,b)},
 lV(a,b){this.a.e.lV(a,b)},
 oe(a){return this.a.e.oe(a)},
 gk(a){var s=this.a.e
-if(s==null)return B.T2
+if(s==null)return B.T3
 return s.at},
 b5(a,b){return this.c.gab().b5(0,b)},
 go8(){var s=this.c.gab()
@@ -98480,7 +98482,7 @@ r=n.f==null&&A.b_U(a,k)
 q=r?A.SJ(a):n.f
 p=A.ao8(j,B.O,q,n.y,!1,B.ca,m,n.w,m,m,m,new A.aq3(l,n,j))
 o=A.o5(a).GW(a)
-if(o===B.SY)p=new A.dV(new A.aq4(a),p,m,t.kj)
+if(o===B.SZ)p=new A.dV(new A.aq4(a),p,m,t.kj)
 return r&&q!=null?A.b_T(p):p}}
 A.aq3.prototype={
 $2(a,b){return new A.Au(this.c,b,B.O,this.a.a,null)},
@@ -99107,8 +99109,8 @@ K(){return"StandardComponentType."+this.b}}
 A.UX.prototype={
 ajl(a){var s=this.c>0
 if(this.d===B.ad)return s?B.XY:B.XX
-if(a===B.bI)return s?B.yb:B.q8
-else return s?B.q8:B.yb},
+if(a===B.bI)return s?B.yc:B.q8
+else return s?B.q8:B.yc},
 R(a){var s,r,q,p=this,o=a.a4(t.I).w,n=1,m=1
 switch(p.d.a){case 0:n=1+Math.abs(p.c)
 break
@@ -99148,7 +99150,7 @@ $1(a){return a.nj(0,this.a)},
 $S:565}
 A.hZ.prototype={
 gig(a){return null},
-gF(a){return B.CM.gF(this.gig(this))},
+gF(a){return B.CN.gF(this.gig(this))},
 l(a,b){var s,r=this
 if(b==null)return!1
 if(r===b)return!0
@@ -99306,7 +99308,7 @@ rr(a,b,c){var s=this
 return A.kT(c,null,s.Q,s.z,s.y,s.w,s.x,s.at,s.as)}}
 A.aa_.prototype={
 $1(a){var s,r=a.a4(t.yS)
-if(r==null)r=B.At
+if(r==null)r=B.Au
 s=r.w.b4(this.b)
 return A.kT(this.x,this.a,r.Q,r.z,r.y,s,r.x,r.at,r.as)},
 $S:567}
@@ -99314,7 +99316,7 @@ A.a_z.prototype={
 R(a){throw A.m(A.ji("A DefaultTextStyle constructed with DefaultTextStyle.fallback cannot be incorporated into the widget tree, it is meant only to provide a fallback value returned by DefaultTextStyle.of() when no enclosing default text style is present in a BuildContext."))}}
 A.a0.prototype={
 R(a0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c=this,b=null,a=a0.a4(t.yS)
-if(a==null)a=B.At
+if(a==null)a=B.Au
 s=c.e
 if(s==null||s.a)s=a.w.b4(s)
 r=A.c1(a0,B.pO)
@@ -99330,14 +99332,14 @@ r=c.d
 r=r!=null?A.b([r],t.VO):b
 n=A.bgm(p,q,A.ey(r,b,b,b,b,b,b,b,b,s,c.c),o)
 m=A.Gd(a0)
-A:{r=A.c1(a0,B.d3)
+A:{r=A.c1(a0,B.d4)
 r=r==null?b:r.gcR()
 if(r==null)r=B.c5
 break A}l=A.cE()
 if(m!=null){k=t.Uf
 j=a0.a4(k)
 j=(j==null?B.iN:j).y
-if(j==null)j=B.Ua
+if(j==null)j=B.Ub
 i=c.r
 if(i==null)i=a.x
 if(i==null)i=B.c3
@@ -99352,7 +99354,7 @@ if(e==null)e=a.Q
 d=A.a9Z(a0)
 k=a0.a4(k)
 k=(k==null?B.iN:k).x
-if(k==null)k=B.zt
+if(k==null)k=B.zu
 l.b=A.m9(new A.KK(n,i,h,g,f,r,e,b,b,a.as,d,B.dc,k,b),j,b,b,b,b)
 r=h}else{k=c.r
 if(k==null)k=a.x
@@ -99368,7 +99370,7 @@ if(g==null)g=a.Q
 f=A.a9Z(a0)
 e=a0.a4(t.Uf)
 e=(e==null?B.iN:e).x
-if(e==null)e=B.zt
+if(e==null)e=B.zu
 l.b=A.aV9(B.dc,b,b,g,h,e,b,i,b,n,k,j,f,r,a.as)
 r=j}k=c.ax
 if(k!=null)l.b=A.cs(b,new A.pl(!0,l.b_(),b),!1,b,b,!1,b,b,b,b,b,b,b,b,k,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,b,r,b,b,b)
@@ -99382,7 +99384,7 @@ s=t.x9
 r=A.b([],t.D1)
 q=$.b5()
 p.d!==$&&A.bt()
-p.d=new A.a2_(p.e,A.aL(s),A.aL(s),r,A.aL(s),B.T3,q)},
+p.d=new A.a2_(p.e,A.aL(s),A.aL(s),r,A.aL(s),B.T4,q)},
 n(){var s=this.d
 s===$&&A.c()
 s.Mz()
@@ -99550,7 +99552,7 @@ q=Math.max(n,m)
 for(p=0;m=o.b,p<m.length;++p){if(p>=r&&p<=q)continue
 o.f2(m[p],B.mz)}},
 lM(a){var s,r,q=this
-if(a.c!==B.Up)return q.HR(a)
+if(a.c!==B.Uq)return q.HR(a)
 s=a.b
 r=a.a===B.fR
 if(r)q.fx=s
@@ -99686,7 +99688,7 @@ q=p.x
 q.Y$=r
 q.O$=0
 o.hD()},
-lk(a,b,c){var s=c.vq(a),r=c.l9(new A.aN(s.c,B.J)),q=r.a,p=c.l9(new A.aN(s.d,B.bo)),o=p.a,n=A.q0(new A.e(q+(r.c-q)/2,r.b),new A.e(o+(p.c-o)/2,p.d)),m=t.aA.a(A.Sd(this.a,!0).c.gab()),l=c.b5(0,m),k=A.ew(l,n),j=A.ew(l,c.l9(a)),i=m==null?null:m.ed(b)
+lk(a,b,c){var s=c.vq(a),r=c.l9(new A.aN(s.c,B.J)),q=r.a,p=c.l9(new A.aN(s.d,B.bp)),o=p.a,n=A.q0(new A.e(q+(r.c-q)/2,r.b),new A.e(o+(p.c-o)/2,p.d)),m=t.aA.a(A.Sd(this.a,!0).c.gab()),l=c.b5(0,m),k=A.ew(l,n),j=A.ew(l,c.l9(a)),i=m==null?null:m.ed(b)
 if(i==null)i=b
 r=c.gv(0)
 return new A.nB(i,k,j,A.ew(l,new A.K(0,0,0+r.a,0+r.b)))},
@@ -99968,14 +99970,14 @@ if(o!=null)s=p.e===B.eN&&p.ay
 else s=!0
 if(s)r=B.bD
 else{s=p.e
-r=A.b1Y(p.k1,p.fx,p.gamQ(),p.gamS(),p.gamU(),p.k2,p.f,o,s,p.x)}return new A.os(this.b.a,A.aVq(A.Ve(new A.pl(!0,r,q),q,B.md,q,q),!1,q,!0,B.xG,q,q,q,q,q),q)},
+r=A.b1Y(p.k1,p.fx,p.gamQ(),p.gamS(),p.gamU(),p.k2,p.f,o,s,p.x)}return new A.os(this.b.a,A.aVq(A.Ve(new A.pl(!0,r,q),q,B.md,q,q),!1,q,!0,B.xH,q,q,q,q,q),q)},
 $S:25}
 A.aom.prototype={
 $1(a){var s,r,q=null,p=this.a,o=p.go,n=!0
 if(o!=null){s=p.as===B.eN
 if(!(s&&p.w))n=s&&!p.w&&!p.ay}if(n)r=B.bD
 else{n=p.as
-r=A.b1Y(p.k1,p.fy,p.gakT(),p.gakV(),p.gakX(),p.k2,p.at,o,n,p.ch)}return new A.os(this.b.a,A.aVq(A.Ve(new A.pl(!0,r,q),q,B.md,q,q),!1,q,!0,B.xG,q,q,q,q,q),q)},
+r=A.b1Y(p.k1,p.fy,p.gakT(),p.gakV(),p.gakX(),p.k2,p.at,o,n,p.ch)}return new A.os(this.b.a,A.aVq(A.Ve(new A.pl(!0,r,q),q,B.md,q,q),!1,q,!0,B.xH,q,q,q,q,q),q)},
 $S:25}
 A.aoo.prototype={
 $1(a){var s=this.a,r=A.c8(this.b.b5(0,null),B.C)
@@ -100034,7 +100036,7 @@ n===$&&A.c()
 s=this.a
 r=s.e
 q=s.d
-return A.aVq(A.Ve(A.aTZ(new A.dK(n,!1,A.aTM(s.c,r,q,!1),p),o),p,B.md,p,p),!1,p,!0,B.xG,p,p,p,p,p)}}
+return A.aVq(A.Ve(A.aTZ(new A.dK(n,!1,A.aTM(s.c,r,q,!1),p),o),p,B.md,p,p),!1,p,!0,B.xH,p,p,p,p,p)}}
 A.KL.prototype={
 am(){return new A.KM(null,null)}}
 A.KM.prototype={
@@ -100083,7 +100085,7 @@ k=A.aK([B.pC,new A.db(new A.aMI(i),new A.aMJ(i,o),t.YC)],t.C,t.xR)
 j=i.a
 return A.aTM(new A.dK(l,!1,A.b6(new A.hu(B.aY,h,h,new A.ke(new A.aG(new A.a5(f,n,q.c,q.d),j.w.DE(a,j.z,j.y,j.d),h),k,B.eb,!1,h),h),r.d-r.b,r.c-r.a),h),g,m,!1)}}
 A.aMI.prototype={
-$0(){return A.b_M(this.a,A.cQ([B.bY,B.cY,B.dJ],t.Au))},
+$0(){return A.b_M(this.a,A.cQ([B.bY,B.cZ,B.dJ],t.Au))},
 $S:196}
 A.aMJ.prototype={
 $1(a){var s=this.a.a
@@ -100149,11 +100151,11 @@ p=p.y
 o=p.ga_().gaE()
 o=o.fu=a.a
 s=a.c
-q.c=q.b=s===B.bY||s===B.cY
+q.c=q.b=s===B.bY||s===B.cZ
 r=q.d
 if(r)p.ga_().gaE().D
 switch(A.bn().a){case 0:p.ga_().a.toString
-A:{o=B.cY===s||B.eJ===s
+A:{o=B.cZ===s||B.eJ===s
 if(o){p.ga_().a.toString
 break A}break A}if(o)A.anT().cc(new A.arX(q),t.P)
 break
@@ -100237,7 +100239,7 @@ k=q.b.a.c.fV(l)
 j=A.cE()
 q=k.a
 if(l.a<=q)j.b=A.ok(B.J,q)
-else j.b=A.ok(B.bo,k.b)
+else j.b=A.ok(B.bp,k.b)
 r.nY(j.b_(),B.cv)
 if(o.l(0,g.ga_().a.c.a.b)&&g.ga_().gaE().B&&!g.ga_().gaE().bM)g.ga_().Gv(!1)
 else g.ga_().kS(!1)}}break}break}h.y.ga_().Gn()},
@@ -100261,7 +100263,7 @@ n.ga_().gaE().hh(B.dK,s)
 s=n.ga_().gaE().ed(s)
 r=n.ga_().a.c.a.b
 q=n.ga_().a.c.a.b
-n.ga_().GG(new A.yf(B.C,new A.aC(s,new A.aN(r.c,q.e)),B.Bs))}break
+n.ga_().GG(new A.yf(B.C,new A.aC(s,new A.aN(r.c,q.e)),B.Bt))}break
 case 0:case 1:case 3:case 5:n=o.y
 s=n.ga_().gaE()
 r=s.fu
@@ -100283,7 +100285,7 @@ m.toString
 s=new A.e(m-o.f,0)}else{m=n.ga_().gaE().X.at
 m.toString
 s=new A.e(0,m-o.f)}m=o.gZ1()
-switch(A.bM(m==null?B.d4:m).a){case 0:m=new A.e(o.gtA()-o.e,0)
+switch(A.bM(m==null?B.d5:m).a){case 0:m=new A.e(o.gtA()-o.e,0)
 break
 case 1:m=new A.e(0,o.gtA()-o.e)
 break
@@ -100318,14 +100320,14 @@ aDZ(a){var s=this.a.y.ga_().gaE()
 s.yt=s.fu=a.a
 this.b=!0
 s=a.c
-this.c=s==null||s===B.bY||s===B.cY},
+this.c=s==null||s===B.bY||s===B.cZ},
 aDA(a){var s,r=this.a,q=r.a.aF
 if(q)r.gf1()
 if(q){r=r.y
 q=r.ga_().gaE()
 s=q.fu
 s.toString
-q.mb(B.T1,s)
+q.mb(B.T2,s)
 if(this.b)r.ga_().iq()}},
 XA(){var s,r,q,p=this
 p.WH()
@@ -100362,7 +100364,7 @@ aDE(a){var s,r=this,q=r.a,p=q.a.aF
 if(p)q.gf1()
 if(!p)return
 s=a.d
-r.c=r.b=s===B.bY||s===B.cY
+r.c=r.b=s===B.bY||s===B.cZ
 q=q.y
 r.r=q.ga_().gaE().D
 r.e=r.gtA()
@@ -100377,10 +100379,10 @@ break
 case 0:case 1:case 3:case 5:r.t9(a.a,B.bR)
 break}else switch(A.bn().a){case 2:switch(s){case B.dI:case B.de:q.ga_().gaE().hh(B.bR,a.a)
 break
-case B.cY:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}break
+case B.cZ:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}break
 case 0:case 1:switch(s){case B.dI:case B.de:q.ga_().gaE().hh(B.bR,a.a)
 break
-case B.cY:case B.eJ:case B.bY:case B.dJ:if(q.ga_().gaE().B){p=a.a
+case B.cZ:case B.eJ:case B.bY:case B.dJ:if(q.ga_().gaE().B){p=a.a
 q.ga_().gaE().hh(B.bR,p)
 r.xg(p)}break
 case null:case void 0:break}break
@@ -100395,7 +100397,7 @@ s.toString
 r=new A.e(s-k.f,0)}else{s=i.ga_().gaE().X.at
 s.toString
 r=new A.e(0,s-k.f)}s=k.gZ1()
-switch(A.bM(s==null?B.d4:s).a){case 0:s=new A.e(k.gtA()-k.e,0)
+switch(A.bM(s==null?B.d5:s).a){case 0:s=new A.e(k.gtA()-k.e,0)
 break
 case 1:s=new A.e(0,k.gtA()-k.e)
 break
@@ -100403,13 +100405,13 @@ default:s=null}q=a.a
 p=q.Z(0,a.r)
 o=a.x
 if(A.Ay(o)===2){i.ga_().gaE().A7(B.bR,p.Z(0,r).Z(0,s),q)
-switch(a.f){case B.cY:case B.eJ:case B.bY:case B.dJ:return k.xg(q)
+switch(a.f){case B.cZ:case B.eJ:case B.bY:case B.dJ:return k.xg(q)
 case B.dI:case B.de:case null:case void 0:return}}if(A.Ay(o)===3)switch(A.bn().a){case 0:case 1:case 2:switch(a.f){case B.dI:case B.de:return k.L6(B.bR,p.Z(0,r).Z(0,s),q)
-case B.cY:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}return
+case B.cZ:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}return
 case 3:return k.Za(B.bR,p.Z(0,r).Z(0,s),q)
 case 5:case 4:return k.L6(B.bR,p.Z(0,r).Z(0,s),q)}switch(A.bn().a){case 2:switch(a.f){case B.dI:case B.de:return i.ga_().gaE().A6(B.bR,p.Z(0,r).Z(0,s),q)
-case B.cY:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}return
-case 0:case 1:switch(a.f){case B.dI:case B.de:case B.cY:case B.eJ:return i.ga_().gaE().A6(B.bR,p.Z(0,r).Z(0,s),q)
+case B.cZ:case B.eJ:case B.bY:case B.dJ:case null:case void 0:break}return
+case 0:case 1:switch(a.f){case B.dI:case B.de:case B.cZ:case B.eJ:return i.ga_().gaE().A6(B.bR,p.Z(0,r).Z(0,s),q)
 case B.bY:case B.dJ:if(i.ga_().gaE().B){i.ga_().gaE().hh(B.bR,q)
 return k.xg(q)}break
 case null:case void 0:break}return
@@ -100440,7 +100442,7 @@ if(a){s=this.a.a.y.ga_().gaE()
 r=s.fu
 r.toString
 s.hh(B.lM,r)
-B.OR.jm("Scribe.startStylusHandwriting",t.H)}},
+B.OS.jm("Scribe.startStylusHandwriting",t.H)}},
 $S:93}
 A.Hi.prototype={
 am(){return new A.Ll()}}
@@ -100470,7 +100472,7 @@ alv(){this.a.ay.$0()},
 R(a){var s,r,q=this,p=A.G(t.C,t.xR)
 p.t(0,B.pD,new A.db(new A.aOB(q),new A.aOC(q),t.UN))
 q.a.toString
-p.t(0,B.xE,new A.db(new A.aOD(q),new A.aOE(q),t.jn))
+p.t(0,B.xF,new A.db(new A.aOD(q),new A.aOE(q),t.jn))
 q.a.toString
 switch(A.bn().a){case 0:case 1:case 2:p.t(0,B.bdy,new A.db(new A.aOF(q),new A.aOG(q),t.hg))
 break
@@ -100970,7 +100972,7 @@ if(this.f===r.gc0()||!r.gc0())return
 $.am.toString
 r=$.bq()
 s=this.a.c
-r.gD7().a1i(s.a,B.xL)},
+r.gD7().a1i(s.a,B.xM)},
 a2e(a){var s,r,q=this,p=a.b.a
 switch(p){case 1:s=a.a===q.a.c.a
 break
@@ -102469,7 +102471,7 @@ if(q)s.ki(r,!0)
 return null},
 $S:58}
 A.aIu.prototype={
-$3(a,b,c){var s=null,r=A.v2(B.bW,s,s).ayB(new A.rE(B.bW,B.cq,B.A,s,s,s,s,s,s,B.h,B.A,s,s,s,s,s,s,s,s,s,s,s,s,s,s,B.a6R,B.A,s,s,B.kn,B.d,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,B.a2M,B.d),B.cq,B.zV,A.v2(B.bW,s,s).ok.axM(B.b4c)),q=b.e.length===0?B.b0G:B.aeB
+$3(a,b,c){var s=null,r=A.v2(B.bW,s,s).ayB(new A.rE(B.bW,B.cq,B.A,s,s,s,s,s,s,B.h,B.A,s,s,s,s,s,s,s,s,s,s,s,s,s,s,B.a6R,B.A,s,s,B.kn,B.d,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,B.a2M,B.d),B.cq,B.zW,A.v2(B.bW,s,s).ok.axM(B.b4c)),q=b.e.length===0?B.b0G:B.aeB
 return new A.tD(q,new A.aIt(),"Pocket Bump",r,!1,s)},
 $C:"$3",
 $R:3,
@@ -102587,7 +102589,7 @@ adO(a,b,c,d,e,f,g,h,i,j,k,l,m){var s,r,q,p=this
 p.cx=a
 s=B.hU.i(0,a)
 if(s==null){p.cy=1
-p.cx=p.a.fr}if(h!=null)for(s=h.length,r=0;r<h.length;h.length===s||(0,A.H)(h),++r)p.iJ(h[r])
+p.cx=p.a.fx}if(h!=null)for(s=h.length,r=0;r<h.length;h.length===s||(0,A.H)(h),++r)p.iJ(h[r])
 for(s=A.akV(p.a,p.c),q=s.length,r=0;r<s.length;s.length===q||(0,A.H)(s),++r)p.iJ(s[r])
 for(s=p.z,q=s.length,r=0;r<s.length;s.length===q||(0,A.H)(s),++r)p.iJ(s[r].a)},
 ga2u(){return B.l.A(B.b.p(this.gDS()*A.SD(this.db)),1,9999)},
@@ -102818,42 +102820,42 @@ K(){return"PokemonRarity."+this.b}}
 A.a.prototype={}
 A.ab.prototype={
 a0r(a){var s,r=this
-if(a===3&&r.fy!=null){s=r.fy
+if(a===3&&r.go!=null){s=r.go
 s.toString
-return s}if(a===2&&r.fx!=null){s=r.fx
+return s}if(a===2&&r.fy!=null){s=r.fy
 s.toString
-return s}return r.fr},
-a8T(a){var s=this.fy
+return s}return r.fx},
+a8T(a){var s=this.go
 if(s!=null&&a===s)return 3
-s=this.fx
+s=this.fy
 if(s!=null&&a===s)return 2
 return 1},
 gi8(){var s,r,q=this
-if(q.ch||q.CW)return B.eK
-if(q.at)return B.W
-s=q.as
-if(s<3)r=q.ay&&q.dx==null
+if(q.CW||q.cx)return B.eK
+if(q.ax)return B.W
+s=q.at
+if(s<3)r=q.ch&&q.dy==null
 else r=!0
 if(r)return B.W
-if(s!==2)s=s===1&&q.dx==null&&!q.ay
+if(s!==2)s=s===1&&q.dy==null&&!q.ch
 else s=!0
 if(s)return B.bf
 return B.bv},
 gOA(){var s=this
-if(!s.go)return!1
+if(!s.id)return!1
 if(s.gi8()===B.eK)return!1
-if(s.ax||B.aZi.q(0,s.a))return!1
-if(s.at&&s.as>1)return!1
+if(s.ay||B.aZi.q(0,s.a))return!1
+if(s.ax&&s.at>1)return!1
 return!0},
 ga6_(){var s,r,q=this
-if(q.at)return 1
-s=q.as
-if(s<3)r=q.ay&&q.dx==null
+if(q.ax)return 1
+s=q.at
+if(s<3)r=q.ch&&q.dy==null
 else r=!0
-if(r)return B.l.A(q.cy-10,1,100)
-if(s!==2)s=s===1&&q.dx==null&&!q.ay
+if(r)return B.l.A(q.db-10,1,100)
+if(s!==2)s=s===1&&q.dy==null&&!q.ch
 else s=!0
-if(s)return B.l.A(q.cy-5,1,100)
+if(s)return B.l.A(q.db-5,1,100)
 return 1},
 guk(){var s=this.a
 if(B.aYB.q(0,s))return B.dU
@@ -103724,24 +103726,24 @@ p=A.dk(new A.a6C(c),null,t.z)
 A.aM(a,!1).cI(p)
 case 1:return A.A(q,r)}})
 return A.B($async$CB,r)},
-R(a){var s,r,q,p,o,n=null,m=A.dW(a,!0,t.R),l=t.AY,k=l.j("t.E"),j=A.a1(new A.af(B.Jj,new A.a6D(m),l),k),i=A.a1(new A.af(B.Jj,new A.a6E(m),l),k)
-l=A.hR(n,!0,B.zH,!0,0,A.co(n,n,B.dd,n,n,new A.a6F(a),n,n,n),B.bac)
+R(a){var s,r,q,p,o,n=null,m=A.dW(a,!0,t.R),l=t.AY,k=l.j("t.E"),j=A.a1(new A.af(B.Jk,new A.a6D(m),l),k),i=A.a1(new A.af(B.Jk,new A.a6E(m),l),k)
+l=A.hR(n,!0,B.zI,!0,0,A.co(n,n,B.dd,n,n,new A.a6F(a),n,n,n),B.bac)
 k=A.dU("assets/images/battle_bg_route.png",B.H,n,B.q,B.cf,!1,n,n,n)
 s=A.eF(n,new A.F(n,n,n,n,n,new A.bh(B.bs,B.am,B.V,A.b([A.d(214,B.iA.h()>>>16&255,B.iA.h()>>>8&255,B.iA.h()&255),A.d(194,B.qv.h()>>>16&255,B.qv.h()>>>8&255,B.qv.h()&255),A.d(240,B.dS.h()>>>16&255,B.dS.h()>>>8&255,B.dS.h()&255)],t.O),n,n),B.p),B.bQ)
 r=A.r(16)
 q=t.p
-r=A.b([A.I(n,B.aXp,B.n,n,n,new A.F(B.a5Z,n,A.W(A.d(115,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1),r,n,n,B.p),n,n,n,B.cB,n,n,n),B.e_,this.afR(a,m),B.m0,A.X(A.b([B.agw,B.a3,A.q("BIOME ADVENTURES ("+j.length+"/8 UNLOCKED)",n,n,n,n,B.Uw,n,n)],q),B.o,B.j,B.k,0),B.af],q)
+r=A.b([A.I(n,B.aXp,B.n,n,n,new A.F(B.a5Z,n,A.W(A.d(115,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1),r,n,n,B.p),n,n,n,B.cB,n,n,n),B.e_,this.afR(a,m),B.m0,A.X(A.b([B.agw,B.a3,A.q("BIOME ADVENTURES ("+j.length+"/8 UNLOCKED)",n,n,n,n,B.Ux,n,n)],q),B.o,B.j,B.k,0),B.af],q)
 for(p=j.length,o=0;o<j.length;j.length===p||(0,A.H)(j),++o)B.c.J(r,A.b([this.T8(a,m,j[o],!0),B.af],q))
 for(p=i.length,o=0;o<i.length;i.length===p||(0,A.H)(i),++o)B.c.J(r,A.b([this.T8(a,m,i[o],!1),B.af],q))
 return A.eW(l,B.kA,A.ct(B.aX,A.b([k,s,A.e4(!0,A.m6(r,B.t5,n,B.ad),B.ae,!0)],q),B.O,B.ck),!0)},
 afR(a,b){var s=null,r=A.r(18),q=A.W(A.d(191,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1.4),p=A.r(12),o=t.p
-return A.I(s,A.ad(A.b([A.X(A.b([A.I(s,B.agM,B.n,s,s,new A.F(B.a5r,s,A.W(A.d(140,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1),p,s,s,B.p),s,s,s,B.tb,s,s,s),B.dL,B.aaQ],o),B.o,B.j,B.k,0),B.m1,B.b9k,B.aw,A.b6(A.dP(B.agm,B.bc6,new A.a6B(this,a,b),A.cc(s,s,B.aC,s,s,s,s,s,s,B.A,s,s,B.t1,s,new A.aZ(A.r(12),B.I),s,s,s,s,s)),s,1/0)],o),B.L,B.j,B.k),B.n,s,s,new A.F(s,s,q,r,s,B.aCu,B.p),s,s,s,B.AU,s,s,s)},
+return A.I(s,A.ad(A.b([A.X(A.b([A.I(s,B.agM,B.n,s,s,new A.F(B.a5r,s,A.W(A.d(140,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1),p,s,s,B.p),s,s,s,B.tb,s,s,s),B.dL,B.aaQ],o),B.o,B.j,B.k,0),B.m1,B.b9k,B.aw,A.b6(A.dP(B.agm,B.bc6,new A.a6B(this,a,b),A.cc(s,s,B.aC,s,s,s,s,s,s,B.A,s,s,B.t1,s,new A.aZ(A.r(12),B.I),s,s,s,s,s)),s,1/0)],o),B.L,B.j,B.k),B.n,s,s,new A.F(s,s,q,r,s,B.aCu,B.p),s,s,s,B.AV,s,s,s)},
 T8(a,b,c,d){var s=null,r=d?1:0.68,q=c.r,p=A.b([A.d(B.b.p(255*(d?0.22:0.08)),q.h()>>>16&255,q.h()>>>8&255,q.h()&255),B.a5M],t.O),o=A.r(16),n=A.W(d?A.d(166,q.h()>>>16&255,q.h()>>>8&255,q.h()&255):B.a4,1.2),m=A.r(11),l=A.W(d?A.d(153,q.h()>>>16&255,q.h()>>>8&255,q.h()&255):B.a4,1),k=d?c.w:B.fG,j=c.b,i=t.p
-m=A.X(A.b([A.I(s,A.bg(k,d?q:B.aQ,s,22),B.n,s,s,new A.F(B.zZ,s,l,m,s,s,B.p),s,s,s,B.hv,s,s,s),B.po,A.ah(A.ad(A.b([A.q(j.toUpperCase(),s,s,s,s,B.b7M,s,s),B.cL,A.q(c.d,s,s,s,s,B.id,s,s)],i),B.L,B.j,B.k),1)],i),B.o,B.j,B.k,0)
+m=A.X(A.b([A.I(s,A.bg(k,d?q:B.aQ,s,22),B.n,s,s,new A.F(B.A_,s,l,m,s,s,B.p),s,s,s,B.hv,s,s,s),B.po,A.ah(A.ad(A.b([A.q(j.toUpperCase(),s,s,s,s,B.b7M,s,s),B.cL,A.q(c.d,s,s,s,s,B.id,s,s)],i),B.L,B.j,B.k),1)],i),B.o,B.j,B.k,0)
 l=c.e
 k=A.a8(l).j("a7<1,fv>")
 l=A.a1(new A.a7(l,new A.a6z(),k),k.j("aW.E"))
-m=A.b([m,B.m1,A.ks(B.d1,l,B.ei,6,6),B.x5],i)
+m=A.b([m,B.m1,A.ks(B.d2,l,B.ei,6,6),B.x5],i)
 if(d)m.push(A.b6(A.dP(A.bg(c.w,s,s,17),A.q("ENTER "+j.toUpperCase(),s,s,s,s,B.b6e,s,s),new A.a6A(this,a,b,c),A.cc(s,s,q,s,s,s,s,s,s,B.A,s,s,B.a9f,s,new A.aZ(A.r(11),B.I),s,s,s,s,s)),s,1/0))
 else{q=A.r(10)
 l=A.W(A.d(71,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1)
@@ -103847,12 +103849,12 @@ return A.B($async$wd,r)},
 R(a){var s,r,q,p=this,o=null,n=A.dW(a,!0,t.R),m=p.a.c,l=m==null?o:m.f
 if(l==null)l="assets/images/battle_bg_route.png"
 m=p.d
-s=A.hR(o,!1,B.zH,!0,0,o,A.q(m===B.pJ?p.gtH(0)+" CHECKPOINT":p.gtH(0),o,o,o,o,B.b5o,o,o))
+s=A.hR(o,!1,B.zI,!0,0,o,A.q(m===B.pJ?p.gtH(0)+" CHECKPOINT":p.gtH(0),o,o,o,o,B.b5o,o,o))
 r=A.dU(l,B.H,o,B.q,B.cf,!1,o,o,o)
 q=A.eF(o,new A.F(o,o,o,o,o,new A.bh(B.bs,B.am,B.V,A.b([A.d(204,B.qE.h()>>>16&255,B.qE.h()>>>8&255,B.qE.h()&255),A.d(168,B.rd.h()>>>16&255,B.rd.h()>>>8&255,B.rd.h()&255),A.d(235,B.dS.h()>>>16&255,B.dS.h()>>>8&255,B.dS.h()&255)],t.O),o,o),B.p),B.bQ)
-return A.ui(m===B.jV,A.eW(s,B.d7,A.ct(B.aX,A.b([r,q,A.e4(!0,new A.aG(B.cB,p.d===B.jV?p.afX():p.afm(n),o),B.ae,!0)],t.p),B.O,B.ck),!0),new A.auC(p,n),t.K)},
+return A.ui(m===B.jV,A.eW(s,B.d8,A.ct(B.aX,A.b([r,q,A.e4(!0,new A.aG(B.cB,p.d===B.jV?p.afX():p.afm(n),o),B.ae,!0)],t.p),B.O,B.ck),!0),new A.auC(p,n),t.K)},
 afm(a){var s,r,q,p,o,n=this,m=null,l=n.gnw()
-l=A.b([A.d(56,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),B.zW],t.O)
+l=A.b([A.d(56,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),B.zX],t.O)
 s=A.r(16)
 r=n.gnw()
 r=A.W(A.d(153,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1.3)
@@ -103873,11 +103875,11 @@ if(k)p=B.z
 else p=m.r?B.b4:m.gnw()
 p=A.W(p,1)
 if(k)o=B.nU
-else o=m.r?B.Cd:B.u4
+else o=m.r?B.Ce:B.u4
 if(k)k=B.z
 else k=m.r?B.b4:m.gnw()
 n=t.p
-return A.ad(A.b([A.I(l,A.ad(A.b([A.bg(o,k,l,52),B.aw,A.q(s,l,l,l,l,B.xk,l,l),B.a8,A.q(r,l,l,l,l,B.jO,B.aU,l)],n),B.o,B.j,B.k),B.n,l,l,new A.F(B.zY,l,p,q,l,l,B.p),l,l,l,B.iS,l,l,1/0),B.m0,A.b6(A.eQ(B.b9c,new A.aut(m),A.cc(l,l,m.gnw(),l,l,l,l,l,l,B.A,l,l,l,l,new A.aZ(A.r(14),B.I),l,l,l,l,l)),50,1/0)],n),B.o,B.b9,B.k)}}
+return A.ad(A.b([A.I(l,A.ad(A.b([A.bg(o,k,l,52),B.aw,A.q(s,l,l,l,l,B.xk,l,l),B.a8,A.q(r,l,l,l,l,B.jO,B.aU,l)],n),B.o,B.j,B.k),B.n,l,l,new A.F(B.zZ,l,p,q,l,l,B.p),l,l,l,B.iS,l,l,1/0),B.m0,A.b6(A.eQ(B.b9c,new A.aut(m),A.cc(l,l,m.gnw(),l,l,l,l,l,l,B.A,l,l,l,l,new A.aZ(A.r(14),B.I),l,l,l,l,l)),50,1/0)],n),B.o,B.b9,B.k)}}
 A.auD.prototype={
 $1(a){var s=this.a
 if(s.c!=null&&s.e===0)s.tf()},
@@ -103896,7 +103898,7 @@ $S:16}
 A.auy.prototype={
 $1(a){var s=null,r=this.a.e+1
 r=r<5?"REST CHECKPOINT ("+r+"/5)":"FINISH ADVENTURE"
-return A.ro(this.c,B.yo,r,"LEAVE ADVENTURE",!1,!0,this.b,s,s,!0,0,s,s,s)},
+return A.ro(this.c,B.yp,r,"LEAVE ADVENTURE",!1,!0,this.b,s,s,!0,0,s,s,s)},
 $S:55}
 A.auz.prototype={
 $0(){var s=this.a
@@ -103932,7 +103934,7 @@ $2(a,b){return B.eL},
 $S:18}
 A.auo.prototype={
 $2(a,b){var s,r,q,p,o=null,n=this.a.e[b],m=A.r(13),l=A.W(n.d<=0?A.d(B.b.p(127.5),B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):A.d(31,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),k=n.b,j=t.p
-k=A.b([A.q(k,o,o,o,o,A.aD(o,o,n.d<=0?B.aQ:B.d,o,o,o,o,o,o,o,o,13,o,o,B.y,o,o,!0,o,o,o,o,o,o,o,o),o,o),B.a3,A.q("Lv."+n.c,o,o,o,o,B.UI,o,o)],j)
+k=A.b([A.q(k,o,o,o,o,A.aD(o,o,n.d<=0?B.aQ:B.d,o,o,o,o,o,o,o,o,13,o,o,B.y,o,o,!0,o,o,o,o,o,o,o,o),o,o),B.a3,A.q("Lv."+n.c,o,o,o,o,B.UJ,o,o)],j)
 if(n.at!==B.al){s=A.d(56,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255)
 r=A.r(4)
 B.c.J(k,A.b([B.a3,A.I(o,A.q(n.at.b.toUpperCase(),o,o,o,o,B.xr,o,o),B.n,o,o,new A.F(s,o,o,r,o,o,B.p),o,o,o,B.dE,o,o,o)],j))}k=A.X(k,B.o,B.j,B.k,0)
@@ -103945,7 +103947,7 @@ q=n.d
 if(q<=0)q=B.a6
 else{p=n.e
 if(q<=p/5)q=B.z
-else q=q<=p/2?B.h:B.aC}return A.I(o,A.X(A.b([k,B.dg,A.b6(A.is(s,A.nx(B.bp,6,r,new A.j9(q,t.ZU))),o,105)],j),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.Af,o,l,m,o,o,B.p),o,o,o,B.fE,o,o,o)},
+else q=q<=p/2?B.h:B.aC}return A.I(o,A.X(A.b([k,B.dg,A.b6(A.is(s,A.nx(B.bn,6,r,new A.j9(q,t.ZU))),o,105)],j),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.Ag,o,l,m,o,o,B.p),o,o,o,B.fE,o,o,o)},
 $S:75}
 A.auq.prototype={
 $0(){var s=this.a,r=s.c
@@ -104011,7 +104013,7 @@ if(s!==!0){r=r.f
 r=r==null?null:B.m.q(r,"Rocket")
 r=r===!0}else r=!0}else r=!1
 if(r)return B.h4
-return q?B.yo:B.yp},
+return q?B.yp:B.yq},
 aJ(){var s,r,q,p,o,n=this,m=null
 n.aY()
 $.bV().aEN(n.gas6())
@@ -104058,7 +104060,7 @@ n.dy=A.c3(m,B.kI,m,m,n)
 n.fr=A.c3(m,B.t_,m,m,n)
 n.fx=A.c3(m,B.t_,m,m,n)
 n.fy=A.c3(m,B.iO,m,m,n)
-n.go=A.c3(m,B.AH,m,m,n)
+n.go=A.c3(m,B.AI,m,m,n)
 n.id=A.c3(m,B.iQ,m,m,n)
 n.k1=A.c3(m,B.iO,m,m,n)
 $.am.ok$.push(new A.ayU(n))},
@@ -104289,7 +104291,7 @@ return A.l(A.b9(B.fC,null,o),$async$jA)
 case 5:if(p.c==null){s=1
 break}p.G(new A.avw(p))
 s=6
-return A.l(A.b9(B.AC,null,o),$async$jA)
+return A.l(A.b9(B.AD,null,o),$async$jA)
 case 6:if(p.c==null){s=1
 break}A.m_()
 $.bV().iI(a.a.a)
@@ -104323,7 +104325,7 @@ return A.l(A.b9(B.fC,null,o),$async$ks)
 case 5:if(p.c==null){s=1
 break}p.G(new A.avC(p))
 s=6
-return A.l(A.b9(B.AC,null,o),$async$ks)
+return A.l(A.b9(B.AD,null,o),$async$ks)
 case 6:if(p.c==null){s=1
 break}A.m_()
 $.bV().iI(a.a.a)
@@ -104567,7 +104569,7 @@ return A.l(A.b9(B.eu,null,n),$async$d8)
 case 5:if(p.c==null){s=1
 break}p.G(new A.ay2(p))
 s=6
-return A.l(A.b9(B.AF,null,n),$async$d8)
+return A.l(A.b9(B.AG,null,n),$async$d8)
 case 6:if(p.c==null){s=1
 break}p.G(new A.ayd(p))
 s=1
@@ -104619,7 +104621,7 @@ n.cw(0,0)}else{n=p.dy
 n===$&&A.c()
 n.cw(0,0)}n=t.z
 s=20
-return A.l(A.b9(B.AB,null,n),$async$d8)
+return A.l(A.b9(B.AC,null,n),$async$d8)
 case 20:if(p.c==null){s=1
 break}p.G(new A.aym(p))
 s=21
@@ -104665,14 +104667,14 @@ break
 case 29:p.G(new A.ay5(p,j))
 n=t.z
 s=31
-return A.l(A.b9(B.AB,null,n),$async$d8)
+return A.l(A.b9(B.AC,null,n),$async$d8)
 case 31:if(p.c==null){s=1
 break}p.G(new A.ay6(p,d,a9,j))
 k=p.go
 k===$&&A.c()
 k.cw(0,0)
 s=32
-return A.l(A.b9(B.AH,null,n),$async$d8)
+return A.l(A.b9(B.AI,null,n),$async$d8)
 case 32:if(p.c==null){s=1
 break}p.G(new A.ay7(p))
 s=1
@@ -104993,7 +104995,7 @@ nH(a){return this.al1(a)},
 al1(a){var s=0,r=A.C(t.H),q,p=this,o,n,m,l,k,j,i,h,g,f,e,d,c
 var $async$nH=A.D(function(b,a0){if(b===1)return A.z(a0,r)
 for(;;)switch(s){case 0:d=a.a
-c=d.dx
+c=d.dy
 c.toString
 if(d.a===133)o=B.aCY[B.dp.bs(3)]
 else o=c
@@ -105203,7 +105205,7 @@ return A.l(A.b9(B.et,null,o),$async$de)
 case 6:if(p.c==null){s=1
 break}p.G(new A.awZ(p))
 s=7
-return A.l(A.b9(B.AA,null,o),$async$de)
+return A.l(A.b9(B.AB,null,o),$async$de)
 case 7:if(p.c==null){s=1
 break}l=$.bV()
 l.nQ("audio/sfx/sfx_ball_throw.wav")
@@ -105287,7 +105289,7 @@ return A.l(A.b9(B.dD,null,o),$async$de)
 case 23:if(p.c==null){s=1
 break}p.G(new A.awR(p))
 k=p.k1
-k.e=B.AF
+k.e=B.AG
 k.cw(0,0)
 s=24
 return A.l(A.b9(B.dD,null,o),$async$de)
@@ -105384,11 +105386,11 @@ l=p.k1
 l.e=B.hp
 l.cw(0,0)
 s=36
-return A.l(A.b9(B.AK,null,o),$async$de)
+return A.l(A.b9(B.AL,null,o),$async$de)
 case 36:if(p.c==null){s=1
 break}p.G(new A.ax0(p))
 s=37
-return A.l(A.b9(B.AA,null,o),$async$de)
+return A.l(A.b9(B.AB,null,o),$async$de)
 case 37:if(p.c==null){s=1
 break}p.G(new A.ax1(p))
 s=38
@@ -105454,7 +105456,7 @@ var $async$kt=A.D(function(a0,a1){if(a0===1)return A.z(a1,r)
 for(;;)switch(s){case 0:if(!p.a.as){o=p.f
 o===$&&A.c()
 o=o.a
-o=o.ch||o.CW}else o=!0
+o=o.CW||o.cx}else o=!0
 if(o){s=1
 break}n=a==null?p.YD():a
 if(n.length===0){s=1
@@ -105519,8 +105521,8 @@ break}case 15:k.length===f||(0,A.H)(k),++e
 s=14
 break
 case 16:k=h.a
-f=k.db
-s=f!=null&&k.dx!=null&&h.c>=f?20:21
+f=k.dx
+s=f!=null&&k.dy!=null&&h.c>=f?20:21
 break
 case 20:s=22
 return A.l(p.nH(h),$async$kt)
@@ -105535,7 +105537,7 @@ case 1:return A.A(q,r)}})
 return A.B($async$kt,r)},
 ZP(a,b){var s="currentHp",r="abilityId",q="abilitySlot"
 if(typeof b.i(0,s)=="number")a.d=B.l.A(B.b.aT(A.fi(b.i(0,s))),0,a.e)
-if(typeof b.i(0,"status")=="string")a.saL(0,B.c.qF(B.Je,new A.ayx(A.c5(b.i(0,"status"))),new A.ayy(a)))
+if(typeof b.i(0,"status")=="string")a.saL(0,B.c.qF(B.Jf,new A.ayx(A.c5(b.i(0,"status"))),new A.ayy(a)))
 if(typeof b.i(0,r)=="string"&&A.c5(b.i(0,r)).length!==0){a.cx=A.c5(b.i(0,r))
 if(typeof b.i(0,q)=="number")a.cy=B.b.aT(A.fi(b.i(0,q)))}},
 YI(a,b){var s,r,q,p,o,n,m,l,k,j,i,h=this,g=null,f=h.r
@@ -106038,7 +106040,7 @@ case 65:case 1:return A.A(q,r)
 case 2:return A.z(o.at(-1),r)}})
 return A.B($async$dU,r)},
 R(a){var s,r,q,p,o,n,m,l,k=this,j=null,i=A.r(10),h=A.r(10),g=A.r(10)
-g=A.fY(!1,B.az,!0,i,A.cw(!1,h,!0,A.I(j,B.Cy,B.n,j,j,new A.F(j,j,A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),g,j,j,B.p),j,34,j,j,j,j,34),j,!0,j,j,j,j,j,j,j,j,k.gaj_(),j,j,j,j),B.n,B.qO,0,j,j,j,j,j,B.cX)
+g=A.fY(!1,B.az,!0,i,A.cw(!1,h,!0,A.I(j,B.Cz,B.n,j,j,new A.F(j,j,A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),g,j,j,B.p),j,34,j,j,j,j,34),j,!0,j,j,j,j,j,j,j,j,k.gaj_(),j,j,j,j),B.n,B.qO,0,j,j,j,j,j,B.cY)
 h=A.r(10)
 i=k.a
 if(i.d)i=B.aa
@@ -106092,7 +106094,7 @@ r=A.W(A.d(82,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
 q=k.y
 o=q?B.tY:B.af7
 o=A.bg(o,q?B.h:B.z,j,22)
-s=A.I(j,A.X(A.b([o,B.bw,A.ah(A.q(q?"Battle Complete! Ready to proceed.":"Return and regroup your team.",1,B.a_,j,j,B.m9,j,j),1)],p),B.o,B.j,B.k,0),B.n,j,j,new A.F(B.zT,j,r,s,j,j,B.p),j,j,j,B.hs,j,j,1/0)
+s=A.I(j,A.X(A.b([o,B.bw,A.ah(A.q(q?"Battle Complete! Ready to proceed.":"Return and regroup your team.",1,B.a_,j,j,B.m9,j,j),1)],p),B.o,B.j,B.k,0),B.n,j,j,new A.F(B.zU,j,r,s,j,j,B.p),j,j,j,B.hs,j,j,1/0)
 r=k.a
 q=r.x
 if(q){o=k.y
@@ -106100,7 +106102,7 @@ n=o?B.af9:B.nU
 m=n
 n=o
 o=m}else{o=k.y
-n=o?B.C9:B.afl
+n=o?B.Ca:B.afl
 m=n
 n=o
 o=m}o=A.bg(o,B.d,j,20)
@@ -106111,7 +106113,7 @@ else{r=r.ax
 if(r==null)r="RETREAT FROM GYM"}else r=n?"CONTINUE":"RETURN"
 r=A.q(r,j,j,j,j,B.b53,j,j)
 if(q)q=n?B.a2A:B.kl
-else q=n?B.cq:B.z9
+else q=n?B.cq:B.za
 q=A.cO(new A.eb(B.a0R,A.ad(A.b([s,B.af,A.b6(A.dP(o,r,new A.ayO(k),A.cc(j,j,q,j,j,j,4,j,j,B.d,j,j,j,j,new A.aZ(A.r(14),B.I),j,j,j,j,j)),50,1/0)],p),B.o,B.j,B.Y),j),j,j)
 s=q}else{s=k.ch?0.52:1
 s=A.oX(k.ay?k.afH():k.afB(),B.ah,B.et,s)}return A.ui(!0,A.eW(j,B.a7a,A.e4(!0,A.ad(A.b([new A.aG(B.iR,i,j),h,g,A.ah(new A.aG(B.a9q,s,j),40)],p),B.o,B.j,B.k),B.ae,!0),!1),new A.ayP(k),t.K)},
@@ -106125,9 +106127,9 @@ k=A.r(12)
 r=A.W(A.d(115,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1)
 q=n.f
 q===$&&A.c()
-k=A.I(m,A.q(q.a.b+" is stunned! Catch rates: Master 100% \u2022 Ultra 10% \u2022 Great 5% \u2022 Other Balls 1% (Flee if missed: "+B.l.aT(s)+"%)",m,m,m,m,B.m5,B.aU,m),B.n,m,m,new A.F(B.zT,m,r,k,m,m,B.p),m,m,m,B.hr,m,m,1/0)
+k=A.I(m,A.q(q.a.b+" is stunned! Catch rates: Master 100% \u2022 Ultra 10% \u2022 Great 5% \u2022 Other Balls 1% (Flee if missed: "+B.l.aT(s)+"%)",m,m,m,m,B.m5,B.aU,m),B.n,m,m,new A.F(B.zU,m,r,k,m,m,B.p),m,m,m,B.hr,m,m,1/0)
 r=!n.ch&&l?n.gaq8():m
-r=A.ah(A.b6(A.dP(B.aSC,A.q(l?"THROW POK\xc9 BALL":"NO BALLS LEFT",m,m,m,m,B.Uy,m,m),r,A.cc(m,m,B.cq,B.a4,m,m,m,m,m,B.d,m,m,m,m,new A.aZ(A.r(14),B.I),m,m,m,m,m)),52,m),2)
+r=A.ah(A.b6(A.dP(B.aSC,A.q(l?"THROW POK\xc9 BALL":"NO BALLS LEFT",m,m,m,m,B.Uz,m,m),r,A.cc(m,m,B.cq,B.a4,m,m,m,m,m,B.d,m,m,m,m,new A.aZ(A.r(14),B.I),m,m,m,m,m)),52,m),2)
 q=!n.ch?new A.avR(n):m
 p=A.d(B.b.p(76.5),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 o=t.p
@@ -106159,7 +106161,7 @@ T7(a,b,c){var s=null
 return A.iP(s,new A.dT(!0,A.I(s,s,B.n,s,s,new A.F(A.d(B.b.p(255*B.b.A(b,0,0.5)),B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),s,s,A.r(c),s,s,B.p),s,c*0.32,s,s,s,s,c),s),s,s,a.a-c/2,s,a.b-c*0.16,s)},
 Tq(a,b,c){var s=c.N(0,b?B.aRn:B.aQQ),r=c.N(0,new A.e(0,b?-11:-14)),q=c.N(0,b?B.aRm:B.aQO),p=c.N(0,B.aQx),o=b?36:48
 return A.vc(new A.aw4(this,p,s,r,o,q,b?24:30,a),null,B.ah,B.nh,new A.b1(0,1,t.Y),t.i)},
-afk(a,b,c,d,e){var s,r=d.N(0,new A.e(38*e,-118*e)),q=a.N(0,B.aQw),p=d.N(0,new A.e(24*e,-2)),o=a.N(0,B.OK),n=this.k1
+afk(a,b,c,d,e){var s,r=d.N(0,new A.e(38*e,-118*e)),q=a.N(0,B.aQw),p=d.N(0,new A.e(24*e,-2)),o=a.N(0,B.OL),n=this.k1
 n===$&&A.c()
 s=this.id
 s===$&&A.c()
@@ -106171,7 +106173,7 @@ p=g?0:1
 r=g?B.aR6:i
 return A.oX(A.aTs(e?A.C8(s,B.O,null):s,B.f3,B.dD,r),B.ah,B.dD,p)},
 T9(a,b,c){var s=null,r=A.d(204,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),q=A.r(10),p=A.W(A.d(217,b.h()>>>16&255,b.h()>>>8&255,b.h()&255),1.2)
-return A.iP(c,A.I(s,A.q(a,s,s,s,s,A.aD(s,s,b,s,s,s,s,s,s,s,s,10,s,s,B.N,s,s,!0,s,0.4,s,s,s,s,s,s),s,s),B.n,s,s,new A.F(r,s,p,q,s,s,B.p),s,s,s,B.da,s,s,s),s,s,s,s,s,s)},
+return A.iP(c,A.I(s,A.q(a,s,s,s,s,A.aD(s,s,b,s,s,s,s,s,s,s,s,10,s,s,B.N,s,s,!0,s,0.4,s,s,s,s,s,s),s,s),B.n,s,s,new A.F(r,s,p,q,s,s,B.p),s,s,s,B.cT,s,s,s),s,s,s,s,s,s)},
 Tk(a){return A.X(A.l3(6,new A.aw3(a),!0,t.l7),B.o,B.j,B.Y,0)},
 Tl(a,b,c){var s,r,q,p,o,n,m,l,k,j,i=this,h=null,g=a.c-1,f=g*g*g,e=a.gNC(),d=e>f?B.b.A((a.as-f)/(e-f),0,1):0
 g=A.d(235,B.qZ.h()>>>16&255,B.qZ.h()>>>8&255,B.qZ.h()&255)
@@ -106185,7 +106187,7 @@ o=t.p
 n=A.b([],o)
 m=!c
 if(m&&!i.a.d){l=i.a.e
-l=A.q(l==null?"Trainer":l,1,B.a_,h,h,B.UD,h,h)
+l=A.q(l==null?"Trainer":l,1,B.a_,h,h,B.UE,h,h)
 k=i.w
 k===$&&A.c()
 B.c.J(n,A.b([A.X(A.b([new A.cF(1,B.aV,l,h),B.bx,i.Tk(k)],o),B.o,B.aP,B.k,0),B.bS],o))}else if(c){l=i.d
@@ -106206,13 +106208,13 @@ m.push(A.I(h,A.q(A.GP(a.at),h,h,h,h,B.b46,h,h),B.n,h,h,new A.F(l,h,h,k,h,h,B.p),
 n.push(A.X(A.b([new A.cF(1,B.aV,r,h),A.X(m,B.o,B.j,B.Y,0)],o),B.o,B.aP,B.k,0))
 n.push(B.cM)
 n.push(new A.jY(b,a.e,h))
-if(c){r=A.is(A.r(2),A.nx(B.hj,2.5,d,B.yc))
-m=A.bg(B.ez,a.cy===3&&a.a.fy!=null?B.M:B.r,h,10.5)
+if(c){r=A.is(A.r(2),A.nx(B.hj,2.5,d,B.yd))
+m=A.bg(B.ez,a.cy===3&&a.a.go!=null?B.M:B.r,h,10.5)
 l=a.id
 l=A.ht(l==null?a.cx:l)
 k=a.cy===3
-j=k&&a.a.fy!=null?" [HA]":""
-B.c.J(n,A.b([B.bS,r,B.bS,A.X(A.b([m,B.jK,new A.cF(1,B.aV,A.q(l+j,h,B.a_,h,h,A.aD(h,h,k&&a.a.fy!=null?B.M:B.r,h,h,h,h,h,h,h,h,9,h,h,B.ch,h,h,!0,h,h,h,h,h,h,h,h),h,h),h)],o),B.o,B.j,B.k,0)],o))}return A.I(h,A.ad(n,B.L,B.j,B.Y),B.n,h,h,new A.F(g,h,q,s,p,h,B.p),h,h,h,B.B4,h,h,184)},
+j=k&&a.a.go!=null?" [HA]":""
+B.c.J(n,A.b([B.bS,r,B.bS,A.X(A.b([m,B.jK,new A.cF(1,B.aV,A.q(l+j,h,B.a_,h,h,A.aD(h,h,k&&a.a.go!=null?B.M:B.r,h,h,h,h,h,h,h,h,9,h,h,B.ch,h,h,!0,h,h,h,h,h,h,h,h),h,h),h)],o),B.o,B.j,B.k,0)],o))}return A.I(h,A.ad(n,B.L,B.j,B.Y),B.n,h,h,new A.F(g,h,q,s,p,h,B.p),h,h,h,B.B5,h,h,184)},
 ag6(a){var s,r,q,p,o,n,m,l,k,j=null
 switch(a.a){case 1:s=B.aWs
 break
@@ -106237,7 +106239,7 @@ l=A.r(10)
 k=A.W(A.d(B.b.p(178.5),p.h()>>>16&255,p.h()>>>8&255,p.h()&255),1)
 return A.I(j,A.X(A.b([A.bg(q,p,j,13),B.bx,A.q(m,j,j,j,j,A.aD(j,j,p,j,j,j,j,j,j,j,j,9.5,j,j,B.y,j,j,!0,j,0.5,j,j,j,j,j,j),j,j)],t.p),B.o,B.j,B.Y,0),B.n,j,j,new A.F(s,j,k,l,j,j,B.p),j,j,j,B.iT,j,j,j)},
 Lj(a){switch(a.a){case 1:return B.cc
-case 4:return B.Ot
+case 4:return B.Ou
 case 3:return B.eq
 case 5:return B.aOZ
 case 2:return B.aP_
@@ -106334,7 +106336,7 @@ if(a7===B.hW||a7===B.fP)B.c.J(a5,A.b([B.bx,A.I(a4,B.ba_,B.n,a4,a4,new A.F(A.d(46
 a5=A.Dh(B.b7,A.X(a5,B.o,B.j,B.Y,0),B.fw)
 if(s)a7="DISABLED"
 else a7=r?"TORMENT":""+a8.w+"/"+a8.r
-return A.fY(!1,B.az,!0,p,A.xr(A.cw(!1,f,!0,A.X(A.b([e,A.ah(new A.aG(new A.a5(9,d,9,c),A.ad(A.b([b,A.X(A.b([new A.cF(1,B.aV,a5,a4),B.bx,A.q(a7,a4,a4,a4,a4,A.aD(a4,a4,l,a4,a4,a4,a4,a4,a4,a4,a4,a9?10:10.5,a4,a4,B.ch,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4),a4,a4)],a),B.o,B.aP,B.k,0)],a),B.L,B.aP,B.k),a4),1)],a),B.cr,B.j,B.k,0),a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,g,a4,a4,a4,a4),new A.F(a4,a4,i,k,h,new A.bh(B.aY,B.bm,B.V,j,a4,a4),B.p),a4),B.dq,B.a6,0,a4,a4,a4,a4,a4,B.cX)},
+return A.fY(!1,B.az,!0,p,A.xr(A.cw(!1,f,!0,A.X(A.b([e,A.ah(new A.aG(new A.a5(9,d,9,c),A.ad(A.b([b,A.X(A.b([new A.cF(1,B.aV,a5,a4),B.bx,A.q(a7,a4,a4,a4,a4,A.aD(a4,a4,l,a4,a4,a4,a4,a4,a4,a4,a4,a9?10:10.5,a4,a4,B.ch,a4,a4,!0,a4,a4,a4,a4,a4,a4,a4,a4),a4,a4)],a),B.o,B.aP,B.k,0)],a),B.L,B.aP,B.k),a4),1)],a),B.cr,B.j,B.k,0),a4,!0,a4,a4,a4,a4,a4,a4,a4,a4,g,a4,a4,a4,a4),new A.F(a4,a4,i,k,h,new A.bh(B.aY,B.bm,B.V,j,a4,a4),B.p),a4),B.dq,B.a6,0,a4,a4,a4,a4,a4,B.cY)},
 aq3(a,b,c){var s=this.c
 s.toString
 A.j8(B.kn,new A.axp(this,c,b,a),s,!0,!0,!1,B.lJ,t.z)},
@@ -106403,7 +106405,7 @@ p=A.b6(l,l,a3?9:11)
 o=A.q(a,1,B.a_,l,l,A.aD(l,l,B.d,l,l,l,l,l,l,l,l,a3?13.5:15,l,l,B.y,l,l,!0,l,0.9,l,l,l,l,l,l),l,l)
 n=a3?9.5:10.5
 m=t.p
-return A.fY(!1,B.az,!0,k,A.xr(A.cw(!1,e,!0,A.ct(B.aX,A.b([d,new A.aG(new A.a5(s,r,s,r),A.X(A.b([q,p,A.ah(A.ad(A.b([o,B.cL,A.q(b,1,B.a_,l,l,A.aD(l,l,A.d(214,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),l,l,l,l,l,l,l,l,n,l,l,B.db,l,l,!0,l,l,l,l,l,l,l,l),l,l)],m),B.L,B.b9,B.k),1)],m),B.o,B.j,B.k,0),l)],m),B.O,B.bH),l,!0,l,l,l,l,l,l,l,l,f,l,l,l,l),new A.F(l,l,h,i,g,new A.bh(B.aY,B.bm,B.V,j,l,l),B.p),l),B.dq,B.a6,0,l,l,l,l,l,B.cX)}}
+return A.fY(!1,B.az,!0,k,A.xr(A.cw(!1,e,!0,A.ct(B.aX,A.b([d,new A.aG(new A.a5(s,r,s,r),A.X(A.b([q,p,A.ah(A.ad(A.b([o,B.cL,A.q(b,1,B.a_,l,l,A.aD(l,l,A.d(214,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),l,l,l,l,l,l,l,l,n,l,l,B.db,l,l,!0,l,l,l,l,l,l,l,l),l,l)],m),B.L,B.b9,B.k),1)],m),B.o,B.j,B.k,0),l)],m),B.O,B.bH),l,!0,l,l,l,l,l,l,l,l,f,l,l,l,l),new A.F(l,l,h,i,g,new A.bh(B.aY,B.bm,B.V,j,l,l),B.p),l),B.dq,B.a6,0,l,l,l,l,l,B.cY)}}
 A.ayS.prototype={
 $1(a){return a.d>0},
 $S:17}
@@ -107004,7 +107006,7 @@ r.aF=!1
 r.O=!0
 r.ai=0
 r.Y=2
-r.ry=B.xR
+r.ry=B.xS
 r.B="BLOCKED!"
 r.bL=!0
 r.bM=B.z
@@ -107026,7 +107028,7 @@ $S:0}
 A.axa.prototype={
 $0(){var s,r=this.a
 r.aF=!1
-r.ry=B.xR
+r.ry=B.xS
 r.B="SWIPED AWAY!"
 r.bL=!0
 r.bM=B.z
@@ -107251,7 +107253,7 @@ s.aF=!1
 s.O=!0
 s.ai=0
 s.Y=2
-s.ry=B.xR
+s.ry=B.xS
 s.B="BLOCKED!"
 s.bL=!0
 s.bM=B.z
@@ -107843,7 +107845,7 @@ k=h?B.b.A(1-B.b.A((o-0.35)/0.65,0,1),0,1):1
 j=h&&o<0.25&&(B.b.ek(o*20)&1)===0
 h=A.m8(1,l,1)
 if(j)p=new A.hX(A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),B.ms,null,B.h9)
-else p=i.r?B.aao:B.B6
+else p=i.r?B.aao:B.B7
 return A.hl(A.z4(A.Vx(B.am,-0.18*m,A.vb(B.am,new A.pc(p,b,null),null,h,!0)),new A.e(q*8*(1-r)+n,s+m*(i.f*0.85))),k)},
 $S:649}
 A.aw3.prototype={
@@ -107868,21 +107870,21 @@ s=s.T?"RECHARGE":"CONTINUE"}else s="FIGHT"
 if(h){r=i.e
 r===$&&A.c()
 r=r.ga3a()}else r="Use a move"
-q=h?B.zB:B.cz
-p=h?B.Am:B.a62
+q=h?B.zC:B.cz
+p=h?B.An:B.a62
 o=h?B.ez:B.tZ
 s=A.ah(i.AU(s,r,q,p,o,h?i.gaiA():new A.avU(i),k),1)
 r=A.b6(m,m,j)
 q=h?l:"Items & Balls"
 p=t.p
-q=A.ah(A.X(A.b([s,r,A.ah(i.AU("BAG",q,B.zB,B.Am,B.nR,h?new A.avV(i,a):i.gaq1(),k),1)],p),B.o,B.j,B.k,0),1)
+q=A.ah(A.X(A.b([s,r,A.ah(i.AU("BAG",q,B.zC,B.An,B.nR,h?new A.avV(i,a):i.gaq1(),k),1)],p),B.o,B.j,B.k,0),1)
 r=A.b6(m,j,m)
 if(h)s=l
 else s=n.c?"Trapped!":"Switch party"
-h=A.ah(i.AU("POK\xc9MON",s,B.Ae,B.a7K,B.bi,h||n.c?new A.avW(i,a,h,n.d):new A.avX(i),k),1)
+h=A.ah(i.AU("POK\xc9MON",s,B.Af,B.a7K,B.bi,h||n.c?new A.avW(i,a,h,n.d):new A.avX(i),k),1)
 s=A.b6(m,m,j)
 o=i.a.d?"Escape battle":"Trainer duel"
-return A.cO(new A.eb(B.a0Q,A.ad(A.b([q,r,A.ah(A.X(A.b([h,s,A.ah(i.AU("RUN",o,B.a7E,B.z9,B.afg,new A.avY(i,a,n.e,n.c,n.f,n.r),k),1)],p),B.o,B.j,B.k,0),1)],p),B.o,B.j,B.k),m),m,m)},
+return A.cO(new A.eb(B.a0Q,A.ad(A.b([q,r,A.ah(A.X(A.b([h,s,A.ah(i.AU("RUN",o,B.a7E,B.za,B.afg,new A.avY(i,a,n.e,n.c,n.f,n.r),k),1)],p),B.o,B.j,B.k,0),1)],p),B.o,B.j,B.k),m),m,m)},
 $S:259}
 A.avU.prototype={
 $0(){var s=this.a
@@ -107932,8 +107934,8 @@ A.avS.prototype={
 $0(){this.a.ax=u.s},
 $S:0}
 A.aw2.prototype={
-$2(a,b){var s,r=null,q=b.d<176,p=q?7:9,o=q?8:10,n=q?24:28,m=t.p,l=A.X(A.b([A.bg(B.ez,B.zI,r,14),B.bx,B.bbL],m),B.o,B.j,B.k,0),k=A.r(20),j=this.a,i=j.ch?r:new A.aw1(j),h=A.r(20),g=A.r(20)
-n=A.b6(A.X(A.b([l,A.fY(!1,B.az,!0,k,A.cw(!1,h,!0,A.I(r,B.aXn,B.n,r,r,new A.F(r,r,A.W(A.d(46,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),g,r,r,B.p),r,r,r,B.iR,r,r,r),r,!0,r,r,r,r,r,r,r,r,i,r,r,r,r),B.n,B.zK,0,r,r,r,r,r,B.cX)],m),B.o,B.aP,B.k,0),n,r)
+$2(a,b){var s,r=null,q=b.d<176,p=q?7:9,o=q?8:10,n=q?24:28,m=t.p,l=A.X(A.b([A.bg(B.ez,B.zJ,r,14),B.bx,B.bbL],m),B.o,B.j,B.k,0),k=A.r(20),j=this.a,i=j.ch?r:new A.aw1(j),h=A.r(20),g=A.r(20)
+n=A.b6(A.X(A.b([l,A.fY(!1,B.az,!0,k,A.cw(!1,h,!0,A.I(r,B.aXn,B.n,r,r,new A.F(r,r,A.W(A.d(46,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),g,r,r,B.p),r,r,r,B.iR,r,r,r),r,!0,r,r,r,r,r,r,r,r,i,r,r,r,r),B.n,B.zL,0,r,r,r,r,r,B.cY)],m),B.o,B.aP,B.k,0),n,r)
 l=A.b6(r,q?5:7,r)
 k=this.b
 i=A.ah(k.length!==0?j.AZ(k[0],q):j.AV(),1)
@@ -107989,7 +107991,7 @@ j=A.cv(j,B.H,new A.axj(s),B.q,B.ay,42,42)
 i=t.p
 h=A.b([],i)
 if(k)B.c.J(h,A.b([B.hA,B.bx],i))
-h.push(A.q(s.b,f,f,f,f,B.d0,f,f))
+h.push(A.q(s.b,f,f,f,f,B.d1,f,f))
 h.push(B.a3)
 h.push(A.q("Lv."+s.c,f,f,f,f,B.xj,f,f))
 if(s===q)B.c.J(h,A.b([B.a3,A.I(f,B.bbq,B.n,f,f,new A.F(A.d(46,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),f,f,A.r(4),f,f,B.p),f,f,f,B.dE,f,f,f)],i))
@@ -108000,10 +108002,10 @@ q=A.r(4)
 B.c.J(h,A.b([B.a3,A.I(f,A.q(A.GP(s.at),f,f,f,f,B.V2,f,f),B.n,f,f,new A.F(e,f,f,q,f,f,B.p),f,f,f,B.dE,f,f,f)],i))}}e=A.b([A.X(h,B.o,B.j,B.k,0),B.cM,new A.jY(s.d,s.e,f)],i)
 if(d==="ether"||d==="max_ether"||d==="leppa_berry"||d==="elixir"||d==="max_elixir")B.c.J(e,A.b([B.bS,A.q("Total PP: "+B.c.hB(s.z,0,new A.axk())+"/"+B.c.hB(s.z,0,new A.axl()),f,f,f,f,B.b3W,f,f)],i))
 e=A.ah(A.ad(e,B.L,B.j,B.k),1)
-d=r?g.e:B.bp
+d=r?g.e:B.bn
 q=A.r(8)
 k=r?"SELECT":"N/A"
-return A.cw(!1,o,!0,A.hl(A.I(f,A.X(A.b([j,B.bw,e,B.ag,A.I(f,A.q(k,f,f,f,f,A.aD(f,f,r?B.d:B.aQ,f,f,f,f,f,f,f,f,10.5,f,f,B.N,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.n,f,f,new A.F(d,f,f,q,f,f,B.p),f,f,f,B.e8,f,f,f)],i),B.o,B.j,B.k,0),B.n,f,f,new A.F(B.zp,f,l,m,f,f,B.p),f,f,f,B.f8,f,f,f),n),f,!0,f,f,f,f,f,f,f,f,p,f,f,f,f)},
+return A.cw(!1,o,!0,A.hl(A.I(f,A.X(A.b([j,B.bw,e,B.ag,A.I(f,A.q(k,f,f,f,f,A.aD(f,f,r?B.d:B.aQ,f,f,f,f,f,f,f,f,10.5,f,f,B.N,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.n,f,f,new A.F(d,f,f,q,f,f,B.p),f,f,f,B.e8,f,f,f)],i),B.o,B.j,B.k,0),B.n,f,f,new A.F(B.zq,f,l,m,f,f,B.p),f,f,f,B.f8,f,f,f),n),f,!0,f,f,f,f,f,f,f,f,p,f,f,f,f)},
 $S:39}
 A.axi.prototype={
 $0(){var s=0,r=A.C(t.H),q,p=this,o,n,m,l
@@ -108031,7 +108033,7 @@ s=s.CW?u.x+r+".png":u.Z+r+".png"
 return A.cv(s,B.H,new A.axh(),B.q,null,42,42)},
 $S:13}
 A.axh.prototype={
-$3(a,b,c){return B.Cz},
+$3(a,b,c){return B.CA},
 $S:10}
 A.axk.prototype={
 $2(a,b){return a+b.w},
@@ -108064,7 +108066,7 @@ i=o.b
 i=m==="poke_ball"?i:i+" ("+j+")"
 if(m==="master_ball")h="Master"
 else h=k?"Special":A.SE(o.r)
-b.push(q.Id(n,"THROW",!0,B.bi,n,new A.fq(m,28,!1,d,!1,d),new A.axc(q,a,o),h,"x"+l+" remaining",i))}g=[new A.fx([B.aP1,B.aa,"+20 HP",B.kX,"potion","Potion","Common"]),new A.fx([B.qD,B.cW,"+50 HP",B.kX,"super_potion","Super Potion","Uncommon"]),new A.fx([B.zn,B.T,"+200 HP",B.kX,"hyper_potion","Hyper Potion","Rare"]),new A.fx([B.eU,B.a9,"Full HP",B.kX,"max_potion","Max Potion","Rare"]),new A.fx([B.mV,B.b4,"Revives +50% HP",B.BZ,"revive","Revive","Rare"]),new A.fx([B.Ot,B.R,"Cures Poison",B.tS,"antidote","Antidote","Common"]),new A.fx([B.zQ,B.h,"Cures Paralysis",B.aeI,"paralyze_heal","Paralyze Heal","Common"]),new A.fx([B.eU,B.a9,"Cures Sleep",B.BV,"awakening","Awakening","Common"]),new A.fx([B.cc,B.av,"Cures Burn",B.C_,"burn_heal","Burn Heal","Common"]),new A.fx([B.zC,B.r,"Cures Freeze",B.BT,"ice_heal","Ice Heal","Common"]),new A.fx([B.qD,B.cW,"Cures all status",B.BX,"full_heal","Full Heal","Uncommon"]),new A.fx([B.zn,B.dQ,"100% HP + Cures status",B.C4,"full_restore","Full Restore","Rare"]),new A.fx([B.Al,B.iH,"+10 PP (1 Move)",B.ez,"ether","Ether","Uncommon"]),new A.fx([B.z5,B.mN,"Full PP (1 Move)",B.tZ,"max_ether","Max Ether","Rare"]),new A.fx([B.qD,B.mF,"+10 PP (All Moves)",B.hz,"elixir","Elixir","Rare"]),new A.fx([B.zL,B.r,"Full PP (All Moves)",B.Ce,"max_elixir","Max Elixir","Special"]),new A.fx([B.cq,B.iJ,"+10 PP (1 Move)",B.ey,"leppa_berry","Leppa Berry","Uncommon"])]
+b.push(q.Id(n,"THROW",!0,B.bi,n,new A.fq(m,28,!1,d,!1,d),new A.axc(q,a,o),h,"x"+l+" remaining",i))}g=[new A.fx([B.aP1,B.aa,"+20 HP",B.kX,"potion","Potion","Common"]),new A.fx([B.qD,B.cX,"+50 HP",B.kX,"super_potion","Super Potion","Uncommon"]),new A.fx([B.zo,B.T,"+200 HP",B.kX,"hyper_potion","Hyper Potion","Rare"]),new A.fx([B.eU,B.a9,"Full HP",B.kX,"max_potion","Max Potion","Rare"]),new A.fx([B.mV,B.b4,"Revives +50% HP",B.C_,"revive","Revive","Rare"]),new A.fx([B.Ou,B.R,"Cures Poison",B.tS,"antidote","Antidote","Common"]),new A.fx([B.zR,B.h,"Cures Paralysis",B.aeI,"paralyze_heal","Paralyze Heal","Common"]),new A.fx([B.eU,B.a9,"Cures Sleep",B.BW,"awakening","Awakening","Common"]),new A.fx([B.cc,B.av,"Cures Burn",B.C0,"burn_heal","Burn Heal","Common"]),new A.fx([B.zD,B.r,"Cures Freeze",B.BU,"ice_heal","Ice Heal","Common"]),new A.fx([B.qD,B.cX,"Cures all status",B.BY,"full_heal","Full Heal","Uncommon"]),new A.fx([B.zo,B.dQ,"100% HP + Cures status",B.C5,"full_restore","Full Restore","Rare"]),new A.fx([B.Am,B.iH,"+10 PP (1 Move)",B.ez,"ether","Ether","Uncommon"]),new A.fx([B.z6,B.mN,"Full PP (1 Move)",B.tZ,"max_ether","Max Ether","Rare"]),new A.fx([B.qD,B.mF,"+10 PP (All Moves)",B.hz,"elixir","Elixir","Rare"]),new A.fx([B.zM,B.r,"Full PP (All Moves)",B.Cf,"max_elixir","Max Elixir","Special"]),new A.fx([B.cq,B.iJ,"+10 PP (1 Move)",B.ey,"leppa_berry","Leppa Berry","Uncommon"])]
 for(p=0;p<17;++p){f=g[p]
 s=q.d
 s===$&&A.c()
@@ -108079,7 +108081,7 @@ i=r[6]
 h=r[2]
 b.push(q.af4(r[0],"USE",e,s,n,new A.axe(q,a,f),i,"x"+l+" remaining ("+h+")",m))}s=A.bH(a,d,t.w).w
 r=A.X(A.b([B.b95,A.co(d,d,B.ec,d,d,new A.axf(a),d,d,d)],c),B.o,B.aP,B.k,0)
-return A.b6(new A.aG(B.iS,A.ad(A.b([r,B.a8,A.ah(b.length===0?A.cO(A.ad(B.aFD,B.o,B.j,B.Y),d,d):A.m6(b,d,B.yx,B.ad),1)],c),B.L,B.j,B.k),d),s.a.b*0.72,d)},
+return A.b6(new A.aG(B.iS,A.ad(A.b([r,B.a8,A.ah(b.length===0?A.cO(A.ad(B.aFD,B.o,B.j,B.Y),d,d):A.m6(b,d,B.yy,B.ad),1)],c),B.L,B.j,B.k),d),s.a.b*0.72,d)},
 $S:655}
 A.axc.prototype={
 $0(){A.aM(this.b,!1).b0(null)
@@ -108104,10 +108106,10 @@ A.axC.prototype={
 $1(a){var s,r=null,q=A.bH(a,r,t.w).w,p=this.b,o=A.q(p?"BATON PASS \u2022 SWITCH":"SWITCH POK\xc9MON",r,r,r,r,B.b2C,r,r),n=A.r(8),m=this.a,l=m.d
 l===$&&A.c()
 s=t.p
-n=A.b([o,B.ag,A.I(r,A.q(""+l.e.length+"/6",r,r,r,r,B.UL,r,r),B.n,r,r,new A.F(B.bp,r,r,n,r,r,B.p),r,r,r,B.B0,r,r,r),B.dg],s)
+n=A.b([o,B.ag,A.I(r,A.q(""+l.e.length+"/6",r,r,r,r,B.xv,r,r),B.n,r,r,new A.F(B.bn,r,r,n,r,r,B.p),r,r,r,B.B1,r,r,r),B.dg],s)
 o=this.c
 if(!o)n.push(A.co(r,B.fv,B.ahu,r,r,new A.axz(a),B.ae,r,r))
-return A.e4(!0,new A.eb(new A.av(0,1/0,0,q.a.b*0.78),new A.aG(B.AX,A.ad(A.b([A.X(n,B.o,B.j,B.k,0),B.af,new A.cF(1,B.aV,A.hA(new A.axA(m,a,o,p),m.d.e.length,B.ad,new A.axB(),!0),r)],s),B.L,B.j,B.Y),r),r),B.ae,!0)},
+return A.e4(!0,new A.eb(new A.av(0,1/0,0,q.a.b*0.78),new A.aG(B.AY,A.ad(A.b([A.X(n,B.o,B.j,B.k,0),B.af,new A.cF(1,B.aV,A.hA(new A.axA(m,a,o,p),m.d.e.length,B.ad,new A.axB(),!0),r)],s),B.L,B.j,B.Y),r),r),B.ae,!0)},
 $S:256}
 A.axz.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -108124,7 +108126,7 @@ f=g.e
 f===$&&A.c()
 r=s===f
 q=!r&&s.d>0
-f=r?B.a4O:B.zp
+f=r?B.a4O:B.zq
 p=A.r(12)
 if(r)o=A.d(153,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 else o=s.d<=0?A.d(71,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):B.a4
@@ -108137,7 +108139,7 @@ n=A.hl(A.cv(l,B.H,new A.axx(s),B.q,B.ay,38,38),n)
 l=t.p
 k=A.b([],l)
 if(m)B.c.J(k,A.b([B.hA,B.bx],l))
-k.push(new A.cF(1,B.aV,A.q(s.b,h,B.a_,h,h,B.d0,h,h),h))
+k.push(new A.cF(1,B.aV,A.q(s.b,h,B.a_,h,h,B.d1,h,h),h))
 k.push(B.a3)
 k.push(A.q("Lv."+s.c,h,h,h,h,B.xj,h,h))
 if(s.d<=0)B.c.J(k,A.b([B.a3,A.I(h,B.V9,B.n,h,h,new A.F(A.d(51,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),h,h,A.r(4),h,h,B.p),h,h,h,B.dE,h,h,h)],l))
@@ -108160,7 +108162,7 @@ s=s.CW?u.x+r+".png":u.Z+r+".png"
 return A.cv(s,B.H,new A.axw(),B.q,B.ay,38,38)},
 $S:13}
 A.axw.prototype={
-$3(a,b,c){return B.Cx},
+$3(a,b,c){return B.Cy},
 $S:10}
 A.axy.prototype={
 $0(){var s=this
@@ -108942,7 +108944,7 @@ x4.c=10*y0
 x4.d=B.K
 x7.av(y2,x3,x4)}break
 case"sleep_powder":case"poison_powder":f6=x3==="sleep_powder"
-f7=f6?B.cW:B.R
+f7=f6?B.cX:B.R
 for(x3=x9*2,x4=x9*3.141592653589793,x5=x9*18,s=x6.a,r=x6.b,q=255*(0.8*y0),m=0;m<12;++m){d=m/12*3.141592653589793*2+x3
 b5=10+Math.sin(x4)*32
 p=Math.cos(d)
@@ -108993,7 +108995,7 @@ x4.r=A.d(B.b.p(255*(0.28*g0*y0)),B.E.h()>>>16&255,B.E.h()>>>8&255,B.E.h()&255).g
 x4.c=36
 x7.av(new A.e(x3,0),x6,x4)
 for(x4=x6.b,x5=x4+0,s=x1.x,f9=-1;f9<=1;++f9)A.dd(x7,new A.e(x3+f9*22,0),new A.e(x3+f9*8,x5),s,y0,!0,!0,16,B.E,B.at,0,7,5.5)
-x5=A.bs(x6.N(0,B.OJ),32*x9,108*x9)
+x5=A.bs(x6.N(0,B.OK),32*x9,108*x9)
 $.p()
 x6=A.x()
 x6.b=B.B
@@ -109052,8 +109054,8 @@ n.d=B.K
 n.r=A.d(B.b.p(s),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255).gk(0)
 x7.aH(g4,n)}break
 case"slash":l=Math.min(1,x9*1.6)
-x3=x6.N(0,B.ON)
-x4=A.an(x6.N(0,B.ON),x6.N(0,B.aQP),l)
+x3=x6.N(0,B.OO)
+x4=A.an(x6.N(0,B.OO),x6.N(0,B.aQP),l)
 x4.toString
 $.p()
 x5=A.x()
@@ -109062,8 +109064,8 @@ x5.r=A.d(s,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255).gk(0)
 x5.c=6
 x5.d=B.K
 x7.av(x3,x4,x5)
-x5=x6.N(0,B.OL)
-x6=A.an(x6.N(0,B.OL),x6.N(0,B.aRp),l)
+x5=x6.N(0,B.OM)
+x6=A.an(x6.N(0,B.OM),x6.N(0,B.aRp),l)
 x6.toString
 x4=A.x()
 x4.r=A.d(s,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255).gk(0)
@@ -109221,7 +109223,7 @@ x4=A.x()
 x3=B.b.p(x3)
 x4.r=A.d(x3,B.fA.h()>>>16&255,B.fA.h()>>>8&255,B.fA.h()&255).gk(0)
 x7.L(h9,17*y0,x4)
-x4=h9.N(0,B.OO)
+x4=h9.N(0,B.OP)
 x5=A.x()
 x5.r=A.d(x3,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255).gk(0)
 x7.L(x4,6.5*y0,x5)}else{i0=B.b.A((x9-0.55)/0.45,0,1)
@@ -109448,7 +109450,7 @@ s.r=A.d(B.b.p(x3),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255).gk(0)
 x7.L(j7,10*(1-l*0.45),s)}break
 case"mud_slap":case"acid":j8=x3==="mud_slap"
 j9=j8?B.f_:B.au
-k0=j8?B.fz:B.z2
+k0=j8?B.fz:B.z3
 for(x3=y6.a,x4=y6.b,x5=255*y0,m=0;m<8;++m){l=B.b.A((x9-m*0.05)/0.55,0,1)
 if(l<=0)continue
 s=Math.sin(l*3.141592653589793)
@@ -109557,14 +109559,14 @@ x1.t7(x7,new A.e(q,l5),p,l*4.5+m,y0)
 if(l>0.85){l6=(l-0.85)/0.15
 for(p=l5+(4-l6*8),b9=-1;b9<=1;b9+=2){$.p()
 o=new A.a2(B.t,B.u,B.v,B.w,B.q)
-o.r=A.d(B.b.p(r),B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255).gk(0)
+o.r=A.d(B.b.p(r),B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255).gk(0)
 x7.L(new A.e(q+b9*l6*16,p),s,o)}}}if(x9>0.45){x3=x9-0.45
 x3=A.bs(x6.N(0,B.wg),16+x3*24,44+x3*76)
 $.p()
 x6=A.x()
 x6.b=B.B
 x6.c=3.5*y0
-x6.r=A.d(B.b.p(255*(0.8*y0)),B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255).gk(0)
+x6.r=A.d(B.b.p(255*(0.8*y0)),B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255).gk(0)
 x7.bh(x3,x6)}break
 case"power_gem":l7=x9*3.141592653589793*3
 l8=new A.aQ($.p().r,B.Q,x2,x2,A.b([],t.v))
@@ -109965,7 +109967,7 @@ o=A.an(o1,new A.e(s+r+p,x6+q+o),l)
 o.toString
 $.p()
 q=new A.a2(B.t,B.u,B.v,B.w,B.q)
-r=n8?B.cW:B.h
+r=n8?B.cX:B.h
 p=B.b.p(x3)
 q.r=A.d(p,r.h()>>>16&255,r.h()>>>8&255,r.h()&255).gk(0)
 q.c=x4
@@ -110771,8 +110773,8 @@ k=new A.a2(B.t,B.u,B.v,B.w,B.q)
 k.b=B.B
 k.c=x5
 k.d=B.K
-k.r=A.d(B.b.p(s),B.cW.h()>>>16&255,B.cW.h()>>>8&255,B.cW.h()&255).gk(0)
-x7.aH(t1,k)}if(x9>0.35)x1.fl(x7,x6,24*y0,x3,B.cW,y0)
+k.r=A.d(B.b.p(s),B.cX.h()>>>16&255,B.cX.h()>>>8&255,B.cX.h()&255).gk(0)
+x7.aH(t1,k)}if(x9>0.35)x1.fl(x7,x6,24*y0,x3,B.cX,y0)
 break
 case"dragon_breath":for(x3=255*(0.78*y0),x4=y6.a,x5=y6.b,m=0;m<14;++m){l=B.b.A((x9-m*0.04)/0.54,0,1)
 if(l<=0)continue
@@ -110783,7 +110785,7 @@ s=s.b
 $.p()
 q=new A.a2(B.t,B.u,B.v,B.w,B.q)
 if(B.l.aO(m,3)===0)p=B.r
-else p=(m&1)===0?B.cW:B.eI
+else p=(m&1)===0?B.cX:B.eI
 q.r=A.d(B.b.p(x3),p.h()>>>16&255,p.h()>>>8&255,p.h()&255).gk(0)
 x7.L(new A.e(r+x4*s6,s+x5*s6),(7+l*12)*y0,q)}if(x9>0.45)for(x3=x9*8,x4=x6.a,x5=x6.b,s=x1.x,e=0;e<4;++e){d=e/4*3.141592653589793*2+x3
 A.dd(x7,x6,new A.e(x4+Math.cos(d)*28,x5+Math.sin(d)*24),s,y0,!0,!0,16,B.E,B.at,0,7,2.5)}break
@@ -111287,7 +111289,7 @@ x4=A.x()
 x5=B.b.p(255*y0)
 x4.r=A.d(x5,B.eW.h()>>>16&255,B.eW.h()>>>8&255,B.eW.h()&255).gk(0)
 x7.L(x3,20*y0,x4)
-x3=x3.N(0,B.OO)
+x3=x3.N(0,B.OP)
 x4=8*y0
 s=A.x()
 s.r=A.d(B.b.p(255*(0.9*y0)),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255).gk(0)
@@ -111393,7 +111395,7 @@ q=Math.sin(d)
 p=B.l.aO(m,3)
 $.p()
 o=new A.a2(B.t,B.u,B.v,B.w,B.q)
-n=(m&1)===0?B.ku:B.A2
+n=(m&1)===0?B.ku:B.A3
 o.r=A.d(B.b.p(x3),n.h()>>>16&255,n.h()>>>8&255,n.h()&255).gk(0)
 x7.L(new A.e(s.a+r*b5,s.b+q*b5*0.72),(10+p*4.5)*y0,o)}break
 case"comet_punch":for(x3=x6.a,x6=x6.b,x4=255*(0.8*y0),x5=5*y0,s=9*y0,r=255*y0,q=13*y0,p=5.5*y0,m=0;m<6;++m){w0=B.b.A((x9-m*0.07)/0.46,0,1)
@@ -111431,7 +111433,7 @@ x4=A.x()
 x4.r=A.d(B.b.p(255*(0.75*y0)),B.av.h()>>>16&255,B.av.h()>>>8&255,B.av.h()&255).gk(0)
 x7.L(w1,13*y0,x4)
 if(x9>0.55){f=B.b.A((x9-0.55)/0.45,0,1)
-x4=A.bs(x6.N(0,B.OI),14+f*24,34+f*72)
+x4=A.bs(x6.N(0,B.OJ),14+f*24,34+f*72)
 x5=A.x()
 x5.b=B.B
 x5.c=4.5*y0
@@ -111848,7 +111850,7 @@ a.aH(k,m)
 m=-c*0.25
 m=b.N(0,new A.e(m,m))
 l=A.x()
-l.r=A.d(B.b.p(255*(0.55*e)),B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255).gk(0)
+l.r=A.d(B.b.p(255*(0.55*e)),B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255).gk(0)
 a.L(m,c*0.25,l)},
 Bl(a,b,c,d,e){var s,r,q,p,o,n,m,l,k,j,i,h,g,f
 $.p()
@@ -111897,7 +111899,7 @@ am(){return new A.I7(B.Vz,B.k5,B.aJE,new A.dH(A.OY(0,0),0,!1),null,null)}}
 A.I7.prototype={
 aJ(){var s,r=this
 r.aY()
-s=A.c3(null,B.Az,null,null,r)
+s=A.c3(null,B.AA,null,null,r)
 s.zu(0)
 r.d=s
 r.at=A.aWE()
@@ -111950,7 +111952,7 @@ p.f=a
 p.G(new A.azg(p))
 $.bV().ca("audio/sfx/sfx_ui_bump.wav",0.85)
 A.eR()
-if(a.x===B.d5){s=a.a
+if(a.x===B.d6){s=a.a
 r=new A.ST(s,a.b,a.e,A.aL(t.N),A.G(t.S,t.a))
 q=A.eH("[^a-zA-Z0-9_-]",!0,!1)
 r.y="pocket_bump_trade_"+A.kG(s,q,"")
@@ -111960,7 +111962,7 @@ A.b9(B.a9_,new A.azh(p,r),t.P)
 return}s=A.b9(B.nj,null,t.z)
 q=p.c
 q.toString
-A.iz(A.b([s,A.lB(B.yh,q).eE(new A.azi())],t.mo),t.H).cc(new A.azj(p,a),t.P)},
+A.iz(A.b([s,A.lB(B.yi,q).eE(new A.azi())],t.mo),t.H).cc(new A.azj(p,a),t.P)},
 aog(){var s,r,q,p=this
 if(p.r===B.ej)return
 s=p.c
@@ -111973,10 +111975,10 @@ if(s!=null)s.n()
 p.e=null
 p.G(new A.azr(p))
 $.bV().ca("audio/sfx/sfx_ui_bump.wav",0.85)
-s=A.b9(B.AJ,null,t.z)
+s=A.b9(B.AK,null,t.z)
 q=p.c
 q.toString
-A.iz(A.b([s,A.lB(B.yh,q).eE(new A.azs())],t.mo),t.H).cc(new A.azt(p,r),t.P)},
+A.iz(A.b([s,A.lB(B.yi,q).eE(new A.azs())],t.mo),t.H).cc(new A.azt(p,r),t.P)},
 n(){var s,r=this
 A.a8w()
 s=r.e
@@ -111992,9 +111994,9 @@ switch(s.r.a){case 2:return B.aC
 case 1:return B.h
 case 3:return B.b4
 case 0:if(B.c.bB(s.x,new A.azw(s)))return B.r
-return s.w===B.d5?B.cW:B.z}},
+return s.w===B.d6?B.cX:B.z}},
 aux(){var s,r,q,p,o,n,m=this
-switch(m.r.a){case 2:s=m.w===B.d5?"TRADING WITH":"VS"
+switch(m.r.a){case 2:s=m.w===B.d6?"TRADING WITH":"VS"
 r=m.f
 r=r==null?null:r.e.toUpperCase()
 if(r==null)r="TRAINER"
@@ -112006,39 +112008,39 @@ if(r.length!==0){q=A.a8(r)
 p=new A.af(r,new A.azx(m),q.j("af<1>"))
 if(!p.gaf(0)){o=new A.em(p,new A.azy(),q.j("em<1,E>")).bw(0,", ")
 return"NEARBY "+m.w.b.toUpperCase()+" TRAINER: "+o.toUpperCase()}n=B.c.gS(m.x)
-return"NEARBY: "+n.b.toUpperCase()+" ("+n.e.b.toUpperCase()+" MODE)"}return m.w===B.d5?"TRADE LINK \u2022 SCANNING NEARBY":"BATTLE LINK \u2022 SCANNING NEARBY"}},
+return"NEARBY: "+n.b.toUpperCase()+" ("+n.e.b.toUpperCase()+" MODE)"}return m.w===B.d6?"TRADE LINK \u2022 SCANNING NEARBY":"BATTLE LINK \u2022 SCANNING NEARBY"}},
 anC(){var s,r,q,p,o=this
 switch(o.r.a){case 2:return"LINK ESTABLISHED!"
-case 1:return o.w===B.d5?"BUMP DETECTED! OPENING TRADE LINK...":"BUMP DETECTED! LINKING WITH NEARBY TRAINER..."
-case 3:return"No partner in "+(o.w===B.d5?"Trade":"Battle")+" mode responded"
+case 1:return o.w===B.d6?"BUMP DETECTED! OPENING TRADE LINK...":"BUMP DETECTED! LINKING WITH NEARBY TRAINER..."
+case 3:return"No partner in "+(o.w===B.d6?"Trade":"Battle")+" mode responded"
 case 0:s=o.x
 r=A.a8(s).j("af<1>")
 q=A.a1(new A.af(s,new A.azk(o),r),r.j("t.E"))
 if(q.length!==0)return B.c.gS(q).b.toUpperCase()+" READY \u2014 FIST-BUMP NOW!"
 s=o.x
 if(s.length!==0){p=B.c.gS(s)
-return p.b.toUpperCase()+" IS IN "+p.e.b.toUpperCase()+" MODE"}return o.w===B.d5?"FIST-BUMP TO TRADE POK\xc9MON!":"HOLD PHONES & FIST-BUMP!"}},
+return p.b.toUpperCase()+" IS IN "+p.e.b.toUpperCase()+" MODE"}return o.w===B.d6?"FIST-BUMP TO TRADE POK\xc9MON!":"HOLD PHONES & FIST-BUMP!"}},
 au3(){var s=this
-switch(s.r.a){case 2:return s.w===B.d5?"Opening secure Fist-Bump Link Trade room...":"Synchronizing Kanto Battle Stadium arena..."
-case 1:return s.w===B.d5?"Pairing trainers for 1-for-1 Link Trade (7s window)...":"Exchanging team rosters over VS Link (7s window)..."
-case 3:return"Make sure both phones have "+(s.w===B.d5?"Trade":"Battle")+" mode selected, then give a firm fist bump."
-case 0:return s.w===B.d5?"Select TRADE on both phones, then give a firm fist bump to swap Pok\xe9mon and trigger Link Trade evolutions!":"Select BATTLE on both phones, then give a firm fist bump to battle each other's team."}},
+switch(s.r.a){case 2:return s.w===B.d6?"Opening secure Fist-Bump Link Trade room...":"Synchronizing Kanto Battle Stadium arena..."
+case 1:return s.w===B.d6?"Pairing trainers for 1-for-1 Link Trade (7s window)...":"Exchanging team rosters over VS Link (7s window)..."
+case 3:return"Make sure both phones have "+(s.w===B.d6?"Trade":"Battle")+" mode selected, then give a firm fist bump."
+case 0:return s.w===B.d6?"Select TRADE on both phones, then give a firm fist bump to swap Pok\xe9mon and trigger Link Trade evolutions!":"Select BATTLE on both phones, then give a firm fist bump to battle each other's team."}},
 Ti(a,b,c,d,e){var s=null,r=this.w===e,q=d?s:new A.azb(this,e),p=r?A.d(61,a.h()>>>16&255,a.h()>>>8&255,a.h()&255):B.a6,o=A.r(10),n=A.W(r?a:B.a6,1.3),m=A.bg(b,r?B.d:B.b5,s,16)
 return A.hz(s,A.ja(A.X(A.b([m,B.a3,A.q(c,s,s,s,s,A.aD(s,s,r?B.d:B.b5,s,s,s,s,s,s,s,s,11.5,s,s,B.y,s,s,!0,s,0.9,s,s,s,s,s,s),s,s)],t.p),B.o,B.b9,B.k,0),B.ah,new A.F(p,s,n,o,s,s,B.p),B.fD,s,s,B.a9n,s,s,s),B.b_,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,q,s,s,s,s,s,s)},
 R(a4){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b=this,a=null,a0=b.au_(),a1=!b.y&&b.at!=="granted",a2=A.co(a,a,B.dd,a,a,new A.azB(a4),a,a,a),a3=t.p
 a2=A.hR(A.b([A.co(a,a,B.ahi,a,a,new A.azC(a4),a,a,"Rivals & Friends")],a3),!0,B.mH,!0,0,a2,B.bbX)
 s=A.dU("assets/images/bg_bump_radar.png",B.H,a,B.q,B.cf,!1,a,a,a)
 r=t.O
-q=A.eF(a,new A.F(a,a,a,a,a,new A.bh(B.bs,B.am,B.V,A.b([A.d(194,B.d7.h()>>>16&255,B.d7.h()>>>8&255,B.d7.h()&255),A.d(148,B.qV.h()>>>16&255,B.qV.h()>>>8&255,B.qV.h()&255),A.d(235,B.r0.h()>>>16&255,B.r0.h()>>>8&255,B.r0.h()&255)],r),a,a),B.p),B.bQ)
+q=A.eF(a,new A.F(a,a,a,a,a,new A.bh(B.bs,B.am,B.V,A.b([A.d(194,B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255),A.d(148,B.qV.h()>>>16&255,B.qV.h()>>>8&255,B.qV.h()&255),A.d(235,B.r0.h()>>>16&255,B.r0.h()>>>8&255,B.r0.h()&255)],r),a,a),B.p),B.bQ)
 p=b.r
 o=p===B.h_||p===B.ej
 p=A.r(14)
 n=A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1)
-p=A.I(a,A.X(A.b([A.ah(b.Ti(B.cz,B.kY,"BATTLE",o,B.k5),1),B.a3,A.ah(b.Ti(B.ha,B.j5,"TRADE",o,B.d5),1)],a3),B.o,B.j,B.k,0),B.n,a,a,new A.F(B.z1,a,n,p,a,a,B.p),a,a,a,B.kN,a,a,a)
+p=A.I(a,A.X(A.b([A.ah(b.Ti(B.cz,B.kY,"BATTLE",o,B.k5),1),B.a3,A.ah(b.Ti(B.ha,B.j5,"TRADE",o,B.d6),1)],a3),B.o,B.j,B.k,0),B.n,a,a,new A.F(B.z2,a,n,p,a,a,B.p),a,a,a,B.kN,a,a,a)
 n=A.r(20)
 m=A.W(A.d(166,a0.h()>>>16&255,a0.h()>>>8&255,a0.h()&255),1)
 l=t.E
-n=A.I(a,A.X(A.b([A.I(a,a,B.n,a,a,new A.F(a0,a,a,a,A.b([new A.cg(0,B.aZ,a0,B.C,6)],l),a,B.c6),a,7,a,a,a,a,7),B.cj,new A.cF(1,B.aV,A.q(b.aux(),1,B.a_,a,a,A.aD(a,a,a0,a,a,a,a,a,a,a,a,10,a,a,B.y,a,a,!0,a,0.9,a,a,a,a,a,a),a,a),a)],a3),B.o,B.j,B.Y,0),B.n,a,a,new A.F(B.z1,a,m,n,a,a,B.p),a,a,a,B.nt,a,a,a)
+n=A.I(a,A.X(A.b([A.I(a,a,B.n,a,a,new A.F(a0,a,a,a,A.b([new A.cg(0,B.aZ,a0,B.C,6)],l),a,B.c6),a,7,a,a,a,a,7),B.cj,new A.cF(1,B.aV,A.q(b.aux(),1,B.a_,a,a,A.aD(a,a,a0,a,a,a,a,a,a,a,a,10,a,a,B.y,a,a,!0,a,0.9,a,a,a,a,a,a),a,a),a)],a3),B.o,B.j,B.Y,0),B.n,a,a,new A.F(B.z2,a,m,n,a,a,B.p),a,a,a,B.nt,a,a,a)
 k=!b.y&&b.at!=="granted"
 j=!b.y&&b.at==="denied"
 m=b.y
@@ -112050,10 +112052,10 @@ else{m=k?"TAP RADAR TO ENABLE iOS MOTION SENSOR":"MOTION SENSOR STANDBY \u2022 M
 h=m}g=b.y?B.b.A(b.Q/12,0.08,1):0
 m=A.r(12)
 f=A.W(A.d(140,i.h()>>>16&255,i.h()>>>8&255,i.h()&255),1)
-e=A.b([A.X(A.b([A.bg(b.y?B.u1:B.Co,i,a,15),B.cj,A.ah(A.q(h,1,B.a_,a,a,A.aD(a,a,i,a,a,a,a,a,a,a,a,10,a,a,B.y,a,a,!0,a,0.5,a,a,a,a,a,a),a,a),1)],a3),B.o,B.j,B.k,0)],a3)
+e=A.b([A.X(A.b([A.bg(b.y?B.u1:B.Cp,i,a,15),B.cj,A.ah(A.q(h,1,B.a_,a,a,A.aD(a,a,i,a,a,a,a,a,a,a,a,10,a,a,B.y,a,a,!0,a,0.5,a,a,a,a,a,a),a,a),1)],a3),B.o,B.j,B.k,0)],a3)
 if(b.y){d=A.r(4)
 c=g>0.75?B.h:B.aC
-B.c.J(e,A.b([B.e0,A.is(d,A.nx(B.bp,4,g,new A.j9(c,t.ZU)))],a3))}m=A.hz(a,A.I(a,A.ad(e,B.L,B.j,B.k),B.n,a,a,new A.F(B.a3K,a,f,m,a,a,B.p),a,a,a,B.hr,a,a,1/0),B.b_,!1,a,a,a,a,a,a,a,a,a,a,a,a,a,a,b.garV(),a,a,a,a,a,a)
+B.c.J(e,A.b([B.e0,A.is(d,A.nx(B.bn,4,g,new A.j9(c,t.ZU)))],a3))}m=A.hz(a,A.I(a,A.ad(e,B.L,B.j,B.k),B.n,a,a,new A.F(B.a3K,a,f,m,a,a,B.p),a,a,a,B.hr,a,a,1/0),B.b_,!1,a,a,a,a,a,a,a,a,a,a,a,a,a,a,b.garV(),a,a,a,a,a,a)
 f=b.d
 f===$&&A.c()
 f=A.ei(f,new A.azD(b,a0),a)
@@ -112061,22 +112063,22 @@ r=b.r===B.ej?A.b([B.a7N,B.a4p],r):A.b([B.a4F,B.a4a],r)
 e=A.W(a0,3)
 l=A.b([new A.cg(4,B.aZ,A.d(107,a0.h()>>>16&255,a0.h()>>>8&255,a0.h()&255),B.C,24)],l)
 d=b.r
-if(d===B.ej)d=B.C9
+if(d===B.ej)d=B.Ca
 else if(d===B.h_)d=B.u3
-else d=b.w===B.d5?B.j5:B.kY
+else d=b.w===B.d6?B.j5:B.kY
 r=A.hz(a,A.cO(A.ct(B.H,A.b([f,A.I(a,A.bg(d,B.d,a,68),B.n,a,a,new A.F(a,a,e,a,l,new A.fM(B.H,0.5,B.V,a,0,r,a,a),B.c6),a,162,a,a,a,a,162)],a3),B.O,B.bH),a,a),B.b_,!1,a,a,a,a,a,a,a,a,a,a,a,a,a,a,new A.azE(b,a1),a,a,a,a,a,a)
 l=A.r(16)
 e=A.W(B.a4,1)
 d=b.anC()
-r=A.b([p,B.a8,n,B.af,m,B.dg,r,B.m0,A.I(a,A.ad(A.b([A.q(d,a,a,a,a,A.aD(a,a,a0.l(0,B.z)?B.d:a0,a,a,a,a,a,a,a,a,15.5,a,a,B.y,a,a,!0,a,0.7,a,a,a,a,a,a),B.aU,a),B.e0,A.q(b.au3(),a,a,a,a,B.pv,B.aU,a)],a3),B.o,B.j,B.k),B.n,a,a,new A.F(B.a4u,a,e,l,a,a,B.p),a,a,a,B.AW,a,a,1/0),B.dg],a3)
+r=A.b([p,B.a8,n,B.af,m,B.dg,r,B.m0,A.I(a,A.ad(A.b([A.q(d,a,a,a,a,A.aD(a,a,a0.l(0,B.z)?B.d:a0,a,a,a,a,a,a,a,a,15.5,a,a,B.y,a,a,!0,a,0.7,a,a,a,a,a,a),B.aU,a),B.e0,A.q(b.au3(),a,a,a,a,B.pv,B.aU,a)],a3),B.o,B.j,B.k),B.n,a,a,new A.F(B.a4u,a,e,l,a,a,B.p),a,a,a,B.AX,a,a,1/0),B.dg],a3)
 p=b.r
-if(p===B.xS){p=A.b6(A.dP(B.agv,B.b9T,b.ga_k(),A.cc(a,a,B.cq,a,a,a,a,a,a,B.d,a,a,a,a,new A.aZ(A.r(14),B.I),a,a,a,a,a)),46,1/0)
+if(p===B.xT){p=A.b6(A.dP(B.agv,B.b9T,b.ga_k(),A.cc(a,a,B.cq,a,a,a,a,a,a,B.d,a,a,a,a,new A.aZ(A.r(14),B.I),a,a,a,a,a)),46,1/0)
 n=A.d(115,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 B.c.J(r,A.b([p,B.a8,A.b6(A.jx(B.ah1,B.b8S,b.gX8(),A.eG(a,a,B.a6Z,a,a,a,a,a,a,a,a,a,a,a,new A.aZ(A.r(12),B.I),new A.aT(n,1,B.U,-1),a,a,a,a)),42,1/0)],a3))}else{n=p===B.h_
 p=n||p===B.ej?a:b.ga_k()
 m=A.bg(n?B.nV:B.afu,B.aJ,a,18)
 if(n)n="SEARCHING FOR NEARBY TRAINER..."
-else n=b.w===B.d5?"BUMP / PAIR FOR LINK TRADE":"BUMP / PAIR FOR LINK BATTLE"
+else n=b.w===B.d6?"BUMP / PAIR FOR LINK TRADE":"BUMP / PAIR FOR LINK BATTLE"
 p=A.b6(A.dP(m,A.q(n,a,a,a,a,B.V0,a,a),p,A.cc(a,a,B.M,A.d(89,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),B.S,a,a,a,a,B.aJ,a,a,a,a,new A.aZ(A.r(14),B.I),a,a,a,a,a)),46,1/0)
 n=b.r
 n=n===B.h_||n===B.ej?a:b.gX8()
@@ -112124,7 +112126,7 @@ if(s.c==null)return
 if(s.r===B.h_)s.G(new A.azl(s))},
 $S:0}
 A.azl.prototype={
-$0(){this.a.r=B.xS},
+$0(){this.a.r=B.xT},
 $S:0}
 A.azn.prototype={
 $1(a){this.a.alD(a)},
@@ -112132,7 +112134,7 @@ $S:659}
 A.azv.prototype={
 $0(){var s=this.a
 s.w=this.b
-if(s.r===B.xS)s.r=B.Vz},
+if(s.r===B.xT)s.r=B.Vz},
 $S:0}
 A.azz.prototype={
 $0(){this.a.r=B.h_},
@@ -112221,7 +112223,7 @@ $0(){var s=A.dk(new A.azA(),null,t.z)
 A.aM(this.a,!1).cI(s)},
 $S:0}
 A.azA.prototype={
-$1(a){return B.SK},
+$1(a){return B.SL},
 $S:264}
 A.azE.prototype={
 $0(){var s=this.a
@@ -112280,14 +112282,14 @@ for(;;)switch(s){case 0:m=p.c
 if(m==null){s=1
 break}o=p.a
 n=""+o.c.a
-m=A.lB(new A.pM(o.r?u.K+n+".gif":u.C+n+".gif",1,null,B.xM),m).eE(new A.aBz())
+m=A.lB(new A.pM(o.r?u.K+n+".gif":u.C+n+".gif",1,null,B.xN),m).eE(new A.aBz())
 n=p.a
 o=""+n.d.a
 o=n.r?u.K+o+".gif":u.C+o+".gif"
 n=p.c
 n.toString
 s=3
-return A.l(A.iz(A.b([m,A.lB(new A.pM(o,1,null,B.xM),n).eE(new A.aBA())],t.mo),t.H).a6e(0,B.rV,new A.aBB()),$async$pP)
+return A.l(A.iz(A.b([m,A.lB(new A.pM(o,1,null,B.xN),n).eE(new A.aBA())],t.mo),t.H).a6e(0,B.rV,new A.aBB()),$async$pP)
 case 3:if(p.c==null){s=1
 break}m=$.bV()
 m.iI(p.a.c.a)
@@ -112302,7 +112304,7 @@ return A.l(o.cw(0,0),$async$pP)
 case 5:if(p.c==null){s=1
 break}A.eR()
 m.r4()
-A.b9(B.AE,new A.aBD(p),t.P)
+A.b9(B.AF,new A.aBD(p),t.P)
 p.G(new A.aBE(p))
 m=p.e
 m===$&&A.c()
@@ -112351,7 +112353,7 @@ B.c.J(m,A.b([B.a8,A.I(h,A.q("Learned "+B.c.bw(i.a.f,", ")+"!",h,h,h,h,B.V8,h,h),
 f=A.e4(!0,new A.aG(B.t9,A.ad(A.b([q,r,A.I(h,A.ad(m,B.cr,B.j,B.Y),B.n,h,h,new A.F(B.a5k,h,f,p,o,h,B.p),h,h,h,B.ea,h,h,1/0)],n),B.o,B.j,B.k),h),B.ae,!0)
 r=i.e
 r===$&&A.c()
-return A.ui(g,A.eW(h,B.d7,A.ct(B.aX,A.b([s,f,A.ei(r,new A.aBK(i),h)],n),B.O,B.ck),!1),h,t.z)}}
+return A.ui(g,A.eW(h,B.d8,A.ct(B.aX,A.b([s,f,A.ei(r,new A.aBK(i),h)],n),B.O,B.ck),!1),h,t.z)}}
 A.aBL.prototype={
 $0(){var s,r=this.a,q=r.d
 q===$&&A.c()
@@ -112441,7 +112443,7 @@ s=A.vc(new A.aBF(),l.Ik(s,s.rC(174,76),!1),B.kB,B.iO,new A.b1(0.72,1,t.Y),t.i)
 l=l.a.d.c
 n=A.a8(l).j("a7<1,eD>")
 l=A.a1(new A.a7(l,new A.aBG(),n),n.j("aW.E"))
-return A.z4(A.ad(A.b([s,B.aw,A.ks(B.d1,l,B.ei,0,6)],t.p),B.o,B.j,B.Y),new A.e(0,-k*4))},
+return A.z4(A.ad(A.b([s,B.aw,A.ks(B.d2,l,B.ei,0,6)],t.p),B.o,B.j,B.Y),new A.e(0,-k*4))},
 $S:257}
 A.aBF.prototype={
 $3(a,b,c){return A.asV(c,b)},
@@ -112452,7 +112454,7 @@ p=A.d(71,p.h()>>>16&255,p.h()>>>8&255,p.h()&255)
 s=A.r(8)
 r=A.bU(a)
 r=A.W(A.d(204,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
-return A.I(q,A.q(A.pV(a).toUpperCase(),q,q,q,q,B.b83,q,q),B.n,q,q,new A.F(p,q,r,s,q,q,B.p),q,q,q,B.da,q,q,q)},
+return A.I(q,A.q(A.pV(a).toUpperCase(),q,q,q,q,B.b83,q,q),B.n,q,q,new A.F(p,q,r,s,q,q,B.p),q,q,q,B.cT,q,q,q)},
 $S:148}
 A.aBJ.prototype={
 $0(){return A.aM(this.a,!1).eL()},
@@ -112481,7 +112483,7 @@ else if(a0.e){q=a0.f
 q=A.d(82,q.h()>>>16&255,q.h()>>>8&255,q.h()&255)}else q=B.a4U
 p=0+a1
 a3=0+a3
-s.svH(new A.fM(B.XZ,1,B.V,null,0,A.b([q,B.d7],t.O),null,null).N_(0,new A.K(0,0,p,a3)))
+s.svH(new A.fM(B.XZ,1,B.V,null,0,A.b([q,B.d8],t.O),null,null).N_(0,new A.K(0,0,p,a3)))
 a6.ew(new A.K(0,0,p,a3),s)
 o=r?5:3
 for(a3=a0.f,q=a0.b,p=a1*0.65,n=0;n<o;++n){m=B.b.aO(q+n/o,1)
@@ -112522,13 +112524,13 @@ r=m?"HIGH-RISK EXPEDITIONS":"LOCKED \u2022 REQUIRES ALL 8 GYM BADGES ("+n.ok.a+"
 q=t.p
 i=A.b([A.I(o,A.ad(A.b([A.X(A.b([s,B.ag,A.ah(A.q(r,o,o,o,o,A.aD(o,o,m?B.r:B.z,o,o,o,o,o,o,o,o,11.5,o,o,B.y,o,o,!0,o,0.7,o,o,o,o,o,o),o,o),1)],q),B.o,B.j,B.k,0),B.aS,B.b8Q],q),B.L,B.j,B.k),B.n,o,o,new A.F(o,o,h,i,o,B.aCq,B.p),o,o,o,B.ns,o,o,o),B.aw],q)
 for(p=0;p<4;++p)B.c.J(i,A.b([this.afo(a,n,B.aLK[p],m),B.aw],q))
-return A.eW(l,B.d7,A.ct(B.aX,A.b([k,j,A.e4(!0,A.m6(i,B.t5,o,B.ad),B.ae,!0)],q),B.O,B.ck),!0)},
+return A.eW(l,B.d8,A.ct(B.aX,A.b([k,j,A.e4(!0,A.m6(i,B.t5,o,B.ad),B.ae,!0)],q),B.O,B.ck),!0)},
 afo(a,b,c,d){var s,r,q,p=null,o=c.r,n=t.O,m=A.b([A.d(46,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),B.a5E],n),l=A.r(18),k=A.W(A.d(B.b.p(255*(d?0.55:0.2)),o.h()>>>16&255,o.h()>>>8&255,o.h()&255),1.3),j=c.b,i=t.p
 n=A.b6(A.ct(B.aX,A.b([A.dU(c.w,B.H,p,B.q,B.cf,!1,p,p,p),A.eF(p,new A.F(p,p,p,p,p,new A.bh(B.b7,B.bN,B.V,A.b([A.d(219,B.eT.h()>>>16&255,B.eT.h()>>>8&255,B.eT.h()&255),A.d(89,B.eT.h()>>>16&255,B.eT.h()>>>8&255,B.eT.h()&255),A.d(209,B.eT.h()>>>16&255,B.eT.h()>>>8&255,B.eT.h()&255)],n),p,p),B.p),B.bQ),new A.aG(B.hs,A.X(A.b([A.ah(A.ad(A.b([A.q(j.toUpperCase(),p,p,p,p,B.b6N,p,p),A.q(c.c,p,p,p,p,A.aD(p,p,o,p,p,p,p,p,p,p,p,11,p,p,B.ch,p,p,!0,p,p,p,p,p,p,p,p),p,p)],i),B.L,B.b9,B.k),1)],i),B.o,B.j,B.k,0),p)],i),B.O,B.ck),92,p)
 s=A.q(c.d,p,p,p,p,B.b8o,p,p)
 r=!d?p:new A.acC(b,a,c)
 q=A.bg(d?B.afm:B.aeV,p,p,17)
-return A.I(p,A.ad(A.b([n,new A.aG(B.AS,A.ad(A.b([s,B.af,A.b6(A.dP(q,A.q(d?"DEPART TO "+j.toUpperCase():"EARN 8 BADGES TO UNLOCK",p,p,p,p,B.b38,p,p),r,A.cc(p,p,o,B.a4,B.aQ,p,p,p,p,B.A,p,p,p,p,new A.aZ(A.r(11),B.I),p,p,p,p,p)),42,p)],i),B.cr,B.j,B.k),p)],i),B.cr,B.j,B.k),B.dq,p,p,new A.F(p,p,k,l,p,new A.bh(B.aY,B.bm,B.V,m,p,p),B.p),p,p,p,p,p,p,p)}}
+return A.I(p,A.ad(A.b([n,new A.aG(B.AT,A.ad(A.b([s,B.af,A.b6(A.dP(q,A.q(d?"DEPART TO "+j.toUpperCase():"EARN 8 BADGES TO UNLOCK",p,p,p,p,B.b38,p,p),r,A.cc(p,p,o,B.a4,B.aQ,p,p,p,p,B.A,p,p,p,p,new A.aZ(A.r(11),B.I),p,p,p,p,p)),42,p)],i),B.cr,B.j,B.k),p)],i),B.cr,B.j,B.k),B.dq,p,p,new A.F(p,p,k,l,p,new A.bh(B.aY,B.bm,B.V,m,p,p),B.p),p,p,p,p,p,p,p)}}
 A.acD.prototype={
 $0(){A.aM(this.a,!1).b0(null)
 return null},
@@ -112649,7 +112651,7 @@ p.G(new A.aBX(p,i,j,n))
 case 1:return A.A(q,r)}})
 return A.B($async$CC,r)},
 R(a){var s=this,r=null,q=A.dW(a,!0,t.R),p=s.a.c,o=t.p
-return A.ui(s.d===B.ik,A.eW(r,B.d7,A.ct(B.aX,A.b([A.dU(p.w,B.H,r,B.q,B.cf,!1,r,r,r),A.eF(r,new A.F(r,r,r,r,r,new A.bh(B.bs,B.am,B.V,A.b([A.d(173,B.iA.h()>>>16&255,B.iA.h()>>>8&255,B.iA.h()&255),A.d(191,B.iE.h()>>>16&255,B.iE.h()>>>8&255,B.iE.h()&255),A.d(240,B.dS.h()>>>16&255,B.dS.h()>>>8&255,B.dS.h()&255)],t.O),r,r),B.p),B.bQ),A.e4(!0,new A.aG(B.a9Q,A.ad(A.b([s.ag2(p),B.aw,A.ah(s.afQ(q,p),1)],o),B.cr,B.j,B.k),r),B.ae,!0)],o),B.O,B.ck),!1),r,t.z)},
+return A.ui(s.d===B.ik,A.eW(r,B.d8,A.ct(B.aX,A.b([A.dU(p.w,B.H,r,B.q,B.cf,!1,r,r,r),A.eF(r,new A.F(r,r,r,r,r,new A.bh(B.bs,B.am,B.V,A.b([A.d(173,B.iA.h()>>>16&255,B.iA.h()>>>8&255,B.iA.h()&255),A.d(191,B.iE.h()>>>16&255,B.iE.h()>>>8&255,B.iE.h()&255),A.d(240,B.dS.h()>>>16&255,B.dS.h()>>>8&255,B.dS.h()&255)],t.O),r,r),B.p),B.bQ),A.e4(!0,new A.aG(B.a9Q,A.ad(A.b([s.ag2(p),B.aw,A.ah(s.afQ(q,p),1)],o),B.cr,B.j,B.k),r),B.ae,!0)],o),B.O,B.ck),!1),r,t.z)},
 ag2(a){var s,r,q,p,o,n,m,l,k=null
 switch(this.d.a){case 0:s="ARRIVAL"
 break
@@ -112668,16 +112670,16 @@ o=A.q(a.b.toUpperCase(),k,k,k,k,B.xe,k,k)
 n=A.d(46,q.h()>>>16&255,q.h()>>>8&255,q.h()&255)
 m=A.r(8)
 l=A.W(A.d(166,q.h()>>>16&255,q.h()>>>8&255,q.h()&255),1)
-return A.I(k,A.X(A.b([o,A.I(k,A.q(s,k,k,k,k,A.aD(k,k,q,k,k,k,k,k,k,k,k,9.5,k,k,B.y,k,k,!0,k,0.5,k,k,k,k,k,k),k,k),B.n,k,k,new A.F(n,k,l,m,k,k,B.p),k,k,k,B.da,k,k,k)],t.p),B.o,B.aP,B.k,0),B.n,k,k,new A.F(B.a5W,k,p,r,k,k,B.p),k,k,k,B.hs,k,k,k)},
+return A.I(k,A.X(A.b([o,A.I(k,A.q(s,k,k,k,k,A.aD(k,k,q,k,k,k,k,k,k,k,k,9.5,k,k,B.y,k,k,!0,k,0.5,k,k,k,k,k,k),k,k),B.n,k,k,new A.F(n,k,l,m,k,k,B.p),k,k,k,B.cT,k,k,k)],t.p),B.o,B.aP,B.k,0),B.n,k,k,new A.F(B.a5W,k,p,r,k,k,B.p),k,k,k,B.hs,k,k,k)},
 Ij(a){var s=null,r=A.r(14),q=A.W(B.a4,1),p=a.e,o=A.a8(p).j("a7<1,ce>")
 p=A.a1(new A.a7(p,new A.aBN(),o),o.j("aW.E"))
-return A.I(s,A.ad(A.b([B.baT,B.a8,A.ks(B.d1,p,B.ei,6,8)],t.p),B.L,B.j,B.k),B.n,s,s,new A.F(B.a3i,s,q,r,s,s,B.p),s,s,s,B.hq,s,s,s)},
+return A.I(s,A.ad(A.b([B.baT,B.a8,A.ks(B.d2,p,B.ei,6,8)],t.p),B.L,B.j,B.k),B.n,s,s,new A.F(B.a3i,s,q,r,s,s,B.p),s,s,s,B.hq,s,s,s)},
 afQ(a,b){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=this,d=null
 switch(e.d.a){case 0:s=A.r(20)
 r=b.r
 q=A.W(A.d(115,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
 p=t.p
-s=A.ah(A.I(d,A.ad(A.b([A.is(A.r(14),A.dU(b.w,B.H,d,B.q,B.cf,!1,155,d,1/0)),B.dz,A.q("Arriving at "+b.b,d,d,d,d,B.b1U,d,d),B.a8,A.q(b.e,d,d,d,d,B.jO,B.aU,d)],p),B.o,B.b9,B.k),B.n,d,d,new A.F(B.Aj,d,q,s,d,d,B.p),d,d,d,B.ea,d,d,d),1)
+s=A.ah(A.I(d,A.ad(A.b([A.is(A.r(14),A.dU(b.w,B.H,d,B.q,B.cf,!1,155,d,1/0)),B.dz,A.q("Arriving at "+b.b,d,d,d,d,B.b1U,d,d),B.a8,A.q(b.e,d,d,d,d,B.jO,B.aU,d)],p),B.o,B.b9,B.k),B.n,d,d,new A.F(B.Ak,d,q,s,d,d,B.p),d,d,d,B.ea,d,d,d),1)
 q=e.Ij(a)
 o=e.as?d:new A.aBO(e)
 return A.ad(A.b([s,B.aw,q,B.aw,A.b6(A.dP(B.agb,B.b9g,o,A.cc(d,d,r,d,d,d,d,d,d,B.A,d,d,d,d,new A.aZ(A.r(14),B.I),d,d,d,d,d)),50,1/0)],p),B.o,B.j,B.k)
@@ -112685,7 +112687,7 @@ case 1:s=A.r(20)
 r=b.r
 q=A.W(A.d(115,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
 p=t.p
-s=A.ah(A.I(d,A.ad(A.b([A.bg(B.Cq,r,d,48),B.aw,A.q("Wild Encounter "+e.e+" of 3 Cleared!",d,d,d,d,B.b1C,d,d),B.a8,A.q("Another fierce Lv.99 wild Pok\xe9mon blocks the path deeper into "+b.b+". Your team gets no rest!",d,d,d,d,B.jO,B.aU,d)],p),B.o,B.b9,B.k),B.n,d,d,new A.F(B.Aj,d,q,s,d,d,B.p),d,d,d,B.ta,d,d,d),1)
+s=A.ah(A.I(d,A.ad(A.b([A.bg(B.Cr,r,d,48),B.aw,A.q("Wild Encounter "+e.e+" of 3 Cleared!",d,d,d,d,B.b1C,d,d),B.a8,A.q("Another fierce Lv.99 wild Pok\xe9mon blocks the path deeper into "+b.b+". Your team gets no rest!",d,d,d,d,B.jO,B.aU,d)],p),B.o,B.b9,B.k),B.n,d,d,new A.F(B.Ak,d,q,s,d,d,B.p),d,d,d,B.ta,d,d,d),1)
 q=e.Ij(a)
 o=e.as?d:new A.aBP(e)
 r=A.cc(d,d,r,d,d,d,d,d,d,B.A,d,d,d,d,new A.aZ(A.r(14),B.I),d,d,d,d,d)
@@ -112703,7 +112705,7 @@ m=n?A.d(64,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255):A.d(64,B.jk.h()>>>16&25
 l=A.r(8)
 k=A.W(n?B.R:B.z,1)
 j=t.p
-r=A.ah(A.I(d,A.ad(A.b([p,B.a8,o,B.a8,A.I(d,A.q(n?"RARE ENCOUNTER: "+s.a.toUpperCase()+" (TEAM ROCKET)":"TEAM ROCKET BALLOON DESCENDED!",d,d,d,d,B.b3O,d,d),B.n,d,d,new A.F(m,d,k,l,d,d,B.p),d,d,d,B.AQ,d,d,d),B.a8,A.q('"'+s.e+'"',d,d,d,d,B.b3h,B.aU,d),B.aS,B.b9s],j),B.o,B.b9,B.k),B.n,d,d,new A.F(B.a3U,d,q,r,d,d,B.p),d,d,d,B.ea,d,d,d),1)
+r=A.ah(A.I(d,A.ad(A.b([p,B.a8,o,B.a8,A.I(d,A.q(n?"RARE ENCOUNTER: "+s.a.toUpperCase()+" (TEAM ROCKET)":"TEAM ROCKET BALLOON DESCENDED!",d,d,d,d,B.b3O,d,d),B.n,d,d,new A.F(m,d,k,l,d,d,B.p),d,d,d,B.AR,d,d,d),B.a8,A.q('"'+s.e+'"',d,d,d,d,B.b3h,B.aU,d),B.aS,B.b9s],j),B.o,B.b9,B.k),B.n,d,d,new A.F(B.a3U,d,q,r,d,d,B.p),d,d,d,B.ea,d,d,d),1)
 q=e.Ij(a)
 p=e.as?d:e.gatY()
 return A.ad(A.b([r,B.aw,q,B.aw,A.b6(A.dP(B.ah9,A.q("CHALLENGE "+s.a.toUpperCase()+"!",d,d,d,d,B.xi,d,d),p,A.cc(d,d,B.iI,d,d,d,d,d,d,B.d,d,d,d,d,new A.aZ(A.r(14),B.I),d,d,d,d,d)),50,1/0)],j),B.o,B.j,B.k)
@@ -112750,10 +112752,10 @@ o=t.p
 s=A.b([A.bg(p,s,d,52),B.aw,A.q(g,d,d,d,d,B.xk,d,d),B.a8,A.q(f,d,d,d,d,B.jO,B.aU,d)],o)
 if(e.w.length!==0)B.c.J(s,A.b([B.e_,e.Tn()],o))
 if(e.x)B.c.J(s,A.b([B.e_,e.Tg()],o))
-return A.ad(A.b([A.I(d,A.ad(s,B.o,B.j,B.k),B.n,d,d,new A.F(B.zY,d,q,r,d,d,B.p),d,d,d,B.iS,d,d,d),B.m0,A.b6(A.eQ(B.bb4,new A.aBS(e),A.cc(d,d,b.r,d,d,d,d,d,d,B.A,d,d,d,d,new A.aZ(A.r(14),B.I),d,d,d,d,d)),50,1/0)],o),B.o,B.b9,B.k)}},
+return A.ad(A.b([A.I(d,A.ad(s,B.o,B.j,B.k),B.n,d,d,new A.F(B.zZ,d,q,r,d,d,B.p),d,d,d,B.iS,d,d,d),B.m0,A.b6(A.eQ(B.bb4,new A.aBS(e),A.cc(d,d,b.r,d,d,d,d,d,d,B.A,d,d,d,d,new A.aZ(A.r(14),B.I),d,d,d,d,d)),50,1/0)],o),B.o,B.b9,B.k)}},
 Tn(){var s=null,r=A.d(235,B.rk.h()>>>16&255,B.rk.h()>>>8&255,B.rk.h()&255),q=A.r(14),p=A.W(A.d(115,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1),o=this.w,n=A.a8(o).j("a7<1,eD>")
 o=A.a1(new A.a7(o,new A.aBT(),n),n.j("aW.E"))
-return A.I(s,A.ad(A.b([B.aXe,B.eL,A.ks(B.d1,o,B.ei,6,8)],t.p),B.L,B.j,B.k),B.n,s,s,new A.F(r,s,p,q,s,s,B.p),s,s,s,B.hs,s,s,1/0)},
+return A.I(s,A.ad(A.b([B.aXe,B.eL,A.ks(B.d2,o,B.ei,6,8)],t.p),B.L,B.j,B.k),B.n,s,s,new A.F(r,s,p,q,s,s,B.p),s,s,s,B.hs,s,s,1/0)},
 Tg(){var s=null,r=A.b([A.d(217,B.mB.h()>>>16&255,B.mB.h()>>>8&255,B.mB.h()&255),A.d(217,B.hk.h()>>>16&255,B.hk.h()>>>8&255,B.hk.h()&255)],t.O),q=A.r(14)
 return A.I(s,B.aXm,B.n,s,s,new A.F(s,s,A.W(B.R,1),q,s,new A.bh(B.b7,B.bN,B.V,r,s,s),B.p),s,s,s,B.hs,s,s,s)}}
 A.aC4.prototype={
@@ -112983,8 +112985,8 @@ case 1:return A.A(q,r)}})
 return A.B($async$BP,r)},
 R(a){var s=this,r=null,q=A.dW(a,!0,t.R),p=q.e,o=p.length!==0?B.c.gS(p):r
 p=t.p
-return A.eW(r,B.a4d,A.ct(B.aX,A.b([A.dU("assets/images/home_bg.png",B.am,r,B.q,B.cf,!1,r,r,r),A.eF(r,new A.F(r,r,r,r,r,new A.bh(B.bs,B.am,B.V,A.b([A.d(173,B.e7.h()>>>16&255,B.e7.h()>>>8&255,B.e7.h()&255),A.d(46,B.rm.h()>>>16&255,B.rm.h()>>>8&255,B.rm.h()&255),A.d(140,B.mL.h()>>>16&255,B.mL.h()>>>8&255,B.mL.h()&255),A.d(219,B.qs.h()>>>16&255,B.qs.h()>>>8&255,B.qs.h()&255)],t.O),B.aDd,r),B.p),B.bQ),A.e4(!0,new A.aG(B.a9A,A.ad(A.b([s.ag1(q),B.a8,A.ah(A.Un(A.ad(A.b([s.afn(q,o),B.a8,s.afW(q),B.a8,s.afx(q),B.cM],p),B.cr,B.j,B.k),r,B.b_,r,B.z_,B.ad),1),B.a8,A.X(A.b([A.ah(s.afl(),1),B.ag,s.afT(q)],p),B.o,B.j,B.k,0)],p),B.o,B.j,B.k),r),B.ae,!0)],p),B.O,B.ck),!1)},
-ag1(a){var s,r,q,p=null,o=A.r(14),n=A.W(A.d(166,B.qX.h()>>>16&255,B.qX.h()>>>8&255,B.qX.h()&255),1.2),m=A.b([new A.cg(0,B.aZ,A.d(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hZ,10)],t.E),l=t.O,k=A.b([A.d(B.b.p(229.5),B.iI.h()>>>16&255,B.iI.h()>>>8&255,B.iI.h()&255),B.d9],l),j=A.r(7),i=A.W(A.d(64,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1)
+return A.eW(r,B.a4d,A.ct(B.aX,A.b([A.dU("assets/images/home_bg.png",B.am,r,B.q,B.cf,!1,r,r,r),A.eF(r,new A.F(r,r,r,r,r,new A.bh(B.bs,B.am,B.V,A.b([A.d(173,B.e7.h()>>>16&255,B.e7.h()>>>8&255,B.e7.h()&255),A.d(46,B.rm.h()>>>16&255,B.rm.h()>>>8&255,B.rm.h()&255),A.d(140,B.mL.h()>>>16&255,B.mL.h()>>>8&255,B.mL.h()&255),A.d(219,B.qs.h()>>>16&255,B.qs.h()>>>8&255,B.qs.h()&255)],t.O),B.aDd,r),B.p),B.bQ),A.e4(!0,new A.aG(B.a9A,A.ad(A.b([s.ag1(q),B.a8,A.ah(A.Un(A.ad(A.b([s.afn(q,o),B.a8,s.afW(q),B.a8,s.afx(q),B.cM],p),B.cr,B.j,B.k),r,B.b_,r,B.z0,B.ad),1),B.a8,A.X(A.b([A.ah(s.afl(),1),B.ag,s.afT(q)],p),B.o,B.j,B.k,0)],p),B.o,B.j,B.k),r),B.ae,!0)],p),B.O,B.ck),!1)},
+ag1(a){var s,r,q,p=null,o=A.r(14),n=A.W(A.d(166,B.qX.h()>>>16&255,B.qX.h()>>>8&255,B.qX.h()&255),1.2),m=A.b([new A.cg(0,B.aZ,A.d(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hZ,10)],t.E),l=t.O,k=A.b([A.d(B.b.p(229.5),B.iI.h()>>>16&255,B.iI.h()>>>8&255,B.iI.h()&255),B.da],l),j=A.r(7),i=A.W(A.d(64,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1)
 k=A.I(p,A.q(a.c.b.toUpperCase(),p,p,p,p,B.b7i,p,p),B.n,p,p,new A.F(p,p,i,j,p,new A.bh(B.b7,B.bN,B.V,k,p,p),B.p),p,p,p,B.kO,p,p,p)
 j=t.p
 i=A.b([new A.cF(1,B.aV,A.q(a.b.toUpperCase(),1,B.a_,p,p,B.b1N,p,p),p)],j)
@@ -112996,9 +112998,9 @@ r.toString
 B.c.J(i,A.b([B.a3,A.I(p,A.q(A.adG(r),p,p,p,p,B.py,p,p),B.n,p,p,new A.F(p,p,p,s,p,new A.bh(B.b7,B.bN,B.V,l,p,p),B.p),p,p,p,B.iU,p,p,p)],j))}l=A.ah(A.ad(A.b([A.X(i,B.o,B.j,B.k,0),A.q("POK\xc9MON "+a.e.length+"/6 \u2022 OBEY Lv."+a.gz4(),p,p,p,p,A.aD(p,p,A.d(217,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),p,p,p,p,p,p,p,p,9.5,p,p,B.N,p,p,!0,p,0.4,p,p,p,p,p,p),p,p)],j),B.L,B.j,B.k),1)
 i=A.r(10)
 s=A.W(A.d(102,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1)
-i=A.I(p,A.X(A.b([B.ahd,B.i5,A.q(""+a.ok.a+"/8",p,p,p,p,B.UV,p,p),A.I(p,p,B.n,B.a4,p,p,p,12,B.hu,p,p,p,1),B.b96,B.jK,A.q(""+a.dy,p,p,p,p,B.UU,p,p)],j),B.o,B.j,B.Y,0),B.n,p,p,new A.F(B.e7,p,s,i,p,p,B.p),p,p,p,B.B3,p,p,p)
+i=A.I(p,A.X(A.b([B.ahd,B.i5,A.q(""+a.ok.a+"/8",p,p,p,p,B.UV,p,p),A.I(p,p,B.n,B.a4,p,p,p,12,B.hu,p,p,p,1),B.b96,B.jK,A.q(""+a.dy,p,p,p,p,B.UU,p,p)],j),B.o,B.j,B.Y,0),B.n,p,p,new A.F(B.e7,p,s,i,p,p,B.p),p,p,p,B.B4,p,p,p)
 s=A.r(10)
-r=A.d(82,B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255)
+r=A.d(82,B.da.h()>>>16&255,B.da.h()>>>8&255,B.da.h()&255)
 q=A.r(10)
 return A.I(p,A.X(A.b([k,B.ag,l,i,B.a3,A.aVx(A.cw(!1,s,!0,A.I(p,B.agP,B.n,p,p,new A.F(r,p,A.W(A.d(115,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1),q,p,p,B.p),p,p,p,B.nx,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.aDC(this,a),p,p,p,p),"Delete Saved Progress")],j),B.o,B.j,B.k,0),B.n,p,p,new A.F(p,p,n,o,m,B.aCz,B.p),p,p,p,B.hr,p,p,p)},
 afn(a,b){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=null,d=b!=null,c=d?A.bU(B.c.gS(b.a.c)):B.r
@@ -113015,12 +113017,12 @@ k=A.b([new A.cg(0,B.aZ,A.d(46,c.h()>>>16&255,c.h()>>>8&255,c.h()&255),B.aQu,16)]
 j=A.r(20)
 i=A.W(A.d(166,c.h()>>>16&255,c.h()>>>8&255,c.h()&255),1)
 h=t.p
-j=A.I(e,A.X(A.b([A.I(e,e,B.n,e,e,new A.F(c,e,e,e,A.b([new A.cg(0,B.aZ,c,B.C,5)],l),e,B.c6),e,6,e,e,e,e,6),B.cG,B.bb6],h),B.o,B.j,B.Y,0),B.n,e,e,new A.F(B.a6s,e,i,j,e,e,B.p),e,e,e,B.da,e,e,e)
+j=A.I(e,A.X(A.b([A.I(e,e,B.n,e,e,new A.F(c,e,e,e,A.b([new A.cg(0,B.aZ,c,B.C,5)],l),e,B.c6),e,6,e,e,e,e,6),B.cG,B.bb6],h),B.o,B.j,B.Y,0),B.n,e,e,new A.F(B.a6s,e,i,j,e,e,B.p),e,e,e,B.cT,e,e,e)
 i=A.r(12)
 l=A.r(12)
-l=A.X(A.b([j,A.X(A.b([B.b0v,B.a3,A.cw(!1,i,!0,A.I(e,B.aXd,B.n,e,e,new A.F(e,e,A.W(B.c8,1),l,e,B.aCl,B.p),e,e,e,B.B3,e,e,e),e,!0,e,e,e,e,e,e,e,e,new A.aDf(this,a),e,e,e,e)],h),B.o,B.j,B.Y,0)],h),B.o,B.aP,B.k,0)
+l=A.X(A.b([j,A.X(A.b([B.b0v,B.a3,A.cw(!1,i,!0,A.I(e,B.aXd,B.n,e,e,new A.F(e,e,A.W(B.c8,1),l,e,B.aCl,B.p),e,e,e,B.B4,e,e,e),e,!0,e,e,e,e,e,e,e,e,new A.aDf(this,a),e,e,e,e)],h),B.o,B.j,B.Y,0)],h),B.o,B.aP,B.k,0)
 s=A.iP(6,A.I(e,e,B.n,e,e,new A.F(e,e,e,A.r(30),e,new A.fM(B.H,2.2,B.V,e,0,A.b([A.d(71,c.h()>>>16&255,c.h()>>>8&255,c.h()&255),B.a6],s),e,e),B.p),e,18,e,e,e,e,e),e,e,24,24,e,e)
-i=A.b([A.ad(A.b([A.va(a.c,B.cz,!1,0,92,e),A.I(e,e,B.n,e,e,new A.F(A.d(122,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),e,e,A.r(12),e,e,B.p),e,7,e,e,e,e,58)],h),B.o,B.hT,B.k),B.U0],h)
+i=A.b([A.ad(A.b([A.va(a.c,B.cz,!1,0,92,e),A.I(e,e,B.n,e,e,new A.F(A.d(122,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),e,e,A.r(12),e,e,B.p),e,7,e,e,e,e,58)],h),B.o,B.hT,B.k),B.U1],h)
 if(d)i.push(new A.dM(new A.aDg(this,b,c),e))
 s=A.b([new A.aG(B.a9z,l,e),A.b6(A.ct(B.am,A.b([s,A.X(i,B.f2,B.b9,B.k,0)],h),B.O,B.bH),124,e),B.aS],h)
 if(d){d=A.W(A.d(71,c.h()>>>16&255,c.h()>>>8&255,c.h()&255),1)
@@ -113041,7 +113043,7 @@ B.c.J(g,new A.a7(l,new A.aDh(),A.a8(l).j("a7<1,j>")))
 g=A.X(g,B.o,B.j,B.k,0)
 l=b.d
 j=b.e
-s.push(A.I(e,A.ad(A.b([g,B.aS,A.X(A.b([B.baz,B.a3,A.ah(new A.jY(l,j,e),1),B.ag,A.q(""+l+"/"+j,e,e,e,e,B.b70,e,e)],h),B.o,B.j,B.k,0),B.cM,A.X(A.b([B.b8U,B.a3,A.ah(A.is(A.r(3),A.nx(B.aT,4,p,B.yc)),1)],h),B.o,B.j,B.k,0)],h),B.o,B.j,B.k),B.n,e,e,new A.F(B.a4c,e,d,B.a0A,e,e,B.p),e,e,e,B.a9C,e,e,e))}return A.I(e,A.ad(s,B.o,B.j,B.k),B.n,e,e,new A.F(e,e,m,n,k,new A.bh(B.bs,B.am,B.V,o,e,e),B.p),e,e,e,e,e,e,e)},
+s.push(A.I(e,A.ad(A.b([g,B.aS,A.X(A.b([B.baz,B.a3,A.ah(new A.jY(l,j,e),1),B.ag,A.q(""+l+"/"+j,e,e,e,e,B.b70,e,e)],h),B.o,B.j,B.k,0),B.cM,A.X(A.b([B.b8U,B.a3,A.ah(A.is(A.r(3),A.nx(B.aT,4,p,B.yd)),1)],h),B.o,B.j,B.k,0)],h),B.o,B.j,B.k),B.n,e,e,new A.F(B.a4c,e,d,B.a0A,e,e,B.p),e,e,e,B.a9C,e,e,e))}return A.I(e,A.ad(s,B.o,B.j,B.k),B.n,e,e,new A.F(e,e,m,n,k,new A.bh(B.bs,B.am,B.V,o,e,e),B.p),e,e,e,e,e,e,e)},
 afW(a){var s,r,q,p,o,n,m,l,k,j=null
 a.CO()
 s=a.fx
@@ -113055,7 +113057,7 @@ o=$.aXj()
 m=A.r(8)
 l=A.W(A.d(89,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
 k=t.p
-return A.I(j,A.ad(A.b([A.X(A.b([n,B.cj,B.aaN,new A.oo(o,new A.aDA(this),j,j,t.UD),B.a3,A.I(j,A.q(""+s+" STEPS",j,j,j,j,B.b2F,j,j),B.n,j,j,new A.F(B.kA,j,l,m,j,j,B.p),j,j,j,B.AQ,j,j,j)],k),B.o,B.j,B.k,0),B.a8,A.b6(A.dP(B.agg,B.b9P,new A.aDB(this,a),A.cc(j,j,B.aC,j,j,j,2,j,j,B.aJ,j,j,B.fE,j,new A.aZ(A.r(10),B.I),j,j,j,j,j)),j,1/0),B.aS,this.Tr(a)],k),B.L,B.j,B.k),B.n,j,j,new A.F(j,j,q,r,p,B.aCi,B.p),j,j,j,B.nr,j,j,j)},
+return A.I(j,A.ad(A.b([A.X(A.b([n,B.cj,B.aaN,new A.oo(o,new A.aDA(this),j,j,t.UD),B.a3,A.I(j,A.q(""+s+" STEPS",j,j,j,j,B.b2F,j,j),B.n,j,j,new A.F(B.kA,j,l,m,j,j,B.p),j,j,j,B.AR,j,j,j)],k),B.o,B.j,B.k,0),B.a8,A.b6(A.dP(B.agg,B.b9P,new A.aDB(this,a),A.cc(j,j,B.aC,j,j,j,2,j,j,B.aJ,j,j,B.fE,j,new A.aZ(A.r(10),B.I),j,j,j,j,j)),j,1/0),B.aS,this.Tr(a)],k),B.L,B.j,B.k),B.n,j,j,new A.F(j,j,q,r,p,B.aCi,B.p),j,j,j,B.nr,j,j,j)},
 Tr(a){var s,r=new A.aDF(),q=a.p4,p=q?"EXP SHARE ON":"EXP SHARE OFF"
 p=r.$5$active$activeColor$icon$label$onTap(q,B.r,B.afJ,p,new A.aDD(a))
 q=a.R8
@@ -113075,18 +113077,18 @@ p=A.q("EXPEDITIONS",n,n,n,n,A.aD(n,n,r?B.d:B.b1,n,n,n,n,n,n,n,n,11.5,n,n,B.y,n,n
 r=a.ok.a>=8
 i=r?"4 Uncharted Kanto Sites \u2022 High-Risk Gauntlets":"Locked \u2022 Earn all 8 Badges to unlock ("+i+"/8)"
 i=A.ah(A.ad(A.b([p,A.q(i,1,B.a_,n,n,A.aD(n,n,r?B.r:B.aQ,n,n,n,n,n,n,n,n,9.5,n,n,B.N,n,n,!0,n,n,n,n,n,n,n,n),n,n)],k),B.L,B.j,B.k),1)
-i=A.fY(!1,B.az,!0,n,A.cw(!1,e,!0,A.xr(A.X(A.b([q,B.i6,i,A.bg(B.j2,a.ok.a>=8?B.r:B.c8,n,18)],k),B.o,B.j,B.k,0),new A.F(n,n,s,d,n,new A.bh(B.b7,B.bN,B.V,g,n,n),B.p),B.nr),n,!0,n,n,n,n,n,n,n,n,f,n,n,n,n),B.n,B.a6,0,n,n,n,n,n,B.cX)
+i=A.fY(!1,B.az,!0,n,A.cw(!1,e,!0,A.xr(A.X(A.b([q,B.i6,i,A.bg(B.j2,a.ok.a>=8?B.r:B.c8,n,18)],k),B.o,B.j,B.k,0),new A.F(n,n,s,d,n,new A.bh(B.b7,B.bN,B.V,g,n,n),B.p),B.nr),n,!0,n,n,n,n,n,n,n,n,f,n,n,n,n),B.n,B.a6,0,n,n,n,n,n,B.cY)
 g=A.r(13)
 f=A.r(13)
 e=A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1.1)
 d=A.b([new A.cg(0,B.aZ,A.d(89,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hY,8)],t.E)
 s=A.d(36,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255)
 r=A.r(8)
-return A.ad(A.b([j,B.eL,h,B.eL,i,B.eL,A.fY(!1,B.az,!0,n,A.cw(!1,g,!0,A.xr(A.X(A.b([A.I(n,B.ahK,B.n,n,n,new A.F(s,n,A.W(A.d(102,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1),r,n,n,B.p),n,28,n,n,n,n,28),B.i6,B.aaI,B.agG],k),B.o,B.j,B.k,0),new A.F(n,n,e,f,d,B.aCk,B.p),B.nr),n,!0,n,n,n,n,n,n,n,n,new A.aDw(o),n,n,n,n),B.n,B.a6,0,n,n,n,n,n,B.cX)],k),B.o,B.j,B.k)},
+return A.ad(A.b([j,B.eL,h,B.eL,i,B.eL,A.fY(!1,B.az,!0,n,A.cw(!1,g,!0,A.xr(A.X(A.b([A.I(n,B.ahK,B.n,n,n,new A.F(s,n,A.W(A.d(102,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1),r,n,n,B.p),n,28,n,n,n,n,28),B.i6,B.aaI,B.agG],k),B.o,B.j,B.k,0),new A.F(n,n,e,f,d,B.aCk,B.p),B.nr),n,!0,n,n,n,n,n,n,n,n,new A.aDw(o),n,n,n,n),B.n,B.a6,0,n,n,n,n,n,B.cY)],k),B.o,B.j,B.k)},
 afl(){var s=null,r=A.r(14),q=A.r(14),p=A.W(A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1.2),o=A.b([new A.cg(0,B.aZ,A.d(140,B.mY.h()>>>16&255,B.mY.h()>>>8&255,B.mY.h()&255),B.hZ,12)],t.E)
-return A.b6(A.fY(!1,B.az,!0,s,A.cw(!1,r,!0,A.xr(new A.aG(B.a9t,A.X(A.b([A.I(s,B.agi,B.n,s,s,new A.F(A.d(61,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),s,s,A.r(9),s,s,B.p),s,s,s,B.nw,s,s,s),B.i6,B.aaz,B.bx,B.agd],t.p),B.o,B.j,B.k,0),s),new A.F(s,s,p,q,o,B.aCn,B.p),s),s,!0,s,s,s,s,s,s,s,s,new A.aDa(this),s,s,s,s),B.n,B.a6,0,s,s,s,s,s,B.cX),48,1/0)},
+return A.b6(A.fY(!1,B.az,!0,s,A.cw(!1,r,!0,A.xr(new A.aG(B.a9t,A.X(A.b([A.I(s,B.agi,B.n,s,s,new A.F(A.d(61,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),s,s,A.r(9),s,s,B.p),s,s,s,B.nw,s,s,s),B.i6,B.aaz,B.bx,B.agd],t.p),B.o,B.j,B.k,0),s),new A.F(s,s,p,q,o,B.aCn,B.p),s),s,!0,s,s,s,s,s,s,s,s,new A.aDa(this),s,s,s,s),B.n,B.a6,0,s,s,s,s,s,B.cY),48,1/0)},
 afT(a){var s=null,r=a.x1.length,q=a.gNJ(),p=A.r(14),o=A.r(14),n=A.W(A.d(140,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1.2),m=A.b([new A.cg(0,B.aZ,A.d(102,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hY,8)],t.E),l=t.p
-return A.b6(A.fY(!1,B.az,!0,s,A.cw(!1,p,!0,A.xr(A.ad(A.b([A.X(A.b([B.ahv,B.bx,B.bab],l),B.o,B.b9,B.k,0),B.x6,A.q(""+r+" \u2022 "+q+" \u2605",1,s,s,s,B.b2Q,s,s)],l),B.o,B.b9,B.k),new A.F(s,s,n,o,m,B.aCr,B.p),s),s,!0,s,s,s,s,s,s,s,s,new A.aDz(this),s,s,s,s),B.n,B.a6,0,s,s,s,s,s,B.cX),48,94)},
+return A.b6(A.fY(!1,B.az,!0,s,A.cw(!1,p,!0,A.xr(A.ad(A.b([A.X(A.b([B.ahv,B.bx,B.bab],l),B.o,B.b9,B.k,0),B.x6,A.q(""+r+" \u2022 "+q+" \u2605",1,s,s,s,B.b2Q,s,s)],l),B.o,B.b9,B.k),new A.F(s,s,n,o,m,B.aCr,B.p),s),s,!0,s,s,s,s,s,s,s,s,new A.aDz(this),s,s,s,s),B.n,B.a6,0,s,s,s,s,s,B.cY),48,94)},
 ahb(a){var s=this.c
 s.toString
 A.hb(!0,new A.aDM(this,a,null),s,t.z)},
@@ -113175,7 +113177,7 @@ q.wN()}},
 $S:673}
 A.aDJ.prototype={
 $1(a){var s=null,r=A.r(18),q=A.d(115,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),p=this.b,o=p.b,n=A.q("A new version of Pocket Bump ("+o+") is available on GitHub.",s,s,s,s,B.b6Z,s,s),m=A.r(10),l=A.W(B.a4,1),k=t.p
-m=A.ad(A.b([n,B.af,A.I(s,A.X(A.b([A.q("Installed: v"+p.a,s,s,s,s,B.b6z,s,s),A.q("Latest: "+o,s,s,s,s,B.b5B,s,s)],k),B.o,B.aP,B.k,0),B.n,s,s,new A.F(B.Aa,s,l,m,s,s,B.p),s,s,s,B.t3,s,s,1/0)],k),B.L,B.j,B.Y)
+m=A.ad(A.b([n,B.af,A.I(s,A.X(A.b([A.q("Installed: v"+p.a,s,s,s,s,B.b6z,s,s),A.q("Latest: "+o,s,s,s,s,B.b5B,s,s)],k),B.o,B.aP,B.k,0),B.n,s,s,new A.F(B.Ab,s,l,m,s,s,B.p),s,s,s,B.t3,s,s,1/0)],k),B.L,B.j,B.Y)
 return A.hc(A.b([A.hn(B.bc8,new A.aDG(p,a),s),A.hn(B.baP,new A.aDH(a),s),A.dP(B.agQ,B.bbw,new A.aDI(this.a,p,a),A.cc(s,s,B.h,s,s,s,s,s,s,B.A,s,s,s,s,new A.aZ(A.r(10),B.I),s,s,s,s,s))],k),s,B.ep,m,s,new A.aZ(r,new A.aT(q,1,B.U,-1)),B.aXr,s)},
 $S:23}
 A.aDG.prototype={
@@ -113293,7 +113295,7 @@ case 1:s=B.h
 r=B.nV
 break
 case 5:s=B.h
-r=B.Co
+r=B.Cp
 break
 case 0:case 6:s=B.b5
 r=B.afI
@@ -113309,7 +113311,7 @@ A.aDB.prototype={
 $0(){return this.a.BP(this.b)},
 $S:0}
 A.aDF.prototype={
-$5$active$activeColor$icon$label$onTap(a,b,c,d,e){var s,r=null,q=A.r(9),p=a?A.d(46,b.h()>>>16&255,b.h()>>>8&255,b.h()&255):B.A_,o=A.r(9),n=A.W(a?A.d(204,b.h()>>>16&255,b.h()>>>8&255,b.h()&255):A.d(B.b.p(25.5),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),m=a?b:B.c8
+$5$active$activeColor$icon$label$onTap(a,b,c,d,e){var s,r=null,q=A.r(9),p=a?A.d(46,b.h()>>>16&255,b.h()>>>8&255,b.h()&255):B.A0,o=A.r(9),n=A.W(a?A.d(204,b.h()>>>16&255,b.h()>>>8&255,b.h()&255):A.d(B.b.p(25.5),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),m=a?b:B.c8
 m=A.I(r,r,B.n,r,r,new A.F(m,r,r,r,a?A.b([new A.cg(0,B.aZ,b,B.C,5)],t.E):r,r,B.c6),r,6,r,r,r,r,6)
 s=A.bg(c,a?b:B.b5,r,12)
 return A.ah(A.cw(!1,q,!0,A.ja(A.X(A.b([m,B.cG,s,B.bx,new A.cF(1,B.aV,A.q(d,1,B.a_,r,r,A.aD(r,r,a?b:B.b1,r,r,r,r,r,r,r,r,9.5,r,r,B.y,r,r,!0,r,0.4,r,r,r,r,r,r),r,r),r)],t.p),B.o,B.b9,B.k,0),B.ah,new A.F(p,r,n,o,r,r,B.p),B.et,r,r,B.ny,r,r,r),r,!0,r,r,r,r,r,r,r,r,e,r,r,r,r),1)},
@@ -113375,7 +113377,7 @@ s=A.dk(new A.aDk(),null,t.z)
 A.aM(r,!1).cI(s)},
 $S:0}
 A.aDk.prototype={
-$1(a){return B.OY},
+$1(a){return B.OZ},
 $S:267}
 A.aDu.prototype={
 $0(){var s,r=this.a.c
@@ -113417,7 +113419,7 @@ s=A.dk(new A.aDy(),null,t.z)
 A.aM(r,!1).cI(s)},
 $S:0}
 A.aDy.prototype={
-$1(a){return B.SK},
+$1(a){return B.SL},
 $S:264}
 A.aDM.prototype={
 $1(a){var s=null,r=A.r(18),q=this.b,p=A.q("This will permanently erase your local save for "+q.b+" ("+q.e.length+" Pok\xe9mon, "+q.fr+" steps, and "+q.gPK()+" items) and return to the start screen.",s,s,s,s,B.mb,s,s)
@@ -113458,7 +113460,7 @@ r=A.dk(new A.aEj(),null,t.z)
 A.aM(s,!1).cI(r)},
 $S:0}
 A.aEj.prototype={
-$1(a){return B.OY},
+$1(a){return B.OZ},
 $S:267}
 A.aEt.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -113477,10 +113479,10 @@ q=t.p
 r=A.b([A.cv(r,B.H,new A.aEg(c,a),B.q,B.ay,54,54)],q)
 if(s)r.push(B.aVP)
 s=A.ct(B.aX,r,B.n,B.bH)
-r=b?A.d(51,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bp
+r=b?A.d(51,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bn
 p=A.r(6)
 o=b?"SPOT #1 \u2022 LEAD":"SPOT #"+(a5+1)
-r=A.X(A.b([A.I(e,A.q(o,e,e,e,e,A.aD(e,e,b?B.h:B.b1,e,e,e,e,e,e,e,e,9,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(r,e,e,p,e,e,B.p),e,e,e,B.dF,e,e,e),B.ag,new A.cF(1,B.aV,A.q(c.b,e,B.a_,e,e,B.UH,e,e),e),B.a3,A.q("Lv."+c.c,e,e,e,e,B.xl,e,e)],q),B.o,B.j,B.k,0)
+r=A.X(A.b([A.I(e,A.q(o,e,e,e,e,A.aD(e,e,b?B.h:B.b1,e,e,e,e,e,e,e,e,9,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(r,e,e,p,e,e,B.p),e,e,e,B.dF,e,e,e),B.ag,new A.cF(1,B.aV,A.q(c.b,e,B.a_,e,e,B.UI,e,e),e),B.a3,A.q("Lv."+c.c,e,e,e,e,B.xl,e,e)],q),B.o,B.j,B.k,0)
 p=c.d
 o=c.e
 n=c.z
@@ -113490,7 +113492,7 @@ l=c.ay
 k=A.W(l!=null&&l.length!==0?A.d(102,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.a4,1)
 l=c.ay
 j=l!=null
-i=j&&l.length!==0?B.tU:B.C7
+i=j&&l.length!==0?B.tU:B.C8
 i=A.bg(i,j&&l.length!==0?B.h:B.aQ,e,13)
 if(j&&l.length!==0){l=B.aq.i(0,l)
 l=l==null?e:l.b
@@ -113500,16 +113502,16 @@ h=j!=null
 g=h&&j.length!==0?B.h:B.aQ
 l=A.b([i,B.cG,A.ah(A.q(l,e,e,e,e,A.aD(e,e,g,e,e,e,e,e,e,e,e,10,e,e,h&&j.length!==0?B.N:B.a0,e,e,!0,e,e,e,e,e,e,e,e),e,e),1)],q)
 j=c.ay
-if(j!=null&&j.length!==0)l.push(A.cw(!1,e,!0,B.OV,e,!0,e,e,e,e,e,e,e,e,new A.aEi(c,d),e,e,e,e))
-else l.push(A.cw(!1,e,!0,B.OU,e,!0,e,e,e,e,e,e,e,e,new A.aEk(a0,f.c,d,c),e,e,e,e))
+if(j!=null&&j.length!==0)l.push(A.cw(!1,e,!0,B.OW,e,!0,e,e,e,e,e,e,e,e,new A.aEi(c,d),e,e,e,e))
+else l.push(A.cw(!1,e,!0,B.OV,e,!0,e,e,e,e,e,e,e,e,new A.aEk(a0,f.c,d,c),e,e,e,e))
 s=A.X(A.b([s,B.dL,A.ah(A.ad(A.b([r,B.aS,new A.jY(p,o,e),B.cM,n,B.e0,A.I(e,A.X(l,B.o,B.j,B.k,0),B.n,e,e,new A.F(B.kk,e,k,m,e,e,B.p),e,e,e,B.kO,e,e,e)],q),B.L,B.j,B.k),1)],q),B.o,B.j,B.k,0)
 r=A.b([],q)
-if(!b)r.push(A.dP(B.Cw,B.bah,new A.aEl(d,a5),A.cc(e,e,B.eq,e,e,e,e,e,e,B.A,e,B.a2,B.e8,e,new A.aZ(A.r(10),B.I),e,e,e,e,e)))
+if(!b)r.push(A.dP(B.Cx,B.bah,new A.aEl(d,a5),A.cc(e,e,B.eq,e,e,e,e,e,e,B.A,e,B.a2,B.e8,e,new A.aZ(A.r(10),B.I),e,e,e,e,e)))
 else{p=A.d(36,B.aa.h()>>>16&255,B.aa.h()>>>8&255,B.aa.h()&255)
 o=A.r(10)
 r.push(A.I(e,B.b9J,B.n,e,e,new A.F(p,e,A.W(A.d(102,B.aa.h()>>>16&255,B.aa.h()>>>8&255,B.aa.h()&255),1),o,e,e,B.p),e,e,e,B.np,e,e,e))}r.push(B.dg)
-if(a5>0)r.push(A.co(e,e,B.CA,e,e,new A.aEm(d,a5),e,e,"Move Up"))
-if(a5<d.e.length-1)r.push(A.co(e,e,B.Cv,e,e,new A.aEn(d,a5),e,e,"Move Down"))
+if(a5>0)r.push(A.co(e,e,B.CB,e,e,new A.aEm(d,a5),e,e,"Move Up"))
+if(a5<d.e.length-1)r.push(A.co(e,e,B.Cw,e,e,new A.aEn(d,a5),e,e,"Move Down"))
 if(d.e.length>1)B.c.J(r,A.b([A.co(e,e,A.bg(B.tW,B.eV,e,18),e,e,new A.aEo(a0,d,a5,c),e,e,"Deposit to PC Box"),A.co(e,e,B.agk,e,e,new A.aEp(a0,f.c,d,a5,c),e,e,"Release Pok\xe9mon")],q))
 r.push(B.jK)
 d=A.d(140,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255)
@@ -113598,7 +113600,7 @@ $1(a){var s=this
 return new A.mr(new A.aE_(s.a,a,s.b,s.c,s.d),null)},
 $S:105}
 A.aE_.prototype={
-$2(a,b){var s,r,q=this,p=null,o=q.a,n=A.q("GIVE ITEM TO "+o.b.toUpperCase(),p,p,p,p,B.xw,p,p),m=o.ay
+$2(a,b){var s,r,q=this,p=null,o=q.a,n=A.q("GIVE ITEM TO "+o.b.toUpperCase(),p,p,p,p,B.xx,p,p),m=o.ay
 if(m!=null&&m.length!==0){m=B.aq.i(0,m)
 m=m==null?p:m.b
 m="Current item: "+A.u(m==null?o.ay:m)+" (will return to bag)"}else m="No item currently held"
@@ -113608,7 +113610,7 @@ s=A.b([A.X(A.b([A.ad(A.b([n,A.q(m,p,p,p,p,B.xf,p,p)],s),B.L,B.j,B.k),A.co(p,p,B.
 n=q.c
 if(n.length===0)s.push(A.I(p,B.a2h,B.n,p,p,new A.F(A.d(10,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),p,p,A.r(12),p,p,B.p),p,p,p,B.ea,p,p,p))
 else s.push(new A.eb(new A.av(0,1/0,0,A.bH(a,p,t.w).w.a.b*0.45),A.hA(new A.aDY(n,q.d,o,r,q.e),n.length,B.ad,new A.aDZ(),!0),p))
-return new A.aG(B.AZ,A.ad(s,B.L,B.j,B.Y),p)},
+return new A.aG(B.B_,A.ad(s,B.L,B.j,B.Y),p)},
 $S:273}
 A.aDX.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -113618,7 +113620,7 @@ A.aDZ.prototype={
 $2(a,b){return B.a8},
 $S:18}
 A.aDY.prototype={
-$2(a,b){var s=this,r=null,q=s.a[b],p=s.b,o=p.cC(q.a),n=A.r(12),m=A.r(12),l=q.w,k=A.W(A.d(89,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),1),j=A.bg(q.x,l,r,22),i=A.q(q.b,r,r,r,r,B.d0,r,r),h=A.d(51,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),g=A.r(4),f=q.d===B.ct?"BERRY":"HELD ITEM",e=t.p
+$2(a,b){var s=this,r=null,q=s.a[b],p=s.b,o=p.cC(q.a),n=A.r(12),m=A.r(12),l=q.w,k=A.W(A.d(89,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),1),j=A.bg(q.x,l,r,22),i=A.q(q.b,r,r,r,r,B.d1,r,r),h=A.d(51,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),g=A.r(4),f=q.d===B.ct?"BERRY":"HELD ITEM",e=t.p
 return A.cw(!1,n,!0,A.I(r,A.X(A.b([j,B.bw,A.ah(A.ad(A.b([A.X(A.b([i,B.a3,A.I(r,A.q(f,r,r,r,r,A.aD(r,r,l,r,r,r,r,r,r,r,r,8.5,r,r,B.N,r,r,!0,r,r,r,r,r,r,r,r),r,r),B.n,r,r,new A.F(h,r,r,g,r,r,B.p),r,r,r,B.dE,r,r,r)],e),B.o,B.j,B.k,0),A.q(q.c,r,r,r,r,B.id,r,r)],e),B.L,B.j,B.k),1),B.ag,A.q("x"+o,r,r,r,r,A.aD(r,r,l,r,r,r,r,r,r,r,r,12,r,r,B.N,r,r,!0,r,r,r,r,r,r,r,r),r,r)],e),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.f1,r,k,m,r,r,B.p),r,r,r,B.fE,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aDW(s.c,p,q,s.d,s.e),r,r,r,r)},
 $S:39}
 A.aDW.prototype={
@@ -113657,7 +113659,7 @@ o=a.a.a
 o=a.CW?u.K+o+".gif":u.C+o+".gif"
 o=A.b6(A.cv(o,B.H,new A.aEI(a),B.q,B.ay,42,42),42,42)
 n=t.p
-m=A.ah(A.ad(A.b([A.q(a.b,j,j,j,j,B.d0,j,j),A.q("Lv. "+a.c,j,j,j,j,B.ib,j,j)],n),B.L,B.j,B.k),1)
+m=A.ah(A.ad(A.b([A.q(a.b,j,j,j,j,B.d1,j,j),A.q("Lv. "+a.c,j,j,j,j,B.ib,j,j)],n),B.L,B.j,B.k),1)
 l=s==null?j:s.b
 if(l==null)l="???"
 return A.cw(!1,h,!0,A.I(j,A.X(A.b([o,B.bw,m,B.agL,B.ag,A.q(l,j,j,j,j,A.aD(j,j,q,j,j,j,j,j,j,j,j,13,j,j,B.N,j,j,!0,j,j,j,j,j,j,j,j),j,j)],n),B.o,B.j,B.k,0),B.n,j,j,new A.F(B.f1,j,p,r,j,j,B.p),j,j,B.nm,B.hq,j,j,j),j,!0,j,j,j,j,j,j,j,j,new A.aEJ(k.a,k.c,s,k.d,k.e,a,i),j,j,j,j)},
@@ -113675,7 +113677,7 @@ s=s.CW?u.x+r+".png":u.Z+r+".png"
 return A.cv(s,B.H,new A.aEH(),B.q,null,42,42)},
 $S:13}
 A.aEH.prototype={
-$3(a,b,c){return B.Cz},
+$3(a,b,c){return B.CA},
 $S:10}
 A.aEL.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -113756,7 +113758,7 @@ A.aEy.prototype={
 $0(){},
 $S:0}
 A.aEC.prototype={
-$3(a,b,c){return B.Cx},
+$3(a,b,c){return B.Cy},
 $S:10}
 A.aEF.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -113811,14 +113813,14 @@ r=A.d(B.b.p(178.5),f.h()>>>16&255,f.h()>>>8&255,f.h()&255)
 B.c.J(q,A.b([B.aS,A.b6(A.dP(B.ahI,B.bb3,i,A.cc(l,l,c,l,l,l,l,l,l,f,l,l,B.kM,l,new A.aZ(A.r(8),B.I),new A.aT(r,1,B.U,-1),l,l,l,l)),28,l)],n))}else if(s){i=o?new A.aE4(m.a,m.d,j,k):l
 c=A.d(61,f.h()>>>16&255,f.h()>>>8&255,f.h()&255)
 r=A.d(B.b.p(178.5),f.h()>>>16&255,f.h()>>>8&255,f.h()&255)
-B.c.J(q,A.b([B.aS,A.b6(A.dP(B.ah8,B.baE,i,A.cc(l,l,c,l,l,l,l,l,l,f,l,l,B.kM,l,new A.aZ(A.r(8),B.I),new A.aT(r,1,B.U,-1),l,l,l,l)),28,l)],n))}else if(b===B.ds)B.c.J(q,A.b([B.aS,A.I(l,B.b9x,B.n,l,l,new A.F(A.d(15,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),l,l,A.r(6),l,l,B.p),l,l,l,B.da,l,l,l)],n))
-else if(b===B.CJ)B.c.J(q,A.b([B.aS,A.I(l,B.b8X,B.n,l,l,new A.F(A.d(31,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255),l,l,A.r(6),l,l,B.p),l,l,l,B.da,l,l,l)],n))
+B.c.J(q,A.b([B.aS,A.b6(A.dP(B.ah8,B.baE,i,A.cc(l,l,c,l,l,l,l,l,l,f,l,l,B.kM,l,new A.aZ(A.r(8),B.I),new A.aT(r,1,B.U,-1),l,l,l,l)),28,l)],n))}else if(b===B.ds)B.c.J(q,A.b([B.aS,A.I(l,B.b9x,B.n,l,l,new A.F(A.d(15,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),l,l,A.r(6),l,l,B.p),l,l,l,B.cT,l,l,l)],n))
+else if(b===B.CK)B.c.J(q,A.b([B.aS,A.I(l,B.b8X,B.n,l,l,new A.F(A.d(31,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255),l,l,A.r(6),l,l,B.p),l,l,l,B.cT,l,l,l)],n))
 else if(b===B.dG||b===B.ct){i=A.d(15,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 f=A.r(6)
-B.c.J(q,A.b([B.aS,A.I(l,A.q(b===B.ct?"Held item: auto-consumed in battle or equip via Pok\xe9mon":"Held item: equip via Pok\xe9mon to boost battle power",l,l,l,l,B.xA,l,l),B.n,l,l,new A.F(i,l,l,f,l,l,B.p),l,l,l,B.da,l,l,l)],n))}i=A.b([d,B.dL,A.ah(A.ad(q,B.L,B.j,B.k),1)],n)
+B.c.J(q,A.b([B.aS,A.I(l,A.q(b===B.ct?"Held item: auto-consumed in battle or equip via Pok\xe9mon":"Held item: equip via Pok\xe9mon to boost battle power",l,l,l,l,B.xB,l,l),B.n,l,l,new A.F(i,l,l,f,l,l,B.p),l,l,l,B.cT,l,l,l)],n))}i=A.b([d,B.dL,A.ah(A.ad(q,B.L,B.j,B.k),1)],n)
 if(!s&&b!==B.ds){f=A.co(l,B.fv,B.agp,l,l,new A.aE5(j,k),B.kN,l,"Add 1")
 j=o?new A.aE6(j,k):l
-B.c.J(i,A.b([B.ag,A.ad(A.b([f,A.co(l,B.fv,A.bg(B.C1,o?B.z:B.c8,l,20),l,l,j,B.kN,l,"Discard 1")],n),B.o,B.j,B.k)],n))}return A.I(l,A.X(i,B.o,B.j,B.k,0),B.n,l,l,new A.F(B.f1,l,e,g,l,l,B.p),l,l,l,B.e9,l,l,l)},
+B.c.J(i,A.b([B.ag,A.ad(A.b([f,A.co(l,B.fv,A.bg(B.C2,o?B.z:B.c8,l,20),l,l,j,B.kN,l,"Discard 1")],n),B.o,B.j,B.k)],n))}return A.I(l,A.X(i,B.o,B.j,B.k,0),B.n,l,l,new A.F(B.f1,l,e,g,l,l,B.p),l,l,l,B.e9,l,l,l)},
 $S:75}
 A.aE2.prototype={
 $0(){var s=this
@@ -113845,7 +113847,7 @@ s.a9()
 return null},
 $S:0}
 A.aET.prototype={
-$1(a){var s=this,r=null,q=A.r(18),p=s.b,o=t.p,n=A.X(A.b([A.bg(p.x,p.w,r,22),B.ag,A.ah(A.q("Teach "+p.b,r,r,r,r,B.UH,r,r),1)],o),B.o,B.j,B.k,0),m=s.c
+$1(a){var s=this,r=null,q=A.r(18),p=s.b,o=t.p,n=A.X(A.b([A.bg(p.x,p.w,r,22),B.ag,A.ah(A.q("Teach "+p.b,r,r,r,r,B.UI,r,r),1)],o),B.o,B.j,B.k,0),m=s.c
 m=A.b6(new A.eb(new A.av(0,1/0,0,A.bH(a,r,t.w).w.a.b*0.48),A.hA(new A.aEQ(s.a,m,p,s.d,a),m.e.length,B.ad,new A.aER(),!0),r),r,17976931348623157e292)
 return A.hc(A.b([A.hn(B.jQ,new A.aES(a),r)],o),r,B.ep,m,r,new A.aZ(q,B.I),n,r)},
 $S:23}
@@ -113948,7 +113950,7 @@ R(a){var s,r,q,p,o,n,m,l,k,j=null,i=A.dW(a,!0,t.R),h=i.cC("heart_scale"),g=i.e.l
 g=i.e
 s=g.length===0?j:g[f]
 g=s==null
-r=g?B.Jh:A.b9U(s.a)
+r=g?B.Ji:A.b9U(s.a)
 q=A.co(j,j,B.dd,j,j,new A.aGy(a),j,j,j)
 p=A.r(12)
 o=A.W(A.d(166,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255),1)
@@ -113967,7 +113969,7 @@ k=A.W(B.a4,1)
 l=A.cO(A.I(j,A.ad(A.b([B.ahz,B.af,A.q(g?"No Pok\xe9mon in Party":s.a.b+" has no Egg Moves to tutor.",j,j,j,j,B.b8g,B.aU,j)],n),B.o,B.j,B.Y),B.n,j,j,new A.F(B.a6x,j,k,l,j,j,B.p),j,j,j,B.iS,j,j,j),j,j)
 g=l}else g=A.hA(new A.aGB(this,r,s,h,i),r.length,B.ad,new A.aGC(),!1)
 m.push(A.ah(g,1))
-return A.eW(q,B.zx,A.ct(B.aX,A.b([p,o,A.e4(!0,new A.aG(B.AT,A.ad(m,B.cr,B.j,B.k),j),B.ae,!0)],n),B.O,B.ck),!0)}}
+return A.eW(q,B.zy,A.ct(B.aX,A.b([p,o,A.e4(!0,new A.aG(B.AU,A.ad(m,B.cr,B.j,B.k),j),B.ae,!0)],n),B.O,B.ck),!0)}}
 A.aGs.prototype={
 $1(a){return a.a===this.a.a},
 $S:6}
@@ -113985,7 +113987,7 @@ s=p.a.a
 s=p.CW?u.K+s+".gif":u.C+s+".gif"
 s=A.cv(s,B.H,new A.aGw(n),B.q,B.ay,38,38)
 r=p.b
-return A.cw(!1,m,!0,A.ja(A.ad(A.b([s,B.bS,A.q(r,1,B.a_,q,q,A.aD(q,q,o?B.d:B.S,q,q,q,q,q,q,q,q,10.5,q,q,B.N,q,q,!0,q,q,q,q,q,q,q,q),q,q),A.q("Lv."+p.c,q,q,q,q,B.UD,q,q)],t.p),B.o,B.b9,B.k),B.ah,new A.F(l,q,j,k,q,q,B.p),B.et,q,q,B.nx,q,q,96),q,!0,q,q,q,q,q,q,q,q,new A.aGx(this.a,b),q,q,q,q)},
+return A.cw(!1,m,!0,A.ja(A.ad(A.b([s,B.bS,A.q(r,1,B.a_,q,q,A.aD(q,q,o?B.d:B.S,q,q,q,q,q,q,q,q,10.5,q,q,B.N,q,q,!0,q,q,q,q,q,q,q,q),q,q),A.q("Lv."+p.c,q,q,q,q,B.UE,q,q)],t.p),B.o,B.b9,B.k),B.ah,new A.F(l,q,j,k,q,q,B.p),B.et,q,q,B.nx,q,q,96),q,!0,q,q,q,q,q,q,q,q,new A.aGx(this.a,b),q,q,q,q)},
 $S:39}
 A.aGx.prototype={
 $0(){var s=this.a
@@ -114006,10 +114008,10 @@ e=A.W(A.d(115,e.h()>>>16&255,e.h()>>>8&255,e.h()&255),1)
 s=p.a
 r=n.d
 q=t.p
-r=A.X(A.b([new A.cF(1,B.aV,A.q(n.b,o,B.a_,o,o,B.d0,o,o),o),B.a3,new A.fv(f,o),B.cG,A.q(s.aoW(r),o,o,o,o,A.aD(o,o,s.aoV(r),o,o,o,o,o,o,o,o,9,o,o,B.N,o,o,!0,o,o,o,o,o,o,o,o),o,o)],q),B.o,B.j,B.k,0)
-f=A.ah(A.ad(A.b([r,B.bS,A.q(k&&j?"Remembered \u2014 swap freely in Pok\xe9mon Info":"PWR "+n.goL()+" \u2022 ACC "+n.f+"% \u2022 PP "+n.r,o,o,o,o,B.UA,o,o),A.q(n.y,o,o,o,o,B.UQ,o,o)],q),B.L,B.j,B.k),1)
+r=A.X(A.b([new A.cF(1,B.aV,A.q(n.b,o,B.a_,o,o,B.d1,o,o),o),B.a3,new A.fv(f,o),B.cG,A.q(s.aoW(r),o,o,o,o,A.aD(o,o,s.aoV(r),o,o,o,o,o,o,o,o,9,o,o,B.N,o,o,!0,o,o,o,o,o,o,o,o),o,o)],q),B.o,B.j,B.k,0)
+f=A.ah(A.ad(A.b([r,B.bS,A.q(k&&j?"Remembered \u2014 swap freely in Pok\xe9mon Info":"PWR "+n.goL()+" \u2022 ACC "+n.f+"% \u2022 PP "+n.r,o,o,o,o,B.UB,o,o),A.q(n.y,o,o,o,o,B.UQ,o,o)],q),B.L,B.j,B.k),1)
 m=i&&p.d>0?new A.aGv(s,p.e,m,n):o
-j=A.cc(o,o,B.bB,B.bp,B.aQ,o,o,o,o,B.A,o,B.a2,B.t3,o,new A.aZ(A.r(10),B.I),o,o,o,o,o)
+j=A.cc(o,o,B.bB,B.bn,B.aQ,o,o,o,o,B.A,o,B.a2,B.t3,o,new A.aZ(A.r(10),B.I),o,o,o,o,o)
 return A.hl(A.I(o,A.X(A.b([f,B.bw,A.eQ(A.q(k?"KNOWN":"TEACH (1 \u2665)",o,o,o,o,B.b5C,o,o),m,j)],q),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.a3Z,o,e,g,o,o,B.p),o,o,o,B.fE,o,o,o),h)},
 $S:692}
 A.aGu.prototype={
@@ -114020,7 +114022,7 @@ $0(){var s=this
 return s.a.CS(s.b,s.c,s.d)},
 $S:0}
 A.tQ.prototype={
-am(){return new A.a_m(new A.Hd(B.Uo,$.b5()))}}
+am(){return new A.a_m(new A.Hd(B.Up,$.b5()))}}
 A.a_m.prototype={
 n(){var s=this.d
 s.Y$=$.b5()
@@ -114067,14 +114069,14 @@ p=r?B.b_Z:B.agU
 o=t.p
 q=A.b([B.aXt,B.a8,B.bai,B.aw,A.b6(A.dP(p,A.q(r?"CHECKING FOR GIFTS...":"CHECK FOR EVENT GIFTS",m,m,m,m,B.V_,m,m),q,A.cc(m,m,B.r,m,m,m,m,m,m,B.aJ,m,m,m,m,new A.aZ(A.r(12),B.I),m,m,m,m,m)),44,1/0)],o)
 if(n.f){r=A.b([B.e_],o)
-B.c.J(r,new A.a7(B.Jl,new A.aGS(n,l),t.Xd))
+B.c.J(r,new A.a7(B.Jm,new A.aGS(n,l),t.Xd))
 B.c.J(q,r)}i=A.I(m,A.ad(q,B.L,B.j,B.k),B.n,m,m,new A.F(m,m,s,i,m,B.aCD,B.p),m,m,m,B.ea,m,m,m)
 s=A.r(18)
 r=A.W(A.d(115,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1)
 q=A.aD(m,m,g?B.aa:B.b5,m,m,m,m,m,m,m,m,11,m,m,B.y,m,m,!0,m,m,m,m,m,m,m,m)
-q=A.b0Q(k,A.aUq(m,new A.hC(4,A.r(12),B.qg),m,m,m,m,"",m,!0,m,m,m,m,m,m,B.d7,!0,m,m,m,m,new A.hC(4,A.r(12),B.a0F),m,m,m,m,m,m,m,m,B.b1F,"ENTER 16-CHAR CODE",m,m,m,m,m,m,m,m,m,!0,!0,!1,m,m,m,m,m,m,m,m,m,m,m,q,""+h+"/16",m),19,new A.aGT(n),B.b73,B.b16)
+q=A.b0Q(k,A.aUq(m,new A.hC(4,A.r(12),B.qg),m,m,m,m,"",m,!0,m,m,m,m,m,m,B.d8,!0,m,m,m,m,new A.hC(4,A.r(12),B.a0F),m,m,m,m,m,m,m,m,B.b1F,"ENTER 16-CHAR CODE",m,m,m,m,m,m,m,m,m,!0,!0,!1,m,m,m,m,m,m,m,m,m,m,m,q,""+h+"/16",m),19,new A.aGT(n),B.b73,B.b16)
 k=g?new A.aGU(n,l):m
-s=A.I(m,A.ad(A.b([B.aXs,B.a8,B.b8V,B.aw,q,B.aw,A.b6(A.dP(B.agN,B.baB,k,A.cc(m,m,B.M,B.bp,B.aQ,m,m,m,m,B.aJ,m,m,m,m,new A.aZ(A.r(12),B.I),m,m,m,m,m)),46,1/0)],o),B.L,B.j,B.k),B.n,m,m,new A.F(m,m,r,s,m,B.aCB,B.p),m,m,m,B.ea,m,m,m)
+s=A.I(m,A.ad(A.b([B.aXs,B.a8,B.b8V,B.aw,q,B.aw,A.b6(A.dP(B.agN,B.baB,k,A.cc(m,m,B.M,B.bn,B.aQ,m,m,m,m,B.aJ,m,m,m,m,new A.aZ(A.r(12),B.I),m,m,m,m,m)),46,1/0)],o),B.L,B.j,B.k),B.n,m,m,new A.F(m,m,r,s,m,B.aCB,B.p),m,m,m,B.ea,m,m,m)
 r=A.r(16)
 return A.eW(j,B.a7f,A.e4(!0,A.m6(A.b([i,B.dz,s,B.dz,A.I(m,B.aX8,B.n,m,m,new A.F(B.r1,m,A.W(B.a4,1),r,m,m,B.p),m,m,m,B.cB,m,m,m)],o),B.ea,m,B.ad),B.ae,!0),!1)}}
 A.aGE.prototype={
@@ -114110,19 +114112,19 @@ q=A.X(o,B.o,B.b9,B.k,0)
 o=d.a.c
 n=A.a8(o).j("a7<1,fv>")
 o=A.a1(new A.a7(o,new A.aGI(),n),n.j("aW.E"))
-o=A.ks(B.d1,o,B.ei,0,6)
+o=A.ks(B.d2,o,B.ei,0,6)
 n=B.hU.i(0,d.cx)
 n=n==null?k:n.b
 if(n==null)n=d.cx
 m=d.cy===3
-l=m&&d.a.fy!=null?" (Hidden Ability!)":""
-B.c.J(e,A.b([A.I(k,A.ad(A.b([p,B.a8,q,B.aS,o,B.a8,A.q("Ability: "+n+l,k,k,k,k,A.aD(k,k,m&&d.a.fy!=null?B.M:B.r,k,k,k,k,k,k,k,k,11.5,k,k,B.ch,k,k,!0,k,k,k,k,k,k,k,k),k,k)],g),B.o,B.j,B.k),B.n,k,k,new A.F(B.a63,k,r,s,k,k,B.p),k,k,k,B.cB,k,k,k),B.af],g))}d=h.e
+l=m&&d.a.go!=null?" (Hidden Ability!)":""
+B.c.J(e,A.b([A.I(k,A.ad(A.b([p,B.a8,q,B.aS,o,B.a8,A.q("Ability: "+n+l,k,k,k,k,A.aD(k,k,m&&d.a.go!=null?B.M:B.r,k,k,k,k,k,k,k,k,11.5,k,k,B.ch,k,k,!0,k,k,k,k,k,k,k,k),k,k)],g),B.o,B.j,B.k),B.n,k,k,new A.F(B.a63,k,r,s,k,k,B.p),k,k,k,B.cB,k,k,k),B.af],g))}d=h.e
 if(d.gc8(d)){s=A.r(14)
 r=A.W(A.d(B.b.p(76.5),B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
 d=d.gjg(d)
 B.c.J(e,A.b([A.I(k,A.ad(d.jp(d,new A.aGJ(),t.iF).f7(0),B.L,B.j,B.k),B.n,k,k,new A.F(B.a6u,k,r,s,k,k,B.p),k,k,k,B.e9,k,k,1/0),B.af],g))}e.push(A.q(h.c,k,k,k,k,B.b5Y,B.aU,k))
 h=A.ad(e,B.o,B.j,B.Y)
-return A.hc(A.b([A.eQ(B.bbV,new A.aGK(a),A.cc(k,k,B.M,k,k,k,k,k,k,B.aJ,k,k,k,k,new A.aZ(A.r(10),B.I),k,k,k,k,k))],g),k,B.zw,h,k,new A.aZ(j,new A.aT(i,1.4,B.U,-1)),f,k)},
+return A.hc(A.b([A.eQ(B.bbV,new A.aGK(a),A.cc(k,k,B.M,k,k,k,k,k,k,B.aJ,k,k,k,k,new A.aZ(A.r(10),B.I),k,k,k,k,k))],g),k,B.zx,h,k,new A.aZ(j,new A.aT(i,1.4,B.U,-1)),f,k)},
 $S:23}
 A.aGH.prototype={
 $3(a,b,c){var s=this.a,r=s.a.a
@@ -114141,7 +114143,7 @@ if(n==null)n=B.u_
 s=o?r:p.w
 n=A.bg(n,s==null?B.r:s,r,16)
 o=o?r:p.b
-return new A.aG(B.t2,A.X(A.b([n,B.ag,A.ah(A.q(o==null?q:o,r,r,r,r,B.d0,r,r),1),A.q("\xd7"+a.b,r,r,r,r,B.UP,r,r)],t.p),B.o,B.j,B.k,0),r)},
+return new A.aG(B.t2,A.X(A.b([n,B.ag,A.ah(A.q(o==null?q:o,r,r,r,r,B.d1,r,r),1),A.q("\xd7"+a.b,r,r,r,r,B.UP,r,r)],t.p),B.o,B.j,B.k,0),r)},
 $S:693}
 A.aGK.prototype={
 $0(){$.bV().ca("audio/sfx/sfx_ui_confirm.wav",0.75)
@@ -114158,8 +114160,8 @@ A.aGS.prototype={
 $1(a){var s,r=null,q=this.b,p=q.to.q(0,a.a),o=A.r(14),n=A.W(p?B.a4:A.d(B.b.p(127.5),B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1),m=A.q(a.d,r,r,r,r,A.aD(r,r,p?B.aQ:B.M,r,r,r,r,r,r,r,r,9,r,r,B.y,r,r,!0,r,0.7,r,r,r,r,r,r),r,r),l=t.p
 m=A.ah(A.ad(A.b([m,B.cL,A.q(a.b,r,r,r,r,A.aD(r,r,p?B.b5:B.d,r,r,r,r,r,r,r,r,13.5,r,r,B.y,r,r,!0,r,r,r,r,r,r,r,r),r,r),B.cL,A.q(a.c,r,r,r,r,B.ib,r,r)],l),B.L,B.j,B.k),1)
 q=p?r:new A.aGP(this.a,q,a)
-s=A.cc(r,r,B.M,B.bp,B.aQ,r,r,r,r,B.aJ,r,r,B.t8,r,new A.aZ(A.r(10),B.I),r,r,r,r,r)
-return A.I(r,A.X(A.b([m,B.ag,A.eQ(A.q(p?"CLAIMED":"RECEIVE",r,r,r,r,B.b24,r,r),q,s)],l),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.a74,r,n,o,r,r,B.p),r,r,B.AN,B.e9,r,r,r)},
+s=A.cc(r,r,B.M,B.bn,B.aQ,r,r,r,r,B.aJ,r,r,B.t8,r,new A.aZ(A.r(10),B.I),r,r,r,r,r)
+return A.I(r,A.X(A.b([m,B.ag,A.eQ(A.q(p?"CLAIMED":"RECEIVE",r,r,r,r,B.b24,r,r),q,s)],l),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.a74,r,n,o,r,r,B.p),r,r,B.AO,B.e9,r,r,r)},
 $S:694}
 A.aGP.prototype={
 $0(){this.a.Y3(A.bcq(this.b,this.c))},
@@ -114225,7 +114227,7 @@ r=b?u.K+r+".gif":u.C+r+".gif"
 return A.cv(r,B.H,new A.aHB(b,a,c,s),B.q,B.ay,c,c)},
 R(a){return A.wO(new A.aHW(this),t.R)},
 afi(a,b,c){var s,r,q,p=null,o=A.b([A.d(173,B.hk.h()>>>16&255,B.hk.h()>>>8&255,B.hk.h()&255),B.a7p],t.O),n=A.r(13),m=A.W(A.d(140,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255),1),l=A.co(p,B.mu,B.ahw,p,p,new A.aHh(this,a,b),B.ae,p,"Previous Box"),k=A.r(8),j=A.r(7),i=A.W(A.d(140,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255),1)
-j=A.I(p,A.q("BOX "+(b+1),p,p,p,p,B.Uv,p,p),B.n,p,p,new A.F(B.a3_,p,i,j,p,p,B.p),p,p,p,B.aae,p,p,p)
+j=A.I(p,A.q("BOX "+(b+1),p,p,p,p,B.Uw,p,p),B.n,p,p,new A.F(B.a3_,p,i,j,p,p,B.p),p,p,p,B.aae,p,p,p)
 i=A.q(""+c+"/20",p,p,p,p,A.aD(p,p,c>=20?B.h:B.S,p,p,p,p,p,p,p,p,12,p,p,B.y,p,p,!0,p,p,p,p,p,p,p,p),p,p)
 s=A.d(38,B.aa.h()>>>16&255,B.aa.h()>>>8&255,B.aa.h()&255)
 r=A.r(5)
@@ -114251,7 +114253,7 @@ if(n!=null&&n.length!==0)l.push(B.aVR)
 return A.cw(!1,s,!0,A.I(k,A.ct(B.aX,l,B.O,B.bH),B.n,k,k,new A.F(k,k,o,p,k,new A.bh(B.aY,B.bm,B.V,r,k,k),B.p),k,k,k,B.aa7,k,k,k),k,!0,k,k,k,k,k,k,k,new A.aHk(this,a,d),new A.aHl(this,a,d),k,k,k,k)},
 afy(a,b,c,d){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=this,e=null
 if(d==null){s=A.r(15)
-return A.I(e,B.aXi,B.n,e,B.yz,new A.F(e,e,A.W(B.a4,1),s,e,B.aCx,B.p),e,e,e,B.t6,e,e,e)}r=A.bU(B.c.gS(d.a.c))
+return A.I(e,B.aXi,B.n,e,B.yA,new A.F(e,e,A.W(B.a4,1),s,e,B.aCx,B.p),e,e,e,B.t6,e,e,e)}r=A.bU(B.c.gS(d.a.c))
 s=d.ay
 if(s!=null&&s.length!==0){s=B.aq.i(0,s)
 s=s==null?e:s.b
@@ -114270,40 +114272,40 @@ i=f.d
 if(i){h=f.r
 h="POK\xc9MON #"+((h==null?0:h)+1)}else h="BOX "+(b+1)
 g=t.p
-j=A.X(A.b([A.I(e,A.q(h,e,e,e,e,A.aD(e,e,i?B.zf:B.eV,e,e,e,e,e,e,e,e,8.5,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(k,e,e,j,e,e,B.p),e,e,e,B.dE,e,e,e),B.a3,new A.cF(1,B.aV,A.q(d.b,e,B.a_,e,e,B.ma,e,e),e),B.a3,A.q("Lv."+d.c,e,e,e,e,B.UG,e,e)],g),B.o,B.j,B.k,0)
+j=A.X(A.b([A.I(e,A.q(h,e,e,e,e,A.aD(e,e,i?B.zg:B.eV,e,e,e,e,e,e,e,e,8.5,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(k,e,e,j,e,e,B.p),e,e,e,B.dE,e,e,e),B.a3,new A.cF(1,B.aV,A.q(d.b,e,B.a_,e,e,B.ma,e,e),e),B.a3,A.q("Lv."+d.c,e,e,e,e,B.UH,e,e)],g),B.o,B.j,B.k,0)
 k=A.q("HP "+d.e+" \u2022 ATK "+d.f+" \u2022 DEF "+d.r+" \u2022 SPA "+d.w+" \u2022 SPD "+d.x+" \u2022 SPE "+d.y,1,B.a_,e,e,B.b5m,e,e)
 i=d.z
 h=A.a8(i)
-m=A.ah(A.cw(!1,m,!0,A.X(A.b([l,B.ag,A.ah(A.ad(A.b([j,B.cL,k,B.cL,A.q(q!=null?"Moves: "+new A.a7(i,new A.aHm(),h.j("a7<1,E>")).bw(0,", ")+" \u2022 Held: "+q:"Moves: "+new A.a7(i,new A.aHn(),h.j("a7<1,E>")).bw(0,", "),1,B.a_,e,e,B.xA,e,e)],g),B.L,B.j,B.k),1)],g),B.o,B.j,B.k,0),e,!0,e,e,e,e,e,e,e,e,n,e,e,e,e),1)
+m=A.ah(A.cw(!1,m,!0,A.X(A.b([l,B.ag,A.ah(A.ad(A.b([j,B.cL,k,B.cL,A.q(q!=null?"Moves: "+new A.a7(i,new A.aHm(),h.j("a7<1,E>")).bw(0,", ")+" \u2022 Held: "+q:"Moves: "+new A.a7(i,new A.aHn(),h.j("a7<1,E>")).bw(0,", "),1,B.a_,e,e,B.xB,e,e)],g),B.L,B.j,B.k),1)],g),B.o,B.j,B.k,0),e,!0,e,e,e,e,e,e,e,e,n,e,e,e,e),1)
 l=A.d(140,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255)
 g=A.b([A.X(A.b([m,B.a3,A.jx(B.u5,B.Ve,n,A.eG(e,e,e,e,e,e,e,e,e,B.r,e,B.a2,B.ny,e,new A.aZ(A.r(9),B.I),new A.aT(l,1,B.U,-1),e,B.w4,e,e))],g),B.o,B.j,B.k,0),B.a8],g)
 if(f.d){n=f.r
 n.toString
 g.push(f.afM(a,b,c,n,d))}else{n=f.f
 n.toString
-g.push(f.afP(a,b,n,d))}return A.I(e,A.ad(g,B.o,B.j,B.Y),B.n,e,B.yz,new A.F(e,e,o,p,e,new A.bh(B.b7,B.bN,B.V,s,e,e),B.p),e,e,e,B.f8,e,e,e)},
+g.push(f.afP(a,b,n,d))}return A.I(e,A.ad(g,B.o,B.j,B.Y),B.n,e,B.yA,new A.F(e,e,o,p,e,new A.bh(B.b7,B.bN,B.V,s,e,e),B.p),e,e,e,B.f8,e,e,e)},
 afP(a,b,c,d){var s,r,q,p=this,o=null,n=a.e.length<6,m=n?new A.aHw(p,a,b,c,d):o
-m=A.ah(A.b6(A.dP(B.ag7,A.q(n?"Withdraw":"Party Full",o,o,o,o,B.fl,o,o),m,A.cc(o,o,B.zj,B.bp,B.aQ,o,o,o,o,B.A,o,o,B.hu,o,new A.aZ(A.r(8),B.I),o,o,o,o,o)),30,o),1)
+m=A.ah(A.b6(A.dP(B.ag7,A.q(n?"Withdraw":"Party Full",o,o,o,o,B.fl,o,o),m,A.cc(o,o,B.zk,B.bn,B.aQ,o,o,o,o,B.A,o,o,B.hu,o,new A.aZ(A.r(8),B.I),o,o,o,o,o)),30,o),1)
 s=A.d(140,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255)
 s=A.ah(A.b6(A.jx(B.agj,B.bbW,new A.aHx(p,a,b,c,d),A.eG(o,o,o,o,o,o,o,o,o,B.r,o,o,B.hu,o,new A.aZ(A.r(8),B.I),new A.aT(s,1,B.U,-1),o,o,o,o)),30,o),1)
 r=A.d(140,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255)
 r=A.ah(A.b6(A.jx(B.ahJ,B.b9X,new A.aHy(p,a,b,c,d),A.eG(o,o,o,o,o,o,o,o,o,B.eV,o,o,B.hu,o,new A.aZ(A.r(8),B.I),new A.aT(r,1,B.U,-1),o,o,o,o)),30,o),1)
 q=A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255)
-return A.X(A.b([m,B.a3,s,B.a3,r,B.a3,A.b6(A.nK(B.CB,new A.aHz(p,d,b,a,c),A.eG(o,o,o,o,o,o,o,o,o,B.z,o,o,B.ae,o,new A.aZ(A.r(8),B.I),new A.aT(q,1,B.U,-1),o,o,o,o)),30,36)],t.p),B.o,B.j,B.k,0)},
+return A.X(A.b([m,B.a3,s,B.a3,r,B.a3,A.b6(A.nK(B.CC,new A.aHz(p,d,b,a,c),A.eG(o,o,o,o,o,o,o,o,o,B.z,o,o,B.ae,o,new A.aZ(A.r(8),B.I),new A.aT(q,1,B.U,-1),o,o,o,o)),30,36)],t.p),B.o,B.j,B.k,0)},
 afM(a,b,c,d,e){var s,r=null,q=a.e.length,p=q>1&&c<20?new A.aHp(this,a,d,b,e):r
 if(q<=1)q="Last Pok\xe9mon"
 else{q=""+(b+1)
-q=c>=20?"Box "+q+" Full":"Deposit to Box "+q}p=A.b([A.ah(A.b6(A.dP(B.agF,A.q(q,r,r,r,r,B.fl,r,r),p,A.cc(r,r,B.mI,B.bp,B.aQ,r,r,r,r,B.A,r,r,B.B1,r,new A.aZ(A.r(8),B.I),r,r,r,r,r)),30,r),2),B.a3],t.p)
+q=c>=20?"Box "+q+" Full":"Deposit to Box "+q}p=A.b([A.ah(A.b6(A.dP(B.agF,A.q(q,r,r,r,r,B.fl,r,r),p,A.cc(r,r,B.mI,B.bn,B.aQ,r,r,r,r,B.A,r,r,B.B2,r,new A.aZ(A.r(8),B.I),r,r,r,r,r)),30,r),2),B.a3],t.p)
 q=d!==0
 if(q){s=A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
-p.push(A.ah(A.b6(A.jx(B.Cw,B.bb8,new A.aHq(this,a,d,e),A.eG(r,r,r,r,r,r,r,r,r,B.h,r,r,B.hu,r,new A.aZ(A.r(8),B.I),new A.aT(s,1,B.U,-1),r,r,r,r)),30,r),1))}if(q)p.push(B.a3)
+p.push(A.ah(A.b6(A.jx(B.Cx,B.bb8,new A.aHq(this,a,d,e),A.eG(r,r,r,r,r,r,r,r,r,B.h,r,r,B.hu,r,new A.aZ(A.r(8),B.I),new A.aT(s,1,B.U,-1),r,r,r,r)),30,r),1))}if(q)p.push(B.a3)
 if(a.e.length>1){q=A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255)
-p.push(A.b6(A.nK(B.CB,new A.aHr(this,e,a,d),A.eG(r,r,r,r,r,r,r,r,r,B.z,r,r,B.ae,r,new A.aZ(A.r(8),B.I),new A.aT(q,1,B.U,-1),r,r,r,r)),30,36))}return A.X(p,B.o,B.j,B.k,0)},
+p.push(A.b6(A.nK(B.CC,new A.aHr(this,e,a,d),A.eG(r,r,r,r,r,r,r,r,r,B.z,r,r,B.ae,r,new A.aZ(A.r(8),B.I),new A.aT(q,1,B.U,-1),r,r,r,r)),30,36))}return A.X(p,B.o,B.j,B.k,0)},
 afN(a){var s=null,r=A.r(14),q=A.W(A.d(82,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1),p=t.p
-return A.I(s,A.ad(A.b([A.X(A.b([B.bb9,A.q(""+a.e.length+"/6 Pok\xe9mon",s,s,s,s,B.b6f,s,s)],p),B.o,B.aP,B.k,0),B.e0,A.X(A.l3(6,new A.aHu(this,a),!0,t.l7),B.o,B.j,B.k,0)],p),B.L,B.j,B.k),B.n,s,s,new A.F(B.za,s,q,r,s,s,B.p),s,s,s,B.B2,s,s,s)},
+return A.I(s,A.ad(A.b([A.X(A.b([B.bb9,A.q(""+a.e.length+"/6 Pok\xe9mon",s,s,s,s,B.b6f,s,s)],p),B.o,B.aP,B.k,0),B.e0,A.X(A.l3(6,new A.aHu(this,a),!0,t.l7),B.o,B.j,B.k,0)],p),B.L,B.j,B.k),B.n,s,s,new A.F(B.zb,s,q,r,s,s,B.p),s,s,s,B.B3,s,s,s)},
 afO(a,b,c){var s,r,q,p,o,n,m,l,k=null
 if(b==null){s=A.r(10)
-return A.I(k,B.a2j,B.n,k,k,new A.F(B.a4h,k,A.W(B.bp,1),s,k,k,B.p),k,54,k,k,k,k,k)}r=A.bU(B.c.gS(b.a.c))
+return A.I(k,B.a2j,B.n,k,k,new A.F(B.a4h,k,A.W(B.bn,1),s,k,k,B.p),k,54,k,k,k,k,k)}r=A.bU(B.c.gS(b.a.c))
 s=A.r(10)
 q=c?A.d(61,r.h()>>>16&255,r.h()>>>8&255,r.h()&255):B.a3q
 p=A.r(10)
@@ -114315,14 +114317,14 @@ m=b.CW
 l=t.p
 l=A.b([A.ad(A.b([A.ah(A.cO(A.Dh(B.H,this.Ca(n,m,32),B.ay),k,k),1),A.q("Lv"+b.c,k,k,k,k,B.b2U,k,k)],l),B.o,B.b9,B.k)],l)
 if(m)l.push(B.aVS)
-if(a===0)l.push(A.iP(k,A.I(k,B.b9H,B.n,k,k,new A.F(A.d(64,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),k,k,A.r(3),k,k,B.p),k,k,k,B.B_,k,k,k),k,k,3,k,2,k))
+if(a===0)l.push(A.iP(k,A.I(k,B.b9H,B.n,k,k,new A.F(A.d(64,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),k,k,A.r(3),k,k,B.p),k,k,k,B.B0,k,k,k),k,k,3,k,2,k))
 return A.cw(!1,s,!0,A.I(k,A.ct(B.aX,l,B.O,B.bH),B.n,k,k,new A.F(q,k,o,p,k,k,B.p),k,54,k,B.t2,k,k,k),k,!0,k,k,k,k,k,k,k,new A.aHs(this,a),new A.aHt(this,a),k,k,k,k)},
 aqe(a,b,c,d){var s=this.c
 s.toString
-A.j8(B.Ag,new A.aHP(this,d,a,b,c),s,!0,!0,!1,B.fQ,t.z)},
+A.j8(B.Ah,new A.aHP(this,d,a,b,c),s,!0,!0,!1,B.fQ,t.z)},
 XD(a,b,c,d){var s=b!=null&&c!=null&&d!=null,r=this.c
 r.toString
-A.j8(B.Ag,new A.aHJ(this,s,d,a,b,c),r,!0,!0,!1,B.fQ,t.z)},
+A.j8(B.Ah,new A.aHJ(this,s,d,a,b,c),r,!0,!0,!1,B.fQ,t.z)},
 XC(a){return this.XD(a,null,null,null)},
 Um(a,b,c){var s,r=b.ay
 if(r!=null&&r.length!==0){r=B.aq.i(0,r)
@@ -114380,7 +114382,7 @@ q=A.co(f,f,B.dd,f,f,new A.aHT(a),f,f,f)
 p=t.p
 o=A.ad(A.b([B.ba9,A.q(""+b.gGw()+"/320 Stored \u2022 16 Boxes \xd7 20 Slots",f,f,f,f,A.aD(f,f,B.eV,f,f,f,f,f,f,f,f,10,f,f,B.db,f,f,!0,f,f,f,f,f,f,f,f),f,f)],p),B.L,B.j,B.k)
 n=A.d(153,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255)
-o=A.hR(A.b([new A.aG(B.a9o,A.jx(B.agA,B.b9r,new A.aHU(d,b),A.eG(f,f,B.zO,f,f,f,f,f,f,B.eV,f,f,B.kM,f,new A.aZ(A.r(10),B.I),new A.aT(n,1,B.U,-1),f,f,f,f)),f)],p),!0,B.a4z,f,0,q,o)
+o=A.hR(A.b([new A.aG(B.a9o,A.jx(B.agA,B.b9r,new A.aHU(d,b),A.eG(f,f,B.zP,f,f,f,f,f,f,B.eV,f,f,B.kM,f,new A.aZ(A.r(10),B.I),new A.aT(n,1,B.U,-1),f,f,f,f)),f)],p),!0,B.a4z,f,0,q,o)
 q=A.dU("assets/images/bg_pc_storage.png",B.H,f,B.q,B.cf,!1,f,f,f)
 n=A.eF(f,new A.F(f,f,f,f,f,new A.bh(B.bs,B.am,B.V,A.b([A.d(189,B.qw.h()>>>16&255,B.qw.h()>>>8&255,B.qw.h()&255),A.d(153,B.qP.h()>>>16&255,B.qP.h()>>>8&255,B.qP.h()&255),A.d(224,B.r9.h()>>>16&255,B.r9.h()>>>8&255,B.r9.h()&255)],t.O),f,f),B.p),B.bQ)
 m=d.afi(b,e,s.length)
@@ -114497,7 +114499,7 @@ $1(a){var s,r=this,q=null,p=r.b,o=t.p
 o=A.b([A.X(A.b([A.ah(A.q("SWAP "+p.b.toUpperCase()+" WITH POK\xc9MON",q,q,q,q,B.pz,q,q),1),A.co(q,q,B.ec,q,q,new A.aHN(a),q,q,q)],o),B.o,B.aP,B.k,0),B.a8],o)
 s=r.c
 B.c.J(o,A.l3(s.e.length,new A.aHO(r.a,s,r.d,r.e,a,p),!0,t.l7))
-return new A.aG(B.AY,A.ad(o,B.L,B.j,B.Y),q)},
+return new A.aG(B.AZ,A.ad(o,B.L,B.j,B.Y),q)},
 $S:114}
 A.aHN.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -114505,7 +114507,7 @@ return null},
 $S:0}
 A.aHO.prototype={
 $1(a){var s=this,r=null,q=s.b,p=q.e[a],o=s.a,n=A.r(12),m=A.r(12),l=A.W(a===0?A.d(115,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.a4,1),k=t.p
-return A.cw(!1,n,!0,A.I(r,A.X(A.b([o.Ca(p.a,p.CW,38),B.bw,A.ah(A.ad(A.b([A.q(p.b,r,r,r,r,B.d0,r,r),A.q("Spot #"+(a+1)+" \u2022 Lv."+p.c,r,r,r,r,B.ib,r,r)],k),B.L,B.j,B.k),1),B.agB],k),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.zu,r,l,m,r,r,B.p),r,r,B.nm,B.hr,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aHM(o,q,a,s.c,s.d,s.e,s.f,p),r,r,r,r)},
+return A.cw(!1,n,!0,A.I(r,A.X(A.b([o.Ca(p.a,p.CW,38),B.bw,A.ah(A.ad(A.b([A.q(p.b,r,r,r,r,B.d1,r,r),A.q("Spot #"+(a+1)+" \u2022 Lv."+p.c,r,r,r,r,B.ib,r,r)],k),B.L,B.j,B.k),1),B.agB],k),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.zv,r,l,m,r,r,B.p),r,r,B.nm,B.hr,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aHM(o,q,a,s.c,s.d,s.e,s.f,p),r,r,r,r)},
 $S:697}
 A.aHM.prototype={
 $0(){var s=this,r=s.b.adz(s.c,s.d,s.e)
@@ -114514,7 +114516,7 @@ if(r)s.a.pT("Swapped "+s.r.b+" with "+s.w.b+"!")},
 $S:0}
 A.aHJ.prototype={
 $1(a){var s=this,r=null,q=s.b,p=t.p
-return new A.aG(B.AY,A.ad(A.b([A.X(A.b([A.ah(A.q(q?"MOVE "+s.c.b.toUpperCase()+" TO BOX":"ALL 16 PC BOXES ("+s.d.gGw()+"/320)",r,r,r,r,B.xw,r,r),1),A.co(r,r,B.ec,r,r,new A.aHH(a),r,r,r)],p),B.o,B.aP,B.k,0),B.af,A.aUl(B.b02,new A.aHI(s.a,s.d,q,s.e,a,s.f,s.c),16,B.aPp,!0)],p),B.L,B.j,B.Y),r)},
+return new A.aG(B.AZ,A.ad(A.b([A.X(A.b([A.ah(A.q(q?"MOVE "+s.c.b.toUpperCase()+" TO BOX":"ALL 16 PC BOXES ("+s.d.gGw()+"/320)",r,r,r,r,B.xx,r,r),1),A.co(r,r,B.ec,r,r,new A.aHH(a),r,r,r)],p),B.o,B.aP,B.k,0),B.af,A.aUl(B.b02,new A.aHI(s.a,s.d,q,s.e,a,s.f,s.c),16,B.aPp,!0)],p),B.L,B.j,B.Y),r)},
 $S:114}
 A.aHH.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -114531,7 +114533,7 @@ if(g)p=!r&&b!==j.d
 else p=!0
 h=p?new A.aHG(j.a,j.e,g,h,j.d,j.f,b,j.r):i
 g=A.r(10)
-o=q?A.d(56,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255):B.zu
+o=q?A.d(56,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255):B.zv
 n=A.r(10)
 if(q)m=B.R
 else m=r?A.d(102,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):B.a4
@@ -114605,19 +114607,19 @@ B.c.J(h,g)}B.c.J(i,h)}return A.eW(q,B.a6i,A.ct(B.aX,A.b([o,m,A.e4(!0,A.ad(A.b([n
 Tf(a,b,c,d){var s,r,q=null,p=b.a,o=d.cC(p),n=b.d,m=n===B.ab,l=m&&d.cC(p)>0,k=c?0.58:1,j=b.w,i=A.b([A.d(B.b.p(255*(c?0.06:0.14)),j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.a76],t.O),h=A.r(15),g=A.W(c?B.a4:A.d(115,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),1.2),f=A.r(11),e=A.W(c?B.a4:A.d(B.b.p(127.5),j.h()>>>16&255,j.h()>>>8&255,j.h()&255),1)
 if(n===B.cC)p=new A.fq(p,28,!1,q,!1,q)
 else{p=c?B.fG:b.x
-p=A.bg(p,c?B.aQ:j,q,23)}f=A.I(q,A.cO(p,q,q),B.n,q,q,new A.F(B.zZ,q,e,f,q,q,B.p),q,46,q,q,q,q,46)
+p=A.bg(p,c?B.aQ:j,q,23)}f=A.I(q,A.cO(p,q,q),B.n,q,q,new A.F(B.A_,q,e,f,q,q,B.p),q,46,q,q,q,q,46)
 e=t.p
 p=A.b([new A.cF(1,B.aV,A.q(b.b,q,B.a_,q,q,B.xs,q,q),q)],e)
 if(!c&&o>0){n=A.r(6)
 j=A.W(B.a4,1)
-B.c.J(p,A.b([B.a3,A.I(q,A.q(m?"BAG \u221e":"BAG x"+o,q,q,q,q,B.b4M,q,q),B.n,q,q,new A.F(B.zg,q,j,n,q,q,B.p),q,q,q,B.kR,q,q,q)],e))}p=A.ah(A.ad(A.b([A.X(p,B.o,B.j,B.k,0),B.bS,A.q(b.c,q,q,q,q,B.b4k,q,q)],e),B.L,B.j,B.k),1)
+B.c.J(p,A.b([B.a3,A.I(q,A.q(m?"BAG \u221e":"BAG x"+o,q,q,q,q,B.b4M,q,q),B.n,q,q,new A.F(B.zh,q,j,n,q,q,B.p),q,q,q,B.kR,q,q,q)],e))}p=A.ah(A.ad(A.b([A.X(p,B.o,B.j,B.k,0),B.bS,A.q(b.c,q,q,q,q,B.b4k,q,q)],e),B.L,B.j,B.k),1)
 n=A.b([A.q("\u20bd"+A.u(b.e),q,q,q,q,A.aD(q,q,c?B.b5:B.M,q,q,q,q,q,q,q,q,13.5,q,q,B.y,q,q,!0,q,q,q,q,q,q,q,q),q,q),B.aS],e)
 if(c){m=A.r(8)
 j=A.W(A.d(115,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1)
 s=b.f
 r=s===1?"":"S"
 n.push(A.I(q,A.q(""+s+" BADGE"+r,q,q,q,q,B.UO,q,q),B.n,q,q,new A.F(B.kA,q,j,m,q,q,B.p),q,q,q,B.iT,q,q,q))}else if(l){m=A.r(9)
-n.push(A.I(q,B.bav,B.n,q,q,new A.F(B.kA,q,A.W(A.d(115,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1),m,q,q,B.p),q,q,q,B.e8,q,q,q))}else n.push(A.eQ(B.b9U,new A.aIK(this,a,d,b),A.cc(q,q,B.A0,q,q,q,q,q,q,B.d,q,B.a2,B.nt,q,new A.aZ(A.r(9),new A.aT(A.d(64,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),q,q,q,q,q)))
+n.push(A.I(q,B.bav,B.n,q,q,new A.F(B.kA,q,A.W(A.d(115,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1),m,q,q,B.p),q,q,q,B.e8,q,q,q))}else n.push(A.eQ(B.b9U,new A.aIK(this,a,d,b),A.cc(q,q,B.A1,q,q,q,q,q,q,B.d,q,B.a2,B.nt,q,new A.aZ(A.r(9),new A.aT(A.d(64,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),q,q,q,q,q)))
 return A.hl(A.I(q,A.X(A.b([f,B.dL,p,B.bw,A.ad(n,B.f2,B.j,B.k)],e),B.o,B.j,B.k,0),B.n,q,q,new A.F(q,q,g,h,q,new A.bh(B.aY,B.bm,B.V,i,q,q),B.p),q,q,q,B.e9,q,q,q),k)},
 AW(a,b,c){var s=null,r=c==b,q=r?B.aCA:s,p=r?s:B.a7o,o=A.r(18),n=A.W(r?B.r:B.a4,1)
 return A.hz(s,A.ja(A.cO(A.q(a,s,s,s,s,A.aD(s,s,r?B.A:B.S,s,s,s,s,s,s,s,s,10.5,s,s,B.y,s,s,!0,s,0.4,s,s,s,s,s,s),s,s),s,s),B.ah,new A.F(p,s,n,o,s,q,B.p),B.et,s,s,B.a9E,s,s,s),B.b_,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.aIJ(this,b),s,s,s,s,s,s)},
@@ -114627,7 +114629,7 @@ q.a=1
 s=c.e
 if(s==null)s=0
 r=p?1:99
-A.j8(B.a5T,new A.aIU(q,s,b,c,s>0?B.l.A(B.l.hR(b.dy,s),0,r):r,a),a,!0,!0,!1,B.SM,t.z)}}
+A.j8(B.a5T,new A.aIU(q,s,b,c,s>0?B.l.A(B.l.hR(b.dy,s),0,r):r,a),a,!0,!0,!1,B.SN,t.z)}}
 A.aIV.prototype={
 $2(a,b){return B.l.bF(a.f,b.f)},
 $S:231}
@@ -114663,7 +114665,7 @@ s=l.d
 r=s.w
 q=A.W(A.d(140,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
 p=t.p
-h=A.X(A.b([A.I(k,A.cO(s.d===B.cC?new A.fq(s.a,28,!1,k,!1,k):A.bg(s.x,r,k,24),k,k),B.n,k,k,new A.F(B.zg,k,q,i,k,k,B.p),k,46,k,k,k,k,46),B.dL,A.ah(A.ad(A.b([A.q("PURCHASE "+s.b.toUpperCase(),k,k,k,k,B.b6d,k,k),A.q("Unit Price: \u20bd"+h,k,k,k,k,B.b42,k,k)],p),B.L,B.j,B.k),1),A.co(k,k,B.aht,k,k,new A.aIO(a),k,k,k)],p),B.o,B.j,B.k,0)
+h=A.X(A.b([A.I(k,A.cO(s.d===B.cC?new A.fq(s.a,28,!1,k,!1,k):A.bg(s.x,r,k,24),k,k),B.n,k,k,new A.F(B.zh,k,q,i,k,k,B.p),k,46,k,k,k,k,46),B.dL,A.ah(A.ad(A.b([A.q("PURCHASE "+s.b.toUpperCase(),k,k,k,k,B.b6d,k,k),A.q("Unit Price: \u20bd"+h,k,k,k,k,B.b42,k,k)],p),B.L,B.j,B.k),1),A.co(k,k,B.aht,k,k,new A.aIO(a),k,k,k)],p),B.o,B.j,B.k,0)
 i=A.r(14)
 q=A.W(B.a4,1)
 r=j.a
@@ -114676,7 +114678,7 @@ i=A.I(k,A.X(A.b([B.bbf,A.X(o,B.o,B.j,B.k,0)],p),B.o,B.aP,B.k,0),B.n,k,k,new A.F(
 r=""+g
 q=A.X(A.b([B.bba,A.q("\u20bd"+r,k,k,k,k,A.aD(k,k,e?B.M:B.z,k,k,k,k,k,k,k,k,17,k,k,B.y,k,k,!0,k,k,k,k,k,k,k,k),k,k)],p),B.o,B.aP,B.k,0)
 j=e?new A.aIS(j,f,g,s,a,l.f):k
-f=A.cc(k,k,B.A0,B.bp,k,k,k,k,k,B.d,k,k,k,k,new A.aZ(A.r(13),B.I),k,k,k,k,k)
+f=A.cc(k,k,B.A1,B.bn,k,k,k,k,k,B.d,k,k,k,k,new A.aZ(A.r(13),B.I),k,k,k,k,k)
 return new A.aG(B.iS,A.ad(A.b([h,B.dz,i,B.aw,q,B.dz,A.b6(A.eQ(A.q(e?"CONFIRM PURCHASE (\u20bd"+r+")":"INSUFFICIENT FUNDS",k,k,k,k,B.b63,k,k),j,f),48,1/0)],p),B.L,B.j,B.Y),k)},
 $S:273}
 A.aIO.prototype={
@@ -114716,7 +114718,7 @@ $S:0}
 A.Ae.prototype={
 K(){return"_PokedexFilter."+this.b}}
 A.ud.prototype={
-am(){return new A.a0t(B.y0)}}
+am(){return new A.a0t(B.y1)}}
 A.a0t.prototype={
 R(a4){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=this,d=null,c=A.dW(a4,!0,t.R),b=A.bd9(),a=c.gDO(),a0=c.ga7P(),a1=A.a8(b).j("af<1>"),a2=new A.af(b,new A.aJh(c),a1).gH(0),a3=A.a1(new A.af(b,new A.aJi(e,c),a1),a1.j("t.E"))
 a1=t.p
@@ -114724,7 +114726,7 @@ s=A.hR(d,!0,B.a3Y,!0,0,A.co(d,d,B.dd,d,d,new A.aJj(a4),d,d,d),A.X(A.b([A.I(d,d,B
 r=A.dU("assets/images/bg_pokedex.png",B.H,d,B.q,B.cf,!1,d,d,d)
 q=t.O
 p=A.eF(d,new A.F(d,d,d,d,d,new A.bh(B.bs,B.am,B.V,A.b([A.d(194,B.qz.h()>>>16&255,B.qz.h()>>>8&255,B.qz.h()&255),A.d(153,B.r6.h()>>>16&255,B.r6.h()>>>8&255,B.r6.h()&255),A.d(224,B.rb.h()>>>16&255,B.rb.h()>>>8&255,B.rb.h()&255)],q),d,d),B.p),B.bQ)
-q=A.b([A.d(140,B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255),B.a5i],q)
+q=A.b([A.d(140,B.da.h()>>>16&255,B.da.h()>>>8&255,B.da.h()&255),B.a5i],q)
 o=A.r(18)
 n=A.W(A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1.3)
 m=A.b([new A.cg(0,B.aZ,A.d(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hZ,10)],t.E)
@@ -114734,16 +114736,16 @@ j=""+a0
 i=A.X(A.b([B.agr,B.cG,A.q(j+" Seen",d,d,d,d,B.UP,d,d)],a1),B.o,B.j,B.k,0)
 h=A.r(8)
 g=A.W(B.a4,1)
-h=A.X(A.b([k,i,A.I(d,A.q("151 TOTAL",d,d,d,d,B.b2P,d,d),B.n,d,d,new A.F(B.z6,d,g,h,d,d,B.p),d,d,d,B.kP,d,d,d)],a1),B.o,B.aP,B.k,0)
+h=A.X(A.b([k,i,A.I(d,A.q("151 TOTAL",d,d,d,d,B.b2P,d,d),B.n,d,d,new A.F(B.z7,d,g,h,d,d,B.p),d,d,d,B.kP,d,d,d)],a1),B.o,B.aP,B.k,0)
 g=A.r(6)
 i=A.I(d,d,B.n,B.a42,d,d,d,d,d,d,d,d,d)
 k=B.b.A(a0/151,0,1)
 k=A.adp(B.b7,A.I(d,d,B.n,A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),d,d,d,d,d,d,d,d,d),k)
 f=B.b.A(a/151,0,1)
 q=A.I(d,A.ad(A.b([h,B.af,A.is(g,A.b6(A.ct(B.aX,A.b([i,k,A.adp(B.b7,A.I(d,d,B.n,B.z,d,d,d,d,d,d,d,d,d),f)],a1),B.O,B.ck),8,d)),B.a8,B.aXf],a1),B.o,B.j,B.k),B.n,d,d,new A.F(d,d,n,o,m,new A.bh(B.aY,B.bm,B.V,q,d,d),B.p),d,d,d,B.ns,d,d,d)
-j=A.b6(A.m6(A.b([e.Cb("All (151)",new A.aJk(e),e.d===B.y0),B.cj,e.Cb("Caught ("+l+")",new A.aJl(e),e.d===B.VN),B.cj,e.Cb("Encountered ("+j+")",new A.aJm(e),e.d===B.VO),B.cj,e.Cb("Unseen ("+a2+")",new A.aJn(e),e.d===B.VP)],a1),d,d,B.ao),36,d)
+j=A.b6(A.m6(A.b([e.Cb("All (151)",new A.aJk(e),e.d===B.y1),B.cj,e.Cb("Caught ("+l+")",new A.aJl(e),e.d===B.VN),B.cj,e.Cb("Encountered ("+j+")",new A.aJm(e),e.d===B.VO),B.cj,e.Cb("Unseen ("+a2+")",new A.aJn(e),e.d===B.VP)],a1),d,d,B.ao),36,d)
 o=a3.length
-return A.eW(s,B.a5Q,A.ct(B.aX,A.b([r,p,A.e4(!0,new A.aG(B.AT,A.ad(A.b([q,B.af,j,B.af,A.ah(o===0?A.cO(A.q("No Pok\xe9mon in this filter yet.\nWalk or battle to discover more!",d,d,d,d,B.b7P,B.aU,d),d,d):A.aUl(B.b01,new A.aJo(e,a3,c),o,B.yx,!1),1)],a1),B.o,B.j,B.k),d),B.ae,!0)],a1),B.O,B.ck),!0)},
+return A.eW(s,B.a5Q,A.ct(B.aX,A.b([r,p,A.e4(!0,new A.aG(B.AU,A.ad(A.b([q,B.af,j,B.af,A.ah(o===0?A.cO(A.q("No Pok\xe9mon in this filter yet.\nWalk or battle to discover more!",d,d,d,d,B.b7P,B.aU,d),d,d):A.aUl(B.b01,new A.aJo(e,a3,c),o,B.yy,!1),1)],a1),B.o,B.j,B.k),d),B.ae,!0)],a1),B.O,B.ck),!0)},
 Cb(a,b,c){var s=null,r=c?new A.bh(B.b7,B.bN,B.V,A.b([B.cz,B.ri],t.O),s,s):s,q=c?s:B.a5S,p=A.r(18),o=A.W(c?B.z:B.a4,1)
 return A.hz(s,A.ja(A.q(a,s,s,s,s,A.aD(s,s,c?B.d:B.S,s,s,s,s,s,s,s,s,10.5,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.ah,new A.F(q,s,o,p,s,r,B.p),B.et,s,s,B.a9F,s,s,s),B.b_,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,b,s,s,s,s,s,s)},
 afp(a,b,c,d){var s,r,q,p,o,n,m,l,k=null,j=a.c,i=A.bU(B.c.gS(j)),h=a.a,g="#"+B.m.fA(B.l.m(h),3,"0"),f=A.r(16)
@@ -114751,7 +114753,7 @@ if(b)s=A.b([A.d(61,i.h()>>>16&255,i.h()>>>8&255,i.h()&255),B.a3A],t.O)
 else{s=t.O
 s=c?A.b([B.a6T,B.a2G],s):A.b([B.a3J,B.a54],s)}r=A.r(16)
 if(b)q=A.d(B.b.p(178.5),i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
-else q=c?A.d(97,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bp
+else q=c?A.d(97,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bn
 q=A.W(q,b?1.5:1)
 p=t.p
 o=A.b([A.q(g,k,k,k,k,A.aD(k,k,c?B.S:B.mW,k,k,k,k,k,k,k,k,10.5,k,k,B.y,k,k,!0,k,k,k,k,k,k,k,k),k,k)],p)
@@ -114764,7 +114766,7 @@ o=A.X(o,B.o,B.aP,B.k,0)
 n=t.O
 n=b?A.b([A.d(66,i.h()>>>16&255,i.h()>>>8&255,i.h()&255),B.a6],n):A.b([A.d(13,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),B.a6],n)
 if(!c)m=B.aan
-else m=b?B.B6:new A.hX(A.d(89,B.e5.h()>>>16&255,B.e5.h()>>>8&255,B.e5.h()&255),B.ms,k,B.h9)
+else m=b?B.B7:new A.hX(A.d(89,B.e5.h()>>>16&255,B.e5.h()>>>8&255,B.e5.h()&255),B.ms,k,B.h9)
 if(c)l=b?1:0.85
 else l=0.45
 n=A.I(k,new A.pc(m,A.hl(A.cv(u.Z+h+".png",B.H,new A.aIZ(c,i),B.q,B.ay,k,k),l),k),B.n,k,k,new A.F(k,k,k,k,k,new A.fM(B.H,0.5,B.V,k,0,n,k,k),B.c6),k,78,k,k,k,k,78)
@@ -114772,7 +114774,7 @@ h=c?a.b:"???"
 h=A.b([o,B.dg,n,B.dg,A.q(h,1,B.a_,k,k,A.aD(k,k,c?B.d:B.aQ,k,k,k,k,k,k,k,k,13.5,k,k,B.y,k,k,!0,k,k,k,k,k,k,k,k),k,k),B.e0],p)
 if(c){o=A.a8(j).j("a7<1,eD>")
 j=A.a1(new A.a7(j,new A.aJ_(),o),o.j("aW.E"))
-j=A.ks(B.xQ,j,B.ei,2,4)
+j=A.ks(B.xR,j,B.ei,2,4)
 o=A.F9(a.gi8())
 o=A.d(41,o.h()>>>16&255,o.h()>>>8&255,o.h()&255)
 n=A.r(6)
@@ -114810,7 +114812,7 @@ $0(){var s=this.a
 return s.G(new A.aJg(s))},
 $S:0}
 A.aJg.prototype={
-$0(){return this.a.d=B.y0},
+$0(){return this.a.d=B.y1},
 $S:0}
 A.aJl.prototype={
 $0(){var s=this.a
@@ -114871,31 +114873,33 @@ e.push(A.q(s,n,n,n,n,A.aD(n,n,i?B.aa:B.h,n,n,n,n,n,n,n,n,11,n,n,B.N,n,n,!0,n,n,n
 h=A.b([A.I(n,A.X(e,B.o,B.j,B.Y,0),B.n,n,n,new A.F(h,n,f,g,n,n,B.p),n,n,n,B.np,n,n,n)],k)
 if(o.f){i=o.a
 g=A.r(10)
-f=i.a?A.d(56,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bp
+f=i.a?A.d(56,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bn
 e=A.r(10)
 s=i.a
 r=A.W(s?B.h:B.c8,1)
 q=A.bg(B.f9,s?B.h:B.b5,n,14)
 p=s?"SHINY FORM":"NORMAL FORM"
-h.push(A.cw(!1,g,!0,A.I(n,A.X(A.b([q,B.cG,A.q(p,n,n,n,n,A.aD(n,n,s?B.h:B.S,n,n,n,n,n,n,n,n,10.5,n,n,B.y,n,n,!0,n,n,n,n,n,n,n,n),n,n)],k),B.o,B.j,B.Y,0),B.n,n,n,new A.F(f,n,r,e,n,n,B.p),n,n,n,B.np,n,n,n),n,!0,n,n,n,n,n,n,n,n,new A.aJ6(i,b),n,n,n,n))}i=A.ks(B.d1,h,B.pI,6,8)
+h.push(A.cw(!1,g,!0,A.I(n,A.X(A.b([q,B.cG,A.q(p,n,n,n,n,A.aD(n,n,s?B.h:B.S,n,n,n,n,n,n,n,n,10.5,n,n,B.y,n,n,!0,n,n,n,n,n,n,n,n),n,n)],k),B.o,B.j,B.Y,0),B.n,n,n,new A.F(f,n,r,e,n,n,B.p),n,n,n,B.np,n,n,n),n,!0,n,n,n,n,n,n,n,n,new A.aJ6(i,b),n,n,n,n))}i=A.ks(B.d2,h,B.pI,6,8)
 h=A.r(22)
 g=o.a
 if(g.a)f=A.d(191,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 else{f=o.r
 f=A.d(B.b.p(127.5),f.h()>>>16&255,f.h()>>>8&255,f.h()&255)}f=A.W(f,1)
-h=A.I(n,A.cO(new A.dM(new A.aJ7(g,l,o.r),n),n,n),B.n,n,n,new A.F(B.zO,n,f,h,n,n,B.p),n,132,n,n,n,n,156)
+h=A.I(n,A.cO(new A.dM(new A.aJ7(g,l,o.r),n),n,n),B.n,n,n,new A.F(B.zP,n,f,h,n,n,B.p),n,132,n,n,n,n,156)
 f=l.c
 g=t.l7
 f=A.a1(new A.a7(f,new A.aJ8(),A.a8(f).j("a7<1,j>")),g)
 e=A.r(8)
-f.push(A.I(n,A.q(A.u(l.Q)+" m",n,n,n,n,B.UL,n,n),B.n,n,n,new A.F(B.bp,n,n,e,n,n,B.p),n,n,n,B.da,n,n,n))
+f.push(A.I(n,A.q(A.u(l.Q)+" m",n,n,n,n,B.xv,n,n),B.n,n,n,new A.F(B.bn,n,n,e,n,n,B.p),n,n,n,B.cT,n,n,n))
+e=A.r(8)
+f.push(A.I(n,A.q(A.u(l.as)+" kg",n,n,n,n,B.xv,n,n),B.n,n,n,new A.F(B.bn,n,n,e,n,n,B.p),n,n,n,B.cT,n,n,n))
 e=A.F9(l.gi8())
 e=A.d(41,e.h()>>>16&255,e.h()>>>8&255,e.h()&255)
 s=A.r(8)
 r=A.F9(l.gi8())
 r=A.W(A.d(166,r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
 q=l.gi8()===B.eK?"SPECIAL \u2022 EVENT ONLY":A.SE(l.gi8()).toUpperCase()+" \u2022 "+B.b.p(A.bdd(l.gi8())*100)+"%"
-f.push(A.I(n,A.q(q,n,n,n,n,A.aD(n,n,A.F9(l.gi8()),n,n,n,n,n,n,n,n,10.5,n,n,B.N,n,n,!0,n,0.4,n,n,n,n,n,n),n,n),B.n,n,n,new A.F(e,n,r,s,n,n,B.p),n,n,n,B.da,n,n,n))
+f.push(A.I(n,A.q(q,n,n,n,n,A.aD(n,n,A.F9(l.gi8()),n,n,n,n,n,n,n,n,10.5,n,n,B.N,n,n,!0,n,0.4,n,n,n,n,n,n),n,n),B.n,n,n,new A.F(e,n,r,s,n,n,B.p),n,n,n,B.cT,n,n,n))
 if(l.guk()!=null){e=l.guk()
 e.toString
 e=A.np(e)
@@ -114910,17 +114914,17 @@ q.toString
 q=A.adG(q)
 p=l.guk()
 p.toString
-f.push(A.I(n,A.q(q+" EXCLUSIVE",n,n,n,n,A.aD(n,n,A.np(p),n,n,n,n,n,n,n,n,10,n,n,B.y,n,n,!0,n,0.4,n,n,n,n,n,n),n,n),B.n,n,n,new A.F(e,n,r,s,n,n,B.p),n,n,n,B.da,n,n,n))}h=A.cO(A.ad(A.b([h,B.af,A.ks(B.xQ,f,B.pI,6,6)],k),B.o,B.j,B.k),n,n)
-f=A.b([l.fr],t.s)
-e=l.fx
+f.push(A.I(n,A.q(q+" EXCLUSIVE",n,n,n,n,A.aD(n,n,A.np(p),n,n,n,n,n,n,n,n,10,n,n,B.y,n,n,!0,n,0.4,n,n,n,n,n,n),n,n),B.n,n,n,new A.F(e,n,r,s,n,n,B.p),n,n,n,B.cT,n,n,n))}h=A.cO(A.ad(A.b([h,B.af,A.ks(B.xR,f,B.pI,6,6)],k),B.o,B.j,B.k),n,n)
+f=A.b([l.fx],t.s)
+e=l.fy
 if(e!=null)f.push(e)
 g=A.a1(new A.a7(f,new A.aJ9(),t.vr),g)
-f=l.fy
+f=l.go
 if(f!=null){e=A.d(36,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
 s=A.r(8)
 r=A.W(A.d(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1)
 g.push(A.I(n,A.q(A.ht(f)+" (Hidden)",n,n,n,n,B.b5O,n,n),B.n,n,n,new A.F(e,n,r,s,n,n,B.p),n,n,n,B.kQ,n,n,n))}f=o.b
-f=A.b([j,i,B.dz,h,B.dz,B.b9C,B.a8,A.ks(B.d1,g,B.ei,6,6),B.dz,B.baL,B.a8,f.rY("HP",l.d,B.aa),f.rY("ATK",l.e,B.z),f.rY("DEF",l.f,B.b4),f.rY("SPA",l.r,B.a9),f.rY("SPD",l.w,B.cW),f.rY("SPE",l.x,B.h)],k)
+f=A.b([j,i,B.dz,h,B.dz,B.b9C,B.a8,A.ks(B.d2,g,B.ei,6,6),B.dz,B.baL,B.a8,f.rY("HP",l.d,B.aa),f.rY("ATK",l.e,B.z),f.rY("DEF",l.f,B.b4),f.rY("SPA",l.r,B.a9),f.rY("SPD",l.w,B.cX),f.rY("SPE",l.x,B.h)],k)
 if(A.aUW(l)!=null){j=A.d(15,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 i=A.r(12)
 h=A.W(B.a4,1)
@@ -114929,10 +114933,10 @@ g.toString
 B.c.J(f,A.b([B.e_,A.I(n,A.X(A.b([B.ahj,B.ag,A.ah(A.q(g,n,n,n,n,B.xm,n,n),1)],k),B.o,B.j,B.k,0),B.n,n,n,new A.F(j,n,h,i,n,n,B.p),n,n,n,B.hq,n,n,1/0)],k))}f.push(B.e_)
 f.push(B.bb5)
 f.push(B.a8)
-l=l.dy
+l=l.fr
 k=A.a8(l).j("a7<1,j>")
 l=A.a1(new A.a7(l,new A.aJa(),k),k.j("aW.E"))
-f.push(A.ks(B.d1,l,B.ei,6,6))
+f.push(A.ks(B.d2,l,B.ei,6,6))
 return A.b6(A.Un(A.ad(f,B.L,B.j,B.k),n,B.b_,B.aa2,n,B.ad),m.a.b*0.78,n)},
 $S:699}
 A.aJ4.prototype={
@@ -114976,7 +114980,7 @@ if(p==null)return B.bD
 s=A.r(10)
 r=A.bU(p.c)
 r=A.W(A.d(B.b.p(127.5),r.h()>>>16&255,r.h()>>>8&255,r.h()&255),1)
-return A.I(q,A.q("Lv."+a.a+"  "+p.b,q,q,q,q,B.b32,q,q),B.n,q,q,new A.F(B.zV,q,r,s,q,q,B.p),q,q,q,B.kQ,q,q,q)},
+return A.I(q,A.q("Lv."+a.a+"  "+p.b,q,q,q,q,B.b32,q,q),B.n,q,q,new A.F(B.zW,q,r,s,q,q,B.p),q,q,q,B.kQ,q,q,q)},
 $S:702}
 A.nV.prototype={
 R(a){var s=null,r=this.c
@@ -115096,17 +115100,17 @@ a2=A.r(12)
 j=A.W(p?A.d(140,B.bq.h()>>>16&255,B.bq.h()>>>8&255,B.bq.h()&255):A.d(89,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1)
 i=A.d(46,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255)
 h=A.r(6)
-q=A.ah(A.I(f,A.ad(A.b([l,B.aS,m,B.aS,A.I(f,A.X(A.b([A.I(f,B.b8N,B.n,f,f,new A.F(i,f,A.W(A.d(k,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1),h,f,f,B.p),f,f,f,B.dF,f,f,f),B.ag,A.ah(A.q(g.w,2,B.a_,f,f,B.b4n,f,f),1)],a3),B.o,B.j,B.k,0),B.n,f,f,new A.F(B.a3y,f,j,a2,f,f,B.p),f,f,f,B.t3,f,f,f)],a3),B.cr,B.j,B.k),B.n,f,f,new A.F(f,f,n,q,f,B.aCy,B.p),f,f,f,B.AR,f,f,f),1)
+q=A.ah(A.I(f,A.ad(A.b([l,B.aS,m,B.aS,A.I(f,A.X(A.b([A.I(f,B.b8N,B.n,f,f,new A.F(i,f,A.W(A.d(k,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1),h,f,f,B.p),f,f,f,B.dF,f,f,f),B.ag,A.ah(A.q(g.w,2,B.a_,f,f,B.b4n,f,f),1)],a3),B.o,B.j,B.k,0),B.n,f,f,new A.F(B.a3y,f,j,a2,f,f,B.p),f,f,f,B.t3,f,f,f)],a3),B.cr,B.j,B.k),B.n,f,f,new A.F(f,f,n,q,f,B.aCy,B.p),f,f,f,B.AS,f,f,f),1)
 a2=g.d
 n=a2?f:new A.aJB(g,e)
 m=A.bg(a2?B.hz:B.j4,f,f,20)
-n=A.b6(A.dP(m,A.q(a2?"HEALING POK\xc9MON...":"HEAL POK\xc9MON",f,f,f,f,B.UJ,f,f),n,A.cc(f,f,B.zX,A.d(89,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),B.S,f,4,f,f,B.d,f,f,f,f,new A.aZ(A.r(14),new A.aT(A.d(71,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),f,f,f,f,f)),48,f)
-a2=A.ah(g.If(B.r,B.Cn,g.d?f:new A.aJC(a4),"Items & Medicine","Pok\xe9 Mart"),1)
+n=A.b6(A.dP(m,A.q(a2?"HEALING POK\xc9MON...":"HEAL POK\xc9MON",f,f,f,f,B.UK,f,f),n,A.cc(f,f,B.zY,A.d(89,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),B.S,f,4,f,f,B.d,f,f,f,f,new A.aZ(A.r(14),new A.aT(A.d(71,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),f,f,f,f,f)),48,f)
+a2=A.ah(g.If(B.r,B.Co,g.d?f:new A.aJC(a4),"Items & Medicine","Pok\xe9 Mart"),1)
 m=g.d?f:new A.aJD(a4)
-m=A.X(A.b([a2,B.bw,A.ah(g.If(B.bX,B.Ck,m,""+d+" Fossil \u2022 "+c+" Voucher","Pok\xe9mon Lab"),1)],a3),B.o,B.j,B.k,0)
+m=A.X(A.b([a2,B.bw,A.ah(g.If(B.bX,B.Cl,m,""+d+" Fossil \u2022 "+c+" Voucher","Pok\xe9mon Lab"),1)],a3),B.o,B.j,B.k,0)
 a2=g.d?f:new A.aJE(a4)
 l=b===1?"":"s"
-return A.eW(a0,B.zx,A.ct(B.aX,A.b([a1,s,A.e4(!0,new A.aG(B.a9B,A.ad(A.b([r,B.af,q,B.af,n,B.af,m,B.af,g.If(B.bB,B.j4,a2,""+b+" Heart Scale"+l+" \u2022 Teach special moves","Move Tutor (Egg Moves)")],a3),B.cr,B.j,B.k),f),B.ae,!0)],a3),B.O,B.ck),!0)},
+return A.eW(a0,B.zy,A.ct(B.aX,A.b([a1,s,A.e4(!0,new A.aG(B.a9B,A.ad(A.b([r,B.af,q,B.af,n,B.af,m,B.af,g.If(B.bB,B.j4,a2,""+b+" Heart Scale"+l+" \u2022 Teach special moves","Move Tutor (Egg Moves)")],a3),B.cr,B.j,B.k),f),B.ae,!0)],a3),B.O,B.ck),!0)},
 afv(b0,b1){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3=this,a4=null,a5=a3.d&&a3.r,a6=t.O,a7=a5?A.b([B.a4e,B.a6y],a6):A.b([B.a2C,B.a3v],a6),a8=A.r(18),a9=a5?B.bq:A.d(140,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255)
 a9=A.W(a9,a5?1.8:1.3)
 s=a5?B.bq:B.T
@@ -115118,7 +115122,7 @@ r=A.b([new A.cg(q,B.aZ,s,B.C,r)],p)
 s=A.d(46,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255)
 q=A.r(10)
 o=A.W(A.d(140,B.T.h()>>>16&255,B.T.h()>>>8&255,B.T.h()&255),1)
-n=a5?B.hz:B.Cg
+n=a5?B.hz:B.Ch
 s=A.I(a4,A.bg(n,a5?B.bq:B.T,a4,20),B.n,a4,a4,new A.F(s,a4,o,q,a4,a4,B.p),a4,a4,a4,B.nx,a4,a4,a4)
 q=t.p
 o=A.b([B.bbK],q)
@@ -115144,7 +115148,7 @@ g=d?A.b([new A.cg(1,B.aZ,A.d(166,B.bq.h()>>>16&255,B.bq.h()>>>8&255,B.bq.h()&255
 if(e&&c!=null){a=d?1.15:1
 a0=!a3.d&&c.d<=0?0.45:1
 a1=c.ch
-a=new A.wg(new A.mc(a0,new A.fq(a1,26,!1,d?B.bq:a4,!1,a4),a4),a,B.H,B.ah,B.Ax,a4,a4)}else{a2=new A.aT(B.a4,1,B.U,-1)
+a=new A.wg(new A.mc(a0,new A.fq(a1,26,!1,d?B.bq:a4,!1,a4),a4),a,B.H,B.ah,B.Ay,a4,a4)}else{a2=new A.aT(B.a4,1,B.U,-1)
 a=A.I(a4,a4,B.n,a4,a4,new A.F(A.d(10,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),a4,new A.ej(a2,a2,a2,a2),a4,a4,a4,B.c6),a4,12,a4,a4,a4,a4,12)}k.push(A.ja(new A.fC(B.H,a4,a4,a,a4),B.ah,new A.F(a4,a4,new A.ej(b,b,b,b),a4,g,new A.fM(B.H,0.5,B.V,a4,0,h,a4,a4),B.c6),B.dD,44,a4,a4,a4,a4,44))}k=A.b([A.X(k,B.o,B.oO,B.k,0)],q)
 if(l===0)k.push(B.a8)
 B.c.J(m,k)}return A.ja(A.ad(A.b([s,B.af,A.I(a4,A.ad(m,B.o,B.j,B.k),B.n,a4,a4,new A.F(a4,a4,n,o,a4,B.aCj,B.p),a4,a4,a4,B.hs,a4,a4,a4)],q),B.cr,B.j,B.k),B.ah,new A.F(a4,a4,a9,a8,r,new A.bh(B.aY,B.bm,B.V,a7,a4,a4),B.p),B.et,a4,a4,B.e9,a4,a4,a4)},
@@ -115246,18 +115250,18 @@ n=A.W(A.d(140,B.bX.h()>>>16&255,B.bX.h()>>>8&255,B.bX.h()&255),1.3)
 m=A.r(11)
 l=t.p
 o=A.I(h,A.X(A.b([A.I(h,B.ahr,B.n,h,h,new A.F(B.a33,h,A.W(A.d(B.b.p(127.5),B.bX.h()>>>16&255,B.bX.h()>>>8&255,B.bX.h()&255),1),m,h,h,B.p),h,h,h,B.hv,h,h,h),B.dL,B.aaA],l),B.o,B.j,B.k,0),B.n,h,h,new A.F(h,h,n,o,h,B.aCo,B.p),h,h,h,B.cB,h,h,h)
-n=A.X(A.b([A.ah(this.Ta(B.d8,f,B.ai,"Unknown Fossils"),1),B.bw,A.ah(this.Ta(B.bX,e,B.Cc,"Restoration Vouchers"),1)],l),B.o,B.j,B.k,0)
+n=A.X(A.b([A.ah(this.Ta(B.d9,f,B.ai,"Unknown Fossils"),1),B.bw,A.ah(this.Ta(B.bX,e,B.Cd,"Restoration Vouchers"),1)],l),B.o,B.j,B.k,0)
 m=A.r(18)
 k=A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1.2)
 j=t.te
 j=A.a1(new A.a7(B.vE,new A.aKh(),j),j.j("aW.E"))
 j=A.X(j,B.o,B.oO,B.k,0)
 i=A.r(10)
-m=A.ah(A.I(h,A.ad(A.b([B.bca,B.e_,j,B.dz,A.I(h,B.bbz,B.n,h,h,new A.F(B.kk,h,A.W(B.bp,1),i,h,h,B.p),h,h,h,B.hr,h,h,h)],l),B.o,B.b9,B.k),B.n,h,h,new A.F(h,h,k,m,h,B.aCv,B.p),h,h,h,B.cB,h,h,h),1)
+m=A.ah(A.I(h,A.ad(A.b([B.bca,B.e_,j,B.dz,A.I(h,B.bbz,B.n,h,h,new A.F(B.kk,h,A.W(B.bn,1),i,h,h,B.p),h,h,h,B.hr,h,h,h)],l),B.o,B.b9,B.k),B.n,h,h,new A.F(h,h,k,m,h,B.aCv,B.p),h,h,h,B.cB,h,h,h),1)
 k=s?new A.aKi(this,g):h
 if(s)j="RESTORE FOSSIL (1 FOSSIL + 1 VOUCHER)"
 else j=g.gyT()?"STORAGE FULL (320/320)":"NEED 1 FOSSIL & 1 VOUCHER"
-return A.eW(r,B.a3R,A.ct(B.aX,A.b([q,p,A.e4(!0,new A.aG(B.a9H,A.ad(A.b([o,B.aw,n,B.aw,m,B.aw,A.b6(A.dP(B.agJ,A.q(j,h,h,h,h,B.Uy,h,h),k,A.cc(h,h,B.bX,B.a4,B.aQ,h,h,h,h,B.A,h,h,h,h,new A.aZ(A.r(14),B.I),h,h,h,h,h)),50,h)],l),B.cr,B.j,B.k),h),B.ae,!0)],l),B.O,B.ck),!0)},
+return A.eW(r,B.a3R,A.ct(B.aX,A.b([q,p,A.e4(!0,new A.aG(B.a9H,A.ad(A.b([o,B.aw,n,B.aw,m,B.aw,A.b6(A.dP(B.agJ,A.q(j,h,h,h,h,B.Uz,h,h),k,A.cc(h,h,B.bX,B.a4,B.aQ,h,h,h,h,B.A,h,h,h,h,new A.aZ(A.r(14),B.I),h,h,h,h,h)),50,h)],l),B.cr,B.j,B.k),h),B.ae,!0)],l),B.O,B.ck),!0)},
 Ta(a,b,c,d){var s=null,r=b>0,q=A.b([A.d(B.b.p(255*(r?0.16:0.04)),a.h()>>>16&255,a.h()>>>8&255,a.h()&255),B.a5Y],t.O),p=A.r(16),o=A.W(r?A.d(166,a.h()>>>16&255,a.h()>>>8&255,a.h()&255):B.a4,1.2),n=A.bg(c,a,s,26)
 return A.I(s,A.ad(A.b([n,B.aS,A.q("x"+b,s,s,s,s,A.aD(s,s,r?a:B.aQ,s,s,s,s,s,s,s,s,22,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.bS,A.q(d,s,s,s,s,B.UU,B.aU,s)],t.p),B.o,B.j,B.k),B.n,s,s,new A.F(s,s,o,p,s,new A.bh(B.aY,B.bm,B.V,q,s,s),B.p),s,s,s,B.a9w,s,s,s)}}
 A.aKb.prototype={
@@ -115276,8 +115280,8 @@ s=B.hU.i(0,n.cx)
 s=s==null?p:s.b
 if(s==null)s=n.cx
 r=n.cy===3
-q=r&&n.a.fy!=null?" (Hidden Ability!)":""
-s=A.q("Ability: "+s+q,p,p,p,p,A.aD(p,p,r&&n.a.fy!=null?B.M:B.r,p,p,p,p,p,p,p,p,11.5,p,p,B.ch,p,p,!0,p,p,p,p,p,p,p,p),B.aU,p)
+q=r&&n.a.go!=null?" (Hidden Ability!)":""
+s=A.q("Ability: "+s+q,p,p,p,p,A.aD(p,p,r&&n.a.go!=null?B.M:B.r,p,p,p,p,p,p,p,p,11.5,p,p,B.ch,p,p,!0,p,p,p,p,p,p,p,p),B.aU,p)
 r=this.c
 n=n.a.b
 q=t.p
@@ -115386,20 +115390,20 @@ case 1:return A.A(q,r)}})
 return A.B($async$CT,r)},
 R(a){return A.wO(new A.aK6(this),t.R)},
 afV(a,a0,a1){var s,r,q,p,o,n,m,l,k,j,i,h=this,g=null,f=a0.c<=a.gz4(),e=B.hU.i(0,a0.cx),d=a0.e,c=a0.a,b=A.b([new A.oE(["HP",d,c.d,B.hi]),new A.oE(["Attack",a0.f,c.e,B.dr]),new A.oE(["Defense",a0.r,c.f,B.hl]),new A.oE(["Sp. Atk",a0.w,c.r,B.hf]),new A.oE(["Sp. Def",a0.x,c.w,B.r7]),new A.oE(["Speed",a0.y,c.x,B.dR])],t.lo)
-d=a0.cy===3&&a0.a.fy!=null
+d=a0.cy===3&&a0.a.go!=null
 c=t.O
 d=d?A.b([B.a68,B.a5I],c):A.b([B.a3S,B.dP],c)
 c=A.r(16)
-s=A.W(a0.cy===3&&a0.a.fy!=null?A.d(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255):A.d(82,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
+s=A.W(a0.cy===3&&a0.a.go!=null?A.d(140,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255):A.d(82,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
 r=t.p
-q=A.b([A.bg(B.ez,a0.cy===3&&a0.a.fy!=null?B.M:B.r,g,16),B.cG,B.bat,B.dg],r)
-if(a0.cy===3&&a0.a.fy!=null){p=A.d(51,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
+q=A.b([A.bg(B.ez,a0.cy===3&&a0.a.go!=null?B.M:B.r,g,16),B.cG,B.bat,B.dg],r)
+if(a0.cy===3&&a0.a.go!=null){p=A.d(51,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
 o=A.r(6)
-q.push(A.I(g,B.ba4,B.n,g,g,new A.F(p,g,A.W(A.d(B.b.p(178.5),B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1),o,g,g,B.p),g,g,g,B.B0,g,g,g))}q=A.X(q,B.o,B.j,B.k,0)
+q.push(A.I(g,B.ba4,B.n,g,g,new A.F(p,g,A.W(A.d(B.b.p(178.5),B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1),o,g,g,B.p),g,g,g,B.B1,g,g,g))}q=A.X(q,B.o,B.j,B.k,0)
 p=e==null
 o=p?g:e.b
 if(o==null)o=a0.cx
-q=A.b([q,B.aS,A.q(o,g,g,g,g,A.aD(g,g,a0.cy===3&&a0.a.fy!=null?B.hg:B.d,g,g,g,g,g,g,g,g,15,g,g,B.y,g,g,!0,g,g,g,g,g,g,g,g),g,g)],r)
+q=A.b([q,B.aS,A.q(o,g,g,g,g,A.aD(g,g,a0.cy===3&&a0.a.go!=null?B.hg:B.d,g,g,g,g,g,g,g,g,15,g,g,B.y,g,g,!0,g,g,g,g,g,g,g,g),g,g)],r)
 if(!p)B.c.J(q,A.b([B.cM,A.q(e.c,g,g,g,g,B.pv,g,g)],r))
 d=A.I(g,A.ad(q,B.L,B.j,B.k),B.n,g,g,new A.F(g,g,s,c,g,new A.bh(B.b7,B.bN,B.V,d,g,g),B.p),g,g,g,B.ns,g,g,g)
 c=A.r(16)
@@ -115429,7 +115433,7 @@ j=A.aUW(a0.a)
 j=h.nJ("Evolution",j==null?"Final Form":j)
 i=f?"Obeys all orders (Cap Lv."+a.gz4()+")":"May disobey! Requires more Badges (Cap Lv."+a.gz4()+")"
 return A.m6(A.b([d,B.aw,c,B.aw,A.I(g,A.ad(A.b([B.baS,B.af,p,o,n,m,l,k,j,h.WO("Obedience",i,f?B.aa:B.b4),h.nJ("Total PP",""+B.c.hB(a0.z,0,new A.aJT())+" / "+B.c.hB(a0.z,0,new A.aJU()))],r),B.L,B.j,B.k),B.n,g,g,new A.F(B.dP,g,q,s,g,g,B.p),g,g,g,B.cB,g,g,g)],r),B.cB,g,B.ad)},
-WO(a,b,c){var s=null,r=A.b6(A.q(a,s,s,s,s,B.Ux,s,s),s,118)
+WO(a,b,c){var s=null,r=A.b6(A.q(a,s,s,s,s,B.Uy,s,s),s,118)
 return new A.aG(B.nl,A.X(A.b([r,A.ah(A.q(b,s,s,s,s,A.aD(s,s,c==null?B.d:c,s,s,s,s,s,s,s,s,11.5,s,s,B.N,s,s,!0,s,s,s,s,s,s,s,s),s,s),1)],t.p),B.L,B.j,B.k,0),s)},
 nJ(a,b){return this.WO(a,b,null)},
 afw(a,b){var s,r,q,p,o,n,m,l=null,k=b.ay,j=k!=null&&k.length!==0?B.aq.i(0,k):l
@@ -115449,7 +115453,7 @@ n=A.d(46,s.h()>>>16&255,s.h()>>>8&255,s.h()&255)
 m=A.r(12)
 o.push(A.X(A.b([A.I(l,A.bg(j.x,s,l,24),B.n,l,l,new A.F(n,l,l,m,l,l,B.p),l,l,l,B.tb,l,l,l),B.bw,A.ah(A.ad(A.b([A.q(j.b,l,l,l,l,B.pz,l,l),A.q(j.c,l,l,l,l,B.ib,l,l)],p),B.L,B.j,B.k),1),B.ag,A.nK(B.bbk,new A.aJH(b,a),A.eG(l,l,l,l,l,l,l,l,l,B.z,l,l,B.e8,l,l,new A.aT(A.d(153,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1,B.U,-1),l,l,l,l))],p),B.o,B.j,B.k,0))}k=A.b([A.I(l,A.ad(o,B.L,B.j,B.k),B.n,l,l,new A.F(B.dP,l,q,k,l,l,B.p),l,l,l,B.cB,l,l,l),B.e_,B.b9O,B.a8],p)
 if(r.length===0){s=A.r(14)
-k.push(A.I(l,B.bag,B.n,l,l,new A.F(B.dP,l,A.W(B.bp,1),s,l,l,B.p),l,l,l,B.ta,l,l,l))}else B.c.J(k,new A.a7(r,new A.aJI(this,a,b),A.a8(r).j("a7<1,j>")))
+k.push(A.I(l,B.bag,B.n,l,l,new A.F(B.dP,l,A.W(B.bn,1),s,l,l,B.p),l,l,l,B.ta,l,l,l))}else B.c.J(k,new A.a7(r,new A.aJI(this,a,b),A.a8(r).j("a7<1,j>")))
 return A.m6(k,B.cB,l,B.ad)},
 afI(a,b){var s,r=null,q=b.gaFA(),p=A.b12(),o=A.a8(p).j("af<1>"),n=A.a1(new A.af(p,new A.aJO(a),o),o.j("t.E"))
 p=t.p
@@ -115461,13 +115465,13 @@ p.push(B.bS)
 p.push(A.q("Includes all level-up moves up to Lv. "+b.c+", pre-evolution moves, and TMs \u2014 swap freely anytime.",r,r,r,r,B.m7,r,r))
 p.push(B.a8)
 if(q.length===0){o=A.r(14)
-s=A.W(B.bp,1)
+s=A.W(B.bn,1)
 p.push(A.I(r,A.q("All moves unlocked up to Lv. "+b.c+" are already equipped above. New moves will appear here as this Pok\xe9mon levels up or learns TMs.",r,r,r,r,B.xf,B.aU,r),B.n,r,r,new A.F(B.dP,r,s,o,r,r,B.p),r,r,r,B.cB,r,r,r))}else B.c.J(p,new A.a7(q,new A.aJQ(this,b,a),A.a8(q).j("a7<1,j>")))
 p.push(B.e_)
 p.push(A.q("TEACH GEN 1 TM FROM BAG ("+n.length+")",r,r,r,r,B.b5u,r,r))
 p.push(B.a8)
 if(n.length===0){o=A.r(14)
-p.push(A.I(r,B.b93,B.n,r,r,new A.F(B.dP,r,A.W(B.bp,1),o,r,r,B.p),r,r,r,B.cB,r,r,r))}else B.c.J(p,new A.a7(n,new A.aJR(this,a,b),A.a8(n).j("a7<1,j>")))
+p.push(A.I(r,B.b93,B.n,r,r,new A.F(B.dP,r,A.W(B.bn,1),o,r,r,B.p),r,r,r,B.cB,r,r,r))}else B.c.J(p,new A.a7(n,new A.aJR(this,a,b),A.a8(n).j("a7<1,j>")))
 return A.m6(p,B.cB,r,B.ad)}}
 A.aJY.prototype={
 $1(a){var s,r,q,p=null,o=A.r(18),n=this.a,m=A.bU(n.c)
@@ -115485,7 +115489,7 @@ A.aJW.prototype={
 $1(a){var s,r=null,q=this.a.z[a],p=A.r(12),o=A.r(12),n=q.c,m=A.bU(n)
 m=A.W(A.d(115,m.h()>>>16&255,m.h()>>>8&255,m.h()&255),1)
 s=t.p
-return new A.aG(B.nl,A.cw(!1,p,!0,A.I(r,A.X(A.b([A.ah(A.ad(A.b([A.X(A.b([new A.cF(1,B.aV,A.q(q.b,r,B.a_,r,r,B.d0,r,r),r),B.a3,new A.fv(n,r)],s),B.o,B.j,B.k,0),B.cL,A.q("PWR "+q.goL()+" \u2022 ACC "+q.f+"% \u2022 PP "+q.w+"/"+q.r,r,r,r,r,B.eP,r,r)],s),B.L,B.j,B.k),1),B.ag9],s),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.Ad,r,m,o,r,r,B.p),r,r,r,B.f8,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aJV(this.b,a),r,r,r,r),r)},
+return new A.aG(B.nl,A.cw(!1,p,!0,A.I(r,A.X(A.b([A.ah(A.ad(A.b([A.X(A.b([new A.cF(1,B.aV,A.q(q.b,r,B.a_,r,r,B.d1,r,r),r),B.a3,new A.fv(n,r)],s),B.o,B.j,B.k,0),B.cL,A.q("PWR "+q.goL()+" \u2022 ACC "+q.f+"% \u2022 PP "+q.w+"/"+q.r,r,r,r,r,B.eP,r,r)],s),B.L,B.j,B.k),1),B.ag9],s),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.Ae,r,m,o,r,r,B.p),r,r,r,B.f8,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aJV(this.b,a),r,r,r,r),r)},
 $S:277}
 A.aJV.prototype={
 $0(){A.aM(this.a,!1).b0(this.b)
@@ -115509,7 +115513,7 @@ o=p>q?B.b.A((a.as-q)/(p-q),0,1):1
 n=a.c>=100?0:B.l.A(p-a.as,0,9999999)
 r=A.co(c,c,B.dd,c,c,new A.aK1(a0),c,c,c)
 m=a.a
-m=A.q("#"+B.m.fA(B.l.m(m.a),3,"0")+" \u2022 "+m.b.toUpperCase(),c,c,c,c,B.UJ,c,c)
+m=A.q("#"+B.m.fA(B.l.m(m.a),3,"0")+" \u2022 "+m.b.toUpperCase(),c,c,c,c,B.UK,c,c)
 l=t.p
 k=A.b([],l)
 j=b.a
@@ -115520,8 +115524,8 @@ i=A.r(8)
 h=A.W(A.d(140,B.R.h()>>>16&255,B.R.h()>>>8&255,B.R.h()&255),1)
 g=b.a.d
 g.toString
-k.push(new A.aG(B.a9c,A.cO(A.I(c,A.q("BOX "+(g+1),c,c,c,c,A.aD(c,c,B.eV,c,c,c,c,c,c,c,c,10,c,c,B.y,c,c,!0,c,0.6,c,c,c,c,c,c),c,c),B.n,c,c,new A.F(j,c,h,i,c,c,B.p),c,c,c,B.da,c,c,c),c,c),c))}r=A.hR(k,!0,B.r1,!0,0,r,m)
-m=A.b([A.d(61,s.h()>>>16&255,s.h()>>>8&255,s.h()&255),B.zw],t.O)
+k.push(new A.aG(B.a9c,A.cO(A.I(c,A.q("BOX "+(g+1),c,c,c,c,A.aD(c,c,B.eV,c,c,c,c,c,c,c,c,10,c,c,B.y,c,c,!0,c,0.6,c,c,c,c,c,c),c,c),B.n,c,c,new A.F(j,c,h,i,c,c,B.p),c,c,c,B.cT,c,c,c),c,c),c))}r=A.hR(k,!0,B.r1,!0,0,r,m)
+m=A.b([A.d(61,s.h()>>>16&255,s.h()>>>8&255,s.h()&255),B.zx],t.O)
 k=A.d(B.b.p(25.5),B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 j=A.r(18)
 i=a.CW
@@ -115531,15 +115535,15 @@ g=i?B.h:s
 g=A.b([new A.cg(0,B.aZ,A.d(71,g.h()>>>16&255,g.h()>>>8&255,g.h()&255),B.C,14)],t.E)
 f=A.b([A.cO(A.hz(c,new A.dM(new A.aK3(a,s),c),B.b_,!1,c,c,c,c,c,c,c,c,c,c,c,c,c,c,new A.aK4(a),c,c,c,c,c,c),c,c)],l)
 if(i)f.push(B.aVQ)
-j=A.I(c,A.ct(B.aX,f,B.O,B.bH),B.n,c,c,new A.F(B.d7,c,h,j,g,c,B.p),c,84,c,c,c,c,84)
+j=A.I(c,A.ct(B.aX,f,B.O,B.bH),B.n,c,c,new A.F(B.d8,c,h,j,g,c,B.p),c,84,c,c,c,c,84)
 h=A.b([new A.fq(a.ch,16,!1,c,!1,c),B.a3],l)
 if(i){i=A.d(51,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 g=A.r(6)
-B.c.J(h,A.b([A.I(c,B.aXj,B.n,c,c,new A.F(i,c,A.W(A.d(204,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1),g,c,c,B.p),c,c,B.AP,B.iU,c,c,c)],l))}h.push(A.ah(A.q(a.b,c,B.a_,c,c,B.xq,c,c),1))
+B.c.J(h,A.b([A.I(c,B.aXj,B.n,c,c,new A.F(i,c,A.W(A.d(204,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1),g,c,c,B.p),c,c,B.AQ,B.iU,c,c,c)],l))}h.push(A.ah(A.q(a.b,c,B.a_,c,c,B.xq,c,c),1))
 i=A.d(46,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 g=A.r(8)
 f=A.W(A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1)
-h.push(A.I(c,A.q("Lv."+a.c,c,c,c,c,B.xv,c,c),B.n,c,c,new A.F(i,c,f,g,c,c,B.p),c,c,c,B.kP,c,c,c))
+h.push(A.I(c,A.q("Lv."+a.c,c,c,c,c,B.xw,c,c),B.n,c,c,new A.F(i,c,f,g,c,c,B.p),c,c,c,B.kP,c,c,c))
 h=A.X(h,B.o,B.j,B.k,0)
 g=a.a.c
 i=A.a1(new A.a7(g,new A.aK5(),A.a8(g).j("a7<1,j>")),t.l7)
@@ -115557,7 +115561,7 @@ f=g<=0
 if(f)d=" \u2022 FAINTED"
 else{d=a.at
 d=d!==B.al?" \u2022 "+A.GP(d):""}d=A.q("HP "+g+"/"+e+d,c,c,c,c,A.aD(c,c,f?B.z:B.S,c,c,c,c,c,c,c,c,10,c,c,B.N,c,c,!0,c,c,c,c,c,c,c,c),c,c)
-return new A.Cy(3,A.eW(r,B.A_,A.ad(A.b([A.I(c,A.X(A.b([j,B.dL,A.ah(A.ad(A.b([h,B.e0,i,B.eL,new A.jY(g,e,c),B.bS,A.X(A.b([d,A.q(a.c>=100?"MAX LEVEL":"Next Lv: "+n+" EXP",c,c,c,c,B.UF,c,c)],l),B.o,B.aP,B.k,0),B.bS,A.is(A.r(3),A.nx(B.a4,3.5,o,B.Y0))],l),B.L,B.j,B.k),1)],l),B.o,B.j,B.k,0),B.n,c,c,new A.F(c,c,new A.ej(B.I,B.I,new A.aT(k,1,B.U,-1),B.I),c,c,new A.bh(B.aY,B.bm,B.V,m,c,c),B.p),c,c,c,B.AS,c,c,c),A.I(c,B.b1_,B.n,B.r1,c,c,c,c,c,c,c,c,c),A.ah(new A.H_(A.b([b.afV(a1,a,n),b.afw(a1,a),b.afI(a1,a)],l),c),1)],l),B.o,B.j,B.k),!1),c)},
+return new A.Cy(3,A.eW(r,B.A0,A.ad(A.b([A.I(c,A.X(A.b([j,B.dL,A.ah(A.ad(A.b([h,B.e0,i,B.eL,new A.jY(g,e,c),B.bS,A.X(A.b([d,A.q(a.c>=100?"MAX LEVEL":"Next Lv: "+n+" EXP",c,c,c,c,B.UG,c,c)],l),B.o,B.aP,B.k,0),B.bS,A.is(A.r(3),A.nx(B.a4,3.5,o,B.Y0))],l),B.L,B.j,B.k),1)],l),B.o,B.j,B.k,0),B.n,c,c,new A.F(c,c,new A.ej(B.I,B.I,new A.aT(k,1,B.U,-1),B.I),c,c,new A.bh(B.aY,B.bm,B.V,m,c,c),B.p),c,c,c,B.AT,c,c,c),A.I(c,B.b1_,B.n,B.r1,c,c,c,c,c,c,c,c,c),A.ah(new A.H_(A.b([b.afV(a1,a,n),b.afw(a1,a),b.afI(a1,a)],l),c),1)],l),B.o,B.j,B.k),!1),c)},
 $C:"$3",
 $R:3,
 $S:708}
@@ -115591,11 +115595,11 @@ A.aK_.prototype={
 $3(a,b,c){return A.bg(B.bi,this.a,null,B.b.A(this.b*0.68,24,46))},
 $S:10}
 A.aK5.prototype={
-$1(a){return new A.aG(B.AP,new A.fv(a,null),null)},
+$1(a){return new A.aG(B.AQ,new A.fv(a,null),null)},
 $S:278}
 A.aJS.prototype={
 $1(a){var s=null,r=a.a,q=r[0],p=r[1],o=r[2],n=r[3],m=B.b.A(p/280,0.06,1)
-return new A.aG(B.a9a,A.X(A.b([A.b6(A.q(q,s,s,s,s,B.b3G,s,s),s,60),A.b6(A.q(""+p,s,s,s,s,A.aD(s,s,n,s,s,s,s,s,s,s,s,13,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),B.fU,s),s,38),B.bw,A.ah(A.is(A.r(5),A.nx(B.bp,7,m,new A.j9(n,t.ZU))),1),B.ag,A.b6(A.q("Base "+o,s,s,s,s,B.UZ,B.fU,s),s,52)],t.p),B.o,B.j,B.k,0),s)},
+return new A.aG(B.a9a,A.X(A.b([A.b6(A.q(q,s,s,s,s,B.b3G,s,s),s,60),A.b6(A.q(""+p,s,s,s,s,A.aD(s,s,n,s,s,s,s,s,s,s,s,13,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),B.fU,s),s,38),B.bw,A.ah(A.is(A.r(5),A.nx(B.bn,7,m,new A.j9(n,t.ZU))),1),B.ag,A.b6(A.q("Base "+o,s,s,s,s,B.UZ,B.fU,s),s,52)],t.p),B.o,B.j,B.k,0),s)},
 $S:710}
 A.aJT.prototype={
 $2(a,b){return a+b.w},
@@ -115617,7 +115621,7 @@ s.bt()}},
 $S:0}
 A.aJI.prototype={
 $1(a){var s=null,r=this.b,q=r.cC(a.a),p=A.r(14),o=a.w,n=A.W(A.d(89,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),1),m=t.p
-return new A.aG(B.nm,A.I(s,A.X(A.b([A.bg(a.x,o,s,22),B.bw,A.ah(A.ad(A.b([A.X(A.b([A.q(a.b,s,s,s,s,B.d0,s,s),B.a3,A.q("x"+q,s,s,s,s,A.aD(s,s,o,s,s,s,s,s,s,s,s,11,s,s,B.N,s,s,!0,s,s,s,s,s,s,s,s),s,s)],m),B.o,B.j,B.k,0),B.cL,A.q(a.c,s,s,s,s,B.id,s,s)],m),B.L,B.j,B.k),1),B.ag,A.eQ(B.bbQ,new A.aJF(this.a,this.c,r,a),A.cc(s,s,A.d(56,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),s,s,s,s,s,s,o,s,B.a2,B.nq,s,s,new A.aT(A.d(153,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),1,B.U,-1),s,s,s,s))],m),B.o,B.j,B.k,0),B.n,s,s,new A.F(B.dP,s,n,p,s,s,B.p),s,s,s,B.fE,s,s,s),s)},
+return new A.aG(B.nm,A.I(s,A.X(A.b([A.bg(a.x,o,s,22),B.bw,A.ah(A.ad(A.b([A.X(A.b([A.q(a.b,s,s,s,s,B.d1,s,s),B.a3,A.q("x"+q,s,s,s,s,A.aD(s,s,o,s,s,s,s,s,s,s,s,11,s,s,B.N,s,s,!0,s,s,s,s,s,s,s,s),s,s)],m),B.o,B.j,B.k,0),B.cL,A.q(a.c,s,s,s,s,B.id,s,s)],m),B.L,B.j,B.k),1),B.ag,A.eQ(B.bbQ,new A.aJF(this.a,this.c,r,a),A.cc(s,s,A.d(56,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),s,s,s,s,s,s,o,s,B.a2,B.nq,s,s,new A.aT(A.d(153,o.h()>>>16&255,o.h()>>>8&255,o.h()&255),1,B.U,-1),s,s,s,s))],m),B.o,B.j,B.k,0),B.n,s,s,new A.F(B.dP,s,n,p,s,s,B.p),s,s,s,B.fE,s,s,s),s)},
 $S:711}
 A.aJF.prototype={
 $0(){var s,r,q,p=this,o=null,n=p.b,m=n.ay
@@ -115647,7 +115651,7 @@ B.c.J(k,A.b([B.cG,A.I(o,B.Vb,B.n,o,o,new A.F(r,o,A.W(A.d(153,B.bB.h()>>>16&255,B
 r=p.a
 q=m.d
 k.push(A.q(r.agp(q),o,o,o,o,A.aD(o,o,r.ago(q),o,o,o,o,o,o,o,o,9,o,o,B.N,o,o,!0,o,o,o,o,o,o,o,o),o,o))
-k=A.ah(A.ad(A.b([A.X(k,B.o,B.j,B.k,0),B.bS,A.q("PWR "+m.goL()+" \u2022 ACC "+m.f+"% \u2022 PP "+m.w+"/"+m.r,o,o,o,o,B.UA,o,o),A.q(m.y,o,o,o,o,B.UQ,o,o)],s),B.L,B.j,B.k),1)
+k=A.ah(A.ad(A.b([A.X(k,B.o,B.j,B.k,0),B.bS,A.q("PWR "+m.goL()+" \u2022 ACC "+m.f+"% \u2022 PP "+m.w+"/"+m.r,o,o,o,o,B.UB,o,o),A.q(m.y,o,o,o,o,B.UQ,o,o)],s),B.L,B.j,B.k),1)
 q=A.b([],s)
 if(a>0)q.push(A.cw(!1,o,!0,B.aRL,o,!0,o,o,o,o,o,o,o,o,new A.aJM(n,a,p.c),o,o,o,o))
 if(a<n.z.length-1)q.push(A.cw(!1,o,!0,B.aRM,o,!0,o,o,o,o,o,o,o,o,new A.aJN(n,a,p.c),o,o,o,o))
@@ -115671,11 +115675,11 @@ A.aJQ.prototype={
 $1(a){var s,r,q,p,o=null,n=A.r(13),m=a.c,l=A.bU(m)
 l=A.W(A.d(89,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),1)
 s=t.p
-m=A.b([new A.cF(1,B.aV,A.q(a.b,o,B.a_,o,o,B.d0,o,o),o),B.a3,new A.fv(m,o)],s)
+m=A.b([new A.cF(1,B.aV,A.q(a.b,o,B.a_,o,o,B.d1,o,o),o),B.a3,new A.fv(m,o)],s)
 r=this.b
 if(B.c.q(A.abE(r.a),a.a)){q=A.d(46,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255)
 p=A.r(5)
-B.c.J(m,A.b([B.cG,A.I(o,B.Vb,B.n,o,o,new A.F(q,o,A.W(A.d(153,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255),1),p,o,o,B.p),o,o,o,B.dE,o,o,o)],s))}m=A.ah(A.ad(A.b([A.X(m,B.o,B.j,B.k,0),B.bS,A.q("PWR "+a.goL()+" \u2022 ACC "+a.f+"% \u2022 PP "+a.r,o,o,o,o,B.eP,o,o),A.q(a.y,o,o,o,o,B.UE,o,o)],s),B.L,B.j,B.k),1)
+B.c.J(m,A.b([B.cG,A.I(o,B.Vb,B.n,o,o,new A.F(q,o,A.W(A.d(153,B.bB.h()>>>16&255,B.bB.h()>>>8&255,B.bB.h()&255),1),p,o,o,B.p),o,o,o,B.dE,o,o,o)],s))}m=A.ah(A.ad(A.b([A.X(m,B.o,B.j,B.k,0),B.bS,A.q("PWR "+a.goL()+" \u2022 ACC "+a.f+"% \u2022 PP "+a.r,o,o,o,o,B.eP,o,o),A.q(a.y,o,o,o,o,B.UF,o,o)],s),B.L,B.j,B.k),1)
 q=A.eG(o,o,o,o,o,o,o,o,o,B.r,o,B.a2,B.e8,o,o,new A.aT(A.d(153,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1,B.U,-1),o,o,o,o)
 return new A.aG(B.nl,A.I(o,A.X(A.b([m,B.ag,A.nK(A.q(r.z.length<4?"EQUIP":"SWAP IN",o,o,o,o,B.fl,o,o),new A.aJL(this.a,this.c,r,a),q)],s),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.dP,o,l,n,o,o,B.p),o,o,o,B.t4,o,o,o),o)},
 $S:712}
@@ -115747,7 +115751,7 @@ g=k?A.d(56,B.dx.h()>>>16&255,B.dx.h()>>>8&255,B.dx.h()&255):A.d(15,B.d.h()>>>16&
 f=A.r(8)
 e=A.W(k?B.h:B.a4,1)
 d=k?"READY":"LOCKED (8 BADGES)"
-n.push(A.I(b,A.ad(A.b([A.X(A.b([i,B.dL,h,A.I(b,A.q(d,b,b,b,b,A.aD(b,b,k?B.h:B.aQ,b,b,b,b,b,b,b,b,8.5,b,b,B.y,b,b,!0,b,b,b,b,b,b,b,b),b,b),B.n,b,b,new A.F(g,b,e,f,b,b,B.p),b,b,b,B.iT,b,b,b)],p),B.o,B.j,B.k,0),B.af,B.bao],p),B.L,B.j,B.k),B.n,b,b,new A.F(b,b,j,m,b,new A.bh(B.b7,B.bN,B.V,q,b,b),B.p),b,b,b,B.AU,b,b,b))
+n.push(A.I(b,A.ad(A.b([A.X(A.b([i,B.dL,h,A.I(b,A.q(d,b,b,b,b,A.aD(b,b,k?B.h:B.aQ,b,b,b,b,b,b,b,b,8.5,b,b,B.y,b,b,!0,b,b,b,b,b,b,b,b),b,b),B.n,b,b,new A.F(g,b,e,f,b,b,B.p),b,b,b,B.iT,b,b,b)],p),B.o,B.j,B.k,0),B.af,B.bao],p),B.L,B.j,B.k),B.n,b,b,new A.F(b,b,j,m,b,new A.bh(B.b7,B.bN,B.V,q,b,b),B.p),b,b,b,B.AV,b,b,b))
 return A.eW(s,B.rv,A.ct(B.aX,A.b([r,o,A.e4(!0,A.m6(n,B.t5,b,B.ad),B.ae,!0)],p),B.O,B.ck),!0)},
 afh(a0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=null,d=A.r(18),c=B.b.p(127.5),b=A.W(A.d(c,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1.3),a=t.E
 c=A.b([new A.cg(0,B.aZ,A.d(c,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.hZ,12)],a)
@@ -115764,7 +115768,7 @@ j=k?e:l.y
 if(j==null)j=B.dx
 i=k?e:l.r
 if(i==null)i="assets/images/badges/boulder_badge.png"
-k=m?A.b([A.d(89,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.a4M],p):A.b([B.z6,B.a2S],p)
+k=m?A.b([A.d(89,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.a4M],p):A.b([B.z7,B.a2S],p)
 h=m?j:B.a4
 g=new A.aT(h,m?1.8:1,B.U,-1)
 h=m?A.b([new A.cg(1,B.aZ,A.d(107,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.C,9)],a):e
@@ -115800,11 +115804,11 @@ g=A.W(A.d(B.b.p(178.5),k.h()>>>16&255,k.h()>>>8&255,k.h()&255),1)
 f=t.p
 h=A.b([l,B.po,A.ah(A.ad(A.b([A.X(A.b([new A.cF(1,B.aV,j,d),B.a3,A.I(d,A.q(a4.x.toUpperCase(),d,d,d,d,A.aD(d,d,k,d,d,d,d,d,d,d,d,8.5,d,d,B.y,d,d,!0,d,d,d,d,d,d,d,d),d,d),B.n,d,d,new A.F(i,d,g,h,d,d,B.p),d,d,d,B.kR,d,d,d)],f),B.o,B.j,B.k,0),B.cL,A.q(a4.c+" \u2022 Leader "+a4.d,d,d,d,d,B.b3f,d,d)],f),B.L,B.j,B.k),1)],f)
 if(a){l=A.r(8)
-B.c.J(h,A.b([A.I(d,B.aX9,B.n,d,d,new A.F(B.a66,d,A.W(A.d(191,B.dx.h()>>>16&255,B.dx.h()>>>8&255,B.dx.h()&255),1),l,d,d,B.p),d,d,d,B.da,d,d,d)],f))}l=A.X(h,B.o,B.j,B.k,0)
+B.c.J(h,A.b([A.I(d,B.aX9,B.n,d,d,new A.F(B.a66,d,A.W(A.d(191,B.dx.h()>>>16&255,B.dx.h()>>>8&255,B.dx.h()&255),1),l,d,d,B.p),d,d,d,B.cT,d,d,d)],f))}l=A.X(h,B.o,B.j,B.k,0)
 j=A.r(9)
-i=A.W(B.bp,1)
-j=A.b([l,B.af,A.I(d,A.X(A.b([A.bg(B.tY,k,d,14),B.a3,A.ah(A.q(a4.f+": "+a4.w,d,d,d,d,B.xx,d,d),1)],f),B.o,B.j,B.k,0),B.n,d,d,new A.F(B.Ab,d,i,j,d,d,B.p),d,d,d,B.e8,d,d,d),B.af],f)
-if(!b){q=A.d(46,B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255)
+i=A.W(B.bn,1)
+j=A.b([l,B.af,A.I(d,A.X(A.b([A.bg(B.tY,k,d,14),B.a3,A.ah(A.q(a4.f+": "+a4.w,d,d,d,d,B.xy,d,d),1)],f),B.o,B.j,B.k,0),B.n,d,d,new A.F(B.Ac,d,i,j,d,d,B.p),d,d,d,B.e8,d,d,d),B.af],f)
+if(!b){q=A.d(46,B.da.h()>>>16&255,B.da.h()>>>8&255,B.da.h()&255)
 l=A.r(9)
 k=A.W(A.d(89,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1)
 B.c.J(j,A.b([A.I(d,A.X(A.b([B.aha,B.a3,A.q("LOCKED: Clear Gym "+(c-1)+" first to unlock entry permit.",d,d,d,d,B.b4r,d,d)],f),B.o,B.j,B.k,0),B.n,d,d,new A.F(q,d,k,l,d,d,B.p),d,d,d,B.hv,d,d,1/0)],f))}else{c=A.ah(e.Tm(s,s>=q,"Pok\xe9dex Caught",q,"species"),1)
@@ -115814,11 +115818,11 @@ c=A.b([B.bb7],f)
 if(a)B.c.J(c,A.b([A.q("Re-challenge (On-Par Lv. \u2022 2\u20135 Trainer / 6 Leader Mons)",d,d,d,d,A.aD(d,d,k,d,d,d,d,d,d,d,d,9.5,d,d,B.N,d,d,!0,d,d,d,d,d,d,d,d),d,d)],f))
 c=A.ah(A.ad(c,B.L,B.j,B.k),1)
 l=r&&!e.w?new A.aKr(e,a2,a3,a4):d
-i=A.bg(r?B.Cr:B.fG,d,d,16)
-B.c.J(j,A.b([q,B.af,A.X(A.b([c,A.dP(i,A.q(a?"RE-CHALLENGE":"ENTER GAUNTLET",d,d,d,d,B.b6k,d,d),l,A.cc(d,d,k,B.bp,B.c8,d,d,d,d,B.A,d,d,B.t8,d,new A.aZ(A.r(10),B.I),d,d,d,d,d))],f),B.o,B.j,B.k,0)],f))}return A.I(d,new A.aG(B.ns,A.ad(j,B.L,B.j,B.k),d),B.n,d,d,new A.F(d,d,m,n,d,new A.bh(B.aY,B.bm,B.V,o,d,d),B.p),d,d,d,d,d,d,d)},
-Tm(a,b,c,d,e){var s=null,r=B.b.A(a/d,0,1),q=b?B.aC:B.h,p=A.r(9),o=A.W(b?A.d(115,q.h()>>>16&255,q.h()>>>8&255,q.h()&255):B.bp,1),n=A.q(c,s,s,s,s,B.UN,s,s),m=t.p
+i=A.bg(r?B.Cs:B.fG,d,d,16)
+B.c.J(j,A.b([q,B.af,A.X(A.b([c,A.dP(i,A.q(a?"RE-CHALLENGE":"ENTER GAUNTLET",d,d,d,d,B.b6k,d,d),l,A.cc(d,d,k,B.bn,B.c8,d,d,d,d,B.A,d,d,B.t8,d,new A.aZ(A.r(10),B.I),d,d,d,d,d))],f),B.o,B.j,B.k,0)],f))}return A.I(d,new A.aG(B.ns,A.ad(j,B.L,B.j,B.k),d),B.n,d,d,new A.F(d,d,m,n,d,new A.bh(B.aY,B.bm,B.V,o,d,d),B.p),d,d,d,d,d,d,d)},
+Tm(a,b,c,d,e){var s=null,r=B.b.A(a/d,0,1),q=b?B.aC:B.h,p=A.r(9),o=A.W(b?A.d(115,q.h()>>>16&255,q.h()>>>8&255,q.h()&255):B.bn,1),n=A.q(c,s,s,s,s,B.UN,s,s),m=t.p
 n=A.X(A.b([n,A.bg(b?B.aeK:B.af0,q,s,12)],m),B.o,B.aP,B.k,0)
-return A.I(s,A.ad(A.b([n,B.bS,A.q(""+a+" / "+d+" "+e,s,s,s,s,A.aD(s,s,b?B.d:q,s,s,s,s,s,s,s,s,10.5,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.cM,A.is(A.r(4),A.nx(B.bp,3.5,r,new A.j9(q,t.ZU)))],m),B.L,B.j,B.k),B.n,s,s,new A.F(B.Ab,s,o,p,s,s,B.p),s,s,s,B.hv,s,s,s)},
+return A.I(s,A.ad(A.b([n,B.bS,A.q(""+a+" / "+d+" "+e,s,s,s,s,A.aD(s,s,b?B.d:q,s,s,s,s,s,s,s,s,10.5,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.cM,A.is(A.r(4),A.nx(B.bn,3.5,r,new A.j9(q,t.ZU)))],m),B.L,B.j,B.k),B.n,s,s,new A.F(B.Ac,s,o,p,s,s,B.p),s,s,s,B.hv,s,s,s)},
 CE(a,b,c){return this.atT(a,b,c)},
 atT(a,b,c){var s=0,r=A.C(t.H),q,p=this,o,n,m
 var $async$CE=A.D(function(d,e){if(d===1)return A.z(e,r)
@@ -115912,7 +115916,7 @@ m=A.dU("assets/images/bg_pokemon_league.png",B.H,c,B.q,B.cf,!1,c,c,c)
 l=t.O
 k=A.eF(c,new A.F(c,c,c,c,c,new A.bh(B.bs,B.am,B.V,A.b([A.d(194,B.iz.h()>>>16&255,B.iz.h()>>>8&255,B.iz.h()&255),A.d(158,B.iF.h()>>>16&255,B.iF.h()>>>8&255,B.iF.h()&255),A.d(224,B.iy.h()>>>16&255,B.iy.h()>>>8&255,B.iy.h()&255)],l),c,c),B.p),B.bQ)
 j=a.y
-l=A.b([A.d(56,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.zW],l)
+l=A.b([A.d(56,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),B.zX],l)
 i=A.r(16)
 h=A.W(A.d(153,j.h()>>>16&255,j.h()>>>8&255,j.h()&255),1.3)
 g=t.p
@@ -115981,7 +115985,7 @@ $1(a){},
 $S:16}
 A.aKx.prototype={
 $1(a){var s=this,r=s.d
-return A.ro(s.a.d.z,B.yp,null,null,!1,!1,s.b,r.d,s.c,!0,r.e,null,r.b,r.c)},
+return A.ro(s.a.d.z,B.yq,null,null,!1,!1,s.b,r.d,s.c,!0,r.e,null,r.b,r.c)},
 $S:55}
 A.aKy.prototype={
 $0(){var s,r=this.a
@@ -116027,7 +116031,7 @@ $2(a,b){return B.eL},
 $S:18}
 A.aKk.prototype={
 $2(a,b){var s,r,q,p,o=null,n=this.a.e[b],m=A.r(13),l=A.W(n.d<=0?A.d(B.b.p(127.5),B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):A.d(31,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),k=n.b,j=t.p
-k=A.b([A.q(k,o,o,o,o,A.aD(o,o,n.d<=0?B.aQ:B.d,o,o,o,o,o,o,o,o,13,o,o,B.y,o,o,!0,o,o,o,o,o,o,o,o),o,o),B.a3,A.q("Lv."+n.c,o,o,o,o,B.UI,o,o)],j)
+k=A.b([A.q(k,o,o,o,o,A.aD(o,o,n.d<=0?B.aQ:B.d,o,o,o,o,o,o,o,o,13,o,o,B.y,o,o,!0,o,o,o,o,o,o,o,o),o,o),B.a3,A.q("Lv."+n.c,o,o,o,o,B.UJ,o,o)],j)
 if(n.at!==B.al){s=A.d(56,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255)
 r=A.r(4)
 B.c.J(k,A.b([B.a3,A.I(o,A.q(n.at.b.toUpperCase(),o,o,o,o,B.xr,o,o),B.n,o,o,new A.F(s,o,o,r,o,o,B.p),o,o,o,B.dE,o,o,o)],j))}k=A.X(k,B.o,B.j,B.k,0)
@@ -116040,7 +116044,7 @@ q=n.d
 if(q<=0)q=B.a6
 else{p=n.e
 if(q<=p/5)q=B.z
-else q=q<=p/2?B.h:B.aC}return A.I(o,A.X(A.b([k,B.dg,A.b6(A.is(s,A.nx(B.bp,6,r,new A.j9(q,t.ZU))),o,105)],j),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.Af,o,l,m,o,o,B.p),o,o,o,B.fE,o,o,o)},
+else q=q<=p/2?B.h:B.aC}return A.I(o,A.X(A.b([k,B.dg,A.b6(A.is(s,A.nx(B.bn,6,r,new A.j9(q,t.ZU))),o,105)],j),B.o,B.j,B.k,0),B.n,o,o,new A.F(B.Ag,o,l,m,o,o,B.p),o,o,o,B.fE,o,o,o)},
 $S:75}
 A.aKo.prototype={
 $0(){return this.a.tg(this.b)},
@@ -116163,7 +116167,7 @@ if(m===0)m=k.afq(i)
 else m=new A.xD(new A.GA(new A.aMh(k,i,g),m,!0,!0,!0,A.b3U(),j),B.a9L,B.ad,!1,j,j,B.mn,!1,j,j,m,B.b_,j,j,B.O,B.ca,j)
 m=A.ah(m,1)
 l=A.r(11)
-return A.eW(h,B.e7,A.ad(A.b([o,n,m,A.e4(!0,new A.aG(B.a9K,A.I(j,B.aX5,B.n,j,j,new A.F(B.a71,j,A.W(B.bp,1),l,j,j,B.p),j,j,j,B.hr,j,j,1/0),j),B.ae,!1)],s),B.o,B.j,B.k),!1)},
+return A.eW(h,B.e7,A.ad(A.b([o,n,m,A.e4(!0,new A.aG(B.a9K,A.I(j,B.aX5,B.n,j,j,new A.F(B.a71,j,A.W(B.bn,1),l,j,j,B.p),j,j,j,B.hr,j,j,1/0),j),B.ae,!1)],s),B.o,B.j,B.k),!1)},
 B_(a,b,c){var s=null
 return A.ah(A.ad(A.b([A.q(a,s,s,s,s,B.b5i,s,s),B.bS,A.Dh(B.H,A.q(b,s,s,s,s,A.aD(s,s,c,s,s,s,s,s,s,s,s,14,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s),B.fw)],t.p),B.o,B.j,B.k),1)},
 afr(a){var s=this
@@ -116176,9 +116180,9 @@ s=A.r(16)
 r=A.W(b.r?A.d(B.b.p(127.5),B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.a4,1.2)
 q=A.r(13)
 p=A.W(b.r?A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):A.d(B.b.p(76.5),B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
-q=A.I(h,A.va(h,B.cz,!1,0,48,b.d),B.n,h,h,new A.F(B.Aa,h,p,q,h,h,B.p),h,58,h,B.kN,h,h,58)
+q=A.I(h,A.va(h,B.cz,!1,0,48,b.d),B.n,h,h,new A.F(B.Ab,h,p,q,h,h,B.p),h,58,h,B.kN,h,h,58)
 p=t.p
-o=A.b([new A.cF(1,B.aV,A.q(b.b,1,B.a_,h,h,B.Uz,h,h),h)],p)
+o=A.b([new A.cF(1,B.aV,A.q(b.b,1,B.a_,h,h,B.UA,h,h),h)],p)
 if(b.r){n=A.d(46,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 m=A.r(6)
 B.c.J(o,A.b([B.a3,A.I(h,B.aX7,B.n,h,h,new A.F(n,h,A.W(A.d(B.b.p(178.5),B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1),m,h,h,B.p),h,h,h,B.dF,h,h,h)],p))}o=A.X(o,B.o,B.j,B.k,0)
@@ -116187,17 +116191,17 @@ m=i.Ih("MATCHES "+b.e,B.a9)
 l=i.Ih("WINS "+b.f,B.aC)
 k=g?"WIN":"LOSS"
 j=g?B.aC:B.z
-j=A.ah(A.ad(A.b([o,B.cL,n,B.eL,A.ks(B.d1,A.b([m,l,i.Ih("LAST: "+k,j)],p),B.ei,4,6)],p),B.L,B.j,B.k),1)
+j=A.ah(A.ad(A.b([o,B.cL,n,B.eL,A.ks(B.d2,A.b([m,l,i.Ih("LAST: "+k,j)],p),B.ei,4,6)],p),B.L,B.j,B.k),1)
 if(b.r){o=A.d(166,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 o=A.jx(B.agE,B.bbl,new A.aM8(i,a,b),A.eG(h,h,h,h,h,h,h,h,h,B.h,h,B.a2,B.f8,h,new A.aZ(A.r(10),B.I),new A.aT(o,1,B.U,-1),h,h,h,h))}else o=A.dP(B.ahA,B.b9S,new A.aM9(i,a,b),A.cc(h,h,B.ha,h,h,h,h,h,h,B.A,h,B.a2,B.a9s,h,new A.aZ(A.r(10),B.I),h,h,h,h,h))
-return A.I(h,A.X(A.b([q,B.dL,j,B.ag,o],p),B.o,B.j,B.k,0),B.n,h,h,new A.F(h,h,r,s,h,new A.bh(B.aY,B.bm,B.V,f,h,h),B.p),h,h,B.AN,B.e9,h,h,h)},
+return A.I(h,A.X(A.b([q,B.dL,j,B.ag,o],p),B.o,B.j,B.k,0),B.n,h,h,new A.F(h,h,r,s,h,new A.bh(B.aY,B.bm,B.V,f,h,h),B.p),h,h,B.AO,B.e9,h,h,h)},
 Ih(a,b){var s=null,r=A.d(31,b.h()>>>16&255,b.h()>>>8&255,b.h()&255),q=A.r(6),p=A.W(A.d(102,b.h()>>>16&255,b.h()>>>8&255,b.h()&255),1)
 return A.I(s,A.q(a,s,s,s,s,A.aD(s,s,b,s,s,s,s,s,s,s,s,9.5,s,s,B.y,s,s,!0,s,0.4,s,s,s,s,s,s),s,s),B.n,s,s,new A.F(r,s,p,q,s,s,B.p),s,s,s,B.kO,s,s,s)},
 afq(a){var s,r=null,q=a.x1.length!==0,p=A.r(18),o=A.W(B.a4,1),n=q?B.afN:B.kY
 n=A.bg(n,q?B.h:B.r,r,44)
 s=A.q(q?"No Friends Added Yet":"No Rivals Yet",r,r,r,r,B.ic,r,r)
 n=A.b([n,B.aw,s,B.aS,A.q(q?"Switch to All Rivals and tap Add Friend on any trainer you've battled.":"Complete a Fist-Bump Battle with another player to record your rivalry, match count, and wins here.",r,r,r,r,B.b2x,B.aU,r),B.dz],t.p)
-if(q)n.push(A.nK(B.b9w,new A.aM2(this),A.eG(r,r,r,r,r,r,r,r,r,B.r,r,r,r,r,r,B.yu,r,r,r,r)))
+if(q)n.push(A.nK(B.b9w,new A.aM2(this),A.eG(r,r,r,r,r,r,r,r,r,B.r,r,r,r,r,r,B.yv,r,r,r,r)))
 else n.push(A.dP(B.ahx,B.b9d,new A.aM3(this),A.cc(r,r,B.cq,r,r,r,r,r,r,B.d,r,r,B.a9W,r,new A.aZ(A.r(12),B.I),r,r,r,r,r)))
 return A.cO(new A.aG(B.aa6,A.I(r,A.ad(n,B.o,B.j,B.Y),B.n,r,r,new A.F(B.a3G,r,o,p,r,r,B.p),r,r,r,B.aa4,r,r,r),r),r,r)}}
 A.aMc.prototype={
@@ -116270,7 +116274,7 @@ $1(a){return B.qi},
 $S:150}
 A.GO.prototype={
 am(){var s=B.c.gS(B.jf)
-return new A.a2B(B.dU,s,new A.Hd(new A.dF("Red",B.pt,B.d_),$.b5()),A.b([1,4,7],t.t))}}
+return new A.a2B(B.dU,s,new A.Hd(new A.dF("Red",B.pt,B.d0),$.b5()),A.b([1,4,7],t.t))}}
 A.a2B.prototype={
 aJ(){this.aY()
 $.bV().zi(B.a0g)},
@@ -116305,10 +116309,10 @@ i=A.X(i,B.o,B.j,B.k,0)
 r=A.r(18)
 p=A.W(B.a4,1.2)
 o=l.r
-o=A.X(A.b([A.va(o,B.cz,!1,0,76,k),B.U0,A.va(o,B.cz,!0,1,76,k)],q),B.o,B.b9,B.k,0)
+o=A.X(A.b([A.va(o,B.cz,!1,0,76,k),B.U1,A.va(o,B.cz,!0,1,76,k)],q),B.o,B.b9,B.k,0)
 n=l.r
 m=n.c?"Female":"Male"
-return A.ad(A.b([B.cM,h,B.a8,B.bam,B.af,s,B.aw,i,B.aw,A.ah(A.I(k,A.ad(A.b([o,B.a8,A.q(n.b+" ("+m+")",k,k,k,k,B.UT,k,k),B.af,A.b0Q(l.w,A.aUq(k,new A.hC(4,A.r(12),B.qg),k,B.nr,k,k,"",k,!0,new A.hC(4,A.r(12),B.a0I),k,k,k,k,k,B.e7,!0,k,k,k,k,new A.hC(4,A.r(12),B.yv),k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,B.b1G,"TRAINER NAME",!0,!0,!1,k,k,k,k,k,k,k,k,k,k,k,k,k,k),14,k,B.UK,B.b17)],q),B.o,B.b9,B.k),B.n,k,k,new A.F(k,k,p,r,k,B.aCw,B.p),k,k,k,B.AW,k,k,1/0),1),B.aw,A.b6(A.eQ(B.b8L,new A.aND(l),A.cc(k,k,B.cq,k,k,k,4,k,k,B.d,k,k,k,k,new A.aZ(A.r(14),new A.aT(A.d(56,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),k,k,k,k,k)),48,1/0)],q),B.o,B.j,B.k)},
+return A.ad(A.b([B.cM,h,B.a8,B.bam,B.af,s,B.aw,i,B.aw,A.ah(A.I(k,A.ad(A.b([o,B.a8,A.q(n.b+" ("+m+")",k,k,k,k,B.UT,k,k),B.af,A.b0Q(l.w,A.aUq(k,new A.hC(4,A.r(12),B.qg),k,B.nr,k,k,"",k,!0,new A.hC(4,A.r(12),B.a0I),k,k,k,k,k,B.e7,!0,k,k,k,k,new A.hC(4,A.r(12),B.yw),k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,B.b1G,"TRAINER NAME",!0,!0,!1,k,k,k,k,k,k,k,k,k,k,k,k,k,k),14,k,B.UL,B.b17)],q),B.o,B.b9,B.k),B.n,k,k,new A.F(k,k,p,r,k,B.aCw,B.p),k,k,k,B.AX,k,k,1/0),1),B.aw,A.b6(A.eQ(B.b8L,new A.aND(l),A.cc(k,k,B.cq,k,k,k,4,k,k,B.d,k,k,k,k,new A.aZ(A.r(14),new A.aT(A.d(56,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),k,k,k,k,k)),48,1/0)],q),B.o,B.j,B.k)},
 Vr(a,b,c,d){var s=null,r=c?new A.bh(B.b7,B.bN,B.V,A.b([B.cz,B.ri],t.O),s,s):s,q=c?s:B.a6,p=A.r(10),o=A.bg(b,c?B.d:B.b1,s,16)
 return A.hz(s,A.ja(A.X(A.b([o,B.a3,A.q(a,s,s,s,s,A.aD(s,s,c?B.d:B.b1,s,s,s,s,s,s,s,s,11.5,s,s,B.y,s,s,!0,s,s,s,s,s,s,s,s),s,s)],t.p),B.o,B.j,B.k,0),B.ah,new A.F(q,s,s,p,s,r,B.p),B.fD,s,s,B.aa3,s,s,s),B.b_,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,d,s,s,s,s,s,s)},
 afU(){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1=this,a2=null,a3=a1.x,a4=$.e9().i(0,a3)
@@ -116317,7 +116321,7 @@ s=A.mj(a3,0,0.05,A.F8(a4),5,a2,!0,a2)
 r=A.bU(B.c.gS(s.a.c))
 a4=A.co(a2,B.fv,B.dd,a2,a2,new A.aNp(a1),B.ae,a2,a2)
 a3=t.O
-q=A.b([B.cq,B.d9],a3)
+q=A.b([B.cq,B.da],a3)
 p=A.r(18)
 o=t.p
 q=A.X(A.b([a4,A.I(a2,B.bb_,B.n,a2,a2,new A.F(a2,a2,A.W(A.d(140,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1),p,a2,new A.bh(B.b7,B.bN,B.V,q,a2,a2),B.p),a2,a2,a2,B.t7,a2,a2,a2),B.x8],o),B.o,B.aP,B.k,0)
@@ -116342,16 +116346,16 @@ h=a1.w5("Defense",s.r)
 g=a1.w5("Sp. Atk",s.w)
 f=a1.w5("Speed",s.y)
 e=A.r(9)
-d=A.W(s.cy===3&&s.a.fy!=null?A.d(153,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255):A.d(71,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
-c=A.bg(B.ez,s.cy===3&&s.a.fy!=null?B.M:B.r,a2,13)
+d=A.W(s.cy===3&&s.a.go!=null?A.d(153,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255):A.d(71,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1)
+c=A.bg(B.ez,s.cy===3&&s.a.go!=null?B.M:B.r,a2,13)
 b=B.hU.i(0,s.cx)
 b=b==null?a2:b.b
 if(b==null)b=s.cx
 a=s.cy===3
-a0=a&&s.a.fy!=null?" (Hidden)":""
-e=A.I(a2,A.X(A.b([c,B.bx,A.ah(A.q("Ability: "+b+a0,a2,B.a_,a2,a2,A.aD(a2,a2,a&&s.a.fy!=null?B.hg:B.r,a2,a2,a2,a2,a2,a2,a2,a2,11,a2,a2,B.ch,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2),1)],o),B.o,B.j,B.k,0),B.n,a2,a2,new A.F(B.e7,a2,d,e,a2,a2,B.p),a2,a2,B.AO,B.np,a2,a2,1/0)
+a0=a&&s.a.go!=null?" (Hidden)":""
+e=A.I(a2,A.X(A.b([c,B.bx,A.ah(A.q("Ability: "+b+a0,a2,B.a_,a2,a2,A.aD(a2,a2,a&&s.a.go!=null?B.hg:B.r,a2,a2,a2,a2,a2,a2,a2,a2,11,a2,a2,B.ch,a2,a2,!0,a2,a2,a2,a2,a2,a2,a2,a2),a2,a2),1)],o),B.o,B.j,B.k,0),B.n,a2,a2,new A.F(B.e7,a2,d,e,a2,a2,B.p),a2,a2,B.AP,B.np,a2,a2,1/0)
 d=A.r(9)
-c=A.W(B.bp,1)
+c=A.W(B.bn,1)
 b=s.z
 p=A.ah(A.I(a2,A.ad(A.b([a3,k,B.aS,l,B.m1,B.a8D,B.a8,j,i,h,g,f,B.dg,e,A.I(a2,A.q("Lv.5 Moves: "+new A.a7(b,new A.aNt(),A.a8(b).j("a7<1,E>")).bw(0,", "),a2,a2,a2,a2,B.b5s,a2,a2),B.n,a2,a2,new A.F(B.e7,a2,c,d,a2,a2,B.p),a2,a2,a2,B.e8,a2,a2,1/0)],o),B.o,B.j,B.k),B.n,a2,a2,new A.F(a2,a2,m,n,a2,new A.bh(B.bs,B.am,B.V,p,a2,a2),B.p),a2,a2,a2,B.t6,a2,a2,1/0),1)
 n=A.d(B.b.p(25.5),B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255)
@@ -116359,7 +116363,7 @@ m=A.r(10)
 d=A.W(A.d(89,B.M.h()>>>16&255,B.M.h()>>>8&255,B.M.h()&255),1)
 m=A.I(a2,A.X(B.aEA,B.o,B.b9,B.k,0),B.n,a2,a2,new A.F(n,a2,d,m,a2,a2,B.p),a2,a2,a2,B.a9y,a2,a2,1/0)
 d=A.cc(a2,a2,B.cq,a2,a2,a2,4,a2,a2,B.d,a2,a2,a2,a2,new A.aZ(A.r(14),new A.aT(A.d(56,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1,B.U,-1)),a2,a2,a2,a2,a2)
-return A.ad(A.b([q,B.aS,B.b9v,B.af,a4,B.aw,p,B.a8,m,B.a8,A.b6(A.eQ(A.q("I CHOOSE "+s.a.b.toUpperCase()+"!",a2,a2,a2,a2,B.xz,a2,a2),new A.aNu(a1,s),d),48,1/0)],o),B.o,B.j,B.k)},
+return A.ad(A.b([q,B.aS,B.b9v,B.af,a4,B.aw,p,B.a8,m,B.a8,A.b6(A.eQ(A.q("I CHOOSE "+s.a.b.toUpperCase()+"!",a2,a2,a2,a2,B.xA,a2,a2),new A.aNu(a1,s),d),48,1/0)],o),B.o,B.j,B.k)},
 w5(a,b){var s,r=null,q=A.b6(A.q(a,r,r,r,r,B.pw,r,r),r,65),p=A.b6(A.q(""+b,r,r,r,r,B.xm,r,r),r,28),o=A.r(3),n=B.b.A(b/25,0,1)
 if(b>=14)s=B.aa
 else s=b>=11?B.h:B.z
@@ -116371,7 +116375,7 @@ q.r=B.c.gS(this.c)
 q=q.w
 s=q.a
 r=s.a
-if(r==="Red"||r==="Leaf")q.rS(0,s.xQ(B.d_,B.pt,p?"Leaf":"Red"))},
+if(r==="Red"||r==="Leaf")q.rS(0,s.xQ(B.d0,B.pt,p?"Leaf":"Red"))},
 $S:0}
 A.aNH.prototype={
 $0(){var s=this.a
@@ -116409,7 +116413,7 @@ $0(){return this.a.Z9(!0)},
 $S:0}
 A.aNC.prototype={
 $1(a){var s,r,q,p,o=null,n=this.a,m=n.r.a===a.a,l=t.O
-l=m?A.b([A.d(140,B.d9.h()>>>16&255,B.d9.h()>>>8&255,B.d9.h()&255),B.a5O],l):A.b([B.a2z,B.A6],l)
+l=m?A.b([A.d(140,B.da.h()>>>16&255,B.da.h()>>>8&255,B.da.h()&255),B.a5O],l):A.b([B.a2z,B.A7],l)
 s=A.r(16)
 r=m?B.z:B.a4
 r=A.W(r,m?2:1)
@@ -116440,7 +116444,7 @@ $0(){return this.a.d=1},
 $S:0}
 A.aNq.prototype={
 $1(a){var s,r,q,p=null,o=$.e9().i(0,a),n=A.bU(B.c.gS(o.c)),m=this.a,l=m.x===a,k=t.O
-k=l?A.b([A.d(82,n.h()>>>16&255,n.h()>>>8&255,n.h()&255),B.a32],k):A.b([B.a6b,B.A6],k)
+k=l?A.b([A.d(82,n.h()>>>16&255,n.h()>>>8&255,n.h()&255),B.a32],k):A.b([B.a6b,B.A7],k)
 s=l?n:B.a4
 s=A.W(s,l?2:1)
 r=A.r(15)
@@ -116469,7 +116473,7 @@ A.aNl.prototype={
 $3(a,b,c){return B.agI},
 $S:10}
 A.aNs.prototype={
-$1(a){return new A.aG(B.B_,new A.fv(a,null),null)},
+$1(a){return new A.aG(B.B0,new A.fv(a,null),null)},
 $S:278}
 A.aNt.prototype={
 $1(a){return a.b},
@@ -116600,17 +116604,17 @@ l=A.d(46,a.h()>>>16&255,a.h()>>>8&255,a.h()&255)
 k=A.r(8)
 j=B.b.p(127.5)
 i=A.W(A.d(j,a.h()>>>16&255,a.h()>>>8&255,a.h()&255),1)
-k=A.I(e,A.q(a1,e,e,e,e,A.aD(e,e,a,e,e,e,e,e,e,e,e,9.5,e,e,B.y,e,e,!0,e,0.7,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(l,e,i,k,e,e,B.p),e,e,e,B.da,e,e,e)
+k=A.I(e,A.q(a1,e,e,e,e,A.aD(e,e,a,e,e,e,e,e,e,e,e,9.5,e,e,B.y,e,e,!0,e,0.7,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(l,e,i,k,e,e,B.p),e,e,e,B.cT,e,e,e)
 l=c?A.d(51,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255):A.d(20,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 i=A.r(8)
 h=A.W(c?B.aC:B.c8,1)
 if(c)g=B.fG
-else g=s?B.afq:B.Cj
+else g=s?B.afq:B.Ck
 g=A.bg(g,c?B.aC:B.S,e,11)
 if(c)s="LOCKED IN"
 else s=s?"READY":"WAITING"
 f=t.p
-i=A.b([A.X(A.b([k,B.dg,A.I(e,A.X(A.b([g,B.bx,A.q(s,e,e,e,e,A.aD(e,e,c?B.aC:B.S,e,e,e,e,e,e,e,e,9,e,e,B.y,e,e,!0,e,0.5,e,e,e,e,e,e),e,e)],f),B.o,B.j,B.Y,0),B.n,e,e,new A.F(l,e,h,i,e,e,B.p),e,e,e,B.da,e,e,e)],f),B.o,B.j,B.k,0),B.af],f)
+i=A.b([A.X(A.b([k,B.dg,A.I(e,A.X(A.b([g,B.bx,A.q(s,e,e,e,e,A.aD(e,e,c?B.aC:B.S,e,e,e,e,e,e,e,e,9,e,e,B.y,e,e,!0,e,0.5,e,e,e,e,e,e),e,e)],f),B.o,B.j,B.Y,0),B.n,e,e,new A.F(l,e,h,i,e,e,B.p),e,e,e,B.cT,e,e,e)],f),B.o,B.j,B.k,0),B.af],f)
 if(d)i.push(new A.aG(B.a9i,A.cO(A.q(b,e,e,e,e,B.b6u,e,e),e,e),e))
 else{d=A.r(14)
 s=a0.CW
@@ -116621,22 +116625,22 @@ k=a0.a.a
 k=s?u.K+k+".gif":u.C+k+".gif"
 k=A.b([A.cO(A.cv(k,B.H,new A.aOU(a0),B.q,B.ay,56,56),e,e)],f)
 if(s)k.push(B.aVN)
-d=A.I(e,A.ct(B.aX,k,B.O,B.bH),B.n,e,e,new A.F(B.d7,e,l,d,e,e,B.p),e,68,e,e,e,e,68)
+d=A.I(e,A.ct(B.aX,k,B.O,B.bH),B.n,e,e,new A.F(B.d8,e,l,d,e,e,B.p),e,68,e,e,e,e,68)
 l=A.b([new A.fq(a0.ch,14,!1,e,!1,e),B.cG],f)
 if(s)B.c.J(l,A.b([B.hA,B.i5],f))
-l.push(A.ah(A.q(a0.b,1,B.a_,e,e,B.Uz,e,e),1))
+l.push(A.ah(A.q(a0.b,1,B.a_,e,e,B.UA,e,e),1))
 l.push(A.q("Lv."+a0.c,e,e,e,e,B.b6q,e,e))
 s=A.X(l,B.o,B.j,B.k,0)
 l=a0.a.c
 l=A.a1(new A.a7(l,new A.aOV(),A.a8(l).j("a7<1,j>")),t.l7)
 if(r!=null){k=A.r(6)
-l.push(A.I(e,A.q("Held: "+r.b,e,e,e,e,B.V6,e,e),B.n,e,e,new A.F(B.bp,e,e,k,e,e,B.p),e,e,e,B.dF,e,e,e))}s=A.b([s,B.cM,A.ks(B.d1,l,B.pI,4,5)],f)
+l.push(A.I(e,A.q("Held: "+r.b,e,e,e,e,B.V6,e,e),B.n,e,e,new A.F(B.bn,e,e,k,e,e,B.p),e,e,e,B.dF,e,e,e))}s=A.b([s,B.cM,A.ks(B.d2,l,B.pI,4,5)],f)
 if(o!=null){l=A.d(41,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255)
 k=A.r(7)
 j=A.W(A.d(B.b.p(178.5),B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255),1)
 B.c.J(s,A.b([B.e0,A.I(e,A.X(A.b([B.nW,B.bx,A.q("TRADE EVOLVES \u2192 "+o.toUpperCase(),e,e,e,e,B.b65,e,e)],f),B.o,B.j,B.Y,0),B.n,e,e,new A.F(l,e,j,k,e,e,B.p),e,e,e,B.aai,e,e,e)],f))}i.push(A.X(A.b([d,B.dL,A.ah(A.ad(s,B.L,B.j,B.k),1)],f),B.o,B.j,B.k,0))}return A.I(e,A.ad(i,B.L,B.j,B.k),B.n,e,e,new A.F(e,e,m,n,e,new A.bh(B.aY,B.bm,B.V,p,e,e),B.p),e,e,e,B.e9,e,e,e)},
-R(a){var s,r,q,p,o,n=this,m=null,l=A.dW(a,!0,t.R),k=n.a.c,j=k.fr,i=k.fx,h=j!=null&&i!=null&&!n.e,g=A.dU("assets/images/bg_bump_radar.png",B.H,m,B.q,B.cf,!1,m,m,m),f=A.eF(m,new A.F(m,m,m,m,m,new A.bh(B.bs,B.am,B.V,A.b([A.d(214,B.d7.h()>>>16&255,B.d7.h()>>>8&255,B.d7.h()&255),A.d(199,B.rl.h()>>>16&255,B.rl.h()>>>8&255,B.rl.h()&255),A.d(240,B.rp.h()>>>16&255,B.rp.h()>>>8&255,B.rp.h()&255)],t.O),m,m),B.p),B.bQ),e=A.r(10),d=n.gaiG(),c=A.r(10),b=A.r(10)
-b=A.fY(!1,B.az,!0,e,A.cw(!1,c,!0,A.I(m,B.Cy,B.n,m,m,new A.F(m,m,A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),b,m,m,B.p),m,36,m,m,m,m,36),m,!0,m,m,m,m,m,m,m,m,d,m,m,m,m),B.n,B.qO,0,m,m,m,m,m,B.cX)
+R(a){var s,r,q,p,o,n=this,m=null,l=A.dW(a,!0,t.R),k=n.a.c,j=k.fr,i=k.fx,h=j!=null&&i!=null&&!n.e,g=A.dU("assets/images/bg_bump_radar.png",B.H,m,B.q,B.cf,!1,m,m,m),f=A.eF(m,new A.F(m,m,m,m,m,new A.bh(B.bs,B.am,B.V,A.b([A.d(214,B.d8.h()>>>16&255,B.d8.h()>>>8&255,B.d8.h()&255),A.d(199,B.rl.h()>>>16&255,B.rl.h()>>>8&255,B.rl.h()&255),A.d(240,B.rp.h()>>>16&255,B.rp.h()>>>8&255,B.rp.h()&255)],t.O),m,m),B.p),B.bQ),e=A.r(10),d=n.gaiG(),c=A.r(10),b=A.r(10)
+b=A.fY(!1,B.az,!0,e,A.cw(!1,c,!0,A.I(m,B.Cz,B.n,m,m,new A.F(m,m,A.W(A.d(36,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),1),b,m,m,B.p),m,36,m,m,m,m,36),m,!0,m,m,m,m,m,m,m,m,d,m,m,m,m),B.n,B.qO,0,m,m,m,m,m,B.cY)
 e=k.CW
 c=k.d
 s=e?c+" disconnected":"Linked with "+c+" \u2022 Round #"+k.cy
@@ -116652,7 +116656,7 @@ e=l.b
 e=A.b([s,B.af,c,new A.aG(B.a9m,b,m),n.Tj(B.h,"Tap a Pok\xe9mon from your party below to offer.",k.fy,j,e.toUpperCase()+"'S OFFER"),B.a8],r)
 if(n.f&&n.w!=null){c=A.r(18)
 b=A.W(A.d(166,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255),1)
-s=A.q("Sent "+A.u(n.r)+" \u2194 Received "+n.w.a.b+"!",m,m,m,m,B.d0,B.aU,m)
+s=A.q("Sent "+A.u(n.r)+" \u2194 Received "+n.w.a.b+"!",m,m,m,m,B.d1,B.aU,m)
 d=A.ah(A.nK(B.bas,d,A.eG(m,m,m,m,m,m,m,m,m,B.S,m,m,B.t1,m,new A.aZ(A.r(12),B.I),B.qg,m,m,m,m)),1)
 q=k.CW?m:new A.aP2(n,k)
 B.c.J(e,A.b([A.ah(A.I(m,A.ad(A.b([B.ahn,B.a8,B.b9z,B.aS,s,B.dz,A.X(A.b([d,B.bw,A.ah(A.dP(B.ah3,B.bbJ,q,A.cc(m,m,B.ha,m,m,m,m,m,m,B.d,m,m,B.t1,m,new A.aZ(A.r(12),B.I),m,m,m,m,m)),2)],r),B.o,B.j,B.k,0)],r),B.o,B.b9,B.k),B.n,m,m,new A.F(B.a5f,m,b,c,m,m,B.p),m,m,m,B.ea,m,m,1/0),1)],r))}else{d=A.r(16)
@@ -116670,10 +116674,10 @@ else s=k.fy?"LOCKED \u2022 WAITING PARTNER":"LOCK & CONFIRM TRADE"
 s=A.q(s,m,m,m,m,B.V5,m,m)
 p=k.fy?A.d(64,B.aC.h()>>>16&255,B.aC.h()>>>8&255,B.aC.h()&255):B.a4
 o=k.fy?B.aC:B.aQ
-c.push(A.ah(A.b6(A.dP(q,s,b,A.cc(m,m,B.zz,p,o,m,m,m,m,B.aJ,m,m,m,m,new A.aZ(A.r(14),B.I),m,m,m,m,m)),48,m),2))
+c.push(A.ah(A.b6(A.dP(q,s,b,A.cc(m,m,B.zA,p,o,m,m,m,m,B.aJ,m,m,m,m,new A.aZ(A.r(14),B.I),m,m,m,m,m)),48,m),2))
 B.c.J(e,A.b([d,B.af,A.X(c,B.o,B.j,B.k,0)],r))}g=A.b([g,f,A.e4(!0,new A.aG(B.a9N,A.ad(e,B.o,B.j,B.k),m),B.ae,!0)],r)
 if(n.e){f=A.d(191,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
-g.push(A.I(m,A.cO(A.ad(A.b([B.b_X,B.dz,A.q("Sending "+A.u(n.r)+"...",m,m,m,m,B.ic,m,m),B.aS,B.b9K],r),B.o,B.j,B.Y),m,m),B.n,f,m,m,m,m,m,m,m,m,m))}return A.ui(!0,A.eW(m,B.d7,A.ct(B.aX,g,B.O,B.ck),!1),new A.aP4(n),t.K)}}
+g.push(A.I(m,A.cO(A.ad(A.b([B.b_X,B.dz,A.q("Sending "+A.u(n.r)+"...",m,m,m,m,B.ic,m,m),B.aS,B.b9K],r),B.o,B.j,B.Y),m,m),B.n,f,m,m,m,m,m,m,m,m,m))}return A.ui(!0,A.eW(m,B.d8,A.ct(B.aX,g,B.O,B.ck),!1),new A.aP4(n),t.K)}}
 A.aP7.prototype={
 $0(){var s=this.a
 if(s.c==null)return
@@ -116765,7 +116769,7 @@ l.push(A.ah(A.q(i.b,1,B.a_,j,j,B.b4d,j,j),1))
 o=A.X(l,B.o,B.j,B.k,0)
 l=""+i.c
 l=f?"Lv."+l+" \u2022 Evolves!":"Lv."+l
-return A.cw(!1,s,!0,A.I(j,A.X(A.b([n,B.a3,A.ah(A.ad(A.b([o,A.q(l,1,B.a_,j,j,A.aD(j,j,f?B.r:B.h,j,j,j,j,j,j,j,j,9.5,j,j,B.N,j,j,!0,j,j,j,j,j,j,j,j),j,j)],m),B.L,B.b9,B.k),1)],m),B.o,B.j,B.k,0),B.n,j,j,new A.F(r,j,p,q,j,j,B.p),j,j,j,B.B2,j,j,j),j,!0,j,j,j,j,j,j,j,j,h,j,j,j,j)},
+return A.cw(!1,s,!0,A.I(j,A.X(A.b([n,B.a3,A.ah(A.ad(A.b([o,A.q(l,1,B.a_,j,j,A.aD(j,j,f?B.r:B.h,j,j,j,j,j,j,j,j,9.5,j,j,B.N,j,j,!0,j,j,j,j,j,j,j,j),j,j)],m),B.L,B.b9,B.k),1)],m),B.o,B.j,B.k,0),B.n,j,j,new A.F(r,j,p,q,j,j,B.p),j,j,j,B.B3,j,j,j),j,!0,j,j,j,j,j,j,j,j,h,j,j,j,j)},
 $S:39}
 A.aOZ.prototype={
 $0(){return this.a.a7Q(this.b,this.c)},
@@ -116934,7 +116938,7 @@ A.a7T.prototype={
 $1(a){return!B.aZe.q(0,a.a)},
 $S:6}
 A.a7U.prototype={
-$1(a){return a.d!==B.D&&a.e>0&&!B.Ts.q(0,a.a)},
+$1(a){return a.d!==B.D&&a.e>0&&!B.Tt.q(0,a.a)},
 $S:6}
 A.a7V.prototype={
 $1(a){return a.eF()},
@@ -117062,7 +117066,7 @@ $1(a){return a.a},
 $S:62}
 A.akT.prototype={
 $1(a){var s
-if(a.ch||a.CW)return!1
+if(a.CW||a.cx)return!1
 if(!a.gOA())return!1
 if(!a.yQ(this.a))return!1
 if(this.b){s=this.c
@@ -117078,11 +117082,11 @@ A.akR.prototype={
 $1(a){return this.a.$1(a)&&a.a1d(this.b,this.c)},
 $S:92}
 A.akS.prototype={
-$1(a){return!a.ch&&!a.CW&&a.gOA()&&a.yQ(this.a)},
+$1(a){return!a.CW&&!a.cx&&a.gOA()&&a.yQ(this.a)},
 $S:92}
 A.akU.prototype={
 $1(a){var s=$.e9().i(0,a)
-return s!=null&&this.a>=s.cy&&this.b>=s.ga6_()},
+return s!=null&&this.a>=s.db&&this.b>=s.ga6_()},
 $S:41}
 A.O6.prototype={
 K(){return"BumpLinkMode."+this.b}}
@@ -117353,7 +117357,7 @@ if(s!=null)s.$0()
 r.Ze()
 s=r.at
 if(s!=null)s.al(0)
-r.at=A.v4(B.Ay,new A.aly(r))
+r.at=A.v4(B.Az,new A.aly(r))
 r.TC()},
 aGF(){var s,r=this
 if(r.ay||r.k4||!r.fy)return
@@ -117586,7 +117590,7 @@ o=p.Q
 if(o!=null)o.al(0)
 m=p.afJ("BUMP_OFFER",n)
 p.nR(m)
-p.Cw(B.AJ)
+p.Cw(B.AK)
 p.tq()
 l.a=0
 p.Q=A.v4(B.ng,new A.alr(l,p,m))
@@ -117694,7 +117698,7 @@ s===$&&A.c()
 s=k===s}else s=!0
 if(s)return
 j=A.be(l.i(0,"kind"))
-i=J.i(l.i(0,"mode"),"trade")?B.d5:B.k5
+i=J.i(l.i(0,"mode"),"trade")?B.d6:B.k5
 if(j==="RADAR_PRESENCE"){s=A.be(l.i(0,a5))
 if(s==null)s=a6
 A.be(l.i(0,a7))
@@ -117910,9 +117914,9 @@ j=A.vT(J.b_(m.a,"sound_bgm_volume"))
 n.x=B.b.A(j==null?0.45:j,0,1)
 j=A.vT(J.b_(m.a,"sound_sfx_volume"))
 n.y=B.b.A(j==null?0.8:j,0,1)
-j=new A.a75(B.yi).awX()
+j=new A.a75(B.yj).awX()
 i=new A.NB(new A.NC(!1,!1,B.Y2,B.Y1))
-i.b=j==null?new A.Bx(B.ya,B.aZp):j
+i.b=j==null?new A.Bx(B.yb,B.aZp):j
 l=i
 s=8
 return A.l($.aX_().jw(l),$async$h5)
@@ -118325,11 +118329,11 @@ R(a){var s,r,q=this,p=null,o=q.e,n=o?p:q.f
 n=A.ah(A.dP(B.ahB,A.Dh(B.H,A.q(q.d,p,p,p,p,B.pA,p,p),B.fw),n,A.cc(p,p,q.c,p,p,p,p,p,p,B.A,p,p,B.no,p,new A.aZ(A.r(12),B.I),p,p,p,p,p)),1)
 s=o?p:q.r
 r=t.p
-s=A.X(A.b([n,B.ag,A.ah(A.jx(B.agq,B.baG,s,A.eG(p,p,B.zh,p,p,p,p,p,p,B.cW,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.a0H,p,p,p,p)),1)],r),B.o,B.j,B.k,0)
+s=A.X(A.b([n,B.ag,A.ah(A.jx(B.agq,B.baG,s,A.eG(p,p,B.zi,p,p,p,p,p,p,B.cX,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.a0H,p,p,p,p)),1)],r),B.o,B.j,B.k,0)
 n=o?p:q.w
-n=A.ah(A.jx(B.agR,B.ba3,n,A.eG(p,p,B.zh,p,p,p,p,p,p,B.r,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.yu,p,p,p,p)),1)
+n=A.ah(A.jx(B.agR,B.ba3,n,A.eG(p,p,B.zi,p,p,p,p,p,p,B.r,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.yv,p,p,p,p)),1)
 o=o?p:q.x
-return A.ad(A.b([s,B.a8,A.X(A.b([n,B.ag,A.ah(A.jx(B.agl,B.b8Y,o,A.eG(p,p,B.a4m,p,p,p,p,p,p,B.z,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.yv,p,p,p,p)),1)],r),B.o,B.j,B.k,0)],r),B.o,B.j,B.Y)}}
+return A.ad(A.b([s,B.a8,A.X(A.b([n,B.ag,A.ah(A.jx(B.agl,B.b8Y,o,A.eG(p,p,B.a4m,p,p,p,p,p,p,B.z,p,p,B.no,p,new A.aZ(A.r(12),B.I),B.yw,p,p,p,p)),1)],r),B.o,B.j,B.k,0)],r),B.o,B.j,B.Y)}}
 A.aRa.prototype={
 $1(a){var s=null,r=A.q(this.a,s,s,s,s,B.b6s,s,s),q=A.q(this.b,s,s,s,s,B.jO,s,s)
 return A.hc(A.b([A.hn(B.bc1,new A.aR8(a),s),A.hn(B.b9e,new A.aR9(a),s)],t.p),s,B.kt,q,s,s,r,s)},
@@ -118377,12 +118381,12 @@ A.aS1.prototype={
 $2(a,b){var s,r,q=this,p=null,o=q.a[b],n=B.aq.i(0,o),m=q.b,l=m.cC(o),k=A.r(12),j=n==null,i=j?p:n.x
 if(i==null)i=B.kX
 s=j?p:n.w
-i=A.bg(i,s==null?B.cW:s,p,24)
+i=A.bg(i,s==null?B.cX:s,p,24)
 s=j?p:n.b
-s=A.q((s==null?o:s)+" (x"+l+")",p,p,p,p,B.d0,p,p)
+s=A.q((s==null?o:s)+" (x"+l+")",p,p,p,p,B.d1,p,p)
 j=j?p:n.c
 r=t.p
-return A.I(p,A.X(A.b([i,B.bw,A.ah(A.ad(A.b([s,A.q(j==null?"":j,p,p,p,p,B.m7,p,p)],r),B.L,B.j,B.k),1),A.eQ(B.baq,new A.aRZ(q.c,m,o,q.d),A.cc(p,p,B.cW,p,p,p,p,p,p,B.A,p,p,B.nq,p,p,p,p,p,p,p))],r),B.o,B.j,B.k,0),B.n,p,p,new A.F(B.zP,p,p,k,p,p,B.p),p,p,p,B.hq,p,p,p)},
+return A.I(p,A.X(A.b([i,B.bw,A.ah(A.ad(A.b([s,A.q(j==null?"":j,p,p,p,p,B.m7,p,p)],r),B.L,B.j,B.k),1),A.eQ(B.baq,new A.aRZ(q.c,m,o,q.d),A.cc(p,p,B.cX,p,p,p,p,p,p,B.A,p,p,B.nq,p,p,p,p,p,p,p))],r),B.o,B.j,B.k,0),B.n,p,p,new A.F(B.zQ,p,p,k,p,p,B.p),p,p,p,B.hq,p,p,p)},
 $S:75}
 A.aRZ.prototype={
 $0(){var s=this
@@ -118395,7 +118399,7 @@ s=p.a
 r=B.aq.i(0,s)
 r=r==null?o:r.b.toUpperCase()
 if(r==null)r=A.kG(s,"_"," ").toUpperCase()
-r=A.q("USE "+r+" ON:",o,o,o,o,B.d0,o,o)
+r=A.q("USE "+r+" ON:",o,o,o,o,B.d1,o,o)
 q=p.b
 return A.hc(o,o,B.kt,A.b6(A.hA(new A.aQT(n,q,s,p.c,a,p.d),q.e.length,B.ad,new A.aQU(),!0),o,17976931348623157e292),o,o,r,o)},
 $S:23}
@@ -118408,7 +118412,7 @@ n=A.q(n+" (HP "+m+"/"+l+")",r,r,r,r,A.aD(r,r,m<=0?B.aQ:B.d,r,r,r,r,r,r,r,r,12,r,
 m=s.c
 if(m==="ether"||m==="max_ether"||m==="leppa_berry"||m==="elixir"||m==="max_elixir")l=A.q("Total PP "+B.c.hB(p.z,0,new A.aQQ())+"/"+B.c.hB(p.z,0,new A.aQR()),r,r,r,r,B.b7T,r,r)
 else{l=p.at
-l=l!==B.al?A.q("Status: "+l.b.toUpperCase(),r,r,r,r,B.b5G,r,r):r}return A.b_a(r,r,new A.aQS(s.a,m,p,s.d,s.e,q,s.f),new A.aZ(o,B.I),l,B.zP,n,r)},
+l=l!==B.al?A.q("Status: "+l.b.toUpperCase(),r,r,r,r,B.b5G,r,r):r}return A.b_a(r,r,new A.aQS(s.a,m,p,s.d,s.e,q,s.f),new A.aZ(o,B.I),l,B.zQ,n,r)},
 $S:743}
 A.aQQ.prototype={
 $2(a,b){return a+b.w},
@@ -118491,11 +118495,11 @@ a1=A.W(a1,b?1.4:1)
 s=c.a.a
 s=c.CW?u.K+s+".gif":u.C+s+".gif"
 s=A.cv(s,B.H,new A.aS6(a),B.q,B.ay,48,48)
-r=b?A.d(51,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bp
+r=b?A.d(51,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.bn
 q=A.r(6)
 p=b?"LEAD":"#"+(a3+1)
 o=t.p
-q=A.X(A.b([A.I(e,A.q(p,e,e,e,e,A.aD(e,e,b?B.h:B.b1,e,e,e,e,e,e,e,e,9,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(r,e,e,q,e,e,B.p),e,e,e,B.dF,e,e,e),B.cj,new A.cF(1,B.aV,A.q(c.b,e,B.a_,e,e,B.pz,e,e),e),B.a3,A.q("Lv."+c.c,e,e,e,e,B.UG,e,e)],o),B.o,B.j,B.k,0)
+q=A.X(A.b([A.I(e,A.q(p,e,e,e,e,A.aD(e,e,b?B.h:B.b1,e,e,e,e,e,e,e,e,9,e,e,B.N,e,e,!0,e,e,e,e,e,e,e,e),e,e),B.n,e,e,new A.F(r,e,e,q,e,e,B.p),e,e,e,B.dF,e,e,e),B.cj,new A.cF(1,B.aV,A.q(c.b,e,B.a_,e,e,B.pz,e,e),e),B.a3,A.q("Lv."+c.c,e,e,e,e,B.UH,e,e)],o),B.o,B.j,B.k,0)
 r=c.d
 p=c.e
 n=c.z
@@ -118505,7 +118509,7 @@ l=c.ay
 k=A.W(l!=null&&l.length!==0?A.d(102,B.h.h()>>>16&255,B.h.h()>>>8&255,B.h.h()&255):B.a4,1)
 l=c.ay
 j=l!=null
-i=j&&l.length!==0?B.tU:B.C7
+i=j&&l.length!==0?B.tU:B.C8
 i=A.bg(i,j&&l.length!==0?B.h:B.aQ,e,13)
 if(j&&l.length!==0){l=B.aq.i(0,l)
 l=l==null?e:l.b
@@ -118517,19 +118521,19 @@ l=A.b([i,B.cG,A.ah(A.q(l,e,e,e,e,A.aD(e,e,g,e,e,e,e,e,e,e,e,10,e,e,h&&j.length!=
 j=c.ay
 j=j!=null&&j.length!==0
 i=f.b
-if(j)l.push(A.cw(!1,e,!0,B.OV,e,!0,e,e,e,e,e,e,e,e,new A.aS8(c,d,i),e,e,e,e))
-else l.push(A.cw(!1,e,!0,B.OU,e,!0,e,e,e,e,e,e,e,e,new A.aS9(f.c,d,c,i),e,e,e,e))
+if(j)l.push(A.cw(!1,e,!0,B.OW,e,!0,e,e,e,e,e,e,e,e,new A.aS8(c,d,i),e,e,e,e))
+else l.push(A.cw(!1,e,!0,B.OV,e,!0,e,e,e,e,e,e,e,e,new A.aS9(f.c,d,c,i),e,e,e,e))
 s=A.X(A.b([s,B.bw,A.ah(A.ad(A.b([q,B.e0,new A.jY(r,p,e),B.cM,n,B.e0,A.I(e,A.X(l,B.o,B.j,B.k,0),B.n,e,e,new A.F(B.kk,e,k,m,e,e,B.p),e,e,e,B.kO,e,e,e)],o),B.L,B.j,B.k),1)],o),B.o,B.j,B.k,0)
 r=A.b([],o)
 if(!b)r.push(A.dP(B.agz,B.bc4,new A.aSa(d,a3,i),A.cc(e,e,B.eq,e,e,e,e,e,e,B.A,e,B.a2,B.kQ,e,new A.aZ(A.r(9),B.I),e,e,e,e,e)))
 else{q=A.d(36,B.aa.h()>>>16&255,B.aa.h()>>>8&255,B.aa.h()&255)
 p=A.r(9)
 r.push(A.I(e,B.b9b,B.n,e,e,new A.F(q,e,A.W(A.d(102,B.aa.h()>>>16&255,B.aa.h()>>>8&255,B.aa.h()&255),1),p,e,e,B.p),e,e,e,B.kQ,e,e,e))}r.push(B.dg)
-if(a3>0)r.push(A.co(e,e,B.CA,e,e,new A.aSb(d,a3,i),e,e,"Move Up"))
-if(a3<d.e.length-1)r.push(A.co(e,e,B.Cv,e,e,new A.aSc(d,a3,i),e,e,"Move Down"))
+if(a3>0)r.push(A.co(e,e,B.CB,e,e,new A.aSb(d,a3,i),e,e,"Move Up"))
+if(a3<d.e.length-1)r.push(A.co(e,e,B.Cw,e,e,new A.aSc(d,a3,i),e,e,"Move Down"))
 d=A.d(140,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255)
 r.push(A.jx(B.u5,B.baj,new A.aSd(f.c,a3),A.eG(e,e,e,e,e,e,e,e,e,B.r,e,B.a2,B.ny,e,new A.aZ(A.r(9),B.I),new A.aT(d,1,B.U,-1),e,e,e,e)))
-return A.I(e,A.ad(A.b([s,B.a8,A.X(r,B.o,B.j,B.k,0)],o),B.o,B.j,B.k),B.n,e,e,new A.F(B.f1,e,a1,a0,e,e,B.p),e,e,e,B.AR,e,e,e)},
+return A.I(e,A.ad(A.b([s,B.a8,A.X(r,B.o,B.j,B.k,0)],o),B.o,B.j,B.k),B.n,e,e,new A.F(B.f1,e,a1,a0,e,e,B.p),e,e,e,B.AS,e,e,e)},
 $S:75}
 A.aS6.prototype={
 $3(a,b,c){return A.bg(B.bi,this.a,null,36)},
@@ -118577,11 +118581,11 @@ return(s===B.ct||s===B.dG)&&this.a.cC(a.a)>0},
 $S:33}
 A.aQK.prototype={
 $1(a){var s,r,q=this,p=null,o=q.a,n=t.p
-n=A.b([A.X(A.b([A.q("GIVE ITEM TO "+o.b.toUpperCase(),p,p,p,p,B.xw,p,p),A.co(p,p,B.ec,p,p,new A.aQG(a),p,p,p)],n),B.o,B.aP,B.k,0),B.af],n)
+n=A.b([A.X(A.b([A.q("GIVE ITEM TO "+o.b.toUpperCase(),p,p,p,p,B.xx,p,p),A.co(p,p,B.ec,p,p,new A.aQG(a),p,p,p)],n),B.o,B.aP,B.k,0),B.af],n)
 s=q.b
 if(s.length===0)n.push(A.I(p,B.a2i,B.n,p,p,new A.F(A.d(10,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255),p,p,A.r(12),p,p,B.p),p,p,p,B.ea,p,p,p))
 else{r=q.c
-n.push(new A.eb(new A.av(0,1/0,0,A.bH(r,p,t.w).w.a.b*0.45),A.hA(new A.aQH(s,q.d,o,q.e,a,r),s.length,B.ad,new A.aQI(),!0),p))}return new A.aG(B.AZ,A.ad(n,B.L,B.j,B.Y),p)},
+n.push(new A.eb(new A.av(0,1/0,0,A.bH(r,p,t.w).w.a.b*0.45),A.hA(new A.aQH(s,q.d,o,q.e,a,r),s.length,B.ad,new A.aQI(),!0),p))}return new A.aG(B.B_,A.ad(n,B.L,B.j,B.Y),p)},
 $S:114}
 A.aQG.prototype={
 $0(){A.aM(this.a,!1).b0(null)
@@ -118592,7 +118596,7 @@ $2(a,b){return B.a8},
 $S:18}
 A.aQH.prototype={
 $2(a,b){var s=this,r=null,q=s.a[b],p=s.b,o=p.cC(q.a),n=A.r(12),m=A.r(12),l=q.w,k=A.W(A.d(89,l.h()>>>16&255,l.h()>>>8&255,l.h()&255),1),j=t.p
-return A.cw(!1,n,!0,A.I(r,A.X(A.b([A.bg(q.x,l,r,22),B.bw,A.ah(A.ad(A.b([A.q(q.b+" (x"+o+")",r,r,r,r,B.d0,r,r),A.q(q.c,r,r,r,r,B.m7,r,r)],j),B.L,B.j,B.k),1)],j),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.f1,r,k,m,r,r,B.p),r,r,r,B.fE,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aQF(s.c,p,q,s.d,s.e,s.f),r,r,r,r)},
+return A.cw(!1,n,!0,A.I(r,A.X(A.b([A.bg(q.x,l,r,22),B.bw,A.ah(A.ad(A.b([A.q(q.b+" (x"+o+")",r,r,r,r,B.d1,r,r),A.q(q.c,r,r,r,r,B.m7,r,r)],j),B.L,B.j,B.k),1)],j),B.o,B.j,B.k,0),B.n,r,r,new A.F(B.f1,r,k,m,r,r,B.p),r,r,r,B.fE,r,r,r),r,!0,r,r,r,r,r,r,r,r,new A.aQF(s.c,p,q,s.d,s.e,s.f),r,r,r,r)},
 $S:39}
 A.aQF.prototype={
 $0(){var s,r,q,p=this,o=null,n=p.a,m=n.ay
@@ -118621,7 +118625,7 @@ $S:283}
 A.aep.prototype={
 $3(a,b,c){var s,r=null
 if(b<=0.2)s=B.a2y
-else s=b<=0.5?B.z7:B.a3m
+else s=b<=0.5?B.z8:B.a3m
 return A.adp(B.b7,A.I(r,r,B.n,s,r,r,r,r,r,r,r,r,r),b)},
 $S:283}
 A.xN.prototype={}
@@ -118646,21 +118650,21 @@ n=A.X(A.b([p,B.bw,A.ah(A.ad(A.b([A.X(n,B.o,B.j,B.k,0),B.cL,A.q("Learn "+q+"?",f,
 p=g.c
 p=A.q(p==null?r.b+" already knows 4 moves. Pick a move below to replace with "+q+":":p,f,f,f,f,B.US,f,f)
 m=A.bU(c)
-m=A.b([A.d(56,m.h()>>>16&255,m.h()>>>8&255,m.h()&255),B.Ad],t.O)
+m=A.b([A.d(56,m.h()>>>16&255,m.h()>>>8&255,m.h()&255),B.Ae],t.O)
 l=A.r(14)
 k=A.bU(c)
 k=A.W(A.d(204,k.h()>>>16&255,k.h()>>>8&255,k.h()&255),1.3)
-c=A.X(A.b([A.I(f,B.b8J,B.n,f,f,new A.F(B.h,f,f,A.r(5),f,f,B.p),f,f,f,B.dF,f,f,f),B.a3,A.ah(A.q(q,f,f,f,f,B.UK,f,f),1),new A.fv(c,f)],o),B.o,B.j,B.k,0)
+c=A.X(A.b([A.I(f,B.b8J,B.n,f,f,new A.F(B.h,f,f,A.r(5),f,f,B.p),f,f,f,B.dF,f,f,f),B.a3,A.ah(A.q(q,f,f,f,f,B.UL,f,f),1),new A.fv(c,f)],o),B.o,B.j,B.k,0)
 j=d.d
 i=A.aWi(j)
 i=A.d(46,i.h()>>>16&255,i.h()>>>8&255,i.h()&255)
 h=A.r(5)
 o=A.b([n,B.a8,p,B.af,A.I(f,A.ad(A.b([c,B.e0,A.X(A.b([A.I(f,A.q(A.b2V(j),f,f,f,f,A.aD(f,f,A.aWi(j),f,f,f,f,f,f,f,f,9,f,f,B.N,f,f,!0,f,f,f,f,f,f,f,f),f,f),B.n,f,f,new A.F(i,f,f,h,f,f,B.p),f,f,f,B.dF,f,f,f),B.ag,A.q("PWR "+d.goL()+" \u2022 ACC "+d.f+"% \u2022 PP "+d.r,f,f,f,f,B.b49,f,f)],o),B.o,B.j,B.k,0),B.cM,A.q(d.y,f,f,f,f,B.id,f,f)],o),B.L,B.j,B.k),B.n,f,f,new A.F(f,f,k,l,f,new A.bh(B.b7,B.bN,B.V,m,f,f),B.p),f,f,f,B.hq,f,f,f),B.af,B.bbi,B.aS,new A.cF(1,B.aV,A.hA(new A.aSp(r,a),r.z.length,B.ad,new A.aSq(),!0),f),B.af],o)
-if(g.d)o.push(new A.aG(B.AO,A.q("Tip: Skipped level-up moves can still be swapped in later via Pok\xe9mon \u2192 Moves.",f,f,f,f,A.aD(f,f,A.d(191,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),f,f,f,f,f,f,f,f,9.5,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),B.aU,f),f))
+if(g.d)o.push(new A.aG(B.AP,A.q("Tip: Skipped level-up moves can still be swapped in later via Pok\xe9mon \u2192 Moves.",f,f,f,f,A.aD(f,f,A.d(191,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),f,f,f,f,f,f,f,f,9.5,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),B.aU,f),f))
 d=A.d(56,B.d.h()>>>16&255,B.d.h()>>>8&255,B.d.h()&255)
 d=A.eG(f,f,f,f,f,f,f,f,f,B.S,f,f,f,f,new A.aZ(A.r(12),B.I),new A.aT(d,1,B.U,-1),f,f,f,f)
 o.push(A.b6(A.nK(A.q("DO NOT LEARN "+q.toUpperCase(),f,f,f,f,B.fV,f,f),new A.aSr(a),d),40,f))
-return A.aYX(f,B.ep,new A.eb(new A.av(0,420,0,s.a.b*0.85),new A.aG(B.AX,A.ad(o,B.cr,B.j,B.Y),f),f),f,f,f,B.a9T,B.aYm,f,new A.aZ(e,new A.aT(b,1.4,B.U,-1)),f)},
+return A.aYX(f,B.ep,new A.eb(new A.av(0,420,0,s.a.b*0.85),new A.aG(B.AY,A.ad(o,B.cr,B.j,B.Y),f),f),f,f,f,B.a9T,B.aYm,f,new A.aZ(e,new A.aT(b,1.4,B.U,-1)),f)},
 $S:745}
 A.aSo.prototype={
 $3(a,b,c){var s=this.a,r=s.a.a
@@ -118678,10 +118682,10 @@ $2(a,b){var s,r,q,p=null,o=this.a.z[b],n=A.r(12),m=A.r(12),l=o.c,k=A.bU(l)
 k=A.W(A.d(115,k.h()>>>16&255,k.h()>>>8&255,k.h()&255),1)
 s=o.d
 r=t.p
-s=A.ah(A.ad(A.b([A.X(A.b([new A.cF(1,B.aV,A.q(o.b,p,B.a_,p,p,B.d0,p,p),p),B.a3,new A.fv(l,p),B.a3,A.q(A.b2V(s),p,p,p,p,A.aD(p,p,A.aWi(s),p,p,p,p,p,p,p,p,9,p,p,B.N,p,p,!0,p,p,p,p,p,p,p,p),p,p)],r),B.o,B.j,B.k,0),B.bS,A.q("PWR "+o.goL()+" \u2022 ACC "+o.f+"% \u2022 PP "+o.w+"/"+o.r,p,p,p,p,B.eP,p,p),A.q(o.y,1,B.a_,p,p,B.UZ,p,p)],r),B.L,B.j,B.k),1)
+s=A.ah(A.ad(A.b([A.X(A.b([new A.cF(1,B.aV,A.q(o.b,p,B.a_,p,p,B.d1,p,p),p),B.a3,new A.fv(l,p),B.a3,A.q(A.b2V(s),p,p,p,p,A.aD(p,p,A.aWi(s),p,p,p,p,p,p,p,p,9,p,p,B.N,p,p,!0,p,p,p,p,p,p,p,p),p,p)],r),B.o,B.j,B.k,0),B.bS,A.q("PWR "+o.goL()+" \u2022 ACC "+o.f+"% \u2022 PP "+o.w+"/"+o.r,p,p,p,p,B.eP,p,p),A.q(o.y,1,B.a_,p,p,B.UZ,p,p)],r),B.L,B.j,B.k),1)
 l=A.d(46,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255)
 q=A.r(8)
-return A.cw(!1,n,!0,A.I(p,A.X(A.b([s,B.ag,A.I(p,B.bau,B.n,p,p,new A.F(l,p,A.W(A.d(153,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1),q,p,p,B.p),p,p,p,B.B4,p,p,p)],r),B.o,B.j,B.k,0),B.n,p,p,new A.F(B.f1,p,k,m,p,p,B.p),p,p,p,B.f8,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.aSm(this.b,o),p,p,p,p)},
+return A.cw(!1,n,!0,A.I(p,A.X(A.b([s,B.ag,A.I(p,B.bau,B.n,p,p,new A.F(l,p,A.W(A.d(153,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255),1),q,p,p,B.p),p,p,p,B.B5,p,p,p)],r),B.o,B.j,B.k,0),B.n,p,p,new A.F(B.f1,p,k,m,p,p,B.p),p,p,p,B.f8,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.aSm(this.b,o),p,p,p,p)},
 $S:39}
 A.aSm.prototype={
 $0(){A.aM(this.a,!1).b0(this.b)
@@ -118702,7 +118706,7 @@ $2(a,b){return B.aS},
 $S:18}
 A.aSv.prototype={
 $2(a,b){var s,r,q=null,p=this.a.z[b],o=p.r,n=p.w<o,m=p.c,l=A.bU(m),k=n?new A.aSu(this.b,b):q,j=A.r(11),i=n?1:0.42,h=A.r(11),g=A.W(n?A.d(140,l.h()>>>16&255,l.h()>>>8&255,l.h()&255):B.a4,1),f=A.I(q,q,B.n,q,q,new A.F(l,q,q,A.r(4),q,q,B.p),q,26,q,q,q,q,8),e=t.p
-m=A.ah(A.ad(A.b([A.q(p.b,q,q,q,q,B.d0,q,q),A.q(A.pV(m).toUpperCase(),q,q,q,q,A.aD(q,q,l,q,q,q,q,q,q,q,q,9.5,q,q,B.ch,q,q,!0,q,q,q,q,q,q,q,q),q,q)],e),B.L,B.j,B.k),1)
+m=A.ah(A.ad(A.b([A.q(p.b,q,q,q,q,B.d1,q,q),A.q(A.pV(m).toUpperCase(),q,q,q,q,A.aD(q,q,l,q,q,q,q,q,q,q,q,9.5,q,q,B.ch,q,q,!0,q,q,q,q,q,q,q,q),q,q)],e),B.L,B.j,B.k),1)
 s=A.r(8)
 r=p.w
 return A.cw(!1,j,!0,A.hl(A.I(q,A.X(A.b([f,B.bw,m,A.I(q,A.q("PP "+r+"/"+o,q,q,q,q,A.aD(q,q,n?B.h:B.b5,q,q,q,q,q,q,q,q,11.5,q,q,B.y,q,q,!0,q,q,q,q,q,q,q,q),q,q),B.n,q,q,new A.F(B.hj,q,q,s,q,q,B.p),q,q,q,B.iT,q,q,q)],e),B.o,B.j,B.k,0),B.n,q,q,new A.F(B.a4_,q,g,h,q,q,B.p),q,q,q,B.fE,q,q,q),i),q,!0,q,q,q,q,q,q,q,q,k,q,q,q,q)},
@@ -118741,18 +118745,18 @@ case"repeat_ball":return B.qr
 case"level_ball":return B.a7M
 case"heal_ball":return B.a3I
 case"poke_ball":default:return B.cz}},
-gauy(){switch(this.b){case"great_ball":return B.zc
+gauy(){switch(this.b){case"great_ball":return B.zd
 case"ultra_ball":return B.a78
 case"master_ball":return B.qF
 case"quick_ball":return B.M
 case"timer_ball":return B.qr
-case"dusk_ball":return B.Ae
+case"dusk_ball":return B.Af
 case"net_ball":return B.a5a
 case"fast_ball":return B.M
-case"dream_ball":return B.zd
+case"dream_ball":return B.ze
 case"repeat_ball":return B.qt
 case"level_ball":return B.qt
-case"heal_ball":return B.z3
+case"heal_ball":return B.z4
 case"poke_ball":default:return B.a5D}},
 aK(b3,b4){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5,a6=this,a7=null,a8=b4.a,a9=a8*0.45,b0=a8/2,b1=a6.c,b2=b4.b
 b2=b1?b2*0.56:b2/2
@@ -118774,7 +118778,7 @@ n=A.x()
 n.r=B.a4f.gk(0)
 b3.dY(m,0,3.141592653589793,!0,n)
 n=A.x()
-n.r=B.zS.gk(0)
+n.r=B.zT.gk(0)
 n.b=B.B
 l=a9*0.16
 n.c=l
@@ -118864,7 +118868,7 @@ g=q-a9*0.05
 b3.av(new A.e(l,h),new A.e(o,g),a5)
 b3.av(new A.e(o,h),new A.e(l,g),a5)}else{o=h==="dream_ball"
 if(o||h==="heal_ball"){l=A.x()
-l.r=(o?B.zd:B.z3).gk(0)
+l.r=(o?B.ze:B.z4).gk(0)
 b3.L(new A.e(b0,q-a9*0.44),a9*0.22,l)}}o=b0-a9
 b0+=a9
 l=A.x()
@@ -118895,7 +118899,7 @@ return a.b!==s.b||a.c!==s.c||!J.i(a.d,s.d)||a.e!==s.e}}
 A.GG.prototype={
 R(a){return new A.k6(new A.aqy(this),null,$.bV(),null)}}
 A.aqy.prototype={
-$2(a,b){var s=null,r=$.bV(),q=A.r(10),p=A.d(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),o=A.r(10),n=A.W(r.f?A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):A.d(102,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1),m=r.f,l=m?B.Cp:B.u2
+$2(a,b){var s=null,r=$.bV(),q=A.r(10),p=A.d(115,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),o=A.r(10),n=A.W(r.f?A.d(140,B.z.h()>>>16&255,B.z.h()>>>8&255,B.z.h()&255):A.d(102,B.r.h()>>>16&255,B.r.h()>>>8&255,B.r.h()&255),1),m=r.f,l=m?B.Cq:B.u2
 m=m?B.z:B.d
 return A.cw(!1,q,!0,A.I(s,A.bg(l,m,s,this.a.d),B.n,s,s,new A.F(p,s,n,o,s,s,B.p),s,s,s,B.aac,s,s,s),s,!0,s,s,s,s,s,s,s,new A.aqw(a),new A.aqx(r),s,s,s,s)},
 $S:747}
@@ -118909,7 +118913,7 @@ A.aSG.prototype={
 $1(a){return new A.k6(new A.aSF(),null,$.bV(),null)},
 $S:748}
 A.aSF.prototype={
-$2(a,b){var s,r,q,p,o=null,n=$.bV(),m=n.f,l=m?B.Cp:B.u2
+$2(a,b){var s,r,q,p,o=null,n=$.bV(),m=n.f,l=m?B.Cq:B.u2
 l=A.bg(l,m?B.z:B.aa,o,16)
 s=m?"MUTED":"ACTIVE"
 r=t.p
@@ -118917,7 +118921,7 @@ s=A.X(A.b([B.ahG,B.ag,B.aaF,A.b0M(l,A.q(s,o,o,o,o,A.aD(o,o,m?B.z:B.aa,o,o,o,o,o,
 l=n.x
 m=A.ah(A.b0A(B.r,n.f?o:new A.aSB(n),l),1)
 l=n.r
-q=l?B.afy:B.Ch
+q=l?B.afy:B.Ci
 m=A.X(A.b([B.b_V,m,A.co(o,o,A.bg(q,l?B.aQ:B.r,o,18),o,o,new A.aSC(n),o,o,o)],r),B.o,B.j,B.k,0)
 q=n.y
 l=A.ah(A.b0A(B.M,n.f?o:new A.aSD(n),q),1)
@@ -118964,7 +118968,7 @@ s=A.eT()
 s.e3(r,0,0,1)
 s.ma(p,p,p,1)
 q=o.w
-return A.ja(A.b7H(A.dU(o.gSW(),B.am,new A.ase(o),B.q,B.ay,!0,q,new A.eq(o.gSW(),t.aM),q),B.AK,A.bjm(),B.dC,B.iL,A.bjn()),B.f3,n,B.dD,n,n,n,s,B.am,n)}}
+return A.ja(A.b7H(A.dU(o.gSW(),B.am,new A.ase(o),B.q,B.ay,!0,q,new A.eq(o.gSW(),t.aM),q),B.AL,A.bjm(),B.dC,B.iL,A.bjn()),B.f3,n,B.dD,n,n,n,s,B.am,n)}}
 A.ase.prototype={
 $3(a,b,c){var s=this.a,r=s.w
 return A.dU("assets/images/trainers/"+s.gCn()+"_front.png",B.am,new A.asd(s),B.q,B.ay,!0,r,null,r)},
@@ -118974,7 +118978,7 @@ $3(a,b,c){return A.bg(B.aeZ,B.S,null,this.a.w*0.65)},
 $S:10}
 A.fv.prototype={
 R(a){var s=null,r=this.c,q=A.bU(r),p=A.r(12),o=A.b([new A.cg(0,B.aZ,A.d(51,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),B.ly,2)],t.E)
-return A.I(s,A.q(A.pV(r).toUpperCase(),s,s,s,s,B.b8r,s,s),B.n,s,s,new A.F(q,s,s,p,o,s,B.p),s,s,s,B.da,s,s,s)}}
+return A.I(s,A.q(A.pV(r).toUpperCase(),s,s,s,s,B.b8r,s,s),B.n,s,s,new A.F(q,s,s,p,o,s,B.p),s,s,s,B.cT,s,s,s)}}
 A.vf.prototype={
 R(a2){var s,r,q,p,o,n,m,l,k=this,j=null,i=k.c,h=A.np(i),g=A.adF(i),f=$.e9().i(0,A.baE(i)),e=k.f,d=e?11:14,c=k.d,b=t.O,a=c?A.b([A.d(82,h.h()>>>16&255,h.h()>>>8&255,h.h()&255),A.d(46,g.h()>>>16&255,g.h()>>>8&255,g.h()&255),B.a6B],b):A.b([B.a2Q,B.a4A],b),a0=A.r(16),a1=c?h:B.a4
 a1=A.W(a1,c?2:1.1)
@@ -118997,7 +119001,7 @@ o=t.p
 b=A.X(A.b([new A.cF(1,B.aV,q,j),B.a3,A.I(j,A.q(i===B.dU?"FIRE":"WATER / LEAF",j,j,j,j,B.py,j,j),B.n,j,j,new A.F(j,j,j,p,j,new A.bh(B.b7,B.bN,B.V,b,j,j),B.p),j,j,j,B.dF,j,j,j)],o),B.o,B.j,B.k,0)
 i=A.baD(i)
 i=A.ah(A.ad(A.b([b,B.e0,A.q("Exclusives: "+i,j,j,j,j,A.aD(j,j,B.S,j,j,j,j,j,j,j,j,e?10.2:11,j,j,j,j,1.32,!0,j,j,j,j,j,j,j,j),j,j)],o),B.L,B.j,B.k),1)
-e=c?B.nT:B.Cj
+e=c?B.nT:B.Ck
 return A.hz(j,A.ja(A.X(A.b([r,B.dL,i,B.a3,A.bg(e,c?h:B.c8,j,22)],o),B.o,B.j,B.k,0),B.ah,new A.F(j,j,a1,a0,s,new A.bh(B.aY,B.bm,B.V,a,j,j),B.p),B.az,j,j,new A.a5(d,d,d,d),j,j,j),B.b_,!1,j,j,j,j,j,j,j,j,j,j,j,j,j,j,k.e,j,j,j,j,j,j)}}
 A.atm.prototype={
 $3(a,b,c){var s=this.a,r=s.f,q=r?44:54
@@ -119320,8 +119324,8 @@ A.R6.prototype={}
 A.ate.prototype={
 yW(a,b,c,d,e,f,g,h){throw A.m(A.ez("launch() has not been implemented."))},
 yX(a,b){var s,r=B.m.c6(a,"http:")||B.m.c6(a,"https:"),q=b.a,p=!0
-if(q!==B.Sy)if(q!==B.Sz){s=r&&q===B.ws
-p=s}return this.yW(a,!0,!0,b.b.c,q===B.SA,p,p,b.d)}}
+if(q!==B.Sz)if(q!==B.SA){s=r&&q===B.ws
+p=s}return this.yW(a,!0,!0,b.b.c,q===B.SB,p,p,b.d)}}
 A.atf.prototype={
 aEq(a,b){var s,r=A.aVA(a),q=r==null?null:r.gkn()
 if(B.aZ8.q(0,q))return!1
@@ -122729,7 +122733,7 @@ B.aic=J.aF.prototype
 B.c=J.T.prototype
 B.u7=J.DW.prototype
 B.l=J.xu.prototype
-B.CM=J.xv.prototype
+B.CN=J.xv.prototype
 B.b=J.pD.prototype
 B.m=J.nv.prototype
 B.akJ=J.fG.prototype
@@ -122739,12 +122743,12 @@ B.ci=A.EA.prototype
 B.aPj=A.EB.prototype
 B.we=A.EC.prototype
 B.dH=A.ED.prototype
-B.OF=A.EH.prototype
+B.OG=A.EH.prototype
 B.aPk=A.xR.prototype
 B.b6=A.nG.prototype
-B.Sv=J.Sr.prototype
-B.xJ=J.mB.prototype
-B.ya=new A.a6h(2,"playback")
+B.Sw=J.Sr.prototype
+B.xK=J.mB.prototype
+B.yb=new A.a6h(2,"playback")
 B.VX=new A.oV(0,"mixWithOthers")
 B.VY=new A.oV(1,"duckOthers")
 B.mm=new A.B9(0,"none")
@@ -122758,7 +122762,7 @@ B.bfy=new A.a6o(0,"unknown")
 B.XW=new A.wd(null)
 B.XX=new A.hv(0,1)
 B.XY=new A.hv(0,-1)
-B.yb=new A.hv(1,0)
+B.yc=new A.hv(1,0)
 B.q8=new A.hv(-1,0)
 B.aX=new A.hv(-1,-1)
 B.H=new A.eN(0,0)
@@ -122781,14 +122785,14 @@ B.r=new A.fJ(B.aOo,1,0.09411764705882353,1,1,B.f)
 B.Y0=new A.j9(B.r,t.ZU)
 B.a3Q=new A.h(1,0.5019607843137255,0.8470588235294118,1,B.f)
 B.a3u=new A.h(1,0.25098039215686274,0.7686274509803922,1,B.f)
-B.zA=new A.h(1,0,0.6901960784313725,1,B.f)
+B.zB=new A.h(1,0,0.6901960784313725,1,B.f)
 B.a73=new A.h(1,0,0.5686274509803921,0.9176470588235294,B.f)
-B.aOt=new A.bT([100,B.a3Q,200,B.a3u,400,B.zA,700,B.a73],t.o)
+B.aOt=new A.bT([100,B.a3Q,200,B.a3u,400,B.zB,700,B.a73],t.o)
 B.a9=new A.fJ(B.aOt,1,0.25098039215686274,0.7686274509803922,1,B.f)
-B.yc=new A.j9(B.a9,t.ZU)
+B.yd=new A.j9(B.a9,t.ZU)
 B.Y1=new A.a6H(0,0,"none")
-B.yd=new A.a6I(0,"normal")
-B.ye=new A.a6J(2,"music")
+B.ye=new A.a6I(0,"normal")
+B.yf=new A.a6J(2,"music")
 B.Y2=new A.a6L(1,1,"media")
 B.Y3=new A.No(0,"normal")
 B.Y4=new A.No(1,"preserve")
@@ -122799,10 +122803,10 @@ B.bz=new A.jQ(3,"completed")
 B.bF=new A.e_(0.4,0,0.2,1)
 B.fC=new A.aP(15e4)
 B.kL=new A.aP(75e3)
-B.yf=new A.Np(B.bF,B.fC,B.kL)
+B.yg=new A.Np(B.bF,B.fC,B.kL)
 B.Y5=new A.p_(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.q9=new A.Bt(0,"exit")
-B.yg=new A.Bt(1,"cancel")
+B.yh=new A.Bt(1,"cancel")
 B.fs=new A.kM(0,"detached")
 B.en=new A.kM(1,"resumed")
 B.mo=new A.kM(2,"inactive")
@@ -122810,35 +122814,35 @@ B.k3=new A.kM(3,"hidden")
 B.mp=new A.kM(4,"paused")
 B.qa=new A.Bu(0,"polite")
 B.qb=new A.Bu(1,"assertive")
-B.yh=new A.iq("assets/images/battle_bg_pvp_arena.png",null,null)
+B.yi=new A.iq("assets/images/battle_bg_pvp_arena.png",null,null)
 B.Y6=new A.ND(1,"duckOthers")
-B.yi=new A.ND(2,"mixWithOthers")
+B.yj=new A.ND(2,"mixWithOthers")
 B.Y7=new A.a76(0,"system")
 B.qc=new A.rk(0,"log")
 B.qd=new A.rk(1,"duration")
-B.yj=new A.rk(3,"complete")
+B.yk=new A.rk(3,"complete")
 B.qe=new A.rk(4,"prepared")
 B.Y9=new A.f4(B.qc,null,"Setting AudioContext is not supported on Web",null)
-B.yk=new A.f4(B.qe,null,null,!0)
+B.yl=new A.f4(B.qe,null,null,!0)
 B.Y8=new A.rk(2,"seekComplete")
-B.yl=new A.f4(B.Y8,null,null,null)
-B.ym=new A.f4(B.yj,null,null,null)
+B.ym=new A.f4(B.Y8,null,null,null)
+B.yn=new A.f4(B.yk,null,null,null)
 B.eF=s([],t.s)
 B.J=new A.H8(1,"downstream")
 B.pt=new A.i9(-1,-1,B.J,!1,-1,-1)
-B.d_=new A.c4(-1,-1)
-B.Uo=new A.dF("",B.pt,B.d_)
-B.yn=new A.wi(!1,"",B.eF,B.Uo,null)
+B.d0=new A.c4(-1,-1)
+B.Up=new A.dF("",B.pt,B.d0)
+B.yo=new A.wi(!1,"",B.eF,B.Up,null)
 B.dB=new A.wk(0,"up")
 B.eR=new A.wk(1,"right")
 B.dm=new A.wk(2,"down")
-B.d4=new A.wk(3,"left")
+B.d5=new A.wk(3,"left")
 B.ao=new A.NH(0,"horizontal")
 B.ad=new A.NH(1,"vertical")
-B.U4=new A.uR(0,"backButton")
+B.U5=new A.uR(0,"backButton")
 B.Ya=new A.NJ(null)
 B.bet=new A.aEX(0,"standard")
-B.Yb=new A.NI(B.U4,null,null,B.Ya,null,null,null,null,null,null)
+B.Yb=new A.NI(B.U5,null,null,B.Ya,null,null,null,null,null,null)
 B.Yc=new A.BB(null,null,null,null,null,null,null,null)
 B.h7=new A.afd()
 B.Yd=new A.p4("flutter/keyevent",B.h7,t.Al)
@@ -122849,8 +122853,8 @@ B.cx=new A.aqF()
 B.k4=new A.p4("flutter/accessibility",B.cx,t.Al)
 B.io=new A.NS(0,"fight")
 B.Yg=new A.NS(3,"run")
-B.yo=new A.wn(0,"wild")
-B.yp=new A.wn(1,"gym")
+B.yp=new A.wn(0,"wild")
+B.yq=new A.wn(1,"gym")
 B.h4=new A.wn(2,"expedition")
 B.mq=new A.wn(3,"special")
 B.Zl=new A.ac(60,60,52,2,62,60,52,2)
@@ -122867,28 +122871,28 @@ B.a0i=new A.lI(4,"battleWild")
 B.a0j=new A.lI(5,"battleGym")
 B.a0k=new A.lI(6,"battleExpedition")
 B.a0l=new A.lI(7,"battleSpecial")
-B.yq=new A.mY(0,0)
-B.yr=new A.mY(1,1)
+B.yr=new A.mY(0,0)
+B.ys=new A.mY(1,1)
 B.a0m=new A.mZ(12,"plus")
 B.a0n=new A.mZ(13,"modulate")
 B.t=new A.mZ(3,"srcOver")
 B.ms=new A.mZ(9,"srcATop")
 B.aZ=new A.NX(0,"normal")
 B.i2=new A.ba(8,8)
-B.ys=new A.d5(B.i2,B.i2,B.i2,B.i2)
+B.yt=new A.d5(B.i2,B.i2,B.i2,B.i2)
 B.p2=new A.ba(40,40)
 B.a0s=new A.d5(B.p2,B.p2,B.p2,B.p2)
 B.p3=new A.ba(60,50)
 B.a0u=new A.d5(B.p3,B.p3,B.p3,B.p3)
 B.i1=new A.ba(4,4)
 B.a7=new A.ba(0,0)
-B.yt=new A.d5(B.i1,B.i1,B.a7,B.a7)
+B.yu=new A.d5(B.i1,B.i1,B.a7,B.a7)
 B.jy=new A.ba(22,22)
 B.a0v=new A.d5(B.jy,B.jy,B.jy,B.jy)
 B.p1=new A.ba(12,12)
 B.a0w=new A.d5(B.p1,B.p1,B.p1,B.p1)
-B.SE=new A.ba(16.5,16.5)
-B.a0A=new A.d5(B.a7,B.a7,B.SE,B.SE)
+B.SF=new A.ba(16.5,16.5)
+B.a0A=new A.d5(B.a7,B.a7,B.SF,B.SF)
 B.mt=new A.d5(B.i1,B.i1,B.i1,B.i1)
 B.bt=new A.d5(B.a7,B.a7,B.a7,B.a7)
 B.p4=new A.ba(7,7)
@@ -122900,48 +122904,48 @@ B.c8=new A.h(0.23921568627450981,1,1,1,B.f)
 B.U=new A.NZ(1,"solid")
 B.qg=new A.aT(B.c8,1,B.U,-1)
 B.a5h=new A.h(1,1,0.8980392156862745,0.4980392156862745,B.f)
-B.zI=new A.h(1,1,0.8431372549019608,0.25098039215686274,B.f)
+B.zJ=new A.h(1,1,0.8431372549019608,0.25098039215686274,B.f)
 B.a3O=new A.h(1,1,0.7686274509803922,0,B.f)
 B.iG=new A.h(1,1,0.6705882352941176,0,B.f)
-B.aOr=new A.bT([100,B.a5h,200,B.zI,400,B.a3O,700,B.iG],t.o)
+B.aOr=new A.bT([100,B.a5h,200,B.zJ,400,B.a3O,700,B.iG],t.o)
 B.h=new A.fJ(B.aOr,1,1,0.8431372549019608,0.25098039215686274,B.f)
 B.a0E=new A.aT(B.h,1,B.U,-1)
 B.M=new A.h(1,1,0.8352941176470589,0.30980392156862746,B.f)
 B.a0F=new A.aT(B.M,1.6,B.U,-1)
-B.yu=new A.aT(B.r,1,B.U,-1)
+B.yv=new A.aT(B.r,1,B.U,-1)
 B.a3o=new A.h(1,0.6549019607843137,1,0.9215686274509803,B.f)
 B.qG=new A.h(1,0.39215686274509803,1,0.8549019607843137,B.f)
 B.a6C=new A.h(1,0.11372549019607843,0.9137254901960784,0.7137254901960784,B.f)
-B.zz=new A.h(1,0,0.7490196078431373,0.6470588235294118,B.f)
-B.aOm=new A.bT([100,B.a3o,200,B.qG,400,B.a6C,700,B.zz],t.o)
-B.cW=new A.fJ(B.aOm,1,0.39215686274509803,1,0.8549019607843137,B.f)
-B.a0H=new A.aT(B.cW,1,B.U,-1)
-B.zf=new A.h(1,1,0.5411764705882353,0.5019607843137255,B.f)
+B.zA=new A.h(1,0,0.7490196078431373,0.6470588235294118,B.f)
+B.aOm=new A.bT([100,B.a3o,200,B.qG,400,B.a6C,700,B.zA],t.o)
+B.cX=new A.fJ(B.aOm,1,0.39215686274509803,1,0.8549019607843137,B.f)
+B.a0H=new A.aT(B.cX,1,B.U,-1)
+B.zg=new A.h(1,1,0.5411764705882353,0.5019607843137255,B.f)
 B.kx=new A.h(1,1,0.3215686274509804,0.3215686274509804,B.f)
 B.a2x=new A.h(1,1,0.09019607843137255,0.26666666666666666,B.f)
 B.iI=new A.h(1,0.8352941176470589,0,0,B.f)
-B.aOs=new A.bT([100,B.zf,200,B.kx,400,B.a2x,700,B.iI],t.o)
+B.aOs=new A.bT([100,B.zg,200,B.kx,400,B.a2x,700,B.iI],t.o)
 B.z=new A.fJ(B.aOs,1,1,0.3215686274509804,0.3215686274509804,B.f)
-B.yv=new A.aT(B.z,1,B.U,-1)
+B.yw=new A.aT(B.z,1,B.U,-1)
 B.a4=new A.h(0.12156862745098039,1,1,1,B.f)
 B.a0I=new A.aT(B.a4,1,B.U,-1)
-B.yw=new A.ej(B.I,B.I,B.I,B.I)
+B.yx=new A.ej(B.I,B.I,B.I,B.I)
 B.a0J=new A.BI(null,null,null,null,null,null,null)
 B.a0K=new A.BJ(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a0L=new A.wo(null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ST=new A.TZ(0,"normal")
+B.SU=new A.TZ(0,"normal")
 B.wt=new A.SV(null)
-B.a0M=new A.wp(B.ST,B.wt)
-B.yx=new A.wp(B.ST,null)
-B.SU=new A.TZ(1,"fast")
-B.a0N=new A.wp(B.SU,B.wt)
+B.a0M=new A.wp(B.SU,B.wt)
+B.yy=new A.wp(B.SU,null)
+B.SV=new A.TZ(1,"fast")
+B.a0N=new A.wp(B.SV,B.wt)
 B.fv=new A.av(0,1/0,0,1/0)
-B.yy=new A.av(0,640,0,1/0)
+B.yz=new A.av(0,640,0,1/0)
 B.a0O=new A.av(0,380,0,1/0)
 B.a0P=new A.av(280,1/0,0,1/0)
 B.a0Q=new A.av(0,1/0,0,204)
 B.a0R=new A.av(0,360,0,1/0)
-B.yz=new A.av(0,1/0,104,1/0)
+B.yA=new A.av(0,1/0,104,1/0)
 B.mu=new A.av(36,1/0,36,1/0)
 B.a0S=new A.av(0,1/0,0,214)
 B.mv=new A.av(1/0,1/0,1/0,1/0)
@@ -122950,7 +122954,7 @@ B.cf=new A.BL(2,"cover")
 B.fw=new A.BL(6,"scaleDown")
 B.mw=new A.BM(0,"tight")
 B.qh=new A.BM(1,"max")
-B.yA=new A.BM(5,"strut")
+B.yB=new A.BM(5,"strut")
 B.p=new A.O1(0,"rectangle")
 B.c6=new A.O1(1,"circle")
 B.h6=new A.O2(0,"tight")
@@ -122961,7 +122965,7 @@ B.fx=new A.BN(0,"blink")
 B.cg=new A.BN(1,"webkit")
 B.iq=new A.BN(2,"firefox")
 B.k5=new A.O6(0,"battle")
-B.d5=new A.O6(1,"trade")
+B.d6=new A.O6(1,"trade")
 B.qi=new A.ru(null)
 B.a0Y=new A.BO(null,null,null,null,null,null,null,null,null)
 B.a0Z=new A.a8x(0,"normal")
@@ -122971,9 +122975,9 @@ B.mx=new A.py(A.bkR(),A.aX("py<U>"))
 B.a10=new A.a6p()
 B.bfz=new A.a7v()
 B.a12=new A.a7t()
-B.yB=new A.a7u()
+B.yC=new A.a7u()
 B.bfA=new A.a8i()
-B.yC=new A.a8m()
+B.yD=new A.a8m()
 B.my=new A.OS()
 B.a13=new A.a9P()
 B.k6=new A.Cx()
@@ -122986,13 +122990,13 @@ B.a1=new A.CK()
 B.a18=new A.aay()
 B.a19=new A.aaK()
 B.a1a=new A.abQ()
-B.yG=new A.jg(A.aX("jg<dQ>"))
-B.yF=new A.jg(A.aX("jg<R>"))
+B.yH=new A.jg(A.aX("jg<dQ>"))
+B.yG=new A.jg(A.aX("jg<R>"))
 B.ir=new A.Pv()
 B.a1b=new A.Py()
 B.cw=new A.Py()
 B.a1c=new A.acq()
-B.yH=new A.PT()
+B.yI=new A.PT()
 B.bfC=new A.Qa()
 B.a1d=new A.ae8()
 B.a1e=new A.Qi()
@@ -123011,7 +123015,7 @@ B.a1q=new A.QF()
 B.a1r=new A.QG()
 B.bu=new A.afc()
 B.cR=new A.afe()
-B.yI=function getTagFallback(o) {
+B.yJ=function getTagFallback(o) {
   var s = Object.prototype.toString.call(o);
   return s.substring(8, s.length - 1);
 }
@@ -123134,7 +123138,7 @@ B.a1u=function(hooks) {
   hooks.getTag = getTagFixed;
   hooks.prototypeForTag = prototypeForTagFixed;
 }
-B.yJ=function(hooks) { return hooks; }
+B.yK=function(hooks) { return hooks; }
 
 B.bK=new A.afj()
 B.a1y=new A.ait()
@@ -123142,7 +123146,7 @@ B.a1z=new A.Ey()
 B.a1A=new A.ajm()
 B.a1B=new A.ajG()
 B.a1C=new A.ajI()
-B.yL=new A.ajK()
+B.yM=new A.ajK()
 B.a1D=new A.ajL()
 B.bO=new A.a4()
 B.a1E=new A.S8()
@@ -123161,21 +123165,21 @@ B.a1G=new A.aka()
 B.bfD=new A.akM()
 B.a1I=new A.alh()
 B.a1K=new A.T2()
-B.yN=new A.q1()
-B.yO=new A.anm()
-B.yP=new A.ann()
-B.yQ=new A.anp()
+B.yO=new A.q1()
+B.yP=new A.anm()
+B.yQ=new A.ann()
+B.yR=new A.anp()
 B.a1L=new A.anS()
 B.a1M=new A.TY()
 B.a1N=new A.aof()
-B.yR=new A.o7()
+B.yS=new A.o7()
 B.a1O=new A.apK()
 B.a=new A.apN()
 B.a1P=new A.Uo()
 B.eo=new A.aqE()
 B.it=new A.aqI()
-B.d6=new A.aqJ()
-B.yS=new A.aqV()
+B.d7=new A.aqJ()
+B.yT=new A.aqV()
 B.h8=new A.aro()
 B.a1R=new A.art()
 B.a1S=new A.ary()
@@ -123185,12 +123189,12 @@ B.a1V=new A.arE()
 B.a1W=new A.arG()
 B.a1X=new A.arH()
 B.a1Y=new A.arI()
-B.yT=new A.qs()
-B.yU=new A.qv()
+B.yU=new A.qs()
+B.yV=new A.qv()
 B.a1Z=new A.atd()
 B.be=new A.atg()
 B.iu=new A.ath()
-B.yV=new A.ati()
+B.yW=new A.ati()
 B.jS=new A.zi(0,0,0,0)
 B.aJK=s([],A.aX("T<aan>"))
 B.bfE=new A.atp()
@@ -123204,7 +123208,7 @@ B.k9=new A.Wu()
 B.ka=new A.avr()
 B.a2_=new A.WS()
 B.Vg=new A.Hq(!0,!1)
-B.yW=new A.Xd()
+B.yX=new A.Xd()
 B.a20=new A.XB()
 B.kb=new A.XP()
 B.a21=new A.aAX()
@@ -123220,10 +123224,10 @@ B.dp=new A.aFx()
 B.ah=new A.Jm()
 B.a25=new A.a_1()
 B.dN=new A.aGX()
-B.yX=new A.aHd()
+B.yY=new A.aHd()
 B.dO=new A.a1K()
 B.a26=new A.aMB()
-B.yY=new A.aNh()
+B.yZ=new A.aNh()
 B.ke=new A.a2M()
 B.fy=new A.aPm()
 B.a28=new A.aPn()
@@ -123256,8 +123260,8 @@ B.iw=new A.wy(1,"isTrue")
 B.ql=new A.wy(2,"isFalse")
 B.kf=new A.wy(3,"mixed")
 B.a2m=new A.BY(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.yZ=new A.eO(0,B.I)
-B.z_=new A.C4(null)
+B.z_=new A.eO(0,B.I)
+B.z0=new A.C4(null)
 B.a2q=new A.C4(B.wt)
 B.aXG=new A.Gf(2,"clear")
 B.mz=new A.C5(B.aXG)
@@ -123278,20 +123282,20 @@ B.d=new A.h(1,1,1,1,B.f)
 B.mO=new A.h(1,0.9176470588235294,0.8666666666666667,1,B.f)
 B.n3=new A.h(1,0.30980392156862746,0.21568627450980393,0.5450980392156862,B.f)
 B.kj=new A.h(1,0.8156862745098039,0.7372549019607844,1,B.f)
-B.A9=new A.h(1,0.12941176470588237,0,0.36470588235294116,B.f)
+B.Aa=new A.h(1,0.12941176470588237,0,0.36470588235294116,B.f)
 B.a2v=new A.h(1,0.3843137254901961,0.3568627450980392,0.44313725490196076,B.f)
 B.n1=new A.h(1,0.9098039215686274,0.8705882352941177,0.9725490196078431,B.f)
 B.mZ=new A.h(1,0.2901960784313726,0.26666666666666666,0.34509803921568627,B.f)
 B.r_=new A.h(1,0.8,0.7607843137254902,0.8627450980392157,B.f)
-B.zm=new A.h(1,0.11372549019607843,0.09803921568627451,0.16862745098039217,B.f)
+B.zn=new A.h(1,0.11372549019607843,0.09803921568627451,0.16862745098039217,B.f)
 B.a4R=new A.h(1,0.49019607843137253,0.3215686274509804,0.3764705882352941,B.f)
 B.mG=new A.h(1,1,0.8470588235294118,0.8941176470588236,B.f)
 B.mE=new A.h(1,0.38823529411764707,0.23137254901960785,0.2823529411764706,B.f)
 B.qU=new A.h(1,0.9372549019607843,0.7215686274509804,0.7843137254901961,B.f)
-B.zy=new A.h(1,0.19215686274509805,0.06666666666666667,0.11372549019607843,B.f)
+B.zz=new A.h(1,0.19215686274509805,0.06666666666666667,0.11372549019607843,B.f)
 B.a5b=new A.h(1,0.7019607843137254,0.14901960784313725,0.11764705882352941,B.f)
-B.zr=new A.h(1,0.9764705882352941,0.8705882352941177,0.8627450980392157,B.f)
-B.A1=new A.h(1,0.5490196078431373,0.11372549019607843,0.09411764705882353,B.f)
+B.zs=new A.h(1,0.9764705882352941,0.8705882352941177,0.8627450980392157,B.f)
+B.A2=new A.h(1,0.5490196078431373,0.11372549019607843,0.09411764705882353,B.f)
 B.rq=new A.h(1,0.996078431372549,0.9686274509803922,1,B.f)
 B.qL=new A.h(1,0.11372549019607843,0.10588235294117647,0.12549019607843137,B.f)
 B.a59=new A.h(1,0.9058823529411765,0.8784313725490196,0.9254901960784314,B.f)
@@ -123302,10 +123306,10 @@ B.a3D=new A.h(1,0.9254901960784314,0.9019607843137255,0.9411764705882353,B.f)
 B.mS=new A.h(1,0.9019607843137255,0.8784313725490196,0.9137254901960784,B.f)
 B.qY=new A.h(1,0.28627450980392155,0.27058823529411763,0.30980392156862746,B.f)
 B.a2X=new A.h(1,0.4745098039215686,0.4549019607843137,0.49411764705882355,B.f)
-B.ze=new A.h(1,0.792156862745098,0.7686274509803922,0.8156862745098039,B.f)
-B.Ak=new A.h(1,0.19607843137254902,0.1843137254901961,0.20784313725490197,B.f)
+B.zf=new A.h(1,0.792156862745098,0.7686274509803922,0.8156862745098039,B.f)
+B.Al=new A.h(1,0.19607843137254902,0.1843137254901961,0.20784313725490197,B.f)
 B.a4r=new A.h(1,0.9607843137254902,0.9372549019607843,0.9686274509803922,B.f)
-B.a2t=new A.rE(B.c7,B.ra,B.d,B.mO,B.n3,B.mO,B.kj,B.A9,B.n3,B.a2v,B.d,B.n1,B.mZ,B.n1,B.r_,B.zm,B.mZ,B.a4R,B.d,B.mG,B.mE,B.mG,B.qU,B.zy,B.mE,B.a5b,B.d,B.zr,B.A1,B.rq,B.qL,B.a59,B.a2D,B.rq,B.d,B.a6n,B.a46,B.a3D,B.mS,B.qY,B.a2X,B.ze,B.A,B.A,B.Ak,B.a4r,B.kj,B.ra,B.rq,B.qL)
+B.a2t=new A.rE(B.c7,B.ra,B.d,B.mO,B.n3,B.mO,B.kj,B.Aa,B.n3,B.a2v,B.d,B.n1,B.mZ,B.n1,B.r_,B.zn,B.mZ,B.a4R,B.d,B.mG,B.mE,B.mG,B.qU,B.zz,B.mE,B.a5b,B.d,B.zs,B.A2,B.rq,B.qL,B.a59,B.a2D,B.rq,B.d,B.a6n,B.a46,B.a3D,B.mS,B.qY,B.a2X,B.zf,B.A,B.A,B.Al,B.a4r,B.kj,B.ra,B.rq,B.qL)
 B.a45=new A.h(1,0.2196078431372549,0.11764705882352941,0.4470588235294118,B.f)
 B.a4t=new A.h(1,0.2,0.17647058823529413,0.2549019607843137,B.f)
 B.a31=new A.h(1,0.28627450980392155,0.1450980392156863,0.19607843137254902,B.f)
@@ -123318,7 +123322,7 @@ B.a2w=new A.h(1,0.12941176470588237,0.12156862745098039,0.14901960784313725,B.f)
 B.a6X=new A.h(1,0.16862745098039217,0.1607843137254902,0.18823529411764706,B.f)
 B.a3a=new A.h(1,0.21176470588235294,0.20392156862745098,0.23137254901960785,B.f)
 B.a2E=new A.h(1,0.5764705882352941,0.5607843137254902,0.6,B.f)
-B.a2u=new A.rE(B.bW,B.kj,B.a45,B.n3,B.mO,B.mO,B.kj,B.A9,B.n3,B.r_,B.a4t,B.mZ,B.n1,B.n1,B.r_,B.zm,B.mZ,B.qU,B.a31,B.mE,B.mG,B.mG,B.qU,B.zy,B.mE,B.a2V,B.a6h,B.A1,B.zr,B.rj,B.mS,B.qY,B.rj,B.a47,B.a5P,B.qL,B.a2w,B.a6X,B.a3a,B.ze,B.a2E,B.qY,B.A,B.A,B.mS,B.Ak,B.ra,B.kj,B.rj,B.mS)
+B.a2u=new A.rE(B.bW,B.kj,B.a45,B.n3,B.mO,B.mO,B.kj,B.Aa,B.n3,B.r_,B.a4t,B.mZ,B.n1,B.n1,B.r_,B.zn,B.mZ,B.qU,B.a31,B.mE,B.mG,B.mG,B.qU,B.zz,B.mE,B.a2V,B.a6h,B.A2,B.zs,B.rj,B.mS,B.qY,B.rj,B.a47,B.a5P,B.qL,B.a2w,B.a6X,B.a3a,B.zf,B.a2E,B.qY,B.A,B.A,B.mS,B.Al,B.ra,B.kj,B.rj,B.mS)
 B.qq=new A.OB(2,"displayP3")
 B.qr=new A.h(1,0.9372549019607843,0.26666666666666666,0.26666666666666666,B.f)
 B.a2y=new A.h(1,0.9411764705882353,0.3137254901960784,0.18823529411764706,B.f)
@@ -123326,8 +123330,8 @@ B.a2z=new A.h(0.8784313725490196,0.08627450980392157,0.10196078431372549,0.16470
 B.a2A=new A.h(1,0.2235294117647059,0.28627450980392155,0.6705882352941176,B.f)
 B.a2C=new A.h(0.9098039215686274,0.1411764705882353,0.09803921568627451,0.1568627450980392,B.f)
 B.eT=new A.h(1,0.0392156862745098,0.054901960784313725,0.10196078431372549,B.f)
-B.z1=new A.h(0.8784313725490196,0.047058823529411764,0.06274509803921569,0.10980392156862745,B.f)
-B.z2=new A.h(1,0.2196078431372549,0.5568627450980392,0.23529411764705882,B.f)
+B.z2=new A.h(0.8784313725490196,0.047058823529411764,0.06274509803921569,0.10980392156862745,B.f)
+B.z3=new A.h(1,0.2196078431372549,0.5568627450980392,0.23529411764705882,B.f)
 B.a2G=new A.h(0.9176470588235294,0.07450980392156863,0.07450980392156863,0.11764705882352941,B.f)
 B.ha=new A.h(1,0,0.6745098039215687,0.7568627450980392,B.f)
 B.a2H=new A.h(0.8,0.0392156862745098,0.06274509803921569,0.09411764705882353,B.f)
@@ -123339,7 +123343,7 @@ B.a2O=new A.h(0.9333333333333333,0.16862745098039217,0.12549019607843137,0.07058
 B.at=new A.h(1,1,0.8392156862745098,0,B.f)
 B.qs=new A.h(1,0.03529411764705882,0.043137254901960784,0.07058823529411765,B.f)
 B.a2Q=new A.h(0.8862745098039215,0.08627450980392157,0.10588235294117647,0.16862745098039217,B.f)
-B.z3=new A.h(1,0.2196078431372549,0.7411764705882353,0.9725490196078431,B.f)
+B.z4=new A.h(1,0.2196078431372549,0.7411764705882353,0.9725490196078431,B.f)
 B.a2S=new A.h(1,0.08235294117647059,0.07058823529411765,0.11764705882352941,B.f)
 B.a2U=new A.h(1,0.6274509803921569,0.25098039215686274,0.6274509803921569,B.f)
 B.a2W=new A.h(1,0.07058823529411765,0.07058823529411765,0.09019607843137255,B.f)
@@ -123351,9 +123355,9 @@ B.mB=new A.h(1,0.2901960784313726,0.0784313725490196,0.5490196078431373,B.f)
 B.bA=new A.h(1,0.9607843137254902,0.9607843137254902,0.8627450980392157,B.f)
 B.mC=new A.h(1,0.5529411764705883,0.4823529411764706,0.40784313725490196,B.f)
 B.a32=new A.h(1,0.0784313725490196,0.09411764705882353,0.16862745098039217,B.f)
-B.z5=new A.h(1,0.3176470588235294,0.17647058823529413,0.6588235294117647,B.f)
-B.z6=new A.h(1,0.0392156862745098,0.03529411764705882,0.06274509803921569,B.f)
-B.z7=new A.h(1,0.9725490196078431,0.8156862745098039,0.18823529411764706,B.f)
+B.z6=new A.h(1,0.3176470588235294,0.17647058823529413,0.6588235294117647,B.f)
+B.z7=new A.h(1,0.0392156862745098,0.03529411764705882,0.06274509803921569,B.f)
+B.z8=new A.h(1,0.9725490196078431,0.8156862745098039,0.18823529411764706,B.f)
 B.qt=new A.h(1,0.9803921568627451,0.8,0.08235294117647059,B.f)
 B.qu=new A.h(1,0.30196078431372547,0.7137254901960784,0.6745098039215687,B.f)
 B.a33=new A.h(1,0.03529411764705882,0.06274509803921569,0.09411764705882353,B.f)
@@ -123362,8 +123366,8 @@ B.qv=new A.h(1,0.054901960784313725,0.08235294117647059,0.1450980392156863,B.f)
 B.qw=new A.h(1,0.054901960784313725,0.047058823529411764,0.11372549019607843,B.f)
 B.hc=new A.h(1,0.9725490196078431,0.7333333333333333,0.8156862745098039,B.f)
 B.a38=new A.h(0.4,0.7843137254901961,0.7843137254901961,0.7843137254901961,B.f)
-B.d7=new A.h(1,0.0392156862745098,0.050980392156862744,0.09411764705882353,B.f)
-B.z8=new A.h(1,0.8901960784313725,0.9490196078431372,0.9921568627450981,B.f)
+B.d8=new A.h(1,0.0392156862745098,0.050980392156862744,0.09411764705882353,B.f)
+B.z9=new A.h(1,0.8901960784313725,0.9490196078431372,0.9921568627450981,B.f)
 B.a3c=new A.h(1,0.0784313725490196,0.08627450980392157,0.14901960784313725,B.f)
 B.a3e=new A.h(1,0.16862745098039217,0.17647058823529413,0.21176470588235294,B.f)
 B.qx=new A.h(1,1,0.42745098039215684,0,B.f)
@@ -123380,51 +123384,51 @@ B.a3p=new A.h(1,0.043137254901960784,0.047058823529411764,0.09411764705882353,B.
 B.qD=new A.h(1,0,0.4745098039215686,0.4196078431372549,B.f)
 B.iz=new A.h(1,0.0784313725490196,0.043137254901960784,0.07058823529411765,B.f)
 B.a3q=new A.h(1,0.08627450980392157,0.09803921568627451,0.17254901960784313,B.f)
-B.z9=new A.h(1,0.2,0.2549019607843137,0.3333333333333333,B.f)
+B.za=new A.h(1,0.2,0.2549019607843137,0.3333333333333333,B.f)
 B.a3r=new A.h(1,0.7215686274509804,0.7215686274509804,0.8156862745098039,B.f)
 B.cI=new A.h(1,0.7411764705882353,0.7411764705882353,0.7411764705882353,B.f)
 B.a3v=new A.h(0.9333333333333333,0.0784313725490196,0.08235294117647059,0.13333333333333333,B.f)
 B.qE=new A.h(1,0.043137254901960784,0.06274509803921569,0.11372549019607843,B.f)
 B.iA=new A.h(1,0.03529411764705882,0.050980392156862744,0.09411764705882353,B.f)
 B.qF=new A.h(1,0.807843137254902,0.5764705882352941,0.8470588235294118,B.f)
-B.d8=new A.h(1,0.8431372549019608,0.8,0.7843137254901961,B.f)
+B.d9=new A.h(1,0.8431372549019608,0.8,0.7843137254901961,B.f)
 B.mF=new A.h(1,0.14901960784313725,0.6509803921568628,0.6039215686274509,B.f)
 B.a3x=new A.h(1,0.10980392156862745,0.12549019607843137,0.18823529411764706,B.f)
-B.za=new A.h(0.9098039215686274,0.07450980392156863,0.0784313725490196,0.14901960784313725,B.f)
+B.zb=new A.h(0.9098039215686274,0.07450980392156863,0.0784313725490196,0.14901960784313725,B.f)
 B.a3y=new A.h(1,0.10196078431372549,0.11764705882352941,0.1843137254901961,B.f)
 B.qH=new A.h(1,0.03137254901960784,0.047058823529411764,0.09411764705882353,B.f)
 B.a3A=new A.h(0.9176470588235294,0.0784313725490196,0.08627450980392157,0.1411764705882353,B.f)
 B.a3B=new A.h(0.9254901960784314,0.06274509803921569,0.09019607843137255,0.1568627450980392,B.f)
 B.dr=new A.h(1,1,0.4392156862745098,0.2627450980392157,B.f)
-B.zb=new A.h(1,0.48627450980392156,0.30196078431372547,1,B.f)
+B.zc=new A.h(1,0.48627450980392156,0.30196078431372547,1,B.f)
 B.eU=new A.h(1,0.00784313725490196,0.5333333333333333,0.8196078431372549,B.f)
 B.a3E=new A.h(1,0.1568627450980392,0.10980392156862745,0.19607843137254902,B.f)
 B.cq=new A.h(1,0.8274509803921568,0.1843137254901961,0.1843137254901961,B.f)
 B.qI=new A.h(1,0.12941176470588237,0.12941176470588237,0.12941176470588237,B.f)
 B.qJ=new A.h(1,0.043137254901960784,0.0784313725490196,0.1411764705882353,B.f)
-B.zc=new A.h(1,0.39215686274509803,0.7098039215686275,0.9647058823529412,B.f)
+B.zd=new A.h(1,0.39215686274509803,0.7098039215686275,0.9647058823529412,B.f)
 B.a3G=new A.h(1,0.07450980392156863,0.09411764705882353,0.1607843137254902,B.f)
 B.a3H=new A.h(1,0.9411764705882353,0.5019607843137255,0.18823529411764706,B.f)
 B.a3I=new A.h(1,0.9568627450980393,0.4470588235294118,0.7137254901960784,B.f)
 B.mH=new A.h(0.8,0.050980392156862744,0.054901960784313725,0.09411764705882353,B.f)
 B.a3J=new A.h(0.8666666666666667,0.07450980392156863,0.07058823529411765,0.10196078431372549,B.f)
 B.a3K=new A.h(0.9019607843137255,0.050980392156862744,0.06666666666666667,0.11764705882352941,B.f)
-B.zd=new A.h(1,0.7529411764705882,0.5176470588235295,0.9882352941176471,B.f)
+B.ze=new A.h(1,0.7529411764705882,0.5176470588235295,0.9882352941176471,B.f)
 B.qK=new A.h(1,0.0392156862745098,0.0784313725490196,0.11764705882352941,B.f)
 B.a6=new A.h(0,0,0,0,B.f)
 B.hd=new A.h(1,0.4745098039215686,0.3333333333333333,0.2823529411764706,B.f)
 B.eq=new A.h(1,1,0.6274509803921569,0,B.f)
 B.a3M=new A.h(1,0.07450980392156863,0.09803921568627451,0.16862745098039217,B.f)
-B.zg=new A.h(1,0.03529411764705882,0.050980392156862744,0.08627450980392157,B.f)
-B.zh=new A.h(1,0.07058823529411765,0.09411764705882353,0.1568627450980392,B.f)
+B.zh=new A.h(1,0.03529411764705882,0.050980392156862744,0.08627450980392157,B.f)
+B.zi=new A.h(1,0.07058823529411765,0.09411764705882353,0.1568627450980392,B.f)
 B.a3N=new A.h(1,0.1568627450980392,0.09803921568627451,0.20392156862745098,B.f)
-B.zj=new A.h(1,0,0.9019607843137255,0.4627450980392157,B.f)
+B.zk=new A.h(1,0,0.9019607843137255,0.4627450980392157,B.f)
 B.mI=new A.h(1,0.8784313725490196,0.25098039215686274,0.984313725490196,B.f)
 B.a3R=new A.h(1,0.047058823529411764,0.07058823529411765,0.10196078431372549,B.f)
 B.a3S=new A.h(1,0.07450980392156863,0.13333333333333333,0.20392156862745098,B.f)
 B.he=new A.h(1,0.24313725490196078,0.15294117647058825,0.13725490196078433,B.f)
 B.a3T=new A.h(1,0.5058823529411764,0.8313725490196079,0.9803921568627451,B.f)
-B.zk=new A.h(0,1,1,1,B.f)
+B.zl=new A.h(0,1,1,1,B.f)
 B.a3U=new A.h(0.9098039215686274,0.09019607843137255,0.06666666666666667,0.13333333333333333,B.f)
 B.a3Y=new A.h(0.8,0.08627450980392157,0.043137254901960784,0.06274509803921569,B.f)
 B.a3Z=new A.h(0.9098039215686274,0.08235294117647059,0.09803921568627451,0.16862745098039217,B.f)
@@ -123433,7 +123437,7 @@ B.qM=new A.h(1,0.011764705882352941,0.6078431372549019,0.8980392156862745,B.f)
 B.a42=new A.h(1,0.03529411764705882,0.03137254901960784,0.054901960784313725,B.f)
 B.a43=new A.h(1,0.0784313725490196,0.09411764705882353,0.1411764705882353,B.f)
 B.a44=new A.h(1,0.03137254901960784,0.047058823529411764,0.0784313725490196,B.f)
-B.zn=new A.h(1,0.7607843137254902,0.09411764705882353,0.3568627450980392,B.f)
+B.zo=new A.h(1,0.7607843137254902,0.09411764705882353,0.3568627450980392,B.f)
 B.qN=new A.h(1,0.07450980392156863,0.06666666666666667,0.12549019607843137,B.f)
 B.qO=new A.h(1,0.09019607843137255,0.11764705882352941,0.1803921568627451,B.f)
 B.qP=new A.h(1,0.06274509803921569,0.054901960784313725,0.13333333333333333,B.f)
@@ -123447,12 +123451,12 @@ B.qT=new A.h(1,0.03529411764705882,0.043137254901960784,0.0784313725490196,B.f)
 B.a4b=new A.h(0.03137254901960784,0,0,0,B.f)
 B.a4c=new A.h(0.9215686274509803,0.06274509803921569,0.0784313725490196,0.13333333333333333,B.f)
 B.a4d=new A.h(1,0.054901960784313725,0.06666666666666667,0.10588235294117647,B.f)
-B.zp=new A.h(1,0.12156862745098039,0.12156862745098039,0.16862745098039217,B.f)
+B.zq=new A.h(1,0.12156862745098039,0.12156862745098039,0.16862745098039217,B.f)
 B.e5=new A.h(1,0.25882352941176473,0.25882352941176473,0.25882352941176473,B.f)
 B.a4e=new A.h(0.9333333333333333,0.23529411764705882,0.10196078431372549,0.20784313725490197,B.f)
 B.a4f=new A.h(1,0.9529411764705882,0.9568627450980393,0.9647058823529412,B.f)
 B.a4h=new A.h(1,0.0392156862745098,0.043137254901960784,0.08235294117647059,B.f)
-B.zq=new A.h(1,0.12941176470588237,0.5882352941176471,0.9529411764705882,B.f)
+B.zr=new A.h(1,0.12941176470588237,0.5882352941176471,0.9529411764705882,B.f)
 B.a4i=new A.h(1,0.10196078431372549,0.12941176470588237,0.20784313725490197,B.f)
 B.a4j=new A.h(1,0.03529411764705882,0.06274509803921569,0.10980392156862745,B.f)
 B.hf=new A.h(1,0.25882352941176473,0.6470588235294118,0.9607843137254902,B.f)
@@ -123463,20 +123467,20 @@ B.qV=new A.h(1,0.050980392156862744,0.06274509803921569,0.11764705882352941,B.f)
 B.aC=new A.h(1,0.20392156862745098,0.9215686274509803,0.5490196078431373,B.f)
 B.a4p=new A.h(1,0.054901960784313725,0.1607843137254902,0.10980392156862745,B.f)
 B.aT=new A.h(0.5411764705882353,0,0,0,B.f)
-B.zt=new A.h(0.5019607843137255,0.5019607843137255,0.5019607843137255,0.5019607843137255,B.f)
-B.zu=new A.h(1,0.1803921568627451,0.1803921568627451,0.23137254901960785,B.f)
+B.zu=new A.h(0.5019607843137255,0.5019607843137255,0.5019607843137255,0.5019607843137255,B.f)
+B.zv=new A.h(1,0.1803921568627451,0.1803921568627451,0.23137254901960785,B.f)
 B.iB=new A.h(1,0.10196078431372549,0,0.2,B.f)
 B.qW=new A.h(1,0.0392156862745098,0.047058823529411764,0.0784313725490196,B.f)
-B.zv=new A.h(1,0.611764705882353,0.8,0.396078431372549,B.f)
+B.zw=new A.h(1,0.611764705882353,0.8,0.396078431372549,B.f)
 B.a4u=new A.h(0.9019607843137255,0.06666666666666667,0.0784313725490196,0.13333333333333333,B.f)
 B.qX=new A.h(1,0.2980392156862745,0.34901960784313724,0.49019607843137253,B.f)
-B.zw=new A.h(1,0.07450980392156863,0.09411764705882353,0.16470588235294117,B.f)
+B.zx=new A.h(1,0.07450980392156863,0.09411764705882353,0.16470588235294117,B.f)
 B.a4x=new A.h(1,0.08627450980392157,0.396078431372549,0.20392156862745098,B.f)
 B.kl=new A.h(1,0.27058823529411763,0.35294117647058826,0.39215686274509803,B.f)
 B.a4z=new A.h(0.8,0.050980392156862744,0.054901960784313725,0.10588235294117647,B.f)
 B.a4A=new A.h(0.9019607843137255,0.058823529411764705,0.07450980392156863,0.12549019607843137,B.f)
 B.aJ=new A.h(0.8666666666666667,0,0,0,B.f)
-B.zx=new A.h(1,0.06274509803921569,0.054901960784313725,0.09411764705882353,B.f)
+B.zy=new A.h(1,0.06274509803921569,0.054901960784313725,0.09411764705882353,B.f)
 B.a4C=new A.h(1,0.4392156862745098,0.34509803921568627,0.596078431372549,B.f)
 B.a4D=new A.h(1,0.6588235294117647,0.7215686274509804,0.12549019607843137,B.f)
 B.a4E=new A.h(1,0.08235294117647059,0.10980392156862745,0.16862745098039217,B.f)
@@ -123486,16 +123490,16 @@ B.a4I=new A.h(0.8745098039215686,0.06274509803921569,0.0784313725490196,0.133333
 B.a4J=new A.h(0.8666666666666667,0.043137254901960784,0.047058823529411764,0.0784313725490196,B.f)
 B.a4K=new A.h(0.8784313725490196,0.07450980392156863,0.08235294117647059,0.13333333333333333,B.f)
 B.iD=new A.h(1,0.5647058823529412,0.792156862745098,0.9764705882352941,B.f)
-B.bp=new A.h(0.10196078431372549,1,1,1,B.f)
+B.bn=new A.h(0.10196078431372549,1,1,1,B.f)
 B.a4L=new A.h(0.9176470588235294,0.07058823529411765,0.0784313725490196,0.13333333333333333,B.f)
-B.zB=new A.h(1,0.9607843137254902,0.6196078431372549,0.043137254901960784,B.f)
+B.zC=new A.h(1,0.9607843137254902,0.6196078431372549,0.043137254901960784,B.f)
 B.a4M=new A.h(1,0.0784313725490196,0.06666666666666667,0.11372549019607843,B.f)
 B.a4N=new A.h(1,0.08235294117647059,0.09803921568627451,0.16862745098039217,B.f)
 B.a4O=new A.h(1,0.1568627450980392,0.18823529411764706,0.26666666666666666,B.f)
 B.a4Q=new A.h(1,0.4392156862745098,0.34509803921568627,0.2823529411764706,B.f)
 B.bX=new A.h(1,0.30196078431372547,0.8156862745098039,0.8823529411764706,B.f)
 B.a4S=new A.h(1,0.6588235294117647,0.6588235294117647,0.47058823529411764,B.f)
-B.zC=new A.h(1,0,0.592156862745098,0.6549019607843137,B.f)
+B.zD=new A.h(1,0,0.592156862745098,0.6549019607843137,B.f)
 B.a4U=new A.h(1,0.08627450980392157,0.11372549019607843,0.21176470588235294,B.f)
 B.a4Z=new A.h(0.9098039215686274,0.08627450980392157,0.06666666666666667,0.1411764705882353,B.f)
 B.mL=new A.h(1,0.047058823529411764,0.06274509803921569,0.10588235294117647,B.f)
@@ -123504,7 +123508,7 @@ B.a50=new A.h(0.9176470588235294,0.0784313725490196,0.09411764705882353,0.156862
 B.a53=new A.h(1,0.47058823529411764,0.7843137254901961,0.3137254901960784,B.f)
 B.a54=new A.h(0.8666666666666667,0.050980392156862744,0.047058823529411764,0.07058823529411765,B.f)
 B.a55=new A.h(0.9098039215686274,0.08627450980392157,0.10196078431372549,0.1607843137254902,B.f)
-B.zE=new A.h(1,0.9254901960784314,0.9372549019607843,0.9450980392156862,B.f)
+B.zF=new A.h(1,0.9254901960784314,0.9372549019607843,0.9450980392156862,B.f)
 B.r0=new A.h(1,0.03137254901960784,0.0392156862745098,0.07058823529411765,B.f)
 B.a57=new A.h(0.8470588235294118,0.06666666666666667,0.08235294117647059,0.1411764705882353,B.f)
 B.r1=new A.h(1,0.06274509803921569,0.08235294117647059,0.14901960784313725,B.f)
@@ -123524,46 +123528,46 @@ B.a5i=new A.h(0.9176470588235294,0.08627450980392157,0.07450980392156863,0.13333
 B.a5j=new A.h(1,0.09411764705882353,0.12549019607843137,0.19607843137254902,B.f)
 B.a5k=new A.h(1,0.09019607843137255,0.10588235294117647,0.16862745098039217,B.f)
 B.r6=new A.h(1,0.0784313725490196,0.054901960784313725,0.09411764705882353,B.f)
-B.zG=new A.h(1,0.7019607843137254,0.5333333333333333,1,B.f)
+B.zH=new A.h(1,0.7019607843137254,0.5333333333333333,1,B.f)
 B.mN=new A.h(1,0.49411764705882355,0.3411764705882353,0.7607843137254902,B.f)
 B.r7=new A.h(1,0.14901960784313725,0.7764705882352941,0.8549019607843137,B.f)
-B.zH=new A.h(0.8,0.0392156862745098,0.054901960784313725,0.09411764705882353,B.f)
+B.zI=new A.h(0.8,0.0392156862745098,0.054901960784313725,0.09411764705882353,B.f)
 B.mP=new A.h(1,0.8784313725490196,0.7529411764705882,0.40784313725490196,B.f)
 B.a5r=new A.h(1,0.0392156862745098,0.0784313725490196,0.07058823529411765,B.f)
 B.dP=new A.h(1,0.0784313725490196,0.10196078431372549,0.1803921568627451,B.f)
 B.kp=new A.h(1,0.27058823529411763,0.15294117647058825,0.6274509803921569,B.f)
 B.hg=new A.h(1,1,0.8784313725490196,0.5098039215686274,B.f)
-B.zK=new A.h(1,0.10196078431372549,0.13333333333333333,0.20392156862745098,B.f)
-B.zL=new A.h(1,0,0.5137254901960784,0.5607843137254902,B.f)
+B.zL=new A.h(1,0.10196078431372549,0.13333333333333333,0.20392156862745098,B.f)
+B.zM=new A.h(1,0,0.5137254901960784,0.5607843137254902,B.f)
 B.a5u=new A.h(0.9176470588235294,0.07058823529411765,0.0784313725490196,0.13725490196078433,B.f)
 B.eW=new A.h(1,0.6901960784313725,0.7450980392156863,0.7725490196078432,B.f)
 B.mQ=new A.h(1,0.050980392156862744,0.2784313725490196,0.6313725490196078,B.f)
-B.zM=new A.h(0.25098039215686274,0.8,0.8,0.8,B.f)
+B.zN=new A.h(0.25098039215686274,0.8,0.8,0.8,B.f)
 B.a5z=new A.h(1,0.054901960784313725,0.07058823529411765,0.12549019607843137,B.f)
 B.kq=new A.h(1,0.7372549019607844,0.6666666666666666,0.6431372549019608,B.f)
-B.zO=new A.h(1,0.0392156862745098,0.043137254901960784,0.0784313725490196,B.f)
+B.zP=new A.h(1,0.0392156862745098,0.043137254901960784,0.0784313725490196,B.f)
 B.eX=new A.h(1,0.4823529411764706,0.12156862745098039,0.6352941176470588,B.f)
 B.a5A=new A.h(1,0.40784313725490196,0.5647058823529412,0.9411764705882353,B.f)
-B.zP=new A.h(1,0.1568627450980392,0.1568627450980392,0.21176470588235294,B.f)
-B.zQ=new A.h(1,1,0.5607843137254902,0,B.f)
+B.zQ=new A.h(1,0.1568627450980392,0.1568627450980392,0.21176470588235294,B.f)
+B.zR=new A.h(1,1,0.5607843137254902,0,B.f)
 B.a5B=new A.h(1,0.9725490196078431,0.34509803921568627,0.5333333333333333,B.f)
 B.a5C=new A.h(0.8,0.07058823529411765,0.08627450980392157,0.1411764705882353,B.f)
 B.a5D=new A.h(1,1,0.43529411764705883,0.3764705882352941,B.f)
 B.a5E=new A.h(0.9215686274509803,0.06274509803921569,0.08235294117647059,0.1411764705882353,B.f)
 B.es=new A.h(1,0.11764705882352941,0.5333333333333333,0.8980392156862745,B.f)
-B.zR=new A.h(1,0.9803921568627451,0.9803921568627451,0.9803921568627451,B.f)
+B.zS=new A.h(1,0.9803921568627451,0.9803921568627451,0.9803921568627451,B.f)
 B.a5G=new A.h(0.8,0.07058823529411765,0.050980392156862744,0.10196078431372549,B.f)
 B.r8=new A.h(1,0.18823529411764706,0.18823529411764706,0.18823529411764706,B.f)
 B.cz=new A.h(1,0.8980392156862745,0.2235294117647059,0.20784313725490197,B.f)
 B.r9=new A.h(1,0.03529411764705882,0.03137254901960784,0.0784313725490196,B.f)
 B.a5H=new A.h(1,0.10588235294117647,0.1411764705882353,0.23137254901960785,B.f)
-B.zS=new A.h(0.12156862745098039,0,0,0,B.f)
-B.zT=new A.h(1,0.08235294117647059,0.10980392156862745,0.17254901960784313,B.f)
+B.zT=new A.h(0.12156862745098039,0,0,0,B.f)
+B.zU=new A.h(1,0.08235294117647059,0.10980392156862745,0.17254901960784313,B.f)
 B.a5I=new A.h(1,0.09019607843137255,0.10980392156862745,0.18823529411764706,B.f)
 B.a5M=new A.h(0.9176470588235294,0.07058823529411765,0.09411764705882353,0.1607843137254902,B.f)
 B.a5N=new A.h(0.9333333333333333,0.058823529411764705,0.07058823529411765,0.11764705882352941,B.f)
 B.a5O=new A.h(0.9176470588235294,0.08627450980392157,0.09803921568627451,0.16862745098039217,B.f)
-B.zV=new A.h(1,0.11764705882352941,0.11764705882352941,0.1411764705882353,B.f)
+B.zW=new A.h(1,0.11764705882352941,0.11764705882352941,0.1411764705882353,B.f)
 B.hh=new A.h(1,0.8784313725490196,0.8784313725490196,0.8784313725490196,B.f)
 B.a5Q=new A.h(1,0.06274509803921569,0.054901960784313725,0.08627450980392157,B.f)
 B.a5S=new A.h(0.8666666666666667,0.09019607843137255,0.07450980392156863,0.12549019607843137,B.f)
@@ -123574,13 +123578,13 @@ B.iE=new A.h(1,0.0392156862745098,0.054901960784313725,0.10588235294117647,B.f)
 B.rb=new A.h(1,0.047058823529411764,0.0392156862745098,0.07058823529411765,B.f)
 B.hi=new A.h(1,0.4,0.7333333333333333,0.41568627450980394,B.f)
 B.a5W=new A.h(0.8784313725490196,0.06274509803921569,0.08627450980392157,0.14901960784313725,B.f)
-B.zW=new A.h(0.9176470588235294,0.07058823529411765,0.08627450980392157,0.1411764705882353,B.f)
+B.zX=new A.h(0.9176470588235294,0.07058823529411765,0.08627450980392157,0.1411764705882353,B.f)
 B.a5X=new A.h(1,0.058823529411764705,0.0784313725490196,0.1411764705882353,B.f)
 B.a5Y=new A.h(0.9098039215686274,0.07058823529411765,0.09803921568627451,0.1411764705882353,B.f)
 B.a5Z=new A.h(0.9098039215686274,0.07058823529411765,0.10196078431372549,0.16862745098039217,B.f)
 B.a6_=new A.h(1,0.08235294117647059,0.09411764705882353,0.16862745098039217,B.f)
-B.zX=new A.h(1,0.9607843137254902,0,0.3411764705882353,B.f)
-B.zY=new A.h(0.9215686274509803,0.06666666666666667,0.08627450980392157,0.14901960784313725,B.f)
+B.zY=new A.h(1,0.9607843137254902,0,0.3411764705882353,B.f)
+B.zZ=new A.h(0.9215686274509803,0.06666666666666667,0.08627450980392157,0.14901960784313725,B.f)
 B.a60=new A.h(0.10196078431372549,0,0,0,B.f)
 B.a61=new A.h(1,0.7215686274509804,0.6274509803921569,0.2196078431372549,B.f)
 B.a62=new A.h(1,0.6,0.10588235294117647,0.10588235294117647,B.f)
@@ -123593,12 +123597,12 @@ B.bB=new A.h(1,1,0.4196078431372549,0.615686274509804,B.f)
 B.re=new A.h(0.4,0.7372549019607844,0.7372549019607844,0.7372549019607844,B.f)
 B.rf=new A.h(1,0.09411764705882353,0.054901960784313725,0.10588235294117647,B.f)
 B.rg=new A.h(1,0.0392156862745098,0.03137254901960784,0.06274509803921569,B.f)
-B.zZ=new A.h(1,0.0392156862745098,0.058823529411764705,0.10196078431372549,B.f)
-B.A_=new A.h(1,0.047058823529411764,0.06274509803921569,0.10980392156862745,B.f)
+B.A_=new A.h(1,0.0392156862745098,0.058823529411764705,0.10196078431372549,B.f)
+B.A0=new A.h(1,0.047058823529411764,0.06274509803921569,0.10980392156862745,B.f)
 B.rh=new A.h(1,0.3058823529411765,0.403921568627451,0.6901960784313725,B.f)
 B.a6b=new A.h(0.8784313725490196,0.08627450980392157,0.10196078431372549,0.16862745098039217,B.f)
 B.ri=new A.h(1,0.7764705882352941,0.1568627450980392,0.1568627450980392,B.f)
-B.A0=new A.h(1,0.1803921568627451,0.6196078431372549,0.3568627450980392,B.f)
+B.A1=new A.h(1,0.1803921568627451,0.6196078431372549,0.3568627450980392,B.f)
 B.a6f=new A.h(0.8,0.0392156862745098,0.06274509803921569,0.10980392156862745,B.f)
 B.a6g=new A.h(1,0.09019607843137255,0.10980392156862745,0.1803921568627451,B.f)
 B.hj=new A.h(0.3803921568627451,0,0,0,B.f)
@@ -123607,7 +123611,7 @@ B.a6i=new A.h(1,0.047058823529411764,0.07058823529411765,0.11764705882352941,B.f
 B.a6k=new A.h(0.8,0.08235294117647059,0.09411764705882353,0.1411764705882353,B.f)
 B.rk=new A.h(1,0.09019607843137255,0.12549019607843137,0.21176470588235294,B.f)
 B.hk=new A.h(1,0.19215686274509805,0.10588235294117647,0.5725490196078431,B.f)
-B.A2=new A.h(1,0.32941176470588235,0.43137254901960786,0.47843137254901963,B.f)
+B.A3=new A.h(1,0.32941176470588235,0.43137254901960786,0.47843137254901963,B.f)
 B.rl=new A.h(1,0.047058823529411764,0.07058823529411765,0.13333333333333333,B.f)
 B.kt=new A.h(1,0.11764705882352941,0.11764705882352941,0.1568627450980392,B.f)
 B.eY=new A.h(1,0.1607843137254902,0.7137254901960784,0.9647058823529412,B.f)
@@ -123618,46 +123622,46 @@ B.a6u=new A.h(1,0.047058823529411764,0.06274509803921569,0.11764705882352941,B.f
 B.a6v=new A.h(1,0.043137254901960784,0.047058823529411764,0.08627450980392157,B.f)
 B.eZ=new A.h(1,0.6313725490196078,0.5333333333333333,0.4980392156862745,B.f)
 B.a6x=new A.h(0.8784313725490196,0.0784313725490196,0.09019607843137255,0.14901960784313725,B.f)
-B.d9=new A.h(1,0.7176470588235294,0.10980392156862745,0.10980392156862745,B.f)
+B.da=new A.h(1,0.7176470588235294,0.10980392156862745,0.10980392156862745,B.f)
 B.a6y=new A.h(0.9333333333333333,0.1411764705882353,0.08627450980392157,0.16470588235294117,B.f)
-B.A3=new A.h(1,0.7333333333333333,0.8705882352941177,0.984313725490196,B.f)
+B.A4=new A.h(1,0.7333333333333333,0.8705882352941177,0.984313725490196,B.f)
 B.aQ=new A.h(0.3843137254901961,1,1,1,B.f)
 B.mU=new A.h(1,1,0.7019607843137254,0,B.f)
 B.hl=new A.h(1,1,0.792156862745098,0.1568627450980392,B.f)
 B.a6B=new A.h(0.9333333333333333,0.06666666666666667,0.08235294117647059,0.1411764705882353,B.f)
 B.mV=new A.h(1,0.9372549019607843,0.4235294117647059,0,B.f)
-B.A6=new A.h(0.8784313725490196,0.06274509803921569,0.07450980392156863,0.12549019607843137,B.f)
+B.A7=new A.h(0.8784313725490196,0.06274509803921569,0.07450980392156863,0.12549019607843137,B.f)
 B.a6E=new A.h(1,0.054901960784313725,0.06274509803921569,0.10196078431372549,B.f)
 B.b1=new A.h(0.6,1,1,1,B.f)
-B.A7=new A.h(1,0.09803921568627451,0.4627450980392157,0.8235294117647058,B.f)
+B.A8=new A.h(1,0.09803921568627451,0.4627450980392157,0.8235294117647058,B.f)
 B.dQ=new A.h(1,1,0.5019607843137255,0.6705882352941176,B.f)
 B.a6F=new A.h(1,0.9333333333333333,0.6,0.6745098039215687,B.f)
 B.ro=new A.h(1,0.8823529411764706,0.9607843137254902,0.996078431372549,B.f)
-B.A8=new A.h(1,0.6196078431372549,0.6196078431372549,0.6196078431372549,B.f)
+B.A9=new A.h(1,0.6196078431372549,0.6196078431372549,0.6196078431372549,B.f)
 B.rp=new A.h(1,0.03137254901960784,0.0392156862745098,0.0784313725490196,B.f)
-B.Aa=new A.h(1,0.043137254901960784,0.054901960784313725,0.09411764705882353,B.f)
+B.Ab=new A.h(1,0.043137254901960784,0.054901960784313725,0.09411764705882353,B.f)
 B.f_=new A.h(1,0.5529411764705883,0.43137254901960786,0.38823529411764707,B.f)
 B.a6J=new A.h(1,0.9254901960784314,0.2823529411764706,0.6,B.f)
 B.kw=new A.h(1,0.8431372549019608,0.6588235294117647,0.43137254901960786,B.f)
 B.a6K=new A.h(0.5019607843137255,0,0,0,B.f)
-B.Ab=new A.h(1,0.043137254901960784,0.054901960784313725,0.09019607843137255,B.f)
+B.Ac=new A.h(1,0.043137254901960784,0.054901960784313725,0.09019607843137255,B.f)
 B.iF=new A.h(1,0.06274509803921569,0.054901960784313725,0.10196078431372549,B.f)
 B.a6N=new A.h(0.8,0.03529411764705882,0.050980392156862744,0.09411764705882353,B.f)
 B.a6Q=new A.h(1,0.6588235294117647,0.5647058823529412,0.9411764705882353,B.f)
 B.a6R=new A.h(1,0.8117647058823529,0.4,0.4745098039215686,B.f)
 B.a6T=new A.h(0.9176470588235294,0.11372549019607843,0.11372549019607843,0.16862745098039217,B.f)
 B.mW=new A.h(0.30196078431372547,1,1,1,B.f)
-B.Ad=new A.h(1,0.11372549019607843,0.13725490196078433,0.2196078431372549,B.f)
-B.Ae=new A.h(1,0.13333333333333333,0.7725490196078432,0.3686274509803922,B.f)
+B.Ae=new A.h(1,0.11372549019607843,0.13725490196078433,0.2196078431372549,B.f)
+B.Af=new A.h(1,0.13333333333333333,0.7725490196078432,0.3686274509803922,B.f)
 B.dR=new A.h(1,0.6705882352941176,0.2784313725490196,0.7372549019607844,B.f)
 B.a6Z=new A.h(0.8666666666666667,0.0784313725490196,0.09411764705882353,0.1568627450980392,B.f)
-B.Af=new A.h(0.9098039215686274,0.0784313725490196,0.09411764705882353,0.14901960784313725,B.f)
+B.Ag=new A.h(0.9098039215686274,0.0784313725490196,0.09411764705882353,0.14901960784313725,B.f)
 B.a7_=new A.h(1,0.07058823529411765,0.07058823529411765,0.11764705882352941,B.f)
 B.a70=new A.h(1,0.0784313725490196,0.09019607843137255,0.14901960784313725,B.f)
 B.a71=new A.h(1,0.07058823529411765,0.09019607843137255,0.1568627450980392,B.f)
 B.rs=new A.h(1,0.054901960784313725,0.08627450980392157,0.1568627450980392,B.f)
 B.iH=new A.h(1,0.5843137254901961,0.4588235294117647,0.803921568627451,B.f)
-B.Ag=new A.h(1,0.07058823529411765,0.0784313725490196,0.13725490196078433,B.f)
+B.Ah=new A.h(1,0.07058823529411765,0.0784313725490196,0.13725490196078433,B.f)
 B.dS=new A.h(1,0.027450980392156862,0.0392156862745098,0.07058823529411765,B.f)
 B.a74=new A.h(1,0.047058823529411764,0.06274509803921569,0.12549019607843137,B.f)
 B.a75=new A.h(0.03137254901960784,0.6196078431372549,0.6196078431372549,0.6196078431372549,B.f)
@@ -123686,7 +123690,7 @@ B.fA=new A.h(1,0.41568627450980394,0.10588235294117647,0.6039215686274509,B.f)
 B.n0=new A.h(1,0.9568627450980393,0.5607843137254902,0.6941176470588235,B.f)
 B.a7v=new A.h(0.9333333333333333,0.058823529411764705,0.07450980392156863,0.12549019607843137,B.f)
 B.a7x=new A.h(0.8,0.06666666666666667,0.08627450980392157,0.14901960784313725,B.f)
-B.Aj=new A.h(0.8784313725490196,0.06666666666666667,0.08627450980392157,0.14901960784313725,B.f)
+B.Ak=new A.h(0.8784313725490196,0.06666666666666667,0.08627450980392157,0.14901960784313725,B.f)
 B.a7B=new A.h(1,0.12156862745098039,0.13333333333333333,0.17647058823529413,B.f)
 B.a7C=new A.h(1,0.596078431372549,0.8470588235294118,0.8470588235294118,B.f)
 B.a7D=new A.h(1,0.9450980392156862,0.9607843137254902,0.9764705882352941,B.f)
@@ -123695,10 +123699,10 @@ B.a7F=new A.h(1,0.10196078431372549,0.054901960784313725,0.1803921568627451,B.f)
 B.a7G=new A.h(0.9411764705882353,0.7529411764705882,0.7529411764705882,0.7529411764705882,B.f)
 B.rx=new A.h(1,1,0.8784313725490196,0.9411764705882353,B.f)
 B.a7H=new A.h(1,0.4392156862745098,0.2196078431372549,0.9725490196078431,B.f)
-B.Al=new A.h(1,0.3686274509803922,0.20784313725490197,0.6941176470588235,B.f)
+B.Am=new A.h(1,0.3686274509803922,0.20784313725490197,0.6941176470588235,B.f)
 B.a7I=new A.h(1,0.08235294117647059,0.11764705882352941,0.19607843137254902,B.f)
 B.iJ=new A.h(1,0.9372549019607843,0.3254901960784314,0.3137254901960784,B.f)
-B.Am=new A.h(1,0.6039215686274509,0.30196078431372547,0.0196078431372549,B.f)
+B.An=new A.h(1,0.6039215686274509,0.30196078431372547,0.0196078431372549,B.f)
 B.hn=new A.h(1,0.2627450980392157,0.6274509803921569,0.2784313725490196,B.f)
 B.bq=new A.h(1,1,0.9333333333333333,0.34509803921568627,B.f)
 B.a7K=new A.h(1,0.054901960784313725,0.43137254901960786,0.2,B.f)
@@ -123724,7 +123728,7 @@ B.ry=new A.jS("liveTextInput",B.rJ)
 B.rC=new A.jT(1,"copy")
 B.n6=new A.jS("copy",B.rC)
 B.rK=new A.jT(9,"custom")
-B.An=new A.jS("custom",B.rK)
+B.Ao=new A.jS("custom",B.rK)
 B.rB=new A.jT(0,"cut")
 B.n7=new A.jS("cut",B.rB)
 B.rF=new A.jT(4,"delete")
@@ -123760,7 +123764,7 @@ B.a84=new A.e_(0.77,0,0.175,1)
 B.a85=new A.e_(0.6,-0.28,0.735,0.045)
 B.a86=new A.e_(0.075,0.82,0.165,1)
 B.dC=new A.e_(0,0,0.58,1)
-B.Ao=new A.e_(0.67,0.03,0.65,0.09)
+B.Ap=new A.e_(0.67,0.03,0.65,0.09)
 B.bfO=new A.a9t(2,"large")
 B.km=new A.h(0.34901960784313724,0,0,0,B.f)
 B.mD=new A.h(0.5019607843137255,1,1,1,B.f)
@@ -123774,15 +123778,15 @@ B.ko=new A.h(0.06274509803921569,0,0,0,B.f)
 B.mK=new A.h(0.06274509803921569,1,1,1,B.f)
 B.a8c=new A.dC(B.ko,null,null,B.ko,B.mK,B.ko,B.mK,B.ko,B.mK,B.ko,B.mK)
 B.rr=new A.h(1,0,0.47843137254901963,1,B.f)
-B.zN=new A.h(1,0.0392156862745098,0.5176470588235295,1,B.f)
-B.z4=new A.h(1,0,0.25098039215686274,0.8666666666666667,B.f)
-B.zo=new A.h(1,0.25098039215686274,0.611764705882353,1,B.f)
-B.nc=new A.dC(B.rr,"systemBlue",null,B.rr,B.zN,B.z4,B.zo,B.rr,B.zN,B.z4,B.zo)
+B.zO=new A.h(1,0.0392156862745098,0.5176470588235295,1,B.f)
+B.z5=new A.h(1,0,0.25098039215686274,0.8666666666666667,B.f)
+B.zp=new A.h(1,0.25098039215686274,0.611764705882353,1,B.f)
+B.nc=new A.dC(B.rr,"systemBlue",null,B.rr,B.zO,B.z5,B.zp,B.rr,B.zO,B.z5,B.zp)
 B.rn=new A.h(0.2980392156862745,0.23529411764705882,0.23529411764705882,0.2627450980392157,B.f)
-B.zl=new A.h(0.2980392156862745,0.9215686274509803,0.9215686274509803,0.9607843137254902,B.f)
-B.A5=new A.h(0.3764705882352941,0.23529411764705882,0.23529411764705882,0.2627450980392157,B.f)
-B.zJ=new A.h(0.3764705882352941,0.9215686274509803,0.9215686274509803,0.9607843137254902,B.f)
-B.a8d=new A.dC(B.rn,"tertiaryLabel",null,B.rn,B.zl,B.A5,B.zJ,B.rn,B.zl,B.A5,B.zJ)
+B.zm=new A.h(0.2980392156862745,0.9215686274509803,0.9215686274509803,0.9607843137254902,B.f)
+B.A6=new A.h(0.3764705882352941,0.23529411764705882,0.23529411764705882,0.2627450980392157,B.f)
+B.zK=new A.h(0.3764705882352941,0.9215686274509803,0.9215686274509803,0.9607843137254902,B.f)
+B.a8d=new A.dC(B.rn,"tertiaryLabel",null,B.rn,B.zm,B.A6,B.zK,B.rn,B.zm,B.A6,B.zK)
 B.kg=new A.h(1,0.9647058823529412,0.9647058823529412,0.9647058823529412,B.f)
 B.mT=new A.h(1,0.13333333333333333,0.13333333333333333,0.13333333333333333,B.f)
 B.a8e=new A.dC(B.kg,null,null,B.kg,B.mT,B.kg,B.mT,B.kg,B.mT,B.kg,B.mT)
@@ -123794,41 +123798,41 @@ B.ki=new A.h(1,0.6,0.6,0.6,B.f)
 B.ks=new A.h(1,0.4588235294117647,0.4588235294117647,0.4588235294117647,B.f)
 B.kC=new A.dC(B.ki,"inactiveGray",null,B.ki,B.ks,B.ki,B.ks,B.ki,B.ks,B.ki,B.ks)
 B.qR=new A.h(0.0784313725490196,0.4549019607843137,0.4549019607843137,0.5019607843137255,B.f)
-B.zU=new A.h(0.17647058823529413,0.4627450980392157,0.4627450980392157,0.5019607843137255,B.f)
-B.zD=new A.h(0.1568627450980392,0.4549019607843137,0.4549019607843137,0.5019607843137255,B.f)
-B.A4=new A.h(0.25882352941176473,0.4627450980392157,0.4627450980392157,0.5019607843137255,B.f)
-B.a8g=new A.dC(B.qR,"quaternarySystemFill",null,B.qR,B.zU,B.zD,B.A4,B.qR,B.zU,B.zD,B.A4)
+B.zV=new A.h(0.17647058823529413,0.4627450980392157,0.4627450980392157,0.5019607843137255,B.f)
+B.zE=new A.h(0.1568627450980392,0.4549019607843137,0.4549019607843137,0.5019607843137255,B.f)
+B.A5=new A.h(0.25882352941176473,0.4627450980392157,0.4627450980392157,0.5019607843137255,B.f)
+B.a8g=new A.dC(B.qR,"quaternarySystemFill",null,B.qR,B.zV,B.zE,B.A5,B.qR,B.zV,B.zE,B.A5)
 B.kv=new A.h(0.9411764705882353,0.9764705882352941,0.9764705882352941,0.9764705882352941,B.f)
 B.mA=new A.h(0.9411764705882353,0.11372549019607843,0.11372549019607843,0.11372549019607843,B.f)
 B.a87=new A.dC(B.kv,null,null,B.kv,B.mA,B.kv,B.mA,B.kv,B.mA,B.kv,B.mA)
 B.a3d=new A.h(1,0.10980392156862745,0.10980392156862745,0.11764705882352941,B.f)
 B.a7d=new A.h(1,0.1411764705882353,0.1411764705882353,0.14901960784313725,B.f)
 B.a8a=new A.dC(B.d,"systemBackground",null,B.d,B.A,B.d,B.A,B.d,B.a3d,B.d,B.a7d)
-B.Ap=new A.dC(B.A,"label",null,B.A,B.d,B.A,B.d,B.A,B.d,B.A,B.d)
-B.be9=new A.XI(B.Ap,B.kC)
-B.xV=new A.XK(null,B.nc,B.d,B.a87,B.a8a,B.nc,!1,B.be9)
-B.f4=new A.wT(B.xV,null,null,null,null,null,null,null,null)
+B.Aq=new A.dC(B.A,"label",null,B.A,B.d,B.A,B.d,B.A,B.d,B.A,B.d)
+B.be9=new A.XI(B.Aq,B.kC)
+B.xW=new A.XK(null,B.nc,B.d,B.a87,B.a8a,B.nc,!1,B.be9)
+B.f4=new A.wT(B.xW,null,null,null,null,null,null,null,null)
 B.cJ=new A.OV(0,"base")
 B.ne=new A.OV(1,"elevated")
 B.a8h=new A.a9K(1,"latency")
 B.a8i=new A.Cv(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a8j=new A.Cw(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Aq=new A.rN(0,"uninitialized")
+B.Ar=new A.rN(0,"uninitialized")
 B.a8k=new A.rN(1,"initializingServices")
-B.Ar=new A.rN(2,"initializedServices")
+B.As=new A.rN(2,"initializedServices")
 B.a8l=new A.rN(3,"initializingUi")
 B.a8m=new A.rN(4,"initialized")
 B.a8n=new A.OZ(0,"inverseHitTest")
 B.a8o=new A.OZ(1,"traversalOrder")
 B.bQ=new A.P1(0,"background")
-B.As=new A.P1(1,"foreground")
+B.At=new A.P1(1,"foreground")
 B.bfa=new A.a_x(null)
 B.iN=new A.pf(null,null,null,B.bfa,null)
 B.jP=new A.k(!0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.eM=new A.z_(0,"clip")
 B.bT=new A.arY(0,"parent")
 B.bfb=new A.a_z(null)
-B.At=new A.pg(B.jP,null,!0,B.eM,null,B.bT,null,B.bfb,null)
+B.Au=new A.pg(B.jP,null,!0,B.eM,null,B.bT,null,B.bfb,null)
 B.rP=new A.rO(!1)
 B.kD=new A.rO(!0)
 B.rQ=new A.rP(!1)
@@ -123851,11 +123855,11 @@ B.kF=new A.na(8,"singleLine")
 B.fB=new A.na(9,"errorProperty")
 B.a8z=new A.rR(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a8A=new A.kV(1,"horizontal")
-B.Au=new A.kV(2,"endToStart")
+B.Av=new A.kV(2,"endToStart")
 B.rT=new A.kV(3,"startToEnd")
 B.a8B=new A.kV(4,"up")
-B.Av=new A.kV(5,"down")
-B.Aw=new A.kV(6,"none")
+B.Aw=new A.kV(5,"down")
+B.Ax=new A.kV(6,"none")
 B.a8C=new A.x_(null,null,null,null,null,null)
 B.a8D=new A.Pj(null)
 B.rU=new A.Pp(0,"down")
@@ -123867,7 +123871,7 @@ B.ap=new A.aP(0)
 B.cA=new A.aP(1e5)
 B.ho=new A.aP(1e6)
 B.f5=new A.aP(11e5)
-B.Ax=new A.aP(12e4)
+B.Ay=new A.aP(12e4)
 B.rV=new A.aP(12e5)
 B.rW=new A.aP(125e3)
 B.a8H=new A.aP(135e4)
@@ -123875,13 +123879,13 @@ B.dD=new A.aP(14e4)
 B.nf=new A.aP(14e5)
 B.a8I=new A.aP(145e4)
 B.a8J=new A.aP(15e3)
-B.Ay=new A.aP(15e5)
+B.Az=new A.aP(15e5)
 B.et=new A.aP(16e4)
 B.a8K=new A.aP(16667)
 B.f6=new A.aP(167e3)
 B.fD=new A.aP(18e4)
-B.Az=new A.aP(18e5)
-B.AA=new A.aP(19e4)
+B.AA=new A.aP(18e5)
+B.AB=new A.aP(19e4)
 B.a8L=new A.aP(2e4)
 B.az=new A.aP(2e5)
 B.aD=new A.aP(2e6)
@@ -123890,7 +123894,7 @@ B.eu=new A.aP(22e4)
 B.ng=new A.aP(22e5)
 B.a8M=new A.aP(225e3)
 B.a8N=new A.aP(23e4)
-B.AB=new A.aP(24e4)
+B.AC=new A.aP(24e4)
 B.a8O=new A.aP(24e5)
 B.kG=new A.aP(25e4)
 B.kH=new A.aP(26e4)
@@ -123903,31 +123907,31 @@ B.a8S=new A.aP(34e4)
 B.a8T=new A.aP(34e5)
 B.rY=new A.aP(35e4)
 B.iO=new A.aP(36e4)
-B.AC=new A.aP(37e4)
-B.AD=new A.aP(375e3)
+B.AD=new A.aP(37e4)
+B.AE=new A.aP(375e3)
 B.a8U=new A.aP(4e4)
 B.iP=new A.aP(4e6)
 B.iQ=new A.aP(42e4)
 B.a8V=new A.aP(45e3)
-B.AE=new A.aP(45e4)
+B.AF=new A.aP(45e4)
 B.a8W=new A.aP(5e4)
 B.kJ=new A.aP(5e5)
 B.nh=new A.aP(52e4)
 B.rZ=new A.aP(55e4)
-B.AF=new A.aP(56e4)
+B.AG=new A.aP(56e4)
 B.kK=new A.aP(6e5)
-B.AG=new A.aP(6e6)
-B.AH=new A.aP(62e4)
+B.AH=new A.aP(6e6)
+B.AI=new A.aP(62e4)
 B.ni=new A.aP(65e4)
 B.t_=new A.aP(68e4)
-B.AI=new A.aP(7e4)
+B.AJ=new A.aP(7e4)
 B.a8X=new A.aP(7e5)
 B.a8Y=new A.aP(7e6)
-B.AJ=new A.aP(75e4)
+B.AK=new A.aP(75e4)
 B.a8Z=new A.aP(78e4)
 B.a9_=new A.aP(8e5)
 B.t0=new A.aP(88e4)
-B.AK=new A.aP(9e4)
+B.AL=new A.aP(9e4)
 B.ev=new A.aP(9e5)
 B.nj=new A.aP(95e4)
 B.a90=new A.aP(-38e3)
@@ -123940,19 +123944,19 @@ B.a96=new A.e1(12,4,12,4)
 B.a97=new A.e1(12,8,12,8)
 B.a98=new A.e1(12,8,16,8)
 B.nk=new A.e1(16,0,24,0)
-B.AL=new A.e1(4,0,6,0)
-B.AM=new A.e1(8,0,12,0)
+B.AM=new A.e1(4,0,6,0)
+B.AN=new A.e1(8,0,12,0)
 B.ae=new A.a5(0,0,0,0)
-B.AN=new A.a5(0,0,0,10)
+B.AO=new A.a5(0,0,0,10)
 B.a99=new A.a5(0,0,0,14)
-B.AO=new A.a5(0,0,0,6)
+B.AP=new A.a5(0,0,0,6)
 B.nl=new A.a5(0,0,0,7)
 B.nm=new A.a5(0,0,0,8)
 B.a9a=new A.a5(0,0,0,9)
 B.a9b=new A.a5(0,0,10,0)
 B.a9c=new A.a5(0,0,12,0)
 B.a9d=new A.a5(0,0,4,0)
-B.AP=new A.a5(0,0,5,0)
+B.AQ=new A.a5(0,0,5,0)
 B.a9e=new A.a5(0,0,8,0)
 B.nn=new A.a5(0,10,14,10)
 B.a9f=new A.a5(0,11,0,11)
@@ -123972,7 +123976,7 @@ B.kM=new A.a5(10,0,10,0)
 B.a9q=new A.a5(10,0,10,10)
 B.hq=new A.a5(10,10,10,10)
 B.no=new A.a5(10,13,10,13)
-B.AQ=new A.a5(10,3,10,3)
+B.AR=new A.a5(10,3,10,3)
 B.iR=new A.a5(10,4,10,4)
 B.np=new A.a5(10,5,10,5)
 B.e8=new A.a5(10,6,10,6)
@@ -123981,7 +123985,7 @@ B.f8=new A.a5(10,8,10,8)
 B.a9s=new A.a5(10,9,10,9)
 B.a9t=new A.a5(11,0,11,0)
 B.a9u=new A.a5(11,10,11,10)
-B.AR=new A.a5(11,11,11,11)
+B.AS=new A.a5(11,11,11,11)
 B.t3=new A.a5(11,8,11,8)
 B.t4=new A.a5(11,9,11,9)
 B.a9v=new A.a5(12,0,12,0)
@@ -124003,7 +124007,7 @@ B.a9E=new A.a5(13,6,13,6)
 B.a9F=new A.a5(13,7,13,7)
 B.a9G=new A.a5(14,0,14,8)
 B.hs=new A.a5(14,10,14,10)
-B.AS=new A.a5(14,10,14,12)
+B.AT=new A.a5(14,10,14,12)
 B.a9H=new A.a5(14,10,14,14)
 B.t5=new A.a5(14,10,14,24)
 B.a9I=new A.a5(14,11,14,11)
@@ -124016,18 +124020,18 @@ B.a9L=new A.a5(14,6,14,16)
 B.a9M=new A.a5(14,6,14,20)
 B.nt=new A.a5(14,6,14,6)
 B.a9N=new A.a5(14,8,14,12)
-B.AT=new A.a5(14,8,14,14)
+B.AU=new A.a5(14,8,14,14)
 B.a9O=new A.a5(14,8,14,6)
 B.t8=new A.a5(14,8,14,8)
-B.AU=new A.a5(15,15,15,15)
+B.AV=new A.a5(15,15,15,15)
 B.a9P=new A.a5(15,5,15,10)
-B.AV=new A.a5(16,0,16,0)
-B.AW=new A.a5(16,12,16,12)
+B.AW=new A.a5(16,0,16,0)
+B.AX=new A.a5(16,12,16,12)
 B.a9Q=new A.a5(16,12,16,16)
-B.AX=new A.a5(16,14,16,14)
+B.AY=new A.a5(16,14,16,14)
 B.a9R=new A.a5(16,14,16,20)
 B.ea=new A.a5(16,16,16,16)
-B.AY=new A.a5(16,16,16,20)
+B.AZ=new A.a5(16,16,16,20)
 B.a9S=new A.a5(16,18,16,18)
 B.a9T=new A.a5(16,20,16,20)
 B.a9U=new A.a5(16,4,16,4)
@@ -124035,7 +124039,7 @@ B.a9V=new A.a5(18,0,18,14)
 B.a9W=new A.a5(18,12,18,12)
 B.t9=new A.a5(18,16,18,18)
 B.a9X=new A.a5(18,16,18,22)
-B.AZ=new A.a5(18,16,18,24)
+B.B_=new A.a5(18,16,18,24)
 B.ta=new A.a5(18,18,18,18)
 B.a9Y=new A.a5(18,18,18,6)
 B.a9Z=new A.a5(18,6,18,12)
@@ -124049,7 +124053,7 @@ B.aa4=new A.a5(22,22,22,22)
 B.aa5=new A.a5(24,0,24,24)
 B.aa6=new A.a5(28,0,28,0)
 B.aa7=new A.a5(2,3,2,3)
-B.B_=new A.a5(3,0,3,0)
+B.B0=new A.a5(3,0,3,0)
 B.nu=new A.a5(3,3,3,3)
 B.aa8=new A.a5(40,24,40,24)
 B.aa9=new A.a5(4,0,0,0)
@@ -124063,27 +124067,27 @@ B.aab=new A.a5(5,5,5,5)
 B.hu=new A.a5(6,0,6,0)
 B.dF=new A.a5(6,2,6,2)
 B.nw=new A.a5(6,6,6,6)
-B.B0=new A.a5(7,2,7,2)
+B.B1=new A.a5(7,2,7,2)
 B.kO=new A.a5(7,3,7,3)
 B.aac=new A.a5(7,4,7,4)
 B.nx=new A.a5(7,7,7,7)
-B.B1=new A.a5(8,0,8,0)
+B.B2=new A.a5(8,0,8,0)
 B.kP=new A.a5(8,2,8,2)
 B.aad=new A.a5(8,2,8,5)
-B.da=new A.a5(8,3,8,3)
+B.cT=new A.a5(8,3,8,3)
 B.iT=new A.a5(8,4,8,4)
 B.ny=new A.a5(8,5,8,5)
-B.B2=new A.a5(8,6,8,6)
+B.B3=new A.a5(8,6,8,6)
 B.hv=new A.a5(8,8,8,8)
 B.aae=new A.a5(9,3,9,3)
-B.B3=new A.a5(9,4,9,4)
+B.B4=new A.a5(9,4,9,4)
 B.kQ=new A.a5(9,5,9,5)
-B.B4=new A.a5(9,6,9,6)
+B.B5=new A.a5(9,6,9,6)
 B.aaf=new A.a5(9,8,8,8)
 B.tb=new A.a5(9,9,9,9)
 B.iU=new A.a5(5,1.5,5,1.5)
 B.aag=new A.a5(0,2.5,0,2.5)
-B.B5=new A.a5(0.5,1,0.5,1)
+B.B6=new A.a5(0.5,1,0.5,1)
 B.aah=new A.a5(7,1.5,7,1.5)
 B.aai=new A.a5(7,2.5,7,2.5)
 B.kR=new A.a5(6,1.5,6,1.5)
@@ -124093,7 +124097,7 @@ B.aal=new A.D2(1,"enabled")
 B.kS=new A.D2(2,"disabled")
 B.aam=new A.Px(null)
 B.a0o=new A.mZ(2,"dst")
-B.B6=new A.hX(B.a6,B.a0o,null,B.h9)
+B.B7=new A.hX(B.a6,B.a0o,null,B.h9)
 B.a0q=new A.mZ(5,"srcIn")
 B.aan=new A.hX(B.A,B.a0q,null,B.h9)
 B.aao=new A.hX(B.S,B.ms,null,B.h9)
@@ -124104,12 +124108,12 @@ B.aaq=new A.hX(null,null,B.aH9,B.qp)
 B.aar=new A.hX(B.d,B.ms,null,B.h9)
 B.a6a=new A.h(1,0.9607843137254902,0.9607843137254902,0.9607843137254902,B.f)
 B.a5l=new A.h(1,0.9333333333333333,0.9333333333333333,0.9333333333333333,B.f)
-B.aOu=new A.bT([50,B.zR,100,B.a6a,200,B.a5l,300,B.hh,350,B.iC,400,B.cI,500,B.A8,600,B.ks,700,B.ix,800,B.e5,850,B.r8,900,B.qI],t.o)
+B.aOu=new A.bT([50,B.zS,100,B.a6a,200,B.a5l,300,B.hh,350,B.iC,400,B.cI,500,B.A9,600,B.ks,700,B.ix,800,B.e5,850,B.r8,900,B.qI],t.o)
 B.aP2=new A.i2(B.aOu,1,0.6196078431372549,0.6196078431372549,0.6196078431372549,B.f)
 B.a0p=new A.mZ(26,"saturation")
 B.aas=new A.hX(B.aP2,B.a0p,null,B.h9)
 B.aat=new A.x9(B.aZ,4)
-B.B7=new A.cD(0,"incrementable")
+B.B8=new A.cD(0,"incrementable")
 B.tc=new A.cD(1,"scrollable")
 B.td=new A.cD(10,"link")
 B.te=new A.cD(11,"header")
@@ -124132,7 +124136,7 @@ B.tt=new A.cD(26,"loadingSpinner")
 B.tu=new A.cD(27,"generic")
 B.nA=new A.cD(28,"menu")
 B.nB=new A.cD(29,"menuBar")
-B.B8=new A.cD(3,"textField")
+B.B9=new A.cD(3,"textField")
 B.tv=new A.cD(30,"menuItem")
 B.tw=new A.cD(31,"menuItemCheckbox")
 B.tx=new A.cD(32,"menuItemRadio")
@@ -124142,11 +124146,11 @@ B.tA=new A.cD(35,"main")
 B.tB=new A.cD(36,"navigation")
 B.tC=new A.cD(37,"region")
 B.tD=new A.cD(38,"form")
-B.B9=new A.cD(39,"slider")
+B.Ba=new A.cD(39,"slider")
 B.tE=new A.cD(4,"radioGroup")
 B.tF=new A.cD(5,"checkable")
-B.Ba=new A.cD(6,"heading")
-B.Bb=new A.cD(7,"image")
+B.Bb=new A.cD(6,"heading")
+B.Bc=new A.cD(7,"image")
 B.tG=new A.cD(8,"route")
 B.tH=new A.cD(9,"platformView")
 B.aau=new A.D8(0,"listener")
@@ -124154,8 +124158,8 @@ B.aav=new A.Da("dev.fluttercommunity.plus/sensors/accelerometer")
 B.aaw=new A.Da("xyz.luan/audioplayers.global/events")
 B.tI=new A.rU(!1,!1,!1,!1)
 B.tJ=new A.rU(!1,!1,!1,!0)
-B.Bc=new A.rV(!1,!1,!1,!1)
-B.Bd=new A.rV(!1,!1,!1,!0)
+B.Bd=new A.rV(!1,!1,!1,!1)
+B.Be=new A.rV(!1,!1,!1,!0)
 B.c_=new A.PS(0,"tight")
 B.b9=new A.pJ(2,"center")
 B.y=new A.iy(900)
@@ -124216,26 +124220,26 @@ B.nE=new A.nh(!1,!1,!1,!1)
 B.nF=new A.nh(!1,!1,!1,!0)
 B.iX=new A.nh(!0,!1,!1,!1)
 B.iY=new A.nh(!0,!1,!1,!0)
-B.Be=new A.jh(!1,!1,!1,!1)
-B.Bf=new A.jh(!1,!1,!1,!0)
-B.Bg=new A.jh(!1,!1,!0,!1)
-B.Bh=new A.jh(!1,!1,!0,!0)
+B.Bf=new A.jh(!1,!1,!1,!1)
+B.Bg=new A.jh(!1,!1,!1,!0)
+B.Bh=new A.jh(!1,!1,!0,!1)
+B.Bi=new A.jh(!1,!1,!0,!0)
 B.hw=new A.jh(!0,!1,!1,!1)
 B.hx=new A.jh(!0,!1,!1,!0)
-B.Bi=new A.jh(!0,!1,!0,!1)
-B.Bj=new A.jh(!0,!1,!0,!0)
-B.Bk=new A.ni(!1,!1,!1,!1)
-B.Bl=new A.ni(!1,!1,!1,!0)
+B.Bj=new A.jh(!0,!1,!0,!1)
+B.Bk=new A.jh(!0,!1,!0,!0)
+B.Bl=new A.ni(!1,!1,!1,!1)
+B.Bm=new A.ni(!1,!1,!1,!0)
 B.aaX=new A.ni(!0,!1,!1,!1)
 B.aaY=new A.ni(!0,!1,!1,!0)
-B.Bm=new A.rX(!1,!0,!1,!1)
-B.Bn=new A.rX(!1,!0,!1,!0)
-B.Bo=new A.nj(!1,!1,!1,!1)
-B.Bp=new A.nj(!1,!1,!1,!0)
+B.Bn=new A.rX(!1,!0,!1,!1)
+B.Bo=new A.rX(!1,!0,!1,!0)
+B.Bp=new A.nj(!1,!1,!1,!1)
+B.Bq=new A.nj(!1,!1,!1,!0)
 B.nG=new A.nj(!0,!1,!1,!1)
 B.nH=new A.nj(!0,!1,!1,!0)
-B.Bq=new A.rY(!1,!0,!1,!1)
-B.Br=new A.rY(!1,!0,!1,!0)
+B.Br=new A.rY(!1,!0,!1,!1)
+B.Bs=new A.rY(!1,!0,!1,!0)
 B.kT=new A.pm(!1,!1,!1,!1)
 B.kU=new A.pm(!1,!1,!1,!0)
 B.iZ=new A.pm(!0,!1,!1,!1)
@@ -124253,22 +124257,22 @@ B.a2=new A.S(0,0)
 B.ab2=new A.PP(B.a2,B.a2)
 B.aV=new A.PS(1,"loose")
 B.ab4=new A.Dl(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Bs=new A.Dm(0,"Start")
+B.Bt=new A.Dm(0,"Start")
 B.nK=new A.Dm(1,"Update")
 B.nL=new A.Dm(2,"End")
 B.tN=new A.Dn(0,"never")
-B.Bt=new A.Dn(1,"auto")
+B.Bu=new A.Dn(1,"auto")
 B.j0=new A.Dn(2,"always")
-B.Bu=new A.po(0,"touch")
+B.Bv=new A.po(0,"touch")
 B.tO=new A.po(1,"traditional")
 B.bfR=new A.adc(0,"automatic")
-B.Bv=new A.adg("focus")
+B.Bw=new A.adg("focus")
 B.ab5=new A.Q_(0,"normal")
 B.a0=new A.iy(400)
 B.bG=new A.iy(500)
 B.db=new A.iy(600)
 B.ch=new A.iy(800)
-B.Bw=new A.hY("Invalid method call",null,null)
+B.Bx=new A.hY("Invalid method call",null,null)
 B.ab9=new A.hY("Invalid envelope",null,null)
 B.aba=new A.hY("Expected envelope, got nothing",null,null)
 B.dT=new A.hY("Message corrupted",null,null)
@@ -124277,7 +124281,7 @@ B.dU=new A.Q6(0,"red")
 B.fF=new A.Q6(1,"blueGreen")
 B.ew=new A.Q9(0,"accepted")
 B.c9=new A.Q9(1,"rejected")
-B.Bx=new A.ta(0,"pointerEvents")
+B.By=new A.ta(0,"pointerEvents")
 B.nN=new A.ta(1,"browserGestures")
 B.hy=new A.Dy(0,"ready")
 B.nO=new A.Dy(1,"possible")
@@ -124291,10 +124295,10 @@ B.abg=new A.lZ(!1,"Already Claimed","You have already received this Mystery Gift
 B.tQ=new A.ae1(0,"log")
 B.abh=new A.jj(B.tQ,"Setting global AudioContext is not supported on Web")
 B.nP=new A.Qe(0,"forward")
-B.By=new A.Qe(1,"reverse")
-B.BI=new A.aa(58,69,null,null)
-B.BF=new A.aa(38,71,null,null)
-B.aLY=s([B.BI,B.BF],t.T)
+B.Bz=new A.Qe(1,"reverse")
+B.BJ=new A.aa(58,69,null,null)
+B.BG=new A.aa(38,71,null,null)
+B.aLY=s([B.BJ,B.BG],t.T)
 B.adY=new A.cn("cinnabar_t1","Burglar Quinn","Torchbearer","npc_ninja",2700,"Quiz time! Does fire burn? You're about to find out first hand!",B.aLY)
 B.acU=new A.aa(72,24,null,null)
 B.abG=new A.aa(116,25,null,null)
@@ -124311,58 +124315,58 @@ B.abo=new A.aa(103,43,null,null)
 B.acn=new A.aa(3,44,null,null)
 B.aCU=s([B.abX,B.acb,B.abo,B.acn],t.T)
 B.ae0=new A.cn("celadon_t3","Picnicker Tina","Nature Scout","npc_lass",1850,"My Bulbasaur line has blossomed under Erika's serene guidance!",B.aCU)
-B.BK=new A.aa(70,41,null,null)
+B.BL=new A.aa(70,41,null,null)
 B.acq=new A.aa(44,43,null,null)
-B.aI1=s([B.BK,B.acq],t.T)
+B.aI1=s([B.BL,B.acq],t.T)
 B.ae1=new A.cn("celadon_t1","Lass Kay","Flower Arranger","npc_lass",1350,"Welcome to our botanical paradise! Watch out for sweet scents!",B.aI1)
 B.acy=new A.aa(50,18,null,null)
-B.BE=new A.aa(138,19,null,null)
+B.BF=new A.aa(138,19,null,null)
 B.ac7=new A.aa(27,21,null,null)
 B.ac8=new A.aa(28,22,null,null)
-B.aFR=s([B.acy,B.BE,B.ac7,B.ac8],t.T)
+B.aFR=s([B.acy,B.BF,B.ac7,B.ac8],t.T)
 B.ae2=new A.cn("pewter_t3","Picnicker Diana","Gym Trainer","npc_lass",600,"Watch out for sand attack! My Sandshrew and Sandslash are super swift!",B.aFR)
 B.abM=new A.aa(125,33,null,null)
 B.ac3=new A.aa(25,35,null,null)
 B.aHg=s([B.abM,B.ac3],t.T)
 B.ae3=new A.cn("vermilion_t1","Sailor Dwayne","Naval Recruit","npc_swimmer",1000,"Lt. Surge taught me the shock-and-awe combat doctrine!",B.aHg)
 B.abH=new A.aa(118,22,null,null)
-B.BH=new A.aa(54,23,null,null)
-B.BR=new A.aa(86,24,null,null)
-B.BJ=new A.aa(61,25,null,null)
-B.BC=new A.aa(120,27,null,null)
+B.BI=new A.aa(54,23,null,null)
+B.BS=new A.aa(86,24,null,null)
+B.BK=new A.aa(61,25,null,null)
+B.BD=new A.aa(120,27,null,null)
 B.abI=new A.aa(121,29,null,null)
-B.aDe=s([B.abH,B.BH,B.BR,B.BJ,B.BC,B.abI],t.T)
+B.aDe=s([B.abH,B.BI,B.BS,B.BK,B.BD,B.abI],t.T)
 B.ae4=new A.cn("misty","Misty","Cerulean Gym Leader","leader_misty",3200,"Hi, you're a new face! Only trainers with true policy and skill can win against my Water Pok\xe9mon!",B.aDe)
 B.acE=new A.aa(58,67,null,null)
-B.BO=new A.aa(77,68,null,null)
+B.BP=new A.aa(77,68,null,null)
 B.ack=new A.aa(38,69,null,null)
 B.abO=new A.aa(126,70,null,null)
-B.BP=new A.aa(78,72,null,null)
+B.BQ=new A.aa(78,72,null,null)
 B.acF=new A.aa(59,74,null,null)
-B.aKe=s([B.acE,B.BO,B.ack,B.abO,B.BP,B.acF],t.T)
+B.aKe=s([B.acE,B.BP,B.ack,B.abO,B.BQ,B.acF],t.T)
 B.ae5=new A.cn("blaine","Blaine","Cinnabar Gym Leader","leader_blaine",9800,"Hah! I am Blaine, the red-hot quiz master! My fiery Pok\xe9mon will incinerate all challengers! You better have Burn Heal ready!",B.aKe)
-B.BG=new A.aa(42,48,null,null)
+B.BH=new A.aa(42,48,null,null)
 B.adf=new A.aa(96,49,null,null)
 B.acv=new A.aa(49,51,null,null)
 B.adh=new A.aa(97,52,null,null)
-B.aGU=s([B.BG,B.adf,B.acv,B.adh],t.T)
+B.aGU=s([B.BH,B.adf,B.acv,B.adh],t.T)
 B.ae6=new A.cn("fuchsia_t3","Juggler Shawn","Hypnotic Master","npc_psychic",2350,"Can your mind resist sleep while toxins sap your vitality?",B.aGU)
 B.abt=new A.aa(109,47,null,null)
 B.abZ=new A.aa(24,49,null,null)
 B.acu=new A.aa(49,50,null,null)
 B.ad7=new A.aa(89,52,null,null)
 B.abw=new A.aa(110,54,null,null)
-B.aLn=s([B.abt,B.BG,B.abZ,B.acu,B.ad7,B.abw],t.T)
+B.aLn=s([B.abt,B.BH,B.abZ,B.acu,B.ad7,B.abw],t.T)
 B.ae7=new A.cn("koga","Koga","Fuchsia Gym Leader","leader_koga",6800,"Fwahahaha! A mere child challenges me? Very well, despair before the creeping terror of poison and sleep!",B.aLn)
 B.adi=new A.aa(98,24,null,null)
 B.acG=new A.aa(60,26,null,null)
 B.acH=new A.aa(61,27,null,null)
-B.aLp=s([B.BH,B.adi,B.acG,B.acH],t.T)
+B.aLp=s([B.BI,B.adi,B.acG,B.acH],t.T)
 B.ae8=new A.cn("cerulean_t3","Picnicker Diana","Cerulean Swimmer","npc_lass",950,"My Water Pok\xe9mon will wash you right out of our gym pool!",B.aLp)
 B.abx=new A.aa(111,19,null,null)
 B.abW=new A.aa(140,20,null,null)
-B.BM=new A.aa(74,21,null,null)
-B.aGi=s([B.abx,B.abW,B.BM],t.T)
+B.BN=new A.aa(74,21,null,null)
+B.aGi=s([B.abx,B.abW,B.BN],t.T)
 B.ae9=new A.cn("pewter_t2","Hiker Anthony","Mountain Man","npc_hiker",500,"My rock Pok\xe9mon have high defense! Can you scratch them?",B.aGi)
 B.abu=new A.aa(109,48,null,null)
 B.ad5=new A.aa(88,49,null,null)
@@ -124388,11 +124392,11 @@ B.aIE=s([B.ace,B.acW,B.acB,B.acg,B.acX],t.T)
 B.aec=new A.cn("viridian_t4","Cooltrainer Yuji","Giovanni's Right Hand","npc_psychic",5100,"You stand before the gateway to the Pok\xe9mon League! Show me your absolute peak!",B.aIE)
 B.acJ=new A.aa(64,57,null,null)
 B.ad_=new A.aa(80,58,null,null)
-B.BS=new A.aa(97,59,null,null)
+B.BT=new A.aa(97,59,null,null)
 B.abJ=new A.aa(122,60,null,null)
 B.acw=new A.aa(49,62,null,null)
 B.acM=new A.aa(65,64,null,null)
-B.aJw=s([B.acJ,B.ad_,B.BS,B.abJ,B.acw,B.acM],t.T)
+B.aJw=s([B.acJ,B.ad_,B.BT,B.abJ,B.acw,B.acM],t.T)
 B.aed=new A.cn("sabrina","Sabrina","Saffron Gym Leader","leader_sabrina",8200,"I had a vision of your arrival! I have had psychic powers since I was a child. I do not like to fight, but I will not lose!",B.aJw)
 B.acj=new A.aa(38,68,null,null)
 B.abS=new A.aa(136,69,null,null)
@@ -124405,26 +124409,26 @@ B.abi=new A.aa(100,31,null,null)
 B.ac1=new A.aa(25,32,null,null)
 B.ad2=new A.aa(82,33,null,null)
 B.abN=new A.aa(125,34,null,null)
-B.Bz=new A.aa(101,36,null,null)
+B.BA=new A.aa(101,36,null,null)
 B.ac4=new A.aa(26,38,null,null)
-B.aE6=s([B.abi,B.ac1,B.ad2,B.abN,B.Bz,B.ac4],t.T)
+B.aE6=s([B.abi,B.ac1,B.ad2,B.abN,B.BA,B.ac4],t.T)
 B.aef=new A.cn("lt_surge","Lt. Surge","Vermilion Gym Leader","leader_surge",4200,"Ten-hut! You won't live long in combat with just guts! I tell you, electric Pok\xe9mon saved me during the war!",B.aE6)
 B.acL=new A.aa(64,59,null,null)
 B.abK=new A.aa(122,61,null,null)
 B.aEZ=s([B.acL,B.abK],t.T)
 B.aeg=new A.cn("saffron_t1","Psychic Johan","Telekinetic Adept","npc_psychic",2200,"I can read your mind! You are wondering if you can defeat me!",B.aEZ)
 B.acQ=new A.aa(6,71,null,null)
-B.aF3=s([B.BO,B.BI,B.acQ,B.BP],t.T)
+B.aF3=s([B.BP,B.BJ,B.acQ,B.BQ],t.T)
 B.aeh=new A.cn("cinnabar_t3","Burglar Ramon","Fire Thief","npc_hiker",3600,"Can your Pok\xe9mon withstand a 10,000-degree blaze?",B.aF3)
 B.acK=new A.aa(64,58,null,null)
 B.abq=new A.aa(103,60,null,null)
-B.BD=new A.aa(124,61,null,null)
-B.BQ=new A.aa(80,62,null,null)
-B.aHy=s([B.acK,B.BS,B.abq,B.BD,B.BQ],t.T)
+B.BE=new A.aa(124,61,null,null)
+B.BR=new A.aa(80,62,null,null)
+B.aHy=s([B.acK,B.BT,B.abq,B.BE,B.BR],t.T)
 B.aei=new A.cn("saffron_t4","Psychic Preston","High Esper","npc_psychic",3400,"Sabrina foresaw your arrival three days ago. Your defeat was also predicted!",B.aHy)
 B.acZ=new A.aa(79,58,null,null)
 B.abp=new A.aa(103,59,null,null)
-B.aLy=s([B.acZ,B.abp,B.BD,B.BQ],t.T)
+B.aLy=s([B.acZ,B.abp,B.BE,B.BR],t.T)
 B.aej=new A.cn("saffron_t3","Psychic Cameron","Mind Bender","npc_psychic",2950,"Physical attacks cannot breach a focused telepathic mind!",B.aLy)
 B.acf=new A.aa(34,49,null,null)
 B.ac_=new A.aa(24,50,null,null)
@@ -124433,7 +124437,7 @@ B.aKC=s([B.acf,B.ac_,B.ac9],t.T)
 B.aek=new A.cn("fuchsia_t2","Tamer Edgar","Beast Ninja","npc_ninja",2050,"Venom courses through my serpentine companions!",B.aKC)
 B.aci=new A.aa(37,69,null,null)
 B.abT=new A.aa(136,70,null,null)
-B.aFI=s([B.aci,B.abT,B.BF],t.T)
+B.aFI=s([B.aci,B.abT,B.BG],t.T)
 B.ael=new A.cn("cinnabar_t2","Super Nerd Erik","Thermodynamics Researcher","npc_engineer",3100,"The combustion reaction in Ninetales' nine tails is mathematically sublime!",B.aFI)
 B.abn=new A.aa(103,39,null,null)
 B.act=new A.aa(47,40,null,null)
@@ -124444,7 +124448,7 @@ B.acs=new A.aa(45,46,null,null)
 B.aMw=s([B.abn,B.act,B.acm,B.abD,B.acT,B.acs],t.T)
 B.aem=new A.cn("erika","Erika","Celadon Gym Leader","leader_erika",5400,"Hello... Lovely weather, isn't it? It's so pleasant. My name is Erika. I am the Leader of Celadon Gym.",B.aMw)
 B.ac6=new A.aa(27,19,null,null)
-B.aJr=s([B.ac6,B.BM],t.T)
+B.aJr=s([B.ac6,B.BN],t.T)
 B.aen=new A.cn("pewter_t1","Camper Liam","Gym Junior Trainer","npc_camper",400,"Stop right there! You're ten thousand light-years from facing Brock!",B.aJr)
 B.abj=new A.aa(100,32,null,null)
 B.ad0=new A.aa(81,33,null,null)
@@ -124454,8 +124458,8 @@ B.ad4=new A.aa(82,36,null,null)
 B.aMl=s([B.abj,B.ad0,B.abR,B.abm,B.ad4],t.T)
 B.aeo=new A.cn("vermilion_t4","Rocker Gene","Sound & Surge","npc_camper",1650,"Can you hear that hum? It's the electric current ready to buzz you!",B.aMl)
 B.abF=new A.aa(116,24,null,null)
-B.BB=new A.aa(118,26,null,null)
-B.aER=s([B.abF,B.BB],t.T)
+B.BC=new A.aa(118,26,null,null)
+B.aER=s([B.abF,B.BC],t.T)
 B.aep=new A.cn("cerulean_t1","Swimmer Luis","Poolside Athlete","npc_swimmer",650,"Splash! Let's see if your team knows how to swim!",B.aER)
 B.acN=new A.aa(67,81,null,null)
 B.acD=new A.aa(57,82,null,null)
@@ -124463,7 +124467,7 @@ B.acO=new A.aa(68,83,null,null)
 B.aLF=s([B.acN,B.acD,B.acO],t.T)
 B.aeq=new A.cn("viridian_t2","Black Belt Takashi","Dojo Champion","npc_ninja",3850,"Earth and martial arts unite! We will crush your defenses to gravel!",B.aLF)
 B.abE=new A.aa(116,23,null,null)
-B.aMh=s([B.abE,B.BR,B.BJ,B.BB,B.BC],t.T)
+B.aMh=s([B.abE,B.BS,B.BK,B.BC,B.BD],t.T)
 B.aer=new A.cn("cerulean_t4","Beauty Violet","Gym Sensational Sister","npc_beauty",1100,"Misty is tough, but you'll have to get past our synchronized defense first!",B.aMh)
 B.adb=new A.aa(92,59,null,null)
 B.adc=new A.aa(93,60,null,null)
@@ -124476,16 +124480,16 @@ B.aHx=s([B.ac0,B.abQ],t.T)
 B.aet=new A.cn("viridian_t1","Tamer Cole","Beast Master","npc_hiker",3300,"The Viridian Gym was closed for so long... Now only the elite may tread here!",B.aHx)
 B.abC=new A.aa(114,40,null,null)
 B.acp=new A.aa(44,42,null,null)
-B.BL=new A.aa(71,43,null,null)
+B.BM=new A.aa(71,43,null,null)
 B.acr=new A.aa(45,44,null,null)
-B.aGF=s([B.abC,B.BK,B.acp,B.BL,B.acr],t.T)
+B.aGF=s([B.abC,B.BL,B.acp,B.BM,B.acr],t.T)
 B.aeu=new A.cn("celadon_t4","Cooltrainer Mary","Celadon Elite","npc_beauty",2150,"Only those who respect the delicate strength of flora may challenge the mistress!",B.aGF)
 B.abr=new A.aa(104,18,null,null)
 B.abV=new A.aa(140,19,null,null)
-B.BA=new A.aa(111,20,null,null)
+B.BB=new A.aa(111,20,null,null)
 B.acz=new A.aa(50,21,null,null)
-B.BN=new A.aa(74,22,null,null)
-B.aIQ=s([B.abr,B.abV,B.BA,B.acz,B.BN],t.T)
+B.BO=new A.aa(74,22,null,null)
+B.aIQ=s([B.abr,B.abV,B.BB,B.acz,B.BO],t.T)
 B.aev=new A.cn("pewter_t4","Jr. Trainer Jerry","Brock's Apprentice","npc_camper",750,"If you can't beat me, you'll never survive Brock's Onix!",B.aIQ)
 B.abk=new A.aa(100,33,null,null)
 B.ad1=new A.aa(81,34,null,null)
@@ -124500,17 +124504,17 @@ B.aG0=s([B.abs,B.abz,B.aca,B.abA],t.T)
 B.aex=new A.cn("viridian_t3","Cooltrainer Samuel","Gym Enforcer","npc_psychic",4450,"Rhydon's armor cannot be pierced by ordinary strikes! Tremble!",B.aG0)
 B.aco=new A.aa(44,41,null,null)
 B.acS=new A.aa(70,42,null,null)
-B.aKh=s([B.aco,B.acS,B.BL],t.T)
+B.aKh=s([B.aco,B.acS,B.BM],t.T)
 B.aey=new A.cn("celadon_t2","Beauty Tamia","Floral Designer","npc_beauty",1600,"Our petals hide sharp thorns and paralyzing spores!",B.aKh)
 B.ac5=new A.aa(27,17,null,null)
 B.abU=new A.aa(140,18,null,null)
 B.ade=new A.aa(95,24,null,null)
-B.aHQ=s([B.ac5,B.abU,B.BE,B.BA,B.BN,B.ade],t.T)
+B.aHQ=s([B.ac5,B.abU,B.BF,B.BB,B.BO,B.ade],t.T)
 B.aez=new A.cn("brock","Brock","Pewter Gym Leader","leader_brock",2400,"I'm Brock! I'm Pewter's Gym Leader! My rock-hard willpower is evident even in my Pok\xe9mon!",B.aHQ)
 B.abL=new A.aa(125,32,null,null)
 B.ac2=new A.aa(25,33,null,null)
 B.abl=new A.aa(100,35,null,null)
-B.aHi=s([B.abL,B.ac2,B.abl,B.Bz],t.T)
+B.aHi=s([B.abL,B.ac2,B.abl,B.BA],t.T)
 B.aeA=new A.cn("vermilion_t3","Gentleman Tucker","Army Veteran","npc_engineer",1400,"War is rough, rookie! Prepare for rapid electric fire!",B.aHi)
 B.kW=new A.xj(0,"push")
 B.j1=new A.xj(1,"pop")
@@ -124520,83 +124524,83 @@ B.eb=new A.DB(2,"translucent")
 B.aeB=new A.DC(null)
 B.dc=new A.aey(0,"manual")
 B.aeD=new A.ps(null)
-B.BT=new A.ai(57399,"MaterialIcons",!1)
-B.BV=new A.ai(57458,"MaterialIcons",!1)
-B.BW=new A.ai(57490,"MaterialIcons",!0)
+B.BU=new A.ai(57399,"MaterialIcons",!1)
+B.BW=new A.ai(57458,"MaterialIcons",!1)
+B.BX=new A.ai(57490,"MaterialIcons",!0)
 B.hz=new A.ai(57527,"MaterialIcons",!1)
-B.BX=new A.ai(57531,"MaterialIcons",!1)
+B.BY=new A.ai(57531,"MaterialIcons",!1)
 B.aeI=new A.ai(57582,"MaterialIcons",!1)
 B.aeK=new A.ai(57689,"MaterialIcons",!1)
 B.nQ=new A.ai(57706,"MaterialIcons",!1)
 B.ey=new A.ai(57879,"MaterialIcons",!1)
 B.aeQ=new A.ai(57900,"MaterialIcons",!1)
-B.BZ=new A.ai(57947,"MaterialIcons",!1)
+B.C_=new A.ai(57947,"MaterialIcons",!1)
 B.aeR=new A.ai(57953,"MaterialIcons",!1)
 B.tS=new A.ai(58116,"MaterialIcons",!1)
-B.C_=new A.ai(58258,"MaterialIcons",!1)
+B.C0=new A.ai(58258,"MaterialIcons",!1)
 B.aeV=new A.ai(58286,"MaterialIcons",!1)
 B.aeW=new A.ai(58309,"MaterialIcons",!1)
 B.kX=new A.ai(58328,"MaterialIcons",!1)
-B.C0=new A.ai(58332,"MaterialIcons",!1)
+B.C1=new A.ai(58332,"MaterialIcons",!1)
 B.aeX=new A.ai(58372,"MaterialIcons",!1)
 B.aeZ=new A.ai(58513,"MaterialIcons",!1)
 B.af0=new A.ai(58628,"MaterialIcons",!1)
-B.C1=new A.ai(58648,"MaterialIcons",!1)
+B.C2=new A.ai(58648,"MaterialIcons",!1)
 B.tU=new A.ai(58778,"MaterialIcons",!1)
-B.C4=new A.ai(58880,"MaterialIcons",!1)
+B.C5=new A.ai(58880,"MaterialIcons",!1)
 B.tW=new A.ai(61748,"MaterialIcons",!1)
 B.af7=new A.ai(62329,"MaterialIcons",!1)
-B.C7=new A.ai(62333,"MaterialIcons",!1)
+B.C8=new A.ai(62333,"MaterialIcons",!1)
 B.ai=new A.ai(62804,"MaterialIcons",!1)
 B.af9=new A.ai(62842,"MaterialIcons",!0)
 B.f9=new A.ai(62870,"MaterialIcons",!1)
 B.nR=new A.ai(62881,"MaterialIcons",!1)
 B.ez=new A.ai(62922,"MaterialIcons",!1)
-B.C9=new A.ai(63028,"MaterialIcons",!1)
+B.Ca=new A.ai(63028,"MaterialIcons",!1)
 B.nT=new A.ai(63029,"MaterialIcons",!1)
 B.j2=new A.ai(63035,"MaterialIcons",!0)
 B.nU=new A.ai(63047,"MaterialIcons",!1)
-B.Cc=new A.ai(63074,"MaterialIcons",!1)
+B.Cd=new A.ai(63074,"MaterialIcons",!1)
 B.afg=new A.ai(63160,"MaterialIcons",!1)
 B.tY=new A.ai(63239,"MaterialIcons",!1)
 B.afl=new A.ai(63262,"MaterialIcons",!1)
 B.j3=new A.ai(63268,"MaterialIcons",!1)
 B.j4=new A.ai(63288,"MaterialIcons",!1)
-B.Cd=new A.ai(63336,"MaterialIcons",!1)
-B.Ce=new A.ai(63338,"MaterialIcons",!1)
+B.Ce=new A.ai(63336,"MaterialIcons",!1)
+B.Cf=new A.ai(63338,"MaterialIcons",!1)
 B.tZ=new A.ai(63341,"MaterialIcons",!1)
 B.afm=new A.ai(63347,"MaterialIcons",!0)
 B.afq=new A.ai(63484,"MaterialIcons",!1)
 B.u_=new A.ai(63522,"MaterialIcons",!1)
 B.afu=new A.ai(63578,"MaterialIcons",!1)
-B.Cg=new A.ai(63599,"MaterialIcons",!1)
+B.Ch=new A.ai(63599,"MaterialIcons",!1)
 B.fG=new A.ai(63625,"MaterialIcons",!1)
 B.u0=new A.ai(63679,"MaterialIcons",!1)
-B.Ch=new A.ai(63725,"MaterialIcons",!1)
+B.Ci=new A.ai(63725,"MaterialIcons",!1)
 B.afy=new A.ai(63726,"MaterialIcons",!1)
 B.afA=new A.ai(983078,"MaterialIcons",!1)
 B.afB=new A.ai(983080,"MaterialIcons",!1)
-B.Cj=new A.ai(983256,"MaterialIcons",!1)
-B.Ck=new A.ai(983343,"MaterialIcons",!1)
+B.Ck=new A.ai(983256,"MaterialIcons",!1)
+B.Cl=new A.ai(983343,"MaterialIcons",!1)
 B.afI=new A.ai(983371,"MaterialIcons",!1)
 B.u1=new A.ai(983372,"MaterialIcons",!1)
 B.afJ=new A.ai(983402,"MaterialIcons",!1)
 B.afK=new A.ai(983403,"MaterialIcons",!1)
 B.kY=new A.ai(983490,"MaterialIcons",!1)
 B.afN=new A.ai(983503,"MaterialIcons",!1)
-B.Cn=new A.ai(983521,"MaterialIcons",!1)
+B.Co=new A.ai(983521,"MaterialIcons",!1)
 B.j5=new A.ai(983546,"MaterialIcons",!1)
 B.afO=new A.ai(983548,"MaterialIcons",!1)
 B.nV=new A.ai(983559,"MaterialIcons",!1)
-B.Co=new A.ai(983621,"MaterialIcons",!1)
+B.Cp=new A.ai(983621,"MaterialIcons",!1)
 B.afT=new A.ai(983662,"MaterialIcons",!1)
-B.Cp=new A.ai(983705,"MaterialIcons",!1)
+B.Cq=new A.ai(983705,"MaterialIcons",!1)
 B.u2=new A.ai(983706,"MaterialIcons",!1)
-B.Cq=new A.ai(983712,"MaterialIcons",!1)
+B.Cr=new A.ai(983712,"MaterialIcons",!1)
 B.u3=new A.ai(983746,"MaterialIcons",!1)
-B.Cr=new A.ai(983940,"MaterialIcons",!1)
+B.Cs=new A.ai(983940,"MaterialIcons",!1)
 B.u4=new A.ai(984e3,"MaterialIcons",!1)
-B.Ct=new A.ev(24,0,400,0,48,B.A,1,null,!1)
+B.Cu=new A.ev(24,0,400,0,48,B.A,1,null,!1)
 B.ag_=new A.ev(null,null,null,null,null,B.d,null,null,null)
 B.ag0=new A.ev(null,null,null,null,null,B.A,null,null,null)
 B.ag1=new A.ar(B.bi,40,B.d,null,null)
@@ -124607,46 +124611,46 @@ B.ag6=new A.ar(B.j4,14,B.bB,null,null)
 B.aeP=new A.ai(57857,"MaterialIcons",!1)
 B.ag7=new A.ar(B.aeP,14,null,null,null)
 B.ag9=new A.ar(B.j5,20,B.h,null,null)
-B.aga=new A.ar(B.C1,null,B.S,null,null)
+B.aga=new A.ar(B.C2,null,B.S,null,null)
 B.agb=new A.ar(B.ez,null,null,null,null)
-B.Cm=new A.ai(983509,"MaterialIcons",!1)
-B.agc=new A.ar(B.Cm,15,B.M,null,null)
+B.Cn=new A.ai(983509,"MaterialIcons",!1)
+B.agc=new A.ar(B.Cn,15,B.M,null,null)
 B.afi=new A.ai(63195,"MaterialIcons",!1)
 B.agd=new A.ar(B.afi,17,B.d,null,null)
 B.age=new A.ar(B.nR,15,B.h,null,null)
 B.agg=new A.ar(B.j3,16,B.aJ,null,null)
 B.agi=new A.ar(B.kY,19,B.h,null,null)
-B.C5=new A.ai(58917,"MaterialIcons",!1)
-B.agj=new A.ar(B.C5,14,null,null,null)
-B.BY=new A.ai(57787,"MaterialIcons",!1)
-B.agk=new A.ar(B.BY,18,B.z,null,null)
-B.agl=new A.ar(B.Cd,16,null,null,null)
+B.C6=new A.ai(58917,"MaterialIcons",!1)
+B.agj=new A.ar(B.C6,14,null,null,null)
+B.BZ=new A.ai(57787,"MaterialIcons",!1)
+B.agk=new A.ar(B.BZ,18,B.z,null,null)
+B.agl=new A.ar(B.Ce,16,null,null,null)
 B.agm=new A.ar(B.j3,18,null,null,null)
 B.a3l=new A.h(1,0.7725490196078432,0.06666666666666667,0.3843137254901961,B.f)
-B.aOg=new A.bT([100,B.dQ,200,B.kr,400,B.zX,700,B.a3l],t.o)
+B.aOg=new A.bT([100,B.dQ,200,B.kr,400,B.zY,700,B.a3l],t.o)
 B.T=new A.fJ(B.aOg,1,1,0.25098039215686274,0.5058823529411764,B.f)
-B.agn=new A.ar(B.Cg,15,B.T,null,null)
+B.agn=new A.ar(B.Ch,15,B.T,null,null)
 B.ago=new A.ar(B.bi,15,B.z,null,null)
-B.BU=new A.ai(57424,"MaterialIcons",!1)
-B.agp=new A.ar(B.BU,20,B.S,null,null)
+B.BV=new A.ai(57424,"MaterialIcons",!1)
+B.agp=new A.ar(B.BV,20,B.S,null,null)
 B.agq=new A.ar(B.nR,16,null,null,null)
 B.afU=new A.ai(983699,"MaterialIcons",!1)
 B.agr=new A.ar(B.afU,16,B.h,null,null)
 B.ags=new A.ar(B.bi,24,B.b5,null,null)
 B.aeF=new A.ai(57495,"MaterialIcons",!1)
-B.Cv=new A.ar(B.aeF,18,B.S,null,null)
+B.Cw=new A.ar(B.aeF,18,B.S,null,null)
 B.hA=new A.ar(B.f9,13,B.h,null,null)
 B.afF=new A.ai(983273,"MaterialIcons",!1)
 B.agv=new A.ar(B.afF,18,null,null,null)
 B.fa=new A.ai(63648,"MaterialIcons",!1)
 B.agw=new A.ar(B.fa,16,B.h,null,null)
-B.C3=new A.ai(58873,"MaterialIcons",!1)
-B.agz=new A.ar(B.C3,13,null,null,null)
+B.C4=new A.ai(58873,"MaterialIcons",!1)
+B.agz=new A.ar(B.C4,13,null,null,null)
 B.afp=new A.ai(63428,"MaterialIcons",!1)
 B.agA=new A.ar(B.afp,14,null,null,null)
-B.agB=new A.ar(B.C5,20,B.r,null,null)
-B.Ca=new A.ai(63030,"MaterialIcons",!1)
-B.agE=new A.ar(B.Ca,15,null,null,null)
+B.agB=new A.ar(B.C6,20,B.r,null,null)
+B.Cb=new A.ai(63030,"MaterialIcons",!1)
+B.agE=new A.ar(B.Cb,15,null,null,null)
 B.af4=new A.ai(59029,"MaterialIcons",!1)
 B.agF=new A.ar(B.af4,14,null,null,null)
 B.agG=new A.ar(B.j2,18,B.T,null,null)
@@ -124665,59 +124669,59 @@ B.afj=new A.ai(63199,"MaterialIcons",!1)
 B.agQ=new A.ar(B.afj,17,null,null,null)
 B.afa=new A.ai(62876,"MaterialIcons",!1)
 B.u5=new A.ar(B.afa,13,null,null,null)
-B.Cw=new A.ar(B.C3,14,null,null,null)
+B.Cx=new A.ar(B.C4,14,null,null,null)
 B.agR=new A.ar(B.bi,16,null,null,null)
 B.agS=new A.ar(B.bi,null,B.b5,null,null)
-B.Cx=new A.ar(B.bi,28,B.b5,null,null)
+B.Cy=new A.ar(B.bi,28,B.b5,null,null)
 B.afH=new A.ai(983357,"MaterialIcons",!1)
 B.agU=new A.ar(B.afH,18,null,null,null)
 B.agV=new A.ar(B.f9,16,B.h,null,null)
-B.Cb=new A.ai(63073,"MaterialIcons",!1)
+B.Cc=new A.ai(63073,"MaterialIcons",!1)
 B.a7O=new A.h(1,0.8352941176470589,0,0.9764705882352941,B.f)
 B.a2F=new A.h(1,0.6666666666666666,0,1,B.f)
 B.aOp=new A.bT([100,B.eV,200,B.mI,400,B.a7O,700,B.a2F],t.o)
 B.R=new A.fJ(B.aOp,1,0.8784313725490196,0.25098039215686274,0.984313725490196,B.f)
-B.agY=new A.ar(B.Cb,15,B.R,null,null)
+B.agY=new A.ar(B.Cc,15,B.R,null,null)
 B.agZ=new A.ar(B.j2,18,B.mW,null,null)
-B.C8=new A.ai(62376,"MaterialIcons",!1)
-B.ah_=new A.ar(B.C8,15,B.S,null,null)
+B.C9=new A.ai(62376,"MaterialIcons",!1)
+B.ah_=new A.ar(B.C9,15,B.S,null,null)
 B.ah0=new A.ar(B.f9,null,null,null,null)
-B.ah1=new A.ar(B.C8,16,B.h,null,null)
+B.ah1=new A.ar(B.C9,16,B.h,null,null)
 B.ah3=new A.ar(B.j5,18,null,null,null)
 B.ah4=new A.ar(B.j2,null,B.d,null,null)
 B.ah5=new A.ar(B.f9,12,B.h,null,null)
 B.tX=new A.ai(62832,"MaterialIcons",!0)
-B.Cy=new A.ar(B.tX,15,B.S,null,null)
+B.Cz=new A.ar(B.tX,15,B.S,null,null)
 B.ah8=new A.ar(B.ai,14,null,null,null)
-B.ah9=new A.ar(B.Cr,null,null,null,null)
+B.ah9=new A.ar(B.Cs,null,null,null,null)
 B.nW=new A.ar(B.f9,11,B.h,null,null)
 B.aha=new A.ar(B.fG,14,B.z,null,null)
-B.ahb=new A.ar(B.Cn,22,B.r,null,null)
+B.ahb=new A.ar(B.Co,22,B.r,null,null)
 B.ahc=new A.ar(B.tW,48,B.c8,null,null)
-B.ahd=new A.ar(B.Cm,13,B.M,null,null)
+B.ahd=new A.ar(B.Cn,13,B.M,null,null)
 B.ahe=new A.ar(B.nQ,11.5,B.z,null,null)
 B.aeL=new A.ai(57690,"MaterialIcons",!1)
 B.ahg=new A.ar(B.aeL,18,null,null,null)
-B.Ci=new A.ai(983132,"MaterialIcons",!1)
-B.ahi=new A.ar(B.Ci,20,B.r,null,null)
+B.Cj=new A.ai(983132,"MaterialIcons",!1)
+B.ahi=new A.ar(B.Cj,20,B.r,null,null)
 B.ahj=new A.ar(B.hz,17,B.h,null,null)
-B.ahk=new A.ar(B.BU,null,B.S,null,null)
+B.ahk=new A.ar(B.BV,null,B.S,null,null)
 B.ahl=new A.ar(B.u0,15,B.M,null,null)
-B.Cz=new A.ar(B.bi,30,B.b5,null,null)
+B.CA=new A.ar(B.bi,30,B.b5,null,null)
 B.ahn=new A.ar(B.nT,40,B.aC,null,null)
 B.nS=new A.ai(63002,"MaterialIcons",!1)
 B.ahp=new A.ar(B.nS,22,B.M,null,null)
 B.dd=new A.ar(B.tX,18,B.S,null,null)
 B.aeH=new A.ai(57504,"MaterialIcons",!1)
-B.CA=new A.ar(B.aeH,18,B.S,null,null)
+B.CB=new A.ar(B.aeH,18,B.S,null,null)
 B.ahq=new A.ar(B.u0,18,B.M,null,null)
-B.ahr=new A.ar(B.Ck,24,B.bX,null,null)
-B.Cl=new A.ai(983508,"MaterialIcons",!1)
-B.ahs=new A.ar(B.Cl,16,B.h,null,null)
+B.ahr=new A.ar(B.Cl,24,B.bX,null,null)
+B.Cm=new A.ai(983508,"MaterialIcons",!1)
+B.ahs=new A.ar(B.Cm,16,B.h,null,null)
 B.aht=new A.ar(B.nU,null,B.b1,null,null)
-B.CB=new A.ar(B.BY,16,null,null,null)
+B.CC=new A.ar(B.BZ,16,null,null,null)
 B.ahu=new A.ar(B.nQ,20,B.b1,null,null)
-B.ahv=new A.ar(B.Ci,15,B.r,null,null)
+B.ahv=new A.ar(B.Cj,15,B.r,null,null)
 B.afe=new A.ai(63034,"MaterialIcons",!0)
 B.ahw=new A.ar(B.afe,null,B.d,null,null)
 B.ahx=new A.ar(B.u1,18,null,null,null)
@@ -124734,7 +124738,7 @@ B.ahD=new A.ar(B.kY,20,B.h,null,null)
 B.ahE=new A.ar(B.bi,26,B.b5,null,null)
 B.afh=new A.ai(63165,"MaterialIcons",!1)
 B.ahF=new A.ar(B.afh,14,B.r,null,null)
-B.ahG=new A.ar(B.Ch,20,B.r,null,null)
+B.ahG=new A.ar(B.Ci,20,B.r,null,null)
 B.ec=new A.ar(B.nQ,null,B.b1,null,null)
 B.ahI=new A.ar(B.hz,14,null,null,null)
 B.aeS=new A.ai(58020,"MaterialIcons",!1)
@@ -124749,18 +124753,18 @@ B.ai0=new A.xn(0,"repeat")
 B.ai1=new A.xn(1,"repeatX")
 B.ai2=new A.xn(2,"repeatY")
 B.kZ=new A.xn(3,"noRepeat")
-B.CD=new A.pu(3,"webp")
-B.ai3=new A.m2(B.CD,!0,5,"animatedWebp")
+B.CE=new A.pu(3,"webp")
+B.ai3=new A.m2(B.CE,!0,5,"animatedWebp")
 B.ai_=new A.pu(5,"avif")
 B.ai5=new A.m2(B.ai_,!1,7,"avif")
-B.CC=new A.pu(1,"gif")
-B.ai7=new A.m2(B.CC,!1,1,"gif")
-B.CE=new A.m2(B.CD,!1,4,"webp")
-B.nX=new A.m2(B.CC,!0,2,"animatedGif")
+B.CD=new A.pu(1,"gif")
+B.ai7=new A.m2(B.CD,!1,1,"gif")
+B.CF=new A.m2(B.CE,!1,4,"webp")
+B.nX=new A.m2(B.CD,!0,2,"animatedGif")
 B.ai9=new A.QT(!0,!0,B.oQ)
 B.c0=s([],t.oU)
 B.aia=new A.nu("\ufffc",null,null,null,!0,!0,B.c0)
-B.aib=new A.DS(null,null,null,null,null,null,null,null,null,B.Bt,B.yH,!1,null,!1,null,null,null,null,null,null,null,null,!1,null,null,null,null,null,null,null,null,null,null,null,!1,null,null)
+B.aib=new A.DS(null,null,null,null,null,null,null,null,null,B.Bu,B.yI,!1,null,!1,null,null,null,null,null,null,null,null,!1,null,null,null,null,null,null,null,null,null,null,null,!1,null,null)
 B.bfS=new A.DR(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,!0,!0,!1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,!0,null,null,null,null)
 B.a7X=new A.e_(0.1,0,0.45,1)
 B.aid=new A.eS(0.7038888888888889,1,B.a7X)
@@ -124770,10 +124774,10 @@ B.aRt=new A.e(0.166666,0.4)
 B.aR_=new A.e(0.208333,0.82)
 B.aRu=new A.e(0.25,1)
 B.jR=new A.Hm(B.aR9,B.aRb,B.aRt,B.aR_,B.aRu)
-B.CF=new A.eS(0,0.8888888888888888,B.jR)
+B.CG=new A.eS(0,0.8888888888888888,B.jR)
 B.a7Z=new A.e_(0,0,0.65,1)
 B.aie=new A.eS(0.5555555555555556,0.8705555555555555,B.a7Z)
-B.CG=new A.eS(0.5,1,B.cs)
+B.CH=new A.eS(0.5,1,B.cs)
 B.a7Y=new A.e_(0.4,0,1,1)
 B.aif=new A.eS(0.185,0.6016666666666667,B.a7Y)
 B.aig=new A.eS(0.6,1,B.ah)
@@ -124791,8 +124795,8 @@ B.aiq=new A.eS(0,0.5,B.bF)
 B.a82=new A.e_(0.2,0,0.8,1)
 B.air=new A.eS(0,0.4166666666666667,B.a82)
 B.ais=new A.eS(0.4,1,B.ah)
-B.CH=new A.DT(0,"grapheme")
-B.CI=new A.DT(1,"word")
+B.CI=new A.DT(0,"grapheme")
+B.CJ=new A.DT(1,"word")
 B.cC=new A.l_(0,"pokeball")
 B.cD=new A.l_(1,"medicine")
 B.ct=new A.l_(2,"berry")
@@ -124801,7 +124805,7 @@ B.fH=new A.l_(4,"evolutionStone")
 B.u6=new A.l_(5,"fossil")
 B.ab=new A.l_(6,"tm")
 B.ds=new A.l_(7,"adventureMap")
-B.CJ=new A.l_(8,"tutorItem")
+B.CK=new A.l_(8,"tutorItem")
 B.eK=new A.y4(3,"special")
 B.aiv=new A.cA("ultra_ball","Ultra Ball",2,B.eK)
 B.W=new A.y4(2,"rare")
@@ -124817,15 +124821,15 @@ B.aiH=new A.cA("full_restore","Full Restore",1,B.W)
 B.aiJ=new A.cA("ether","Ether",1,B.bf)
 B.aiK=new A.cA("elixir","Elixir",1,B.W)
 B.aiL=new A.cA("great_ball","Great Ball",1,B.bf)
-B.CK=new A.cA("revive","Revive",1,B.W)
+B.CL=new A.cA("revive","Revive",1,B.W)
 B.aiM=new A.cA("full_heal","Full Heal",1,B.bf)
-B.CL=new A.cA("lum_berry","Lum Berry",1,B.W)
+B.CM=new A.cA("lum_berry","Lum Berry",1,B.W)
 B.aiO=new A.cA("super_potion","Super Potion",1,B.bf)
 B.aiP=new A.cA("max_elixir","Max Elixir",1,B.eK)
 B.aiQ=new A.cA("max_ether","Max Ether",1,B.W)
 B.aiU=new A.cA("full_restore","Full Restore",2,B.eK)
 B.aiV=new A.cA("ultra_ball","Ultra Ball",1,B.W)
-B.CN=new A.afk(null)
+B.CO=new A.afk(null)
 B.akL=new A.afl(null)
 B.akM=new A.R2(0,"rawKeyData")
 B.akN=new A.R2(1,"keyDataThenRawKeyData")
@@ -124854,9 +124858,9 @@ B.akT=new A.xy(2,"inAppBrowserView")
 B.akU=new A.xy(3,"externalApplication")
 B.aCg=new A.ts("INFO",800)
 B.aCh=new A.ts("WARNING",900)
-B.IN=new A.Ea(0,"opportunity")
+B.IO=new A.Ea(0,"opportunity")
 B.vD=new A.Ea(2,"mandatory")
-B.IO=new A.Ea(3,"endOfText")
+B.IP=new A.Ea(3,"endOfText")
 B.V=new A.Hr(0,"clamp")
 B.a7e=new A.h(0.9176470588235294,0.10196078431372549,0.12941176470588237,0.2196078431372549,B.f)
 B.a5t=new A.h(0.9176470588235294,0.06274509803921569,0.08235294117647059,0.14901960784313725,B.f)
@@ -124875,10 +124879,10 @@ B.a4V=new A.h(1,0.10588235294117647,0.13333333333333333,0.20784313725490197,B.f)
 B.aFu=s([B.a65,B.a4V],t.O)
 B.aCl=new A.bh(B.b7,B.bN,B.V,B.aFu,null,null)
 B.a7c=new A.h(1,0.06666666666666667,0.09019607843137255,0.13725490196078433,B.f)
-B.aDm=s([B.zK,B.a7c],t.O)
+B.aDm=s([B.zL,B.a7c],t.O)
 B.aCm=new A.bh(B.aY,B.bm,B.V,B.aDm,null,null)
-B.Ah=new A.h(1,0.9019607843137255,0.2901960784313726,0.09803921568627451,B.f)
-B.aKo=s([B.cq,B.Ah,B.qx],t.O)
+B.Ai=new A.h(1,0.9019607843137255,0.2901960784313726,0.09803921568627451,B.f)
+B.aKo=s([B.cq,B.Ai,B.qx],t.O)
 B.aCn=new A.bh(B.b7,B.bN,B.V,B.aKo,null,null)
 B.a51=new A.h(0.9098039215686274,0.07450980392156863,0.13333333333333333,0.19607843137254902,B.f)
 B.a34=new A.h(0.9098039215686274,0.050980392156862744,0.08627450980392157,0.13333333333333333,B.f)
@@ -124901,7 +124905,7 @@ B.a6D=new A.h(0.9098039215686274,0.047058823529411764,0.0784313725490196,0.13333
 B.aEX=s([B.a7u,B.a6D],t.O)
 B.aCs=new A.bh(B.aY,B.bm,B.V,B.aEX,null,null)
 B.a3P=new A.h(0.9098039215686274,0.047058823529411764,0.054901960784313725,0.10588235294117647,B.f)
-B.aKY=s([B.za,B.a3P],t.O)
+B.aKY=s([B.zb,B.a3P],t.O)
 B.aCt=new A.bh(B.bs,B.am,B.V,B.aKY,null,null)
 B.a6p=new A.h(0.9215686274509803,0.08235294117647059,0.16862745098039217,0.14901960784313725,B.f)
 B.a4T=new A.h(0.9215686274509803,0.054901960784313725,0.09411764705882353,0.1411764705882353,B.f)
@@ -124927,7 +124931,7 @@ B.a36=new A.h(0.9098039215686274,0.08627450980392157,0.10588235294117647,0.16862
 B.a2Y=new A.h(0.9098039215686274,0.058823529411764705,0.07450980392156863,0.12549019607843137,B.f)
 B.aL5=s([B.a36,B.a2Y],t.O)
 B.aCz=new A.bh(B.bs,B.am,B.V,B.aL5,null,null)
-B.aI2=s([B.rc,B.zA],t.O)
+B.aI2=s([B.rc,B.zB],t.O)
 B.aCA=new A.bh(B.b7,B.bN,B.V,B.aI2,null,null)
 B.a6I=new A.h(1,0.1411764705882353,0.10196078431372549,0.1803921568627451,B.f)
 B.a2T=new A.h(1,0.07450980392156863,0.09019607843137255,0.1568627450980392,B.f)
@@ -124942,10 +124946,10 @@ B.a4q=new A.h(1,0.06666666666666667,0.08627450980392157,0.1607843137254902,B.f)
 B.aEn=s([B.a3f,B.a4q],t.O)
 B.aCD=new A.bh(B.aY,B.bm,B.V,B.aEn,null,null)
 B.aCE=new A.xC(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.IP=new A.tx(0,"threeLine")
+B.IQ=new A.tx(0,"threeLine")
 B.aCF=new A.tx(1,"titleHeight")
 B.aCG=new A.tx(2,"top")
-B.IQ=new A.tx(3,"center")
+B.IR=new A.tx(3,"center")
 B.aCH=new A.tx(4,"bottom")
 B.aCJ=s([118,119,116,117,60,61,90,91,120,54,55],t.t)
 B.bdN=new A.qy(0,"auto")
@@ -124961,7 +124965,7 @@ B.aMC=s([1.9622899599665666,-57.173814538844006,308.7233197812385],t.n)
 B.aD_=s([B.aIX,B.aHa,B.aMC],t.zg)
 B.aD0=s(["tm_27","tm_26","tm_07","tm_02","tm_04","tm_43"],t.s)
 B.vF=s([99,99,99,99,99,99],t.t)
-B.IR=s(["text","multiline","number","phone","datetime","emailAddress","url","visiblePassword","name","address","none","webSearch","twitter"],t.s)
+B.IS=s(["text","multiline","number","phone","datetime","emailAddress","url","visiblePassword","name","address","none","webSearch","twitter"],t.s)
 B.aD4=s([22,30,22],t.n)
 B.aDd=s([0,0.42,0.78,1],t.n)
 B.C=new A.e(0,0)
@@ -125008,20 +125012,20 @@ B.ahY=new A.pu(2,"jpeg")
 B.ai8=new A.m2(B.ahY,!1,3,"jpeg")
 B.ahW=new A.nt(B.aD5,B.ai8,3,"jpeg")
 B.aEI=s([82,73,70,70,null,null,null,null,87,69,66,80],t.Z)
-B.ahS=new A.nt(B.aEI,B.CE,4,"webp")
+B.ahS=new A.nt(B.aEI,B.CF,4,"webp")
 B.aEb=s([66,77],t.Z)
 B.ahZ=new A.pu(4,"bmp")
 B.ai6=new A.m2(B.ahZ,!1,6,"bmp")
 B.ahR=new A.nt(B.aEb,B.ai6,5,"bmp")
 B.aDQ=s([B.ahV,B.ahU,B.ahT,B.ahW,B.ahS,B.ahR],A.aX("T<nt>"))
-B.y4=new A.Ku(0,"named")
+B.y5=new A.Ku(0,"named")
 B.VU=new A.Ku(1,"anonymous")
-B.aE_=s([B.y4,B.VU],A.aX("T<Ku>"))
+B.aE_=s([B.y5,B.VU],A.aX("T<Ku>"))
 B.aHj=s([0.41233895,0.35762064,0.18051042],t.n)
 B.aFm=s([0.2126,0.7152,0.0722],t.n)
 B.aM0=s([0.01932141,0.11916382,0.95034478],t.n)
 B.aE3=s([B.aHj,B.aFm,B.aM0],t.zg)
-B.IT=s([0,4,12,1,5,13,3,7,15],t.t)
+B.IU=s([0,4,12,1,5,13,3,7,15],t.t)
 B.ag5=new A.ar(B.nS,14,B.M,null,null)
 B.a3=new A.ce(6,null,null,null)
 B.b6R=new A.k(!0,B.hg,null,null,null,null,10.5,B.ch,null,0.25,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -125058,7 +125062,7 @@ B.aGr=s([4.08649929,2.23811846],t.n)
 B.aHG=s([4.85481134,2.47563463],t.n)
 B.aFl=s([5.62945551,2.72948597],t.n)
 B.aG7=s([6.43023796,2.98020421],t.n)
-B.IU=s([B.aG6,B.aDk,B.aK8,B.aKl,B.aFc,B.aFz,B.aI0,B.aGr,B.aHG,B.aFl,B.aG7],t.zg)
+B.IV=s([B.aG6,B.aDk,B.aK8,B.aKl,B.aFc,B.aFz,B.aI0,B.aGr,B.aHG,B.aFl,B.aG7],t.zg)
 B.aGM=s(["wing_attack","poison_jab","confuse_ray","bite"],t.s)
 B.ad8=new A.aa(42,50,B.aGM,"poison_barb")
 B.aL9=s(["poison_jab","glare","earthquake","crunch"],t.s)
@@ -125075,7 +125079,7 @@ B.aF8=s([B.ad8,B.adD,B.adE,B.adV,B.adv,B.acl],t.T)
 B.aF9=s(["Arial"],t.s)
 B.aFa=s([B.qa,B.qb],A.aX("T<Bu>"))
 B.aFd=s(["-apple-system","BlinkMacSystemFont"],t.s)
-B.IV=s(["BlinkMacSystemFont"],t.s)
+B.IW=s(["BlinkMacSystemFont"],t.s)
 B.aFk=s([18,15,10,12,15,18,15,12,12],t.n)
 B.aFv=s(["tm_34","tm_48","tm_28","tm_08","tm_09","tm_20"],t.s)
 B.aFw=s(["Boulder","Cascade","Thunder","Rainbow","Soul","Marsh","Volcano","Earth"],t.s)
@@ -125089,7 +125093,7 @@ B.aFG=s(["Noto Color Emoji","Noto Sans Symbols","Noto Sans SC","Noto Sans TC","N
 B.aFM=s([1,0.85,1.05,0.9,1.08,0.82],t.n)
 B.aG3=s([108,42,124,89,130,24],t.t)
 B.cH=new A.h7(0,"icon")
-B.d2=new A.h7(1,"input")
+B.d3=new A.h7(1,"input")
 B.bV=new A.h7(2,"label")
 B.dj=new A.h7(3,"hint")
 B.dk=new A.h7(4,"prefix")
@@ -125099,17 +125103,17 @@ B.cP=new A.h7(7,"suffixIcon")
 B.ek=new A.h7(8,"helperError")
 B.el=new A.h7(9,"counter")
 B.h0=new A.h7(10,"container")
-B.aGa=s([B.cH,B.d2,B.bV,B.dj,B.dk,B.dl,B.bM,B.cP,B.ek,B.el,B.h0],A.aX("T<h7>"))
+B.aGa=s([B.cH,B.d3,B.bV,B.dj,B.dk,B.dl,B.bM,B.cP,B.ek,B.el,B.h0],A.aX("T<h7>"))
 B.aMG=new A.tz("en",null,"US")
 B.vG=s([B.aMG],t.ss)
-B.IW=s([0,41,61,101,131,181,251,301,360],t.n)
+B.IX=s([0,41,61,101,131,181,251,301,360],t.n)
 B.bef=new A.ox(0,0)
 B.bek=new A.ox(1,0.05)
 B.bei=new A.ox(3,0.08)
 B.bej=new A.ox(6,0.11)
 B.beh=new A.ox(8,0.12)
 B.beg=new A.ox(12,0.14)
-B.IX=s([B.bef,B.bek,B.bei,B.bej,B.beh,B.beg],A.aX("T<ox>"))
+B.IY=s([B.bef,B.bek,B.bei,B.bej,B.beh,B.beg],A.aX("T<ox>"))
 B.aEr=s(["giga_drain","sleep_powder","ancient_power","sludge_bomb"],t.s)
 B.adH=new A.aa(114,50,B.aEr,"miracle_seed")
 B.aLN=s(["spore","x_scissor","seed_bomb","slash"],t.s)
@@ -125131,18 +125135,18 @@ B.aiG=new A.cA("chesto_berry","Chesto Berry",1,B.bv)
 B.aiA=new A.cA("rawst_berry","Rawst Berry",1,B.bv)
 B.aiI=new A.cA("aspear_berry","Aspear Berry",1,B.bv)
 B.aGI=s([B.aiR,B.aiw,B.aiF,B.aiG,B.aiA,B.aiI],t.kP)
-B.IY=s([0,21,51,121,151,191,271,321,360],t.n)
+B.IZ=s([0,21,51,121,151,191,271,321,360],t.n)
 B.aHb=s(["poke_ball","great_ball","ultra_ball","master_ball"],t.s)
 B.a0r=new A.NX(2,"outer")
-B.zs=new A.h(0.09803921568627451,0,0,0,B.f)
-B.a0U=new A.cg(0.2,B.a0r,B.zs,B.C,11)
+B.zt=new A.h(0.09803921568627451,0,0,0,B.f)
+B.a0U=new A.cg(0.2,B.a0r,B.zt,B.C,11)
 B.aHd=s([B.a0U],t.E)
 B.aHs=s(["assets/images/battle_bg_route.png","assets/images/battle_bg_cave.png","assets/images/battle_bg_beach.png","assets/images/battle_bg_forest.png","assets/images/battle_bg_volcano.png","assets/images/battle_bg_urban.png","assets/images/battle_bg_pvp_arena.png","assets/images/battle_bg_seafoam.png","assets/images/battle_bg_power_plant.png","assets/images/battle_bg_victory_road.png",u.r,"assets/images/rocket_balloon.png","assets/images/bg_expeditions.png","assets/images/battle_bg_gym_rock.png","assets/images/battle_bg_gym_water.png","assets/images/battle_bg_gym_electric.png","assets/images/battle_bg_gym_grass.png","assets/images/battle_bg_gym_poison.png","assets/images/battle_bg_gym_psychic.png","assets/images/battle_bg_gym_fire.png","assets/images/battle_bg_gym_ground.png","assets/images/home_bg.png","assets/images/bg_pokemon_center.png","assets/images/nurse_joy.png","assets/images/bg_poke_mart.png","assets/images/bg_pokemon_lab.png","assets/images/bg_pokemon_league.png","assets/images/bg_pokedex.png","assets/images/bg_pc_storage.png","assets/images/bg_bump_radar.png","assets/images/bg_starter_select.png","assets/images/badges/boulder_badge.png","assets/images/badges/cascade_badge.png","assets/images/badges/thunder_badge.png","assets/images/badges/rainbow_badge.png","assets/images/badges/soul_badge.png","assets/images/badges/marsh_badge.png","assets/images/badges/volcano_badge.png","assets/images/badges/earth_badge.png"],t.s)
-B.U8=new A.GU(0,"left")
-B.U9=new A.GU(1,"right")
-B.aHA=s([B.U8,B.U9],A.aX("T<GU>"))
-B.bo=new A.H8(0,"upstream")
-B.aHH=s([B.bo,B.J],A.aX("T<H8>"))
+B.U9=new A.GU(0,"left")
+B.Ua=new A.GU(1,"right")
+B.aHA=s([B.U9,B.Ua],A.aX("T<GU>"))
+B.bp=new A.H8(0,"upstream")
+B.aHH=s([B.bp,B.J],A.aX("T<H8>"))
 B.bI=new A.uW(0,"rtl")
 B.aN=new A.uW(1,"ltr")
 B.vL=s([B.bI,B.aN],A.aX("T<uW>"))
@@ -125187,7 +125191,7 @@ B.jM=new A.jD(2,"freeze")
 B.fT=new A.jD(3,"paralysis")
 B.i7=new A.jD(4,"poison")
 B.bL=new A.jD(5,"sleep")
-B.Je=s([B.al,B.jL,B.jM,B.fT,B.i7,B.bL],A.aX("T<jD>"))
+B.Jf=s([B.al,B.jL,B.jM,B.fT,B.i7,B.bL],A.aX("T<jD>"))
 B.aI9=s(["atk","def","spa","spd","spe"],t.s)
 B.aMb=s(["earthquake","rock_slide","explosion","body_slam"],t.s)
 B.adl=new A.aa(76,50,B.aMb,"hard_stone")
@@ -125202,8 +125206,8 @@ B.adF=new A.aa(142,50,B.aEm,"lum_berry")
 B.aMj=s(["earthquake","rock_slide","body_slam","fissure"],t.s)
 B.abY=new A.aa(112,50,B.aMj,"leftovers")
 B.aIg=s([B.adl,B.adU,B.adJ,B.adn,B.adF,B.abY],t.T)
-B.cZ=new A.hI(1,"fuchsia")
-B.aIs=s([B.bE,B.cZ,B.aI,B.cN,B.ce,B.cO],A.aX("T<hI>"))
+B.d_=new A.hI(1,"fuchsia")
+B.aIs=s([B.bE,B.d_,B.aI,B.cN,B.ce,B.cO],A.aX("T<hI>"))
 B.VA=new A.zz(0,"topLeft")
 B.VD=new A.zz(3,"bottomRight")
 B.bea=new A.ow(B.VA,B.VD)
@@ -125251,15 +125255,15 @@ B.pa=new A.U_(1,"page")
 B.pb=new A.h0(B.dm,B.pa)
 B.aJm=s([B.a11,B.pb],A.aX("T<bK>"))
 B.aJJ=s([],t.QP)
-B.Ji=s([],A.aX("T<bm5>"))
+B.Jj=s([],A.aX("T<bm5>"))
 B.aJO=s([],t.F)
 B.oE=s([],t.J2)
 B.aJD=s([],t.fJ)
 B.oD=s([],t.kP)
 B.aJN=s([],t.ER)
 B.bfU=s([],t.ss)
-B.Jh=s([],t.je)
-B.Jg=s([],t.tc)
+B.Ji=s([],t.je)
+B.Jh=s([],t.tc)
 B.aJE=s([],A.aX("T<jv>"))
 B.oC=s([],t.jl)
 B.aJC=s([],t.wi)
@@ -125277,7 +125281,7 @@ B.aJF=s([],A.aX("T<~>"))
 B.aJL=s([],t.XS)
 B.aK5=s(["tm_46","tm_29","tm_30","tm_35","tm_42","tm_50"],t.s)
 B.aQs=new A.e(0,2)
-B.a0T=new A.cg(0.75,B.aZ,B.zs,B.aQs,1.5)
+B.a0T=new A.cg(0.75,B.aZ,B.zt,B.aQs,1.5)
 B.aKm=s([B.a0T],t.E)
 B.aH=new A.dx(12,"rock")
 B.aL=new A.dx(8,"ground")
@@ -125307,8 +125311,8 @@ B.afd=new A.ai(62960,"MaterialIcons",!1)
 B.XO=new A.im("Toxic Marsh","map_toxic_marsh","Misty boglands haunted by Poison & Ghost Pok\xe9mon.",B.aH6,"assets/images/battle_bg_cave.png",B.dR,B.afd,"Fuchsia Gym (Koga)")
 B.a5=new A.dx(10,"psychic")
 B.df=new A.dx(17,"fairy")
-B.J_=s([B.a5,B.df],t.U)
-B.XU=new A.im("Mystic Sanctum","map_mystic_sanctum","Astral ruins resonating with Psychic & Fairy Pok\xe9mon.",B.J_,"assets/images/battle_bg_route.png",B.f0,B.f9,"Saffron Gym (Sabrina)")
+B.J0=s([B.a5,B.df],t.U)
+B.XU=new A.im("Mystic Sanctum","map_mystic_sanctum","Astral ruins resonating with Psychic & Fairy Pok\xe9mon.",B.J0,"assets/images/battle_bg_route.png",B.f0,B.f9,"Saffron Gym (Sabrina)")
 B.aj=new A.dx(1,"fire")
 B.c1=new A.dx(14,"dragon")
 B.aGY=s([B.aj,B.c1],t.U)
@@ -125318,7 +125322,7 @@ B.aA=new A.dx(6,"fighting")
 B.aJi=s([B.aA,B.aL,B.aH],t.U)
 B.aft=new A.ai(63550,"MaterialIcons",!1)
 B.XP=new A.im("Victory Highlands","map_victory_highlands","Rugged training peaks ruled by Fighting, Ground & Rock Pok\xe9mon.",B.aJi,"assets/images/battle_bg_victory_road.png",B.f_,B.aft,"Viridian Gym (Giovanni)")
-B.Jj=s([B.XS,B.XT,B.XQ,B.XR,B.XO,B.XU,B.XV,B.XP],A.aX("T<im>"))
+B.Jk=s([B.XS,B.XT,B.XQ,B.XR,B.XO,B.XU,B.XV,B.XP],A.aX("T<im>"))
 B.lh=s(["quick_ball","timer_ball","dusk_ball","net_ball","fast_ball","dream_ball","repeat_ball","level_ball","heal_ball"],t.s)
 B.aKt=s([53,73,130,49,71,110],t.t)
 B.aKI=s([-16,0,16],t.n)
@@ -125334,7 +125338,7 @@ B.b13=new A.yR("MOVES",null)
 B.oF=s([B.b12,B.b14,B.b13],t.p)
 B.aLi=s(["map_underground_cave","map_deep_sea","map_thunder_plains","map_emerald_forest","map_toxic_marsh","map_mystic_sanctum","map_volcanic_ridge","map_victory_highlands"],t.s)
 B.aiN=new A.cA("sitrus_berry","Sitrus Berry",1,B.bf)
-B.aLk=s([B.aiN,B.CL],t.kP)
+B.aLk=s([B.aiN,B.CM],t.kP)
 B.aEs=s([0.001200833568784504,0.002389694492170889,0.0002795742885861124],t.n)
 B.aJn=s([0.0005891086651375999,0.0029785502573438758,0.0003270666104008398],t.n)
 B.aFi=s([0.00010146692491640572,0.0005364214359186694,0.0032979401770712076],t.n)
@@ -125347,7 +125351,7 @@ B.aax=new A.kY("event_kanto_supply_pack","Kanto Explorer Supply Pack","5\xd7 Ult
 B.aPZ={fire_stone:0,water_stone:1,thunder_stone:2,leaf_stone:3}
 B.aOI=new A.c6(B.aPZ,[1,1,1,1],t.eL)
 B.aay=new A.kY("event_evolution_festival","Evolution Stone Celebration","1\xd7 Fire, Water, Thunder & Leaf Stone","SPECIAL DISTRIBUTION",B.aOI)
-B.Jl=s([B.aax,B.aay],A.aX("T<kY>"))
+B.Jm=s([B.aax,B.aay],A.aX("T<kY>"))
 B.aLI=s(["potion","super_potion","hyper_potion","max_potion","full_restore","revive","antidote","paralyze_heal","awakening","burn_heal","ice_heal","full_heal","ether","max_ether","elixir","max_elixir","leppa_berry"],t.s)
 B.aGJ=s([55,73,80,87,91,99,117,119,121,124,130,131],t.t)
 B.aaS=new A.rW("Seafoam Islands","Frozen Subterranean Sea","Glacial sea caverns deep beneath southern Kanto, carved by freezing subterranean tides.","Icy mist swirls around subterranean tides as your team steps onto the frozen ledges of Seafoam Islands...",144,B.hm,"assets/images/battle_bg_seafoam.png",B.aGJ)
@@ -125366,8 +125370,8 @@ B.w7=new A.js(4,"capsLockModifier")
 B.w8=new A.js(5,"numLockModifier")
 B.w9=new A.js(6,"scrollLockModifier")
 B.wa=new A.js(7,"functionModifier")
-B.Oy=new A.js(8,"symbolModifier")
-B.Jn=s([B.jm,B.jn,B.jo,B.jp,B.w7,B.w8,B.w9,B.wa,B.Oy],A.aX("T<js>"))
+B.Oz=new A.js(8,"symbolModifier")
+B.Jo=s([B.jm,B.jn,B.jo,B.jp,B.w7,B.w8,B.w9,B.wa,B.Oz],A.aX("T<js>"))
 B.aLS=s(["tm_11","tm_12","tm_13","tm_14","tm_33","tm_39"],t.s)
 B.vN=s([!0,!1],t.HZ)
 B.aHW=s(["thunderbolt","thunder_wave","explosion","swift"],t.s)
@@ -125411,12 +125415,12 @@ B.aW2=new A.aC(0.9526,1.3431)
 B.aW9=new A.aC(0.9594,1.3212)
 B.aWd=new A.aC(0.9653,1.3032)
 B.aWm=new A.aC(0.9705,1.288)
-B.Jo=s([B.aWg,B.aW8,B.aWr,B.aW4,B.aWb,B.aW5,B.aW7,B.aW6,B.aWc,B.aW2,B.aW9,B.aWd,B.aWm],A.aX("T<+(U,U)>"))
+B.Jp=s([B.aWg,B.aW8,B.aWr,B.aW4,B.aWb,B.aW5,B.aW7,B.aW6,B.aWc,B.aW2,B.aW9,B.aWd,B.aWm],A.aX("T<+(U,U)>"))
 B.aMF=s(["tm_38","tm_15","tm_17","tm_18","tm_19","tm_23"],t.s)
 B.X=new A.Eg(0,"ignored")
-B.cU=new A.n(4294967304)
+B.cV=new A.n(4294967304)
 B.hK=new A.n(4294967323)
-B.cV=new A.n(4294967423)
+B.cW=new A.n(4294967423)
 B.vQ=new A.n(4294967558)
 B.lo=new A.n(8589934848)
 B.oL=new A.n(8589934849)
@@ -125437,7 +125441,7 @@ B.bb=new A.K(0,0,0,0)
 B.aO7=new A.nB(B.C,B.bb,B.bb,B.bb)
 B.hT=new A.pJ(1,"end")
 B.aP=new A.pJ(3,"spaceBetween")
-B.Og=new A.pJ(4,"spaceAround")
+B.Oh=new A.pJ(4,"spaceAround")
 B.oO=new A.pJ(5,"spaceEvenly")
 B.Y=new A.Rq(0,"min")
 B.aO8=new A.nC(B.k6,B.k6,A.aX("nC<E,E>"))
@@ -125449,8 +125453,8 @@ B.wy=new A.f_([10,-1,!1,"spe"])
 B.lH=new A.f_([100,-1,!1,"spe"])
 B.aWH=new A.f_([70,1,!0,"spa"])
 B.aWN=new A.f_([20,-1,!1,"def"])
-B.SH=new A.f_([50,-1,!1,"def"])
-B.SI=new A.f_([100,1,!0,"spe"])
+B.SI=new A.f_([50,-1,!1,"def"])
+B.SJ=new A.f_([100,1,!0,"spe"])
 B.aWM=new A.f_([100,-1,!0,"spe"])
 B.aWQ=new A.f_([30,-1,!1,"def"])
 B.aWP=new A.f_([100,-2,!0,"spa"])
@@ -125461,7 +125465,7 @@ B.wz=new A.f_([30,-1,!1,"acc"])
 B.aWG=new A.f_([30,-1,!1,"spa"])
 B.aWR=new A.f_([100,-1,!1,"acc"])
 B.aWI=new A.f_([20,-1,!1,"spd"])
-B.lv=new A.c6(B.aQg,[B.jB,B.aWJ,B.aWS,B.wy,B.wy,B.jB,B.lH,B.aWH,B.wy,B.aWN,B.SH,B.jB,B.jB,B.SI,B.jB,B.aWM,B.lH,B.aWQ,B.aWP,B.aWO,B.lH,B.aWL,B.aWK,B.wz,B.aWG,B.wz,B.lH,B.aWR,B.wz,B.jB,B.SI,B.SH,B.lH,B.aWI],A.aX("c6<E,+chance,delta,self,stat(v,v,Q,E)>"))
+B.lv=new A.c6(B.aQg,[B.jB,B.aWJ,B.aWS,B.wy,B.wy,B.jB,B.lH,B.aWH,B.wy,B.aWN,B.SI,B.jB,B.jB,B.SJ,B.jB,B.aWM,B.lH,B.aWQ,B.aWP,B.aWO,B.lH,B.aWL,B.aWK,B.wz,B.aWG,B.wz,B.lH,B.aWR,B.wz,B.jB,B.SJ,B.SI,B.lH,B.aWI],A.aX("c6<E,+chance,delta,self,stat(v,v,Q,E)>"))
 B.aO9=new A.bT([25,"Evolves into Raichu via Thunder Stone",30,"Evolves into Nidoqueen via Moon Stone",33,"Evolves into Nidoking via Moon Stone",35,"Evolves into Clefable via Moon Stone",37,"Evolves into Ninetales via Fire Stone",39,"Evolves into Wigglytuff via Moon Stone",44,"Evolves into Vileplume via Leaf Stone",58,"Evolves into Arcanine via Fire Stone",61,"Evolves into Poliwrath via Water Stone",64,"Evolves into Alakazam via Link Trade (Fist Bump)",67,"Evolves into Machamp via Link Trade (Fist Bump)",70,"Evolves into Victreebel via Leaf Stone",75,"Evolves into Golem via Link Trade (Fist Bump)",90,"Evolves into Cloyster via Water Stone",93,"Evolves into Gengar via Link Trade (Fist Bump)",102,"Evolves into Exeggutor via Leaf Stone",120,"Evolves into Starmie via Water Stone",133,"Evolves into Vaporeon / Jolteon / Flareon via Evolution Stone"],t.TM)
 B.aPM={in:0,iw:1,ji:2,jw:3,mo:4,aam:5,adp:6,aue:7,ayx:8,bgm:9,bjd:10,ccq:11,cjr:12,cka:13,cmk:14,coy:15,cqu:16,drh:17,drw:18,gav:19,gfx:20,ggn:21,gti:22,guv:23,hrr:24,ibi:25,ilw:26,jeg:27,kgc:28,kgh:29,koj:30,krm:31,ktr:32,kvs:33,kwq:34,kxe:35,kzj:36,kzt:37,lii:38,lmm:39,meg:40,mst:41,mwj:42,myt:43,nad:44,ncp:45,nnx:46,nts:47,oun:48,pcr:49,pmc:50,pmu:51,ppa:52,ppr:53,pry:54,puz:55,sca:56,skk:57,tdu:58,thc:59,thx:60,tie:61,tkk:62,tlw:63,tmp:64,tne:65,tnf:66,tsf:67,uok:68,xba:69,xia:70,xkh:71,xsj:72,ybd:73,yma:74,ymt:75,yos:76,yuu:77}
 B.eh=new A.c6(B.aPM,["id","he","yi","jv","ro","aas","dz","ktz","nun","bcg","drl","rki","mom","cmr","xch","pij","quh","khk","prs","dev","vaj","gvr","nyc","duz","jal","opa","gal","oyb","tdf","kml","kwv","bmf","dtp","gdj","yam","tvd","dtp","dtp","raq","rmx","cir","mry","vaj","mry","xny","kdz","ngv","pij","vaj","adx","huw","phr","bfy","lcq","prt","pub","hle","oyb","dtp","tpo","oyb","ras","twm","weo","tyj","kak","prs","taj","ema","cax","acn","waw","suj","rki","lrr","mtm","zom","yug"],t.li)
@@ -125473,23 +125477,23 @@ B.eg=new A.n(4294968067)
 B.wS=new A.aS(B.eg,!1,!1,!0,!1,B.X)
 B.eH=new A.n(4294968068)
 B.wT=new A.aS(B.eH,!1,!1,!0,!1,B.X)
-B.TK=new A.aS(B.eG,!1,!1,!1,!0,B.X)
-B.TH=new A.aS(B.ef,!1,!1,!1,!0,B.X)
-B.TI=new A.aS(B.eg,!1,!1,!1,!0,B.X)
-B.TJ=new A.aS(B.eH,!1,!1,!1,!0,B.X)
+B.TL=new A.aS(B.eG,!1,!1,!1,!0,B.X)
+B.TI=new A.aS(B.ef,!1,!1,!1,!0,B.X)
+B.TJ=new A.aS(B.eg,!1,!1,!1,!0,B.X)
+B.TK=new A.aS(B.eH,!1,!1,!1,!0,B.X)
 B.m_=new A.aS(B.eG,!1,!1,!1,!1,B.X)
 B.jI=new A.aS(B.ef,!1,!1,!1,!1,B.X)
 B.jJ=new A.aS(B.eg,!1,!1,!1,!1,B.X)
 B.lZ=new A.aS(B.eH,!1,!1,!1,!1,B.X)
-B.TL=new A.aS(B.ef,!0,!1,!1,!1,B.X)
-B.TM=new A.aS(B.eg,!0,!1,!1,!1,B.X)
-B.TP=new A.aS(B.ef,!0,!0,!1,!1,B.X)
-B.TQ=new A.aS(B.eg,!0,!0,!1,!1,B.X)
-B.Ju=new A.n(32)
-B.pj=new A.aS(B.Ju,!1,!1,!1,!1,B.X)
+B.TM=new A.aS(B.ef,!0,!1,!1,!1,B.X)
+B.TN=new A.aS(B.eg,!0,!1,!1,!1,B.X)
+B.TQ=new A.aS(B.ef,!0,!0,!1,!1,B.X)
+B.TR=new A.aS(B.eg,!0,!0,!1,!1,B.X)
+B.Jv=new A.n(32)
+B.pj=new A.aS(B.Jv,!1,!1,!1,!1,B.X)
 B.oH=new A.n(4294967309)
 B.pm=new A.aS(B.oH,!1,!1,!1,!1,B.X)
-B.Oh=new A.bT([B.wU,B.a1,B.wR,B.a1,B.wS,B.a1,B.wT,B.a1,B.TK,B.a1,B.TH,B.a1,B.TI,B.a1,B.TJ,B.a1,B.m_,B.a1,B.jI,B.a1,B.jJ,B.a1,B.lZ,B.a1,B.TL,B.a1,B.TM,B.a1,B.TP,B.a1,B.TQ,B.a1,B.pj,B.a1,B.pm,B.a1],t.Fp)
+B.Oi=new A.bT([B.wU,B.a1,B.wR,B.a1,B.wS,B.a1,B.wT,B.a1,B.TL,B.a1,B.TI,B.a1,B.TJ,B.a1,B.TK,B.a1,B.m_,B.a1,B.jI,B.a1,B.jJ,B.a1,B.lZ,B.a1,B.TM,B.a1,B.TN,B.a1,B.TQ,B.a1,B.TR,B.a1,B.pj,B.a1,B.pm,B.a1],t.Fp)
 B.aN_=new A.n(33)
 B.aN0=new A.n(34)
 B.aN1=new A.n(35)
@@ -125499,22 +125503,22 @@ B.aN4=new A.n(38)
 B.aN5=new A.n(39)
 B.aN6=new A.n(40)
 B.aN7=new A.n(41)
-B.Jv=new A.n(42)
-B.NY=new A.n(43)
+B.Jw=new A.n(42)
+B.NZ=new A.n(43)
 B.aN8=new A.n(44)
-B.NZ=new A.n(45)
-B.O_=new A.n(46)
-B.O0=new A.n(47)
-B.O1=new A.n(48)
-B.O2=new A.n(49)
-B.O3=new A.n(50)
-B.O4=new A.n(51)
-B.O5=new A.n(52)
-B.O6=new A.n(53)
-B.O7=new A.n(54)
-B.O8=new A.n(55)
-B.O9=new A.n(56)
-B.Oa=new A.n(57)
+B.O_=new A.n(45)
+B.O0=new A.n(46)
+B.O1=new A.n(47)
+B.O2=new A.n(48)
+B.O3=new A.n(49)
+B.O4=new A.n(50)
+B.O5=new A.n(51)
+B.O6=new A.n(52)
+B.O7=new A.n(53)
+B.O8=new A.n(54)
+B.O9=new A.n(55)
+B.Oa=new A.n(56)
+B.Ob=new A.n(57)
 B.aN9=new A.n(58)
 B.aNa=new A.n(59)
 B.aNb=new A.n(60)
@@ -125529,11 +125533,11 @@ B.aO3=new A.n(94)
 B.aO4=new A.n(95)
 B.aO5=new A.n(96)
 B.vZ=new A.n(97)
-B.Of=new A.n(98)
+B.Og=new A.n(98)
 B.w_=new A.n(99)
 B.aMH=new A.n(100)
-B.Jp=new A.n(101)
-B.Jq=new A.n(102)
+B.Jq=new A.n(101)
+B.Jr=new A.n(102)
 B.aMI=new A.n(103)
 B.aMJ=new A.n(104)
 B.aMK=new A.n(105)
@@ -125541,13 +125545,13 @@ B.aML=new A.n(106)
 B.aMM=new A.n(107)
 B.aMN=new A.n(108)
 B.aMO=new A.n(109)
-B.Jr=new A.n(110)
+B.Js=new A.n(110)
 B.aMP=new A.n(111)
-B.Js=new A.n(112)
+B.Jt=new A.n(112)
 B.aMQ=new A.n(113)
 B.aMR=new A.n(114)
 B.aMS=new A.n(115)
-B.Jt=new A.n(116)
+B.Ju=new A.n(116)
 B.aMT=new A.n(117)
 B.vO=new A.n(118)
 B.aMU=new A.n(119)
@@ -125558,294 +125562,294 @@ B.aMW=new A.n(123)
 B.aMX=new A.n(124)
 B.aMY=new A.n(125)
 B.aMZ=new A.n(126)
-B.Jw=new A.n(4294967297)
+B.Jx=new A.n(4294967297)
 B.oG=new A.n(4294967305)
-B.Jx=new A.n(4294967553)
+B.Jy=new A.n(4294967553)
 B.oI=new A.n(4294967555)
-B.Jy=new A.n(4294967559)
-B.Jz=new A.n(4294967560)
-B.JA=new A.n(4294967566)
-B.JB=new A.n(4294967567)
-B.JC=new A.n(4294967568)
-B.JD=new A.n(4294967569)
+B.Jz=new A.n(4294967559)
+B.JA=new A.n(4294967560)
+B.JB=new A.n(4294967566)
+B.JC=new A.n(4294967567)
+B.JD=new A.n(4294967568)
+B.JE=new A.n(4294967569)
 B.hL=new A.n(4294968069)
 B.hM=new A.n(4294968070)
 B.ll=new A.n(4294968071)
 B.lm=new A.n(4294968072)
 B.vR=new A.n(4294968321)
-B.JE=new A.n(4294968322)
-B.JF=new A.n(4294968323)
-B.JG=new A.n(4294968324)
-B.JH=new A.n(4294968325)
-B.JI=new A.n(4294968326)
+B.JF=new A.n(4294968322)
+B.JG=new A.n(4294968323)
+B.JH=new A.n(4294968324)
+B.JI=new A.n(4294968325)
+B.JJ=new A.n(4294968326)
 B.ln=new A.n(4294968327)
-B.JJ=new A.n(4294968328)
-B.JK=new A.n(4294968329)
-B.JL=new A.n(4294968330)
-B.JM=new A.n(4294968577)
-B.JN=new A.n(4294968578)
-B.JO=new A.n(4294968579)
-B.JP=new A.n(4294968580)
-B.JQ=new A.n(4294968581)
-B.JR=new A.n(4294968582)
-B.JS=new A.n(4294968583)
-B.JT=new A.n(4294968584)
-B.JU=new A.n(4294968585)
-B.JV=new A.n(4294968586)
-B.JW=new A.n(4294968587)
-B.JX=new A.n(4294968588)
-B.JY=new A.n(4294968589)
-B.JZ=new A.n(4294968590)
-B.K_=new A.n(4294968833)
-B.K0=new A.n(4294968834)
-B.K1=new A.n(4294968835)
-B.K2=new A.n(4294968836)
-B.K3=new A.n(4294968837)
-B.K4=new A.n(4294968838)
-B.K5=new A.n(4294968839)
-B.K6=new A.n(4294968840)
-B.K7=new A.n(4294968841)
-B.K8=new A.n(4294968842)
-B.K9=new A.n(4294968843)
-B.Ka=new A.n(4294969089)
-B.Kb=new A.n(4294969090)
-B.Kc=new A.n(4294969091)
-B.Kd=new A.n(4294969092)
-B.Ke=new A.n(4294969093)
-B.Kf=new A.n(4294969094)
-B.Kg=new A.n(4294969095)
-B.Kh=new A.n(4294969096)
-B.Ki=new A.n(4294969097)
-B.Kj=new A.n(4294969098)
-B.Kk=new A.n(4294969099)
-B.Kl=new A.n(4294969100)
-B.Km=new A.n(4294969101)
-B.Kn=new A.n(4294969102)
-B.Ko=new A.n(4294969103)
-B.Kp=new A.n(4294969104)
-B.Kq=new A.n(4294969105)
-B.Kr=new A.n(4294969106)
-B.Ks=new A.n(4294969107)
-B.Kt=new A.n(4294969108)
-B.Ku=new A.n(4294969109)
-B.Kv=new A.n(4294969110)
-B.Kw=new A.n(4294969111)
-B.Kx=new A.n(4294969112)
-B.Ky=new A.n(4294969113)
-B.Kz=new A.n(4294969114)
-B.KA=new A.n(4294969115)
-B.KB=new A.n(4294969116)
-B.KC=new A.n(4294969117)
-B.KD=new A.n(4294969345)
-B.KE=new A.n(4294969346)
-B.KF=new A.n(4294969347)
-B.KG=new A.n(4294969348)
-B.KH=new A.n(4294969349)
-B.KI=new A.n(4294969350)
-B.KJ=new A.n(4294969351)
-B.KK=new A.n(4294969352)
-B.KL=new A.n(4294969353)
-B.KM=new A.n(4294969354)
-B.KN=new A.n(4294969355)
-B.KO=new A.n(4294969356)
-B.KP=new A.n(4294969357)
-B.KQ=new A.n(4294969358)
-B.KR=new A.n(4294969359)
-B.KS=new A.n(4294969360)
-B.KT=new A.n(4294969361)
-B.KU=new A.n(4294969362)
-B.KV=new A.n(4294969363)
-B.KW=new A.n(4294969364)
-B.KX=new A.n(4294969365)
-B.KY=new A.n(4294969366)
-B.KZ=new A.n(4294969367)
-B.L_=new A.n(4294969368)
-B.L0=new A.n(4294969601)
-B.L1=new A.n(4294969602)
-B.L2=new A.n(4294969603)
-B.L3=new A.n(4294969604)
-B.L4=new A.n(4294969605)
-B.L5=new A.n(4294969606)
-B.L6=new A.n(4294969607)
-B.L7=new A.n(4294969608)
-B.L8=new A.n(4294969857)
-B.L9=new A.n(4294969858)
-B.La=new A.n(4294969859)
-B.Lb=new A.n(4294969860)
-B.Lc=new A.n(4294969861)
-B.Ld=new A.n(4294969863)
-B.Le=new A.n(4294969864)
-B.Lf=new A.n(4294969865)
-B.Lg=new A.n(4294969866)
-B.Lh=new A.n(4294969867)
-B.Li=new A.n(4294969868)
-B.Lj=new A.n(4294969869)
-B.Lk=new A.n(4294969870)
-B.Ll=new A.n(4294969871)
-B.Lm=new A.n(4294969872)
-B.Ln=new A.n(4294969873)
-B.Lo=new A.n(4294970113)
-B.Lp=new A.n(4294970114)
-B.Lq=new A.n(4294970115)
-B.Lr=new A.n(4294970116)
-B.Ls=new A.n(4294970117)
-B.Lt=new A.n(4294970118)
-B.Lu=new A.n(4294970119)
-B.Lv=new A.n(4294970120)
-B.Lw=new A.n(4294970121)
-B.Lx=new A.n(4294970122)
-B.Ly=new A.n(4294970123)
-B.Lz=new A.n(4294970124)
-B.LA=new A.n(4294970125)
-B.LB=new A.n(4294970126)
-B.LC=new A.n(4294970127)
-B.LD=new A.n(4294970369)
-B.LE=new A.n(4294970370)
-B.LF=new A.n(4294970371)
-B.LG=new A.n(4294970372)
-B.LH=new A.n(4294970373)
-B.LI=new A.n(4294970374)
-B.LJ=new A.n(4294970375)
-B.LK=new A.n(4294970625)
-B.LL=new A.n(4294970626)
-B.LM=new A.n(4294970627)
-B.LN=new A.n(4294970628)
-B.LO=new A.n(4294970629)
-B.LP=new A.n(4294970630)
-B.LQ=new A.n(4294970631)
-B.LR=new A.n(4294970632)
-B.LS=new A.n(4294970633)
-B.LT=new A.n(4294970634)
-B.LU=new A.n(4294970635)
-B.LV=new A.n(4294970636)
-B.LW=new A.n(4294970637)
-B.LX=new A.n(4294970638)
-B.LY=new A.n(4294970639)
-B.LZ=new A.n(4294970640)
-B.M_=new A.n(4294970641)
-B.M0=new A.n(4294970642)
-B.M1=new A.n(4294970643)
-B.M2=new A.n(4294970644)
-B.M3=new A.n(4294970645)
-B.M4=new A.n(4294970646)
-B.M5=new A.n(4294970647)
-B.M6=new A.n(4294970648)
-B.M7=new A.n(4294970649)
-B.M8=new A.n(4294970650)
-B.M9=new A.n(4294970651)
-B.Ma=new A.n(4294970652)
-B.Mb=new A.n(4294970653)
-B.Mc=new A.n(4294970654)
-B.Md=new A.n(4294970655)
-B.Me=new A.n(4294970656)
-B.Mf=new A.n(4294970657)
-B.Mg=new A.n(4294970658)
-B.Mh=new A.n(4294970659)
-B.Mi=new A.n(4294970660)
-B.Mj=new A.n(4294970661)
-B.Mk=new A.n(4294970662)
-B.Ml=new A.n(4294970663)
-B.Mm=new A.n(4294970664)
-B.Mn=new A.n(4294970665)
-B.Mo=new A.n(4294970666)
-B.Mp=new A.n(4294970667)
-B.Mq=new A.n(4294970668)
-B.Mr=new A.n(4294970669)
-B.Ms=new A.n(4294970670)
-B.Mt=new A.n(4294970671)
-B.Mu=new A.n(4294970672)
-B.Mv=new A.n(4294970673)
-B.Mw=new A.n(4294970674)
-B.Mx=new A.n(4294970675)
-B.My=new A.n(4294970676)
-B.Mz=new A.n(4294970677)
-B.MA=new A.n(4294970678)
-B.MB=new A.n(4294970679)
-B.MC=new A.n(4294970680)
-B.MD=new A.n(4294970681)
-B.ME=new A.n(4294970682)
-B.MF=new A.n(4294970683)
-B.MG=new A.n(4294970684)
-B.MH=new A.n(4294970685)
-B.MI=new A.n(4294970686)
-B.MJ=new A.n(4294970687)
-B.MK=new A.n(4294970688)
-B.ML=new A.n(4294970689)
-B.MM=new A.n(4294970690)
-B.MN=new A.n(4294970691)
-B.MO=new A.n(4294970692)
-B.MP=new A.n(4294970693)
-B.MQ=new A.n(4294970694)
-B.MR=new A.n(4294970695)
-B.MS=new A.n(4294970696)
-B.MT=new A.n(4294970697)
-B.MU=new A.n(4294970698)
-B.MV=new A.n(4294970699)
-B.MW=new A.n(4294970700)
-B.MX=new A.n(4294970701)
-B.MY=new A.n(4294970702)
-B.MZ=new A.n(4294970703)
-B.N_=new A.n(4294970704)
-B.N0=new A.n(4294970705)
-B.N1=new A.n(4294970706)
-B.N2=new A.n(4294970707)
-B.N3=new A.n(4294970708)
-B.N4=new A.n(4294970709)
-B.N5=new A.n(4294970710)
-B.N6=new A.n(4294970711)
-B.N7=new A.n(4294970712)
-B.N8=new A.n(4294970713)
-B.N9=new A.n(4294970714)
-B.Na=new A.n(4294970715)
-B.Nb=new A.n(4294970882)
-B.Nc=new A.n(4294970884)
-B.Nd=new A.n(4294970885)
-B.Ne=new A.n(4294970886)
-B.Nf=new A.n(4294970887)
-B.Ng=new A.n(4294970888)
-B.Nh=new A.n(4294970889)
-B.Ni=new A.n(4294971137)
-B.Nj=new A.n(4294971138)
-B.Nk=new A.n(4294971393)
-B.Nl=new A.n(4294971394)
-B.Nm=new A.n(4294971395)
-B.Nn=new A.n(4294971396)
-B.No=new A.n(4294971397)
-B.Np=new A.n(4294971398)
-B.Nq=new A.n(4294971399)
-B.Nr=new A.n(4294971400)
-B.Ns=new A.n(4294971401)
-B.Nt=new A.n(4294971402)
-B.Nu=new A.n(4294971403)
-B.Nv=new A.n(4294971649)
-B.Nw=new A.n(4294971650)
-B.Nx=new A.n(4294971651)
-B.Ny=new A.n(4294971652)
-B.Nz=new A.n(4294971653)
-B.NA=new A.n(4294971654)
-B.NB=new A.n(4294971655)
-B.NC=new A.n(4294971656)
-B.ND=new A.n(4294971657)
-B.NE=new A.n(4294971658)
-B.NF=new A.n(4294971659)
-B.NG=new A.n(4294971660)
-B.NH=new A.n(4294971661)
-B.NI=new A.n(4294971662)
-B.NJ=new A.n(4294971663)
-B.NK=new A.n(4294971664)
-B.NL=new A.n(4294971665)
-B.NM=new A.n(4294971666)
-B.NN=new A.n(4294971667)
-B.NO=new A.n(4294971668)
-B.NP=new A.n(4294971669)
-B.NQ=new A.n(4294971670)
-B.NR=new A.n(4294971671)
-B.NS=new A.n(4294971672)
-B.NT=new A.n(4294971673)
-B.NU=new A.n(4294971674)
-B.NV=new A.n(4294971675)
-B.NW=new A.n(4294971905)
-B.NX=new A.n(4294971906)
+B.JK=new A.n(4294968328)
+B.JL=new A.n(4294968329)
+B.JM=new A.n(4294968330)
+B.JN=new A.n(4294968577)
+B.JO=new A.n(4294968578)
+B.JP=new A.n(4294968579)
+B.JQ=new A.n(4294968580)
+B.JR=new A.n(4294968581)
+B.JS=new A.n(4294968582)
+B.JT=new A.n(4294968583)
+B.JU=new A.n(4294968584)
+B.JV=new A.n(4294968585)
+B.JW=new A.n(4294968586)
+B.JX=new A.n(4294968587)
+B.JY=new A.n(4294968588)
+B.JZ=new A.n(4294968589)
+B.K_=new A.n(4294968590)
+B.K0=new A.n(4294968833)
+B.K1=new A.n(4294968834)
+B.K2=new A.n(4294968835)
+B.K3=new A.n(4294968836)
+B.K4=new A.n(4294968837)
+B.K5=new A.n(4294968838)
+B.K6=new A.n(4294968839)
+B.K7=new A.n(4294968840)
+B.K8=new A.n(4294968841)
+B.K9=new A.n(4294968842)
+B.Ka=new A.n(4294968843)
+B.Kb=new A.n(4294969089)
+B.Kc=new A.n(4294969090)
+B.Kd=new A.n(4294969091)
+B.Ke=new A.n(4294969092)
+B.Kf=new A.n(4294969093)
+B.Kg=new A.n(4294969094)
+B.Kh=new A.n(4294969095)
+B.Ki=new A.n(4294969096)
+B.Kj=new A.n(4294969097)
+B.Kk=new A.n(4294969098)
+B.Kl=new A.n(4294969099)
+B.Km=new A.n(4294969100)
+B.Kn=new A.n(4294969101)
+B.Ko=new A.n(4294969102)
+B.Kp=new A.n(4294969103)
+B.Kq=new A.n(4294969104)
+B.Kr=new A.n(4294969105)
+B.Ks=new A.n(4294969106)
+B.Kt=new A.n(4294969107)
+B.Ku=new A.n(4294969108)
+B.Kv=new A.n(4294969109)
+B.Kw=new A.n(4294969110)
+B.Kx=new A.n(4294969111)
+B.Ky=new A.n(4294969112)
+B.Kz=new A.n(4294969113)
+B.KA=new A.n(4294969114)
+B.KB=new A.n(4294969115)
+B.KC=new A.n(4294969116)
+B.KD=new A.n(4294969117)
+B.KE=new A.n(4294969345)
+B.KF=new A.n(4294969346)
+B.KG=new A.n(4294969347)
+B.KH=new A.n(4294969348)
+B.KI=new A.n(4294969349)
+B.KJ=new A.n(4294969350)
+B.KK=new A.n(4294969351)
+B.KL=new A.n(4294969352)
+B.KM=new A.n(4294969353)
+B.KN=new A.n(4294969354)
+B.KO=new A.n(4294969355)
+B.KP=new A.n(4294969356)
+B.KQ=new A.n(4294969357)
+B.KR=new A.n(4294969358)
+B.KS=new A.n(4294969359)
+B.KT=new A.n(4294969360)
+B.KU=new A.n(4294969361)
+B.KV=new A.n(4294969362)
+B.KW=new A.n(4294969363)
+B.KX=new A.n(4294969364)
+B.KY=new A.n(4294969365)
+B.KZ=new A.n(4294969366)
+B.L_=new A.n(4294969367)
+B.L0=new A.n(4294969368)
+B.L1=new A.n(4294969601)
+B.L2=new A.n(4294969602)
+B.L3=new A.n(4294969603)
+B.L4=new A.n(4294969604)
+B.L5=new A.n(4294969605)
+B.L6=new A.n(4294969606)
+B.L7=new A.n(4294969607)
+B.L8=new A.n(4294969608)
+B.L9=new A.n(4294969857)
+B.La=new A.n(4294969858)
+B.Lb=new A.n(4294969859)
+B.Lc=new A.n(4294969860)
+B.Ld=new A.n(4294969861)
+B.Le=new A.n(4294969863)
+B.Lf=new A.n(4294969864)
+B.Lg=new A.n(4294969865)
+B.Lh=new A.n(4294969866)
+B.Li=new A.n(4294969867)
+B.Lj=new A.n(4294969868)
+B.Lk=new A.n(4294969869)
+B.Ll=new A.n(4294969870)
+B.Lm=new A.n(4294969871)
+B.Ln=new A.n(4294969872)
+B.Lo=new A.n(4294969873)
+B.Lp=new A.n(4294970113)
+B.Lq=new A.n(4294970114)
+B.Lr=new A.n(4294970115)
+B.Ls=new A.n(4294970116)
+B.Lt=new A.n(4294970117)
+B.Lu=new A.n(4294970118)
+B.Lv=new A.n(4294970119)
+B.Lw=new A.n(4294970120)
+B.Lx=new A.n(4294970121)
+B.Ly=new A.n(4294970122)
+B.Lz=new A.n(4294970123)
+B.LA=new A.n(4294970124)
+B.LB=new A.n(4294970125)
+B.LC=new A.n(4294970126)
+B.LD=new A.n(4294970127)
+B.LE=new A.n(4294970369)
+B.LF=new A.n(4294970370)
+B.LG=new A.n(4294970371)
+B.LH=new A.n(4294970372)
+B.LI=new A.n(4294970373)
+B.LJ=new A.n(4294970374)
+B.LK=new A.n(4294970375)
+B.LL=new A.n(4294970625)
+B.LM=new A.n(4294970626)
+B.LN=new A.n(4294970627)
+B.LO=new A.n(4294970628)
+B.LP=new A.n(4294970629)
+B.LQ=new A.n(4294970630)
+B.LR=new A.n(4294970631)
+B.LS=new A.n(4294970632)
+B.LT=new A.n(4294970633)
+B.LU=new A.n(4294970634)
+B.LV=new A.n(4294970635)
+B.LW=new A.n(4294970636)
+B.LX=new A.n(4294970637)
+B.LY=new A.n(4294970638)
+B.LZ=new A.n(4294970639)
+B.M_=new A.n(4294970640)
+B.M0=new A.n(4294970641)
+B.M1=new A.n(4294970642)
+B.M2=new A.n(4294970643)
+B.M3=new A.n(4294970644)
+B.M4=new A.n(4294970645)
+B.M5=new A.n(4294970646)
+B.M6=new A.n(4294970647)
+B.M7=new A.n(4294970648)
+B.M8=new A.n(4294970649)
+B.M9=new A.n(4294970650)
+B.Ma=new A.n(4294970651)
+B.Mb=new A.n(4294970652)
+B.Mc=new A.n(4294970653)
+B.Md=new A.n(4294970654)
+B.Me=new A.n(4294970655)
+B.Mf=new A.n(4294970656)
+B.Mg=new A.n(4294970657)
+B.Mh=new A.n(4294970658)
+B.Mi=new A.n(4294970659)
+B.Mj=new A.n(4294970660)
+B.Mk=new A.n(4294970661)
+B.Ml=new A.n(4294970662)
+B.Mm=new A.n(4294970663)
+B.Mn=new A.n(4294970664)
+B.Mo=new A.n(4294970665)
+B.Mp=new A.n(4294970666)
+B.Mq=new A.n(4294970667)
+B.Mr=new A.n(4294970668)
+B.Ms=new A.n(4294970669)
+B.Mt=new A.n(4294970670)
+B.Mu=new A.n(4294970671)
+B.Mv=new A.n(4294970672)
+B.Mw=new A.n(4294970673)
+B.Mx=new A.n(4294970674)
+B.My=new A.n(4294970675)
+B.Mz=new A.n(4294970676)
+B.MA=new A.n(4294970677)
+B.MB=new A.n(4294970678)
+B.MC=new A.n(4294970679)
+B.MD=new A.n(4294970680)
+B.ME=new A.n(4294970681)
+B.MF=new A.n(4294970682)
+B.MG=new A.n(4294970683)
+B.MH=new A.n(4294970684)
+B.MI=new A.n(4294970685)
+B.MJ=new A.n(4294970686)
+B.MK=new A.n(4294970687)
+B.ML=new A.n(4294970688)
+B.MM=new A.n(4294970689)
+B.MN=new A.n(4294970690)
+B.MO=new A.n(4294970691)
+B.MP=new A.n(4294970692)
+B.MQ=new A.n(4294970693)
+B.MR=new A.n(4294970694)
+B.MS=new A.n(4294970695)
+B.MT=new A.n(4294970696)
+B.MU=new A.n(4294970697)
+B.MV=new A.n(4294970698)
+B.MW=new A.n(4294970699)
+B.MX=new A.n(4294970700)
+B.MY=new A.n(4294970701)
+B.MZ=new A.n(4294970702)
+B.N_=new A.n(4294970703)
+B.N0=new A.n(4294970704)
+B.N1=new A.n(4294970705)
+B.N2=new A.n(4294970706)
+B.N3=new A.n(4294970707)
+B.N4=new A.n(4294970708)
+B.N5=new A.n(4294970709)
+B.N6=new A.n(4294970710)
+B.N7=new A.n(4294970711)
+B.N8=new A.n(4294970712)
+B.N9=new A.n(4294970713)
+B.Na=new A.n(4294970714)
+B.Nb=new A.n(4294970715)
+B.Nc=new A.n(4294970882)
+B.Nd=new A.n(4294970884)
+B.Ne=new A.n(4294970885)
+B.Nf=new A.n(4294970886)
+B.Ng=new A.n(4294970887)
+B.Nh=new A.n(4294970888)
+B.Ni=new A.n(4294970889)
+B.Nj=new A.n(4294971137)
+B.Nk=new A.n(4294971138)
+B.Nl=new A.n(4294971393)
+B.Nm=new A.n(4294971394)
+B.Nn=new A.n(4294971395)
+B.No=new A.n(4294971396)
+B.Np=new A.n(4294971397)
+B.Nq=new A.n(4294971398)
+B.Nr=new A.n(4294971399)
+B.Ns=new A.n(4294971400)
+B.Nt=new A.n(4294971401)
+B.Nu=new A.n(4294971402)
+B.Nv=new A.n(4294971403)
+B.Nw=new A.n(4294971649)
+B.Nx=new A.n(4294971650)
+B.Ny=new A.n(4294971651)
+B.Nz=new A.n(4294971652)
+B.NA=new A.n(4294971653)
+B.NB=new A.n(4294971654)
+B.NC=new A.n(4294971655)
+B.ND=new A.n(4294971656)
+B.NE=new A.n(4294971657)
+B.NF=new A.n(4294971658)
+B.NG=new A.n(4294971659)
+B.NH=new A.n(4294971660)
+B.NI=new A.n(4294971661)
+B.NJ=new A.n(4294971662)
+B.NK=new A.n(4294971663)
+B.NL=new A.n(4294971664)
+B.NM=new A.n(4294971665)
+B.NN=new A.n(4294971666)
+B.NO=new A.n(4294971667)
+B.NP=new A.n(4294971668)
+B.NQ=new A.n(4294971669)
+B.NR=new A.n(4294971670)
+B.NS=new A.n(4294971671)
+B.NT=new A.n(4294971672)
+B.NU=new A.n(4294971673)
+B.NV=new A.n(4294971674)
+B.NW=new A.n(4294971675)
+B.NX=new A.n(4294971905)
+B.NY=new A.n(4294971906)
 B.aNg=new A.n(8589934592)
 B.aNh=new A.n(8589934593)
 B.aNi=new A.n(8589934594)
@@ -125861,12 +125865,12 @@ B.aNr=new A.n(8589934626)
 B.vW=new A.n(8589935117)
 B.aNs=new A.n(8589935144)
 B.aNt=new A.n(8589935145)
-B.Ob=new A.n(8589935146)
-B.Oc=new A.n(8589935147)
+B.Oc=new A.n(8589935146)
+B.Od=new A.n(8589935147)
 B.aNu=new A.n(8589935148)
-B.Od=new A.n(8589935149)
+B.Oe=new A.n(8589935149)
 B.hO=new A.n(8589935150)
-B.Oe=new A.n(8589935151)
+B.Of=new A.n(8589935151)
 B.vX=new A.n(8589935152)
 B.lr=new A.n(8589935153)
 B.hP=new A.n(8589935154)
@@ -125909,7 +125913,7 @@ B.aNX=new A.n(8589935388)
 B.aNY=new A.n(8589935389)
 B.aNZ=new A.n(8589935390)
 B.aO_=new A.n(8589935391)
-B.aOa=new A.bT([32,B.Ju,33,B.aN_,34,B.aN0,35,B.aN1,36,B.aN2,37,B.aN3,38,B.aN4,39,B.aN5,40,B.aN6,41,B.aN7,42,B.Jv,43,B.NY,44,B.aN8,45,B.NZ,46,B.O_,47,B.O0,48,B.O1,49,B.O2,50,B.O3,51,B.O4,52,B.O5,53,B.O6,54,B.O7,55,B.O8,56,B.O9,57,B.Oa,58,B.aN9,59,B.aNa,60,B.aNb,61,B.aNc,62,B.aNd,63,B.aNe,64,B.aNf,91,B.aO0,92,B.aO1,93,B.aO2,94,B.aO3,95,B.aO4,96,B.aO5,97,B.vZ,98,B.Of,99,B.w_,100,B.aMH,101,B.Jp,102,B.Jq,103,B.aMI,104,B.aMJ,105,B.aMK,106,B.aML,107,B.aMM,108,B.aMN,109,B.aMO,110,B.Jr,111,B.aMP,112,B.Js,113,B.aMQ,114,B.aMR,115,B.aMS,116,B.Jt,117,B.aMT,118,B.vO,119,B.aMU,120,B.vP,121,B.aMV,122,B.lj,123,B.aMW,124,B.aMX,125,B.aMY,126,B.aMZ,4294967297,B.Jw,4294967304,B.cU,4294967305,B.oG,4294967309,B.oH,4294967323,B.hK,4294967423,B.cV,4294967553,B.Jx,4294967555,B.oI,4294967556,B.lk,4294967558,B.vQ,4294967559,B.Jy,4294967560,B.Jz,4294967562,B.oJ,4294967564,B.oK,4294967566,B.JA,4294967567,B.JB,4294967568,B.JC,4294967569,B.JD,4294968065,B.eG,4294968066,B.ef,4294968067,B.eg,4294968068,B.eH,4294968069,B.hL,4294968070,B.hM,4294968071,B.ll,4294968072,B.lm,4294968321,B.vR,4294968322,B.JE,4294968323,B.JF,4294968324,B.JG,4294968325,B.JH,4294968326,B.JI,4294968327,B.ln,4294968328,B.JJ,4294968329,B.JK,4294968330,B.JL,4294968577,B.JM,4294968578,B.JN,4294968579,B.JO,4294968580,B.JP,4294968581,B.JQ,4294968582,B.JR,4294968583,B.JS,4294968584,B.JT,4294968585,B.JU,4294968586,B.JV,4294968587,B.JW,4294968588,B.JX,4294968589,B.JY,4294968590,B.JZ,4294968833,B.K_,4294968834,B.K0,4294968835,B.K1,4294968836,B.K2,4294968837,B.K3,4294968838,B.K4,4294968839,B.K5,4294968840,B.K6,4294968841,B.K7,4294968842,B.K8,4294968843,B.K9,4294969089,B.Ka,4294969090,B.Kb,4294969091,B.Kc,4294969092,B.Kd,4294969093,B.Ke,4294969094,B.Kf,4294969095,B.Kg,4294969096,B.Kh,4294969097,B.Ki,4294969098,B.Kj,4294969099,B.Kk,4294969100,B.Kl,4294969101,B.Km,4294969102,B.Kn,4294969103,B.Ko,4294969104,B.Kp,4294969105,B.Kq,4294969106,B.Kr,4294969107,B.Ks,4294969108,B.Kt,4294969109,B.Ku,4294969110,B.Kv,4294969111,B.Kw,4294969112,B.Kx,4294969113,B.Ky,4294969114,B.Kz,4294969115,B.KA,4294969116,B.KB,4294969117,B.KC,4294969345,B.KD,4294969346,B.KE,4294969347,B.KF,4294969348,B.KG,4294969349,B.KH,4294969350,B.KI,4294969351,B.KJ,4294969352,B.KK,4294969353,B.KL,4294969354,B.KM,4294969355,B.KN,4294969356,B.KO,4294969357,B.KP,4294969358,B.KQ,4294969359,B.KR,4294969360,B.KS,4294969361,B.KT,4294969362,B.KU,4294969363,B.KV,4294969364,B.KW,4294969365,B.KX,4294969366,B.KY,4294969367,B.KZ,4294969368,B.L_,4294969601,B.L0,4294969602,B.L1,4294969603,B.L2,4294969604,B.L3,4294969605,B.L4,4294969606,B.L5,4294969607,B.L6,4294969608,B.L7,4294969857,B.L8,4294969858,B.L9,4294969859,B.La,4294969860,B.Lb,4294969861,B.Lc,4294969863,B.Ld,4294969864,B.Le,4294969865,B.Lf,4294969866,B.Lg,4294969867,B.Lh,4294969868,B.Li,4294969869,B.Lj,4294969870,B.Lk,4294969871,B.Ll,4294969872,B.Lm,4294969873,B.Ln,4294970113,B.Lo,4294970114,B.Lp,4294970115,B.Lq,4294970116,B.Lr,4294970117,B.Ls,4294970118,B.Lt,4294970119,B.Lu,4294970120,B.Lv,4294970121,B.Lw,4294970122,B.Lx,4294970123,B.Ly,4294970124,B.Lz,4294970125,B.LA,4294970126,B.LB,4294970127,B.LC,4294970369,B.LD,4294970370,B.LE,4294970371,B.LF,4294970372,B.LG,4294970373,B.LH,4294970374,B.LI,4294970375,B.LJ,4294970625,B.LK,4294970626,B.LL,4294970627,B.LM,4294970628,B.LN,4294970629,B.LO,4294970630,B.LP,4294970631,B.LQ,4294970632,B.LR,4294970633,B.LS,4294970634,B.LT,4294970635,B.LU,4294970636,B.LV,4294970637,B.LW,4294970638,B.LX,4294970639,B.LY,4294970640,B.LZ,4294970641,B.M_,4294970642,B.M0,4294970643,B.M1,4294970644,B.M2,4294970645,B.M3,4294970646,B.M4,4294970647,B.M5,4294970648,B.M6,4294970649,B.M7,4294970650,B.M8,4294970651,B.M9,4294970652,B.Ma,4294970653,B.Mb,4294970654,B.Mc,4294970655,B.Md,4294970656,B.Me,4294970657,B.Mf,4294970658,B.Mg,4294970659,B.Mh,4294970660,B.Mi,4294970661,B.Mj,4294970662,B.Mk,4294970663,B.Ml,4294970664,B.Mm,4294970665,B.Mn,4294970666,B.Mo,4294970667,B.Mp,4294970668,B.Mq,4294970669,B.Mr,4294970670,B.Ms,4294970671,B.Mt,4294970672,B.Mu,4294970673,B.Mv,4294970674,B.Mw,4294970675,B.Mx,4294970676,B.My,4294970677,B.Mz,4294970678,B.MA,4294970679,B.MB,4294970680,B.MC,4294970681,B.MD,4294970682,B.ME,4294970683,B.MF,4294970684,B.MG,4294970685,B.MH,4294970686,B.MI,4294970687,B.MJ,4294970688,B.MK,4294970689,B.ML,4294970690,B.MM,4294970691,B.MN,4294970692,B.MO,4294970693,B.MP,4294970694,B.MQ,4294970695,B.MR,4294970696,B.MS,4294970697,B.MT,4294970698,B.MU,4294970699,B.MV,4294970700,B.MW,4294970701,B.MX,4294970702,B.MY,4294970703,B.MZ,4294970704,B.N_,4294970705,B.N0,4294970706,B.N1,4294970707,B.N2,4294970708,B.N3,4294970709,B.N4,4294970710,B.N5,4294970711,B.N6,4294970712,B.N7,4294970713,B.N8,4294970714,B.N9,4294970715,B.Na,4294970882,B.Nb,4294970884,B.Nc,4294970885,B.Nd,4294970886,B.Ne,4294970887,B.Nf,4294970888,B.Ng,4294970889,B.Nh,4294971137,B.Ni,4294971138,B.Nj,4294971393,B.Nk,4294971394,B.Nl,4294971395,B.Nm,4294971396,B.Nn,4294971397,B.No,4294971398,B.Np,4294971399,B.Nq,4294971400,B.Nr,4294971401,B.Ns,4294971402,B.Nt,4294971403,B.Nu,4294971649,B.Nv,4294971650,B.Nw,4294971651,B.Nx,4294971652,B.Ny,4294971653,B.Nz,4294971654,B.NA,4294971655,B.NB,4294971656,B.NC,4294971657,B.ND,4294971658,B.NE,4294971659,B.NF,4294971660,B.NG,4294971661,B.NH,4294971662,B.NI,4294971663,B.NJ,4294971664,B.NK,4294971665,B.NL,4294971666,B.NM,4294971667,B.NN,4294971668,B.NO,4294971669,B.NP,4294971670,B.NQ,4294971671,B.NR,4294971672,B.NS,4294971673,B.NT,4294971674,B.NU,4294971675,B.NV,4294971905,B.NW,4294971906,B.NX,8589934592,B.aNg,8589934593,B.aNh,8589934594,B.aNi,8589934595,B.aNj,8589934608,B.aNk,8589934609,B.aNl,8589934610,B.aNm,8589934611,B.aNn,8589934612,B.aNo,8589934624,B.aNp,8589934625,B.aNq,8589934626,B.aNr,8589934848,B.lo,8589934849,B.oL,8589934850,B.fO,8589934851,B.hN,8589934852,B.lp,8589934853,B.oM,8589934854,B.lq,8589934855,B.oN,8589935088,B.vS,8589935090,B.vT,8589935092,B.vU,8589935094,B.vV,8589935117,B.vW,8589935144,B.aNs,8589935145,B.aNt,8589935146,B.Ob,8589935147,B.Oc,8589935148,B.aNu,8589935149,B.Od,8589935150,B.hO,8589935151,B.Oe,8589935152,B.vX,8589935153,B.lr,8589935154,B.hP,8589935155,B.ls,8589935156,B.hQ,8589935157,B.vY,8589935158,B.hR,8589935159,B.lt,8589935160,B.hS,8589935161,B.lu,8589935165,B.aNv,8589935361,B.aNw,8589935362,B.aNx,8589935363,B.aNy,8589935364,B.aNz,8589935365,B.aNA,8589935366,B.aNB,8589935367,B.aNC,8589935368,B.aND,8589935369,B.aNE,8589935370,B.aNF,8589935371,B.aNG,8589935372,B.aNH,8589935373,B.aNI,8589935374,B.aNJ,8589935375,B.aNK,8589935376,B.aNL,8589935377,B.aNM,8589935378,B.aNN,8589935379,B.aNO,8589935380,B.aNP,8589935381,B.aNQ,8589935382,B.aNR,8589935383,B.aNS,8589935384,B.aNT,8589935385,B.aNU,8589935386,B.aNV,8589935387,B.aNW,8589935388,B.aNX,8589935389,B.aNY,8589935390,B.aNZ,8589935391,B.aO_],A.aX("bT<v,n>"))
+B.aOa=new A.bT([32,B.Jv,33,B.aN_,34,B.aN0,35,B.aN1,36,B.aN2,37,B.aN3,38,B.aN4,39,B.aN5,40,B.aN6,41,B.aN7,42,B.Jw,43,B.NZ,44,B.aN8,45,B.O_,46,B.O0,47,B.O1,48,B.O2,49,B.O3,50,B.O4,51,B.O5,52,B.O6,53,B.O7,54,B.O8,55,B.O9,56,B.Oa,57,B.Ob,58,B.aN9,59,B.aNa,60,B.aNb,61,B.aNc,62,B.aNd,63,B.aNe,64,B.aNf,91,B.aO0,92,B.aO1,93,B.aO2,94,B.aO3,95,B.aO4,96,B.aO5,97,B.vZ,98,B.Og,99,B.w_,100,B.aMH,101,B.Jq,102,B.Jr,103,B.aMI,104,B.aMJ,105,B.aMK,106,B.aML,107,B.aMM,108,B.aMN,109,B.aMO,110,B.Js,111,B.aMP,112,B.Jt,113,B.aMQ,114,B.aMR,115,B.aMS,116,B.Ju,117,B.aMT,118,B.vO,119,B.aMU,120,B.vP,121,B.aMV,122,B.lj,123,B.aMW,124,B.aMX,125,B.aMY,126,B.aMZ,4294967297,B.Jx,4294967304,B.cV,4294967305,B.oG,4294967309,B.oH,4294967323,B.hK,4294967423,B.cW,4294967553,B.Jy,4294967555,B.oI,4294967556,B.lk,4294967558,B.vQ,4294967559,B.Jz,4294967560,B.JA,4294967562,B.oJ,4294967564,B.oK,4294967566,B.JB,4294967567,B.JC,4294967568,B.JD,4294967569,B.JE,4294968065,B.eG,4294968066,B.ef,4294968067,B.eg,4294968068,B.eH,4294968069,B.hL,4294968070,B.hM,4294968071,B.ll,4294968072,B.lm,4294968321,B.vR,4294968322,B.JF,4294968323,B.JG,4294968324,B.JH,4294968325,B.JI,4294968326,B.JJ,4294968327,B.ln,4294968328,B.JK,4294968329,B.JL,4294968330,B.JM,4294968577,B.JN,4294968578,B.JO,4294968579,B.JP,4294968580,B.JQ,4294968581,B.JR,4294968582,B.JS,4294968583,B.JT,4294968584,B.JU,4294968585,B.JV,4294968586,B.JW,4294968587,B.JX,4294968588,B.JY,4294968589,B.JZ,4294968590,B.K_,4294968833,B.K0,4294968834,B.K1,4294968835,B.K2,4294968836,B.K3,4294968837,B.K4,4294968838,B.K5,4294968839,B.K6,4294968840,B.K7,4294968841,B.K8,4294968842,B.K9,4294968843,B.Ka,4294969089,B.Kb,4294969090,B.Kc,4294969091,B.Kd,4294969092,B.Ke,4294969093,B.Kf,4294969094,B.Kg,4294969095,B.Kh,4294969096,B.Ki,4294969097,B.Kj,4294969098,B.Kk,4294969099,B.Kl,4294969100,B.Km,4294969101,B.Kn,4294969102,B.Ko,4294969103,B.Kp,4294969104,B.Kq,4294969105,B.Kr,4294969106,B.Ks,4294969107,B.Kt,4294969108,B.Ku,4294969109,B.Kv,4294969110,B.Kw,4294969111,B.Kx,4294969112,B.Ky,4294969113,B.Kz,4294969114,B.KA,4294969115,B.KB,4294969116,B.KC,4294969117,B.KD,4294969345,B.KE,4294969346,B.KF,4294969347,B.KG,4294969348,B.KH,4294969349,B.KI,4294969350,B.KJ,4294969351,B.KK,4294969352,B.KL,4294969353,B.KM,4294969354,B.KN,4294969355,B.KO,4294969356,B.KP,4294969357,B.KQ,4294969358,B.KR,4294969359,B.KS,4294969360,B.KT,4294969361,B.KU,4294969362,B.KV,4294969363,B.KW,4294969364,B.KX,4294969365,B.KY,4294969366,B.KZ,4294969367,B.L_,4294969368,B.L0,4294969601,B.L1,4294969602,B.L2,4294969603,B.L3,4294969604,B.L4,4294969605,B.L5,4294969606,B.L6,4294969607,B.L7,4294969608,B.L8,4294969857,B.L9,4294969858,B.La,4294969859,B.Lb,4294969860,B.Lc,4294969861,B.Ld,4294969863,B.Le,4294969864,B.Lf,4294969865,B.Lg,4294969866,B.Lh,4294969867,B.Li,4294969868,B.Lj,4294969869,B.Lk,4294969870,B.Ll,4294969871,B.Lm,4294969872,B.Ln,4294969873,B.Lo,4294970113,B.Lp,4294970114,B.Lq,4294970115,B.Lr,4294970116,B.Ls,4294970117,B.Lt,4294970118,B.Lu,4294970119,B.Lv,4294970120,B.Lw,4294970121,B.Lx,4294970122,B.Ly,4294970123,B.Lz,4294970124,B.LA,4294970125,B.LB,4294970126,B.LC,4294970127,B.LD,4294970369,B.LE,4294970370,B.LF,4294970371,B.LG,4294970372,B.LH,4294970373,B.LI,4294970374,B.LJ,4294970375,B.LK,4294970625,B.LL,4294970626,B.LM,4294970627,B.LN,4294970628,B.LO,4294970629,B.LP,4294970630,B.LQ,4294970631,B.LR,4294970632,B.LS,4294970633,B.LT,4294970634,B.LU,4294970635,B.LV,4294970636,B.LW,4294970637,B.LX,4294970638,B.LY,4294970639,B.LZ,4294970640,B.M_,4294970641,B.M0,4294970642,B.M1,4294970643,B.M2,4294970644,B.M3,4294970645,B.M4,4294970646,B.M5,4294970647,B.M6,4294970648,B.M7,4294970649,B.M8,4294970650,B.M9,4294970651,B.Ma,4294970652,B.Mb,4294970653,B.Mc,4294970654,B.Md,4294970655,B.Me,4294970656,B.Mf,4294970657,B.Mg,4294970658,B.Mh,4294970659,B.Mi,4294970660,B.Mj,4294970661,B.Mk,4294970662,B.Ml,4294970663,B.Mm,4294970664,B.Mn,4294970665,B.Mo,4294970666,B.Mp,4294970667,B.Mq,4294970668,B.Mr,4294970669,B.Ms,4294970670,B.Mt,4294970671,B.Mu,4294970672,B.Mv,4294970673,B.Mw,4294970674,B.Mx,4294970675,B.My,4294970676,B.Mz,4294970677,B.MA,4294970678,B.MB,4294970679,B.MC,4294970680,B.MD,4294970681,B.ME,4294970682,B.MF,4294970683,B.MG,4294970684,B.MH,4294970685,B.MI,4294970686,B.MJ,4294970687,B.MK,4294970688,B.ML,4294970689,B.MM,4294970690,B.MN,4294970691,B.MO,4294970692,B.MP,4294970693,B.MQ,4294970694,B.MR,4294970695,B.MS,4294970696,B.MT,4294970697,B.MU,4294970698,B.MV,4294970699,B.MW,4294970700,B.MX,4294970701,B.MY,4294970702,B.MZ,4294970703,B.N_,4294970704,B.N0,4294970705,B.N1,4294970706,B.N2,4294970707,B.N3,4294970708,B.N4,4294970709,B.N5,4294970710,B.N6,4294970711,B.N7,4294970712,B.N8,4294970713,B.N9,4294970714,B.Na,4294970715,B.Nb,4294970882,B.Nc,4294970884,B.Nd,4294970885,B.Ne,4294970886,B.Nf,4294970887,B.Ng,4294970888,B.Nh,4294970889,B.Ni,4294971137,B.Nj,4294971138,B.Nk,4294971393,B.Nl,4294971394,B.Nm,4294971395,B.Nn,4294971396,B.No,4294971397,B.Np,4294971398,B.Nq,4294971399,B.Nr,4294971400,B.Ns,4294971401,B.Nt,4294971402,B.Nu,4294971403,B.Nv,4294971649,B.Nw,4294971650,B.Nx,4294971651,B.Ny,4294971652,B.Nz,4294971653,B.NA,4294971654,B.NB,4294971655,B.NC,4294971656,B.ND,4294971657,B.NE,4294971658,B.NF,4294971659,B.NG,4294971660,B.NH,4294971661,B.NI,4294971662,B.NJ,4294971663,B.NK,4294971664,B.NL,4294971665,B.NM,4294971666,B.NN,4294971667,B.NO,4294971668,B.NP,4294971669,B.NQ,4294971670,B.NR,4294971671,B.NS,4294971672,B.NT,4294971673,B.NU,4294971674,B.NV,4294971675,B.NW,4294971905,B.NX,4294971906,B.NY,8589934592,B.aNg,8589934593,B.aNh,8589934594,B.aNi,8589934595,B.aNj,8589934608,B.aNk,8589934609,B.aNl,8589934610,B.aNm,8589934611,B.aNn,8589934612,B.aNo,8589934624,B.aNp,8589934625,B.aNq,8589934626,B.aNr,8589934848,B.lo,8589934849,B.oL,8589934850,B.fO,8589934851,B.hN,8589934852,B.lp,8589934853,B.oM,8589934854,B.lq,8589934855,B.oN,8589935088,B.vS,8589935090,B.vT,8589935092,B.vU,8589935094,B.vV,8589935117,B.vW,8589935144,B.aNs,8589935145,B.aNt,8589935146,B.Oc,8589935147,B.Od,8589935148,B.aNu,8589935149,B.Oe,8589935150,B.hO,8589935151,B.Of,8589935152,B.vX,8589935153,B.lr,8589935154,B.hP,8589935155,B.ls,8589935156,B.hQ,8589935157,B.vY,8589935158,B.hR,8589935159,B.lt,8589935160,B.hS,8589935161,B.lu,8589935165,B.aNv,8589935361,B.aNw,8589935362,B.aNx,8589935363,B.aNy,8589935364,B.aNz,8589935365,B.aNA,8589935366,B.aNB,8589935367,B.aNC,8589935368,B.aND,8589935369,B.aNE,8589935370,B.aNF,8589935371,B.aNG,8589935372,B.aNH,8589935373,B.aNI,8589935374,B.aNJ,8589935375,B.aNK,8589935376,B.aNL,8589935377,B.aNM,8589935378,B.aNN,8589935379,B.aNO,8589935380,B.aNP,8589935381,B.aNQ,8589935382,B.aNR,8589935383,B.aNS,8589935384,B.aNT,8589935385,B.aNU,8589935386,B.aNV,8589935387,B.aNW,8589935388,B.aNX,8589935389,B.aNY,8589935390,B.aNZ,8589935391,B.aO_],A.aX("bT<v,n>"))
 B.bfq=new A.Av(1,"left")
 B.Vw=new A.lq(B.bfq)
 B.bfp=new A.Av(0,"right")
@@ -125917,48 +125921,48 @@ B.Vv=new A.lq(B.bfp)
 B.aOb=new A.bT([B.jI,B.Vw,B.jJ,B.Vv],t.Fp)
 B.aOc=new A.bT([2,1,3,1,5,4,6,4,8,7,9,7,17,16,18,16,20,19,22,21,24,23,26,25,28,27,30,29,31,29,33,32,34,32,36,35,38,37,40,39,42,41,44,43,45,43,47,46,49,48,51,50,53,52,55,54,57,56,59,58,61,60,62,60,64,63,65,63,67,66,68,66,70,69,71,69,73,72,75,74,76,74,78,77,80,79,85,84,87,86,89,88,91,90,93,92,94,92,97,96,99,98,103,102,105,104,110,109,112,111,117,116,119,118,121,120,130,129,134,133,135,133,136,133,139,138,141,140,148,147,149,147,153,152,154,152,156,155,157,155,159,158,160,158,253,252,254,252,256,255,257,255,259,258,260,258,388,387,389,387,391,390,392,390,394,393,395,393,496,495,497,495,499,498,500,498,502,501,503,501],t.KL)
 B.aQa={bite:0,crunch:1,headbutt:2,stomp:3,rolling_kick:4,bone_club:5,hyper_fang:6,rock_slide:7,twister:8,fake_out:9,astonish:10,extrasensory:11,air_slash:12,dark_pulse:13,dragon_rush:14,thunder_fang:15,ice_fang:16,fire_fang:17,waterfall:18,zen_headbutt:19,iron_head:20,heart_stamp:21,steamroller:22,icicle_crash:23,sky_attack:24,snore:25}
-B.Oi=new A.c6(B.aQa,[30,0,30,30,30,10,10,30,20,100,30,10,30,20,20,10,10,10,20,20,30,30,30,30,30,30],t.eL)
+B.Oj=new A.c6(B.aQa,[30,0,30,30,30,10,10,30,20,100,30,10,30,20,20,10,10,10,20,20,30,30,30,30,30,30],t.eL)
 B.b_l=new A.aS(B.vW,!1,!1,!1,!1,B.X)
-B.TR=new A.aS(B.hK,!1,!1,!1,!1,B.X)
-B.TS=new A.aS(B.oG,!1,!1,!1,!1,B.X)
-B.TG=new A.aS(B.oG,!1,!0,!1,!1,B.X)
+B.TS=new A.aS(B.hK,!1,!1,!1,!1,B.X)
+B.TT=new A.aS(B.oG,!1,!1,!1,!1,B.X)
+B.TH=new A.aS(B.oG,!1,!0,!1,!1,B.X)
 B.lT=new A.aS(B.lm,!1,!1,!1,!1,B.X)
 B.lW=new A.aS(B.ll,!1,!1,!1,!1,B.X)
 B.a1J=new A.nW()
-B.yD=new A.ws()
-B.yE=new A.iv()
-B.yK=new A.tT()
-B.yM=new A.uk()
+B.yE=new A.ws()
+B.yF=new A.iv()
+B.yL=new A.tT()
+B.yN=new A.uk()
 B.p9=new A.U_(0,"line")
 B.aXx=new A.h0(B.dB,B.p9)
 B.aXw=new A.h0(B.dm,B.p9)
-B.aXz=new A.h0(B.d4,B.p9)
+B.aXz=new A.h0(B.d5,B.p9)
 B.aXy=new A.h0(B.eR,B.p9)
 B.wF=new A.h0(B.dB,B.pa)
-B.aOd=new A.bT([B.pj,B.a1J,B.pm,B.yD,B.b_l,B.yD,B.TR,B.yE,B.TS,B.yK,B.TG,B.yM,B.lZ,B.aXx,B.m_,B.aXw,B.jI,B.aXz,B.jJ,B.aXy,B.lT,B.wF,B.lW,B.pb],t.Fp)
+B.aOd=new A.bT([B.pj,B.a1J,B.pm,B.yE,B.b_l,B.yE,B.TS,B.yF,B.TT,B.yL,B.TH,B.yN,B.lZ,B.aXx,B.m_,B.aXw,B.jI,B.aXz,B.jJ,B.aXy,B.lT,B.wF,B.lW,B.pb],t.Fp)
 B.aPK={Abort:0,Again:1,AltLeft:2,AltRight:3,ArrowDown:4,ArrowLeft:5,ArrowRight:6,ArrowUp:7,AudioVolumeDown:8,AudioVolumeMute:9,AudioVolumeUp:10,Backquote:11,Backslash:12,Backspace:13,BracketLeft:14,BracketRight:15,BrightnessDown:16,BrightnessUp:17,BrowserBack:18,BrowserFavorites:19,BrowserForward:20,BrowserHome:21,BrowserRefresh:22,BrowserSearch:23,BrowserStop:24,CapsLock:25,Comma:26,ContextMenu:27,ControlLeft:28,ControlRight:29,Convert:30,Copy:31,Cut:32,Delete:33,Digit0:34,Digit1:35,Digit2:36,Digit3:37,Digit4:38,Digit5:39,Digit6:40,Digit7:41,Digit8:42,Digit9:43,DisplayToggleIntExt:44,Eject:45,End:46,Enter:47,Equal:48,Esc:49,Escape:50,F1:51,F10:52,F11:53,F12:54,F13:55,F14:56,F15:57,F16:58,F17:59,F18:60,F19:61,F2:62,F20:63,F21:64,F22:65,F23:66,F24:67,F3:68,F4:69,F5:70,F6:71,F7:72,F8:73,F9:74,Find:75,Fn:76,FnLock:77,GameButton1:78,GameButton10:79,GameButton11:80,GameButton12:81,GameButton13:82,GameButton14:83,GameButton15:84,GameButton16:85,GameButton2:86,GameButton3:87,GameButton4:88,GameButton5:89,GameButton6:90,GameButton7:91,GameButton8:92,GameButton9:93,GameButtonA:94,GameButtonB:95,GameButtonC:96,GameButtonLeft1:97,GameButtonLeft2:98,GameButtonMode:99,GameButtonRight1:100,GameButtonRight2:101,GameButtonSelect:102,GameButtonStart:103,GameButtonThumbLeft:104,GameButtonThumbRight:105,GameButtonX:106,GameButtonY:107,GameButtonZ:108,Help:109,Home:110,Hyper:111,Insert:112,IntlBackslash:113,IntlRo:114,IntlYen:115,KanaMode:116,KeyA:117,KeyB:118,KeyC:119,KeyD:120,KeyE:121,KeyF:122,KeyG:123,KeyH:124,KeyI:125,KeyJ:126,KeyK:127,KeyL:128,KeyM:129,KeyN:130,KeyO:131,KeyP:132,KeyQ:133,KeyR:134,KeyS:135,KeyT:136,KeyU:137,KeyV:138,KeyW:139,KeyX:140,KeyY:141,KeyZ:142,KeyboardLayoutSelect:143,Lang1:144,Lang2:145,Lang3:146,Lang4:147,Lang5:148,LaunchApp1:149,LaunchApp2:150,LaunchAssistant:151,LaunchControlPanel:152,LaunchMail:153,LaunchScreenSaver:154,MailForward:155,MailReply:156,MailSend:157,MediaFastForward:158,MediaPause:159,MediaPlay:160,MediaPlayPause:161,MediaRecord:162,MediaRewind:163,MediaSelect:164,MediaStop:165,MediaTrackNext:166,MediaTrackPrevious:167,MetaLeft:168,MetaRight:169,MicrophoneMuteToggle:170,Minus:171,NonConvert:172,NumLock:173,Numpad0:174,Numpad1:175,Numpad2:176,Numpad3:177,Numpad4:178,Numpad5:179,Numpad6:180,Numpad7:181,Numpad8:182,Numpad9:183,NumpadAdd:184,NumpadBackspace:185,NumpadClear:186,NumpadClearEntry:187,NumpadComma:188,NumpadDecimal:189,NumpadDivide:190,NumpadEnter:191,NumpadEqual:192,NumpadMemoryAdd:193,NumpadMemoryClear:194,NumpadMemoryRecall:195,NumpadMemoryStore:196,NumpadMemorySubtract:197,NumpadMultiply:198,NumpadParenLeft:199,NumpadParenRight:200,NumpadSubtract:201,Open:202,PageDown:203,PageUp:204,Paste:205,Pause:206,Period:207,Power:208,PrintScreen:209,PrivacyScreenToggle:210,Props:211,Quote:212,Resume:213,ScrollLock:214,Select:215,SelectTask:216,Semicolon:217,ShiftLeft:218,ShiftRight:219,ShowAllWindows:220,Slash:221,Sleep:222,Space:223,Super:224,Suspend:225,Tab:226,Turbo:227,Undo:228,WakeUp:229,ZoomToggle:230}
 B.aOe=new A.c6(B.aPK,[458907,458873,458978,458982,458833,458832,458831,458834,458881,458879,458880,458805,458801,458794,458799,458800,786544,786543,786980,786986,786981,786979,786983,786977,786982,458809,458806,458853,458976,458980,458890,458876,458875,458828,458791,458782,458783,458784,458785,458786,458787,458788,458789,458790,65717,786616,458829,458792,458798,458793,458793,458810,458819,458820,458821,458856,458857,458858,458859,458860,458861,458862,458811,458863,458864,458865,458866,458867,458812,458813,458814,458815,458816,458817,458818,458878,18,19,392961,392970,392971,392972,392973,392974,392975,392976,392962,392963,392964,392965,392966,392967,392968,392969,392977,392978,392979,392980,392981,392982,392983,392984,392985,392986,392987,392988,392989,392990,392991,458869,458826,16,458825,458852,458887,458889,458888,458756,458757,458758,458759,458760,458761,458762,458763,458764,458765,458766,458767,458768,458769,458770,458771,458772,458773,458774,458775,458776,458777,458778,458779,458780,458781,787101,458896,458897,458898,458899,458900,786836,786834,786891,786847,786826,786865,787083,787081,787084,786611,786609,786608,786637,786610,786612,786819,786615,786613,786614,458979,458983,24,458797,458891,458835,458850,458841,458842,458843,458844,458845,458846,458847,458848,458849,458839,458939,458968,458969,458885,458851,458836,458840,458855,458963,458962,458961,458960,458964,458837,458934,458935,458838,458868,458830,458827,458877,458824,458807,458854,458822,23,458915,458804,21,458823,458871,786850,458803,458977,458981,787103,458808,65666,458796,17,20,458795,22,458874,65667,786994],t.eL)
 B.aOv=new A.bT([0,"FontWeight.w100",1,"FontWeight.w200",2,"FontWeight.w300",3,"FontWeight.w400",4,"FontWeight.w500",5,"FontWeight.w600",6,"FontWeight.w700",7,"FontWeight.w800",8,"FontWeight.w900"],t.TM)
 B.aQf={growth:0,work_up:1,bulk_up:2,calm_mind:3,dragon_dance:4,cosmic_power:5,coil:6,quiver_dance:7,shell_smash:8,stockpile:9,tickle:10,memento:11,superpower:12,close_combat:13}
 B.p5=new A.fS(1,!0,"atk")
 B.wx=new A.fS(1,!0,"spa")
-B.Jm=s([B.p5,B.wx],t.vk)
+B.Jn=s([B.p5,B.wx],t.vk)
 B.ww=new A.fS(1,!0,"def")
 B.aCX=s([B.p5,B.ww],t.vk)
 B.wv=new A.fS(1,!0,"spd")
 B.aGV=s([B.wx,B.wv],t.vk)
-B.SF=new A.fS(1,!0,"spe")
-B.aMD=s([B.p5,B.SF],t.vk)
-B.Jd=s([B.ww,B.wv],t.vk)
+B.SG=new A.fS(1,!0,"spe")
+B.aMD=s([B.p5,B.SG],t.vk)
+B.Je=s([B.ww,B.wv],t.vk)
 B.aWB=new A.fS(1,!0,"acc")
 B.aFY=s([B.p5,B.ww,B.aWB],t.vk)
-B.aL3=s([B.wx,B.wv,B.SF],t.vk)
+B.aL3=s([B.wx,B.wv,B.SG],t.vk)
 B.wu=new A.fS(-1,!0,"def")
-B.SG=new A.fS(-1,!0,"spd")
+B.SH=new A.fS(-1,!0,"spd")
 B.aWF=new A.fS(2,!0,"atk")
 B.aWC=new A.fS(2,!0,"spa")
 B.aWy=new A.fS(2,!0,"spe")
-B.aK1=s([B.wu,B.SG,B.aWF,B.aWC,B.aWy],t.vk)
+B.aK1=s([B.wu,B.SH,B.aWF,B.aWC,B.aWy],t.vk)
 B.aWz=new A.fS(-1,!1,"atk")
 B.aWt=new A.fS(-1,!1,"def")
 B.aD8=s([B.aWz,B.aWt],t.vk)
@@ -125967,11 +125971,11 @@ B.aWw=new A.fS(-2,!1,"spa")
 B.aJ5=s([B.aWv,B.aWw],t.vk)
 B.aWx=new A.fS(-1,!0,"atk")
 B.aI8=s([B.aWx,B.wu],t.vk)
-B.aHD=s([B.wu,B.SG],t.vk)
-B.lw=new A.c6(B.aQf,[B.Jm,B.Jm,B.aCX,B.aGV,B.aMD,B.Jd,B.aFY,B.aL3,B.aK1,B.Jd,B.aD8,B.aJ5,B.aI8,B.aHD],A.aX("c6<E,a3<+delta,self,stat(v,Q,E)>>"))
-B.OG={AVRInput:0,AVRPower:1,Accel:2,Accept:3,Again:4,AllCandidates:5,Alphanumeric:6,AltGraph:7,AppSwitch:8,ArrowDown:9,ArrowLeft:10,ArrowRight:11,ArrowUp:12,Attn:13,AudioBalanceLeft:14,AudioBalanceRight:15,AudioBassBoostDown:16,AudioBassBoostToggle:17,AudioBassBoostUp:18,AudioFaderFront:19,AudioFaderRear:20,AudioSurroundModeNext:21,AudioTrebleDown:22,AudioTrebleUp:23,AudioVolumeDown:24,AudioVolumeMute:25,AudioVolumeUp:26,Backspace:27,BrightnessDown:28,BrightnessUp:29,BrowserBack:30,BrowserFavorites:31,BrowserForward:32,BrowserHome:33,BrowserRefresh:34,BrowserSearch:35,BrowserStop:36,Call:37,Camera:38,CameraFocus:39,Cancel:40,CapsLock:41,ChannelDown:42,ChannelUp:43,Clear:44,Close:45,ClosedCaptionToggle:46,CodeInput:47,ColorF0Red:48,ColorF1Green:49,ColorF2Yellow:50,ColorF3Blue:51,ColorF4Grey:52,ColorF5Brown:53,Compose:54,ContextMenu:55,Convert:56,Copy:57,CrSel:58,Cut:59,DVR:60,Delete:61,Dimmer:62,DisplaySwap:63,Eisu:64,Eject:65,End:66,EndCall:67,Enter:68,EraseEof:69,Esc:70,Escape:71,ExSel:72,Execute:73,Exit:74,F1:75,F10:76,F11:77,F12:78,F13:79,F14:80,F15:81,F16:82,F17:83,F18:84,F19:85,F2:86,F20:87,F21:88,F22:89,F23:90,F24:91,F3:92,F4:93,F5:94,F6:95,F7:96,F8:97,F9:98,FavoriteClear0:99,FavoriteClear1:100,FavoriteClear2:101,FavoriteClear3:102,FavoriteRecall0:103,FavoriteRecall1:104,FavoriteRecall2:105,FavoriteRecall3:106,FavoriteStore0:107,FavoriteStore1:108,FavoriteStore2:109,FavoriteStore3:110,FinalMode:111,Find:112,Fn:113,FnLock:114,GoBack:115,GoHome:116,GroupFirst:117,GroupLast:118,GroupNext:119,GroupPrevious:120,Guide:121,GuideNextDay:122,GuidePreviousDay:123,HangulMode:124,HanjaMode:125,Hankaku:126,HeadsetHook:127,Help:128,Hibernate:129,Hiragana:130,HiraganaKatakana:131,Home:132,Hyper:133,Info:134,Insert:135,InstantReplay:136,JunjaMode:137,KanaMode:138,KanjiMode:139,Katakana:140,Key11:141,Key12:142,LastNumberRedial:143,LaunchApplication1:144,LaunchApplication2:145,LaunchAssistant:146,LaunchCalendar:147,LaunchContacts:148,LaunchControlPanel:149,LaunchMail:150,LaunchMediaPlayer:151,LaunchMusicPlayer:152,LaunchPhone:153,LaunchScreenSaver:154,LaunchSpreadsheet:155,LaunchWebBrowser:156,LaunchWebCam:157,LaunchWordProcessor:158,Link:159,ListProgram:160,LiveContent:161,Lock:162,LogOff:163,MailForward:164,MailReply:165,MailSend:166,MannerMode:167,MediaApps:168,MediaAudioTrack:169,MediaClose:170,MediaFastForward:171,MediaLast:172,MediaPause:173,MediaPlay:174,MediaPlayPause:175,MediaRecord:176,MediaRewind:177,MediaSkip:178,MediaSkipBackward:179,MediaSkipForward:180,MediaStepBackward:181,MediaStepForward:182,MediaStop:183,MediaTopMenu:184,MediaTrackNext:185,MediaTrackPrevious:186,MicrophoneToggle:187,MicrophoneVolumeDown:188,MicrophoneVolumeMute:189,MicrophoneVolumeUp:190,ModeChange:191,NavigateIn:192,NavigateNext:193,NavigateOut:194,NavigatePrevious:195,New:196,NextCandidate:197,NextFavoriteChannel:198,NextUserProfile:199,NonConvert:200,Notification:201,NumLock:202,OnDemand:203,Open:204,PageDown:205,PageUp:206,Pairing:207,Paste:208,Pause:209,PinPDown:210,PinPMove:211,PinPToggle:212,PinPUp:213,Play:214,PlaySpeedDown:215,PlaySpeedReset:216,PlaySpeedUp:217,Power:218,PowerOff:219,PreviousCandidate:220,Print:221,PrintScreen:222,Process:223,Props:224,RandomToggle:225,RcLowBattery:226,RecordSpeedNext:227,Redo:228,RfBypass:229,Romaji:230,STBInput:231,STBPower:232,Save:233,ScanChannelsToggle:234,ScreenModeNext:235,ScrollLock:236,Select:237,Settings:238,ShiftLevel5:239,SingleCandidate:240,Soft1:241,Soft2:242,Soft3:243,Soft4:244,Soft5:245,Soft6:246,Soft7:247,Soft8:248,SpeechCorrectionList:249,SpeechInputToggle:250,SpellCheck:251,SplitScreenToggle:252,Standby:253,Subtitle:254,Super:255,Symbol:256,SymbolLock:257,TV:258,TV3DMode:259,TVAntennaCable:260,TVAudioDescription:261,TVAudioDescriptionMixDown:262,TVAudioDescriptionMixUp:263,TVContentsMenu:264,TVDataService:265,TVInput:266,TVInputComponent1:267,TVInputComponent2:268,TVInputComposite1:269,TVInputComposite2:270,TVInputHDMI1:271,TVInputHDMI2:272,TVInputHDMI3:273,TVInputHDMI4:274,TVInputVGA1:275,TVMediaContext:276,TVNetwork:277,TVNumberEntry:278,TVPower:279,TVRadioService:280,TVSatellite:281,TVSatelliteBS:282,TVSatelliteCS:283,TVSatelliteToggle:284,TVTerrestrialAnalog:285,TVTerrestrialDigital:286,TVTimer:287,Tab:288,Teletext:289,Undo:290,Unidentified:291,VideoModeNext:292,VoiceDial:293,WakeUp:294,Wink:295,Zenkaku:296,ZenkakuHankaku:297,ZoomIn:298,ZoomOut:299,ZoomToggle:300}
-B.aOw=new A.c6(B.OG,[B.LR,B.LS,B.Jx,B.JM,B.JN,B.Ka,B.Kb,B.oI,B.Nk,B.eG,B.ef,B.eg,B.eH,B.JO,B.LK,B.LL,B.LM,B.Nb,B.LN,B.LO,B.LP,B.LQ,B.Nc,B.Nd,B.Ll,B.Ln,B.Lm,B.cU,B.K_,B.K0,B.LD,B.LE,B.LF,B.LG,B.LH,B.LI,B.LJ,B.Nl,B.K1,B.Nm,B.JP,B.lk,B.LT,B.LU,B.vR,B.L8,B.M0,B.Kc,B.LV,B.LW,B.LX,B.LY,B.LZ,B.M_,B.Kd,B.JQ,B.Ke,B.JE,B.JF,B.JG,B.MZ,B.cV,B.M1,B.M2,B.Kt,B.K2,B.hL,B.Nn,B.oH,B.JH,B.hK,B.hK,B.JI,B.JR,B.M3,B.KD,B.KM,B.KN,B.KO,B.KP,B.KQ,B.KR,B.KS,B.KT,B.KU,B.KV,B.KE,B.KW,B.KX,B.KY,B.KZ,B.L_,B.KF,B.KG,B.KH,B.KI,B.KJ,B.KK,B.KL,B.M4,B.M5,B.M6,B.M7,B.M8,B.M9,B.Ma,B.Mb,B.Mc,B.Md,B.Me,B.Mf,B.Kf,B.JS,B.vQ,B.Jy,B.No,B.Np,B.Kg,B.Kh,B.Ki,B.Kj,B.Mg,B.Mh,B.Mi,B.Kq,B.Kr,B.Ku,B.Nq,B.JT,B.K7,B.Kv,B.Kw,B.hM,B.Jz,B.Mj,B.ln,B.Mk,B.Ks,B.Kx,B.Ky,B.Kz,B.NW,B.NX,B.Nr,B.Lt,B.Lo,B.LB,B.Lp,B.Lz,B.LC,B.Lq,B.Lr,B.Ls,B.LA,B.Lu,B.Lv,B.Lw,B.Lx,B.Ly,B.Ml,B.Mm,B.Mn,B.Mo,B.K3,B.L9,B.La,B.Lb,B.Nt,B.Mp,B.N_,B.Na,B.Mq,B.Mr,B.Ms,B.Mt,B.Lc,B.Mu,B.Mv,B.Mw,B.N0,B.N1,B.N2,B.N3,B.Ld,B.N4,B.Le,B.Lf,B.Ne,B.Nf,B.Nh,B.Ng,B.Kk,B.N5,B.N6,B.N7,B.N8,B.Lg,B.Kl,B.Mx,B.My,B.Km,B.Ns,B.oJ,B.Mz,B.Lh,B.ll,B.lm,B.N9,B.JJ,B.JU,B.MA,B.MB,B.MC,B.MD,B.JV,B.ME,B.MF,B.MG,B.K4,B.K5,B.Kn,B.Li,B.K6,B.Ko,B.JW,B.MH,B.MI,B.MJ,B.JK,B.MK,B.KA,B.MP,B.MQ,B.Lj,B.ML,B.MM,B.oK,B.JX,B.MN,B.JD,B.Kp,B.L0,B.L1,B.L2,B.L3,B.L4,B.L5,B.L6,B.L7,B.Ni,B.Nj,B.Lk,B.MO,B.K8,B.MR,B.JA,B.JB,B.JC,B.MT,B.Nv,B.Nw,B.Nx,B.Ny,B.Nz,B.NA,B.NB,B.MU,B.NC,B.ND,B.NE,B.NF,B.NG,B.NH,B.NI,B.NJ,B.NK,B.NL,B.NM,B.NN,B.MV,B.NO,B.NP,B.NQ,B.NR,B.NS,B.NT,B.NU,B.NV,B.oG,B.MS,B.JL,B.Jw,B.MW,B.Nu,B.K9,B.MX,B.KB,B.KC,B.JY,B.JZ,B.MY],A.aX("c6<E,n>"))
-B.aOx=new A.c6(B.OG,[4294970632,4294970633,4294967553,4294968577,4294968578,4294969089,4294969090,4294967555,4294971393,4294968065,4294968066,4294968067,4294968068,4294968579,4294970625,4294970626,4294970627,4294970882,4294970628,4294970629,4294970630,4294970631,4294970884,4294970885,4294969871,4294969873,4294969872,4294967304,4294968833,4294968834,4294970369,4294970370,4294970371,4294970372,4294970373,4294970374,4294970375,4294971394,4294968835,4294971395,4294968580,4294967556,4294970634,4294970635,4294968321,4294969857,4294970642,4294969091,4294970636,4294970637,4294970638,4294970639,4294970640,4294970641,4294969092,4294968581,4294969093,4294968322,4294968323,4294968324,4294970703,4294967423,4294970643,4294970644,4294969108,4294968836,4294968069,4294971396,4294967309,4294968325,4294967323,4294967323,4294968326,4294968582,4294970645,4294969345,4294969354,4294969355,4294969356,4294969357,4294969358,4294969359,4294969360,4294969361,4294969362,4294969363,4294969346,4294969364,4294969365,4294969366,4294969367,4294969368,4294969347,4294969348,4294969349,4294969350,4294969351,4294969352,4294969353,4294970646,4294970647,4294970648,4294970649,4294970650,4294970651,4294970652,4294970653,4294970654,4294970655,4294970656,4294970657,4294969094,4294968583,4294967558,4294967559,4294971397,4294971398,4294969095,4294969096,4294969097,4294969098,4294970658,4294970659,4294970660,4294969105,4294969106,4294969109,4294971399,4294968584,4294968841,4294969110,4294969111,4294968070,4294967560,4294970661,4294968327,4294970662,4294969107,4294969112,4294969113,4294969114,4294971905,4294971906,4294971400,4294970118,4294970113,4294970126,4294970114,4294970124,4294970127,4294970115,4294970116,4294970117,4294970125,4294970119,4294970120,4294970121,4294970122,4294970123,4294970663,4294970664,4294970665,4294970666,4294968837,4294969858,4294969859,4294969860,4294971402,4294970667,4294970704,4294970715,4294970668,4294970669,4294970670,4294970671,4294969861,4294970672,4294970673,4294970674,4294970705,4294970706,4294970707,4294970708,4294969863,4294970709,4294969864,4294969865,4294970886,4294970887,4294970889,4294970888,4294969099,4294970710,4294970711,4294970712,4294970713,4294969866,4294969100,4294970675,4294970676,4294969101,4294971401,4294967562,4294970677,4294969867,4294968071,4294968072,4294970714,4294968328,4294968585,4294970678,4294970679,4294970680,4294970681,4294968586,4294970682,4294970683,4294970684,4294968838,4294968839,4294969102,4294969868,4294968840,4294969103,4294968587,4294970685,4294970686,4294970687,4294968329,4294970688,4294969115,4294970693,4294970694,4294969869,4294970689,4294970690,4294967564,4294968588,4294970691,4294967569,4294969104,4294969601,4294969602,4294969603,4294969604,4294969605,4294969606,4294969607,4294969608,4294971137,4294971138,4294969870,4294970692,4294968842,4294970695,4294967566,4294967567,4294967568,4294970697,4294971649,4294971650,4294971651,4294971652,4294971653,4294971654,4294971655,4294970698,4294971656,4294971657,4294971658,4294971659,4294971660,4294971661,4294971662,4294971663,4294971664,4294971665,4294971666,4294971667,4294970699,4294971668,4294971669,4294971670,4294971671,4294971672,4294971673,4294971674,4294971675,4294967305,4294970696,4294968330,4294967297,4294970700,4294971403,4294968843,4294970701,4294969116,4294969117,4294968589,4294968590,4294970702],t.eL)
+B.aHD=s([B.wu,B.SH],t.vk)
+B.lw=new A.c6(B.aQf,[B.Jn,B.Jn,B.aCX,B.aGV,B.aMD,B.Je,B.aFY,B.aL3,B.aK1,B.Je,B.aD8,B.aJ5,B.aI8,B.aHD],A.aX("c6<E,a3<+delta,self,stat(v,Q,E)>>"))
+B.OH={AVRInput:0,AVRPower:1,Accel:2,Accept:3,Again:4,AllCandidates:5,Alphanumeric:6,AltGraph:7,AppSwitch:8,ArrowDown:9,ArrowLeft:10,ArrowRight:11,ArrowUp:12,Attn:13,AudioBalanceLeft:14,AudioBalanceRight:15,AudioBassBoostDown:16,AudioBassBoostToggle:17,AudioBassBoostUp:18,AudioFaderFront:19,AudioFaderRear:20,AudioSurroundModeNext:21,AudioTrebleDown:22,AudioTrebleUp:23,AudioVolumeDown:24,AudioVolumeMute:25,AudioVolumeUp:26,Backspace:27,BrightnessDown:28,BrightnessUp:29,BrowserBack:30,BrowserFavorites:31,BrowserForward:32,BrowserHome:33,BrowserRefresh:34,BrowserSearch:35,BrowserStop:36,Call:37,Camera:38,CameraFocus:39,Cancel:40,CapsLock:41,ChannelDown:42,ChannelUp:43,Clear:44,Close:45,ClosedCaptionToggle:46,CodeInput:47,ColorF0Red:48,ColorF1Green:49,ColorF2Yellow:50,ColorF3Blue:51,ColorF4Grey:52,ColorF5Brown:53,Compose:54,ContextMenu:55,Convert:56,Copy:57,CrSel:58,Cut:59,DVR:60,Delete:61,Dimmer:62,DisplaySwap:63,Eisu:64,Eject:65,End:66,EndCall:67,Enter:68,EraseEof:69,Esc:70,Escape:71,ExSel:72,Execute:73,Exit:74,F1:75,F10:76,F11:77,F12:78,F13:79,F14:80,F15:81,F16:82,F17:83,F18:84,F19:85,F2:86,F20:87,F21:88,F22:89,F23:90,F24:91,F3:92,F4:93,F5:94,F6:95,F7:96,F8:97,F9:98,FavoriteClear0:99,FavoriteClear1:100,FavoriteClear2:101,FavoriteClear3:102,FavoriteRecall0:103,FavoriteRecall1:104,FavoriteRecall2:105,FavoriteRecall3:106,FavoriteStore0:107,FavoriteStore1:108,FavoriteStore2:109,FavoriteStore3:110,FinalMode:111,Find:112,Fn:113,FnLock:114,GoBack:115,GoHome:116,GroupFirst:117,GroupLast:118,GroupNext:119,GroupPrevious:120,Guide:121,GuideNextDay:122,GuidePreviousDay:123,HangulMode:124,HanjaMode:125,Hankaku:126,HeadsetHook:127,Help:128,Hibernate:129,Hiragana:130,HiraganaKatakana:131,Home:132,Hyper:133,Info:134,Insert:135,InstantReplay:136,JunjaMode:137,KanaMode:138,KanjiMode:139,Katakana:140,Key11:141,Key12:142,LastNumberRedial:143,LaunchApplication1:144,LaunchApplication2:145,LaunchAssistant:146,LaunchCalendar:147,LaunchContacts:148,LaunchControlPanel:149,LaunchMail:150,LaunchMediaPlayer:151,LaunchMusicPlayer:152,LaunchPhone:153,LaunchScreenSaver:154,LaunchSpreadsheet:155,LaunchWebBrowser:156,LaunchWebCam:157,LaunchWordProcessor:158,Link:159,ListProgram:160,LiveContent:161,Lock:162,LogOff:163,MailForward:164,MailReply:165,MailSend:166,MannerMode:167,MediaApps:168,MediaAudioTrack:169,MediaClose:170,MediaFastForward:171,MediaLast:172,MediaPause:173,MediaPlay:174,MediaPlayPause:175,MediaRecord:176,MediaRewind:177,MediaSkip:178,MediaSkipBackward:179,MediaSkipForward:180,MediaStepBackward:181,MediaStepForward:182,MediaStop:183,MediaTopMenu:184,MediaTrackNext:185,MediaTrackPrevious:186,MicrophoneToggle:187,MicrophoneVolumeDown:188,MicrophoneVolumeMute:189,MicrophoneVolumeUp:190,ModeChange:191,NavigateIn:192,NavigateNext:193,NavigateOut:194,NavigatePrevious:195,New:196,NextCandidate:197,NextFavoriteChannel:198,NextUserProfile:199,NonConvert:200,Notification:201,NumLock:202,OnDemand:203,Open:204,PageDown:205,PageUp:206,Pairing:207,Paste:208,Pause:209,PinPDown:210,PinPMove:211,PinPToggle:212,PinPUp:213,Play:214,PlaySpeedDown:215,PlaySpeedReset:216,PlaySpeedUp:217,Power:218,PowerOff:219,PreviousCandidate:220,Print:221,PrintScreen:222,Process:223,Props:224,RandomToggle:225,RcLowBattery:226,RecordSpeedNext:227,Redo:228,RfBypass:229,Romaji:230,STBInput:231,STBPower:232,Save:233,ScanChannelsToggle:234,ScreenModeNext:235,ScrollLock:236,Select:237,Settings:238,ShiftLevel5:239,SingleCandidate:240,Soft1:241,Soft2:242,Soft3:243,Soft4:244,Soft5:245,Soft6:246,Soft7:247,Soft8:248,SpeechCorrectionList:249,SpeechInputToggle:250,SpellCheck:251,SplitScreenToggle:252,Standby:253,Subtitle:254,Super:255,Symbol:256,SymbolLock:257,TV:258,TV3DMode:259,TVAntennaCable:260,TVAudioDescription:261,TVAudioDescriptionMixDown:262,TVAudioDescriptionMixUp:263,TVContentsMenu:264,TVDataService:265,TVInput:266,TVInputComponent1:267,TVInputComponent2:268,TVInputComposite1:269,TVInputComposite2:270,TVInputHDMI1:271,TVInputHDMI2:272,TVInputHDMI3:273,TVInputHDMI4:274,TVInputVGA1:275,TVMediaContext:276,TVNetwork:277,TVNumberEntry:278,TVPower:279,TVRadioService:280,TVSatellite:281,TVSatelliteBS:282,TVSatelliteCS:283,TVSatelliteToggle:284,TVTerrestrialAnalog:285,TVTerrestrialDigital:286,TVTimer:287,Tab:288,Teletext:289,Undo:290,Unidentified:291,VideoModeNext:292,VoiceDial:293,WakeUp:294,Wink:295,Zenkaku:296,ZenkakuHankaku:297,ZoomIn:298,ZoomOut:299,ZoomToggle:300}
+B.aOw=new A.c6(B.OH,[B.LS,B.LT,B.Jy,B.JN,B.JO,B.Kb,B.Kc,B.oI,B.Nl,B.eG,B.ef,B.eg,B.eH,B.JP,B.LL,B.LM,B.LN,B.Nc,B.LO,B.LP,B.LQ,B.LR,B.Nd,B.Ne,B.Lm,B.Lo,B.Ln,B.cV,B.K0,B.K1,B.LE,B.LF,B.LG,B.LH,B.LI,B.LJ,B.LK,B.Nm,B.K2,B.Nn,B.JQ,B.lk,B.LU,B.LV,B.vR,B.L9,B.M1,B.Kd,B.LW,B.LX,B.LY,B.LZ,B.M_,B.M0,B.Ke,B.JR,B.Kf,B.JF,B.JG,B.JH,B.N_,B.cW,B.M2,B.M3,B.Ku,B.K3,B.hL,B.No,B.oH,B.JI,B.hK,B.hK,B.JJ,B.JS,B.M4,B.KE,B.KN,B.KO,B.KP,B.KQ,B.KR,B.KS,B.KT,B.KU,B.KV,B.KW,B.KF,B.KX,B.KY,B.KZ,B.L_,B.L0,B.KG,B.KH,B.KI,B.KJ,B.KK,B.KL,B.KM,B.M5,B.M6,B.M7,B.M8,B.M9,B.Ma,B.Mb,B.Mc,B.Md,B.Me,B.Mf,B.Mg,B.Kg,B.JT,B.vQ,B.Jz,B.Np,B.Nq,B.Kh,B.Ki,B.Kj,B.Kk,B.Mh,B.Mi,B.Mj,B.Kr,B.Ks,B.Kv,B.Nr,B.JU,B.K8,B.Kw,B.Kx,B.hM,B.JA,B.Mk,B.ln,B.Ml,B.Kt,B.Ky,B.Kz,B.KA,B.NX,B.NY,B.Ns,B.Lu,B.Lp,B.LC,B.Lq,B.LA,B.LD,B.Lr,B.Ls,B.Lt,B.LB,B.Lv,B.Lw,B.Lx,B.Ly,B.Lz,B.Mm,B.Mn,B.Mo,B.Mp,B.K4,B.La,B.Lb,B.Lc,B.Nu,B.Mq,B.N0,B.Nb,B.Mr,B.Ms,B.Mt,B.Mu,B.Ld,B.Mv,B.Mw,B.Mx,B.N1,B.N2,B.N3,B.N4,B.Le,B.N5,B.Lf,B.Lg,B.Nf,B.Ng,B.Ni,B.Nh,B.Kl,B.N6,B.N7,B.N8,B.N9,B.Lh,B.Km,B.My,B.Mz,B.Kn,B.Nt,B.oJ,B.MA,B.Li,B.ll,B.lm,B.Na,B.JK,B.JV,B.MB,B.MC,B.MD,B.ME,B.JW,B.MF,B.MG,B.MH,B.K5,B.K6,B.Ko,B.Lj,B.K7,B.Kp,B.JX,B.MI,B.MJ,B.MK,B.JL,B.ML,B.KB,B.MQ,B.MR,B.Lk,B.MM,B.MN,B.oK,B.JY,B.MO,B.JE,B.Kq,B.L1,B.L2,B.L3,B.L4,B.L5,B.L6,B.L7,B.L8,B.Nj,B.Nk,B.Ll,B.MP,B.K9,B.MS,B.JB,B.JC,B.JD,B.MU,B.Nw,B.Nx,B.Ny,B.Nz,B.NA,B.NB,B.NC,B.MV,B.ND,B.NE,B.NF,B.NG,B.NH,B.NI,B.NJ,B.NK,B.NL,B.NM,B.NN,B.NO,B.MW,B.NP,B.NQ,B.NR,B.NS,B.NT,B.NU,B.NV,B.NW,B.oG,B.MT,B.JM,B.Jx,B.MX,B.Nv,B.Ka,B.MY,B.KC,B.KD,B.JZ,B.K_,B.MZ],A.aX("c6<E,n>"))
+B.aOx=new A.c6(B.OH,[4294970632,4294970633,4294967553,4294968577,4294968578,4294969089,4294969090,4294967555,4294971393,4294968065,4294968066,4294968067,4294968068,4294968579,4294970625,4294970626,4294970627,4294970882,4294970628,4294970629,4294970630,4294970631,4294970884,4294970885,4294969871,4294969873,4294969872,4294967304,4294968833,4294968834,4294970369,4294970370,4294970371,4294970372,4294970373,4294970374,4294970375,4294971394,4294968835,4294971395,4294968580,4294967556,4294970634,4294970635,4294968321,4294969857,4294970642,4294969091,4294970636,4294970637,4294970638,4294970639,4294970640,4294970641,4294969092,4294968581,4294969093,4294968322,4294968323,4294968324,4294970703,4294967423,4294970643,4294970644,4294969108,4294968836,4294968069,4294971396,4294967309,4294968325,4294967323,4294967323,4294968326,4294968582,4294970645,4294969345,4294969354,4294969355,4294969356,4294969357,4294969358,4294969359,4294969360,4294969361,4294969362,4294969363,4294969346,4294969364,4294969365,4294969366,4294969367,4294969368,4294969347,4294969348,4294969349,4294969350,4294969351,4294969352,4294969353,4294970646,4294970647,4294970648,4294970649,4294970650,4294970651,4294970652,4294970653,4294970654,4294970655,4294970656,4294970657,4294969094,4294968583,4294967558,4294967559,4294971397,4294971398,4294969095,4294969096,4294969097,4294969098,4294970658,4294970659,4294970660,4294969105,4294969106,4294969109,4294971399,4294968584,4294968841,4294969110,4294969111,4294968070,4294967560,4294970661,4294968327,4294970662,4294969107,4294969112,4294969113,4294969114,4294971905,4294971906,4294971400,4294970118,4294970113,4294970126,4294970114,4294970124,4294970127,4294970115,4294970116,4294970117,4294970125,4294970119,4294970120,4294970121,4294970122,4294970123,4294970663,4294970664,4294970665,4294970666,4294968837,4294969858,4294969859,4294969860,4294971402,4294970667,4294970704,4294970715,4294970668,4294970669,4294970670,4294970671,4294969861,4294970672,4294970673,4294970674,4294970705,4294970706,4294970707,4294970708,4294969863,4294970709,4294969864,4294969865,4294970886,4294970887,4294970889,4294970888,4294969099,4294970710,4294970711,4294970712,4294970713,4294969866,4294969100,4294970675,4294970676,4294969101,4294971401,4294967562,4294970677,4294969867,4294968071,4294968072,4294970714,4294968328,4294968585,4294970678,4294970679,4294970680,4294970681,4294968586,4294970682,4294970683,4294970684,4294968838,4294968839,4294969102,4294969868,4294968840,4294969103,4294968587,4294970685,4294970686,4294970687,4294968329,4294970688,4294969115,4294970693,4294970694,4294969869,4294970689,4294970690,4294967564,4294968588,4294970691,4294967569,4294969104,4294969601,4294969602,4294969603,4294969604,4294969605,4294969606,4294969607,4294969608,4294971137,4294971138,4294969870,4294970692,4294968842,4294970695,4294967566,4294967567,4294967568,4294970697,4294971649,4294971650,4294971651,4294971652,4294971653,4294971654,4294971655,4294970698,4294971656,4294971657,4294971658,4294971659,4294971660,4294971661,4294971662,4294971663,4294971664,4294971665,4294971666,4294971667,4294970699,4294971668,4294971669,4294971670,4294971671,4294971672,4294971673,4294971674,4294971675,4294967305,4294970696,4294968330,4294967297,4294970700,4294971403,4294968843,4294970701,4294969116,4294969117,4294968589,4294968590,4294970702],t.eL)
 B.aQh={poke_ball:0,great_ball:1,ultra_ball:2,master_ball:3,quick_ball:4,timer_ball:5,dusk_ball:6,net_ball:7,fast_ball:8,dream_ball:9,repeat_ball:10,level_ball:11,heal_ball:12,potion:13,super_potion:14,hyper_potion:15,max_potion:16,full_restore:17,revive:18,antidote:19,paralyze_heal:20,awakening:21,burn_heal:22,ice_heal:23,full_heal:24,ether:25,max_ether:26,elixir:27,max_elixir:28,oran_berry:29,sitrus_berry:30,cheri_berry:31,chesto_berry:32,pecha_berry:33,rawst_berry:34,aspear_berry:35,lum_berry:36,leppa_berry:37,hard_stone:38,mystic_water:39,magnet:40,miracle_seed:41,poison_barb:42,twisted_spoon:43,charcoal:44,soft_sand:45,leftovers:46,fire_stone:47,water_stone:48,thunder_stone:49,leaf_stone:50,moon_stone:51,unknown_fossil:52,fossil_restoration_voucher:53,heart_scale:54,tm_01:55,tm_02:56,tm_03:57,tm_04:58,tm_05:59,tm_06:60,tm_07:61,tm_08:62,tm_09:63,tm_10:64,tm_11:65,tm_12:66,tm_13:67,tm_14:68,tm_15:69,tm_16:70,tm_17:71,tm_18:72,tm_19:73,tm_20:74,tm_21:75,tm_22:76,tm_23:77,tm_24:78,tm_25:79,tm_26:80,tm_27:81,tm_28:82,tm_29:83,tm_30:84,tm_31:85,tm_32:86,tm_33:87,tm_34:88,tm_35:89,tm_36:90,tm_37:91,tm_38:92,tm_39:93,tm_40:94,tm_41:95,tm_42:96,tm_43:97,tm_44:98,tm_45:99,tm_46:100,tm_47:101,tm_48:102,tm_49:103,tm_50:104,map_underground_cave:105,map_deep_sea:106,map_thunder_plains:107,map_emerald_forest:108,map_toxic_marsh:109,map_mystic_sanctum:110,map_volcanic_ridge:111,map_victory_highlands:112}
 B.tV=new A.ai(58853,"MaterialIcons",!1)
 B.akI=new A.ao("poke_ball","Pok\xe9 Ball","A device for catching wild Pok\xe9mon (1.0x catch rate).",B.cC,200,0,B.bv,B.iJ,B.tV,null)
@@ -126000,21 +126004,21 @@ B.ajr=new A.ao("super_potion","Super Potion","Restores 50 HP for a single Pok\xe
 B.a6e=new A.h(1,1,0.596078431372549,0,B.f)
 B.ak_=new A.ao("hyper_potion","Hyper Potion","Restores 200 HP for a single Pok\xe9mon.",B.cD,1200,4,B.W,B.a6e,B.tT,null)
 B.aku=new A.ao("max_potion","Max Potion","Fully restores HP for a single Pok\xe9mon.",B.cD,2500,6,B.W,B.eY,B.tS,null)
-B.ajH=new A.ao("full_restore","Full Restore","Fully restores HP and cures all status ailments for a single Pok\xe9mon.",B.cD,3000,7,B.W,B.dQ,B.C4,null)
-B.aj9=new A.ao("revive","Revive","Revives a fainted Pok\xe9mon to 50% max HP.",B.cD,1500,3,B.W,B.M,B.BZ,null)
+B.ajH=new A.ao("full_restore","Full Restore","Fully restores HP and cures all status ailments for a single Pok\xe9mon.",B.cD,3000,7,B.W,B.dQ,B.C5,null)
+B.aj9=new A.ao("revive","Revive","Revives a fainted Pok\xe9mon to 50% max HP.",B.cD,1500,3,B.W,B.M,B.C_,null)
 B.ak1=new A.ao("antidote","Antidote","Cures a Pok\xe9mon of poisoning.",B.cD,100,0,B.bv,B.dR,B.tS,null)
 B.tR=new A.ai(58003,"MaterialIcons",!1)
 B.ajq=new A.ao("paralyze_heal","Paralyze Heal","Cures a Pok\xe9mon of paralysis.",B.cD,200,0,B.bv,B.bq,B.tR,null)
-B.ajA=new A.ao("awakening","Awakening","Awakens a sleeping Pok\xe9mon.",B.cD,250,0,B.bv,B.r7,B.BV,null)
-B.C6=new A.ai(59107,"MaterialIcons",!1)
-B.ajR=new A.ao("burn_heal","Burn Heal","Cures a Pok\xe9mon of a burn.",B.cD,250,0,B.bv,B.dr,B.C6,null)
+B.ajA=new A.ao("awakening","Awakening","Awakens a sleeping Pok\xe9mon.",B.cD,250,0,B.bv,B.r7,B.BW,null)
+B.C7=new A.ai(59107,"MaterialIcons",!1)
+B.ajR=new A.ao("burn_heal","Burn Heal","Cures a Pok\xe9mon of a burn.",B.cD,250,0,B.bv,B.dr,B.C7,null)
 B.qB=new A.h(1,0.5019607843137255,0.8705882352941177,0.9176470588235294,B.f)
-B.ajL=new A.ao("ice_heal","Ice Heal","Thaws a frozen Pok\xe9mon.",B.cD,250,0,B.bv,B.qB,B.BT,null)
-B.aky=new A.ao("full_heal","Full Heal","Cures all status ailments for a single Pok\xe9mon.",B.cD,600,2,B.bf,B.qG,B.BX,null)
+B.ajL=new A.ao("ice_heal","Ice Heal","Thaws a frozen Pok\xe9mon.",B.cD,250,0,B.bv,B.qB,B.BU,null)
+B.aky=new A.ao("full_heal","Full Heal","Cures all status ailments for a single Pok\xe9mon.",B.cD,600,2,B.bf,B.qG,B.BY,null)
 B.akx=new A.ao("ether","Ether","Restores 10 PP to one selected move of a single Pok\xe9mon.",B.cD,1200,5,B.bf,B.iH,B.ez,null)
 B.ak7=new A.ao("max_ether","Max Ether","Fully restores the PP of one selected move of a single Pok\xe9mon.",B.cD,null,0,B.W,B.mN,B.tZ,null)
 B.ajt=new A.ao("elixir","Elixir","Restores 10 PP to all moves of a single Pok\xe9mon.",B.cD,null,0,B.W,B.mF,B.hz,null)
-B.akr=new A.ao("max_elixir","Max Elixir","Fully restores the PP of all moves of a single Pok\xe9mon.",B.cD,null,0,B.eK,B.rc,B.Ce,null)
+B.akr=new A.ao("max_elixir","Max Elixir","Fully restores the PP of all moves of a single Pok\xe9mon.",B.cD,null,0,B.eK,B.rc,B.Cf,null)
 B.ajF=new A.ao("oran_berry","Oran Berry","Held Berry: Restores 10 HP when holder HP drops to 50% or less.",B.ct,null,0,B.bv,B.hf,B.ey,null)
 B.aki=new A.ao("sitrus_berry","Sitrus Berry","Held Berry: Restores 30 HP when holder HP drops to 50% or less.",B.ct,null,0,B.bf,B.M,B.ey,null)
 B.akc=new A.ao("cheri_berry","Cheri Berry","Held Berry: Instantly cures paralysis in battle.",B.ct,null,0,B.bv,B.iJ,B.ey,null)
@@ -126028,8 +126032,8 @@ B.akm=new A.ao("lum_berry","Lum Berry","Held Berry: Instantly cures any status c
 B.akh=new A.ao("leppa_berry","Leppa Berry","Held Berry: Restores 10 PP when a move runs out of PP, or use from Bag on a move.",B.ct,null,0,B.bf,B.iJ,B.ey,null)
 B.af3=new A.ai(58952,"MaterialIcons",!1)
 B.ajf=new A.ao("hard_stone","Hard Stone","Held Item: An unbreakable stone that boosts Rock-type moves by 20%.",B.dG,null,0,B.W,B.kq,B.af3,null)
-B.Cs=new A.ai(984482,"MaterialIcons",!1)
-B.aje=new A.ao("mystic_water","Mystic Water","Held Item: A tear-shaped gem that boosts Water-type moves by 20%.",B.dG,null,0,B.W,B.eY,B.Cs,null)
+B.Ct=new A.ai(984482,"MaterialIcons",!1)
+B.aje=new A.ao("mystic_water","Mystic Water","Held Item: A tear-shaped gem that boosts Water-type moves by 20%.",B.dG,null,0,B.W,B.eY,B.Ct,null)
 B.akv=new A.ao("magnet","Magnet","Held Item: A powerful magnet that boosts Electric-type moves by 20%.",B.dG,null,0,B.W,B.M,B.tR,null)
 B.aeU=new A.ai(58084,"MaterialIcons",!1)
 B.ajP=new A.ao("miracle_seed","Miracle Seed","Held Item: A life-imbued seed that boosts Grass-type moves by 20%.",B.dG,null,0,B.W,B.hi,B.aeU,null)
@@ -126037,28 +126041,28 @@ B.aeN=new A.ai(57725,"MaterialIcons",!1)
 B.aju=new A.ao("poison_barb","Poison Barb","Held Item: A small, toxic barb that boosts Poison-type moves by 20%.",B.dG,null,0,B.W,B.rt,B.aeN,null)
 B.af_=new A.ai(58607,"MaterialIcons",!1)
 B.ajo=new A.ao("twisted_spoon","Twisted Spoon","Held Item: A telekinetically charged spoon that boosts Psychic moves by 20%.",B.dG,null,0,B.W,B.kr,B.af_,null)
-B.ak8=new A.ao("charcoal","Charcoal","Held Item: A combustible fuel that boosts Fire-type moves by 20%.",B.dG,null,0,B.W,B.dr,B.C_,null)
+B.ak8=new A.ao("charcoal","Charcoal","Held Item: A combustible fuel that boosts Fire-type moves by 20%.",B.dG,null,0,B.W,B.dr,B.C0,null)
 B.aeT=new A.ai(58082,"MaterialIcons",!1)
 B.akB=new A.ao("soft_sand","Soft Sand","Held Item: Finely textured sand that boosts Ground-type moves by 20%.",B.dG,null,0,B.W,B.hl,B.aeT,null)
 B.af1=new A.ai(58674,"MaterialIcons",!1)
 B.aj8=new A.ao("leftovers","Leftovers","Held Item: Gradually restores 1/16 of max HP at the end of each battle turn.",B.dG,null,0,B.W,B.n4,B.af1,null)
-B.Ac=new A.h(1,1,0.3411764705882353,0.13333333333333333,B.f)
-B.ajZ=new A.ao("fire_stone","Fire Stone","A peculiar stone that triggers evolution in certain Fire Pok\xe9mon (e.g. Vulpix, Growlithe, Eevee).",B.fH,5000,8,B.W,B.Ac,B.C6,null)
+B.Ad=new A.h(1,1,0.3411764705882353,0.13333333333333333,B.f)
+B.ajZ=new A.ao("fire_stone","Fire Stone","A peculiar stone that triggers evolution in certain Fire Pok\xe9mon (e.g. Vulpix, Growlithe, Eevee).",B.fH,5000,8,B.W,B.Ad,B.C7,null)
 B.a37=new A.h(1,0.011764705882352941,0.6627450980392157,0.9568627450980393,B.f)
-B.akF=new A.ao("water_stone","Water Stone","A peculiar stone that triggers evolution in certain Water Pok\xe9mon (e.g. Poliwhirl, Shellder, Staryu, Eevee).",B.fH,5000,8,B.W,B.a37,B.Cs,null)
-B.z0=new A.h(1,1,0.9215686274509803,0.23137254901960785,B.f)
-B.ajm=new A.ao("thunder_stone","Thunder Stone","A peculiar stone that triggers evolution in certain Electric Pok\xe9mon (e.g. Pikachu, Eevee).",B.fH,5000,8,B.W,B.z0,B.tR,null)
-B.Ai=new A.h(1,0.2980392156862745,0.6862745098039216,0.3137254901960784,B.f)
+B.akF=new A.ao("water_stone","Water Stone","A peculiar stone that triggers evolution in certain Water Pok\xe9mon (e.g. Poliwhirl, Shellder, Staryu, Eevee).",B.fH,5000,8,B.W,B.a37,B.Ct,null)
+B.z1=new A.h(1,1,0.9215686274509803,0.23137254901960785,B.f)
+B.ajm=new A.ao("thunder_stone","Thunder Stone","A peculiar stone that triggers evolution in certain Electric Pok\xe9mon (e.g. Pikachu, Eevee).",B.fH,5000,8,B.W,B.z1,B.tR,null)
+B.Aj=new A.h(1,0.2980392156862745,0.6862745098039216,0.3137254901960784,B.f)
 B.af2=new A.ai(58840,"MaterialIcons",!1)
-B.aiY=new A.ao("leaf_stone","Leaf Stone","A peculiar stone that triggers evolution in certain Grass Pok\xe9mon (e.g. Gloom, Weepinbell, Exeggcute).",B.fH,5000,8,B.W,B.Ai,B.af2,null)
+B.aiY=new A.ao("leaf_stone","Leaf Stone","A peculiar stone that triggers evolution in certain Grass Pok\xe9mon (e.g. Gloom, Weepinbell, Exeggcute).",B.fH,5000,8,B.W,B.Aj,B.af2,null)
 B.a7h=new A.h(1,0.6235294117647059,0.6588235294117647,0.8549019607843137,B.f)
 B.aeY=new A.ai(58415,"MaterialIcons",!1)
 B.aj1=new A.ao("moon_stone","Moon Stone","A peculiar stone that triggers evolution in certain Pok\xe9mon (e.g. Nidorina, Nidorino, Clefairy, Jigglypuff).",B.fH,5000,8,B.W,B.a7h,B.aeY,null)
 B.aeE=new A.ai(57462,"MaterialIcons",!1)
-B.akj=new A.ao("unknown_fossil","Unknown Fossil","A mysterious prehistoric fossil. Take it with a Fossil Restoration Voucher to a Pok\xe9 Lab to restore it.",B.u6,null,0,B.W,B.d8,B.aeE,null)
-B.C2=new A.ai(58714,"MaterialIcons",!1)
-B.ajn=new A.ao("fossil_restoration_voucher","Fossil Restoration Voucher","Requires an Unknown Fossil. Redeem at a Pok\xe9 Lab to restore a random Lv. 10 first-stage Fossil Pok\xe9mon.",B.u6,null,0,B.W,B.bX,B.C2,null)
-B.akt=new A.ao("heart_scale","Heart Scale","A lovely, heart-shaped scale. Trade 1x to the Move Tutor at the Pok\xe9mon Center to teach an Egg Move.",B.CJ,null,0,B.W,B.bB,B.j4,null)
+B.akj=new A.ao("unknown_fossil","Unknown Fossil","A mysterious prehistoric fossil. Take it with a Fossil Restoration Voucher to a Pok\xe9 Lab to restore it.",B.u6,null,0,B.W,B.d9,B.aeE,null)
+B.C3=new A.ai(58714,"MaterialIcons",!1)
+B.ajn=new A.ao("fossil_restoration_voucher","Fossil Restoration Voucher","Requires an Unknown Fossil. Redeem at a Pok\xe9 Lab to restore a random Lv. 10 first-stage Fossil Pok\xe9mon.",B.u6,null,0,B.W,B.bX,B.C3,null)
+B.akt=new A.ao("heart_scale","Heart Scale","A lovely, heart-shaped scale. Trade 1x to the Move Tutor at the Pok\xe9mon Center to teach an Egg Move.",B.CK,null,0,B.W,B.bB,B.j4,null)
 B.akw=new A.ao("tm_01","TM01 Mega Punch","Teaches Mega Punch (80 PWR Fighting-limb power punch) to compatible Pok\xe9mon.",B.ab,null,0,B.W,B.cI,B.ai,"mega_punch")
 B.akq=new A.ao("tm_02","TM02 Razor Wind","Teaches Razor Wind (80 PWR slicing whirlwind) to compatible Pok\xe9mon.",B.ab,null,0,B.W,B.iD,B.ai,"razor_wind")
 B.ajI=new A.ao("tm_03","TM03 Swords Dance","Teaches Swords Dance (+2 Atk setup dance) to compatible Pok\xe9mon.",B.ab,null,0,B.W,B.hh,B.ai,"swords_dance")
@@ -126241,15 +126245,15 @@ B.bdW=new A.lq(B.bfr)
 B.bfs=new A.Av(3,"down")
 B.bdX=new A.lq(B.bfs)
 B.aOz=new A.bT([B.lZ,B.bdW,B.m_,B.bdX,B.jI,B.Vw,B.jJ,B.Vv],t.Fp)
-B.b_A=new A.aS(B.cU,!1,!1,!1,!1,B.X)
-B.b_6=new A.aS(B.cU,!1,!0,!1,!1,B.X)
-B.TF=new A.aS(B.cV,!1,!1,!1,!1,B.X)
-B.TC=new A.aS(B.cV,!1,!0,!1,!1,B.X)
-B.b_r=new A.aS(B.cU,!1,!0,!0,!1,B.X)
-B.b_i=new A.aS(B.cU,!1,!1,!0,!1,B.X)
-B.b_F=new A.aS(B.cV,!1,!0,!0,!1,B.X)
-B.b_v=new A.aS(B.cV,!1,!1,!0,!1,B.X)
-B.Oj=new A.bT([B.b_A,B.a1,B.b_6,B.a1,B.TF,B.a1,B.TC,B.a1,B.b_r,B.a1,B.b_i,B.a1,B.b_F,B.a1,B.b_v,B.a1],t.Fp)
+B.b_A=new A.aS(B.cV,!1,!1,!1,!1,B.X)
+B.b_6=new A.aS(B.cV,!1,!0,!1,!1,B.X)
+B.TG=new A.aS(B.cW,!1,!1,!1,!1,B.X)
+B.TD=new A.aS(B.cW,!1,!0,!1,!1,B.X)
+B.b_r=new A.aS(B.cV,!1,!0,!0,!1,B.X)
+B.b_i=new A.aS(B.cV,!1,!1,!0,!1,B.X)
+B.b_F=new A.aS(B.cW,!1,!0,!0,!1,B.X)
+B.b_v=new A.aS(B.cW,!1,!1,!0,!1,B.X)
+B.Ok=new A.bT([B.b_A,B.a1,B.b_6,B.a1,B.TG,B.a1,B.TD,B.a1,B.b_r,B.a1,B.b_i,B.a1,B.b_F,B.a1,B.b_v,B.a1],t.Fp)
 B.aQo={"Content-Type":0}
 B.aOA=new A.c6(B.aQo,["text/plain; charset=utf-8"],t.li)
 B.aXR=new A.df(1,"hasCheckedState")
@@ -126283,7 +126287,7 @@ B.aY8=new A.df(67108864,"hasExpandedState")
 B.aXN=new A.df(134217728,"isExpanded")
 B.aY5=new A.df(536870912,"hasRequiredState")
 B.aXK=new A.df(1073741824,"isRequired")
-B.Ok=new A.bT([1,B.aXR,2,B.aXX,268435456,B.aXW,4,B.aY2,8,B.aYb,16,B.aXQ,32,B.aXZ,64,B.aY6,128,B.aXL,256,B.aXU,512,B.aY3,1024,B.aXI,2048,B.aXS,4096,B.aY0,8192,B.aY9,16384,B.aXO,32768,B.aXY,65536,B.aY7,131072,B.aXM,262144,B.aXV,524288,B.aY4,1048576,B.aXJ,2097152,B.aXT,4194304,B.aY1,8388608,B.aYa,16777216,B.aXP,33554432,B.aY_,67108864,B.aY8,134217728,B.aXN,536870912,B.aY5,1073741824,B.aXK],A.aX("bT<v,df>"))
+B.Ol=new A.bT([1,B.aXR,2,B.aXX,268435456,B.aXW,4,B.aY2,8,B.aYb,16,B.aXQ,32,B.aXZ,64,B.aY6,128,B.aXL,256,B.aXU,512,B.aY3,1024,B.aXI,2048,B.aXS,4096,B.aY0,8192,B.aY9,16384,B.aXO,32768,B.aXY,65536,B.aY7,131072,B.aXM,262144,B.aXV,524288,B.aY4,1048576,B.aXJ,2097152,B.aXT,4194304,B.aY1,8388608,B.aYa,16777216,B.aXP,33554432,B.aY_,67108864,B.aY8,134217728,B.aXN,536870912,B.aY5,1073741824,B.aXK],A.aX("bT<v,df>"))
 B.aMs=s(["leaf_storm","power_whip","giga_drain","amnesia","curse","ingrain"],t.s)
 B.aFb=s(["dragon_dance","belly_drum","flare_blitz","outrage","crunch","ancient_power"],t.s)
 B.aLs=s(["aqua_jet","aura_sphere","mirror_coat","dragon_pulse","muddy_water","yawn"],t.s)
@@ -126326,7 +126330,7 @@ B.aIF=s(["fire_punch","ice_punch","thunder_punch","nasty_plot","psycho_cut","bar
 B.aGL=s(["knock_off","agility","ancient_power","haze","amnesia","tickle"],t.s)
 B.aHe=s(["leaf_storm","giga_drain","moonlight","ancient_power","synthesis","ingrain"],t.s)
 B.aIr=s(["belly_drum","iron_head","perish_song","ancient_power","skull_bash","double_kick"],t.s)
-B.IS=s(["mach_punch","bullet_punch","rapid_spin","high_jump_kick","feint","counter"],t.s)
+B.IT=s(["mach_punch","bullet_punch","rapid_spin","high_jump_kick","feint","counter"],t.s)
 B.aLd=s(["belly_drum","zen_headbutt","hammer_arm","curse","amnesia","body_slam"],t.s)
 B.aKj=s(["spite","curse","destiny_bond","psybeam","toxic_spikes","stockpile"],t.s)
 B.aLR=s(["ice_fang","fire_fang","thunder_fang","dragon_rush","crush_claw","counter"],t.s)
@@ -126360,18 +126364,18 @@ B.aIp=s(["aqua_ring","agility","hydro_pump","icy_wind","feather_dance","yawn"],t
 B.aGQ=s(["glare","mirror_coat","iron_tail","magical_leaf","pursuit","mean_look"],t.s)
 B.aIM=s(["superpower","sucker_punch","heavy_slam","yawn","curse","body_slam"],t.s)
 B.aJS=s(["night_slash","air_slash","detect","screech","assurance","trump_card"],t.s)
-B.aOB=new A.bT([1,B.aMs,4,B.aFb,7,B.aLs,16,B.aL6,19,B.aM3,21,B.aK7,23,B.aJt,25,B.aJX,27,B.aFf,29,B.aJ3,32,B.aGw,35,B.aJ2,37,B.aHo,39,B.aMa,41,B.aJp,43,B.aHm,46,B.aGu,48,B.aGE,50,B.aED,52,B.aGP,54,B.aHR,56,B.aHK,58,B.aHp,60,B.aKq,63,B.aFW,66,B.aGv,69,B.aJh,72,B.aGG,74,B.aMx,77,B.aHr,79,B.aME,83,B.aG8,84,B.aG5,86,B.aDK,88,B.aFy,90,B.aLv,92,B.aKD,95,B.aHE,96,B.aIF,98,B.aGL,102,B.aHe,104,B.aIr,106,B.IS,107,B.IS,108,B.aLd,109,B.aKj,111,B.aLR,113,B.aFN,114,B.aCV,115,B.aJq,116,B.aMg,118,B.aFF,122,B.aIi,123,B.aMr,124,B.aKG,125,B.aJT,126,B.aJf,127,B.aIe,128,B.eF,131,B.aHq,133,B.aEU,138,B.aKO,140,B.aGb,142,B.aLz,143,B.aGR,147,B.aDN,152,B.aHv,155,B.aGm,158,B.aGT,252,B.aF7,255,B.aE4,258,B.aIj,387,B.aGe,390,B.aMz,393,B.aIp,495,B.aGQ,498,B.aIM,501,B.aJS],A.aX("bT<v,a3<E>>"))
+B.aOB=new A.bT([1,B.aMs,4,B.aFb,7,B.aLs,16,B.aL6,19,B.aM3,21,B.aK7,23,B.aJt,25,B.aJX,27,B.aFf,29,B.aJ3,32,B.aGw,35,B.aJ2,37,B.aHo,39,B.aMa,41,B.aJp,43,B.aHm,46,B.aGu,48,B.aGE,50,B.aED,52,B.aGP,54,B.aHR,56,B.aHK,58,B.aHp,60,B.aKq,63,B.aFW,66,B.aGv,69,B.aJh,72,B.aGG,74,B.aMx,77,B.aHr,79,B.aME,83,B.aG8,84,B.aG5,86,B.aDK,88,B.aFy,90,B.aLv,92,B.aKD,95,B.aHE,96,B.aIF,98,B.aGL,102,B.aHe,104,B.aIr,106,B.IT,107,B.IT,108,B.aLd,109,B.aKj,111,B.aLR,113,B.aFN,114,B.aCV,115,B.aJq,116,B.aMg,118,B.aFF,122,B.aIi,123,B.aMr,124,B.aKG,125,B.aJT,126,B.aJf,127,B.aIe,128,B.eF,131,B.aHq,133,B.aEU,138,B.aKO,140,B.aGb,142,B.aLz,143,B.aGR,147,B.aDN,152,B.aHv,155,B.aGm,158,B.aGT,252,B.aF7,255,B.aE4,258,B.aIj,387,B.aGe,390,B.aMz,393,B.aIp,495,B.aGQ,498,B.aIM,501,B.aJS],A.aX("bT<v,a3<E>>"))
 B.aQj={type:0}
 B.aOC=new A.c6(B.aQj,["line"],t.li)
 B.aOE=new A.c6(B.cF,[],A.aX("c6<kV,U>"))
-B.Om=new A.c6(B.cF,[],A.aX("c6<a4,zO>"))
+B.On=new A.c6(B.cF,[],A.aX("c6<a4,zO>"))
 B.oR=new A.c6(B.cF,[],A.aX("c6<yy,bK>"))
 B.aOF=new A.c6(B.cF,[],A.aX("c6<E,j(O)>"))
-B.Oo=new A.c6(B.cF,[],t.VJ)
+B.Op=new A.c6(B.cF,[],t.VJ)
 B.jj=new A.c6(B.cF,[],A.aX("c6<E,@>"))
-B.On=new A.c6(B.cF,[],A.aX("c6<GW,@>"))
+B.Oo=new A.c6(B.cF,[],A.aX("c6<GW,@>"))
 B.aOD=new A.c6(B.cF,[],A.aX("c6<ia,dS>"))
-B.Ol=new A.c6(B.cF,[],A.aX("c6<ia,tb<dS>>"))
+B.Om=new A.c6(B.cF,[],A.aX("c6<ia,tb<dS>>"))
 B.aDC=s([42,null,null,8589935146],t.Z)
 B.aDD=s([43,null,null,8589935147],t.Z)
 B.aDF=s([45,null,null,8589935149],t.Z)
@@ -126404,22 +126408,22 @@ B.aHN=s([8589934854,8589934854,8589934855,null],t.Z)
 B.aDy=s([4294968071,null,null,8589935155],t.Z)
 B.aDz=s([4294968072,null,null,8589935161],t.Z)
 B.aHO=s([8589934850,8589934850,8589934851,null],t.Z)
-B.Op=new A.bT(["*",B.aDC,"+",B.aDD,"-",B.aDF,".",B.aDG,"/",B.aDH,"0",B.aDI,"1",B.aDJ,"2",B.aDP,"3",B.aDR,"4",B.aDS,"5",B.aDT,"6",B.aDU,"7",B.aDV,"8",B.aDW,"9",B.aDY,"Alt",B.aHL,"AltGraph",B.aDr,"ArrowDown",B.aDs,"ArrowLeft",B.aDt,"ArrowRight",B.aDu,"ArrowUp",B.aDv,"Clear",B.aDA,"Control",B.aHM,"Delete",B.aDq,"End",B.aDw,"Enter",B.aDp,"Home",B.aDx,"Insert",B.aDB,"Meta",B.aHN,"PageDown",B.aDy,"PageUp",B.aDz,"Shift",B.aHO],A.aX("bT<E,a3<v?>>"))
-B.aDX=s([B.Jv,null,null,B.Ob],t.L)
-B.aK0=s([B.NY,null,null,B.Oc],t.L)
-B.aFS=s([B.NZ,null,null,B.Od],t.L)
-B.aHV=s([B.O_,null,null,B.hO],t.L)
-B.aCI=s([B.O0,null,null,B.Oe],t.L)
-B.aLe=s([B.O1,null,null,B.vX],t.L)
-B.aKE=s([B.O2,null,null,B.lr],t.L)
-B.aEd=s([B.O3,null,null,B.hP],t.L)
-B.aLV=s([B.O4,null,null,B.ls],t.L)
-B.aKB=s([B.O5,null,null,B.hQ],t.L)
-B.aE9=s([B.O6,null,null,B.vY],t.L)
-B.aD7=s([B.O7,null,null,B.hR],t.L)
-B.aF1=s([B.O8,null,null,B.lt],t.L)
-B.aK3=s([B.O9,null,null,B.hS],t.L)
-B.aKi=s([B.Oa,null,null,B.lu],t.L)
+B.Oq=new A.bT(["*",B.aDC,"+",B.aDD,"-",B.aDF,".",B.aDG,"/",B.aDH,"0",B.aDI,"1",B.aDJ,"2",B.aDP,"3",B.aDR,"4",B.aDS,"5",B.aDT,"6",B.aDU,"7",B.aDV,"8",B.aDW,"9",B.aDY,"Alt",B.aHL,"AltGraph",B.aDr,"ArrowDown",B.aDs,"ArrowLeft",B.aDt,"ArrowRight",B.aDu,"ArrowUp",B.aDv,"Clear",B.aDA,"Control",B.aHM,"Delete",B.aDq,"End",B.aDw,"Enter",B.aDp,"Home",B.aDx,"Insert",B.aDB,"Meta",B.aHN,"PageDown",B.aDy,"PageUp",B.aDz,"Shift",B.aHO],A.aX("bT<E,a3<v?>>"))
+B.aDX=s([B.Jw,null,null,B.Oc],t.L)
+B.aK0=s([B.NZ,null,null,B.Od],t.L)
+B.aFS=s([B.O_,null,null,B.Oe],t.L)
+B.aHV=s([B.O0,null,null,B.hO],t.L)
+B.aCI=s([B.O1,null,null,B.Of],t.L)
+B.aLe=s([B.O2,null,null,B.vX],t.L)
+B.aKE=s([B.O3,null,null,B.lr],t.L)
+B.aEd=s([B.O4,null,null,B.hP],t.L)
+B.aLV=s([B.O5,null,null,B.ls],t.L)
+B.aKB=s([B.O6,null,null,B.hQ],t.L)
+B.aE9=s([B.O7,null,null,B.vY],t.L)
+B.aD7=s([B.O8,null,null,B.hR],t.L)
+B.aF1=s([B.O9,null,null,B.lt],t.L)
+B.aK3=s([B.Oa,null,null,B.hS],t.L)
+B.aKi=s([B.Ob,null,null,B.lu],t.L)
 B.aEu=s([B.lp,B.lp,B.oM,null],t.L)
 B.aLh=s([B.oI,null,B.oI,null],t.L)
 B.aGy=s([B.eG,null,null,B.hP],t.L)
@@ -126428,7 +126432,7 @@ B.aGA=s([B.eg,null,null,B.hR],t.L)
 B.aLG=s([B.eH,null,null,B.hS],t.L)
 B.aKw=s([B.vR,null,null,B.vY],t.L)
 B.aEv=s([B.lo,B.lo,B.oL,null],t.L)
-B.aJ7=s([B.cV,null,null,B.hO],t.L)
+B.aJ7=s([B.cW,null,null,B.hO],t.L)
 B.aGB=s([B.hL,null,null,B.lr],t.L)
 B.aE5=s([B.oH,null,null,B.vW],t.L)
 B.aGC=s([B.hM,null,null,B.lt],t.L)
@@ -126627,7 +126631,7 @@ B.Yt=new A.ac(36,56,56,0,34,56,56,0)
 B.a_o=new A.ac(95,80,80,0,88,80,80,0)
 B.aOJ=new A.bT([1,B.Zj,2,B.ZU,3,B.YD,4,B.ZB,5,B.Z8,6,B.a_m,7,B.a02,8,B.a_K,9,B.Zs,10,B.Yh,11,B.a_Y,12,B.YB,13,B.Yv,14,B.a_3,15,B.a_P,16,B.a_O,17,B.ZM,18,B.Yo,19,B.a_I,20,B.Zd,21,B.YI,22,B.a01,23,B.YP,24,B.Zo,25,B.Yl,26,B.a0b,27,B.a_w,28,B.a_d,29,B.Zp,30,B.a_B,31,B.Yn,32,B.a_i,33,B.Zr,34,B.ZI,35,B.a_c,36,B.ZJ,37,B.Zk,38,B.Z4,39,B.a_7,40,B.Zt,41,B.a_N,42,B.ZV,43,B.a_D,44,B.YL,45,B.a_4,46,B.YS,47,B.Ym,48,B.Zu,49,B.a_g,50,B.ZA,51,B.YN,52,B.ZF,53,B.ZW,54,B.ZS,55,B.Zg,56,B.YV,57,B.ZT,58,B.a_W,59,B.a_l,60,B.YX,61,B.a_j,62,B.Yz,63,B.Zx,64,B.ZG,65,B.a_1,66,B.a08,67,B.Zb,68,B.a_M,69,B.Zw,70,B.Zc,71,B.Zn,72,B.Yr,73,B.a_n,74,B.ZY,75,B.a0c,76,B.a_x,77,B.YC,78,B.Yk,79,B.a09,80,B.Zv,81,B.ZD,82,B.a_r,83,B.Yj,84,B.a0d,85,B.Z6,86,B.a_6,87,B.Yp,88,B.a_h,89,B.ZZ,90,B.a_G,91,B.a_v,92,B.YY,93,B.Yy,94,B.a_s,95,B.a__,96,B.a_2,97,B.a_S,98,B.a_t,99,B.a_u,100,B.a_V,101,B.Zm,102,B.ZC,103,B.Zz,104,B.YO,105,B.a_b,106,B.a05,107,B.YW,108,B.Z_,109,B.YM,110,B.Zq,111,B.YT,112,B.a_q,113,B.Z3,114,B.a00,115,B.Z7,116,B.Z9,117,B.a_L,118,B.YR,119,B.a_p,120,B.a0f,121,B.ZL,122,B.ZX,123,B.ZK,124,B.a_9,125,B.a_a,126,B.YA,127,B.a0a,128,B.a_H,129,B.ZR,130,B.a_0,131,B.Zf,132,B.a_5,133,B.Z5,134,B.a07,135,B.a_Z,136,B.a_J,137,B.YF,138,B.YZ,139,B.a_f,140,B.a06,141,B.Yq,142,B.Ze,143,B.Zy,144,B.YQ,145,B.Z2,146,B.a04,147,B.Z1,148,B.YE,149,B.ZQ,150,B.a0e,151,B.Zi,152,B.ZH,153,B.a_X,154,B.a_A,155,B.a_R,156,B.ZE,157,B.a_y,158,B.a_Q,159,B.a_U,160,B.a_E,252,B.a_k,253,B.a_C,254,B.Zh,255,B.Yi,256,B.ZP,257,B.YG,258,B.a0_,259,B.Yu,260,B.Za,387,B.ZO,388,B.YH,389,B.Yw,390,B.ZN,391,B.a_e,392,B.Z0,393,B.a_T,394,B.a_z,395,B.YU,495,B.a03,496,B.YJ,497,B.Yx,498,B.YK,499,B.a_F,500,B.Ys,501,B.a_8,502,B.Yt,503,B.a_o],A.aX("bT<v,ac>"))
 B.aPR={take_down:0,submission:1,double_edge:2,flare_blitz:3,brave_bird:4,wood_hammer:5,volt_tackle:6,wild_charge:7,head_smash:8}
-B.Oq=new A.c6(B.aPR,[0.25,0.25,0.33,0.33,0.33,0.33,0.33,0.25,0.5],A.aX("c6<E,U>"))
+B.Or=new A.c6(B.aPR,[0.25,0.25,0.33,0.33,0.33,0.33,0.33,0.25,0.5],A.aX("c6<E,U>"))
 B.w0=new A.bT([64,65,67,68,75,76,93,94],t.KL)
 B.aPU={KeyA:0,KeyB:1,KeyC:2,KeyD:3,KeyE:4,KeyF:5,KeyG:6,KeyH:7,KeyI:8,KeyJ:9,KeyK:10,KeyL:11,KeyM:12,KeyN:13,KeyO:14,KeyP:15,KeyQ:16,KeyR:17,KeyS:18,KeyT:19,KeyU:20,KeyV:21,KeyW:22,KeyX:23,KeyY:24,KeyZ:25,Digit1:26,Digit2:27,Digit3:28,Digit4:29,Digit5:30,Digit6:31,Digit7:32,Digit8:33,Digit9:34,Digit0:35,Minus:36,Equal:37,BracketLeft:38,BracketRight:39,Backslash:40,Semicolon:41,Quote:42,Backquote:43,Comma:44,Period:45,Slash:46}
 B.w1=new A.c6(B.aPU,["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0","-","=","[","]","\\",";","'","`",",",".","/"],t.li)
@@ -126636,241 +126640,241 @@ B.vK=s(["Noto Sans TC"],t.s)
 B.aIa=s(["Noto Sans HK","Noto Sans TC"],t.s)
 B.aE1=s(["Noto Sans JP"],t.s)
 B.aDb=s(["Noto Sans KR"],t.s)
-B.Jc=s(["Noto Sans SC"],t.s)
+B.Jd=s(["Noto Sans SC"],t.s)
 B.aMe=s(["Noto Sans SC","Noto Sans TC"],t.s)
-B.oS=new A.c6(B.aPO,[B.vK,B.vK,B.vK,B.aIa,B.aE1,B.aDb,B.Jc,B.Jc,B.aMe],t.VJ)
+B.oS=new A.c6(B.aPO,[B.vK,B.vK,B.vK,B.aIa,B.aE1,B.aDb,B.Jd,B.Jd,B.aMe],t.VJ)
 B.aPG={Abort:0,Again:1,AltLeft:2,AltRight:3,ArrowDown:4,ArrowLeft:5,ArrowRight:6,ArrowUp:7,AudioVolumeDown:8,AudioVolumeMute:9,AudioVolumeUp:10,Backquote:11,Backslash:12,Backspace:13,BracketLeft:14,BracketRight:15,BrightnessDown:16,BrightnessUp:17,BrowserBack:18,BrowserFavorites:19,BrowserForward:20,BrowserHome:21,BrowserRefresh:22,BrowserSearch:23,BrowserStop:24,CapsLock:25,Comma:26,ContextMenu:27,ControlLeft:28,ControlRight:29,Convert:30,Copy:31,Cut:32,Delete:33,Digit0:34,Digit1:35,Digit2:36,Digit3:37,Digit4:38,Digit5:39,Digit6:40,Digit7:41,Digit8:42,Digit9:43,DisplayToggleIntExt:44,Eject:45,End:46,Enter:47,Equal:48,Escape:49,Esc:50,F1:51,F10:52,F11:53,F12:54,F13:55,F14:56,F15:57,F16:58,F17:59,F18:60,F19:61,F2:62,F20:63,F21:64,F22:65,F23:66,F24:67,F3:68,F4:69,F5:70,F6:71,F7:72,F8:73,F9:74,Find:75,Fn:76,FnLock:77,GameButton1:78,GameButton10:79,GameButton11:80,GameButton12:81,GameButton13:82,GameButton14:83,GameButton15:84,GameButton16:85,GameButton2:86,GameButton3:87,GameButton4:88,GameButton5:89,GameButton6:90,GameButton7:91,GameButton8:92,GameButton9:93,GameButtonA:94,GameButtonB:95,GameButtonC:96,GameButtonLeft1:97,GameButtonLeft2:98,GameButtonMode:99,GameButtonRight1:100,GameButtonRight2:101,GameButtonSelect:102,GameButtonStart:103,GameButtonThumbLeft:104,GameButtonThumbRight:105,GameButtonX:106,GameButtonY:107,GameButtonZ:108,Help:109,Home:110,Hyper:111,Insert:112,IntlBackslash:113,IntlRo:114,IntlYen:115,KanaMode:116,KeyA:117,KeyB:118,KeyC:119,KeyD:120,KeyE:121,KeyF:122,KeyG:123,KeyH:124,KeyI:125,KeyJ:126,KeyK:127,KeyL:128,KeyM:129,KeyN:130,KeyO:131,KeyP:132,KeyQ:133,KeyR:134,KeyS:135,KeyT:136,KeyU:137,KeyV:138,KeyW:139,KeyX:140,KeyY:141,KeyZ:142,KeyboardLayoutSelect:143,Lang1:144,Lang2:145,Lang3:146,Lang4:147,Lang5:148,LaunchApp1:149,LaunchApp2:150,LaunchAssistant:151,LaunchControlPanel:152,LaunchMail:153,LaunchScreenSaver:154,MailForward:155,MailReply:156,MailSend:157,MediaFastForward:158,MediaPause:159,MediaPlay:160,MediaPlayPause:161,MediaRecord:162,MediaRewind:163,MediaSelect:164,MediaStop:165,MediaTrackNext:166,MediaTrackPrevious:167,MetaLeft:168,MetaRight:169,MicrophoneMuteToggle:170,Minus:171,NonConvert:172,NumLock:173,Numpad0:174,Numpad1:175,Numpad2:176,Numpad3:177,Numpad4:178,Numpad5:179,Numpad6:180,Numpad7:181,Numpad8:182,Numpad9:183,NumpadAdd:184,NumpadBackspace:185,NumpadClear:186,NumpadClearEntry:187,NumpadComma:188,NumpadDecimal:189,NumpadDivide:190,NumpadEnter:191,NumpadEqual:192,NumpadMemoryAdd:193,NumpadMemoryClear:194,NumpadMemoryRecall:195,NumpadMemoryStore:196,NumpadMemorySubtract:197,NumpadMultiply:198,NumpadParenLeft:199,NumpadParenRight:200,NumpadSubtract:201,Open:202,PageDown:203,PageUp:204,Paste:205,Pause:206,Period:207,Power:208,PrintScreen:209,PrivacyScreenToggle:210,Props:211,Quote:212,Resume:213,ScrollLock:214,Select:215,SelectTask:216,Semicolon:217,ShiftLeft:218,ShiftRight:219,ShowAllWindows:220,Slash:221,Sleep:222,Space:223,Super:224,Suspend:225,Tab:226,Turbo:227,Undo:228,WakeUp:229,ZoomToggle:230}
-B.RF=new A.M(458907)
-B.Rl=new A.M(458873)
+B.RG=new A.M(458907)
+B.Rm=new A.M(458873)
 B.ju=new A.M(458978)
 B.jw=new A.M(458982)
-B.QL=new A.M(458833)
-B.QK=new A.M(458832)
-B.QJ=new A.M(458831)
-B.QM=new A.M(458834)
-B.Rt=new A.M(458881)
-B.Rr=new A.M(458879)
-B.Rs=new A.M(458880)
-B.Ql=new A.M(458805)
-B.Qi=new A.M(458801)
-B.Qb=new A.M(458794)
-B.Qg=new A.M(458799)
-B.Qh=new A.M(458800)
-B.RV=new A.M(786544)
-B.RU=new A.M(786543)
-B.Sf=new A.M(786980)
-B.Sj=new A.M(786986)
-B.Sg=new A.M(786981)
-B.Se=new A.M(786979)
-B.Si=new A.M(786983)
-B.Sd=new A.M(786977)
-B.Sh=new A.M(786982)
+B.QM=new A.M(458833)
+B.QL=new A.M(458832)
+B.QK=new A.M(458831)
+B.QN=new A.M(458834)
+B.Ru=new A.M(458881)
+B.Rs=new A.M(458879)
+B.Rt=new A.M(458880)
+B.Qm=new A.M(458805)
+B.Qj=new A.M(458801)
+B.Qc=new A.M(458794)
+B.Qh=new A.M(458799)
+B.Qi=new A.M(458800)
+B.RW=new A.M(786544)
+B.RV=new A.M(786543)
+B.Sg=new A.M(786980)
+B.Sk=new A.M(786986)
+B.Sh=new A.M(786981)
+B.Sf=new A.M(786979)
+B.Sj=new A.M(786983)
+B.Se=new A.M(786977)
+B.Si=new A.M(786982)
 B.i_=new A.M(458809)
-B.Qm=new A.M(458806)
-B.R3=new A.M(458853)
+B.Qn=new A.M(458806)
+B.R4=new A.M(458853)
 B.js=new A.M(458976)
 B.lC=new A.M(458980)
-B.Ry=new A.M(458890)
-B.Ro=new A.M(458876)
-B.Rn=new A.M(458875)
-B.QG=new A.M(458828)
-B.Q9=new A.M(458791)
-B.Q0=new A.M(458782)
-B.Q1=new A.M(458783)
-B.Q2=new A.M(458784)
-B.Q3=new A.M(458785)
-B.Q4=new A.M(458786)
-B.Q5=new A.M(458787)
-B.Q6=new A.M(458788)
-B.Q7=new A.M(458789)
-B.Q8=new A.M(458790)
-B.RT=new A.M(65717)
-B.S3=new A.M(786616)
-B.QH=new A.M(458829)
-B.Qa=new A.M(458792)
-B.Qf=new A.M(458798)
+B.Rz=new A.M(458890)
+B.Rp=new A.M(458876)
+B.Ro=new A.M(458875)
+B.QH=new A.M(458828)
+B.Qa=new A.M(458791)
+B.Q1=new A.M(458782)
+B.Q2=new A.M(458783)
+B.Q3=new A.M(458784)
+B.Q4=new A.M(458785)
+B.Q5=new A.M(458786)
+B.Q6=new A.M(458787)
+B.Q7=new A.M(458788)
+B.Q8=new A.M(458789)
+B.Q9=new A.M(458790)
+B.RU=new A.M(65717)
+B.S4=new A.M(786616)
+B.QI=new A.M(458829)
+B.Qb=new A.M(458792)
+B.Qg=new A.M(458798)
 B.wn=new A.M(458793)
-B.Qp=new A.M(458810)
-B.Qy=new A.M(458819)
-B.Qz=new A.M(458820)
-B.QA=new A.M(458821)
-B.R6=new A.M(458856)
-B.R7=new A.M(458857)
-B.R8=new A.M(458858)
-B.R9=new A.M(458859)
-B.Ra=new A.M(458860)
-B.Rb=new A.M(458861)
-B.Rc=new A.M(458862)
-B.Qq=new A.M(458811)
-B.Rd=new A.M(458863)
-B.Re=new A.M(458864)
-B.Rf=new A.M(458865)
-B.Rg=new A.M(458866)
-B.Rh=new A.M(458867)
-B.Qr=new A.M(458812)
-B.Qs=new A.M(458813)
-B.Qt=new A.M(458814)
-B.Qu=new A.M(458815)
-B.Qv=new A.M(458816)
-B.Qw=new A.M(458817)
-B.Qx=new A.M(458818)
-B.Rq=new A.M(458878)
+B.Qq=new A.M(458810)
+B.Qz=new A.M(458819)
+B.QA=new A.M(458820)
+B.QB=new A.M(458821)
+B.R7=new A.M(458856)
+B.R8=new A.M(458857)
+B.R9=new A.M(458858)
+B.Ra=new A.M(458859)
+B.Rb=new A.M(458860)
+B.Rc=new A.M(458861)
+B.Rd=new A.M(458862)
+B.Qr=new A.M(458811)
+B.Re=new A.M(458863)
+B.Rf=new A.M(458864)
+B.Rg=new A.M(458865)
+B.Rh=new A.M(458866)
+B.Ri=new A.M(458867)
+B.Qs=new A.M(458812)
+B.Qt=new A.M(458813)
+B.Qu=new A.M(458814)
+B.Qv=new A.M(458815)
+B.Qw=new A.M(458816)
+B.Qx=new A.M(458817)
+B.Qy=new A.M(458818)
+B.Rr=new A.M(458878)
 B.lB=new A.M(18)
-B.P0=new A.M(19)
-B.P6=new A.M(392961)
-B.Pf=new A.M(392970)
-B.Pg=new A.M(392971)
-B.Ph=new A.M(392972)
-B.Pi=new A.M(392973)
-B.Pj=new A.M(392974)
-B.Pk=new A.M(392975)
-B.Pl=new A.M(392976)
-B.P7=new A.M(392962)
-B.P8=new A.M(392963)
-B.P9=new A.M(392964)
-B.Pa=new A.M(392965)
-B.Pb=new A.M(392966)
-B.Pc=new A.M(392967)
-B.Pd=new A.M(392968)
-B.Pe=new A.M(392969)
-B.Pm=new A.M(392977)
-B.Pn=new A.M(392978)
-B.Po=new A.M(392979)
-B.Pp=new A.M(392980)
-B.Pq=new A.M(392981)
-B.Pr=new A.M(392982)
-B.Ps=new A.M(392983)
-B.Pt=new A.M(392984)
-B.Pu=new A.M(392985)
-B.Pv=new A.M(392986)
-B.Pw=new A.M(392987)
-B.Px=new A.M(392988)
-B.Py=new A.M(392989)
-B.Pz=new A.M(392990)
-B.PA=new A.M(392991)
-B.Rj=new A.M(458869)
-B.QE=new A.M(458826)
-B.OZ=new A.M(16)
-B.QD=new A.M(458825)
-B.R2=new A.M(458852)
-B.Rv=new A.M(458887)
-B.Rx=new A.M(458889)
-B.Rw=new A.M(458888)
-B.PB=new A.M(458756)
-B.PC=new A.M(458757)
-B.PD=new A.M(458758)
-B.PE=new A.M(458759)
-B.PF=new A.M(458760)
-B.PG=new A.M(458761)
-B.PH=new A.M(458762)
-B.PI=new A.M(458763)
-B.PJ=new A.M(458764)
-B.PK=new A.M(458765)
-B.PL=new A.M(458766)
-B.PM=new A.M(458767)
-B.PN=new A.M(458768)
-B.PO=new A.M(458769)
-B.PP=new A.M(458770)
-B.PQ=new A.M(458771)
-B.PR=new A.M(458772)
-B.PS=new A.M(458773)
-B.PT=new A.M(458774)
-B.PU=new A.M(458775)
-B.PV=new A.M(458776)
-B.PW=new A.M(458777)
-B.PX=new A.M(458778)
-B.PY=new A.M(458779)
-B.PZ=new A.M(458780)
-B.Q_=new A.M(458781)
-B.So=new A.M(787101)
-B.RA=new A.M(458896)
-B.RB=new A.M(458897)
-B.RC=new A.M(458898)
-B.RD=new A.M(458899)
-B.RE=new A.M(458900)
-B.S8=new A.M(786836)
-B.S7=new A.M(786834)
-B.Sc=new A.M(786891)
-B.S9=new A.M(786847)
-B.S6=new A.M(786826)
-B.Sb=new A.M(786865)
-B.Sm=new A.M(787083)
-B.Sl=new A.M(787081)
-B.Sn=new A.M(787084)
-B.RZ=new A.M(786611)
-B.RX=new A.M(786609)
-B.RW=new A.M(786608)
-B.S4=new A.M(786637)
-B.RY=new A.M(786610)
-B.S_=new A.M(786612)
-B.S5=new A.M(786819)
-B.S2=new A.M(786615)
-B.S0=new A.M(786613)
-B.S1=new A.M(786614)
+B.P1=new A.M(19)
+B.P7=new A.M(392961)
+B.Pg=new A.M(392970)
+B.Ph=new A.M(392971)
+B.Pi=new A.M(392972)
+B.Pj=new A.M(392973)
+B.Pk=new A.M(392974)
+B.Pl=new A.M(392975)
+B.Pm=new A.M(392976)
+B.P8=new A.M(392962)
+B.P9=new A.M(392963)
+B.Pa=new A.M(392964)
+B.Pb=new A.M(392965)
+B.Pc=new A.M(392966)
+B.Pd=new A.M(392967)
+B.Pe=new A.M(392968)
+B.Pf=new A.M(392969)
+B.Pn=new A.M(392977)
+B.Po=new A.M(392978)
+B.Pp=new A.M(392979)
+B.Pq=new A.M(392980)
+B.Pr=new A.M(392981)
+B.Ps=new A.M(392982)
+B.Pt=new A.M(392983)
+B.Pu=new A.M(392984)
+B.Pv=new A.M(392985)
+B.Pw=new A.M(392986)
+B.Px=new A.M(392987)
+B.Py=new A.M(392988)
+B.Pz=new A.M(392989)
+B.PA=new A.M(392990)
+B.PB=new A.M(392991)
+B.Rk=new A.M(458869)
+B.QF=new A.M(458826)
+B.P_=new A.M(16)
+B.QE=new A.M(458825)
+B.R3=new A.M(458852)
+B.Rw=new A.M(458887)
+B.Ry=new A.M(458889)
+B.Rx=new A.M(458888)
+B.PC=new A.M(458756)
+B.PD=new A.M(458757)
+B.PE=new A.M(458758)
+B.PF=new A.M(458759)
+B.PG=new A.M(458760)
+B.PH=new A.M(458761)
+B.PI=new A.M(458762)
+B.PJ=new A.M(458763)
+B.PK=new A.M(458764)
+B.PL=new A.M(458765)
+B.PM=new A.M(458766)
+B.PN=new A.M(458767)
+B.PO=new A.M(458768)
+B.PP=new A.M(458769)
+B.PQ=new A.M(458770)
+B.PR=new A.M(458771)
+B.PS=new A.M(458772)
+B.PT=new A.M(458773)
+B.PU=new A.M(458774)
+B.PV=new A.M(458775)
+B.PW=new A.M(458776)
+B.PX=new A.M(458777)
+B.PY=new A.M(458778)
+B.PZ=new A.M(458779)
+B.Q_=new A.M(458780)
+B.Q0=new A.M(458781)
+B.Sp=new A.M(787101)
+B.RB=new A.M(458896)
+B.RC=new A.M(458897)
+B.RD=new A.M(458898)
+B.RE=new A.M(458899)
+B.RF=new A.M(458900)
+B.S9=new A.M(786836)
+B.S8=new A.M(786834)
+B.Sd=new A.M(786891)
+B.Sa=new A.M(786847)
+B.S7=new A.M(786826)
+B.Sc=new A.M(786865)
+B.Sn=new A.M(787083)
+B.Sm=new A.M(787081)
+B.So=new A.M(787084)
+B.S_=new A.M(786611)
+B.RY=new A.M(786609)
+B.RX=new A.M(786608)
+B.S5=new A.M(786637)
+B.RZ=new A.M(786610)
+B.S0=new A.M(786612)
+B.S6=new A.M(786819)
+B.S3=new A.M(786615)
+B.S1=new A.M(786613)
+B.S2=new A.M(786614)
 B.jv=new A.M(458979)
 B.lE=new A.M(458983)
-B.P5=new A.M(24)
-B.Qe=new A.M(458797)
-B.Rz=new A.M(458891)
+B.P6=new A.M(24)
+B.Qf=new A.M(458797)
+B.RA=new A.M(458891)
 B.oZ=new A.M(458835)
-B.R0=new A.M(458850)
-B.QS=new A.M(458841)
-B.QT=new A.M(458842)
-B.QU=new A.M(458843)
-B.QV=new A.M(458844)
-B.QW=new A.M(458845)
-B.QX=new A.M(458846)
-B.QY=new A.M(458847)
-B.QZ=new A.M(458848)
-B.R_=new A.M(458849)
-B.QQ=new A.M(458839)
-B.RJ=new A.M(458939)
-B.RP=new A.M(458968)
-B.RQ=new A.M(458969)
-B.Ru=new A.M(458885)
-B.R1=new A.M(458851)
-B.QN=new A.M(458836)
-B.QR=new A.M(458840)
-B.R5=new A.M(458855)
-B.RN=new A.M(458963)
-B.RM=new A.M(458962)
-B.RL=new A.M(458961)
-B.RK=new A.M(458960)
-B.RO=new A.M(458964)
-B.QO=new A.M(458837)
-B.RH=new A.M(458934)
-B.RI=new A.M(458935)
-B.QP=new A.M(458838)
-B.Ri=new A.M(458868)
-B.QI=new A.M(458830)
-B.QF=new A.M(458827)
-B.Rp=new A.M(458877)
-B.QC=new A.M(458824)
-B.Qn=new A.M(458807)
-B.R4=new A.M(458854)
-B.QB=new A.M(458822)
-B.P4=new A.M(23)
-B.RG=new A.M(458915)
-B.Qk=new A.M(458804)
-B.P2=new A.M(21)
+B.R1=new A.M(458850)
+B.QT=new A.M(458841)
+B.QU=new A.M(458842)
+B.QV=new A.M(458843)
+B.QW=new A.M(458844)
+B.QX=new A.M(458845)
+B.QY=new A.M(458846)
+B.QZ=new A.M(458847)
+B.R_=new A.M(458848)
+B.R0=new A.M(458849)
+B.QR=new A.M(458839)
+B.RK=new A.M(458939)
+B.RQ=new A.M(458968)
+B.RR=new A.M(458969)
+B.Rv=new A.M(458885)
+B.R2=new A.M(458851)
+B.QO=new A.M(458836)
+B.QS=new A.M(458840)
+B.R6=new A.M(458855)
+B.RO=new A.M(458963)
+B.RN=new A.M(458962)
+B.RM=new A.M(458961)
+B.RL=new A.M(458960)
+B.RP=new A.M(458964)
+B.QP=new A.M(458837)
+B.RI=new A.M(458934)
+B.RJ=new A.M(458935)
+B.QQ=new A.M(458838)
+B.Rj=new A.M(458868)
+B.QJ=new A.M(458830)
+B.QG=new A.M(458827)
+B.Rq=new A.M(458877)
+B.QD=new A.M(458824)
+B.Qo=new A.M(458807)
+B.R5=new A.M(458854)
+B.QC=new A.M(458822)
+B.P5=new A.M(23)
+B.RH=new A.M(458915)
+B.Ql=new A.M(458804)
+B.P3=new A.M(21)
 B.oY=new A.M(458823)
-B.Rk=new A.M(458871)
-B.Sa=new A.M(786850)
-B.Qj=new A.M(458803)
+B.Rl=new A.M(458871)
+B.Sb=new A.M(786850)
+B.Qk=new A.M(458803)
 B.jt=new A.M(458977)
 B.lD=new A.M(458981)
-B.Sp=new A.M(787103)
-B.Qo=new A.M(458808)
-B.RR=new A.M(65666)
-B.Qd=new A.M(458796)
-B.P_=new A.M(17)
-B.P1=new A.M(20)
-B.Qc=new A.M(458795)
-B.P3=new A.M(22)
-B.Rm=new A.M(458874)
-B.RS=new A.M(65667)
-B.Sk=new A.M(786994)
-B.Or=new A.c6(B.aPG,[B.RF,B.Rl,B.ju,B.jw,B.QL,B.QK,B.QJ,B.QM,B.Rt,B.Rr,B.Rs,B.Ql,B.Qi,B.Qb,B.Qg,B.Qh,B.RV,B.RU,B.Sf,B.Sj,B.Sg,B.Se,B.Si,B.Sd,B.Sh,B.i_,B.Qm,B.R3,B.js,B.lC,B.Ry,B.Ro,B.Rn,B.QG,B.Q9,B.Q0,B.Q1,B.Q2,B.Q3,B.Q4,B.Q5,B.Q6,B.Q7,B.Q8,B.RT,B.S3,B.QH,B.Qa,B.Qf,B.wn,B.wn,B.Qp,B.Qy,B.Qz,B.QA,B.R6,B.R7,B.R8,B.R9,B.Ra,B.Rb,B.Rc,B.Qq,B.Rd,B.Re,B.Rf,B.Rg,B.Rh,B.Qr,B.Qs,B.Qt,B.Qu,B.Qv,B.Qw,B.Qx,B.Rq,B.lB,B.P0,B.P6,B.Pf,B.Pg,B.Ph,B.Pi,B.Pj,B.Pk,B.Pl,B.P7,B.P8,B.P9,B.Pa,B.Pb,B.Pc,B.Pd,B.Pe,B.Pm,B.Pn,B.Po,B.Pp,B.Pq,B.Pr,B.Ps,B.Pt,B.Pu,B.Pv,B.Pw,B.Px,B.Py,B.Pz,B.PA,B.Rj,B.QE,B.OZ,B.QD,B.R2,B.Rv,B.Rx,B.Rw,B.PB,B.PC,B.PD,B.PE,B.PF,B.PG,B.PH,B.PI,B.PJ,B.PK,B.PL,B.PM,B.PN,B.PO,B.PP,B.PQ,B.PR,B.PS,B.PT,B.PU,B.PV,B.PW,B.PX,B.PY,B.PZ,B.Q_,B.So,B.RA,B.RB,B.RC,B.RD,B.RE,B.S8,B.S7,B.Sc,B.S9,B.S6,B.Sb,B.Sm,B.Sl,B.Sn,B.RZ,B.RX,B.RW,B.S4,B.RY,B.S_,B.S5,B.S2,B.S0,B.S1,B.jv,B.lE,B.P5,B.Qe,B.Rz,B.oZ,B.R0,B.QS,B.QT,B.QU,B.QV,B.QW,B.QX,B.QY,B.QZ,B.R_,B.QQ,B.RJ,B.RP,B.RQ,B.Ru,B.R1,B.QN,B.QR,B.R5,B.RN,B.RM,B.RL,B.RK,B.RO,B.QO,B.RH,B.RI,B.QP,B.Ri,B.QI,B.QF,B.Rp,B.QC,B.Qn,B.R4,B.QB,B.P4,B.RG,B.Qk,B.P2,B.oY,B.Rk,B.Sa,B.Qj,B.jt,B.lD,B.Sp,B.Qo,B.RR,B.Qd,B.P_,B.P1,B.Qc,B.P3,B.Rm,B.RS,B.Sk],A.aX("c6<E,M>"))
+B.Sq=new A.M(787103)
+B.Qp=new A.M(458808)
+B.RS=new A.M(65666)
+B.Qe=new A.M(458796)
+B.P0=new A.M(17)
+B.P2=new A.M(20)
+B.Qd=new A.M(458795)
+B.P4=new A.M(22)
+B.Rn=new A.M(458874)
+B.RT=new A.M(65667)
+B.Sl=new A.M(786994)
+B.Os=new A.c6(B.aPG,[B.RG,B.Rm,B.ju,B.jw,B.QM,B.QL,B.QK,B.QN,B.Ru,B.Rs,B.Rt,B.Qm,B.Qj,B.Qc,B.Qh,B.Qi,B.RW,B.RV,B.Sg,B.Sk,B.Sh,B.Sf,B.Sj,B.Se,B.Si,B.i_,B.Qn,B.R4,B.js,B.lC,B.Rz,B.Rp,B.Ro,B.QH,B.Qa,B.Q1,B.Q2,B.Q3,B.Q4,B.Q5,B.Q6,B.Q7,B.Q8,B.Q9,B.RU,B.S4,B.QI,B.Qb,B.Qg,B.wn,B.wn,B.Qq,B.Qz,B.QA,B.QB,B.R7,B.R8,B.R9,B.Ra,B.Rb,B.Rc,B.Rd,B.Qr,B.Re,B.Rf,B.Rg,B.Rh,B.Ri,B.Qs,B.Qt,B.Qu,B.Qv,B.Qw,B.Qx,B.Qy,B.Rr,B.lB,B.P1,B.P7,B.Pg,B.Ph,B.Pi,B.Pj,B.Pk,B.Pl,B.Pm,B.P8,B.P9,B.Pa,B.Pb,B.Pc,B.Pd,B.Pe,B.Pf,B.Pn,B.Po,B.Pp,B.Pq,B.Pr,B.Ps,B.Pt,B.Pu,B.Pv,B.Pw,B.Px,B.Py,B.Pz,B.PA,B.PB,B.Rk,B.QF,B.P_,B.QE,B.R3,B.Rw,B.Ry,B.Rx,B.PC,B.PD,B.PE,B.PF,B.PG,B.PH,B.PI,B.PJ,B.PK,B.PL,B.PM,B.PN,B.PO,B.PP,B.PQ,B.PR,B.PS,B.PT,B.PU,B.PV,B.PW,B.PX,B.PY,B.PZ,B.Q_,B.Q0,B.Sp,B.RB,B.RC,B.RD,B.RE,B.RF,B.S9,B.S8,B.Sd,B.Sa,B.S7,B.Sc,B.Sn,B.Sm,B.So,B.S_,B.RY,B.RX,B.S5,B.RZ,B.S0,B.S6,B.S3,B.S1,B.S2,B.jv,B.lE,B.P6,B.Qf,B.RA,B.oZ,B.R1,B.QT,B.QU,B.QV,B.QW,B.QX,B.QY,B.QZ,B.R_,B.R0,B.QR,B.RK,B.RQ,B.RR,B.Rv,B.R2,B.QO,B.QS,B.R6,B.RO,B.RN,B.RM,B.RL,B.RP,B.QP,B.RI,B.RJ,B.QQ,B.Rj,B.QJ,B.QG,B.Rq,B.QD,B.Qo,B.R5,B.QC,B.P5,B.RH,B.Ql,B.P3,B.oY,B.Rl,B.Sb,B.Qk,B.jt,B.lD,B.Sq,B.Qp,B.RS,B.Qe,B.P0,B.P2,B.Qd,B.P4,B.Rn,B.RT,B.Sl],A.aX("c6<E,M>"))
 B.i4=new A.dr(1,"tap")
 B.pe=new A.dr(2,"longPress")
 B.lR=new A.dr(4,"scrollLeft")
@@ -126880,29 +126884,29 @@ B.lP=new A.dr(32,"scrollDown")
 B.wM=new A.dr(8388608,"scrollToOffset")
 B.wL=new A.dr(64,"increase")
 B.wK=new A.dr(128,"decrease")
-B.Tb=new A.dr(256,"showOnScreen")
-B.Tg=new A.dr(512,"moveCursorForwardByCharacter")
-B.T8=new A.dr(1024,"moveCursorBackwardByCharacter")
-B.T9=new A.dr(2048,"setSelection")
-B.Tf=new A.dr(4096,"copy")
-B.Tj=new A.dr(8192,"cut")
-B.T6=new A.dr(16384,"paste")
-B.Td=new A.dr(32768,"didGainAccessibilityFocus")
-B.Ti=new A.dr(65536,"didLoseAccessibilityFocus")
-B.T5=new A.dr(131072,"customAction")
-B.Tc=new A.dr(262144,"dismiss")
-B.Th=new A.dr(524288,"moveCursorForwardByWord")
-B.T4=new A.dr(1048576,"moveCursorBackwardByWord")
-B.Ta=new A.dr(2097152,"setText")
+B.Tc=new A.dr(256,"showOnScreen")
+B.Th=new A.dr(512,"moveCursorForwardByCharacter")
+B.T9=new A.dr(1024,"moveCursorBackwardByCharacter")
+B.Ta=new A.dr(2048,"setSelection")
+B.Tg=new A.dr(4096,"copy")
+B.Tk=new A.dr(8192,"cut")
+B.T7=new A.dr(16384,"paste")
+B.Te=new A.dr(32768,"didGainAccessibilityFocus")
+B.Tj=new A.dr(65536,"didLoseAccessibilityFocus")
+B.T6=new A.dr(131072,"customAction")
+B.Td=new A.dr(262144,"dismiss")
+B.Ti=new A.dr(524288,"moveCursorForwardByWord")
+B.T5=new A.dr(1048576,"moveCursorBackwardByWord")
+B.Tb=new A.dr(2097152,"setText")
 B.lQ=new A.dr(4194304,"focus")
-B.T7=new A.dr(16777216,"expand")
-B.Te=new A.dr(33554432,"collapse")
-B.Os=new A.bT([1,B.i4,2,B.pe,4,B.lR,8,B.lS,16,B.lO,32,B.lP,8388608,B.wM,64,B.wL,128,B.wK,256,B.Tb,512,B.Tg,1024,B.T8,2048,B.T9,4096,B.Tf,8192,B.Tj,16384,B.T6,32768,B.Td,65536,B.Ti,131072,B.T5,262144,B.Tc,524288,B.Th,1048576,B.T4,2097152,B.Ta,4194304,B.lQ,16777216,B.T7,33554432,B.Te],A.aX("bT<v,dr>"))
+B.T8=new A.dr(16777216,"expand")
+B.Tf=new A.dr(33554432,"collapse")
+B.Ot=new A.bT([1,B.i4,2,B.pe,4,B.lR,8,B.lS,16,B.lO,32,B.lP,8388608,B.wM,64,B.wL,128,B.wK,256,B.Tc,512,B.Th,1024,B.T9,2048,B.Ta,4096,B.Tg,8192,B.Tk,16384,B.T7,32768,B.Te,65536,B.Tj,131072,B.T6,262144,B.Td,524288,B.Ti,1048576,B.T5,2097152,B.Tb,4194304,B.lQ,16777216,B.T8,33554432,B.Tf],A.aX("bT<v,dr>"))
 B.aOV=new A.bT([26,25,31,30,34,33,36,35,38,37,40,39,45,44,59,58,62,61,65,64,68,67,71,70,76,75,91,90,94,93,103,102,121,120,134,133,135,133,136,133],t.KL)
 B.aQm={"deleteBackward:":0,"deleteWordBackward:":1,"deleteToBeginningOfLine:":2,"deleteForward:":3,"deleteWordForward:":4,"deleteToEndOfLine:":5,"moveLeft:":6,"moveRight:":7,"moveForward:":8,"moveBackward:":9,"moveUp:":10,"moveDown:":11,"moveLeftAndModifySelection:":12,"moveRightAndModifySelection:":13,"moveUpAndModifySelection:":14,"moveDownAndModifySelection:":15,"moveWordLeft:":16,"moveWordRight:":17,"moveToBeginningOfParagraph:":18,"moveToEndOfParagraph:":19,"moveWordLeftAndModifySelection:":20,"moveWordRightAndModifySelection:":21,"moveParagraphBackwardAndModifySelection:":22,"moveParagraphForwardAndModifySelection:":23,"moveToLeftEndOfLine:":24,"moveToRightEndOfLine:":25,"moveToBeginningOfDocument:":26,"moveToEndOfDocument:":27,"moveToLeftEndOfLineAndModifySelection:":28,"moveToRightEndOfLineAndModifySelection:":29,"moveToBeginningOfDocumentAndModifySelection:":30,"moveToEndOfDocumentAndModifySelection:":31,"transpose:":32,"scrollToBeginningOfDocument:":33,"scrollToEndOfDocument:":34,"scrollPageUp:":35,"scrollPageDown:":36,"pageUpAndModifySelection:":37,"pageDownAndModifySelection:":38,"cancelOperation:":39,"insertTab:":40,"insertBacktab:":41}
-B.SV=new A.o6(!1)
-B.SW=new A.o6(!0)
-B.aOW=new A.c6(B.aQm,[B.rP,B.rS,B.rQ,B.kD,B.kE,B.rR,B.iV,B.iW,B.iW,B.iV,B.iZ,B.j_,B.nC,B.nD,B.kT,B.kU,B.nG,B.nH,B.hw,B.hx,B.Bq,B.Br,B.Bm,B.Bn,B.hw,B.hx,B.iX,B.iY,B.Bc,B.Bd,B.tI,B.tJ,B.yT,B.SV,B.SW,B.wF,B.pb,B.nI,B.nJ,B.yE,B.yK,B.yM],A.aX("c6<E,bK>"))
+B.SW=new A.o6(!1)
+B.SX=new A.o6(!0)
+B.aOW=new A.c6(B.aQm,[B.rP,B.rS,B.rQ,B.kD,B.kE,B.rR,B.iV,B.iW,B.iW,B.iV,B.iZ,B.j_,B.nC,B.nD,B.kT,B.kU,B.nG,B.nH,B.hw,B.hx,B.Br,B.Bs,B.Bn,B.Bo,B.hw,B.hx,B.iX,B.iY,B.Bd,B.Be,B.tI,B.tJ,B.yU,B.SW,B.SX,B.wF,B.pb,B.nI,B.nJ,B.yF,B.yL,B.yN],A.aX("c6<E,bK>"))
 B.aQ1={BU:0,DD:1,FX:2,TP:3,YD:4,ZR:5}
 B.ff=new A.c6(B.aQ1,["MM","DE","FR","TL","YE","CD"],t.li)
 B.aRQ=new A.M(458752)
@@ -126944,15 +126948,15 @@ B.aSo=new A.M(786952)
 B.aSp=new A.M(786989)
 B.aSq=new A.M(786990)
 B.aSr=new A.M(787065)
-B.aOX=new A.bT([16,B.OZ,17,B.P_,18,B.lB,19,B.P0,20,B.P1,21,B.P2,22,B.P3,23,B.P4,24,B.P5,65666,B.RR,65667,B.RS,65717,B.RT,392961,B.P6,392962,B.P7,392963,B.P8,392964,B.P9,392965,B.Pa,392966,B.Pb,392967,B.Pc,392968,B.Pd,392969,B.Pe,392970,B.Pf,392971,B.Pg,392972,B.Ph,392973,B.Pi,392974,B.Pj,392975,B.Pk,392976,B.Pl,392977,B.Pm,392978,B.Pn,392979,B.Po,392980,B.Pp,392981,B.Pq,392982,B.Pr,392983,B.Ps,392984,B.Pt,392985,B.Pu,392986,B.Pv,392987,B.Pw,392988,B.Px,392989,B.Py,392990,B.Pz,392991,B.PA,458752,B.aRQ,458753,B.aRR,458754,B.aRS,458755,B.aRT,458756,B.PB,458757,B.PC,458758,B.PD,458759,B.PE,458760,B.PF,458761,B.PG,458762,B.PH,458763,B.PI,458764,B.PJ,458765,B.PK,458766,B.PL,458767,B.PM,458768,B.PN,458769,B.PO,458770,B.PP,458771,B.PQ,458772,B.PR,458773,B.PS,458774,B.PT,458775,B.PU,458776,B.PV,458777,B.PW,458778,B.PX,458779,B.PY,458780,B.PZ,458781,B.Q_,458782,B.Q0,458783,B.Q1,458784,B.Q2,458785,B.Q3,458786,B.Q4,458787,B.Q5,458788,B.Q6,458789,B.Q7,458790,B.Q8,458791,B.Q9,458792,B.Qa,458793,B.wn,458794,B.Qb,458795,B.Qc,458796,B.Qd,458797,B.Qe,458798,B.Qf,458799,B.Qg,458800,B.Qh,458801,B.Qi,458803,B.Qj,458804,B.Qk,458805,B.Ql,458806,B.Qm,458807,B.Qn,458808,B.Qo,458809,B.i_,458810,B.Qp,458811,B.Qq,458812,B.Qr,458813,B.Qs,458814,B.Qt,458815,B.Qu,458816,B.Qv,458817,B.Qw,458818,B.Qx,458819,B.Qy,458820,B.Qz,458821,B.QA,458822,B.QB,458823,B.oY,458824,B.QC,458825,B.QD,458826,B.QE,458827,B.QF,458828,B.QG,458829,B.QH,458830,B.QI,458831,B.QJ,458832,B.QK,458833,B.QL,458834,B.QM,458835,B.oZ,458836,B.QN,458837,B.QO,458838,B.QP,458839,B.QQ,458840,B.QR,458841,B.QS,458842,B.QT,458843,B.QU,458844,B.QV,458845,B.QW,458846,B.QX,458847,B.QY,458848,B.QZ,458849,B.R_,458850,B.R0,458851,B.R1,458852,B.R2,458853,B.R3,458854,B.R4,458855,B.R5,458856,B.R6,458857,B.R7,458858,B.R8,458859,B.R9,458860,B.Ra,458861,B.Rb,458862,B.Rc,458863,B.Rd,458864,B.Re,458865,B.Rf,458866,B.Rg,458867,B.Rh,458868,B.Ri,458869,B.Rj,458871,B.Rk,458873,B.Rl,458874,B.Rm,458875,B.Rn,458876,B.Ro,458877,B.Rp,458878,B.Rq,458879,B.Rr,458880,B.Rs,458881,B.Rt,458885,B.Ru,458887,B.Rv,458888,B.Rw,458889,B.Rx,458890,B.Ry,458891,B.Rz,458896,B.RA,458897,B.RB,458898,B.RC,458899,B.RD,458900,B.RE,458907,B.RF,458915,B.RG,458934,B.RH,458935,B.RI,458939,B.RJ,458960,B.RK,458961,B.RL,458962,B.RM,458963,B.RN,458964,B.RO,458967,B.aRU,458968,B.RP,458969,B.RQ,458976,B.js,458977,B.jt,458978,B.ju,458979,B.jv,458980,B.lC,458981,B.lD,458982,B.jw,458983,B.lE,786528,B.aRV,786529,B.aRW,786543,B.RU,786544,B.RV,786546,B.aRX,786547,B.aRY,786548,B.aRZ,786549,B.aS_,786553,B.aS0,786554,B.aS1,786563,B.aS2,786572,B.aS3,786573,B.aS4,786580,B.aS5,786588,B.aS6,786589,B.aS7,786608,B.RW,786609,B.RX,786610,B.RY,786611,B.RZ,786612,B.S_,786613,B.S0,786614,B.S1,786615,B.S2,786616,B.S3,786637,B.S4,786639,B.aS8,786661,B.aS9,786819,B.S5,786820,B.aSa,786822,B.aSb,786826,B.S6,786829,B.aSc,786830,B.aSd,786834,B.S7,786836,B.S8,786838,B.aSe,786844,B.aSf,786846,B.aSg,786847,B.S9,786850,B.Sa,786855,B.aSh,786859,B.aSi,786862,B.aSj,786865,B.Sb,786871,B.aSk,786891,B.Sc,786945,B.aSl,786947,B.aSm,786951,B.aSn,786952,B.aSo,786977,B.Sd,786979,B.Se,786980,B.Sf,786981,B.Sg,786982,B.Sh,786983,B.Si,786986,B.Sj,786989,B.aSp,786990,B.aSq,786994,B.Sk,787065,B.aSr,787081,B.Sl,787083,B.Sm,787084,B.Sn,787101,B.So,787103,B.Sp],A.aX("bT<v,M>"))
+B.aOX=new A.bT([16,B.P_,17,B.P0,18,B.lB,19,B.P1,20,B.P2,21,B.P3,22,B.P4,23,B.P5,24,B.P6,65666,B.RS,65667,B.RT,65717,B.RU,392961,B.P7,392962,B.P8,392963,B.P9,392964,B.Pa,392965,B.Pb,392966,B.Pc,392967,B.Pd,392968,B.Pe,392969,B.Pf,392970,B.Pg,392971,B.Ph,392972,B.Pi,392973,B.Pj,392974,B.Pk,392975,B.Pl,392976,B.Pm,392977,B.Pn,392978,B.Po,392979,B.Pp,392980,B.Pq,392981,B.Pr,392982,B.Ps,392983,B.Pt,392984,B.Pu,392985,B.Pv,392986,B.Pw,392987,B.Px,392988,B.Py,392989,B.Pz,392990,B.PA,392991,B.PB,458752,B.aRQ,458753,B.aRR,458754,B.aRS,458755,B.aRT,458756,B.PC,458757,B.PD,458758,B.PE,458759,B.PF,458760,B.PG,458761,B.PH,458762,B.PI,458763,B.PJ,458764,B.PK,458765,B.PL,458766,B.PM,458767,B.PN,458768,B.PO,458769,B.PP,458770,B.PQ,458771,B.PR,458772,B.PS,458773,B.PT,458774,B.PU,458775,B.PV,458776,B.PW,458777,B.PX,458778,B.PY,458779,B.PZ,458780,B.Q_,458781,B.Q0,458782,B.Q1,458783,B.Q2,458784,B.Q3,458785,B.Q4,458786,B.Q5,458787,B.Q6,458788,B.Q7,458789,B.Q8,458790,B.Q9,458791,B.Qa,458792,B.Qb,458793,B.wn,458794,B.Qc,458795,B.Qd,458796,B.Qe,458797,B.Qf,458798,B.Qg,458799,B.Qh,458800,B.Qi,458801,B.Qj,458803,B.Qk,458804,B.Ql,458805,B.Qm,458806,B.Qn,458807,B.Qo,458808,B.Qp,458809,B.i_,458810,B.Qq,458811,B.Qr,458812,B.Qs,458813,B.Qt,458814,B.Qu,458815,B.Qv,458816,B.Qw,458817,B.Qx,458818,B.Qy,458819,B.Qz,458820,B.QA,458821,B.QB,458822,B.QC,458823,B.oY,458824,B.QD,458825,B.QE,458826,B.QF,458827,B.QG,458828,B.QH,458829,B.QI,458830,B.QJ,458831,B.QK,458832,B.QL,458833,B.QM,458834,B.QN,458835,B.oZ,458836,B.QO,458837,B.QP,458838,B.QQ,458839,B.QR,458840,B.QS,458841,B.QT,458842,B.QU,458843,B.QV,458844,B.QW,458845,B.QX,458846,B.QY,458847,B.QZ,458848,B.R_,458849,B.R0,458850,B.R1,458851,B.R2,458852,B.R3,458853,B.R4,458854,B.R5,458855,B.R6,458856,B.R7,458857,B.R8,458858,B.R9,458859,B.Ra,458860,B.Rb,458861,B.Rc,458862,B.Rd,458863,B.Re,458864,B.Rf,458865,B.Rg,458866,B.Rh,458867,B.Ri,458868,B.Rj,458869,B.Rk,458871,B.Rl,458873,B.Rm,458874,B.Rn,458875,B.Ro,458876,B.Rp,458877,B.Rq,458878,B.Rr,458879,B.Rs,458880,B.Rt,458881,B.Ru,458885,B.Rv,458887,B.Rw,458888,B.Rx,458889,B.Ry,458890,B.Rz,458891,B.RA,458896,B.RB,458897,B.RC,458898,B.RD,458899,B.RE,458900,B.RF,458907,B.RG,458915,B.RH,458934,B.RI,458935,B.RJ,458939,B.RK,458960,B.RL,458961,B.RM,458962,B.RN,458963,B.RO,458964,B.RP,458967,B.aRU,458968,B.RQ,458969,B.RR,458976,B.js,458977,B.jt,458978,B.ju,458979,B.jv,458980,B.lC,458981,B.lD,458982,B.jw,458983,B.lE,786528,B.aRV,786529,B.aRW,786543,B.RV,786544,B.RW,786546,B.aRX,786547,B.aRY,786548,B.aRZ,786549,B.aS_,786553,B.aS0,786554,B.aS1,786563,B.aS2,786572,B.aS3,786573,B.aS4,786580,B.aS5,786588,B.aS6,786589,B.aS7,786608,B.RX,786609,B.RY,786610,B.RZ,786611,B.S_,786612,B.S0,786613,B.S1,786614,B.S2,786615,B.S3,786616,B.S4,786637,B.S5,786639,B.aS8,786661,B.aS9,786819,B.S6,786820,B.aSa,786822,B.aSb,786826,B.S7,786829,B.aSc,786830,B.aSd,786834,B.S8,786836,B.S9,786838,B.aSe,786844,B.aSf,786846,B.aSg,786847,B.Sa,786850,B.Sb,786855,B.aSh,786859,B.aSi,786862,B.aSj,786865,B.Sc,786871,B.aSk,786891,B.Sd,786945,B.aSl,786947,B.aSm,786951,B.aSn,786952,B.aSo,786977,B.Se,786979,B.Sf,786980,B.Sg,786981,B.Sh,786982,B.Si,786983,B.Sj,786986,B.Sk,786989,B.aSp,786990,B.aSq,786994,B.Sl,787065,B.aSr,787081,B.Sm,787083,B.Sn,787084,B.So,787101,B.Sp,787103,B.Sq],A.aX("bT<v,M>"))
 B.a6G=new A.h(1,0.7254901960784313,0.9647058823529412,0.792156862745098,B.f)
 B.a6r=new A.h(1,0.4117647058823529,0.9411764705882353,0.6823529411764706,B.f)
 B.a6o=new A.h(1,0,0.7843137254901961,0.3254901960784314,B.f)
-B.aOi=new A.bT([100,B.a6G,200,B.a6r,400,B.zj,700,B.a6o],t.o)
+B.aOi=new A.bT([100,B.a6G,200,B.a6r,400,B.zk,700,B.a6o],t.o)
 B.aa=new A.fJ(B.aOi,1,0.4117647058823529,0.9411764705882353,0.6823529411764706,B.f)
 B.a7r=new A.h(1,0.396078431372549,0.12156862745098039,1,B.f)
 B.a4y=new A.h(1,0.3843137254901961,0,0.9176470588235294,B.f)
-B.aOn=new A.bT([100,B.zG,200,B.zb,400,B.a7r,700,B.a4y],t.o)
+B.aOn=new A.bT([100,B.zH,200,B.zc,400,B.a7r,700,B.a4y],t.o)
 B.cE=new A.fJ(B.aOn,1,0.48627450980392156,0.30196078431372547,1,B.f)
 B.a7w=new A.h(1,0.8,1,0.5647058823529412,B.f)
 B.a3X=new A.h(1,0.6980392156862745,1,0.34901960784313724,B.f)
@@ -126966,9 +126970,9 @@ B.a2R=new A.h(1,1,0.5686274509803921,0,B.f)
 B.aOq=new A.bT([100,B.a5K,200,B.a7z,400,B.a2R,700,B.qx],t.o)
 B.b4=new A.fJ(B.aOq,1,1,0.6705882352941176,0.25098039215686274,B.f)
 B.a4B=new A.h(1,1,1,0.5529411764705883,B.f)
-B.zF=new A.h(1,1,1,0,B.f)
+B.zG=new A.h(1,1,1,0,B.f)
 B.a5V=new A.h(1,1,0.9176470588235294,0,B.f)
-B.aOl=new A.bT([100,B.a4B,200,B.zF,400,B.a5V,700,B.at],t.o)
+B.aOl=new A.bT([100,B.a4B,200,B.zG,400,B.a5V,700,B.at],t.o)
 B.E=new A.fJ(B.aOl,1,1,1,0,B.f)
 B.a52=new A.h(1,1,0.6196078431372549,0.5019607843137255,B.f)
 B.a6V=new A.h(1,1,0.43137254901960786,0.25098039215686274,B.f)
@@ -126989,26 +126993,26 @@ B.a6z=new A.h(1,0.6823529411764706,0.9176470588235294,0,B.f)
 B.aOk=new A.bT([100,B.a5n,200,B.a2B,400,B.a3t,700,B.a6z],t.o)
 B.oT=new A.fJ(B.aOk,1,0.9333333333333333,1,0.2549019607843137,B.f)
 B.aOY=new A.Ek(null,null,null,null,null,null,null,null)
-B.aOM=new A.bT([50,B.z8,100,B.A3,200,B.iD,300,B.zc,400,B.hf,500,B.zq,600,B.es,700,B.A7,800,B.n_,900,B.mQ],t.o)
+B.aOM=new A.bT([50,B.z9,100,B.A4,200,B.iD,300,B.zd,400,B.hf,500,B.zr,600,B.es,700,B.A8,800,B.n_,900,B.mQ],t.o)
 B.oU=new A.i2(B.aOM,1,0.12941176470588237,0.5882352941176471,0.9529411764705882,B.f)
 B.a4w=new A.h(1,0.9372549019607843,0.9215686274509803,0.9137254901960784,B.f)
-B.aOU=new A.bT([50,B.a4w,100,B.d8,200,B.kq,300,B.eZ,400,B.f_,500,B.hd,600,B.a5v,700,B.a5m,800,B.fz,900,B.he],t.o)
+B.aOU=new A.bT([50,B.a4w,100,B.d9,200,B.kq,300,B.eZ,400,B.f_,500,B.hd,600,B.a5v,700,B.a5m,800,B.fz,900,B.he],t.o)
 B.w2=new A.i2(B.aOU,1,0.4745098039215686,0.3333333333333333,0.2823529411764706,B.f)
 B.a5y=new A.h(1,0.9529411764705882,0.8980392156862745,0.9607843137254902,B.f)
 B.a5F=new A.h(1,0.8823529411764706,0.7450980392156863,0.9058823529411765,B.f)
 B.a6P=new A.h(1,0.611764705882353,0.15294117647058825,0.6901960784313725,B.f)
 B.a5p=new A.h(1,0.5568627450980392,0.1411764705882353,0.6666666666666666,B.f)
 B.aOP=new A.bT([50,B.a5y,100,B.a5F,200,B.qF,300,B.rt,400,B.dR,500,B.a6P,600,B.a5p,700,B.eX,800,B.fA,900,B.mB],t.o)
-B.Ot=new A.i2(B.aOP,1,0.611764705882353,0.15294117647058825,0.6901960784313725,B.f)
+B.Ou=new A.i2(B.aOP,1,0.611764705882353,0.15294117647058825,0.6901960784313725,B.f)
 B.a3h=new A.h(1,0.47058823529411764,0.5647058823529412,0.611764705882353,B.f)
 B.a3g=new A.h(1,0.3764705882352941,0.49019607843137253,0.5450980392156862,B.f)
-B.aOQ=new A.bT([50,B.zE,100,B.er,200,B.eW,300,B.mM,400,B.a3h,500,B.a3g,600,B.A2,700,B.kl,800,B.ku,900,B.a6j],t.o)
+B.aOQ=new A.bT([50,B.zF,100,B.er,200,B.eW,300,B.mM,400,B.a3h,500,B.a3g,600,B.A3,700,B.kl,800,B.ku,900,B.a6j],t.o)
 B.aOZ=new A.i2(B.aOQ,1,0.3764705882352941,0.49019607843137253,0.5450980392156862,B.f)
 B.a6A=new A.h(1,0.8784313725490196,0.9686274509803922,0.9803921568627451,B.f)
 B.a6S=new A.h(1,0.6980392156862745,0.9215686274509803,0.9490196078431372,B.f)
 B.a7y=new A.h(1,0,0.7372549019607844,0.8313725490196079,B.f)
 B.a6l=new A.h(1,0,0.3764705882352941,0.39215686274509803,B.f)
-B.aOR=new A.bT([50,B.a6A,100,B.a6S,200,B.qB,300,B.bX,400,B.r7,500,B.a7y,600,B.ha,700,B.zC,800,B.zL,900,B.a6l],t.o)
+B.aOR=new A.bT([50,B.a6A,100,B.a6S,200,B.qB,300,B.bX,400,B.r7,500,B.a7y,600,B.ha,700,B.zD,800,B.zM,900,B.a6l],t.o)
 B.aP_=new A.i2(B.aOR,1,0,0.7372549019607844,0.8313725490196079,B.f)
 B.a7A=new A.h(1,0.984313725490196,0.9137254901960784,0.9058823529411765,B.f)
 B.a5d=new A.h(1,1,0.8,0.7372549019607844,B.f)
@@ -127016,13 +127020,13 @@ B.a6q=new A.h(1,1,0.6705882352941176,0.5686274509803921,B.f)
 B.a5L=new A.h(1,1,0.5411764705882353,0.396078431372549,B.f)
 B.a3C=new A.h(1,0.9568627450980393,0.3176470588235294,0.11764705882352941,B.f)
 B.a4G=new A.h(1,0.8470588235294118,0.2627450980392157,0.08235294117647059,B.f)
-B.aOT=new A.bT([50,B.a7A,100,B.a5d,200,B.a6q,300,B.a5L,400,B.dr,500,B.Ac,600,B.a3C,700,B.Ah,800,B.a4G,900,B.mY],t.o)
+B.aOT=new A.bT([50,B.a7A,100,B.a5d,200,B.a6q,300,B.a5L,400,B.dr,500,B.Ad,600,B.a3C,700,B.Ai,800,B.a4G,900,B.mY],t.o)
 B.cc=new A.i2(B.aOT,1,1,0.3411764705882353,0.13333333333333333,B.f)
 B.a7m=new A.h(1,0.9294117647058824,0.9058823529411765,0.9647058823529412,B.f)
 B.a3b=new A.h(1,0.8196078431372549,0.7686274509803922,0.9137254901960784,B.f)
 B.a49=new A.h(1,0.7019607843137254,0.615686274509804,0.8588235294117647,B.f)
 B.a3F=new A.h(1,0.403921568627451,0.22745098039215686,0.7176470588235294,B.f)
-B.aOO=new A.bT([50,B.a7m,100,B.a3b,200,B.a49,300,B.iH,400,B.mN,500,B.a3F,600,B.Al,700,B.z5,800,B.kp,900,B.hk],t.o)
+B.aOO=new A.bT([50,B.a7m,100,B.a3b,200,B.a49,300,B.iH,400,B.mN,500,B.a3F,600,B.Am,700,B.z6,800,B.kp,900,B.hk],t.o)
 B.aP0=new A.i2(B.aOO,1,0.403921568627451,0.22745098039215686,0.7176470588235294,B.f)
 B.a4P=new A.h(1,1,0.9921568627450981,0.9058823529411765,B.f)
 B.a6M=new A.h(1,1,0.9450980392156862,0.4627450980392157,B.f)
@@ -127030,31 +127034,31 @@ B.a6W=new A.h(1,0.9921568627450981,0.8470588235294118,0.20784313725490197,B.f)
 B.a5x=new A.h(1,0.984313725490196,0.7529411764705882,0.17647058823529413,B.f)
 B.a5s=new A.h(1,0.9764705882352941,0.6588235294117647,0.1450980392156863,B.f)
 B.a4s=new A.h(1,0.9607843137254902,0.4980392156862745,0.09019607843137255,B.f)
-B.aOK=new A.bT([50,B.a4P,100,B.n5,200,B.mR,300,B.a6M,400,B.bq,500,B.z0,600,B.a6W,700,B.a5x,800,B.a5s,900,B.a4s],t.o)
+B.aOK=new A.bT([50,B.a4P,100,B.n5,200,B.mR,300,B.a6M,400,B.bq,500,B.z1,600,B.a6W,700,B.a5x,800,B.a5s,900,B.a4s],t.o)
 B.w3=new A.i2(B.aOK,1,1,0.9215686274509803,0.23137254901960785,B.f)
 B.a6c=new A.h(1,1,0.9215686274509803,0.9333333333333333,B.f)
 B.a41=new A.h(1,1,0.803921568627451,0.8235294117647058,B.f)
 B.a3k=new A.h(1,0.9372549019607843,0.6039215686274509,0.6039215686274509,B.f)
 B.a7i=new A.h(1,0.8980392156862745,0.45098039215686275,0.45098039215686275,B.f)
 B.a6Y=new A.h(1,0.9568627450980393,0.2627450980392157,0.21176470588235294,B.f)
-B.aOL=new A.bT([50,B.a6c,100,B.a41,200,B.a3k,300,B.a7i,400,B.iJ,500,B.a6Y,600,B.cz,700,B.cq,800,B.ri,900,B.d9],t.o)
+B.aOL=new A.bT([50,B.a6c,100,B.a41,200,B.a3k,300,B.a7i,400,B.iJ,500,B.a6Y,600,B.cz,700,B.cq,800,B.ri,900,B.da],t.o)
 B.jk=new A.i2(B.aOL,1,0.9568627450980393,0.2627450980392157,0.21176470588235294,B.f)
 B.a5R=new A.h(1,1,0.9254901960784314,0.7019607843137254,B.f)
 B.a39=new A.h(1,1,0.7568627450980392,0.027450980392156862,B.f)
 B.a3W=new A.h(1,1,0.43529411764705883,0,B.f)
-B.aON=new A.bT([50,B.a2K,100,B.a5R,200,B.hg,300,B.M,400,B.hl,500,B.a39,600,B.mU,700,B.eq,800,B.zQ,900,B.a3W],t.o)
+B.aON=new A.bT([50,B.a2K,100,B.a5R,200,B.hg,300,B.M,400,B.hl,500,B.a39,600,B.mU,700,B.eq,800,B.zR,900,B.a3W],t.o)
 B.dx=new A.i2(B.aON,1,1,0.7568627450980392,0.027450980392156862,B.f)
 B.a7s=new A.h(1,0.9098039215686274,0.9607843137254902,0.9137254901960784,B.f)
 B.a3L=new A.h(1,0.7843137254901961,0.9019607843137255,0.788235294117647,B.f)
 B.a6H=new A.h(1,0.6470588235294118,0.8392156862745098,0.6549019607843137,B.f)
 B.a3z=new A.h(1,0.10588235294117647,0.3686274509803922,0.12549019607843137,B.f)
-B.aOS=new A.bT([50,B.a7s,100,B.a3L,200,B.a6H,300,B.n4,400,B.hi,500,B.Ai,600,B.hn,700,B.z2,800,B.e6,900,B.a3z],t.o)
+B.aOS=new A.bT([50,B.a7s,100,B.a3L,200,B.a6H,300,B.n4,400,B.hi,500,B.Aj,600,B.hn,700,B.z3,800,B.e6,900,B.a3z],t.o)
 B.aP1=new A.i2(B.aOS,1,0.2980392156862745,0.6862745098039216,0.3137254901960784,B.f)
 B.aP3=new A.tF(0,"padded")
 B.w4=new A.tF(1,"shrinkWrap")
-B.cX=new A.tG(0,"canvas")
+B.cY=new A.tG(0,"canvas")
 B.jl=new A.tG(1,"card")
-B.Ou=new A.tG(2,"circle")
+B.Ov=new A.tG(2,"circle")
 B.w5=new A.tG(3,"button")
 B.lx=new A.tG(4,"transparency")
 B.aP4=new A.Rv(0,"none")
@@ -127063,32 +127067,32 @@ B.aP6=new A.Ry(null,null)
 B.aP7=new A.Ep(null)
 B.aP8=new A.xL(null,null)
 B.aP9=new A.jq("popRoute",null)
-B.aPa=new A.k8("plugins.flutter.io/url_launcher",B.d6)
-B.aPb=new A.k8("dev.fluttercommunity.plus/sensors/method",B.d6)
-B.w6=new A.k8("plugins.flutter.io/shared_preferences",B.d6)
-B.Ov=new A.k8("xyz.luan/audioplayers.global",B.d6)
-B.Ow=new A.k8("flutter/platform_views",B.d6)
-B.Ox=new A.k8("xyz.luan/audioplayers",B.d6)
-B.aPc=new A.k8("flutter/service_worker",B.d6)
+B.aPa=new A.k8("plugins.flutter.io/url_launcher",B.d7)
+B.aPb=new A.k8("dev.fluttercommunity.plus/sensors/method",B.d7)
+B.w6=new A.k8("plugins.flutter.io/shared_preferences",B.d7)
+B.Ow=new A.k8("xyz.luan/audioplayers.global",B.d7)
+B.Ox=new A.k8("flutter/platform_views",B.d7)
+B.Oy=new A.k8("xyz.luan/audioplayers",B.d7)
+B.aPc=new A.k8("flutter/service_worker",B.d7)
 B.x=new A.Eu(0,"physical")
 B.P=new A.Eu(1,"special")
 B.D=new A.Eu(2,"status")
-B.Oz=new A.xN(!1,null)
+B.OA=new A.xN(!1,null)
 B.aPd=new A.xN(!0,null)
 B.i=new A.ma(0,"none")
 B.hW=new A.ma(1,"twoTurnCharge")
 B.fP=new A.ma(2,"semiInvulnerable")
 B.wb=new A.ma(3,"rechargeAfterHit")
-B.OA=new A.ma(4,"bide")
+B.OB=new A.ma(4,"bide")
 B.wc=new A.ma(5,"rampage")
-B.OB=new A.ma(6,"escalatingRoll")
+B.OC=new A.ma(6,"escalatingRoll")
 B.hX=new A.ma(7,"trapDot")
 B.aPe=new A.tL(null)
 B.jq=new A.RM(0,"latestPointer")
 B.wd=new A.RM(1,"averageBoundaryPointers")
-B.OC=new A.tO(0,"clipRect")
-B.OD=new A.tO(1,"clipRRect")
-B.OE=new A.tO(2,"clipPath")
+B.OD=new A.tO(0,"clipRect")
+B.OE=new A.tO(1,"clipRRect")
+B.OF=new A.tO(2,"clipPath")
 B.aPf=new A.tO(3,"transform")
 B.aPg=new A.tO(4,"opacity")
 B.aPh=new A.tQ(null)
@@ -127099,22 +127103,22 @@ B.oV=new A.RQ(1,"directional")
 B.aPn=new A.nH(!0)
 B.aPo=new A.EK(null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aPp=new A.RS(null)
-B.OH=new A.fL(B.C,B.C)
+B.OI=new A.fL(B.C,B.C)
 B.ly=new A.e(0,1)
 B.aQr=new A.e(0,10)
 B.wf=new A.e(0,14)
 B.wg=new A.e(0,16)
 B.wh=new A.e(0,18)
 B.wi=new A.e(0,20)
-B.OI=new A.e(0,22)
-B.OJ=new A.e(0,24)
+B.OJ=new A.e(0,22)
+B.OK=new A.e(0,24)
 B.oW=new A.e(0,26)
 B.hY=new A.e(0,3)
 B.hZ=new A.e(0,4)
 B.aQt=new A.e(0,42)
 B.aQu=new A.e(0,6)
 B.aQv=new A.e(0,8)
-B.OK=new A.e(0,-1)
+B.OL=new A.e(0,-1)
 B.aQw=new A.e(0,-13)
 B.aQx=new A.e(0,-2)
 B.aQy=new A.e(0,-24)
@@ -127136,7 +127140,7 @@ B.aQM=new A.e(1,3)
 B.aQN=new A.e(22,0)
 B.aQO=new A.e(30,-2)
 B.aQP=new A.e(32,30)
-B.OL=new A.e(32,-30)
+B.OM=new A.e(32,-30)
 B.aQQ=new A.e(36,-116)
 B.aQR=new A.e(3,0)
 B.aQS=new A.e(3,3)
@@ -127152,7 +127156,7 @@ B.aR3=new A.e(5,10.5)
 B.aR4=new A.e(-0.18,0.22)
 B.aR5=new A.e(1/0,0)
 B.aR6=new A.e(0,0.35)
-B.OM=new A.e(-0.25,0)
+B.ON=new A.e(-0.25,0)
 B.aR7=new A.e(0,-4.5)
 B.aR8=new A.e(0.18,-0.26)
 B.aRa=new A.e(17976931348623157e292,0)
@@ -127169,33 +127173,33 @@ B.aRm=new A.e(-22,-2)
 B.aRn=new A.e(-26,-88)
 B.aRo=new A.e(-2,-2)
 B.aRp=new A.e(-32,30)
-B.ON=new A.e(-32,-30)
+B.OO=new A.e(-32,-30)
 B.aRq=new A.e(-3,0)
 B.aRr=new A.e(-3,3)
 B.aRs=new A.e(-3,-3)
-B.OO=new A.e(-4,-4)
+B.OP=new A.e(-4,-4)
 B.bfW=new A.e(0,-0.005)
-B.OP=new A.e(0.25,0)
+B.OQ=new A.e(0.25,0)
 B.aRx=new A.e(1/0,1/0)
 B.cd=new A.nI(0,"iOs")
 B.lA=new A.nI(1,"android")
 B.oX=new A.nI(2,"linux")
 B.wj=new A.nI(3,"windows")
 B.dZ=new A.nI(4,"macOs")
-B.OQ=new A.nI(5,"unknown")
-B.wk=new A.iK("flutter/restoration",B.d6)
+B.OR=new A.nI(5,"unknown")
+B.wk=new A.iK("flutter/restoration",B.d7)
 B.is=new A.aff()
-B.OR=new A.iK("flutter/scribe",B.is)
+B.OS=new A.iK("flutter/scribe",B.is)
 B.wl=new A.iK("flutter/textinput",B.is)
-B.OS=new A.iK("flutter/menu",B.d6)
-B.aRy=new A.iK("flutter/mousecursor",B.d6)
-B.aRz=new A.iK("flutter/processtext",B.d6)
+B.OT=new A.iK("flutter/menu",B.d7)
+B.aRy=new A.iK("flutter/mousecursor",B.d7)
+B.aRz=new A.iK("flutter/processtext",B.d7)
 B.cu=new A.iK("flutter/platform",B.is)
-B.aRA=new A.iK("flutter/backgesture",B.d6)
+B.aRA=new A.iK("flutter/backgesture",B.d7)
 B.wm=new A.iK("flutter/navigation",B.is)
 B.aRB=new A.iK("flutter/undomanager",B.is)
 B.aRC=new A.iK("flutter/status_bar",B.is)
-B.aRD=new A.iK("flutter/keyboard",B.d6)
+B.aRD=new A.iK("flutter/keyboard",B.d7)
 B.aRE=new A.nJ(0,null)
 B.aRF=new A.nJ(1,null)
 B.aRG=new A.S7(0,"portrait")
@@ -127203,11 +127207,11 @@ B.aRH=new A.S7(1,"landscape")
 B.aRI=new A.EU(null)
 B.bfX=new A.Sa(0,"start")
 B.aRJ=new A.Sa(1,"end")
-B.OT=new A.Sb(0,"nearestOverlay")
+B.OU=new A.Sb(0,"nearestOverlay")
 B.aRK=new A.Sb(1,"rootOverlay")
-B.UF=new A.k(!0,B.r,null,null,null,null,9.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bbF=new A.a0("GIVE",null,B.UF,null,null,null,null,null,null,null)
-B.OU=new A.aG(B.nv,B.bbF,null)
+B.UG=new A.k(!0,B.r,null,null,null,null,9.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.bbF=new A.a0("GIVE",null,B.UG,null,null,null,null,null,null,null)
+B.OV=new A.aG(B.nv,B.bbF,null)
 B.afs=new A.ai(63534,"MaterialIcons",!1)
 B.ahf=new A.ar(B.afs,18,B.S,null,null)
 B.aRL=new A.aG(B.nu,B.ahf,null)
@@ -127216,22 +127220,22 @@ B.ahL=new A.ar(B.afr,18,B.S,null,null)
 B.aRM=new A.aG(B.nu,B.ahL,null)
 B.b5Z=new A.k(!0,B.z,null,null,null,null,9.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b9V=new A.a0("TAKE",null,B.b5Z,null,null,null,null,null,null,null)
-B.OV=new A.aG(B.nv,B.b9V,null)
-B.OW=new A.xX(null)
+B.OW=new A.aG(B.nv,B.b9V,null)
+B.OX=new A.xX(null)
 B.u=new A.Sj(0,"fill")
 B.B=new A.Sj(1,"stroke")
 B.aRN=new A.pP(1/0)
 B.Q=new A.Sm(0,"nonZero")
-B.OX=new A.Sm(1,"evenOdd")
+B.OY=new A.Sm(1,"evenOdd")
 B.aRO=new A.ak7(0,"difference")
-B.OY=new A.u0(null)
+B.OZ=new A.u0(null)
 B.aRP=new A.F_(null)
-B.Sq=new A.pR(0,"baseline")
-B.Sr=new A.pR(1,"aboveBaseline")
-B.Ss=new A.pR(2,"belowBaseline")
-B.St=new A.pR(3,"top")
+B.Sr=new A.pR(0,"baseline")
+B.Ss=new A.pR(1,"aboveBaseline")
+B.St=new A.pR(2,"belowBaseline")
+B.Su=new A.pR(3,"top")
 B.jx=new A.pR(4,"bottom")
-B.Su=new A.pR(5,"middle")
+B.Sv=new A.pR(5,"middle")
 B.aSs=new A.y_(B.a2,B.jx,null,null)
 B.aSt=new A.Sv(0,"opaque")
 B.wo=new A.Sv(2,"transparent")
@@ -127246,10 +127250,10 @@ B.aSw=new A.nQ(2,"remove")
 B.i0=new A.nQ(3,"hover")
 B.aSx=new A.nQ(4,"down")
 B.p0=new A.nQ(5,"move")
-B.Sw=new A.nQ(6,"up")
+B.Sx=new A.nQ(6,"up")
 B.bY=new A.mi(0,"touch")
 B.dI=new A.mi(1,"mouse")
-B.cY=new A.mi(2,"stylus")
+B.cZ=new A.mi(2,"stylus")
 B.eJ=new A.mi(3,"invertedStylus")
 B.de=new A.mi(4,"trackpad")
 B.dJ=new A.mi(5,"unknown")
@@ -127267,435 +127271,860 @@ B.aSK=new A.ud(null)
 B.aSL=new A.ue(null)
 B.aSM=new A.uf(null)
 B.aSN=new A.ug(null)
-B.hJ=s([B.aA],t.U)
-B.uQ=new A.a(1,"wide_guard")
-B.l5=new A.a(1,"low_kick")
-B.b3=new A.a(1,"leer")
-B.fc=new A.a(1,"focus_energy")
-B.Eg=new A.a(1,"karate_chop")
-B.eD=new A.a(7,"focus_energy")
-B.ua=new A.a(10,"karate_chop")
-B.ul=new A.a(13,"low_sweep")
-B.oc=new A.a(19,"foresight")
-B.uV=new A.a(22,"seismic_toss")
-B.on=new A.a(25,"revenge")
-B.Gu=new A.a(32,"vital_throw")
-B.GT=new A.a(36,"submission")
-B.Hb=new A.a(40,"wake_up_slap")
-B.Hq=new A.a(44,"cross_chop")
-B.HT=new A.a(51,"scary_face")
-B.I1=new A.a(55,"dynamic_punch")
-B.aHU=s([B.uQ,B.l5,B.b3,B.fc,B.Eg,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.Gu,B.GT,B.Hb,B.Hq,B.HT,B.I1],t._)
-B.aSO=new A.ab(68,"Machamp",B.hJ,90,130,80,65,85,55,45,227,1.6,3,!1,!1,!1,!1,!1,38,null,null,B.aHU,"guts","no_guard","steadfast",!0)
-B.bC=s([B.ar],t.U)
-B.ac=new A.a(1,"tackle")
-B.ld=new A.a(5,"tail_whip")
-B.vq=new A.a(7,"water_gun")
-B.l1=new A.a(11,"water_sport")
-B.o5=new A.a(13,"focus_energy")
-B.uy=new A.a(17,"razor_shell")
-B.aml=new A.a(19,"fury_cutter")
-B.aoC=new A.a(23,"water_pulse")
-B.apW=new A.a(29,"aqua_jet")
-B.aqA=new A.a(31,"encore")
-B.v7=new A.a(35,"aqua_tail")
-B.at5=new A.a(37,"retaliate")
-B.auI=new A.a(41,"swords_dance")
-B.Hn=new A.a(43,"hydro_pump")
-B.aGf=s([B.ac,B.ld,B.vq,B.l1,B.o5,B.uy,B.aml,B.aoC,B.on,B.apW,B.aqA,B.v7,B.at5,B.auI,B.Hn],t._)
-B.aSP=new A.ab(501,"Oshawott",B.bC,55,55,45,63,45,45,45,62,0.5,1,!0,!1,!1,!1,!1,5,17,502,B.aGf,"torrent",null,"shell_armor",!1)
-B.amB=new A.a(1,"aqua_jet")
-B.fK=new A.a(1,"water_sport")
-B.br=new A.a(1,"scratch")
-B.cb=new A.a(1,"tail_whip")
-B.eC=new A.a(1,"water_gun")
-B.fM=new A.a(4,"tail_whip")
-B.ID=new A.a(8,"water_gun")
-B.CQ=new A.a(11,"disable")
-B.Dm=new A.a(15,"confusion")
-B.E0=new A.a(18,"water_pulse")
-B.F4=new A.a(22,"fury_swipes")
-B.FB=new A.a(25,"screech")
-B.Gd=new A.a(29,"zen_headbutt")
-B.oq=new A.a(32,"aqua_tail")
-B.atv=new A.a(38,"soak")
-B.avu=new A.a(43,"psych_up")
-B.axe=new A.a(49,"amnesia")
-B.ayX=new A.a(54,"hydro_pump")
-B.aAj=new A.a(60,"wonder_room")
-B.aIz=s([B.amB,B.fK,B.br,B.cb,B.eC,B.fM,B.ID,B.CQ,B.Dm,B.E0,B.F4,B.FB,B.Gd,B.oq,B.atv,B.avu,B.axe,B.ayX,B.aAj],t._)
-B.aSQ=new A.ab(55,"Golduck",B.bC,80,82,78,95,80,85,75,175,1.7,2,!1,!1,!1,!1,!1,33,null,null,B.aIz,"damp","cloud_nine","swift_swim",!0)
 B.eE=s([B.aK],t.U)
+B.og=new A.a(1,"poison_gas")
+B.ac=new A.a(1,"tackle")
+B.Es=new A.a(1,"smog")
+B.l7=new A.a(1,"smokescreen")
+B.HQ=new A.a(4,"smog")
+B.Iv=new A.a(7,"smokescreen")
+B.D0=new A.a(12,"assurance")
+B.Dm=new A.a(15,"clear_smog")
+B.E0=new A.a(18,"sludge")
+B.Fn=new A.a(23,"self_destruct")
+B.FJ=new A.a(26,"haze")
+B.aq_=new A.a(29,"double_hit")
+B.GH=new A.a(34,"sludge_bomb")
+B.au1=new A.a(40,"explosion")
+B.aws=new A.a(46,"destiny_bond")
+B.ayZ=new A.a(54,"memento")
+B.aIv=s([B.og,B.ac,B.Es,B.l7,B.HQ,B.Iv,B.D0,B.Dm,B.E0,B.Fn,B.FJ,B.aq_,B.GH,B.au1,B.aws,B.ayZ],t._)
+B.aSO=new A.ab(110,"Weezing",B.eE,65,90,120,85,70,60,60,172,1.2,9.5,2,!1,!1,!1,!1,!1,35,null,null,B.aIv,"levitate",null,"stench",!0)
+B.cU=s([B.aj],t.U)
+B.oe=new A.a(1,"helping_hand")
+B.cb=new A.a(1,"tail_whip")
+B.hH=new A.a(5,"sand_attack")
+B.vw=new A.a(9,"ember")
+B.ed=new A.a(13,"quick_attack")
+B.DF=new A.a(17,"bite")
+B.ER=new A.a(21,"fire_fang")
+B.om=new A.a(25,"fire_spin")
+B.aqb=new A.a(29,"scary_face")
+B.arv=new A.a(33,"smog")
+B.GX=new A.a(37,"lava_plume")
+B.ot=new A.a(41,"last_resort")
+B.aw_=new A.a(45,"fire_blast")
+B.aJQ=s([B.oe,B.ac,B.cb,B.hH,B.vw,B.ed,B.DF,B.ER,B.om,B.aqb,B.arv,B.GX,B.ot,B.aw_],t._)
+B.aSP=new A.ab(136,"Flareon",B.cU,65,130,60,95,110,65,45,184,0.9,25,2,!1,!1,!1,!1,!1,25,null,null,B.aJQ,"flash_fire",null,"guts",!0)
+B.bC=s([B.ar],t.U)
+B.b2=new A.a(1,"growl")
+B.lb=new A.a(4,"growl")
+B.vr=new A.a(8,"bubble")
+B.l1=new A.a(11,"water_sport")
+B.us=new A.a(15,"peck")
+B.DA=new A.a(16,"metal_claw")
+B.oa=new A.a(19,"bubble_beam")
+B.aoD=new A.a(24,"bide")
+B.FZ=new A.a(28,"fury_attack")
+B.or=new A.a(33,"brine")
+B.ate=new A.a(37,"whirlpool")
+B.auZ=new A.a(42,"mist")
+B.awu=new A.a(46,"drill_peck")
+B.ayk=new A.a(51,"hydro_pump")
+B.aLf=s([B.ac,B.b2,B.lb,B.vr,B.l1,B.us,B.DA,B.oa,B.aoD,B.FZ,B.or,B.ate,B.auZ,B.awu,B.ayk],t._)
+B.aSQ=new A.ab(394,"Prinplup",B.bC,64,66,68,81,76,50,45,142,0.8,23,2,!0,!1,!1,!1,!1,16,36,395,B.aLf,"torrent",null,"defiant",!1)
+B.Jc=s([B.aL,B.aH],t.U)
+B.Ef=new A.a(1,"horn_attack")
+B.Eu=new A.a(1,"stomp")
+B.uH=new A.a(1,"fury_attack")
+B.aCe=new A.a(9,"stomp")
+B.D4=new A.a(12,"fury_attack")
+B.uD=new A.a(19,"scary_face")
+B.Fj=new A.a(23,"rock_blast")
+B.Gh=new A.a(30,"bulldoze")
+B.GD=new A.a(34,"chip_away")
+B.ou=new A.a(41,"take_down")
+B.auW=new A.a(42,"hammer_arm")
+B.awO=new A.a(47,"drill_run")
+B.azB=new A.a(56,"stone_edge")
+B.aAw=new A.a(62,"earthquake")
+B.aBi=new A.a(71,"horn_drill")
+B.aBu=new A.a(77,"megahorn")
+B.aFx=s([B.Ef,B.cb,B.Eu,B.uH,B.aCe,B.D4,B.uD,B.Fj,B.Gh,B.GD,B.ou,B.auW,B.awO,B.azB,B.aAw,B.aBi,B.aBu],t._)
+B.aSR=new A.ab(112,"Rhydon",B.Jc,105,130,120,45,45,40,60,170,1.9,120,2,!1,!1,!1,!1,!1,42,null,null,B.aFx,"lightning_rod","rock_head","reckless",!0)
+B.dY=s([B.ak],t.U)
+B.vf=new A.a(4,"leer")
+B.ox=new A.a(7,"vine_whip")
+B.ue=new A.a(10,"wrap")
+B.uk=new A.a(13,"growth")
+B.uw=new A.a(16,"leaf_tornado")
+B.amn=new A.a(19,"leech_seed")
+B.aod=new A.a(22,"mega_drain")
+B.ap3=new A.a(25,"slam")
+B.apG=new A.a(28,"leaf_blade")
+B.aqy=new A.a(31,"coil")
+B.arP=new A.a(34,"giga_drain")
+B.ati=new A.a(37,"wring_out")
+B.au4=new A.a(40,"gastro_acid")
+B.avn=new A.a(43,"leaf_storm")
+B.aFE=s([B.ac,B.vf,B.ox,B.ue,B.uk,B.uw,B.amn,B.aod,B.ap3,B.apG,B.aqy,B.arP,B.ati,B.au4,B.avn],t._)
+B.aSS=new A.ab(495,"Snivy",B.dY,45,45,55,45,55,63,45,62,0.6,8.1,1,!0,!1,!1,!1,!1,5,17,496,B.aFE,"overgrow",null,"contrary",!1)
+B.oj=new A.a(1,"sing")
+B.eC=new A.a(1,"water_gun")
+B.axK=new A.a(4,"mist")
+B.aBz=new A.a(7,"confuse_ray")
+B.al0=new A.a(10,"ice_shard")
+B.alx=new A.a(14,"water_pulse")
+B.am7=new A.a(18,"body_slam")
+B.aok=new A.a(22,"rain_dance")
+B.apt=new A.a(27,"perish_song")
+B.aqV=new A.a(32,"ice_beam")
+B.asL=new A.a(37,"brine")
+B.Hp=new A.a(43,"safeguard")
+B.axr=new A.a(49,"hydro_pump")
+B.azh=new A.a(55,"sheer_cold")
+B.aIb=s([B.oj,B.b2,B.eC,B.axK,B.aBz,B.al0,B.alx,B.am7,B.aok,B.apt,B.aqV,B.asL,B.Hp,B.axr,B.azh],t._)
+B.aST=new A.ab(131,"Lapras",B.oB,130,85,80,85,95,60,45,187,2.5,220,1,!1,!1,!1,!1,!1,20,null,null,B.aIb,"water_absorb","shell_armor","hydration",!0)
+B.fe=s([B.ak,B.aK],t.U)
+B.Ej=new A.a(1,"leech_seed")
+B.jc=new A.a(1,"vine_whip")
+B.la=new A.a(3,"growl")
+B.vp=new A.a(7,"leech_seed")
+B.vB=new A.a(9,"vine_whip")
+B.hC=new A.a(13,"poison_powder")
+B.l2=new A.a(13,"sleep_powder")
+B.uu=new A.a(15,"take_down")
+B.EM=new A.a(20,"razor_leaf")
+B.Fq=new A.a(23,"sweet_scent")
+B.G_=new A.a(28,"growth")
+B.v4=new A.a(31,"double_edge")
+B.Gs=new A.a(32,"petal_dance")
+B.atT=new A.a(39,"worry_seed")
+B.awk=new A.a(45,"synthesis")
+B.ayR=new A.a(53,"solar_beam")
+B.aKa=s([B.ac,B.b2,B.Ej,B.jc,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.EM,B.Fq,B.G_,B.v4,B.Gs,B.atT,B.awk,B.ayR],t._)
+B.aSU=new A.ab(3,"Venusaur",B.fe,80,82,83,100,100,80,45,236,2,100,3,!0,!1,!1,!1,!1,32,null,null,B.aKa,"overgrow",null,"chlorophyll",!0)
+B.hJ=s([B.aA],t.U)
+B.Ep=new A.a(1,"revenge")
+B.Eb=new A.a(1,"comet_punch")
+B.aBc=new A.a(6,"agility")
+B.ala=new A.a(11,"pursuit")
+B.alR=new A.a(16,"mach_punch")
+B.alM=new A.a(16,"bullet_punch")
+B.anS=new A.a(21,"feint")
+B.apk=new A.a(26,"vacuum_wave")
+B.aqH=new A.a(31,"quick_guard")
+B.asD=new A.a(36,"thunder_punch")
+B.asr=new A.a(36,"ice_punch")
+B.asn=new A.a(36,"fire_punch")
+B.auF=new A.a(41,"sky_uppercut")
+B.awB=new A.a(46,"mega_punch")
+B.HT=new A.a(51,"detect")
+B.azs=new A.a(56,"focus_punch")
+B.aAk=new A.a(61,"counter")
+B.aAX=new A.a(66,"close_combat")
+B.aIC=s([B.Ep,B.Eb,B.aBc,B.ala,B.alR,B.alM,B.anS,B.apk,B.aqH,B.asD,B.asr,B.asn,B.auF,B.awB,B.HT,B.azs,B.aAk,B.aAX],t._)
+B.aSV=new A.ab(107,"Hitmonchan",B.hJ,50,105,79,35,110,76,45,159,1.4,50.2,1,!1,!1,!1,!1,!1,25,null,null,B.aIC,"keen_eye","iron_fist","inner_focus",!0)
+B.fN=s([B.G,B.aM],t.U)
+B.jb=new A.a(1,"sand_attack")
+B.uI=new A.a(1,"gust")
+B.eB=new A.a(1,"quick_attack")
+B.vx=new A.a(9,"gust")
+B.uA=new A.a(17,"whirlwind")
+B.Fa=new A.a(22,"twister")
+B.FR=new A.a(27,"feather_dance")
+B.Gp=new A.a(32,"agility")
+B.atw=new A.a(38,"wing_attack")
+B.avP=new A.a(44,"roost")
+B.ay6=new A.a(50,"tailwind")
+B.azx=new A.a(56,"mirror_move")
+B.aAv=new A.a(62,"air_slash")
+B.aB8=new A.a(68,"hurricane")
+B.aEP=s([B.ac,B.jb,B.uI,B.eB,B.hH,B.vx,B.ed,B.uA,B.Fa,B.FR,B.Gp,B.atw,B.avP,B.ay6,B.azx,B.aAv,B.aB8],t._)
+B.aSW=new A.ab(18,"Pidgeot",B.fN,83,80,75,70,70,101,45,216,1.5,39.5,3,!1,!1,!1,!1,!1,36,null,null,B.aEP,"keen_eye","tangled_feet","big_pecks",!0)
+B.b3=new A.a(1,"leer")
 B.ee=new A.a(1,"peck")
+B.eD=new A.a(7,"focus_energy")
 B.oy=new A.a(9,"double_kick")
 B.o6=new A.a(13,"poison_sting")
 B.anG=new A.a(20,"fury_attack")
 B.aot=new A.a(23,"horn_attack")
-B.G_=new A.a(28,"helping_hand")
-B.GL=new A.a(35,"toxic_spikes")
-B.H1=new A.a(38,"flatter")
+B.G0=new A.a(28,"helping_hand")
+B.GM=new A.a(35,"toxic_spikes")
+B.H2=new A.a(38,"flatter")
 B.avs=new A.a(43,"poison_jab")
-B.HR=new A.a(50,"captivate")
+B.HS=new A.a(50,"captivate")
 B.azW=new A.a(58,"horn_drill")
-B.aM6=s([B.b3,B.ee,B.eD,B.oy,B.o6,B.anG,B.aot,B.G_,B.GL,B.H1,B.avs,B.HR,B.azW],t._)
-B.aSR=new A.ab(33,"Nidorino",B.eE,61,72,57,55,55,65,120,128,0.9,2,!1,!1,!1,!1,!1,16,null,34,B.aM6,"poison_point","rivalry","hustle",!0)
-B.dX=s([B.G],t.U)
-B.Ex=new A.a(1,"switcheroo")
-B.b2=new A.a(1,"growl")
+B.aM6=s([B.b3,B.ee,B.eD,B.oy,B.o6,B.anG,B.aot,B.G0,B.GM,B.H2,B.avs,B.HS,B.azW],t._)
+B.aSX=new A.ab(33,"Nidorino",B.eE,61,72,57,55,55,65,120,128,0.9,19.5,2,!1,!1,!1,!1,!1,16,null,34,B.aM6,"poison_point","rivalry","hustle",!0)
+B.Ek=new A.a(1,"megahorn")
+B.fK=new A.a(1,"water_sport")
+B.ld=new A.a(5,"tail_whip")
+B.vq=new A.a(7,"water_gun")
+B.o5=new A.a(13,"focus_energy")
+B.uy=new A.a(17,"razor_shell")
+B.EJ=new A.a(20,"fury_cutter")
+B.uX=new A.a(25,"water_pulse")
+B.G2=new A.a(28,"revenge")
+B.Gx=new A.a(33,"aqua_jet")
+B.asy=new A.a(36,"slash")
+B.atn=new A.a(38,"encore")
+B.avU=new A.a(45,"aqua_tail")
+B.ay0=new A.a(50,"retaliate")
+B.I4=new A.a(57,"swords_dance")
+B.aAz=new A.a(62,"hydro_pump")
+B.aCT=s([B.Ek,B.ac,B.cb,B.eC,B.fK,B.ld,B.vq,B.l1,B.o5,B.uy,B.EJ,B.uX,B.G2,B.Gx,B.asy,B.atn,B.avU,B.ay0,B.I4,B.aAz],t._)
+B.aSY=new A.ab(503,"Samurott",B.bC,95,100,85,108,70,70,45,238,1.5,94.6,3,!0,!1,!1,!1,!1,36,null,null,B.aCT,"torrent",null,"shell_armor",!1)
+B.uJ=new A.a(1,"headbutt")
+B.aBJ=new A.a(7,"water_sport")
+B.CU=new A.a(11,"icy_wind")
+B.D9=new A.a(13,"encore")
+B.DK=new A.a(17,"ice_shard")
+B.EY=new A.a(21,"rest")
+B.Fe=new A.a(23,"aqua_ring")
+B.FP=new A.a(27,"aurora_beam")
+B.op=new A.a(31,"aqua_jet")
+B.atb=new A.a(37,"take_down")
+B.auq=new A.a(41,"dive")
+B.Hk=new A.a(43,"aqua_tail")
+B.awX=new A.a(47,"ice_beam")
+B.ayl=new A.a(51,"safeguard")
+B.ayK=new A.a(53,"hail")
+B.aJs=s([B.uJ,B.la,B.aBJ,B.CU,B.D9,B.DK,B.EY,B.Fe,B.FP,B.op,B.or,B.atb,B.auq,B.Hk,B.awX,B.ayl,B.ayK],t._)
+B.aSZ=new A.ab(86,"Seel",B.bC,65,45,55,45,70,45,190,65,1.1,90,1,!1,!1,!1,!1,!1,2,34,87,B.aJs,"thick_fat","hydration","ice_body",!0)
+B.jg=s([B.aj,B.aA],t.U)
+B.br=new A.a(1,"scratch")
+B.dt=new A.a(1,"ember")
+B.fd=new A.a(7,"ember")
+B.vA=new A.a(9,"taunt")
+B.Dj=new A.a(14,"mach_punch")
+B.Dy=new A.a(16,"fury_swipes")
+B.uC=new A.a(19,"flame_wheel")
+B.FI=new A.a(26,"feint")
+B.aqj=new A.a(29,"torment")
+B.GO=new A.a(36,"close_combat")
+B.atG=new A.a(39,"fire_spin")
+B.awn=new A.a(46,"acrobatics")
+B.axB=new A.a(49,"slack_off")
+B.azr=new A.a(56,"flare_blitz")
+B.aM1=s([B.br,B.b3,B.dt,B.fd,B.vA,B.Dj,B.Dy,B.uC,B.FI,B.aqj,B.GO,B.atG,B.awn,B.axB,B.azr],t._)
+B.aT_=new A.ab(391,"Monferno",B.jg,64,78,52,78,52,81,45,142,0.9,22,2,!0,!1,!1,!1,!1,14,36,392,B.aM1,"blaze",null,"iron_fist",!1)
+B.aGW=s([B.aH,B.aM],t.U)
+B.Eg=new A.a(1,"ice_fang")
+B.uG=new A.a(1,"fire_fang")
+B.uP=new A.a(1,"thunder_fang")
+B.EE=new A.a(1,"wing_attack")
+B.hG=new A.a(1,"supersonic")
 B.j9=new A.a(1,"bite")
+B.ane=new A.a(1,"scary_face")
+B.aCc=new A.a(9,"roar")
+B.DD=new A.a(17,"agility")
+B.aoK=new A.a(25,"ancient_power")
+B.ar9=new A.a(33,"crunch")
+B.axA=new A.a(49,"sky_drop")
+B.azJ=new A.a(57,"iron_head")
+B.aAV=new A.a(65,"hyper_beam")
+B.aBo=new A.a(73,"rock_slide")
+B.aBL=new A.a(81,"giga_impact")
+B.aGq=s([B.Eg,B.uG,B.uP,B.EE,B.hG,B.j9,B.ane,B.aCc,B.DD,B.aoK,B.ar9,B.ou,B.axA,B.azJ,B.aAV,B.aBo,B.aBL],t._)
+B.aT0=new A.ab(142,"Aerodactyl",B.aGW,80,105,65,60,75,130,45,180,1.8,59,1,!1,!0,!1,!1,!1,25,null,null,B.aGq,"rock_head","pressure","unnerve",!0)
+B.J3=s([B.c1],t.U)
+B.fL=new A.a(1,"wrap")
+B.Ez=new A.a(1,"thunder_wave")
+B.EC=new A.a(1,"twister")
+B.vj=new A.a(5,"thunder_wave")
+B.ui=new A.a(11,"twister")
+B.uq=new A.a(15,"dragon_rage")
+B.uT=new A.a(21,"slam")
+B.ol=new A.a(25,"agility")
+B.Gy=new A.a(33,"dragon_tail")
+B.H4=new A.a(39,"aqua_tail")
+B.HA=new A.a(47,"dragon_rush")
+B.I1=new A.a(53,"safeguard")
+B.Ih=new A.a(61,"dragon_dance")
+B.Ik=new A.a(67,"outrage")
+B.Io=new A.a(75,"hyper_beam")
+B.aKr=s([B.fL,B.b3,B.Ez,B.EC,B.vj,B.ui,B.uq,B.uT,B.ol,B.Gy,B.H4,B.HA,B.I1,B.Ih,B.Ik,B.Io],t._)
+B.aT1=new A.ab(148,"Dragonair",B.J3,61,84,65,70,70,70,45,147,4,16.5,2,!1,!1,!0,!1,!1,30,55,149,B.aKr,"shed_skin",null,"marvel_scale",!0)
+B.lf=s([B.bk,B.aK],t.U)
+B.l4=new A.a(1,"disable")
+B.Ee=new A.a(1,"foresight")
+B.lc=new A.a(5,"supersonic")
+B.CQ=new A.a(11,"confusion")
+B.DL=new A.a(17,"leech_life")
+B.Fo=new A.a(23,"stun_spore")
+B.l9=new A.a(25,"psybeam")
+B.Gb=new A.a(29,"sleep_powder")
+B.as6=new A.a(35,"signal_beam")
+B.atj=new A.a(37,"zen_headbutt")
+B.auD=new A.a(41,"poison_fang")
+B.ax0=new A.a(47,"psychic")
+B.aFA=s([B.ac,B.l4,B.Ee,B.lc,B.CQ,B.hC,B.DL,B.Fo,B.l9,B.Gb,B.as6,B.atj,B.auD,B.ax0],t._)
+B.aT2=new A.ab(48,"Venonat",B.lf,60,55,50,40,55,45,190,61,1,30,1,!1,!1,!1,!1,!1,2,31,49,B.aFA,"compound_eyes","tinted_lens","run_away",!0)
+B.ji=s([B.aL],t.U)
+B.Ip=new A.a(7,"astonish")
+B.D6=new A.a(12,"mud_slap")
+B.l3=new A.a(15,"magnitude")
+B.DU=new A.a(18,"bulldoze")
+B.Fp=new A.a(23,"sucker_punch")
+B.apf=new A.a(26,"mud_bomb")
+B.aq0=new A.a(29,"earth_power")
+B.arI=new A.a(34,"dig")
+B.H_=new A.a(37,"slash")
+B.au_=new A.a(40,"earthquake")
+B.aw0=new A.a(45,"fissure")
+B.aDE=s([B.br,B.jb,B.lb,B.Ip,B.D6,B.l3,B.DU,B.Fp,B.apf,B.aq0,B.arI,B.H_,B.au_,B.aw0],t._)
+B.aT3=new A.ab(50,"Diglett",B.ji,10,55,25,35,45,95,255,53,0.2,0.8,1,!1,!1,!1,!1,!1,2,26,51,B.aDE,"sand_veil","arena_trap","sand_force",!0)
+B.dX=s([B.G],t.U)
+B.Ey=new A.a(1,"switcheroo")
 B.amO=new A.a(1,"fake_out")
-B.Ik=new A.a(6,"bite")
-B.II=new A.a(9,"fake_out")
-B.Dh=new A.a(14,"fury_swipes")
+B.Il=new A.a(6,"bite")
+B.IJ=new A.a(9,"fake_out")
+B.Di=new A.a(14,"fury_swipes")
 B.o9=new A.a(17,"screech")
-B.F3=new A.a(22,"feint_attack")
-B.FE=new A.a(25,"taunt")
+B.F4=new A.a(22,"feint_attack")
+B.FF=new A.a(25,"taunt")
 B.apU=new A.a(28,"swift")
 B.aqZ=new A.a(32,"power_gem")
-B.GZ=new A.a(37,"slash")
 B.avL=new A.a(44,"nasty_plot")
 B.axg=new A.a(49,"assurance")
 B.azm=new A.a(56,"captivate")
 B.aAp=new A.a(61,"night_slash")
 B.aB5=new A.a(68,"feint")
-B.aEy=s([B.Ex,B.br,B.b2,B.j9,B.amO,B.Ik,B.II,B.Dh,B.o9,B.F3,B.FE,B.apU,B.aqZ,B.GZ,B.avL,B.axg,B.azm,B.aAp,B.aB5],t._)
-B.aSS=new A.ab(53,"Persian",B.dX,65,70,60,65,65,115,90,154,1,2,!1,!1,!1,!1,!1,28,null,null,B.aEy,"limber","technician","unnerve",!0)
-B.vH=s([B.bk],t.U)
-B.EC=new A.a(1,"vise_grip")
-B.axF=new A.a(4,"bind")
-B.aBX=new A.a(8,"seismic_toss")
-B.uf=new A.a(11,"harden")
-B.alJ=new A.a(15,"revenge")
-B.am8=new A.a(18,"brick_break")
-B.aon=new A.a(22,"vital_throw")
-B.apj=new A.a(26,"submission")
-B.aqm=new A.a(29,"x_scissor")
-B.arw=new A.a(33,"storm_throw")
-B.asC=new A.a(36,"thrash")
-B.auf=new A.a(40,"swords_dance")
-B.avz=new A.a(43,"superpower")
-B.awR=new A.a(47,"guillotine")
-B.aLT=s([B.EC,B.fc,B.axF,B.aBX,B.uf,B.alJ,B.am8,B.aon,B.apj,B.aqm,B.arw,B.asC,B.auf,B.avz,B.awR],t._)
-B.aST=new A.ab(127,"Pinsir",B.vH,65,125,100,55,70,85,45,175,1.5,1,!1,!1,!1,!1,!1,25,null,null,B.aLT,"hyper_cutter","mold_breaker","moxie",!0)
-B.cT=s([B.aj],t.U)
-B.l7=new A.a(1,"smokescreen")
-B.vn=new A.a(6,"smokescreen")
-B.o1=new A.a(10,"ember")
-B.ed=new A.a(13,"quick_attack")
-B.EG=new A.a(20,"flame_wheel")
-B.Fs=new A.a(24,"defense_curl")
-B.v5=new A.a(31,"swift")
-B.GJ=new A.a(35,"flame_charge")
-B.auY=new A.a(42,"lava_plume")
-B.awv=new A.a(46,"flamethrower")
-B.ayM=new A.a(53,"inferno")
-B.azO=new A.a(57,"rollout")
-B.aAP=new A.a(64,"double_edge")
-B.aB4=new A.a(68,"eruption")
-B.aHZ=s([B.ac,B.b3,B.l7,B.vn,B.o1,B.ed,B.EG,B.Fs,B.v5,B.GJ,B.auY,B.awv,B.ayM,B.azO,B.aAP,B.aB4],t._)
-B.aSU=new A.ab(156,"Quilava",B.cT,58,64,58,80,65,80,45,142,0.9,2,!0,!1,!1,!1,!1,14,36,157,B.aHZ,"blaze",null,"flash_fire",!1)
-B.fe=s([B.ak,B.aK],t.U)
+B.aEy=s([B.Ey,B.br,B.b2,B.j9,B.amO,B.Il,B.IJ,B.Di,B.o9,B.F4,B.FF,B.apU,B.aqZ,B.H_,B.avL,B.axg,B.azm,B.aAp,B.aB5],t._)
+B.aT4=new A.ab(53,"Persian",B.dX,65,70,60,65,65,115,90,154,1,32,2,!1,!1,!1,!1,!1,28,null,null,B.aEy,"limber","technician","unnerve",!0)
+B.aA9=new A.a(5,"ember")
+B.aBY=new A.a(8,"smokescreen")
+B.alf=new A.a(12,"feint_attack")
+B.alC=new A.a(15,"fire_spin")
+B.ami=new A.a(19,"clear_smog")
+B.aob=new A.a(22,"flame_burst")
+B.apc=new A.a(26,"confuse_ray")
+B.aq1=new A.a(29,"fire_punch")
+B.ass=new A.a(36,"lava_plume")
+B.av4=new A.a(42,"sunny_day")
+B.axp=new A.a(49,"flamethrower")
+B.az6=new A.a(55,"fire_blast")
+B.aHl=s([B.Es,B.b3,B.dt,B.aA9,B.aBY,B.alf,B.alC,B.ami,B.aob,B.apc,B.aq1,B.ass,B.av4,B.axp,B.az6],t._)
+B.aT5=new A.ab(126,"Magmar",B.cU,65,95,57,100,85,93,45,173,1.3,44.5,1,!1,!1,!1,!1,!1,28,null,null,B.aHl,"flame_body",null,"vital_spirit",!0)
+B.anz=new A.a(1,"toxic_spikes")
+B.jd=new A.a(1,"withdraw")
+B.an7=new A.a(1,"protect")
+B.amE=new A.a(1,"aurora_beam")
+B.alv=new A.a(13,"spike_cannon")
+B.apQ=new A.a(28,"spikes")
+B.ayw=new A.a(52,"icicle_crash")
+B.aE7=s([B.anz,B.jd,B.hG,B.an7,B.amE,B.alv,B.apQ,B.ayw],t._)
+B.aT6=new A.ab(91,"Cloyster",B.oB,50,95,180,85,45,70,60,184,1.5,132.5,2,!1,!1,!1,!1,!1,28,null,null,B.aE7,"shell_armor","skill_link","overcoat",!0)
+B.hI=s([B.a5],t.U)
+B.dW=new A.a(1,"pound")
+B.anb=new A.a(1,"reflect_type")
+B.EA=new A.a(1,"transform")
+B.al1=new A.a(10,"mega_punch")
+B.anL=new A.a(20,"metronome")
+B.aqs=new A.a(30,"psychic")
+B.atW=new A.a(40,"barrier")
+B.axP=new A.a(50,"ancient_power")
+B.aAf=new A.a(60,"amnesia")
+B.aBe=new A.a(70,"me_first")
+B.aBK=new A.a(80,"baton_pass")
+B.aC2=new A.a(90,"nasty_plot")
+B.akV=new A.a(100,"aura_sphere")
+B.aLZ=s([B.dW,B.anb,B.EA,B.al1,B.anL,B.aqs,B.atW,B.axP,B.aAf,B.aBe,B.aBK,B.aC2,B.akV],t._)
+B.aT7=new A.ab(151,"Mew",B.hI,100,100,100,100,100,100,45,270,0.4,4,1,!1,!1,!1,!1,!0,50,null,null,B.aLZ,"synchronize",null,null,!0)
+B.vk=new A.a(5,"withdraw")
+B.vv=new A.a(9,"absorb")
+B.um=new A.a(13,"razor_leaf")
+B.ux=new A.a(17,"curse")
+B.EO=new A.a(21,"bite")
+B.ap_=new A.a(25,"mega_drain")
+B.aq4=new A.a(29,"leech_seed")
+B.GC=new A.a(33,"synthesis")
+B.v8=new A.a(37,"crunch")
+B.auu=new A.a(41,"giga_drain")
+B.aw5=new A.a(45,"leaf_storm")
+B.aGO=s([B.ac,B.vk,B.vv,B.um,B.ux,B.EO,B.ap_,B.aq4,B.GC,B.v8,B.auu,B.aw5],t._)
+B.aT8=new A.ab(387,"Turtwig",B.dY,55,68,64,45,55,31,45,64,0.4,10.2,1,!0,!1,!1,!1,!1,5,18,388,B.aGO,"overgrow",null,"shell_armor",!1)
+B.aGX=s([B.c1,B.aM],t.U)
+B.Ed=new A.a(1,"fire_punch")
+B.anx=new A.a(1,"thunder_punch")
+B.anc=new A.a(1,"roost")
+B.azk=new A.a(55,"wing_attack")
+B.aBM=new A.a(81,"hurricane")
+B.aI6=s([B.Ed,B.anx,B.anc,B.fL,B.b3,B.Ez,B.EC,B.vj,B.ui,B.uq,B.uT,B.ol,B.Gy,B.H4,B.HA,B.I1,B.azk,B.Ih,B.Ik,B.Io,B.aBM],t._)
+B.aT9=new A.ab(149,"Dragonite",B.aGX,91,134,95,100,100,80,45,270,2.2,210,3,!1,!1,!0,!1,!1,55,null,null,B.aI6,"inner_focus",null,"multiscale",!0)
 B.j8=new A.a(1,"absorb")
-B.Ic=new A.a(5,"sweet_scent")
-B.IF=new A.a(9,"acid")
-B.hC=new A.a(13,"poison_powder")
-B.Dr=new A.a(15,"stun_spore")
-B.DQ=new A.a(17,"sleep_powder")
+B.Id=new A.a(5,"sweet_scent")
+B.IG=new A.a(9,"acid")
+B.Ds=new A.a(15,"stun_spore")
+B.DR=new A.a(17,"sleep_powder")
 B.anW=new A.a(21,"mega_drain")
 B.aoY=new A.a(25,"lucky_chant")
 B.aq7=new A.a(29,"natural_gift")
 B.ark=new A.a(33,"moonlight")
 B.asV=new A.a(37,"giga_drain")
 B.auC=new A.a(41,"petal_dance")
-B.aJ1=s([B.j8,B.Ic,B.IF,B.hC,B.Dr,B.DQ,B.anW,B.aoY,B.aq7,B.ark,B.asV,B.auC],t._)
-B.aSV=new A.ab(43,"Oddish",B.fe,45,50,55,75,65,30,255,64,0.5,1,!1,!1,!1,!1,!1,2,21,44,B.aJ1,"chlorophyll",null,"run_away",!0)
-B.ji=s([B.aL],t.U)
-B.jb=new A.a(1,"sand_attack")
-B.lb=new A.a(4,"growl")
-B.Io=new A.a(7,"astonish")
-B.D5=new A.a(12,"mud_slap")
-B.l3=new A.a(15,"magnitude")
-B.DT=new A.a(18,"bulldoze")
-B.Fo=new A.a(23,"sucker_punch")
-B.apf=new A.a(26,"mud_bomb")
-B.aq0=new A.a(29,"earth_power")
-B.arI=new A.a(34,"dig")
-B.au_=new A.a(40,"earthquake")
-B.aw0=new A.a(45,"fissure")
-B.aDE=s([B.br,B.jb,B.lb,B.Io,B.D5,B.l3,B.DT,B.Fo,B.apf,B.aq0,B.arI,B.GZ,B.au_,B.aw0],t._)
-B.aSW=new A.ab(50,"Diglett",B.ji,10,55,25,35,45,95,255,53,0.2,1,!1,!1,!1,!1,!1,2,26,51,B.aDE,"sand_veil","arena_trap","sand_force",!0)
-B.Iv=new A.a(7,"supersonic")
-B.CS=new A.a(11,"horn_attack")
-B.uz=new A.a(17,"water_pulse")
-B.ER=new A.a(21,"flail")
-B.FN=new A.a(27,"aqua_ring")
-B.Gj=new A.a(31,"fury_attack")
-B.atd=new A.a(37,"waterfall")
-B.auw=new A.a(41,"horn_drill")
-B.awL=new A.a(47,"agility")
-B.aym=new A.a(51,"soak")
-B.azL=new A.a(57,"megahorn")
-B.aKM=s([B.ee,B.cb,B.fK,B.Iv,B.CS,B.uz,B.ER,B.FN,B.Gj,B.atd,B.auw,B.awL,B.aym,B.azL],t._)
-B.aSX=new A.ab(118,"Goldeen",B.bC,45,67,60,35,50,63,225,64,0.6,1,!1,!1,!1,!1,!1,2,33,119,B.aKM,"swift_swim","water_veil","lightning_rod",!0)
-B.J4=s([B.aj,B.aM],t.U)
+B.aJ1=s([B.j8,B.Id,B.IG,B.hC,B.Ds,B.DR,B.anW,B.aoY,B.aq7,B.ark,B.asV,B.auC],t._)
+B.aTa=new A.ab(43,"Oddish",B.fe,45,50,55,75,65,30,255,64,0.5,5.4,1,!1,!1,!1,!1,!1,2,21,44,B.aJ1,"chlorophyll",null,"run_away",!0)
+B.Eq=new A.a(1,"roar")
+B.uM=new A.a(1,"odor_sleuth")
+B.arM=new A.a(34,"extreme_speed")
+B.aJe=s([B.uP,B.j9,B.Eq,B.uM,B.uG,B.arM],t._)
+B.aTb=new A.ab(59,"Arcanine",B.cU,90,110,80,100,80,95,75,194,1.9,155,2,!1,!1,!1,!1,!1,24,null,null,B.aJe,"intimidate","flash_fire","justified",!0)
+B.Em=new A.a(1,"pluck")
+B.I9=new A.a(5,"leer")
+B.IK=new A.a(9,"fury_attack")
+B.o7=new A.a(13,"pursuit")
+B.DC=new A.a(17,"aerial_ace")
+B.aow=new A.a(23,"mirror_move")
+B.v1=new A.a(29,"agility")
+B.as0=new A.a(35,"assurance")
+B.auE=new A.a(41,"roost")
+B.HB=new A.a(47,"drill_peck")
+B.ayF=new A.a(53,"drill_run")
+B.aFK=s([B.Em,B.ee,B.b2,B.b3,B.uH,B.I9,B.IK,B.o7,B.DC,B.aow,B.v1,B.as0,B.auE,B.HB,B.ayF],t._)
+B.aTc=new A.ab(22,"Fearow",B.fN,65,90,65,61,61,100,90,155,1.2,38,2,!1,!1,!1,!1,!1,20,null,null,B.aFK,"keen_eye",null,"sniper",!0)
+B.J2=s([B.bk,B.aM],t.U)
+B.hD=new A.a(1,"confusion")
+B.akY=new A.a(10,"confusion")
+B.alj=new A.a(12,"poison_powder")
+B.alm=new A.a(12,"stun_spore")
+B.all=new A.a(12,"sleep_powder")
+B.alQ=new A.a(16,"gust")
+B.amf=new A.a(18,"supersonic")
+B.aop=new A.a(22,"whirlwind")
+B.aoH=new A.a(24,"psybeam")
+B.apO=new A.a(28,"silver_wind")
+B.aqu=new A.a(30,"tailwind")
+B.arS=new A.a(34,"rage_powder")
+B.GS=new A.a(36,"safeguard")
+B.atX=new A.a(40,"captivate")
+B.auO=new A.a(42,"bug_buzz")
+B.awF=new A.a(46,"quiver_dance")
+B.aIA=s([B.hD,B.akY,B.alj,B.alm,B.all,B.alQ,B.amf,B.aop,B.aoH,B.apO,B.aqu,B.arS,B.GS,B.atX,B.auO,B.awF],t._)
+B.aTd=new A.ab(12,"Butterfree",B.J2,60,45,50,90,80,70,45,178,1.1,32,3,!1,!1,!1,!1,!1,10,null,null,B.aIA,"compound_eyes",null,"tinted_lens",!0)
+B.ow=new A.a(6,"water_gun")
+B.vt=new A.a(8,"rage")
+B.o3=new A.a(13,"bite")
+B.ut=new A.a(15,"scary_face")
+B.anI=new A.a(20,"ice_fang")
+B.aoa=new A.a(22,"flail")
+B.apo=new A.a(27,"crunch")
+B.apZ=new A.a(29,"chip_away")
+B.v6=new A.a(34,"slash")
+B.asv=new A.a(36,"screech")
+B.Hf=new A.a(41,"thrash")
+B.axa=new A.a(48,"superpower")
+B.axX=new A.a(50,"hydro_pump")
+B.aF0=s([B.br,B.b3,B.ow,B.vt,B.o3,B.ut,B.anI,B.aoa,B.apo,B.apZ,B.v6,B.asv,B.Hf,B.Hk,B.axa,B.axX],t._)
+B.aTe=new A.ab(158,"Totodile",B.bC,50,65,64,44,48,43,45,63,0.6,9.5,1,!0,!1,!1,!1,!1,5,18,159,B.aF0,"torrent",null,"sheer_force",!1)
+B.J5=s([B.aj,B.aM],t.U)
 B.amN=new A.a(1,"dragon_claw")
 B.anh=new A.a(1,"shadow_claw")
 B.amA=new A.a(1,"air_slash")
-B.dt=new A.a(1,"ember")
-B.fd=new A.a(7,"ember")
 B.uc=new A.a(10,"smokescreen")
-B.DF=new A.a(17,"dragon_rage")
-B.EZ=new A.a(21,"scary_face")
-B.FW=new A.a(28,"fire_fang")
-B.Gp=new A.a(32,"flame_burst")
+B.DG=new A.a(17,"dragon_rage")
+B.F_=new A.a(21,"scary_face")
+B.FX=new A.a(28,"fire_fang")
+B.Gq=new A.a(32,"flame_burst")
 B.asF=new A.a(36,"wing_attack")
 B.auH=new A.a(41,"slash")
-B.HC=new A.a(47,"flamethrower")
+B.HD=new A.a(47,"flamethrower")
 B.azq=new A.a(56,"fire_spin")
 B.aAA=new A.a(62,"inferno")
 B.aBh=new A.a(71,"heat_wave")
 B.aBt=new A.a(77,"flare_blitz")
-B.aKf=s([B.amN,B.anh,B.amA,B.br,B.b2,B.dt,B.l7,B.fd,B.uc,B.DF,B.EZ,B.FW,B.Gp,B.asF,B.auH,B.HC,B.azq,B.aAA,B.aBh,B.aBt],t._)
-B.aSY=new A.ab(6,"Charizard",B.J4,78,84,78,109,85,100,45,240,1.7,3,!0,!1,!1,!1,!1,36,null,null,B.aKf,"blaze",null,"solar_power",!0)
-B.oe=new A.a(1,"helping_hand")
-B.hH=new A.a(5,"sand_attack")
-B.aC7=new A.a(9,"growl")
-B.DE=new A.a(17,"bite")
-B.anQ=new A.a(21,"covet")
-B.FD=new A.a(25,"take_down")
-B.apY=new A.a(29,"charm")
-B.ar6=new A.a(33,"baton_pass")
-B.asO=new A.a(37,"double_edge")
-B.ot=new A.a(41,"last_resort")
-B.awm=new A.a(45,"trump_card")
-B.aIO=s([B.oe,B.ac,B.cb,B.hH,B.aC7,B.ed,B.DE,B.anQ,B.FD,B.apY,B.ar6,B.asO,B.ot,B.awm],t._)
-B.aSZ=new A.ab(133,"Eevee",B.dX,55,55,50,45,65,55,45,65,0.3,1,!1,!1,!1,!1,!1,2,null,134,B.aIO,"run_away","adaptability","anticipation",!0)
-B.aGW=s([B.aH,B.aM],t.U)
-B.Ef=new A.a(1,"ice_fang")
-B.uG=new A.a(1,"fire_fang")
-B.uP=new A.a(1,"thunder_fang")
-B.ED=new A.a(1,"wing_attack")
-B.hG=new A.a(1,"supersonic")
-B.ane=new A.a(1,"scary_face")
-B.aCc=new A.a(9,"roar")
-B.DC=new A.a(17,"agility")
-B.aoK=new A.a(25,"ancient_power")
-B.ar9=new A.a(33,"crunch")
-B.ou=new A.a(41,"take_down")
-B.axA=new A.a(49,"sky_drop")
-B.azJ=new A.a(57,"iron_head")
-B.aAV=new A.a(65,"hyper_beam")
-B.aBo=new A.a(73,"rock_slide")
-B.aBL=new A.a(81,"giga_impact")
-B.aGq=s([B.Ef,B.uG,B.uP,B.ED,B.hG,B.j9,B.ane,B.aCc,B.DC,B.aoK,B.ar9,B.ou,B.axA,B.azJ,B.aAV,B.aBo,B.aBL],t._)
-B.aT_=new A.ab(142,"Aerodactyl",B.aGW,80,105,65,60,75,130,45,180,1.8,1,!1,!0,!1,!1,!1,25,null,null,B.aGq,"rock_head","pressure","unnerve",!0)
-B.amk=new A.a(19,"fury_attack")
-B.anV=new A.a(21,"horn_attack")
-B.Fw=new A.a(25,"helping_hand")
-B.Gn=new A.a(31,"toxic_spikes")
-B.Gy=new A.a(33,"flatter")
-B.GY=new A.a(37,"poison_jab")
-B.Hk=new A.a(43,"captivate")
-B.aw3=new A.a(45,"horn_drill")
-B.aLU=s([B.b3,B.ee,B.eD,B.oy,B.o6,B.amk,B.anV,B.Fw,B.Gn,B.Gy,B.GY,B.Hk,B.aw3],t._)
-B.aT0=new A.ab(32,"Nidoran\u2642",B.eE,46,57,40,40,40,50,235,55,0.5,1,!1,!1,!1,!1,!1,2,16,33,B.aLU,"poison_point","rivalry","hustle",!0)
-B.amV=new A.a(1,"gyro_ball")
-B.avm=new A.a(43,"lava_plume")
-B.ax7=new A.a(48,"flamethrower")
-B.azu=new A.a(56,"inferno")
-B.aAs=new A.a(61,"rollout")
-B.aB9=new A.a(69,"double_edge")
-B.aBq=new A.a(74,"eruption")
-B.aKK=s([B.amV,B.ac,B.b3,B.l7,B.dt,B.vn,B.o1,B.ed,B.EG,B.Fs,B.v5,B.GJ,B.avm,B.ax7,B.azu,B.aAs,B.aB9,B.aBq],t._)
-B.aT1=new A.ab(157,"Typhlosion",B.cT,78,84,78,109,85,100,45,240,1.7,3,!0,!1,!1,!1,!1,36,null,null,B.aKK,"blaze",null,"flash_fire",!1)
-B.jc=new A.a(1,"vine_whip")
-B.amT=new A.a(1,"growth")
-B.fL=new A.a(1,"wrap")
-B.Ir=new A.a(7,"growth")
-B.CY=new A.a(11,"wrap")
-B.l2=new A.a(13,"sleep_powder")
-B.Do=new A.a(15,"poison_powder")
-B.DS=new A.a(17,"stun_spore")
-B.Fb=new A.a(23,"acid")
-B.uZ=new A.a(27,"knock_off")
-B.Gb=new A.a(29,"sweet_scent")
-B.GK=new A.a(35,"gastro_acid")
-B.H4=new A.a(39,"razor_leaf")
-B.va=new A.a(41,"slam")
-B.HF=new A.a(47,"wring_out")
-B.aJ6=s([B.jc,B.amT,B.fL,B.Ir,B.CY,B.l2,B.Do,B.DS,B.Fb,B.uZ,B.Gb,B.GK,B.H4,B.va,B.HF],t._)
-B.aT2=new A.ab(70,"Weepinbell",B.fe,65,90,50,85,45,55,120,137,1,2,!1,!1,!1,!1,!1,21,null,71,B.aJ6,"chlorophyll",null,"gluttony",!0)
-B.J3=s([B.df],t.U)
-B.oj=new A.a(1,"sing")
-B.uF=new A.a(1,"double_slap")
-B.an3=new A.a(1,"minimize")
-B.an2=new A.a(1,"metronome")
-B.aIJ=s([B.oj,B.uF,B.an3,B.an2],t._)
-B.aT3=new A.ab(36,"Clefable",B.J3,95,70,73,95,90,60,25,217,1.3,2,!1,!1,!1,!1,!1,26,null,null,B.aIJ,"cute_charm","magic_guard","unaware",!0)
-B.anp=new A.a(1,"splash")
-B.alL=new A.a(15,"tackle")
-B.aqp=new A.a(30,"flail")
-B.aLc=s([B.anp,B.alL,B.aqp],t._)
-B.aT4=new A.ab(129,"Magikarp",B.bC,20,10,55,15,20,80,255,40,0.9,1,!1,!1,!0,!1,!1,2,20,130,B.aLc,"swift_swim",null,"rattled",!0)
-B.Ej=new A.a(1,"megahorn")
-B.EI=new A.a(20,"fury_cutter")
-B.uX=new A.a(25,"water_pulse")
-B.G1=new A.a(28,"revenge")
-B.Gw=new A.a(33,"aqua_jet")
-B.asy=new A.a(36,"slash")
-B.atn=new A.a(38,"encore")
-B.avU=new A.a(45,"aqua_tail")
-B.ay0=new A.a(50,"retaliate")
-B.I3=new A.a(57,"swords_dance")
-B.aAz=new A.a(62,"hydro_pump")
-B.aCT=s([B.Ej,B.ac,B.cb,B.eC,B.fK,B.ld,B.vq,B.l1,B.o5,B.uy,B.EI,B.uX,B.G1,B.Gw,B.asy,B.atn,B.avU,B.ay0,B.I3,B.aAz],t._)
-B.aT5=new A.ab(503,"Samurott",B.bC,95,100,85,108,70,70,45,238,1.5,3,!0,!1,!1,!1,!1,36,null,null,B.aCT,"torrent",null,"shell_armor",!1)
-B.Iw=new A.a(7,"tail_whip")
-B.amm=new A.a(19,"fury_swipes")
-B.EN=new A.a(21,"bite")
-B.v8=new A.a(37,"crunch")
-B.awd=new A.a(45,"poison_fang")
-B.aIu=s([B.b2,B.br,B.Iw,B.oy,B.o6,B.amm,B.EN,B.Fw,B.Gn,B.Gy,B.v8,B.Hk,B.awd],t._)
-B.aT6=new A.ab(29,"Nidoran\u2640",B.eE,55,47,52,40,40,41,235,55,0.4,1,!1,!1,!1,!1,!1,2,16,30,B.aIu,"poison_point","rivalry","hustle",!0)
-B.dW=new A.a(1,"pound")
-B.og=new A.a(1,"poison_gas")
-B.HM=new A.a(4,"harden")
-B.Is=new A.a(7,"mud_slap")
-B.D2=new A.a(12,"disable")
-B.Dq=new A.a(15,"sludge")
-B.DW=new A.a(18,"minimize")
-B.EW=new A.a(21,"mud_bomb")
-B.FL=new A.a(26,"sludge_bomb")
-B.G5=new A.a(29,"fling")
-B.Gt=new A.a(32,"screech")
-B.H_=new A.a(37,"sludge_wave")
-B.atU=new A.a(40,"acid_armor")
-B.avj=new A.a(43,"gunk_shot")
-B.ax9=new A.a(48,"memento")
-B.aLE=s([B.dW,B.og,B.HM,B.Is,B.D2,B.Dq,B.DW,B.EW,B.FL,B.G5,B.Gt,B.H_,B.atU,B.avj,B.ax9],t._)
-B.aT7=new A.ab(88,"Grimer",B.eE,80,80,50,40,50,25,190,65,0.9,1,!1,!1,!1,!1,!1,2,38,89,B.aLE,"stench","sticky_hold","poison_touch",!0)
-B.alN=new A.a(16,"dragon_rage")
-B.uD=new A.a(19,"scary_face")
-B.aoU=new A.a(25,"fire_fang")
-B.FX=new A.a(28,"flame_burst")
-B.v6=new A.a(34,"slash")
-B.asS=new A.a(37,"flamethrower")
-B.avh=new A.a(43,"fire_spin")
-B.Hw=new A.a(46,"inferno")
-B.aES=s([B.br,B.b2,B.fd,B.uc,B.alN,B.uD,B.aoU,B.FX,B.v6,B.asS,B.avh,B.Hw],t._)
-B.aT8=new A.ab(4,"Charmander",B.cT,39,52,43,60,50,65,45,62,0.6,1,!0,!1,!1,!1,!1,2,16,5,B.aES,"blaze",null,"solar_power",!0)
-B.Ep=new A.a(1,"roar")
-B.uM=new A.a(1,"odor_sleuth")
-B.arM=new A.a(34,"extreme_speed")
-B.aJe=s([B.uP,B.j9,B.Ep,B.uM,B.uG,B.arM],t._)
-B.aT9=new A.ab(59,"Arcanine",B.cT,90,110,80,100,80,95,75,194,1.9,2,!1,!1,!1,!1,!1,24,null,null,B.aJe,"intimidate","flash_fire","justified",!0)
-B.jh=s([B.bg],t.U)
-B.E9=new A.a(1,"charge")
-B.Es=new A.a(1,"sonic_boom")
-B.anm=new A.a(1,"spark")
-B.Id=new A.a(5,"tackle")
-B.IC=new A.a(8,"sonic_boom")
-B.D6=new A.a(12,"spark")
-B.Dp=new A.a(15,"rollout")
-B.E5=new A.a(19,"screech")
-B.F1=new A.a(22,"charge_beam")
-B.uY=new A.a(26,"light_screen")
-B.G4=new A.a(29,"electro_ball")
-B.as5=new A.a(35,"self_destruct")
-B.aue=new A.a(40,"swift")
-B.awA=new A.a(46,"magnet_rise")
-B.ayi=new A.a(51,"gyro_ball")
-B.azF=new A.a(57,"explosion")
-B.aAD=new A.a(62,"mirror_coat")
-B.aI5=s([B.E9,B.ac,B.Es,B.anm,B.Id,B.IC,B.D6,B.Dp,B.E5,B.F1,B.uY,B.G4,B.as5,B.aue,B.awA,B.ayi,B.azF,B.aAD],t._)
-B.aTa=new A.ab(101,"Electrode",B.jh,60,50,70,80,80,150,60,168,1.2,2,!1,!1,!1,!1,!1,30,null,null,B.aI5,"soundproof","static","aftermath",!0)
-B.Ek=new A.a(1,"night_slash")
-B.EA=new A.a(1,"tri_attack")
-B.aph=new A.a(26,"sand_tomb")
-B.apH=new A.a(28,"mud_bomb")
-B.arb=new A.a(33,"earth_power")
-B.atY=new A.a(40,"dig")
-B.Ht=new A.a(45,"slash")
-B.axT=new A.a(50,"earthquake")
-B.azG=new A.a(57,"fissure")
-B.aFr=s([B.Ek,B.EA,B.br,B.jb,B.b2,B.lb,B.Io,B.D5,B.l3,B.DT,B.Fo,B.aph,B.apH,B.arb,B.atY,B.Ht,B.axT,B.azG],t._)
-B.aTb=new A.ab(51,"Dugtrio",B.ji,35,100,50,50,70,120,50,149,0.7,2,!1,!1,!1,!1,!1,26,null,null,B.aFr,"sand_veil","arena_trap","sand_force",!0)
-B.hI=s([B.a5],t.U)
-B.uO=new A.a(1,"teleport")
-B.aGc=s([B.uO],t._)
-B.aTc=new A.ab(63,"Abra",B.hI,25,20,15,105,55,90,200,62,0.9,1,!1,!1,!1,!1,!1,2,16,64,B.aGc,"synchronize","inner_focus","magic_guard",!0)
-B.hE=new A.a(1,"defense_curl")
-B.aCb=new A.a(9,"refresh")
-B.ale=new A.a(12,"double_slap")
-B.alV=new A.a(16,"soft_boiled")
-B.anD=new A.a(20,"bestow")
-B.aov=new A.a(23,"minimize")
-B.apy=new A.a(27,"take_down")
-B.aqJ=new A.a(31,"sing")
-B.arO=new A.a(34,"fling")
-B.atp=new A.a(38,"heal_pulse")
-B.auT=new A.a(42,"egg_bomb")
-B.Hx=new A.a(46,"light_screen")
-B.axW=new A.a(50,"healing_wish")
-B.ayT=new A.a(54,"double_edge")
-B.aDh=s([B.hE,B.dW,B.b2,B.ld,B.aCb,B.ale,B.alV,B.anD,B.aov,B.apy,B.aqJ,B.arO,B.atp,B.auT,B.Hx,B.axW,B.ayT],t._)
-B.aTd=new A.ab(113,"Chansey",B.dX,250,5,5,35,105,50,30,395,1.1,1,!1,!1,!1,!1,!1,24,null,null,B.aDh,"natural_cure","serene_grace","healer",!0)
-B.Ez=new A.a(1,"transform")
-B.aGd=s([B.Ez],t._)
-B.aTe=new A.ab(132,"Ditto",B.dX,48,48,48,48,48,48,35,101,0.3,1,!1,!1,!1,!1,!1,20,null,null,B.aGd,"limber",null,"imposter",!0)
+B.aKf=s([B.amN,B.anh,B.amA,B.br,B.b2,B.dt,B.l7,B.fd,B.uc,B.DG,B.F_,B.FX,B.Gq,B.asF,B.auH,B.HD,B.azq,B.aAA,B.aBh,B.aBt],t._)
+B.aTf=new A.ab(6,"Charizard",B.J5,78,84,78,109,85,100,45,240,1.7,90.5,3,!0,!1,!1,!1,!1,36,null,null,B.aKf,"blaze",null,"solar_power",!0)
+B.Ix=new A.a(7,"tail_whip")
+B.uR=new A.a(20,"fury_swipes")
+B.aoq=new A.a(23,"bite")
+B.ava=new A.a(43,"crunch")
+B.azY=new A.a(58,"poison_fang")
+B.aKA=s([B.b2,B.br,B.Ix,B.oy,B.o6,B.uR,B.aoq,B.G0,B.GM,B.H2,B.ava,B.HS,B.azY],t._)
+B.aTg=new A.ab(30,"Nidorina",B.eE,70,62,67,55,55,56,120,128,0.8,20,2,!1,!1,!1,!1,!1,16,null,31,B.aKA,"poison_point","rivalry","hustle",!0)
 B.vJ=s([B.ar,B.a5],t.U)
 B.an9=new A.a(1,"rapid_spin")
 B.ana=new A.a(1,"recover")
 B.ant=new A.a(1,"swift")
 B.ao5=new A.a(22,"confuse_ray")
 B.aFU=s([B.eC,B.an9,B.ana,B.ant,B.ao5],t._)
-B.aTf=new A.ab(121,"Starmie",B.vJ,60,75,85,100,85,115,60,182,1.1,2,!1,!1,!1,!1,!1,26,null,null,B.aFU,"illuminate","natural_cure","analytic",!0)
-B.lf=s([B.bk,B.aK],t.U)
-B.l4=new A.a(1,"disable")
-B.Ed=new A.a(1,"foresight")
-B.lc=new A.a(5,"supersonic")
-B.CP=new A.a(11,"confusion")
-B.DK=new A.a(17,"leech_life")
-B.Fn=new A.a(23,"stun_spore")
-B.l9=new A.a(25,"psybeam")
-B.Ga=new A.a(29,"sleep_powder")
-B.as6=new A.a(35,"signal_beam")
-B.atj=new A.a(37,"zen_headbutt")
-B.auD=new A.a(41,"poison_fang")
-B.ax0=new A.a(47,"psychic")
-B.aFA=s([B.ac,B.l4,B.Ed,B.lc,B.CP,B.hC,B.DK,B.Fn,B.l9,B.Ga,B.as6,B.atj,B.auD,B.ax0],t._)
-B.aTg=new A.ab(48,"Venonat",B.lf,60,55,50,40,55,45,190,61,1,1,!1,!1,!1,!1,!1,2,31,49,B.aFA,"compound_eyes","tinted_lens","run_away",!0)
-B.I5=new A.a(5,"bubble")
-B.IA=new A.a(8,"hypnosis")
-B.o2=new A.a(11,"water_gun")
+B.aTh=new A.ab(121,"Starmie",B.vJ,60,75,85,100,85,115,60,182,1.1,80,2,!1,!1,!1,!1,!1,26,null,null,B.aFU,"illuminate","natural_cure","analytic",!0)
+B.Eo=new A.a(1,"rage")
+B.EU=new A.a(21,"ice_fang")
+B.Fu=new A.a(24,"flail")
+B.Gf=new A.a(30,"agility")
+B.aqQ=new A.a(32,"crunch")
+B.GW=new A.a(37,"chip_away")
+B.Hu=new A.a(45,"slash")
+B.ay2=new A.a(50,"screech")
+B.aA_=new A.a(58,"thrash")
+B.aAG=new A.a(63,"aqua_tail")
+B.aBl=new A.a(71,"superpower")
+B.aBs=new A.a(76,"hydro_pump")
+B.aLA=s([B.br,B.b3,B.eC,B.Eo,B.ow,B.vt,B.o3,B.ut,B.EU,B.Fu,B.Gf,B.aqQ,B.GW,B.Hu,B.ay2,B.aA_,B.aAG,B.aBl,B.aBs],t._)
+B.aTi=new A.ab(160,"Feraligatr",B.bC,85,105,100,79,83,78,45,239,2.3,88.8,3,!0,!1,!1,!1,!1,30,null,null,B.aLA,"torrent",null,"sheer_force",!1)
+B.Ib=new A.a(5,"quick_attack")
+B.ub=new A.a(10,"rage")
+B.Dg=new A.a(14,"fury_attack")
+B.E5=new A.a(19,"pursuit")
+B.Fr=new A.a(23,"uproar")
+B.FU=new A.a(28,"acupressure")
+B.arZ=new A.a(34,"tri_attack")
+B.aui=new A.a(41,"agility")
+B.ayU=new A.a(54,"endeavor")
+B.aAi=new A.a(60,"thrash")
+B.aI7=s([B.Em,B.ee,B.b2,B.eB,B.Eo,B.Ib,B.ub,B.Dg,B.E5,B.Fr,B.FU,B.arZ,B.aui,B.HB,B.ayU,B.aAi],t._)
+B.aTj=new A.ab(85,"Dodrio",B.fN,60,110,70,60,60,110,45,165,1.8,85.2,2,!1,!1,!1,!1,!1,31,null,null,B.aI7,"run_away","early_bird","tangled_feet",!0)
+B.anq=new A.a(1,"stockpile")
+B.ans=new A.a(1,"swallow")
+B.ann=new A.a(1,"spit_up")
+B.anl=new A.a(1,"sleep_powder")
+B.Ex=new A.a(1,"sweet_scent")
+B.oi=new A.a(1,"razor_leaf")
+B.aps=new A.a(27,"leaf_tornado")
+B.HF=new A.a(47,"leaf_storm")
+B.awY=new A.a(47,"leaf_blade")
+B.aIS=s([B.anq,B.ans,B.ann,B.jc,B.anl,B.Ex,B.oi,B.aps,B.HF,B.awY],t._)
+B.aTk=new A.ab(71,"Victreebel",B.fe,80,105,65,100,70,70,45,221,1.7,15.5,3,!1,!1,!1,!1,!1,36,null,null,B.aIS,"chlorophyll",null,"gluttony",!0)
+B.Is=new A.a(7,"growth")
+B.CZ=new A.a(11,"wrap")
+B.Dp=new A.a(15,"poison_powder")
+B.DT=new A.a(17,"stun_spore")
+B.Fc=new A.a(23,"acid")
+B.uZ=new A.a(27,"knock_off")
+B.Gc=new A.a(29,"sweet_scent")
+B.GL=new A.a(35,"gastro_acid")
+B.H5=new A.a(39,"razor_leaf")
+B.va=new A.a(41,"slam")
+B.HG=new A.a(47,"wring_out")
+B.aGo=s([B.jc,B.Is,B.CZ,B.l2,B.Dp,B.DT,B.Fc,B.uZ,B.Gc,B.GL,B.H5,B.va,B.HG],t._)
+B.aTl=new A.ab(69,"Bellsprout",B.fe,50,75,35,70,30,40,255,60,0.7,4,1,!1,!1,!1,!1,!1,2,21,70,B.aGo,"chlorophyll",null,"gluttony",!0)
+B.fM=new A.a(4,"tail_whip")
+B.aBF=new A.a(7,"roar")
+B.al3=new A.a(10,"quick_attack")
+B.alg=new A.a(12,"fire_spin")
+B.alA=new A.a(15,"confuse_ray")
+B.amc=new A.a(18,"imprison")
+B.anF=new A.a(20,"feint_attack")
+B.aos=new A.a(23,"flame_burst")
+B.apl=new A.a(26,"will_o_wisp")
+B.apE=new A.a(28,"hex")
+B.aqG=new A.a(31,"payback")
+B.GE=new A.a(34,"flamethrower")
+B.atF=new A.a(39,"extrasensory")
+B.auU=new A.a(42,"fire_blast")
+B.avJ=new A.a(44,"grudge")
+B.awM=new A.a(47,"captivate")
+B.axY=new A.a(50,"inferno")
+B.aJ8=s([B.dt,B.fM,B.aBF,B.al3,B.alg,B.alA,B.amc,B.anF,B.aos,B.apl,B.apE,B.aqG,B.GE,B.GS,B.atF,B.auU,B.avJ,B.awM,B.axY],t._)
+B.aTm=new A.ab(37,"Vulpix",B.cU,38,41,40,50,65,65,190,60,0.6,9.9,1,!1,!1,!1,!1,!1,2,null,38,B.aJ8,"flash_fire",null,"drought",!0)
+B.anu=new A.a(1,"swords_dance")
+B.fc=new A.a(1,"focus_energy")
+B.HP=new A.a(4,"quick_attack")
+B.CP=new A.a(10,"bite")
+B.Dz=new A.a(16,"hyper_fang")
+B.E7=new A.a(19,"sucker_punch")
+B.anM=new A.a(20,"scary_face")
+B.aoE=new A.a(24,"crunch")
+B.G3=new A.a(29,"assurance")
+B.arX=new A.a(34,"super_fang")
+B.atB=new A.a(39,"double_edge")
+B.avH=new A.a(44,"endeavor")
+B.aM8=s([B.anu,B.ac,B.cb,B.eB,B.fc,B.HP,B.eD,B.CP,B.o7,B.Dz,B.E7,B.anM,B.aoE,B.G3,B.arX,B.atB,B.avH],t._)
+B.aTn=new A.ab(20,"Raticate",B.dX,55,81,60,50,70,97,127,145,0.7,18.5,2,!1,!1,!1,!1,!1,20,null,null,B.aM8,"run_away","guts","hustle",!0)
+B.Jb=s([B.aK,B.aM],t.U)
+B.uK=new A.a(1,"leech_life")
+B.ov=new A.a(4,"supersonic")
+B.Iz=new A.a(8,"astonish")
+B.D1=new A.a(12,"bite")
+B.Dv=new A.a(15,"wing_attack")
+B.ob=new A.a(19,"confuse_ray")
+B.aoA=new A.a(23,"swift")
+B.apb=new A.a(26,"air_cutter")
+B.aqn=new A.a(30,"acrobatics")
+B.arR=new A.a(34,"mean_look")
+B.at2=new A.a(37,"poison_fang")
+B.He=new A.a(41,"haze")
+B.avT=new A.a(45,"air_slash")
+B.aKv=s([B.uK,B.ov,B.Iz,B.D1,B.Dv,B.ob,B.aoA,B.apb,B.aqn,B.arR,B.at2,B.He,B.avT],t._)
+B.aTo=new A.ab(41,"Zubat",B.Jb,40,45,35,30,40,55,255,49,0.8,7.5,1,!1,!1,!1,!1,!1,2,22,42,B.aKv,"inner_focus",null,"infiltrator",!0)
+B.anB=new A.a(1,"vacuum_wave")
+B.aAa=new A.a(5,"focus_energy")
+B.aCa=new A.a(9,"pursuit")
+B.alq=new A.a(13,"false_swipe")
+B.ao2=new A.a(21,"wing_attack")
+B.aoW=new A.a(25,"fury_cutter")
+B.Ga=new A.a(29,"slash")
+B.aro=new A.a(33,"razor_wind")
+B.asP=new A.a(37,"double_team")
+B.auM=new A.a(41,"x_scissor")
+B.awc=new A.a(45,"night_slash")
+B.axl=new A.a(49,"double_hit")
+B.ayC=new A.a(53,"air_slash")
+B.aAm=new A.a(61,"feint")
+B.aFJ=s([B.anB,B.eB,B.b3,B.aAa,B.aCa,B.alq,B.DD,B.ao2,B.aoW,B.Ga,B.aro,B.asP,B.auM,B.awc,B.axl,B.ayC,B.I4,B.aAm],t._)
+B.aTp=new A.ab(123,"Scyther",B.J2,70,110,80,55,80,105,45,100,1.5,56,1,!1,!1,!1,!1,!1,25,null,null,B.aFJ,"swarm","technician","steadfast",!0)
+B.alN=new A.a(16,"dragon_rage")
+B.aoU=new A.a(25,"fire_fang")
+B.FY=new A.a(28,"flame_burst")
+B.asS=new A.a(37,"flamethrower")
+B.avh=new A.a(43,"fire_spin")
+B.Hx=new A.a(46,"inferno")
+B.aES=s([B.br,B.b2,B.fd,B.uc,B.alN,B.uD,B.aoU,B.FY,B.v6,B.asS,B.avh,B.Hx],t._)
+B.aTq=new A.ab(4,"Charmander",B.cU,39,52,43,60,50,65,45,62,0.6,8.5,1,!0,!1,!1,!1,!1,2,16,5,B.aES,"blaze",null,"solar_power",!0)
+B.vH=s([B.bk],t.U)
+B.ja=new A.a(1,"harden")
+B.aBC=new A.a(7,"harden")
+B.Jl=s([B.ja,B.aBC],t._)
+B.aTr=new A.ab(11,"Metapod",B.vH,50,20,55,25,25,30,120,72,0.7,9.9,2,!1,!1,!1,!1,!1,7,10,12,B.Jl,"shed_skin",null,null,!0)
+B.J_=s([B.G,B.df],t.U)
+B.hE=new A.a(1,"defense_curl")
+B.uF=new A.a(1,"double_slap")
+B.aKk=s([B.oj,B.l4,B.hE,B.uF],t._)
+B.aTs=new A.ab(40,"Wigglytuff",B.J_,140,70,45,85,50,45,50,196,1,12,2,!1,!1,!1,!1,!1,24,null,null,B.aKk,"cute_charm",null,"frisk",!0)
+B.je=new A.a(3,"tail_whip")
+B.Ir=new A.a(7,"bone_club")
+B.CS=new A.a(11,"headbutt")
+B.Dd=new A.a(13,"leer")
+B.DI=new A.a(17,"focus_energy")
+B.EQ=new A.a(21,"bonemerang")
+B.Fi=new A.a(23,"rage")
+B.FQ=new A.a(27,"false_swipe")
+B.aqL=new A.a(31,"thrash")
+B.are=new A.a(33,"fling")
+B.asK=new A.a(37,"bone_rush")
+B.aut=new A.a(41,"endeavor")
+B.avd=new A.a(43,"double_edge")
+B.ax1=new A.a(47,"retaliate")
+B.aMt=s([B.b2,B.je,B.Ir,B.CS,B.Dd,B.DI,B.EQ,B.Fi,B.FQ,B.aqL,B.are,B.asK,B.aut,B.avd,B.ax1],t._)
+B.aTt=new A.ab(104,"Cubone",B.ji,50,50,95,40,50,35,190,64,0.4,6.5,1,!1,!1,!1,!1,!1,2,28,105,B.aMt,"rock_head","lightning_rod","battle_armor",!0)
+B.aqz=new A.a(31,"dragon_tail")
+B.v7=new A.a(35,"aqua_tail")
+B.aur=new A.a(41,"dragon_rush")
+B.awh=new A.a(45,"safeguard")
+B.ayf=new A.a(51,"dragon_dance")
+B.azb=new A.a(55,"outrage")
+B.aAo=new A.a(61,"hyper_beam")
+B.aFo=s([B.fL,B.b3,B.vj,B.ui,B.uq,B.uT,B.ol,B.aqz,B.v7,B.aur,B.awh,B.ayf,B.azb,B.aAo],t._)
+B.aTu=new A.ab(147,"Dratini",B.J3,41,64,45,50,50,50,45,60,1.8,3.3,1,!1,!1,!0,!1,!1,2,30,148,B.aFo,"shed_skin",null,"marvel_scale",!0)
+B.aH4=s([B.bh,B.a5],t.U)
+B.of=new A.a(1,"lick")
+B.an_=new A.a(1,"lovely_kiss")
+B.En=new A.a(1,"powder_snow")
+B.aAb=new A.a(5,"lick")
+B.aBT=new A.a(8,"lovely_kiss")
+B.al9=new A.a(11,"powder_snow")
 B.up=new A.a(15,"double_slap")
-B.DX=new A.a(18,"rain_dance")
-B.EO=new A.a(21,"body_slam")
-B.aoM=new A.a(25,"bubble_beam")
-B.apI=new A.a(28,"mud_shot")
-B.aqw=new A.a(31,"belly_drum")
-B.asa=new A.a(35,"wake_up_slap")
-B.atq=new A.a(38,"hydro_pump")
-B.auB=new A.a(41,"mud_bomb")
-B.aMi=s([B.fK,B.I5,B.IA,B.o2,B.up,B.DX,B.EO,B.aoM,B.apI,B.aqw,B.asa,B.atq,B.auB],t._)
-B.aTh=new A.ab(60,"Poliwag",B.bC,40,50,40,40,40,90,255,60,0.6,1,!1,!1,!1,!1,!1,2,25,61,B.aMi,"water_absorb","damp","swift_swim",!0)
-B.vw=new A.a(9,"ember")
-B.D9=new A.a(13,"flame_wheel")
-B.DR=new A.a(17,"stomp")
-B.ES=new A.a(21,"flame_charge")
-B.om=new A.a(25,"fire_spin")
-B.Gc=new A.a(29,"take_down")
-B.Gz=new A.a(33,"inferno")
-B.os=new A.a(37,"agility")
-B.Hc=new A.a(41,"fire_blast")
-B.Hs=new A.a(45,"bounce")
-B.HJ=new A.a(49,"flare_blitz")
-B.aLP=s([B.b2,B.ac,B.fM,B.vw,B.D9,B.DR,B.ES,B.om,B.Gc,B.Gz,B.os,B.Hc,B.Hs,B.HJ],t._)
-B.aTi=new A.ab(77,"Ponyta",B.cT,50,85,55,65,65,90,190,82,1,1,!1,!1,!1,!1,!1,2,40,78,B.aLP,"run_away","flash_fire","flame_body",!0)
-B.Ea=new A.a(1,"comet_punch")
+B.amb=new A.a(18,"ice_punch")
+B.anU=new A.a(21,"heart_stamp")
+B.aoZ=new A.a(25,"mean_look")
+B.apC=new A.a(28,"fake_tears")
+B.arA=new A.a(33,"wake_up_slap")
+B.aty=new A.a(39,"avalanche")
+B.avC=new A.a(44,"body_slam")
+B.HM=new A.a(49,"wring_out")
+B.azc=new A.a(55,"perish_song")
+B.aAh=new A.a(60,"blizzard")
+B.aEH=s([B.dW,B.of,B.an_,B.En,B.aAb,B.aBT,B.al9,B.up,B.amb,B.anU,B.aoZ,B.apC,B.arA,B.aty,B.avC,B.HM,B.azc,B.aAh],t._)
+B.aTv=new A.ab(124,"Jynx",B.aH4,65,50,35,115,95,95,45,159,1.4,40.6,1,!1,!1,!1,!1,!1,20,null,null,B.aEH,"oblivious","forewarn","dry_skin",!0)
+B.uN=new A.a(1,"poison_jab")
+B.amS=new A.a(1,"fury_cutter")
+B.aBB=new A.a(7,"fury_attack")
+B.aC8=new A.a(9,"knock_off")
+B.alo=new A.a(13,"aerial_ace")
+B.amv=new A.a(19,"slash")
+B.anO=new A.a(21,"air_cutter")
+B.ap8=new A.a(25,"swords_dance")
+B.v3=new A.a(31,"agility")
+B.arn=new A.a(33,"night_slash")
+B.asH=new A.a(37,"acrobatics")
+B.avg=new A.a(43,"feint")
+B.avZ=new A.a(45,"false_swipe")
+B.HJ=new A.a(49,"air_slash")
+B.az4=new A.a(55,"brave_bird")
+B.aJ4=s([B.uN,B.ee,B.jb,B.b3,B.amS,B.aBB,B.aC8,B.alo,B.amv,B.anO,B.ap8,B.v3,B.arn,B.asH,B.avg,B.avZ,B.HJ,B.az4],t._)
+B.aTw=new A.ab(83,"Farfetch'd",B.fN,52,90,55,58,62,60,45,132,0.8,15,1,!1,!1,!1,!1,!1,2,null,null,B.aJ4,"keen_eye","inner_focus","defiant",!0)
+B.an0=new A.a(1,"magical_leaf")
+B.an8=new A.a(1,"quick_guard")
+B.uQ=new A.a(1,"wide_guard")
+B.an6=new A.a(1,"power_swap")
+B.amU=new A.a(1,"guard_swap")
+B.E9=new A.a(1,"barrier")
+B.axG=new A.a(4,"copycat")
+B.aBV=new A.a(8,"meditate")
+B.al7=new A.a(11,"double_slap")
+B.alG=new A.a(15,"mimic")
+B.alH=new A.a(15,"psywave")
+B.ama=new A.a(18,"encore")
+B.aoc=new A.a(22,"light_screen")
+B.aol=new A.a(22,"reflect")
+B.aqg=new A.a(29,"substitute")
+B.ar1=new A.a(32,"recycle")
+B.asE=new A.a(36,"trick")
+B.atM=new A.a(39,"psychic")
+B.avw=new A.a(43,"role_play")
+B.awp=new A.a(46,"baton_pass")
+B.ay1=new A.a(50,"safeguard")
+B.aKR=s([B.an0,B.an8,B.uQ,B.an6,B.amU,B.E9,B.hD,B.axG,B.aBV,B.al7,B.alG,B.alH,B.ama,B.aoc,B.aol,B.l9,B.aqg,B.ar1,B.asE,B.atM,B.avw,B.awp,B.ay1],t._)
+B.aTx=new A.ab(122,"Mr. Mime",B.J0,40,45,65,100,120,90,45,161,1.3,54.5,1,!1,!1,!1,!1,!1,2,null,null,B.aKR,"soundproof","filter","technician",!0)
+B.HN=new A.a(4,"harden")
+B.It=new A.a(7,"mud_slap")
+B.D3=new A.a(12,"disable")
+B.Dr=new A.a(15,"sludge")
+B.DX=new A.a(18,"minimize")
+B.EX=new A.a(21,"mud_bomb")
+B.FM=new A.a(26,"sludge_bomb")
+B.G6=new A.a(29,"fling")
+B.Gu=new A.a(32,"screech")
+B.H0=new A.a(37,"sludge_wave")
+B.atU=new A.a(40,"acid_armor")
+B.avj=new A.a(43,"gunk_shot")
+B.ax9=new A.a(48,"memento")
+B.aLE=s([B.dW,B.og,B.HN,B.It,B.D3,B.Dr,B.DX,B.EX,B.FM,B.G6,B.Gu,B.H0,B.atU,B.avj,B.ax9],t._)
+B.aTy=new A.ab(88,"Grimer",B.eE,80,80,50,40,50,25,190,65,0.9,30,1,!1,!1,!1,!1,!1,2,38,89,B.aLE,"stench","sticky_hold","poison_touch",!0)
+B.vo=new A.a(7,"bubble")
+B.ud=new A.a(10,"withdraw")
+B.un=new A.a(13,"water_gun")
+B.uv=new A.a(16,"bite")
+B.amp=new A.a(19,"rapid_spin")
+B.aog=new A.a(22,"protect")
+B.apB=new A.a(28,"aqua_tail")
+B.aqK=new A.a(31,"skull_bash")
+B.arQ=new A.a(34,"iron_defense")
+B.at4=new A.a(37,"rain_dance")
+B.Ha=new A.a(40,"hydro_pump")
+B.aCZ=s([B.ac,B.fM,B.vo,B.ud,B.un,B.uv,B.amp,B.aog,B.uX,B.apB,B.aqK,B.arQ,B.at4,B.Ha],t._)
+B.aTz=new A.ab(7,"Squirtle",B.bC,44,48,65,50,64,43,45,63,0.5,9,1,!0,!1,!1,!1,!1,2,16,8,B.aCZ,"torrent",null,"rain_dish",!0)
+B.vn=new A.a(6,"smokescreen")
+B.o1=new A.a(10,"ember")
+B.EH=new A.a(20,"flame_wheel")
+B.Ft=new A.a(24,"defense_curl")
+B.v5=new A.a(31,"swift")
+B.GK=new A.a(35,"flame_charge")
+B.auY=new A.a(42,"lava_plume")
+B.awv=new A.a(46,"flamethrower")
+B.ayM=new A.a(53,"inferno")
+B.azO=new A.a(57,"rollout")
+B.aAP=new A.a(64,"double_edge")
+B.aB4=new A.a(68,"eruption")
+B.aHZ=s([B.ac,B.b3,B.l7,B.vn,B.o1,B.ed,B.EH,B.Ft,B.v5,B.GK,B.auY,B.awv,B.ayM,B.azO,B.aAP,B.aB4],t._)
+B.aTA=new A.ab(156,"Quilava",B.cU,58,64,58,80,65,80,45,142,0.9,19,2,!0,!1,!1,!1,!1,14,36,157,B.aHZ,"blaze",null,"flash_fire",!1)
+B.amk=new A.a(19,"fury_attack")
+B.anV=new A.a(21,"horn_attack")
+B.Fx=new A.a(25,"helping_hand")
+B.Go=new A.a(31,"toxic_spikes")
+B.Gz=new A.a(33,"flatter")
+B.GZ=new A.a(37,"poison_jab")
+B.Hl=new A.a(43,"captivate")
+B.aw3=new A.a(45,"horn_drill")
+B.aLU=s([B.b3,B.ee,B.eD,B.oy,B.o6,B.amk,B.anV,B.Fx,B.Go,B.Gz,B.GZ,B.Hl,B.aw3],t._)
+B.aTB=new A.ab(32,"Nidoran\u2642",B.eE,46,57,40,40,40,50,235,55,0.5,9,1,!1,!1,!1,!1,!1,2,16,33,B.aLU,"poison_point","rivalry","hustle",!0)
+B.oz=s([B.aH,B.ar],t.U)
+B.od=new A.a(1,"constrict")
+B.Iq=new A.a(7,"bite")
+B.l0=new A.a(10,"water_gun")
+B.DB=new A.a(16,"rollout")
+B.E3=new A.a(19,"leer")
+B.FB=new A.a(25,"mud_shot")
+B.FV=new A.a(28,"brine")
+B.GG=new A.a(34,"protect")
+B.GV=new A.a(37,"ancient_power")
+B.avA=new A.a(43,"tickle")
+B.awG=new A.a(46,"rock_blast")
+B.ayA=new A.a(52,"shell_smash")
+B.az9=new A.a(55,"hydro_pump")
+B.aIt=s([B.od,B.jd,B.Iq,B.l0,B.DB,B.E3,B.FB,B.FV,B.GG,B.GV,B.avA,B.awG,B.ayA,B.az9],t._)
+B.aTC=new A.ab(138,"Omanyte",B.oz,35,40,100,90,55,35,45,71,0.4,7.5,1,!1,!0,!1,!1,!1,2,40,139,B.aIt,"swift_swim","shell_armor","weak_armor",!0)
+B.fI=new A.a(1,"bubble")
+B.HR=new A.a(4,"smokescreen")
+B.vs=new A.a(8,"leer")
+B.o2=new A.a(11,"water_gun")
+B.Df=new A.a(14,"focus_energy")
+B.uB=new A.a(18,"bubble_beam")
+B.Fd=new A.a(23,"agility")
+B.FN=new A.a(26,"twister")
+B.Gg=new A.a(30,"brine")
+B.as3=new A.a(35,"hydro_pump")
+B.atm=new A.a(38,"dragon_dance")
+B.auS=new A.a(42,"dragon_pulse")
+B.aFq=s([B.fI,B.HR,B.vs,B.o2,B.Df,B.uB,B.Fd,B.FN,B.Gg,B.as3,B.atm,B.auS],t._)
+B.aTD=new A.ab(116,"Horsea",B.bC,30,40,70,70,25,60,225,59,0.4,8,1,!1,!1,!1,!1,!1,2,32,117,B.aFq,"swift_swim","sniper","damp",!0)
+B.Ev=new A.a(1,"string_shot")
+B.Dl=new A.a(15,"bug_bite")
+B.aD3=s([B.ac,B.Ev,B.Dl],t._)
+B.aTE=new A.ab(10,"Caterpie",B.vH,45,30,35,20,20,45,255,39,0.3,2.9,1,!1,!1,!1,!1,!1,2,7,11,B.aD3,"shield_dust",null,"run_away",!0)
+B.aBZ=new A.a(8,"stomp")
+B.avY=new A.a(45,"drill_run")
+B.ayB=new A.a(52,"stone_edge")
+B.azp=new A.a(56,"earthquake")
+B.aAL=new A.a(63,"horn_drill")
+B.aB2=new A.a(67,"megahorn")
+B.aG1=s([B.Ef,B.cb,B.aBZ,B.D4,B.uD,B.Fj,B.Gh,B.GD,B.ou,B.avY,B.ayB,B.azp,B.aAL,B.aB2],t._)
+B.aTF=new A.ab(111,"Rhyhorn",B.Jc,80,85,95,30,30,25,120,69,1,115,1,!1,!1,!1,!1,!1,2,42,112,B.aG1,"lightning_rod","rock_head","reckless",!0)
+B.H7=new A.a(3,"sand_attack")
+B.Ia=new A.a(5,"poison_sting")
+B.Iu=new A.a(7,"rollout")
+B.IN=new A.a(9,"rapid_spin")
+B.CY=new A.a(11,"swift")
+B.Dh=new A.a(14,"fury_cutter")
+B.DM=new A.a(17,"magnitude")
+B.Fl=new A.a(23,"sand_tomb")
+B.FL=new A.a(26,"slash")
+B.Gi=new A.a(30,"dig")
+B.GF=new A.a(34,"gyro_ball")
+B.H3=new A.a(38,"swords_dance")
+B.Hg=new A.a(42,"sandstorm")
+B.vd=new A.a(46,"earthquake")
+B.aKg=s([B.br,B.hE,B.H7,B.Ia,B.Iu,B.IN,B.CY,B.Dh,B.DM,B.uR,B.Fl,B.FL,B.Gi,B.GF,B.H3,B.Hg,B.vd],t._)
+B.aTG=new A.ab(27,"Sandshrew",B.ji,50,75,85,20,30,40,255,60,0.6,12,1,!1,!1,!1,!1,!1,2,22,28,B.aKg,"sand_veil",null,"sand_rush",!0)
+B.an1=new A.a(1,"mega_drain")
+B.amC=new A.a(1,"aromatherapy")
+B.Ew=new A.a(1,"stun_spore")
+B.oh=new A.a(1,"poison_powder")
+B.I_=new A.a(53,"petal_dance")
+B.aAW=new A.a(65,"solar_beam")
+B.aMu=s([B.an1,B.amC,B.Ew,B.oh,B.I_,B.aAW],t._)
+B.aTH=new A.ab(45,"Vileplume",B.fe,75,80,85,110,90,50,45,221,1.2,18.6,3,!1,!1,!1,!1,!1,36,null,null,B.aMu,"chlorophyll",null,"effect_spore",!0)
+B.J8=s([B.ak,B.a5],t.U)
+B.ang=new A.a(1,"seed_bomb")
+B.E8=new A.a(1,"barrage")
+B.fJ=new A.a(1,"hypnosis")
+B.am3=new A.a(17,"psyshock")
+B.apq=new A.a(27,"egg_bomb")
+B.ath=new A.a(37,"wood_hammer")
+B.aIk=s([B.ang,B.E8,B.fJ,B.hD,B.Eu,B.am3,B.apq,B.ath,B.HF],t._)
+B.aTI=new A.ab(103,"Exeggutor",B.J8,95,95,85,125,75,55,45,186,2,120,2,!1,!1,!1,!1,!1,26,null,null,B.aIk,"chlorophyll",null,"harvest",!0)
+B.amm=new A.a(19,"fury_swipes")
+B.awd=new A.a(45,"poison_fang")
+B.aIu=s([B.b2,B.br,B.Ix,B.oy,B.o6,B.amm,B.EO,B.Fx,B.Go,B.Gz,B.v8,B.Hl,B.awd],t._)
+B.aTJ=new A.ab(29,"Nidoran\u2640",B.eE,55,47,52,40,40,41,235,55,0.4,7,1,!1,!1,!1,!1,!1,2,16,30,B.aIu,"poison_point","rivalry","hustle",!0)
+B.anp=new A.a(1,"splash")
+B.alL=new A.a(15,"tackle")
+B.aqp=new A.a(30,"flail")
+B.aLc=s([B.anp,B.alL,B.aqp],t._)
+B.aTK=new A.ab(129,"Magikarp",B.bC,20,10,55,15,20,80,255,40,0.9,10,1,!1,!1,!0,!1,!1,2,20,130,B.aLc,"swift_swim",null,"rattled",!0)
+B.J9=s([B.bg,B.aW],t.U)
+B.Iy=new A.a(7,"thunder_shock")
+B.CX=new A.a(11,"sonic_boom")
+B.Dt=new A.a(15,"thunder_wave")
+B.DW=new A.a(18,"magnet_bomb")
+B.F0=new A.a(21,"spark")
+B.Fz=new A.a(25,"mirror_shot")
+B.G9=new A.a(29,"metal_sound")
+B.aqU=new A.a(32,"electro_ball")
+B.as2=new A.a(35,"flash_cannon")
+B.atP=new A.a(39,"screech")
+B.avc=new A.a(43,"discharge")
+B.awz=new A.a(46,"lock_on")
+B.axu=new A.a(49,"magnet_rise")
+B.ayJ=new A.a(53,"gyro_ball")
+B.azR=new A.a(57,"zap_cannon")
+B.aKL=s([B.ac,B.ov,B.Iy,B.CX,B.Dt,B.DW,B.F0,B.Fz,B.G9,B.aqU,B.as2,B.atP,B.avc,B.awz,B.axu,B.ayJ,B.azR],t._)
+B.aTL=new A.ab(81,"Magnemite",B.J9,25,35,70,95,55,45,190,65,0.3,6,1,!1,!1,!1,!1,!1,2,30,82,B.aKL,"magnet_pull","sturdy","analytic",!0)
+B.vl=new A.a(6,"mud_slap")
+B.uo=new A.a(15,"bide")
+B.oc=new A.a(19,"foresight")
+B.aoF=new A.a(24,"mud_sport")
+B.v0=new A.a(28,"take_down")
+B.arC=new A.a(33,"whirlpool")
+B.at3=new A.a(37,"protect")
+B.auX=new A.a(42,"hydro_pump")
+B.Hw=new A.a(46,"endeavor")
+B.aGt=s([B.ac,B.b2,B.vl,B.l0,B.uo,B.oc,B.aoF,B.v0,B.arC,B.at3,B.auX,B.Hw],t._)
+B.aTM=new A.ab(258,"Mudkip",B.bC,50,70,50,50,50,40,45,62,0.4,7.6,1,!0,!1,!1,!1,!1,5,16,259,B.aGt,"torrent",null,"damp",!1)
 B.aBA=new A.a(7,"fake_out")
 B.al5=new A.a(10,"tail_whip")
-B.o3=new A.a(13,"bite")
 B.amj=new A.a(19,"double_hit")
 B.aoj=new A.a(22,"rage")
 B.ap0=new A.a(25,"mega_punch")
@@ -127705,8 +128134,8 @@ B.ave=new A.a(43,"endure")
 B.awD=new A.a(46,"outrage")
 B.axC=new A.a(49,"sucker_punch")
 B.azf=new A.a(55,"reversal")
-B.aIG=s([B.Ea,B.b3,B.aBA,B.al5,B.o3,B.amj,B.aoj,B.ap0,B.aqx,B.arJ,B.v8,B.ave,B.awD,B.axC,B.azf],t._)
-B.aTj=new A.ab(115,"Kangaskhan",B.dX,105,95,80,40,80,90,45,172,2.2,1,!1,!1,!1,!1,!1,25,null,null,B.aIG,"early_bird","scrappy","inner_focus",!0)
+B.aIG=s([B.Eb,B.b3,B.aBA,B.al5,B.o3,B.amj,B.aoj,B.ap0,B.aqx,B.arJ,B.v8,B.ave,B.awD,B.axC,B.azf],t._)
+B.aTN=new A.ab(115,"Kangaskhan",B.dX,105,95,80,40,80,90,45,172,2.2,80,1,!1,!1,!1,!1,!1,25,null,null,B.aIG,"early_bird","scrappy","inner_focus",!0)
 B.axI=new A.a(4,"defense_curl")
 B.aC5=new A.a(9,"amnesia")
 B.ali=new A.a(12,"lick")
@@ -127723,355 +128152,101 @@ B.axj=new A.a(49,"crunch")
 B.ayu=new A.a(52,"heavy_slam")
 B.azH=new A.a(57,"giga_impact")
 B.aCO=s([B.ac,B.axI,B.aC5,B.ali,B.alZ,B.anN,B.aoN,B.apN,B.apP,B.aru,B.asg,B.aum,B.avO,B.axj,B.ayu,B.azH],t._)
-B.aTk=new A.ab(143,"Snorlax",B.dX,160,110,65,65,110,30,25,189,2.1,1,!1,!1,!1,!1,!1,30,null,null,B.aCO,"immunity","thick_fat","gluttony",!0)
-B.anq=new A.a(1,"stockpile")
-B.ans=new A.a(1,"swallow")
-B.ann=new A.a(1,"spit_up")
-B.anl=new A.a(1,"sleep_powder")
-B.Ew=new A.a(1,"sweet_scent")
-B.oi=new A.a(1,"razor_leaf")
-B.aps=new A.a(27,"leaf_tornado")
-B.HE=new A.a(47,"leaf_storm")
-B.awY=new A.a(47,"leaf_blade")
-B.aIS=s([B.anq,B.ans,B.ann,B.jc,B.anl,B.Ew,B.oi,B.aps,B.HE,B.awY],t._)
-B.aTl=new A.ab(71,"Victreebel",B.fe,80,105,65,100,70,70,45,221,1.7,3,!1,!1,!1,!1,!1,36,null,null,B.aIS,"chlorophyll",null,"gluttony",!0)
-B.dY=s([B.ak],t.U)
-B.jd=new A.a(1,"withdraw")
-B.vk=new A.a(5,"withdraw")
-B.vv=new A.a(9,"absorb")
-B.um=new A.a(13,"razor_leaf")
-B.ux=new A.a(17,"curse")
-B.F0=new A.a(22,"bite")
-B.FR=new A.a(27,"mega_drain")
+B.aTO=new A.ab(143,"Snorlax",B.dX,160,110,65,65,110,30,25,189,2.1,460,1,!1,!1,!1,!1,!1,30,null,null,B.aCO,"immunity","thick_fat","gluttony",!0)
+B.aH3=s([B.bg,B.aM],t.U)
+B.l8=new A.a(1,"thunder_shock")
+B.aC1=new A.a(8,"thunder_wave")
+B.alB=new A.a(15,"detect")
+B.aof=new A.a(22,"pluck")
+B.v2=new A.a(29,"ancient_power")
+B.asi=new A.a(36,"charge")
+B.av6=new A.a(43,"agility")
+B.axS=new A.a(50,"discharge")
+B.vi=new A.a(57,"roost")
+B.aAR=new A.a(64,"light_screen")
+B.aBg=new A.a(71,"drill_peck")
+B.aBx=new A.a(78,"thunder")
+B.aBO=new A.a(85,"rain_dance")
+B.aC3=new A.a(92,"zap_cannon")
+B.aIc=s([B.ee,B.l8,B.aC1,B.alB,B.aof,B.v2,B.asi,B.av6,B.axS,B.vi,B.aAR,B.aBg,B.aBx,B.aBO,B.aC3],t._)
+B.aTP=new A.ab(145,"Zapdos",B.aH3,90,90,85,125,90,100,3,261,1.6,52.6,1,!1,!1,!1,!0,!1,50,null,null,B.aIc,"pressure",null,"lightning_rod",!0)
+B.v9=new A.a(39,"slash")
+B.vc=new A.a(43,"flamethrower")
+B.axU=new A.a(50,"fire_spin")
+B.ayY=new A.a(54,"inferno")
+B.aFP=s([B.br,B.b2,B.dt,B.fd,B.uc,B.DG,B.F_,B.FX,B.Gq,B.v9,B.vc,B.axU,B.ayY],t._)
+B.aTQ=new A.ab(5,"Charmeleon",B.cU,58,64,58,80,65,80,45,142,1.1,19,2,!0,!1,!1,!1,!1,16,36,6,B.aFP,"blaze",null,"solar_power",!0)
+B.amR=new A.a(1,"fling")
+B.l5=new A.a(1,"low_kick")
+B.IL=new A.a(9,"fury_swipes")
+B.Dc=new A.a(13,"karate_chop")
+B.DQ=new A.a(17,"seismic_toss")
+B.uS=new A.a(21,"screech")
+B.uW=new A.a(25,"assurance")
+B.apM=new A.a(28,"rage")
+B.as8=new A.a(35,"swagger")
+B.auo=new A.a(41,"cross_chop")
+B.ax4=new A.a(47,"thrash")
+B.ayP=new A.a(53,"punishment")
+B.aA1=new A.a(59,"close_combat")
+B.aAH=new A.a(63,"final_gambit")
+B.aL8=s([B.amR,B.br,B.l5,B.b3,B.fc,B.IL,B.Dc,B.DQ,B.uS,B.uW,B.apM,B.as8,B.auo,B.ax4,B.ayP,B.aA1,B.aAH],t._)
+B.aTR=new A.ab(57,"Primeape",B.hJ,65,105,60,60,70,95,75,159,1,32,2,!1,!1,!1,!1,!1,28,null,null,B.aL8,"vital_spirit","anger_point","defiant",!0)
+B.aC0=new A.a(8,"swift")
+B.alE=new A.a(15,"future_sight")
+B.aoh=new A.a(22,"psych_up")
+B.aq6=new A.a(29,"miracle_eye")
+B.GQ=new A.a(36,"mist")
+B.avv=new A.a(43,"psycho_cut")
+B.axO=new A.a(50,"amnesia")
+B.azN=new A.a(57,"power_swap")
+B.azI=new A.a(57,"guard_swap")
+B.aAS=new A.a(64,"psychic")
+B.aBj=new A.a(71,"me_first")
+B.aBy=new A.a(79,"recover")
+B.aBQ=new A.a(86,"safeguard")
+B.aC4=new A.a(93,"aura_sphere")
+B.akW=new A.a(100,"psystrike")
+B.aHY=s([B.hD,B.l4,B.E9,B.aC0,B.alE,B.aoh,B.aq6,B.GQ,B.avv,B.axO,B.azN,B.azI,B.aAS,B.aBj,B.aBy,B.aBQ,B.aC4,B.akW],t._)
+B.aTS=new A.ab(150,"Mewtwo",B.hI,106,110,90,154,90,130,3,306,2,122,1,!1,!1,!1,!0,!1,70,null,null,B.aHY,"pressure",null,"unnerve",!0)
+B.hF=new A.a(1,"poison_sting")
+B.aKT=s([B.hF,B.Ev,B.Dl],t._)
+B.aTT=new A.ab(13,"Weedle",B.lf,40,35,30,20,20,50,255,39,0.3,3.2,1,!1,!1,!1,!1,!1,2,7,14,B.aKT,"shield_dust",null,"run_away",!0)
+B.Iw=new A.a(7,"supersonic")
+B.CT=new A.a(11,"horn_attack")
+B.uz=new A.a(17,"water_pulse")
+B.ES=new A.a(21,"flail")
+B.FO=new A.a(27,"aqua_ring")
+B.Gk=new A.a(31,"fury_attack")
+B.aug=new A.a(40,"waterfall")
+B.awU=new A.a(47,"horn_drill")
+B.azl=new A.a(56,"agility")
+B.aAN=new A.a(63,"soak")
+B.aBm=new A.a(72,"megahorn")
+B.aH8=s([B.uN,B.ee,B.cb,B.fK,B.hG,B.Iw,B.CT,B.uz,B.ES,B.FO,B.Gk,B.aug,B.awU,B.azl,B.aAN,B.aBm],t._)
+B.aTU=new A.ab(119,"Seaking",B.bC,80,92,65,65,80,68,60,158,1.3,39,2,!1,!1,!1,!1,!1,33,null,null,B.aH8,"swift_swim","water_veil","lightning_rod",!0)
+B.jh=s([B.bg],t.U)
+B.any=new A.a(1,"thunderbolt")
+B.aIY=s([B.l8,B.cb,B.eB,B.any],t._)
+B.aTV=new A.ab(26,"Raichu",B.jh,60,90,55,90,80,110,75,218,0.8,30,2,!1,!1,!1,!1,!1,22,null,null,B.aIY,"static",null,"lightning_rod",!0)
+B.aCf=new A.a(9,"thunder_shock")
+B.am2=new A.a(17,"double_kick")
+B.ao0=new A.a(21,"thunder_fang")
+B.ap1=new A.a(25,"pin_missile")
+B.arz=new A.a(33,"thunder_wave")
+B.asN=new A.a(37,"discharge")
+B.awl=new A.a(45,"thunder")
+B.aE8=s([B.oe,B.ac,B.cb,B.hH,B.aCf,B.ed,B.am2,B.ao0,B.ap1,B.v1,B.arz,B.asN,B.ot,B.awl],t._)
+B.aTW=new A.ab(135,"Jolteon",B.jh,65,65,60,110,95,130,45,184,0.8,24.5,2,!1,!1,!1,!1,!1,25,null,null,B.aE8,"volt_absorb",null,"quick_feet",!0)
+B.F1=new A.a(22,"bite")
+B.FS=new A.a(27,"mega_drain")
 B.aqX=new A.a(32,"leech_seed")
 B.ata=new A.a(37,"synthesis")
 B.auQ=new A.a(42,"crunch")
-B.HD=new A.a(47,"giga_drain")
-B.HU=new A.a(52,"leaf_storm")
-B.aD9=s([B.ac,B.jd,B.vk,B.vv,B.um,B.ux,B.F0,B.FR,B.aqX,B.ata,B.auQ,B.HD,B.HU],t._)
-B.aTm=new A.ab(388,"Grotle",B.dY,75,89,85,55,65,36,45,142,1.1,2,!0,!1,!1,!1,!1,16,32,389,B.aD9,"overgrow",null,"shell_armor",!1)
-B.amG=new A.a(1,"bone_club")
-B.uJ=new A.a(1,"headbutt")
-B.je=new A.a(3,"tail_whip")
-B.Iq=new A.a(7,"bone_club")
-B.CR=new A.a(11,"headbutt")
-B.Dc=new A.a(13,"leer")
-B.DH=new A.a(17,"focus_energy")
-B.EP=new A.a(21,"bonemerang")
-B.Fh=new A.a(23,"rage")
-B.FP=new A.a(27,"false_swipe")
-B.ary=new A.a(33,"thrash")
-B.asT=new A.a(37,"fling")
-B.av8=new A.a(43,"bone_rush")
-B.axn=new A.a(49,"endeavor")
-B.HW=new A.a(53,"double_edge")
-B.aA6=new A.a(59,"retaliate")
-B.aFO=s([B.b2,B.cb,B.amG,B.uJ,B.je,B.Iq,B.CR,B.Dc,B.DH,B.EP,B.Fh,B.FP,B.ary,B.asT,B.av8,B.axn,B.HW,B.aA6],t._)
-B.aTn=new A.ab(105,"Marowak",B.ji,60,80,110,50,80,45,75,149,1,2,!1,!1,!1,!1,!1,28,null,null,B.aFO,"rock_head","lightning_rod","battle_armor",!0)
-B.oz=s([B.aH,B.ar],t.U)
-B.ja=new A.a(1,"harden")
-B.le=new A.a(6,"absorb")
-B.CV=new A.a(11,"leer")
-B.o8=new A.a(16,"mud_shot")
-B.ok=new A.a(21,"sand_attack")
-B.FG=new A.a(26,"endure")
-B.op=new A.a(31,"aqua_jet")
-B.GO=new A.a(36,"mega_drain")
-B.auz=new A.a(41,"metal_sound")
-B.awo=new A.a(46,"ancient_power")
-B.ayo=new A.a(51,"wring_out")
-B.aGN=s([B.br,B.ja,B.le,B.CV,B.o8,B.ok,B.FG,B.op,B.GO,B.auz,B.awo,B.ayo],t._)
-B.aTo=new A.ab(140,"Kabuto",B.oz,30,80,90,55,45,55,45,71,0.5,1,!1,!0,!1,!1,!1,2,40,141,B.aGN,"swift_swim","battle_armor","weak_armor",!0)
-B.vr=new A.a(8,"bubble")
-B.us=new A.a(15,"peck")
-B.uB=new A.a(18,"bubble_beam")
-B.ao3=new A.a(22,"bide")
-B.aoV=new A.a(25,"fury_attack")
-B.apX=new A.a(29,"brine")
-B.ar4=new A.a(32,"whirlpool")
-B.GP=new A.a(36,"mist")
-B.atD=new A.a(39,"drill_peck")
-B.aKF=s([B.dW,B.lb,B.vr,B.l1,B.us,B.uB,B.ao3,B.aoV,B.apX,B.ar4,B.GP,B.atD,B.Hn],t._)
-B.aTp=new A.ab(393,"Piplup",B.bC,53,51,53,61,56,40,45,63,0.4,1,!0,!1,!1,!1,!1,5,16,394,B.aKF,"torrent",null,"defiant",!1)
-B.fI=new A.a(1,"bubble")
-B.HQ=new A.a(4,"smokescreen")
-B.vs=new A.a(8,"leer")
-B.De=new A.a(14,"focus_energy")
-B.Fc=new A.a(23,"agility")
-B.FM=new A.a(26,"twister")
-B.Gf=new A.a(30,"brine")
-B.as3=new A.a(35,"hydro_pump")
-B.atm=new A.a(38,"dragon_dance")
-B.auS=new A.a(42,"dragon_pulse")
-B.aFq=s([B.fI,B.HQ,B.vs,B.o2,B.De,B.uB,B.Fc,B.FM,B.Gf,B.as3,B.atm,B.auS],t._)
-B.aTq=new A.ab(116,"Horsea",B.bC,30,40,70,70,25,60,225,59,0.4,1,!1,!1,!1,!1,!1,2,32,117,B.aFq,"swift_swim","sniper","damp",!0)
-B.IZ=s([B.G,B.df],t.U)
-B.aKk=s([B.oj,B.l4,B.hE,B.uF],t._)
-B.aTr=new A.ab(40,"Wigglytuff",B.IZ,140,70,45,85,50,45,50,196,1,2,!1,!1,!1,!1,!1,24,null,null,B.aKk,"cute_charm",null,"frisk",!0)
-B.an1=new A.a(1,"mega_drain")
-B.amC=new A.a(1,"aromatherapy")
-B.Ev=new A.a(1,"stun_spore")
-B.oh=new A.a(1,"poison_powder")
-B.HZ=new A.a(53,"petal_dance")
-B.aAW=new A.a(65,"solar_beam")
-B.aMu=s([B.an1,B.amC,B.Ev,B.oh,B.HZ,B.aAW],t._)
-B.aTs=new A.ab(45,"Vileplume",B.fe,75,80,85,110,90,50,45,221,1.2,3,!1,!1,!1,!1,!1,36,null,null,B.aMu,"chlorophyll",null,"effect_spore",!0)
-B.J2=s([B.c1],t.U)
-B.vj=new A.a(5,"thunder_wave")
-B.ui=new A.a(11,"twister")
-B.uq=new A.a(15,"dragon_rage")
-B.uT=new A.a(21,"slam")
-B.ol=new A.a(25,"agility")
-B.aqz=new A.a(31,"dragon_tail")
-B.aur=new A.a(41,"dragon_rush")
-B.awh=new A.a(45,"safeguard")
-B.ayf=new A.a(51,"dragon_dance")
-B.azb=new A.a(55,"outrage")
-B.aAo=new A.a(61,"hyper_beam")
-B.aFo=s([B.fL,B.b3,B.vj,B.ui,B.uq,B.uT,B.ol,B.aqz,B.v7,B.aur,B.awh,B.ayf,B.azb,B.aAo],t._)
-B.aTt=new A.ab(147,"Dratini",B.J2,41,64,45,50,50,50,45,60,1.8,1,!1,!1,!0,!1,!1,2,30,148,B.aFo,"shed_skin",null,"marvel_scale",!0)
-B.aH4=s([B.bh,B.a5],t.U)
-B.of=new A.a(1,"lick")
-B.an_=new A.a(1,"lovely_kiss")
-B.Em=new A.a(1,"powder_snow")
-B.aAb=new A.a(5,"lick")
-B.aBT=new A.a(8,"lovely_kiss")
-B.al9=new A.a(11,"powder_snow")
-B.amb=new A.a(18,"ice_punch")
-B.anU=new A.a(21,"heart_stamp")
-B.aoZ=new A.a(25,"mean_look")
-B.apC=new A.a(28,"fake_tears")
-B.arA=new A.a(33,"wake_up_slap")
-B.aty=new A.a(39,"avalanche")
-B.avC=new A.a(44,"body_slam")
-B.HL=new A.a(49,"wring_out")
-B.azc=new A.a(55,"perish_song")
-B.aAh=new A.a(60,"blizzard")
-B.aEH=s([B.dW,B.of,B.an_,B.Em,B.aAb,B.aBT,B.al9,B.up,B.amb,B.anU,B.aoZ,B.apC,B.arA,B.aty,B.avC,B.HL,B.azc,B.aAh],t._)
-B.aTu=new A.ab(124,"Jynx",B.aH4,65,50,35,115,95,95,45,159,1.4,1,!1,!1,!1,!1,!1,20,null,null,B.aEH,"oblivious","forewarn","dry_skin",!0)
-B.anz=new A.a(1,"toxic_spikes")
-B.an7=new A.a(1,"protect")
-B.amE=new A.a(1,"aurora_beam")
-B.alv=new A.a(13,"spike_cannon")
-B.apQ=new A.a(28,"spikes")
-B.ayw=new A.a(52,"icicle_crash")
-B.aE7=s([B.anz,B.jd,B.hG,B.an7,B.amE,B.alv,B.apQ,B.ayw],t._)
-B.aTv=new A.ab(91,"Cloyster",B.oB,50,95,180,85,45,70,60,184,1.5,2,!1,!1,!1,!1,!1,28,null,null,B.aE7,"shell_armor","skill_link","overcoat",!0)
-B.J7=s([B.ak,B.a5],t.U)
-B.ang=new A.a(1,"seed_bomb")
-B.E7=new A.a(1,"barrage")
-B.fJ=new A.a(1,"hypnosis")
-B.hD=new A.a(1,"confusion")
-B.Et=new A.a(1,"stomp")
-B.am3=new A.a(17,"psyshock")
-B.apq=new A.a(27,"egg_bomb")
-B.ath=new A.a(37,"wood_hammer")
-B.aIk=s([B.ang,B.E7,B.fJ,B.hD,B.Et,B.am3,B.apq,B.ath,B.HE],t._)
-B.aTw=new A.ab(103,"Exeggutor",B.J7,95,95,85,125,75,55,45,186,2,2,!1,!1,!1,!1,!1,26,null,null,B.aIk,"chlorophyll",null,"harvest",!0)
-B.aH2=s([B.ak,B.aL],t.U)
-B.anC=new A.a(1,"wood_hammer")
-B.aqT=new A.a(32,"earthquake")
-B.arh=new A.a(33,"leech_seed")
-B.H5=new A.a(39,"synthesis")
-B.avW=new A.a(45,"crunch")
-B.ayh=new A.a(51,"giga_drain")
-B.azK=new A.a(57,"leaf_storm")
-B.aMf=s([B.anC,B.ac,B.jd,B.j8,B.oi,B.vk,B.vv,B.um,B.ux,B.F0,B.FR,B.aqT,B.arh,B.H5,B.avW,B.ayh,B.azK],t._)
-B.aTx=new A.ab(389,"Torterra",B.aH2,95,109,105,75,85,56,45,236,2.2,3,!0,!1,!1,!1,!1,32,null,null,B.aMf,"overgrow",null,"shell_armor",!1)
-B.amK=new A.a(1,"conversion_2")
-B.amJ=new A.a(1,"conversion")
-B.ani=new A.a(1,"sharpen")
-B.aBD=new A.a(7,"psybeam")
-B.ald=new A.a(12,"agility")
-B.amd=new A.a(18,"recover")
-B.aou=new A.a(23,"magnet_rise")
-B.aqe=new A.a(29,"signal_beam")
-B.arT=new A.a(34,"recycle")
-B.atZ=new A.a(40,"discharge")
-B.aw7=new A.a(45,"lock_on")
-B.ayn=new A.a(51,"tri_attack")
-B.azw=new A.a(56,"magic_coat")
-B.aAF=new A.a(62,"zap_cannon")
-B.aFL=s([B.amK,B.ac,B.amJ,B.ani,B.aBD,B.ald,B.amd,B.aou,B.aqe,B.arT,B.atZ,B.aw7,B.ayn,B.azw,B.aAF],t._)
-B.aTy=new A.ab(137,"Porygon",B.dX,65,60,70,85,75,40,45,79,0.8,1,!1,!1,!1,!1,!1,22,null,null,B.aFL,"trace","download","analytic",!0)
-B.aM7=s([B.l5,B.b3,B.fc,B.Eg,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.Gu,B.GT,B.Hb,B.Hq,B.HT,B.I1],t._)
-B.aTz=new A.ab(67,"Machoke",B.hJ,80,100,70,50,60,45,90,142,1.5,2,!1,!1,!1,!1,!1,28,null,68,B.aM7,"guts","no_guard","steadfast",!0)
-B.hF=new A.a(1,"poison_sting")
-B.H6=new A.a(3,"sand_attack")
-B.I9=new A.a(5,"poison_sting")
-B.It=new A.a(7,"rollout")
-B.IM=new A.a(9,"rapid_spin")
-B.CX=new A.a(11,"swift")
-B.Dg=new A.a(14,"fury_cutter")
-B.DL=new A.a(17,"magnitude")
-B.uR=new A.a(20,"fury_swipes")
-B.ao6=new A.a(22,"crush_claw")
-B.Fk=new A.a(23,"sand_tomb")
-B.FK=new A.a(26,"slash")
-B.Gh=new A.a(30,"dig")
-B.GE=new A.a(34,"gyro_ball")
-B.H2=new A.a(38,"swords_dance")
-B.Hf=new A.a(42,"sandstorm")
-B.vd=new A.a(46,"earthquake")
-B.aEp=s([B.br,B.hE,B.jb,B.hF,B.H6,B.I9,B.It,B.IM,B.CX,B.Dg,B.DL,B.uR,B.ao6,B.Fk,B.FK,B.Gh,B.GE,B.H2,B.Hf,B.vd],t._)
-B.aTA=new A.ab(28,"Sandslash",B.ji,75,100,110,45,55,65,90,158,1,2,!1,!1,!1,!1,!1,22,null,null,B.aEp,"sand_veil",null,"sand_rush",!0)
-B.aGX=s([B.c1,B.aM],t.U)
-B.Ec=new A.a(1,"fire_punch")
-B.anx=new A.a(1,"thunder_punch")
-B.anc=new A.a(1,"roost")
-B.Ey=new A.a(1,"thunder_wave")
-B.EB=new A.a(1,"twister")
-B.Gx=new A.a(33,"dragon_tail")
-B.H3=new A.a(39,"aqua_tail")
-B.Hz=new A.a(47,"dragon_rush")
-B.I0=new A.a(53,"safeguard")
-B.azk=new A.a(55,"wing_attack")
-B.Ig=new A.a(61,"dragon_dance")
-B.Ij=new A.a(67,"outrage")
-B.In=new A.a(75,"hyper_beam")
-B.aBM=new A.a(81,"hurricane")
-B.aI6=s([B.Ec,B.anx,B.anc,B.fL,B.b3,B.Ey,B.EB,B.vj,B.ui,B.uq,B.uT,B.ol,B.Gx,B.H3,B.Hz,B.I0,B.azk,B.Ig,B.Ij,B.In,B.aBM],t._)
-B.aTB=new A.ab(149,"Dragonite",B.aGX,91,134,95,100,100,80,45,270,2.2,3,!1,!1,!0,!1,!1,55,null,null,B.aI6,"inner_focus",null,"multiscale",!0)
-B.Eb=new A.a(1,"curse")
-B.EE=new A.a(1,"yawn")
-B.I7=new A.a(5,"growl")
-B.vC=new A.a(9,"water_gun")
-B.Dd=new A.a(14,"confusion")
-B.E1=new A.a(19,"disable")
-B.Ff=new A.a(23,"headbutt")
-B.oo=new A.a(28,"water_pulse")
-B.Gv=new A.a(32,"zen_headbutt")
-B.GS=new A.a(36,"slack_off")
-B.auj=new A.a(41,"amnesia")
-B.awe=new A.a(45,"psychic")
-B.axx=new A.a(49,"rain_dance")
-B.az_=new A.a(54,"psych_up")
-B.azV=new A.a(58,"heal_pulse")
-B.aEh=s([B.Eb,B.EE,B.ac,B.I7,B.vC,B.Dd,B.E1,B.Ff,B.oo,B.Gv,B.GS,B.auj,B.awe,B.axx,B.az_,B.azV],t._)
-B.aTC=new A.ab(79,"Slowpoke",B.vJ,90,65,65,40,40,15,190,63,1.2,1,!1,!1,!1,!1,!1,2,37,80,B.aEh,"oblivious","own_tempo","regenerator",!0)
-B.axK=new A.a(4,"mist")
-B.aBz=new A.a(7,"confuse_ray")
-B.al0=new A.a(10,"ice_shard")
-B.alx=new A.a(14,"water_pulse")
-B.am7=new A.a(18,"body_slam")
-B.aok=new A.a(22,"rain_dance")
-B.apt=new A.a(27,"perish_song")
-B.aqV=new A.a(32,"ice_beam")
-B.asL=new A.a(37,"brine")
-B.Ho=new A.a(43,"safeguard")
-B.axr=new A.a(49,"hydro_pump")
-B.azh=new A.a(55,"sheer_cold")
-B.aIb=s([B.oj,B.b2,B.eC,B.axK,B.aBz,B.al0,B.alx,B.am7,B.aok,B.apt,B.aqV,B.asL,B.Ho,B.axr,B.azh],t._)
-B.aTD=new A.ab(131,"Lapras",B.oB,130,85,80,85,95,60,45,187,2.5,1,!1,!1,!1,!1,!1,20,null,null,B.aIb,"water_absorb","shell_armor","hydration",!0)
-B.fN=s([B.G,B.aM],t.U)
-B.uI=new A.a(1,"gust")
-B.eB=new A.a(1,"quick_attack")
-B.vx=new A.a(9,"gust")
-B.uA=new A.a(17,"whirlwind")
-B.F9=new A.a(22,"twister")
-B.FQ=new A.a(27,"feather_dance")
-B.Go=new A.a(32,"agility")
-B.atw=new A.a(38,"wing_attack")
-B.avP=new A.a(44,"roost")
-B.ay6=new A.a(50,"tailwind")
-B.azx=new A.a(56,"mirror_move")
-B.aAv=new A.a(62,"air_slash")
-B.aB8=new A.a(68,"hurricane")
-B.aEP=s([B.ac,B.jb,B.uI,B.eB,B.hH,B.vx,B.ed,B.uA,B.F9,B.FQ,B.Go,B.atw,B.avP,B.ay6,B.azx,B.aAv,B.aB8],t._)
-B.aTE=new A.ab(18,"Pidgeot",B.fN,83,80,75,70,70,101,45,216,1.5,3,!1,!1,!1,!1,!1,36,null,null,B.aEP,"keen_eye","tangled_feet","big_pecks",!0)
-B.aAd=new A.a(5,"rage")
-B.aBS=new A.a(8,"horn_attack")
-B.alb=new A.a(11,"scary_face")
-B.alI=new A.a(15,"pursuit")
-B.amr=new A.a(19,"rest")
-B.aoG=new A.a(24,"payback")
-B.aql=new A.a(29,"work_up")
-B.asb=new A.a(35,"zen_headbutt")
-B.axb=new A.a(48,"swagger")
-B.azi=new A.a(55,"thrash")
-B.aAJ=new A.a(63,"giga_impact")
-B.aKX=s([B.ac,B.je,B.aAd,B.aBS,B.alb,B.alI,B.amr,B.aoG,B.aql,B.asb,B.ou,B.axb,B.azi,B.aAJ],t._)
-B.aTF=new A.ab(128,"Tauros",B.dX,75,100,95,40,70,110,45,172,1.4,1,!1,!1,!1,!1,!1,25,null,null,B.aKX,"intimidate","anger_point","sheer_force",!0)
-B.jg=s([B.aj,B.aA],t.U)
-B.amX=new A.a(1,"high_jump_kick")
-B.D7=new A.a(13,"ember")
-B.Dw=new A.a(16,"double_kick")
-B.DM=new A.a(17,"peck")
-B.FV=new A.a(28,"bulk_up")
-B.Gs=new A.a(32,"quick_attack")
-B.asf=new A.a(36,"blaze_kick")
-B.av3=new A.a(42,"slash")
-B.axh=new A.a(49,"brave_bird")
-B.aA7=new A.a(59,"sky_uppercut")
-B.aAY=new A.a(66,"flare_blitz")
-B.aJ_=s([B.Ec,B.amX,B.br,B.b2,B.fc,B.dt,B.eD,B.D7,B.Dw,B.DM,B.ok,B.FV,B.Gs,B.asf,B.av3,B.axh,B.aA7,B.aAY],t._)
-B.aTG=new A.ab(257,"Blaziken",B.jg,80,120,70,110,70,80,45,239,1.9,3,!0,!1,!1,!1,!1,36,null,null,B.aJ_,"blaze",null,"speed_boost",!1)
-B.Eo=new A.a(1,"revenge")
-B.uE=new A.a(1,"double_kick")
-B.aAc=new A.a(5,"meditate")
-B.aCd=new A.a(9,"rolling_kick")
-B.als=new A.a(13,"jump_kick")
-B.am0=new A.a(17,"brick_break")
-B.anT=new A.a(21,"focus_energy")
-B.aoT=new A.a(25,"feint")
-B.aq3=new A.a(29,"high_jump_kick")
-B.arj=new A.a(33,"mind_reader")
-B.asU=new A.a(37,"foresight")
-B.auL=new A.a(41,"wide_guard")
-B.avV=new A.a(45,"blaze_kick")
-B.axo=new A.a(49,"endure")
-B.ayN=new A.a(53,"mega_kick")
-B.azD=new A.a(57,"close_combat")
-B.aAr=new A.a(61,"reversal")
-B.aDO=s([B.Eo,B.uE,B.aAc,B.aCd,B.als,B.am0,B.anT,B.aoT,B.aq3,B.arj,B.asU,B.auL,B.avV,B.axo,B.ayN,B.azD,B.aAr],t._)
-B.aTH=new A.ab(106,"Hitmonlee",B.hJ,50,120,53,35,110,87,45,159,1.5,1,!1,!1,!1,!1,!1,25,null,null,B.aDO,"limber","reckless","unburden",!0)
-B.J5=s([B.ar,B.aK],t.U)
-B.Iz=new A.a(8,"constrict")
-B.CZ=new A.a(12,"acid")
-B.Dt=new A.a(15,"toxic_spikes")
-B.oa=new A.a(19,"bubble_beam")
-B.Fa=new A.a(22,"wrap")
-B.FF=new A.a(26,"acid_spray")
-B.G3=new A.a(29,"barrier")
-B.arB=new A.a(33,"water_pulse")
-B.asu=new A.a(36,"poison_jab")
-B.aub=new A.a(40,"screech")
-B.Hm=new A.a(43,"hex")
-B.awV=new A.a(47,"hydro_pump")
-B.ay4=new A.a(50,"sludge_wave")
-B.az2=new A.a(54,"wring_out")
-B.aE0=s([B.hF,B.lc,B.Iz,B.CZ,B.Dt,B.oa,B.Fa,B.FF,B.G3,B.arB,B.asu,B.aub,B.Hm,B.awV,B.ay4,B.az2],t._)
-B.aTI=new A.ab(72,"Tentacool",B.J5,40,40,35,50,100,70,190,67,0.9,1,!1,!1,!1,!1,!1,2,30,73,B.aE0,"clear_body","liquid_ooze","rain_dish",!0)
-B.J0=s([B.bk,B.ak],t.U)
-B.amM=new A.a(1,"cross_poison")
-B.uK=new A.a(1,"leech_life")
-B.Im=new A.a(6,"stun_spore")
-B.Il=new A.a(6,"poison_powder")
-B.CU=new A.a(11,"leech_life")
-B.DI=new A.a(17,"fury_cutter")
-B.F7=new A.a(22,"spore")
-B.G9=new A.a(29,"slash")
-B.asW=new A.a(37,"growth")
-B.Hr=new A.a(44,"giga_drain")
-B.ayc=new A.a(51,"aromatherapy")
-B.aA5=new A.a(59,"rage_powder")
-B.aB_=new A.a(66,"x_scissor")
-B.aDl=s([B.amM,B.br,B.Ev,B.oh,B.uK,B.Im,B.Il,B.CU,B.DI,B.F7,B.G9,B.asW,B.Hr,B.ayc,B.aA5,B.aB_],t._)
-B.aTJ=new A.ab(47,"Parasect",B.J0,60,95,80,60,80,30,75,142,1,2,!1,!1,!1,!1,!1,24,null,null,B.aDl,"effect_spore","dry_skin","damp",!0)
-B.aA8=new A.a(5,"defense_curl")
-B.aC9=new A.a(9,"pound")
-B.alp=new A.a(13,"disable")
-B.am5=new A.a(17,"round")
-B.EY=new A.a(21,"rollout")
-B.aoQ=new A.a(25,"double_slap")
-B.aqa=new A.a(29,"rest")
-B.ar7=new A.a(33,"body_slam")
-B.asY=new A.a(37,"gyro_ball")
-B.auK=new A.a(41,"wake_up_slap")
-B.awa=new A.a(45,"mimic")
-B.axs=new A.a(49,"hyper_voice")
-B.aL2=s([B.oj,B.aA8,B.aC9,B.alp,B.am5,B.EY,B.aoQ,B.aqa,B.ar7,B.asY,B.auK,B.awa,B.axs,B.HW],t._)
-B.aTK=new A.ab(39,"Jigglypuff",B.IZ,115,45,20,45,25,20,170,95,0.5,1,!1,!1,!1,!1,!1,2,null,40,B.aL2,"cute_charm",null,"friend_guard",!0)
+B.HE=new A.a(47,"giga_drain")
+B.HV=new A.a(52,"leaf_storm")
+B.aD9=s([B.ac,B.jd,B.vk,B.vv,B.um,B.ux,B.F1,B.FS,B.aqX,B.ata,B.auQ,B.HE,B.HV],t._)
+B.aTX=new A.ab(388,"Grotle",B.dY,75,89,85,55,65,36,45,142,1.1,97,2,!0,!1,!1,!1,!1,16,32,389,B.aD9,"overgrow",null,"shell_armor",!1)
 B.aC6=new A.a(9,"defense_curl")
 B.alt=new A.a(13,"knock_off")
 B.am6=new A.a(17,"wrap")
@@ -128079,318 +128254,30 @@ B.anZ=new A.a(21,"stomp")
 B.aoP=new A.a(25,"disable")
 B.aqf=new A.a(29,"slam")
 B.arp=new A.a(33,"rollout")
-B.GV=new A.a(37,"chip_away")
 B.auy=new A.a(41,"me_first")
 B.awg=new A.a(45,"refresh")
 B.axz=new A.a(49,"screech")
-B.I_=new A.a(53,"power_whip")
+B.I0=new A.a(53,"power_whip")
 B.azQ=new A.a(57,"wring_out")
-B.aCW=s([B.of,B.lc,B.aC6,B.alt,B.am6,B.anZ,B.aoP,B.aqf,B.arp,B.GV,B.auy,B.awg,B.axz,B.I_,B.azQ],t._)
-B.aTL=new A.ab(108,"Lickitung",B.dX,90,55,75,60,75,30,45,77,1.2,1,!1,!1,!1,!1,!1,20,null,null,B.aCW,"own_tempo","oblivious","cloud_nine",!0)
-B.ow=new A.a(6,"water_gun")
-B.vt=new A.a(8,"rage")
-B.ut=new A.a(15,"scary_face")
-B.anI=new A.a(20,"ice_fang")
-B.aoa=new A.a(22,"flail")
-B.apo=new A.a(27,"crunch")
-B.apZ=new A.a(29,"chip_away")
-B.asv=new A.a(36,"screech")
-B.He=new A.a(41,"thrash")
-B.Hj=new A.a(43,"aqua_tail")
-B.axa=new A.a(48,"superpower")
-B.axX=new A.a(50,"hydro_pump")
-B.aF0=s([B.br,B.b3,B.ow,B.vt,B.o3,B.ut,B.anI,B.aoa,B.apo,B.apZ,B.v6,B.asv,B.He,B.Hj,B.axa,B.axX],t._)
-B.aTM=new A.ab(158,"Totodile",B.bC,50,65,64,44,48,43,45,63,0.6,1,!0,!1,!1,!1,!1,5,18,159,B.aF0,"torrent",null,"sheer_force",!1)
-B.Ei=new A.a(1,"leech_seed")
-B.la=new A.a(3,"growl")
-B.vp=new A.a(7,"leech_seed")
-B.vB=new A.a(9,"vine_whip")
-B.uu=new A.a(15,"take_down")
-B.EL=new A.a(20,"razor_leaf")
-B.Fp=new A.a(23,"sweet_scent")
-B.FZ=new A.a(28,"growth")
-B.v4=new A.a(31,"double_edge")
-B.asG=new A.a(36,"worry_seed")
-B.avR=new A.a(44,"solar_beam")
-B.aKb=s([B.ac,B.b2,B.Ei,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.EL,B.Fp,B.FZ,B.v4,B.asG,B.H5,B.avR],t._)
-B.aTN=new A.ab(2,"Ivysaur",B.fe,60,62,63,80,80,60,45,142,1,2,!0,!1,!1,!1,!1,16,32,3,B.aKb,"overgrow",null,"chlorophyll",!0)
-B.ank=new A.a(1,"silver_wind")
-B.aqD=new A.a(31,"gust")
-B.at9=new A.a(37,"signal_beam")
-B.vb=new A.a(41,"zen_headbutt")
-B.ax_=new A.a(47,"poison_fang")
-B.azd=new A.a(55,"psychic")
-B.aA0=new A.a(59,"bug_buzz")
-B.aAM=new A.a(63,"quiver_dance")
-B.aG9=s([B.ank,B.ac,B.l4,B.Ed,B.hG,B.lc,B.CP,B.hC,B.DK,B.Fn,B.l9,B.Ga,B.aqD,B.at9,B.vb,B.ax_,B.azd,B.aA0,B.aAM],t._)
-B.aTO=new A.ab(49,"Venomoth",B.lf,70,65,60,90,75,90,75,158,1.5,2,!1,!1,!1,!1,!1,31,null,null,B.aG9,"shield_dust","tinted_lens","wonder_skin",!0)
-B.amW=new A.a(1,"hammer_arm")
-B.vy=new A.a(9,"odor_sleuth")
-B.o4=new A.a(13,"defense_curl")
-B.ur=new A.a(15,"flame_charge")
-B.DD=new A.a(17,"arm_thrust")
-B.EM=new A.a(20,"smog")
-B.Fj=new A.a(23,"rollout")
-B.v0=new A.a(28,"take_down")
-B.Gk=new A.a(31,"heat_crash")
-B.atk=new A.a(38,"assurance")
-B.vc=new A.a(43,"flamethrower")
-B.axV=new A.a(50,"head_smash")
-B.azg=new A.a(55,"roar")
-B.aAx=new A.a(62,"flare_blitz")
-B.aFj=s([B.amW,B.ac,B.cb,B.dt,B.uM,B.je,B.fd,B.vy,B.o4,B.ur,B.DD,B.EM,B.Fj,B.v0,B.Gk,B.atk,B.vc,B.axV,B.azg,B.aAx],t._)
-B.aTP=new A.ab(500,"Emboar",B.jg,110,123,65,100,65,65,45,238,1.6,3,!0,!1,!1,!1,!1,36,null,null,B.aFj,"blaze",null,"reckless",!1)
-B.vf=new A.a(4,"leer")
-B.ox=new A.a(7,"vine_whip")
-B.ue=new A.a(10,"wrap")
-B.uk=new A.a(13,"growth")
-B.uw=new A.a(16,"leaf_tornado")
-B.amn=new A.a(19,"leech_seed")
-B.aod=new A.a(22,"mega_drain")
-B.ap3=new A.a(25,"slam")
-B.apG=new A.a(28,"leaf_blade")
-B.aqy=new A.a(31,"coil")
-B.arP=new A.a(34,"giga_drain")
-B.ati=new A.a(37,"wring_out")
-B.au4=new A.a(40,"gastro_acid")
-B.avn=new A.a(43,"leaf_storm")
-B.aFE=s([B.ac,B.vf,B.ox,B.ue,B.uk,B.uw,B.amn,B.aod,B.ap3,B.apG,B.aqy,B.arP,B.ati,B.au4,B.avn],t._)
-B.aTQ=new A.ab(495,"Snivy",B.dY,45,45,55,45,55,63,45,62,0.6,1,!0,!1,!1,!1,!1,5,17,496,B.aFE,"overgrow",null,"contrary",!1)
-B.aKg=s([B.br,B.hE,B.H6,B.I9,B.It,B.IM,B.CX,B.Dg,B.DL,B.uR,B.Fk,B.FK,B.Gh,B.GE,B.H2,B.Hf,B.vd],t._)
-B.aTR=new A.ab(27,"Sandshrew",B.ji,50,75,85,20,30,40,255,60,0.6,1,!1,!1,!1,!1,!1,2,22,28,B.aKg,"sand_veil",null,"sand_rush",!0)
-B.Er=new A.a(1,"smog")
-B.HP=new A.a(4,"smog")
-B.Iu=new A.a(7,"smokescreen")
-B.D_=new A.a(12,"assurance")
-B.Dl=new A.a(15,"clear_smog")
-B.E_=new A.a(18,"sludge")
-B.Fm=new A.a(23,"self_destruct")
-B.FI=new A.a(26,"haze")
-B.aq_=new A.a(29,"double_hit")
-B.GG=new A.a(34,"sludge_bomb")
-B.au1=new A.a(40,"explosion")
-B.aws=new A.a(46,"destiny_bond")
-B.ayZ=new A.a(54,"memento")
-B.aIv=s([B.og,B.ac,B.Er,B.l7,B.HP,B.Iu,B.D_,B.Dl,B.E_,B.Fm,B.FI,B.aq_,B.GG,B.au1,B.aws,B.ayZ],t._)
-B.aTS=new A.ab(110,"Weezing",B.eE,65,90,120,85,70,60,60,172,1.2,2,!1,!1,!1,!1,!1,35,null,null,B.aIv,"levitate",null,"stench",!0)
-B.oA=s([B.aH,B.aL],t.U)
-B.l6=new A.a(1,"mud_sport")
-B.Eq=new A.a(1,"rock_polish")
-B.vg=new A.a(4,"mud_sport")
-B.vu=new A.a(8,"rock_polish")
-B.uh=new A.a(11,"rock_throw")
-B.ame=new A.a(18,"steamroller")
-B.uU=new A.a(22,"rock_blast")
-B.FS=new A.a(27,"smack_down")
-B.Gl=new A.a(31,"self_destruct")
-B.GM=new A.a(36,"bulldoze")
-B.Hh=new A.a(42,"stealth_rock")
-B.HB=new A.a(47,"earthquake")
-B.HX=new A.a(53,"explosion")
-B.I4=new A.a(58,"double_edge")
-B.Ii=new A.a(64,"stone_edge")
-B.aBb=new A.a(69,"heavy_slam")
-B.aCM=s([B.ac,B.hE,B.l6,B.Eq,B.vg,B.vu,B.uh,B.l3,B.ame,B.uU,B.FS,B.Gl,B.GM,B.Hh,B.HB,B.HX,B.I4,B.Ii,B.aBb],t._)
-B.aTT=new A.ab(76,"Golem",B.oA,80,120,130,55,65,45,45,223,1.4,3,!1,!1,!1,!1,!1,38,null,null,B.aCM,"rock_head","sturdy","sand_veil",!0)
-B.aH_=s([B.ar,B.aA],t.U)
-B.amH=new A.a(1,"bubble_beam")
-B.anr=new A.a(1,"submission")
-B.aqS=new A.a(32,"dynamic_punch")
-B.avo=new A.a(43,"mind_reader")
-B.ayE=new A.a(53,"circle_throw")
-B.aHI=s([B.amH,B.fJ,B.uF,B.anr,B.aqS,B.avo,B.ayE],t._)
-B.aTU=new A.ab(62,"Poliwrath",B.aH_,90,95,95,70,90,70,45,230,1.3,3,!1,!1,!1,!1,!1,36,null,null,B.aHI,"water_absorb","damp","swift_swim",!0)
-B.amz=new A.a(1,"acid")
-B.Fg=new A.a(23,"mega_drain")
-B.aq5=new A.a(29,"lucky_chant")
-B.as4=new A.a(35,"natural_gift")
-B.auA=new A.a(41,"moonlight")
-B.aKz=s([B.j8,B.Ew,B.amz,B.Ic,B.IF,B.hC,B.Dr,B.DQ,B.Fg,B.aq5,B.as4,B.auA,B.HD,B.HZ],t._)
-B.aTV=new A.ab(44,"Gloom",B.fe,60,65,70,85,75,40,120,138,0.8,2,!1,!1,!1,!1,!1,21,null,45,B.aKz,"chlorophyll",null,"stench",!0)
-B.vm=new A.a(6,"razor_leaf")
-B.vz=new A.a(9,"poison_powder")
-B.uj=new A.a(12,"synthesis")
-B.DY=new A.a(18,"reflect")
-B.F5=new A.a(22,"magical_leaf")
-B.FJ=new A.a(26,"natural_gift")
-B.ar3=new A.a(32,"sweet_scent")
-B.ast=new A.a(36,"light_screen")
-B.H7=new A.a(40,"body_slam")
-B.awH=new A.a(46,"safeguard")
-B.axQ=new A.a(50,"aromatherapy")
-B.az1=new A.a(54,"solar_beam")
-B.aLt=s([B.ac,B.b2,B.oi,B.oh,B.vm,B.vz,B.uj,B.DY,B.F5,B.FJ,B.ar3,B.ast,B.H7,B.awH,B.axQ,B.az1],t._)
-B.aTW=new A.ab(153,"Bayleef",B.dY,60,62,80,63,80,60,45,142,1.2,2,!0,!1,!1,!1,!1,16,32,154,B.aLt,"overgrow",null,"leaf_guard",!1)
+B.aCW=s([B.of,B.lc,B.aC6,B.alt,B.am6,B.anZ,B.aoP,B.aqf,B.arp,B.GW,B.auy,B.awg,B.axz,B.I0,B.azQ],t._)
+B.aTY=new A.ab(108,"Lickitung",B.dX,90,55,75,60,75,30,45,77,1.2,65.5,1,!1,!1,!1,!1,!1,20,null,null,B.aCW,"own_tempo","oblivious","cloud_nine",!0)
 B.vI=s([B.ba,B.aK],t.U)
-B.Ib=new A.a(5,"spite")
-B.IB=new A.a(8,"mean_look")
-B.D1=new A.a(12,"curse")
-B.Dn=new A.a(15,"night_shade")
-B.ob=new A.a(19,"confuse_ray")
-B.F8=new A.a(22,"sucker_punch")
+B.Ic=new A.a(5,"spite")
+B.IC=new A.a(8,"mean_look")
+B.D2=new A.a(12,"curse")
+B.Do=new A.a(15,"night_shade")
+B.F9=new A.a(22,"sucker_punch")
 B.apg=new A.a(26,"payback")
 B.aqd=new A.a(29,"shadow_ball")
 B.ara=new A.a(33,"dream_eater")
 B.ask=new A.a(36,"dark_pulse")
-B.H8=new A.a(40,"destiny_bond")
+B.H9=new A.a(40,"destiny_bond")
+B.Hn=new A.a(43,"hex")
 B.awZ=new A.a(47,"nightmare")
-B.aHF=s([B.fJ,B.of,B.Ib,B.IB,B.D1,B.Dn,B.ob,B.F8,B.apg,B.aqd,B.ara,B.ask,B.H8,B.Hm,B.awZ],t._)
-B.aTX=new A.ab(92,"Gastly",B.vI,30,35,30,100,35,80,190,62,1.3,1,!1,!1,!1,!1,!1,2,25,93,B.aHF,"levitate",null,null,!0)
-B.atf=new A.a(37,"wing_attack")
-B.av2=new A.a(42,"roost")
-B.ax3=new A.a(47,"tailwind")
-B.ayy=new A.a(52,"mirror_move")
-B.azC=new A.a(57,"air_slash")
-B.aAy=new A.a(62,"hurricane")
-B.aEc=s([B.ac,B.jb,B.uI,B.hH,B.vx,B.ed,B.uA,B.F9,B.FQ,B.Go,B.atf,B.av2,B.ax3,B.ayy,B.azC,B.aAy],t._)
-B.aTY=new A.ab(17,"Pidgeotto",B.fN,63,60,55,50,50,71,120,122,1.1,2,!1,!1,!1,!1,!1,18,36,18,B.aEc,"keen_eye","tangled_feet","big_pecks",!0)
-B.HN=new A.a(4,"poison_sting")
-B.IG=new A.a(9,"bite")
-B.D4=new A.a(12,"glare")
-B.EF=new A.a(20,"acid")
-B.ap6=new A.a(25,"stockpile")
-B.ap7=new A.a(25,"swallow")
-B.ap5=new A.a(25,"spit_up")
-B.apz=new A.a(28,"acid_spray")
-B.arl=new A.a(33,"mud_bomb")
-B.asp=new A.a(36,"gastro_acid")
-B.Hd=new A.a(41,"haze")
-B.avE=new A.a(44,"coil")
-B.HK=new A.a(49,"gunk_shot")
-B.aCR=s([B.fL,B.b3,B.HN,B.IG,B.D4,B.o9,B.EF,B.ap6,B.ap7,B.ap5,B.apz,B.arl,B.asp,B.Hd,B.avE,B.HK],t._)
-B.aTZ=new A.ab(23,"Ekans",B.eE,35,60,44,40,54,55,255,58,2,1,!1,!1,!1,!1,!1,2,22,24,B.aCR,"intimidate","shed_skin","unnerve",!0)
-B.uN=new A.a(1,"poison_jab")
-B.amS=new A.a(1,"fury_cutter")
-B.aBB=new A.a(7,"fury_attack")
-B.aC8=new A.a(9,"knock_off")
-B.alo=new A.a(13,"aerial_ace")
-B.amv=new A.a(19,"slash")
-B.anO=new A.a(21,"air_cutter")
-B.ap8=new A.a(25,"swords_dance")
-B.v3=new A.a(31,"agility")
-B.arn=new A.a(33,"night_slash")
-B.asH=new A.a(37,"acrobatics")
-B.avg=new A.a(43,"feint")
-B.avZ=new A.a(45,"false_swipe")
-B.HI=new A.a(49,"air_slash")
-B.az4=new A.a(55,"brave_bird")
-B.aJ4=s([B.uN,B.ee,B.jb,B.b3,B.amS,B.aBB,B.aC8,B.alo,B.amv,B.anO,B.ap8,B.v3,B.arn,B.asH,B.avg,B.avZ,B.HI,B.az4],t._)
-B.aU_=new A.ab(83,"Farfetch'd",B.fN,52,90,55,58,62,60,45,132,0.8,1,!1,!1,!1,!1,!1,2,null,null,B.aJ4,"keen_eye","inner_focus","defiant",!0)
-B.Ie=new A.a(5,"vise_grip")
-B.IL=new A.a(9,"leer")
-B.Dj=new A.a(15,"bubble_beam")
-B.E3=new A.a(19,"mud_shot")
-B.EV=new A.a(21,"metal_claw")
-B.FC=new A.a(25,"stomp")
-B.aq8=new A.a(29,"protect")
-B.aqC=new A.a(31,"guillotine")
-B.as7=new A.a(35,"slam")
-B.atz=new A.a(39,"brine")
-B.aun=new A.a(41,"crabhammer")
-B.aw1=new A.a(45,"flail")
-B.aEa=s([B.l6,B.fI,B.Ie,B.IL,B.uf,B.Dj,B.E3,B.EV,B.FC,B.aq8,B.aqC,B.as7,B.atz,B.aun,B.aw1],t._)
-B.aU0=new A.ab(98,"Krabby",B.bC,30,105,90,25,25,50,225,65,0.4,1,!1,!1,!1,!1,!1,2,28,99,B.aEa,"hyper_cutter","shell_armor","sheer_force",!0)
-B.I8=new A.a(5,"leer")
-B.IJ=new A.a(9,"fury_attack")
-B.o7=new A.a(13,"pursuit")
-B.DB=new A.a(17,"aerial_ace")
-B.anX=new A.a(21,"mirror_move")
-B.G2=new A.a(29,"assurance")
-B.arq=new A.a(33,"roost")
-B.asQ=new A.a(37,"drill_peck")
-B.aJR=s([B.ee,B.b2,B.I8,B.IJ,B.o7,B.DB,B.anX,B.ol,B.G2,B.arq,B.asQ],t._)
-B.aU1=new A.ab(21,"Spearow",B.fN,40,60,30,31,31,70,255,52,0.3,1,!1,!1,!1,!1,!1,2,20,22,B.aJR,"keen_eye",null,"sniper",!0)
-B.aGZ=s([B.ar,B.aW],t.U)
-B.alc=new A.a(11,"swords_dance")
-B.Dz=new A.a(16,"metal_claw")
-B.aoI=new A.a(24,"swagger")
-B.FY=new A.a(28,"fury_attack")
-B.or=new A.a(33,"brine")
-B.asd=new A.a(36,"aqua_jet")
-B.atS=new A.a(39,"whirlpool")
-B.awC=new A.a(46,"mist")
-B.ayr=new A.a(52,"drill_peck")
-B.aA3=new A.a(59,"hydro_pump")
-B.aDZ=s([B.ac,B.b2,B.fI,B.lb,B.vr,B.alc,B.us,B.Dz,B.oa,B.aoI,B.FY,B.or,B.asd,B.atS,B.awC,B.ayr,B.aA3],t._)
-B.aU2=new A.ab(395,"Empoleon",B.aGZ,84,86,88,111,101,60,45,239,1.7,3,!0,!1,!1,!1,!1,36,null,null,B.aDZ,"torrent",null,"defiant",!1)
-B.atg=new A.a(37,"withdraw")
-B.Hi=new A.a(43,"amnesia")
-B.ve=new A.a(49,"psychic")
-B.aze=new A.a(55,"rain_dance")
-B.aAE=new A.a(62,"psych_up")
-B.aB7=new A.a(68,"heal_pulse")
-B.aIV=s([B.Eb,B.EE,B.ac,B.b2,B.I7,B.vC,B.Dd,B.E1,B.Ff,B.oo,B.Gv,B.GS,B.atg,B.Hi,B.ve,B.aze,B.aAE,B.aB7],t._)
-B.aU3=new A.ab(80,"Slowbro",B.vJ,95,75,110,100,80,30,75,172,1.6,2,!1,!1,!1,!1,!1,37,null,null,B.aIV,"oblivious","own_tempo","regenerator",!0)
-B.aA9=new A.a(5,"ember")
-B.aBY=new A.a(8,"smokescreen")
-B.alf=new A.a(12,"feint_attack")
-B.alC=new A.a(15,"fire_spin")
-B.ami=new A.a(19,"clear_smog")
-B.aob=new A.a(22,"flame_burst")
-B.apc=new A.a(26,"confuse_ray")
-B.aq1=new A.a(29,"fire_punch")
-B.ass=new A.a(36,"lava_plume")
-B.av4=new A.a(42,"sunny_day")
-B.axp=new A.a(49,"flamethrower")
-B.az6=new A.a(55,"fire_blast")
-B.aHl=s([B.Er,B.b3,B.dt,B.aA9,B.aBY,B.alf,B.alC,B.ami,B.aob,B.apc,B.aq1,B.ass,B.av4,B.axp,B.az6],t._)
-B.aU4=new A.ab(126,"Magmar",B.cT,65,95,57,100,85,93,45,173,1.3,1,!1,!1,!1,!1,!1,28,null,null,B.aHl,"flame_body",null,"vital_spirit",!0)
-B.axJ=new A.a(4,"encore")
-B.aBI=new A.a(7,"sing")
-B.akZ=new A.a(10,"double_slap")
-B.alO=new A.a(16,"follow_me")
-B.amh=new A.a(19,"bestow")
-B.aoo=new A.a(22,"wake_up_slap")
-B.Fx=new A.a(25,"minimize")
-B.apR=new A.a(28,"stored_power")
-B.aqF=new A.a(31,"metronome")
-B.arH=new A.a(34,"cosmic_power")
-B.at_=new A.a(37,"lucky_chant")
-B.avq=new A.a(43,"moonlight")
-B.axq=new A.a(49,"gravity")
-B.ayx=new A.a(52,"meteor_mash")
-B.az7=new A.a(55,"healing_wish")
-B.azS=new A.a(58,"after_you")
-B.aIR=s([B.dW,B.b2,B.axJ,B.aBI,B.akZ,B.o4,B.alO,B.amh,B.aoo,B.Fx,B.apR,B.aqF,B.arH,B.at_,B.H7,B.avq,B.Hx,B.axq,B.ayx,B.az7,B.azS],t._)
-B.aU5=new A.ab(35,"Clefairy",B.J3,70,45,48,60,65,35,150,113,0.6,1,!1,!1,!1,!1,!1,2,null,36,B.aIR,"cute_charm","magic_guard","friend_guard",!0)
-B.Ia=new A.a(5,"quick_attack")
-B.ub=new A.a(10,"rage")
-B.Df=new A.a(14,"fury_attack")
-B.E4=new A.a(19,"pursuit")
-B.Fq=new A.a(23,"uproar")
-B.FT=new A.a(28,"acupressure")
-B.aqR=new A.a(32,"double_hit")
-B.aus=new A.a(41,"drill_peck")
-B.Hv=new A.a(46,"endeavor")
-B.ay7=new A.a(50,"thrash")
-B.aF5=s([B.ee,B.b2,B.Ia,B.ub,B.Df,B.E4,B.Fq,B.FT,B.aqR,B.os,B.aus,B.Hv,B.ay7],t._)
-B.aU6=new A.ab(84,"Doduo",B.fN,35,85,45,35,35,75,190,62,1.4,1,!1,!1,!1,!1,!1,2,31,85,B.aF5,"run_away","early_bird","tangled_feet",!0)
-B.uC=new A.a(19,"flame_wheel")
-B.ao7=new A.a(22,"defense_curl")
-B.apD=new A.a(28,"flame_charge")
-B.GW=new A.a(37,"lava_plume")
-B.au2=new A.a(40,"flamethrower")
-B.axy=new A.a(49,"rollout")
-B.az5=new A.a(55,"double_edge")
-B.azU=new A.a(58,"eruption")
-B.aD1=s([B.ac,B.b3,B.vn,B.o1,B.ed,B.uC,B.ao7,B.apD,B.v5,B.GW,B.au2,B.Hw,B.axy,B.az5,B.azU],t._)
-B.aU7=new A.ab(155,"Cyndaquil",B.cT,39,52,43,60,50,65,45,62,0.5,1,!0,!1,!1,!1,!1,5,17,156,B.aD1,"blaze",null,"flash_fire",!1)
-B.J1=s([B.bk,B.aM],t.U)
-B.anB=new A.a(1,"vacuum_wave")
-B.aAa=new A.a(5,"focus_energy")
-B.aCa=new A.a(9,"pursuit")
-B.alq=new A.a(13,"false_swipe")
-B.ao2=new A.a(21,"wing_attack")
-B.aoW=new A.a(25,"fury_cutter")
-B.aro=new A.a(33,"razor_wind")
-B.asP=new A.a(37,"double_team")
-B.auM=new A.a(41,"x_scissor")
-B.awc=new A.a(45,"night_slash")
-B.axl=new A.a(49,"double_hit")
-B.ayC=new A.a(53,"air_slash")
-B.aAm=new A.a(61,"feint")
-B.aFJ=s([B.anB,B.eB,B.b3,B.aAa,B.aCa,B.alq,B.DC,B.ao2,B.aoW,B.G9,B.aro,B.asP,B.auM,B.awc,B.axl,B.ayC,B.I3,B.aAm],t._)
-B.aU8=new A.ab(123,"Scyther",B.J1,70,110,80,55,80,105,45,100,1.5,1,!1,!1,!1,!1,!1,25,null,null,B.aFJ,"swarm","technician","steadfast",!0)
+B.aHF=s([B.fJ,B.of,B.Ic,B.IC,B.D2,B.Do,B.ob,B.F9,B.apg,B.aqd,B.ara,B.ask,B.H9,B.Hn,B.awZ],t._)
+B.aTZ=new A.ab(92,"Gastly",B.vI,30,35,30,100,35,80,190,62,1.3,0.1,1,!1,!1,!1,!1,!1,2,25,93,B.aHF,"levitate",null,null,!0)
+B.oA=s([B.aH,B.aL],t.U)
+B.l6=new A.a(1,"mud_sport")
 B.amF=new A.a(1,"bind")
 B.axH=new A.a(4,"curse")
 B.aBG=new A.a(7,"rock_throw")
@@ -128409,114 +128296,394 @@ B.awJ=new A.a(46,"stone_edge")
 B.axk=new A.a(49,"double_edge")
 B.ayz=new A.a(52,"sandstorm")
 B.aFe=s([B.l6,B.ac,B.ja,B.amF,B.axH,B.aBG,B.ub,B.alu,B.alW,B.amt,B.aom,B.aoR,B.v_,B.aqI,B.arU,B.at7,B.au7,B.avb,B.awJ,B.axk,B.ayz],t._)
-B.aU9=new A.ab(95,"Onix",B.oA,35,45,160,30,45,70,45,77,8.8,1,!1,!1,!1,!1,!1,2,null,null,B.aFe,"rock_head","sturdy","weak_armor",!0)
-B.J6=s([B.ar,B.aL],t.U)
+B.aU_=new A.ab(95,"Onix",B.oA,35,45,160,30,45,70,45,77,8.8,210,1,!1,!1,!1,!1,!1,2,null,null,B.aFe,"rock_head","sturdy","weak_armor",!0)
+B.ano=new A.a(1,"spite")
+B.ap2=new A.a(25,"shadow_punch")
+B.apJ=new A.a(28,"payback")
+B.ars=new A.a(33,"shadow_ball")
+B.atC=new A.a(39,"dream_eater")
+B.avF=new A.a(44,"dark_pulse")
+B.axR=new A.a(50,"destiny_bond")
+B.az8=new A.a(55,"hex")
+B.aAq=new A.a(61,"nightmare")
+B.Jg=s([B.fJ,B.of,B.ano,B.Ic,B.IC,B.D2,B.Do,B.ob,B.F9,B.ap2,B.apJ,B.ars,B.atC,B.avF,B.axR,B.az8,B.aAq],t._)
+B.aU0=new A.ab(94,"Gengar",B.vI,60,65,60,130,75,110,45,225,1.5,40.5,3,!1,!1,!1,!1,!1,38,null,null,B.Jg,"levitate",null,null,!0)
+B.aH5=s([B.bh,B.aM],t.U)
+B.aBW=new A.a(8,"mist")
+B.alF=new A.a(15,"ice_shard")
+B.aoe=new A.a(22,"mind_reader")
+B.asc=new A.a(36,"agility")
+B.avl=new A.a(43,"ice_beam")
+B.ay_=new A.a(50,"reflect")
+B.aAT=new A.a(64,"tailwind")
+B.aBf=new A.a(71,"blizzard")
+B.aBv=new A.a(78,"sheer_cold")
+B.aBN=new A.a(85,"hail")
+B.IF=new A.a(92,"hurricane")
+B.aK6=s([B.uI,B.En,B.aBW,B.alF,B.aoe,B.v2,B.asc,B.avl,B.ay_,B.vi,B.aAT,B.aBf,B.aBv,B.aBN,B.IF],t._)
+B.aU1=new A.ab(144,"Articuno",B.aH5,90,85,100,95,125,85,3,261,1.7,55.4,1,!1,!1,!1,!0,!1,50,null,null,B.aK6,"pressure",null,"snow_cloak",!0)
+B.aU2=new A.ab(14,"Kakuna",B.lf,45,25,50,25,25,35,120,72,0.6,10,2,!1,!1,!1,!1,!1,7,10,15,B.Jl,"shed_skin",null,null,!0)
+B.J4=s([B.df],t.U)
+B.an3=new A.a(1,"minimize")
+B.an2=new A.a(1,"metronome")
+B.aIJ=s([B.oj,B.uF,B.an3,B.an2],t._)
+B.aU3=new A.ab(36,"Clefable",B.J4,95,70,73,95,90,60,25,217,1.3,40,2,!1,!1,!1,!1,!1,26,null,null,B.aIJ,"cute_charm","magic_guard","unaware",!0)
+B.asm=new A.a(36,"encore")
+B.auk=new A.a(41,"aqua_tail")
+B.avN=new A.a(44,"retaliate")
+B.axD=new A.a(49,"swords_dance")
+B.vh=new A.a(52,"hydro_pump")
+B.aMo=s([B.ac,B.cb,B.eC,B.fK,B.ld,B.vq,B.l1,B.o5,B.uy,B.EJ,B.uX,B.G2,B.Gx,B.asm,B.auk,B.avN,B.axD,B.vh],t._)
+B.aU4=new A.ab(502,"Dewott",B.bC,75,75,60,83,60,60,45,145,0.8,24.5,2,!0,!1,!1,!1,!1,17,36,503,B.aMo,"torrent",null,"shell_armor",!1)
+B.D8=new A.a(13,"ember")
+B.Dx=new A.a(16,"double_kick")
+B.DN=new A.a(17,"peck")
+B.ok=new A.a(21,"sand_attack")
+B.FW=new A.a(28,"bulk_up")
+B.Gt=new A.a(32,"quick_attack")
+B.avp=new A.a(43,"mirror_move")
+B.ay3=new A.a(50,"sky_uppercut")
+B.ayW=new A.a(54,"flare_blitz")
+B.aF2=s([B.br,B.b2,B.fc,B.dt,B.eD,B.D8,B.Dx,B.DN,B.ok,B.FW,B.Gt,B.v9,B.avp,B.ay3,B.ayW],t._)
+B.aU5=new A.ab(256,"Combusken",B.jg,60,85,60,85,60,55,45,142,0.9,19.5,2,!0,!1,!1,!1,!1,16,36,257,B.aF2,"blaze",null,"speed_boost",!1)
 B.uL=new A.a(1,"mud_slap")
-B.vl=new A.a(6,"mud_slap")
-B.l0=new A.a(10,"water_gun")
-B.uo=new A.a(15,"bide")
-B.EH=new A.a(20,"foresight")
-B.Fz=new A.a(25,"mud_bomb")
-B.Gm=new A.a(31,"take_down")
-B.GX=new A.a(37,"muddy_water")
+B.av5=new A.a(43,"acid_armor")
+B.HL=new A.a(49,"gunk_shot")
+B.azM=new A.a(57,"memento")
+B.aKQ=s([B.dW,B.og,B.ja,B.uL,B.HN,B.It,B.D3,B.Dr,B.DX,B.EX,B.FM,B.G6,B.Gu,B.H0,B.av5,B.HL,B.azM],t._)
+B.aU6=new A.ab(89,"Muk",B.eE,105,105,75,65,100,50,75,175,1.2,30,2,!1,!1,!1,!1,!1,38,null,null,B.aKQ,"stench","sticky_hold","poison_touch",!0)
+B.vy=new A.a(9,"odor_sleuth")
+B.o4=new A.a(13,"defense_curl")
+B.ur=new A.a(15,"flame_charge")
+B.DE=new A.a(17,"arm_thrust")
+B.EN=new A.a(20,"smog")
+B.Fk=new A.a(23,"rollout")
+B.Gl=new A.a(31,"heat_crash")
+B.ase=new A.a(36,"assurance")
+B.atH=new A.a(39,"flamethrower")
+B.avK=new A.a(44,"head_smash")
+B.ax2=new A.a(47,"roar")
+B.ayt=new A.a(52,"flare_blitz")
+B.aKp=s([B.ac,B.cb,B.dt,B.uM,B.je,B.fd,B.vy,B.o4,B.ur,B.DE,B.EN,B.Fk,B.v0,B.Gl,B.ase,B.atH,B.avK,B.ax2,B.ayt],t._)
+B.aU7=new A.ab(499,"Pignite",B.jg,90,93,55,70,55,55,45,146,1,55.5,2,!0,!1,!1,!1,!1,17,36,500,B.aKp,"blaze",null,"thick_fat",!1)
+B.aqR=new A.a(32,"double_hit")
+B.os=new A.a(37,"agility")
+B.aus=new A.a(41,"drill_peck")
+B.ay7=new A.a(50,"thrash")
+B.aF5=s([B.ee,B.b2,B.Ib,B.ub,B.Dg,B.E5,B.Fr,B.FU,B.aqR,B.os,B.aus,B.Hw,B.ay7],t._)
+B.aU8=new A.ab(84,"Doduo",B.fN,35,85,45,35,35,75,190,62,1.4,39.2,1,!1,!1,!1,!1,!1,2,31,85,B.aF5,"run_away","early_bird","tangled_feet",!0)
+B.J1=s([B.bk,B.ak],t.U)
+B.In=new A.a(6,"stun_spore")
+B.Im=new A.a(6,"poison_powder")
+B.CV=new A.a(11,"leech_life")
+B.DJ=new A.a(17,"fury_cutter")
+B.F8=new A.a(22,"spore")
+B.apu=new A.a(27,"slash")
+B.arf=new A.a(33,"growth")
+B.ato=new A.a(38,"giga_drain")
+B.av7=new A.a(43,"aromatherapy")
+B.axw=new A.a(49,"rage_powder")
+B.az3=new A.a(54,"x_scissor")
+B.aL7=s([B.br,B.In,B.Im,B.CV,B.DJ,B.F8,B.apu,B.arf,B.ato,B.av7,B.axw,B.az3],t._)
+B.aU9=new A.ab(46,"Paras",B.J1,35,70,55,45,55,25,190,57,0.3,5.4,1,!1,!1,!1,!1,!1,2,24,47,B.aL7,"effect_spore","dry_skin","damp",!0)
+B.aqr=new A.a(30,"pay_day")
+B.art=new A.a(33,"slash")
+B.ats=new A.a(38,"nasty_plot")
+B.aul=new A.a(41,"assurance")
+B.awr=new A.a(46,"captivate")
+B.axv=new A.a(49,"night_slash")
+B.ayV=new A.a(54,"feint")
+B.aIH=s([B.br,B.b2,B.Il,B.IJ,B.Di,B.o9,B.F4,B.FF,B.aqr,B.art,B.ats,B.aul,B.awr,B.axv,B.ayV],t._)
+B.aUa=new A.ab(52,"Meowth",B.dX,40,45,35,40,40,90,255,58,0.4,4.2,1,!1,!1,!1,!1,!1,2,28,53,B.aIH,"pickup","technician","unnerve",!0)
+B.J6=s([B.ar,B.aK],t.U)
+B.IA=new A.a(8,"constrict")
+B.D_=new A.a(12,"acid")
+B.Du=new A.a(15,"toxic_spikes")
+B.Fb=new A.a(22,"wrap")
+B.FG=new A.a(26,"acid_spray")
+B.G4=new A.a(29,"barrier")
+B.as_=new A.a(34,"water_pulse")
+B.att=new A.a(38,"poison_jab")
+B.avx=new A.a(43,"screech")
+B.awT=new A.a(47,"hex")
+B.azA=new A.a(56,"sludge_wave")
+B.aAu=new A.a(61,"wring_out")
+B.aEN=s([B.hF,B.hG,B.od,B.lc,B.IA,B.D_,B.Du,B.oa,B.Fb,B.FG,B.G4,B.as_,B.att,B.avx,B.awT,B.vh,B.azA,B.aAu],t._)
+B.aUb=new A.ab(73,"Tentacruel",B.J6,80,70,65,80,120,100,60,180,1.6,55,2,!1,!1,!1,!1,!1,30,null,null,B.aEN,"clear_body","liquid_ooze","rain_dish",!0)
+B.aAe=new A.a(5,"thunder_shock")
+B.aBU=new A.a(8,"low_kick")
+B.aln=new A.a(12,"swift")
+B.alK=new A.a(15,"shock_wave")
+B.amy=new A.a(19,"thunder_wave")
+B.ao8=new A.a(22,"electro_ball")
+B.uY=new A.a(26,"light_screen")
+B.aqh=new A.a(29,"thunder_punch")
+B.asl=new A.a(36,"discharge")
+B.Hh=new A.a(42,"screech")
+B.axE=new A.a(49,"thunderbolt")
+B.azj=new A.a(55,"thunder")
+B.aGs=s([B.eB,B.b3,B.l8,B.aAe,B.aBU,B.aln,B.alK,B.amy,B.ao8,B.uY,B.aqh,B.asl,B.Hh,B.axE,B.azj],t._)
+B.aUc=new A.ab(125,"Electabuzz",B.jh,65,83,57,95,85,105,45,172,1.1,30,1,!1,!1,!1,!1,!1,28,null,null,B.aGs,"static",null,"vital_spirit",!0)
+B.Da=new A.a(13,"flame_wheel")
+B.DS=new A.a(17,"stomp")
+B.ET=new A.a(21,"flame_charge")
+B.Gd=new A.a(29,"take_down")
+B.GA=new A.a(33,"inferno")
+B.au3=new A.a(40,"fury_attack")
+B.Hd=new A.a(41,"fire_blast")
+B.Ht=new A.a(45,"bounce")
+B.HK=new A.a(49,"flare_blitz")
+B.aFh=s([B.uN,B.Ek,B.b2,B.eB,B.cb,B.dt,B.fM,B.vw,B.Da,B.DS,B.ET,B.om,B.Gd,B.GA,B.os,B.au3,B.Hd,B.Ht,B.HK],t._)
+B.aUd=new A.ab(78,"Rapidash",B.cU,65,100,70,80,80,105,60,175,1.7,95,2,!1,!1,!1,!1,!1,40,null,null,B.aFh,"run_away","flash_fire","flame_body",!0)
+B.amP=new A.a(1,"feint")
+B.le=new A.a(6,"absorb")
+B.CW=new A.a(11,"leer")
+B.o8=new A.a(16,"mud_shot")
+B.FH=new A.a(26,"endure")
+B.GP=new A.a(36,"mega_drain")
+B.auc=new A.a(40,"slash")
+B.aw9=new A.a(45,"metal_sound")
+B.ayS=new A.a(54,"ancient_power")
+B.aAO=new A.a(63,"wring_out")
+B.aBn=new A.a(72,"night_slash")
+B.aMk=s([B.amP,B.br,B.ja,B.j8,B.b3,B.le,B.CW,B.o8,B.ok,B.FH,B.op,B.GP,B.auc,B.aw9,B.ayS,B.aAO,B.aBn],t._)
+B.aUe=new A.ab(141,"Kabutops",B.oz,60,115,105,65,70,80,45,173,1.3,40.5,2,!1,!0,!1,!1,!1,40,null,null,B.aMk,"swift_swim","battle_armor","weak_armor",!0)
+B.Eh=new A.a(1,"karate_chop")
+B.ua=new A.a(10,"karate_chop")
+B.ul=new A.a(13,"low_sweep")
+B.uV=new A.a(22,"seismic_toss")
+B.on=new A.a(25,"revenge")
+B.Gv=new A.a(32,"vital_throw")
+B.GU=new A.a(36,"submission")
+B.Hc=new A.a(40,"wake_up_slap")
+B.Hr=new A.a(44,"cross_chop")
+B.HU=new A.a(51,"scary_face")
+B.I2=new A.a(55,"dynamic_punch")
+B.aM7=s([B.l5,B.b3,B.fc,B.Eh,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.Gv,B.GU,B.Hc,B.Hr,B.HU,B.I2],t._)
+B.aUf=new A.ab(67,"Machoke",B.hJ,80,100,70,50,60,45,90,142,1.5,70.5,2,!1,!1,!1,!1,!1,28,null,68,B.aM7,"guts","no_guard","steadfast",!0)
+B.ao1=new A.a(21,"twister")
+B.aoS=new A.a(25,"feather_dance")
+B.arD=new A.a(33,"wing_attack")
+B.at6=new A.a(37,"roost")
+B.auJ=new A.a(41,"tailwind")
+B.awb=new A.a(45,"mirror_move")
+B.ayL=new A.a(53,"hurricane")
+B.aKH=s([B.ac,B.hH,B.vx,B.ed,B.uA,B.ao1,B.aoS,B.v1,B.arD,B.at6,B.auJ,B.awb,B.HJ,B.ayL],t._)
+B.aUg=new A.ab(16,"Pidgey",B.fN,40,45,40,35,35,56,255,50,0.3,1.8,1,!1,!1,!1,!1,!1,2,18,17,B.aKH,"keen_eye","tangled_feet","big_pecks",!0)
+B.I7=new A.a(5,"disable")
+B.II=new A.a(9,"confusion")
+B.Db=new A.a(13,"headbutt")
+B.DO=new A.a(17,"poison_gas")
+B.EV=new A.a(21,"meditate")
+B.G7=new A.a(29,"headbutt")
+B.GB=new A.a(33,"psych_up")
+B.H1=new A.a(37,"synchronoise")
+B.vb=new A.a(41,"zen_headbutt")
+B.Hv=new A.a(45,"swagger")
+B.ve=new A.a(49,"psychic")
+B.HZ=new A.a(53,"nasty_plot")
+B.I3=new A.a(57,"psyshock")
+B.Ii=new A.a(61,"future_sight")
+B.aFV=s([B.dW,B.fJ,B.I7,B.II,B.Db,B.DO,B.EV,B.l9,B.G7,B.GB,B.H1,B.vb,B.Hv,B.ve,B.HZ,B.I3,B.Ii],t._)
+B.aUh=new A.ab(96,"Drowzee",B.hI,60,48,45,43,90,42,190,66,1,32.4,1,!1,!1,!1,!1,!1,2,26,97,B.aFV,"insomnia","forewarn","inner_focus",!0)
+B.uO=new A.a(1,"teleport")
+B.aGc=s([B.uO],t._)
+B.aUi=new A.ab(63,"Abra",B.hI,25,20,15,105,55,90,200,62,0.9,19.5,1,!1,!1,!1,!1,!1,2,16,64,B.aGc,"synchronize","inner_focus","magic_guard",!0)
+B.El=new A.a(1,"night_slash")
+B.ug=new A.a(11,"quick_attack")
+B.alY=new A.a(16,"x_scissor")
+B.DP=new A.a(17,"pursuit")
+B.Fm=new A.a(23,"screech")
+B.G8=new A.a(29,"leaf_blade")
+B.GJ=new A.a(35,"agility")
+B.Hq=new A.a(43,"slam")
+B.aA2=new A.a(59,"false_swipe")
+B.aB1=new A.a(67,"leaf_storm")
+B.aEG=s([B.El,B.dW,B.b3,B.j8,B.eB,B.le,B.ug,B.alY,B.DP,B.Fm,B.G8,B.GJ,B.Hq,B.HT,B.aA2,B.aB1],t._)
+B.aUj=new A.ab(254,"Sceptile",B.dY,70,85,65,105,85,120,45,239,1.7,52.2,3,!0,!1,!1,!1,!1,36,null,null,B.aEG,"overgrow",null,"unburden",!1)
+B.EL=new A.a(20,"rapid_spin")
+B.Fw=new A.a(24,"protect")
+B.oo=new A.a(28,"water_pulse")
+B.oq=new A.a(32,"aqua_tail")
+B.asw=new A.a(36,"skull_bash")
+B.au6=new A.a(40,"iron_defense")
+B.avM=new A.a(44,"rain_dance")
+B.HI=new A.a(48,"hydro_pump")
+B.aIl=s([B.ac,B.cb,B.fI,B.fM,B.vo,B.ud,B.un,B.uv,B.EL,B.Fw,B.oo,B.oq,B.asw,B.au6,B.avM,B.HI],t._)
+B.aUk=new A.ab(8,"Wartortle",B.bC,59,63,80,65,80,58,45,142,1,22.5,2,!0,!1,!1,!1,!1,16,36,9,B.aIl,"torrent",null,"rain_dish",!0)
+B.aA8=new A.a(5,"defense_curl")
+B.aC9=new A.a(9,"pound")
+B.alp=new A.a(13,"disable")
+B.am5=new A.a(17,"round")
+B.EZ=new A.a(21,"rollout")
+B.aoQ=new A.a(25,"double_slap")
+B.aqa=new A.a(29,"rest")
+B.ar7=new A.a(33,"body_slam")
+B.asY=new A.a(37,"gyro_ball")
+B.auK=new A.a(41,"wake_up_slap")
+B.awa=new A.a(45,"mimic")
+B.axs=new A.a(49,"hyper_voice")
+B.HX=new A.a(53,"double_edge")
+B.aL2=s([B.oj,B.aA8,B.aC9,B.alp,B.am5,B.EZ,B.aoQ,B.aqa,B.ar7,B.asY,B.auK,B.awa,B.axs,B.HX],t._)
+B.aUl=new A.ab(39,"Jigglypuff",B.J_,115,45,20,45,25,20,170,95,0.5,5.5,1,!1,!1,!1,!1,!1,2,null,40,B.aL2,"cute_charm",null,"friend_guard",!0)
+B.aud=new A.a(40,"spike_cannon")
+B.axd=new A.a(48,"tickle")
+B.azy=new A.a(56,"rock_blast")
+B.aB3=new A.a(67,"shell_smash")
+B.aBr=new A.a(75,"hydro_pump")
+B.aGK=s([B.od,B.jd,B.j9,B.Iq,B.l0,B.DB,B.E3,B.FB,B.FV,B.GG,B.GV,B.aud,B.axd,B.azy,B.aB3,B.aBr],t._)
+B.aUm=new A.ab(139,"Omastar",B.oz,70,60,125,115,70,55,45,173,1,35,2,!1,!0,!1,!1,!1,40,null,null,B.aGK,"swift_swim","shell_armor","weak_armor",!0)
+B.amT=new A.a(1,"growth")
+B.aJ6=s([B.jc,B.amT,B.fL,B.Is,B.CZ,B.l2,B.Dp,B.DT,B.Fc,B.uZ,B.Gc,B.GL,B.H5,B.va,B.HG],t._)
+B.aUn=new A.ab(70,"Weepinbell",B.fe,65,90,50,85,45,55,120,137,1,6.4,2,!1,!1,!1,!1,!1,21,null,71,B.aJ6,"chlorophyll",null,"gluttony",!0)
+B.asG=new A.a(36,"worry_seed")
+B.H6=new A.a(39,"synthesis")
+B.avR=new A.a(44,"solar_beam")
+B.aKb=s([B.ac,B.b2,B.Ej,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.EM,B.Fq,B.G_,B.v4,B.asG,B.H6,B.avR],t._)
+B.aUo=new A.ab(2,"Ivysaur",B.fe,60,62,63,80,80,60,45,142,1,13,2,!0,!1,!1,!1,!1,16,32,3,B.aKb,"overgrow",null,"chlorophyll",!0)
+B.aqM=new A.a(31,"vital_throw")
+B.arW=new A.a(34,"submission")
+B.atc=new A.a(37,"wake_up_slap")
+B.av9=new A.a(43,"cross_chop")
+B.awI=new A.a(46,"scary_face")
+B.axm=new A.a(49,"dynamic_punch")
+B.aG4=s([B.l5,B.b3,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.aqM,B.arW,B.atc,B.av9,B.awI,B.axm],t._)
+B.aUp=new A.ab(66,"Machop",B.hJ,70,80,50,35,35,35,180,61,0.8,19.5,1,!1,!1,!1,!1,!1,2,28,67,B.aG4,"guts","no_guard","steadfast",!0)
+B.aBd=new A.a(6,"ember")
+B.al2=new A.a(10,"odor_sleuth")
+B.alh=new A.a(12,"helping_hand")
+B.DH=new A.a(17,"flame_wheel")
+B.ams=new A.a(19,"reversal")
+B.aoB=new A.a(23,"take_down")
+B.ar2=new A.a(32,"retaliate")
+B.atA=new A.a(39,"crunch")
+B.auv=new A.a(41,"heat_wave")
+B.avr=new A.a(43,"outrage")
+B.aw2=new A.a(45,"flare_blitz")
+B.aFn=s([B.j9,B.Eq,B.aBd,B.vs,B.al2,B.alh,B.DH,B.ams,B.ER,B.aoB,B.FY,B.Gf,B.ar2,B.GE,B.atA,B.auv,B.avr,B.aw2],t._)
+B.aUq=new A.ab(58,"Growlithe",B.cU,55,70,45,70,50,60,190,70,0.7,19,1,!1,!1,!1,!1,!1,2,null,59,B.aFn,"intimidate","flash_fire","justified",!0)
+B.Ja=s([B.aK,B.aL],t.U)
+B.uE=new A.a(1,"double_kick")
+B.Ff=new A.a(23,"chip_away")
+B.as1=new A.a(35,"body_slam")
+B.Hm=new A.a(43,"earth_power")
+B.azZ=new A.a(58,"superpower")
+B.aLj=s([B.br,B.cb,B.uE,B.hF,B.Ff,B.as1,B.Hm,B.azZ],t._)
+B.aUr=new A.ab(31,"Nidoqueen",B.Ja,90,92,87,75,85,76,45,227,1.3,60,3,!1,!1,!1,!1,!1,36,null,null,B.aLj,"poison_point","rivalry","sheer_force",!0)
+B.alP=new A.a(16,"fury_cutter")
+B.awN=new A.a(47,"detect")
+B.ayH=new A.a(53,"false_swipe")
+B.aA4=new A.a(59,"leaf_storm")
+B.aIw=s([B.dW,B.b3,B.j8,B.eB,B.le,B.ug,B.alP,B.DP,B.Fm,B.G8,B.GJ,B.va,B.awN,B.ayH,B.aA4],t._)
+B.aUs=new A.ab(253,"Grovyle",B.dY,50,65,45,85,65,95,45,142,0.9,21.6,2,!0,!1,!1,!1,!1,16,36,254,B.aIw,"overgrow",null,"unburden",!1)
+B.alS=new A.a(16,"peck")
+B.amu=new A.a(19,"sand_attack")
+B.apL=new A.a(28,"quick_attack")
+B.at0=new A.a(37,"mirror_move")
+B.aEY=s([B.br,B.b2,B.eD,B.o1,B.alS,B.amu,B.om,B.apL,B.v6,B.at0,B.vc],t._)
+B.aUt=new A.ab(255,"Torchic",B.cU,45,60,40,70,50,45,45,62,0.4,2.5,1,!0,!1,!1,!1,!1,5,16,256,B.aEY,"blaze",null,"speed_boost",!1)
+B.amK=new A.a(1,"conversion_2")
+B.amJ=new A.a(1,"conversion")
+B.ani=new A.a(1,"sharpen")
+B.aBD=new A.a(7,"psybeam")
+B.ald=new A.a(12,"agility")
+B.amd=new A.a(18,"recover")
+B.aou=new A.a(23,"magnet_rise")
+B.aqe=new A.a(29,"signal_beam")
+B.arT=new A.a(34,"recycle")
+B.atZ=new A.a(40,"discharge")
+B.aw7=new A.a(45,"lock_on")
+B.ayn=new A.a(51,"tri_attack")
+B.azw=new A.a(56,"magic_coat")
+B.aAF=new A.a(62,"zap_cannon")
+B.aFL=s([B.amK,B.ac,B.amJ,B.ani,B.aBD,B.ald,B.amd,B.aou,B.aqe,B.arT,B.atZ,B.aw7,B.ayn,B.azw,B.aAF],t._)
+B.aUu=new A.ab(137,"Porygon",B.dX,65,60,70,85,75,40,45,79,0.8,36.5,1,!1,!1,!1,!1,!1,22,null,null,B.aFL,"trace","download","analytic",!0)
+B.amQ=new A.a(1,"flash_cannon")
+B.atQ=new A.a(39,"skull_bash")
+B.awy=new A.a(46,"iron_defense")
+B.ayQ=new A.a(53,"rain_dance")
+B.Ig=new A.a(60,"hydro_pump")
+B.aIK=s([B.amQ,B.ac,B.cb,B.fI,B.jd,B.fM,B.vo,B.ud,B.un,B.uv,B.EL,B.Fw,B.oo,B.oq,B.atQ,B.awy,B.ayQ,B.Ig],t._)
+B.aUv=new A.ab(9,"Blastoise",B.bC,79,83,100,85,105,78,45,239,1.6,85.5,3,!0,!1,!1,!1,!1,36,null,null,B.aIK,"torrent",null,"rain_dish",!0)
+B.amM=new A.a(1,"cross_poison")
+B.asW=new A.a(37,"growth")
+B.Hs=new A.a(44,"giga_drain")
+B.ayc=new A.a(51,"aromatherapy")
+B.aA5=new A.a(59,"rage_powder")
+B.aB_=new A.a(66,"x_scissor")
+B.aDl=s([B.amM,B.br,B.Ew,B.oh,B.uK,B.In,B.Im,B.CV,B.DJ,B.F8,B.Ga,B.asW,B.Hs,B.ayc,B.aA5,B.aB_],t._)
+B.aUw=new A.ab(47,"Parasect",B.J1,60,95,80,60,80,30,75,142,1,29.5,2,!1,!1,!1,!1,!1,24,null,null,B.aDl,"effect_spore","dry_skin","damp",!0)
+B.amX=new A.a(1,"high_jump_kick")
+B.asf=new A.a(36,"blaze_kick")
+B.av3=new A.a(42,"slash")
+B.axh=new A.a(49,"brave_bird")
+B.aA7=new A.a(59,"sky_uppercut")
+B.aAY=new A.a(66,"flare_blitz")
+B.aJ_=s([B.Ed,B.amX,B.br,B.b2,B.fc,B.dt,B.eD,B.D8,B.Dx,B.DN,B.ok,B.FW,B.Gt,B.asf,B.av3,B.axh,B.aA7,B.aAY],t._)
+B.aUx=new A.ab(257,"Blaziken",B.jg,80,120,70,110,70,80,45,239,1.9,52,3,!0,!1,!1,!1,!1,36,null,null,B.aJ_,"blaze",null,"speed_boost",!1)
+B.alU=new A.a(16,"pursuit")
+B.ape=new A.a(26,"mega_drain")
+B.asx=new A.a(36,"slam")
+B.aup=new A.a(41,"detect")
+B.aww=new A.a(46,"giga_drain")
+B.ayg=new A.a(51,"energy_ball")
+B.aLL=s([B.dW,B.b3,B.le,B.ug,B.alU,B.uS,B.ape,B.v3,B.asx,B.aup,B.aww,B.ayg],t._)
+B.aUy=new A.ab(252,"Treecko",B.dY,40,45,35,65,55,70,45,62,0.5,5,1,!0,!1,!1,!1,!1,5,16,253,B.aLL,"overgrow",null,"unburden",!1)
+B.J7=s([B.ar,B.aL],t.U)
+B.EI=new A.a(20,"foresight")
+B.FA=new A.a(25,"mud_bomb")
+B.Gn=new A.a(31,"take_down")
+B.GY=new A.a(37,"muddy_water")
 B.av0=new A.a(42,"protect")
 B.ayG=new A.a(53,"endeavor")
-B.aK4=s([B.ac,B.b2,B.uL,B.eC,B.vl,B.l0,B.uo,B.o8,B.EH,B.Fz,B.Gm,B.GX,B.av0,B.vd,B.ayG],t._)
-B.aUa=new A.ab(259,"Marshtomp",B.J6,70,85,70,60,70,50,45,142,0.7,2,!0,!1,!1,!1,!1,16,36,260,B.aK4,"torrent",null,"damp",!1)
-B.EJ=new A.a(20,"leech_seed")
-B.Fu=new A.a(24,"mega_drain")
-B.Gq=new A.a(32,"leaf_blade")
-B.asj=new A.a(36,"coil")
-B.au5=new A.a(40,"giga_drain")
-B.avS=new A.a(44,"wring_out")
-B.ax8=new A.a(48,"gastro_acid")
-B.aLx=s([B.ac,B.b3,B.jc,B.fL,B.vf,B.ox,B.ue,B.uk,B.uw,B.EJ,B.Fu,B.v_,B.Gq,B.asj,B.au5,B.avS,B.ax8,B.HU],t._)
-B.aUb=new A.ab(496,"Servine",B.dY,60,60,75,60,75,83,45,145,0.8,2,!0,!1,!1,!1,!1,17,36,497,B.aLx,"overgrow",null,"contrary",!1)
-B.aBC=new A.a(7,"harden")
-B.Jk=s([B.ja,B.aBC],t._)
-B.aUc=new A.ab(11,"Metapod",B.vH,50,20,55,25,25,30,120,72,0.7,2,!1,!1,!1,!1,!1,7,10,12,B.Jk,"shed_skin",null,null,!0)
+B.aK4=s([B.ac,B.b2,B.uL,B.eC,B.vl,B.l0,B.uo,B.o8,B.EI,B.FA,B.Gn,B.GY,B.av0,B.vd,B.ayG],t._)
+B.aUz=new A.ab(259,"Marshtomp",B.J7,70,85,70,60,70,50,45,142,0.7,28,2,!0,!1,!1,!1,!1,16,36,260,B.aK4,"torrent",null,"damp",!1)
+B.aq2=new A.a(29,"gyro_ball")
+B.asR=new A.a(37,"explosion")
+B.aw8=new A.a(45,"memento")
+B.aJZ=s([B.og,B.ac,B.HQ,B.Iv,B.D0,B.Dm,B.E0,B.Fn,B.FJ,B.aq2,B.GH,B.asR,B.H9,B.aw8],t._)
+B.aUA=new A.ab(109,"Koffing",B.eE,40,65,95,60,45,35,190,68,0.6,1,1,!1,!1,!1,!1,!1,2,35,110,B.aJZ,"levitate",null,"stench",!0)
+B.amL=new A.a(1,"covet")
+B.arx=new A.a(33,"swagger")
+B.asM=new A.a(37,"cross_chop")
+B.awf=new A.a(45,"punishment")
+B.axi=new A.a(49,"close_combat")
+B.ayI=new A.a(53,"final_gambit")
+B.aFT=s([B.amL,B.br,B.l5,B.b3,B.fc,B.IL,B.Dc,B.DQ,B.uS,B.uW,B.arx,B.asM,B.Hf,B.awf,B.axi,B.ayI],t._)
+B.aUB=new A.ab(56,"Mankey",B.hJ,40,80,35,35,45,70,190,61,0.5,28,1,!1,!1,!1,!1,!1,2,28,57,B.aFT,"vital_spirit","anger_point","defiant",!0)
+B.as9=new A.a(35,"thrash")
+B.azX=new A.a(58,"megahorn")
+B.aET=s([B.ee,B.fc,B.uE,B.hF,B.Ff,B.as9,B.Hm,B.azX],t._)
+B.aUC=new A.ab(34,"Nidoking",B.Ja,81,102,77,85,75,85,45,227,1.4,62,3,!1,!1,!1,!1,!1,36,null,null,B.aET,"poison_point","rivalry","sheer_force",!0)
+B.amz=new A.a(1,"acid")
+B.Fh=new A.a(23,"mega_drain")
+B.aq5=new A.a(29,"lucky_chant")
+B.as4=new A.a(35,"natural_gift")
+B.auA=new A.a(41,"moonlight")
+B.aKz=s([B.j8,B.Ex,B.amz,B.Id,B.IG,B.hC,B.Ds,B.DR,B.Fh,B.aq5,B.as4,B.auA,B.HE,B.I_],t._)
+B.aUD=new A.ab(44,"Gloom",B.fe,60,65,70,85,75,40,120,138,0.8,8.6,2,!1,!1,!1,!1,!1,21,null,45,B.aKz,"chlorophyll",null,"stench",!0)
+B.EK=new A.a(20,"leech_seed")
+B.Fv=new A.a(24,"mega_drain")
+B.Gr=new A.a(32,"leaf_blade")
+B.atl=new A.a(38,"coil")
+B.aya=new A.a(50,"wring_out")
+B.azt=new A.a(56,"gastro_acid")
+B.aAB=new A.a(62,"leaf_storm")
+B.aEF=s([B.ac,B.b3,B.jc,B.fL,B.vf,B.ox,B.ue,B.uk,B.uw,B.EK,B.Fv,B.v_,B.Gr,B.atl,B.Hs,B.aya,B.azt,B.aAB],t._)
+B.aUE=new A.ab(497,"Serperior",B.dY,75,75,95,75,95,113,45,238,3.3,63,3,!0,!1,!1,!1,!1,36,null,null,B.aEF,"overgrow",null,"contrary",!1)
 B.amw=new A.a(19,"smog")
+B.FE=new A.a(25,"take_down")
 B.apr=new A.a(27,"heat_crash")
 B.aqv=new A.a(31,"assurance")
 B.ard=new A.a(33,"flamethrower")
 B.asZ=new A.a(37,"head_smash")
 B.atN=new A.a(39,"roar")
 B.avi=new A.a(43,"flare_blitz")
-B.aGj=s([B.ac,B.je,B.fd,B.vy,B.o4,B.ur,B.amw,B.EY,B.FD,B.apr,B.aqv,B.ard,B.asZ,B.atN,B.avi],t._)
-B.aUd=new A.ab(498,"Tepig",B.cT,65,63,45,45,45,45,45,62,0.5,1,!0,!1,!1,!1,!1,5,17,499,B.aGj,"blaze",null,"thick_fat",!1)
-B.aKr=s([B.fL,B.b3,B.Ey,B.EB,B.vj,B.ui,B.uq,B.uT,B.ol,B.Gx,B.H3,B.Hz,B.I0,B.Ig,B.Ij,B.In],t._)
-B.aUe=new A.ab(148,"Dragonair",B.J2,61,84,65,70,70,70,45,147,4,2,!1,!1,!0,!1,!1,30,55,149,B.aKr,"shed_skin",null,"marvel_scale",!0)
-B.ar_=new A.a(32,"protect")
-B.asX=new A.a(37,"guillotine")
-B.avQ=new A.a(44,"slam")
-B.ayd=new A.a(51,"brine")
-B.azo=new A.a(56,"crabhammer")
-B.aAI=new A.a(63,"flail")
-B.aFg=s([B.uQ,B.l6,B.fI,B.EC,B.b3,B.Ie,B.IL,B.uf,B.Dj,B.E3,B.EV,B.FC,B.ar_,B.asX,B.avQ,B.ayd,B.azo,B.aAI],t._)
-B.aUf=new A.ab(99,"Kingler",B.bC,55,130,115,50,50,75,60,166,1.3,2,!1,!1,!1,!1,!1,28,null,null,B.aFg,"hyper_cutter","shell_armor","sheer_force",!0)
-B.ap_=new A.a(25,"mega_drain")
-B.aq4=new A.a(29,"leech_seed")
-B.GB=new A.a(33,"synthesis")
-B.auu=new A.a(41,"giga_drain")
-B.aw5=new A.a(45,"leaf_storm")
-B.aGO=s([B.ac,B.vk,B.vv,B.um,B.ux,B.EN,B.ap_,B.aq4,B.GB,B.v8,B.auu,B.aw5],t._)
-B.aUg=new A.ab(387,"Turtwig",B.dY,55,68,64,45,55,31,45,64,0.4,1,!0,!1,!1,!1,!1,5,18,388,B.aGO,"overgrow",null,"shell_armor",!1)
-B.amZ=new A.a(1,"ingrain")
-B.od=new A.a(1,"constrict")
-B.axL=new A.a(4,"sleep_powder")
-B.akX=new A.a(10,"absorb")
-B.alw=new A.a(14,"poison_powder")
-B.am_=new A.a(17,"bind")
-B.anH=new A.a(20,"growth")
-B.aqt=new A.a(30,"stun_spore")
-B.arm=new A.a(33,"natural_gift")
-B.asq=new A.a(36,"giga_drain")
-B.atV=new A.a(40,"ancient_power")
-B.Hp=new A.a(43,"slam")
-B.awK=new A.a(46,"tickle")
-B.aLJ=s([B.amZ,B.od,B.axL,B.ox,B.akX,B.alw,B.am_,B.anH,B.Fg,B.uZ,B.aqt,B.arm,B.asq,B.atV,B.Hp,B.awK,B.HL,B.I_],t._)
-B.aUh=new A.ab(114,"Tangela",B.dY,65,55,115,100,40,60,45,87,1,1,!1,!1,!1,!1,!1,20,null,null,B.aLJ,"chlorophyll","leaf_guard","regenerator",!0)
-B.aBd=new A.a(6,"ember")
-B.al2=new A.a(10,"odor_sleuth")
-B.alh=new A.a(12,"helping_hand")
-B.DG=new A.a(17,"flame_wheel")
-B.ams=new A.a(19,"reversal")
-B.EQ=new A.a(21,"fire_fang")
-B.aoB=new A.a(23,"take_down")
-B.Ge=new A.a(30,"agility")
-B.ar2=new A.a(32,"retaliate")
-B.GD=new A.a(34,"flamethrower")
-B.atA=new A.a(39,"crunch")
-B.auv=new A.a(41,"heat_wave")
-B.avr=new A.a(43,"outrage")
-B.aw2=new A.a(45,"flare_blitz")
-B.aFn=s([B.j9,B.Ep,B.aBd,B.vs,B.al2,B.alh,B.DG,B.ams,B.EQ,B.aoB,B.FX,B.Ge,B.ar2,B.GD,B.atA,B.auv,B.avr,B.aw2],t._)
-B.aUi=new A.ab(58,"Growlithe",B.cT,55,70,45,70,50,60,190,70,0.7,1,!1,!1,!1,!1,!1,2,null,59,B.aFn,"intimidate","flash_fire","justified",!0)
-B.an4=new A.a(1,"nasty_plot")
-B.amI=new A.a(1,"confuse_ray")
-B.and=new A.a(1,"safeguard")
-B.aLO=s([B.an4,B.dt,B.eB,B.amI,B.and],t._)
-B.aUj=new A.ab(38,"Ninetales",B.cT,73,76,75,81,100,100,75,177,1.1,2,!1,!1,!1,!1,!1,22,null,null,B.aLO,"flash_fire",null,"drought",!0)
-B.uH=new A.a(1,"fury_attack")
-B.al_=new A.a(10,"fury_attack")
-B.alX=new A.a(16,"twinneedle")
-B.amo=new A.a(19,"rage")
-B.aoi=new A.a(22,"pursuit")
-B.apa=new A.a(25,"toxic_spikes")
-B.apK=new A.a(28,"pin_missile")
-B.arF=new A.a(34,"assurance")
-B.au0=new A.a(40,"endeavor")
-B.aHh=s([B.uH,B.al_,B.o5,B.alX,B.amo,B.aoi,B.apa,B.apK,B.v3,B.arF,B.GY,B.au0],t._)
-B.aUk=new A.ab(15,"Beedrill",B.lf,65,90,40,45,80,75,45,178,1,3,!1,!1,!1,!1,!1,10,null,null,B.aHh,"swarm",null,"sniper",!0)
+B.aGj=s([B.ac,B.je,B.fd,B.vy,B.o4,B.ur,B.amw,B.EZ,B.FE,B.apr,B.aqv,B.ard,B.asZ,B.atN,B.avi],t._)
+B.aUF=new A.ab(498,"Tepig",B.cU,65,63,45,45,45,45,45,62,0.5,9.9,1,!0,!1,!1,!1,!1,5,17,499,B.aGj,"blaze",null,"thick_fat",!1)
 B.anj=new A.a(1,"signal_beam")
 B.amY=new A.a(1,"icy_wind")
 B.aBH=new A.a(7,"signal_beam")
-B.CT=new A.a(11,"icy_wind")
-B.D8=new A.a(13,"encore")
-B.DJ=new A.a(17,"ice_shard")
-B.EX=new A.a(21,"rest")
-B.Fd=new A.a(23,"aqua_ring")
-B.FO=new A.a(27,"aurora_beam")
 B.arV=new A.a(34,"sheer_cold")
 B.atR=new A.a(39,"take_down")
 B.avX=new A.a(45,"dive")
@@ -128524,302 +128691,168 @@ B.axf=new A.a(49,"aqua_tail")
 B.aza=new A.a(55,"ice_beam")
 B.aAt=new A.a(61,"safeguard")
 B.aAU=new A.a(65,"hail")
-B.aGg=s([B.uJ,B.b2,B.anj,B.amY,B.la,B.aBH,B.CT,B.D8,B.DJ,B.EX,B.Fd,B.FO,B.op,B.or,B.arV,B.atR,B.avX,B.axf,B.aza,B.aAt,B.aAU],t._)
-B.aUl=new A.ab(87,"Dewgong",B.oB,90,70,80,70,95,70,75,166,1.7,2,!1,!1,!1,!1,!1,34,null,null,B.aGg,"thick_fat","hydration","ice_body",!0)
-B.ase=new A.a(36,"assurance")
-B.atH=new A.a(39,"flamethrower")
-B.avK=new A.a(44,"head_smash")
-B.ax2=new A.a(47,"roar")
-B.ayt=new A.a(52,"flare_blitz")
-B.aKp=s([B.ac,B.cb,B.dt,B.uM,B.je,B.fd,B.vy,B.o4,B.ur,B.DD,B.EM,B.Fj,B.v0,B.Gk,B.ase,B.atH,B.avK,B.ax2,B.ayt],t._)
-B.aUm=new A.ab(499,"Pignite",B.jg,90,93,55,70,55,55,45,146,1,2,!0,!1,!1,!1,!1,17,36,500,B.aKp,"blaze",null,"thick_fat",!1)
-B.av5=new A.a(43,"acid_armor")
-B.azM=new A.a(57,"memento")
-B.aKQ=s([B.dW,B.og,B.ja,B.uL,B.HM,B.Is,B.D2,B.Dq,B.DW,B.EW,B.FL,B.G5,B.Gt,B.H_,B.av5,B.HK,B.azM],t._)
-B.aUn=new A.ab(89,"Muk",B.eE,105,105,75,65,100,50,75,175,1.2,2,!1,!1,!1,!1,!1,38,null,null,B.aKQ,"stench","sticky_hold","poison_touch",!0)
-B.aH5=s([B.bh,B.aM],t.U)
-B.aBW=new A.a(8,"mist")
-B.alF=new A.a(15,"ice_shard")
-B.aoe=new A.a(22,"mind_reader")
-B.v2=new A.a(29,"ancient_power")
-B.asc=new A.a(36,"agility")
-B.avl=new A.a(43,"ice_beam")
-B.ay_=new A.a(50,"reflect")
-B.vi=new A.a(57,"roost")
-B.aAT=new A.a(64,"tailwind")
-B.aBf=new A.a(71,"blizzard")
-B.aBv=new A.a(78,"sheer_cold")
-B.aBN=new A.a(85,"hail")
-B.IE=new A.a(92,"hurricane")
-B.aK6=s([B.uI,B.Em,B.aBW,B.alF,B.aoe,B.v2,B.asc,B.avl,B.ay_,B.vi,B.aAT,B.aBf,B.aBv,B.aBN,B.IE],t._)
-B.aUo=new A.ab(144,"Articuno",B.aH5,90,85,100,95,125,85,3,261,1.7,1,!1,!1,!1,!0,!1,50,null,null,B.aK6,"pressure",null,"snow_cloak",!0)
-B.Eh=new A.a(1,"kinesis")
-B.Dv=new A.a(16,"confusion")
-B.DU=new A.a(18,"disable")
-B.F6=new A.a(22,"miracle_eye")
-B.Fr=new A.a(24,"ally_switch")
-B.G0=new A.a(28,"psybeam")
-B.Gi=new A.a(30,"reflect")
-B.GH=new A.a(34,"telekinesis")
-B.GQ=new A.a(36,"recover")
-B.Ha=new A.a(40,"psycho_cut")
-B.av1=new A.a(42,"role_play")
-B.Hy=new A.a(46,"psychic")
-B.HG=new A.a(48,"future_sight")
-B.HV=new A.a(52,"trick")
-B.aEJ=s([B.uO,B.Eh,B.hD,B.Dv,B.DU,B.F6,B.Fr,B.G0,B.Gi,B.GH,B.GQ,B.Ha,B.av1,B.Hy,B.HG,B.HV],t._)
-B.aUp=new A.ab(64,"Kadabra",B.hI,40,35,30,120,70,105,100,140,1.3,2,!1,!1,!1,!1,!1,16,null,65,B.aEJ,"synchronize","inner_focus","magic_guard",!0)
-B.aH3=s([B.bg,B.aM],t.U)
-B.l8=new A.a(1,"thunder_shock")
-B.aC1=new A.a(8,"thunder_wave")
-B.alB=new A.a(15,"detect")
-B.aof=new A.a(22,"pluck")
-B.asi=new A.a(36,"charge")
-B.av6=new A.a(43,"agility")
-B.axS=new A.a(50,"discharge")
-B.aAR=new A.a(64,"light_screen")
-B.aBg=new A.a(71,"drill_peck")
-B.aBx=new A.a(78,"thunder")
-B.aBO=new A.a(85,"rain_dance")
-B.aC3=new A.a(92,"zap_cannon")
-B.aIc=s([B.ee,B.l8,B.aC1,B.alB,B.aof,B.v2,B.asi,B.av6,B.axS,B.vi,B.aAR,B.aBg,B.aBx,B.aBO,B.aC3],t._)
-B.aUq=new A.ab(145,"Zapdos",B.aH3,90,90,85,125,90,100,3,261,1.6,1,!1,!1,!1,!0,!1,50,null,null,B.aIc,"pressure",null,"lightning_rod",!0)
-B.ao1=new A.a(21,"twister")
-B.aoS=new A.a(25,"feather_dance")
-B.v1=new A.a(29,"agility")
-B.arD=new A.a(33,"wing_attack")
-B.at6=new A.a(37,"roost")
-B.auJ=new A.a(41,"tailwind")
-B.awb=new A.a(45,"mirror_move")
-B.ayL=new A.a(53,"hurricane")
-B.aKH=s([B.ac,B.hH,B.vx,B.ed,B.uA,B.ao1,B.aoS,B.v1,B.arD,B.at6,B.auJ,B.awb,B.HI,B.ayL],t._)
-B.aUr=new A.ab(16,"Pidgey",B.fN,40,45,40,35,35,56,255,50,0.3,1,!1,!1,!1,!1,!1,2,18,17,B.aKH,"keen_eye","tangled_feet","big_pecks",!0)
-B.aoq=new A.a(23,"bite")
-B.ava=new A.a(43,"crunch")
-B.azY=new A.a(58,"poison_fang")
-B.aKA=s([B.b2,B.br,B.Iw,B.oy,B.o6,B.uR,B.aoq,B.G_,B.GL,B.H1,B.ava,B.HR,B.azY],t._)
-B.aUs=new A.ab(30,"Nidorina",B.eE,70,62,67,55,55,56,120,128,0.8,2,!1,!1,!1,!1,!1,16,null,31,B.aKA,"poison_point","rivalry","hustle",!0)
+B.aGg=s([B.uJ,B.b2,B.anj,B.amY,B.la,B.aBH,B.CU,B.D9,B.DK,B.EY,B.Fe,B.FP,B.op,B.or,B.arV,B.atR,B.avX,B.axf,B.aza,B.aAt,B.aAU],t._)
+B.aUG=new A.ab(87,"Dewgong",B.oB,90,70,80,70,95,70,75,166,1.7,120,2,!1,!1,!1,!1,!1,34,null,null,B.aGg,"thick_fat","hydration","ice_body",!0)
+B.aml=new A.a(19,"fury_cutter")
+B.aoC=new A.a(23,"water_pulse")
+B.apW=new A.a(29,"aqua_jet")
+B.aqA=new A.a(31,"encore")
+B.at5=new A.a(37,"retaliate")
+B.auI=new A.a(41,"swords_dance")
+B.Ho=new A.a(43,"hydro_pump")
+B.aGf=s([B.ac,B.ld,B.vq,B.l1,B.o5,B.uy,B.aml,B.aoC,B.on,B.apW,B.aqA,B.v7,B.at5,B.auI,B.Ho],t._)
+B.aUH=new A.ab(501,"Oshawott",B.bC,55,55,45,63,45,45,45,62,0.5,5.9,1,!0,!1,!1,!1,!1,5,17,502,B.aGf,"torrent",null,"shell_armor",!1)
+B.I6=new A.a(5,"bubble")
+B.IB=new A.a(8,"hypnosis")
+B.DY=new A.a(18,"rain_dance")
+B.EP=new A.a(21,"body_slam")
+B.aoM=new A.a(25,"bubble_beam")
+B.apI=new A.a(28,"mud_shot")
+B.aqw=new A.a(31,"belly_drum")
+B.asa=new A.a(35,"wake_up_slap")
+B.atq=new A.a(38,"hydro_pump")
+B.auB=new A.a(41,"mud_bomb")
+B.aMi=s([B.fK,B.I6,B.IB,B.o2,B.up,B.DY,B.EP,B.aoM,B.apI,B.aqw,B.asa,B.atq,B.auB],t._)
+B.aUI=new A.ab(60,"Poliwag",B.bC,40,50,40,40,40,90,255,60,0.6,12.4,1,!1,!1,!1,!1,!1,2,25,61,B.aMi,"water_absorb","damp","swift_swim",!0)
+B.Er=new A.a(1,"rock_polish")
+B.vg=new A.a(4,"mud_sport")
+B.vu=new A.a(8,"rock_polish")
+B.uh=new A.a(11,"rock_throw")
+B.ame=new A.a(18,"steamroller")
+B.uU=new A.a(22,"rock_blast")
+B.FT=new A.a(27,"smack_down")
+B.Gm=new A.a(31,"self_destruct")
+B.GN=new A.a(36,"bulldoze")
+B.Hi=new A.a(42,"stealth_rock")
+B.HC=new A.a(47,"earthquake")
+B.HY=new A.a(53,"explosion")
+B.I5=new A.a(58,"double_edge")
+B.Ij=new A.a(64,"stone_edge")
+B.aBb=new A.a(69,"heavy_slam")
+B.aCM=s([B.ac,B.hE,B.l6,B.Er,B.vg,B.vu,B.uh,B.l3,B.ame,B.uU,B.FT,B.Gm,B.GN,B.Hi,B.HC,B.HY,B.I5,B.Ij,B.aBb],t._)
+B.aUJ=new A.ab(76,"Golem",B.oA,80,120,130,55,65,45,45,223,1.4,300,3,!1,!1,!1,!1,!1,38,null,null,B.aCM,"rock_head","sturdy","sand_veil",!0)
+B.HO=new A.a(4,"poison_sting")
+B.IH=new A.a(9,"bite")
+B.D5=new A.a(12,"glare")
+B.EG=new A.a(20,"acid")
+B.F3=new A.a(22,"crunch")
+B.apw=new A.a(27,"stockpile")
+B.apx=new A.a(27,"swallow")
+B.apv=new A.a(27,"spit_up")
+B.aqO=new A.a(32,"acid_spray")
+B.atJ=new A.a(39,"mud_bomb")
+B.avI=new A.a(44,"gastro_acid")
+B.ayj=new A.a(51,"haze")
+B.azn=new A.a(56,"coil")
+B.aAK=new A.a(63,"gunk_shot")
+B.aHc=s([B.Eg,B.uP,B.uG,B.fL,B.b3,B.hF,B.j9,B.HO,B.IH,B.D5,B.o9,B.EG,B.F3,B.apw,B.apx,B.apv,B.aqO,B.atJ,B.avI,B.ayj,B.azn,B.aAK],t._)
+B.aUK=new A.ab(24,"Arbok",B.eE,60,95,69,65,79,80,90,157,3.5,65,2,!1,!1,!1,!1,!1,22,null,null,B.aHc,"intimidate","shed_skin","unnerve",!0)
 B.an5=new A.a(1,"nightmare")
-B.I6=new A.a(5,"disable")
-B.IH=new A.a(9,"confusion")
-B.Da=new A.a(13,"headbutt")
-B.DN=new A.a(17,"poison_gas")
-B.EU=new A.a(21,"meditate")
-B.G6=new A.a(29,"headbutt")
-B.GA=new A.a(33,"psych_up")
-B.H0=new A.a(37,"synchronoise")
-B.Hu=new A.a(45,"swagger")
-B.HY=new A.a(53,"nasty_plot")
-B.I2=new A.a(57,"psyshock")
-B.Ih=new A.a(61,"future_sight")
-B.aFZ=s([B.an5,B.Ex,B.dW,B.fJ,B.l4,B.hD,B.I6,B.IH,B.Da,B.DN,B.EU,B.l9,B.G6,B.GA,B.H0,B.vb,B.Hu,B.ve,B.HY,B.I2,B.Ih],t._)
-B.aUt=new A.ab(97,"Hypno",B.hI,85,73,70,73,115,67,75,169,1.6,2,!1,!1,!1,!1,!1,26,null,null,B.aFZ,"insomnia","forewarn","inner_focus",!0)
-B.aq2=new A.a(29,"gyro_ball")
-B.asR=new A.a(37,"explosion")
-B.aw8=new A.a(45,"memento")
-B.aJZ=s([B.og,B.ac,B.HP,B.Iu,B.D_,B.Dl,B.E_,B.Fm,B.FI,B.aq2,B.GG,B.asR,B.H8,B.aw8],t._)
-B.aUu=new A.ab(109,"Koffing",B.eE,40,65,95,60,45,35,190,68,0.6,1,!1,!1,!1,!1,!1,2,35,110,B.aJZ,"levitate",null,"stench",!0)
-B.atK=new A.a(39,"muddy_water")
-B.awE=new A.a(46,"protect")
-B.ays=new A.a(52,"earthquake")
-B.aAl=new A.a(61,"endeavor")
-B.aBa=new A.a(69,"hammer_arm")
-B.aEq=s([B.ac,B.b2,B.uL,B.eC,B.vl,B.l0,B.uo,B.o8,B.EH,B.Fz,B.Gm,B.atK,B.awE,B.ays,B.aAl,B.aBa],t._)
-B.aUv=new A.ab(260,"Swampert",B.J6,100,110,90,85,90,60,45,241,1.5,3,!0,!1,!1,!1,!1,36,null,null,B.aEq,"torrent",null,"damp",!1)
-B.ug=new A.a(11,"quick_attack")
-B.alY=new A.a(16,"x_scissor")
-B.DO=new A.a(17,"pursuit")
-B.Fl=new A.a(23,"screech")
-B.G7=new A.a(29,"leaf_blade")
-B.GI=new A.a(35,"agility")
-B.HS=new A.a(51,"detect")
-B.aA2=new A.a(59,"false_swipe")
-B.aB1=new A.a(67,"leaf_storm")
-B.aEG=s([B.Ek,B.dW,B.b3,B.j8,B.eB,B.le,B.ug,B.alY,B.DO,B.Fl,B.G7,B.GI,B.Hp,B.HS,B.aA2,B.aB1],t._)
-B.aUw=new A.ab(254,"Sceptile",B.dY,70,85,65,105,85,120,45,239,1.7,3,!0,!1,!1,!1,!1,36,null,null,B.aEG,"overgrow",null,"unburden",!1)
-B.v9=new A.a(39,"slash")
-B.avp=new A.a(43,"mirror_move")
-B.ay3=new A.a(50,"sky_uppercut")
-B.ayW=new A.a(54,"flare_blitz")
-B.aF2=s([B.br,B.b2,B.fc,B.dt,B.eD,B.D7,B.Dw,B.DM,B.ok,B.FV,B.Gs,B.v9,B.avp,B.ay3,B.ayW],t._)
-B.aUx=new A.ab(256,"Combusken",B.jg,60,85,60,85,60,55,45,142,0.9,2,!0,!1,!1,!1,!1,16,36,257,B.aF2,"blaze",null,"speed_boost",!1)
-B.atl=new A.a(38,"coil")
-B.aya=new A.a(50,"wring_out")
-B.azt=new A.a(56,"gastro_acid")
-B.aAB=new A.a(62,"leaf_storm")
-B.aEF=s([B.ac,B.b3,B.jc,B.fL,B.vf,B.ox,B.ue,B.uk,B.uw,B.EJ,B.Fu,B.v_,B.Gq,B.atl,B.Hr,B.aya,B.azt,B.aAB],t._)
-B.aUy=new A.ab(497,"Serperior",B.dY,75,75,95,75,95,113,45,238,3.3,3,!0,!1,!1,!1,!1,36,null,null,B.aEF,"overgrow",null,"contrary",!1)
-B.aug=new A.a(40,"waterfall")
-B.awU=new A.a(47,"horn_drill")
-B.azl=new A.a(56,"agility")
-B.aAN=new A.a(63,"soak")
-B.aBm=new A.a(72,"megahorn")
-B.aH8=s([B.uN,B.ee,B.cb,B.fK,B.hG,B.Iv,B.CS,B.uz,B.ER,B.FN,B.Gj,B.aug,B.awU,B.azl,B.aAN,B.aBm],t._)
-B.aUz=new A.ab(119,"Seaking",B.bC,80,92,65,65,80,68,60,158,1.3,2,!1,!1,!1,!1,!1,33,null,null,B.aH8,"swift_swim","water_veil","lightning_rod",!0)
-B.auP=new A.a(42,"calm_mind")
-B.aI4=s([B.uO,B.Eh,B.hD,B.Dv,B.DU,B.F6,B.Fr,B.G0,B.Gi,B.GH,B.GQ,B.Ha,B.auP,B.Hy,B.HG,B.HV],t._)
-B.aUA=new A.ab(65,"Alakazam",B.hI,55,50,45,135,95,120,50,225,1.5,3,!1,!1,!1,!1,!1,36,null,null,B.aI4,"synchronize","inner_focus","magic_guard",!0)
-B.Jb=s([B.aL,B.aH],t.U)
-B.Ee=new A.a(1,"horn_attack")
-B.aBZ=new A.a(8,"stomp")
-B.D3=new A.a(12,"fury_attack")
-B.Fi=new A.a(23,"rock_blast")
-B.Gg=new A.a(30,"bulldoze")
-B.GC=new A.a(34,"chip_away")
-B.avY=new A.a(45,"drill_run")
-B.ayB=new A.a(52,"stone_edge")
-B.azp=new A.a(56,"earthquake")
-B.aAL=new A.a(63,"horn_drill")
-B.aB2=new A.a(67,"megahorn")
-B.aG1=s([B.Ee,B.cb,B.aBZ,B.D3,B.uD,B.Fi,B.Gg,B.GC,B.ou,B.avY,B.ayB,B.azp,B.aAL,B.aB2],t._)
-B.aUB=new A.ab(111,"Rhyhorn",B.Jb,80,85,95,30,30,25,120,69,1,1,!1,!1,!1,!1,!1,2,42,112,B.aG1,"lightning_rod","rock_head","reckless",!0)
-B.HO=new A.a(4,"quick_attack")
-B.CO=new A.a(10,"bite")
-B.Dy=new A.a(16,"hyper_fang")
-B.E6=new A.a(19,"sucker_punch")
-B.F2=new A.a(22,"crunch")
-B.uW=new A.a(25,"assurance")
-B.apS=new A.a(28,"super_fang")
-B.arL=new A.a(34,"endeavor")
-B.aDj=s([B.ac,B.cb,B.HO,B.eD,B.CO,B.o7,B.Dy,B.E6,B.F2,B.uW,B.apS,B.v4,B.arL],t._)
-B.aUC=new A.ab(19,"Rattata",B.dX,30,56,35,25,35,72,255,51,0.3,1,!1,!1,!1,!1,!1,2,20,20,B.aDj,"run_away","guts","hustle",!0)
-B.aoF=new A.a(24,"mud_sport")
-B.arC=new A.a(33,"whirlpool")
-B.at3=new A.a(37,"protect")
-B.auX=new A.a(42,"hydro_pump")
-B.aGt=s([B.ac,B.b2,B.vl,B.l0,B.uo,B.oc,B.aoF,B.v0,B.arC,B.at3,B.auX,B.Hv],t._)
-B.aUD=new A.ab(258,"Mudkip",B.bC,50,70,50,50,50,40,45,62,0.4,1,!0,!1,!1,!1,!1,5,16,259,B.aGt,"torrent",null,"damp",!1)
-B.asz=new A.a(36,"soak")
-B.atL=new A.a(39,"psych_up")
-B.awx=new A.a(46,"hydro_pump")
-B.ay9=new A.a(50,"wonder_room")
-B.aK9=s([B.fK,B.br,B.fM,B.ID,B.CQ,B.Dm,B.E0,B.F4,B.FB,B.Gd,B.oq,B.asz,B.atL,B.Hi,B.awx,B.ay9],t._)
-B.aUE=new A.ab(54,"Psyduck",B.bC,50,52,48,65,50,55,190,64,0.8,1,!1,!1,!1,!1,!1,2,33,55,B.aK9,"damp","cloud_nine","swift_swim",!0)
-B.anA=new A.a(1,"uproar")
-B.aBE=new A.a(7,"reflect")
-B.al8=new A.a(11,"leech_seed")
-B.am1=new A.a(17,"bullet_seed")
-B.amx=new A.a(19,"stun_spore")
-B.anY=new A.a(21,"poison_powder")
-B.aoz=new A.a(23,"sleep_powder")
-B.apn=new A.a(27,"confusion")
-B.arE=new A.a(33,"worry_seed")
-B.at1=new A.a(37,"natural_gift")
-B.avy=new A.a(43,"solar_beam")
-B.awQ=new A.a(47,"extrasensory")
-B.ayD=new A.a(53,"bestow")
-B.aF6=s([B.E7,B.anA,B.fJ,B.aBE,B.al8,B.am1,B.amx,B.anY,B.aoz,B.apn,B.arE,B.at1,B.avy,B.awQ,B.ayD],t._)
-B.aUF=new A.ab(102,"Exeggcute",B.J7,60,40,80,60,45,40,90,65,0.4,1,!1,!1,!1,!1,!1,2,null,103,B.aF6,"chlorophyll",null,"harvest",!0)
-B.al4=new A.a(10,"rapid_spin")
-B.alk=new A.a(12,"recover")
-B.alz=new A.a(15,"camouflage")
-B.amg=new A.a(18,"swift")
-B.ao4=new A.a(22,"bubble_beam")
-B.aqq=new A.a(30,"gyro_ball")
-B.ari=new A.a(33,"light_screen")
-B.ash=new A.a(36,"brine")
-B.aua=new A.a(40,"reflect_type")
-B.avt=new A.a(43,"power_gem")
-B.ax5=new A.a(48,"cosmic_power")
-B.vh=new A.a(52,"hydro_pump")
-B.aLr=s([B.ac,B.ja,B.ow,B.al4,B.alk,B.alz,B.amg,B.ao4,B.Fx,B.aqq,B.ari,B.ash,B.aua,B.avt,B.ax5,B.vh],t._)
-B.aUG=new A.ab(120,"Staryu",B.bC,30,45,55,70,55,85,225,68,0.8,1,!1,!1,!1,!1,!1,2,null,121,B.aLr,"illuminate","natural_cure","analytic",!0)
-B.aBR=new A.a(8,"fire_spin")
-B.aly=new A.a(15,"agility")
-B.ao9=new A.a(22,"endure")
-B.aso=new A.a(36,"flamethrower")
-B.axN=new A.a(50,"air_slash")
-B.aAQ=new A.a(64,"heat_wave")
-B.aBk=new A.a(71,"solar_beam")
-B.aBw=new A.a(78,"sky_attack")
-B.aBP=new A.a(85,"sunny_day")
-B.aKW=s([B.ED,B.dt,B.aBR,B.aly,B.ao9,B.v2,B.aso,B.Ho,B.axN,B.vi,B.aAQ,B.aBk,B.aBw,B.aBP,B.IE],t._)
-B.aUH=new A.ab(146,"Moltres",B.J4,90,100,90,125,85,90,3,261,2,1,!1,!1,!1,!0,!1,50,null,null,B.aKW,"pressure",null,"flame_body",!0)
-B.J8=s([B.bg,B.aW],t.U)
-B.ov=new A.a(4,"supersonic")
-B.Ix=new A.a(7,"thunder_shock")
-B.CW=new A.a(11,"sonic_boom")
-B.Ds=new A.a(15,"thunder_wave")
-B.DV=new A.a(18,"magnet_bomb")
-B.F_=new A.a(21,"spark")
-B.Fy=new A.a(25,"mirror_shot")
-B.G8=new A.a(29,"metal_sound")
-B.aqU=new A.a(32,"electro_ball")
-B.as2=new A.a(35,"flash_cannon")
-B.atP=new A.a(39,"screech")
-B.avc=new A.a(43,"discharge")
-B.awz=new A.a(46,"lock_on")
-B.axu=new A.a(49,"magnet_rise")
-B.ayJ=new A.a(53,"gyro_ball")
-B.azR=new A.a(57,"zap_cannon")
-B.aKL=s([B.ac,B.ov,B.Ix,B.CW,B.Ds,B.DV,B.F_,B.Fy,B.G8,B.aqU,B.as2,B.atP,B.avc,B.awz,B.axu,B.ayJ,B.azR],t._)
-B.aUI=new A.ab(81,"Magnemite",B.J8,25,35,70,95,55,45,190,65,0.3,1,!1,!1,!1,!1,!1,2,30,82,B.aKL,"magnet_pull","sturdy","analytic",!0)
-B.DZ=new A.a(18,"rollout")
-B.aCP=s([B.ac,B.hE,B.l6,B.Eq,B.vg,B.vu,B.uh,B.l3,B.DZ,B.uU,B.FS,B.Gl,B.GM,B.Hh,B.HB,B.HX,B.I4,B.Ii],t._)
-B.aUJ=new A.ab(75,"Graveler",B.oA,55,95,115,45,45,35,120,137,1,2,!1,!1,!1,!1,!1,25,null,76,B.aCP,"rock_head","sturdy","sand_veil",!0)
-B.axU=new A.a(50,"fire_spin")
-B.ayY=new A.a(54,"inferno")
-B.aFP=s([B.br,B.b2,B.dt,B.fd,B.uc,B.DF,B.EZ,B.FW,B.Gp,B.v9,B.vc,B.axU,B.ayY],t._)
-B.aUK=new A.ab(5,"Charmeleon",B.cT,58,64,58,80,65,80,45,142,1.1,2,!0,!1,!1,!1,!1,16,36,6,B.aFP,"blaze",null,"solar_power",!0)
-B.anP=new A.a(21,"aurora_beam")
-B.aoL=new A.a(25,"aqua_ring")
-B.apV=new A.a(29,"acid_armor")
-B.arg=new A.a(33,"haze")
-B.aw4=new A.a(45,"hydro_pump")
-B.aEk=s([B.oe,B.ac,B.cb,B.hH,B.vC,B.ed,B.uz,B.anP,B.aoL,B.apV,B.arg,B.GX,B.ot,B.aw4],t._)
-B.aUL=new A.ab(134,"Vaporeon",B.bC,130,65,60,110,95,65,45,184,1,2,!1,!1,!1,!1,!1,25,null,null,B.aEk,"water_absorb",null,"hydration",!0)
-B.J9=s([B.aK,B.aL],t.U)
-B.Fe=new A.a(23,"chip_away")
-B.as1=new A.a(35,"body_slam")
-B.Hl=new A.a(43,"earth_power")
-B.azZ=new A.a(58,"superpower")
-B.aLj=s([B.br,B.cb,B.uE,B.hF,B.Fe,B.as1,B.Hl,B.azZ],t._)
-B.aUM=new A.ab(31,"Nidoqueen",B.J9,90,92,87,75,85,76,45,227,1.3,3,!1,!1,!1,!1,!1,36,null,null,B.aLj,"poison_point","rivalry","sheer_force",!0)
-B.amL=new A.a(1,"covet")
-B.IK=new A.a(9,"fury_swipes")
-B.Db=new A.a(13,"karate_chop")
-B.DP=new A.a(17,"seismic_toss")
-B.uS=new A.a(21,"screech")
-B.arx=new A.a(33,"swagger")
-B.asM=new A.a(37,"cross_chop")
-B.awf=new A.a(45,"punishment")
-B.axi=new A.a(49,"close_combat")
-B.ayI=new A.a(53,"final_gambit")
-B.aFT=s([B.amL,B.br,B.l5,B.b3,B.fc,B.IK,B.Db,B.DP,B.uS,B.uW,B.arx,B.asM,B.He,B.awf,B.axi,B.ayI],t._)
-B.aUN=new A.ab(56,"Mankey",B.hJ,40,80,35,35,45,70,190,61,0.5,1,!1,!1,!1,!1,!1,2,28,57,B.aFT,"vital_spirit","anger_point","defiant",!0)
-B.am4=new A.a(17,"reflect")
-B.anK=new A.a(20,"magical_leaf")
-B.aoy=new A.a(23,"natural_gift")
-B.apT=new A.a(28,"sweet_scent")
-B.aqE=new A.a(31,"light_screen")
-B.arG=new A.a(34,"body_slam")
-B.atO=new A.a(39,"safeguard")
-B.auN=new A.a(42,"aromatherapy")
-B.awj=new A.a(45,"solar_beam")
-B.aDL=s([B.ac,B.b2,B.vm,B.vz,B.uj,B.am4,B.anK,B.aoy,B.apT,B.aqE,B.arG,B.atO,B.auN,B.awj],t._)
-B.aUO=new A.ab(152,"Chikorita",B.dY,45,49,65,49,65,45,45,64,0.9,1,!0,!1,!1,!1,!1,5,16,153,B.aDL,"overgrow",null,"leaf_guard",!1)
-B.H9=new A.a(40,"hydro_pump")
-B.ax6=new A.a(48,"dragon_dance")
-B.azE=new A.a(57,"dragon_pulse")
-B.aIq=s([B.fI,B.l7,B.b3,B.eC,B.HQ,B.vs,B.o2,B.De,B.uB,B.Fc,B.FM,B.Gf,B.H9,B.ax6,B.azE],t._)
-B.aUP=new A.ab(117,"Seadra",B.bC,55,65,95,95,45,85,75,154,1.2,2,!1,!1,!1,!1,!1,32,null,null,B.aIq,"poison_point","sniper","damp",!0)
-B.E8=new A.a(1,"barrier")
-B.aC0=new A.a(8,"swift")
-B.alE=new A.a(15,"future_sight")
-B.aoh=new A.a(22,"psych_up")
-B.aq6=new A.a(29,"miracle_eye")
-B.avv=new A.a(43,"psycho_cut")
-B.axO=new A.a(50,"amnesia")
-B.azN=new A.a(57,"power_swap")
-B.azI=new A.a(57,"guard_swap")
-B.aAS=new A.a(64,"psychic")
-B.aBj=new A.a(71,"me_first")
-B.aBy=new A.a(79,"recover")
-B.aBQ=new A.a(86,"safeguard")
-B.aC4=new A.a(93,"aura_sphere")
-B.akW=new A.a(100,"psystrike")
-B.aHY=s([B.hD,B.l4,B.E8,B.aC0,B.alE,B.aoh,B.aq6,B.GP,B.avv,B.axO,B.azN,B.azI,B.aAS,B.aBj,B.aBy,B.aBQ,B.aC4,B.akW],t._)
-B.aUQ=new A.ab(150,"Mewtwo",B.hI,106,110,90,154,90,130,3,306,2,1,!1,!1,!1,!0,!1,70,null,null,B.aHY,"pressure",null,"unnerve",!0)
+B.aFZ=s([B.an5,B.Ey,B.dW,B.fJ,B.l4,B.hD,B.I7,B.II,B.Db,B.DO,B.EV,B.l9,B.G7,B.GB,B.H1,B.vb,B.Hv,B.ve,B.HZ,B.I3,B.Ii],t._)
+B.aUL=new A.ab(97,"Hypno",B.hI,85,73,70,73,115,67,75,169,1.6,75.6,2,!1,!1,!1,!1,!1,26,null,null,B.aFZ,"insomnia","forewarn","inner_focus",!0)
+B.amG=new A.a(1,"bone_club")
+B.ary=new A.a(33,"thrash")
+B.asT=new A.a(37,"fling")
+B.av8=new A.a(43,"bone_rush")
+B.axn=new A.a(49,"endeavor")
+B.aA6=new A.a(59,"retaliate")
+B.aFO=s([B.b2,B.cb,B.amG,B.uJ,B.je,B.Ir,B.CS,B.Dd,B.DI,B.EQ,B.Fi,B.FQ,B.ary,B.asT,B.av8,B.axn,B.HX,B.aA6],t._)
+B.aUM=new A.ab(105,"Marowak",B.ji,60,80,110,50,80,45,75,149,1,45,2,!1,!1,!1,!1,!1,28,null,null,B.aFO,"rock_head","lightning_rod","battle_armor",!0)
+B.Ec=new A.a(1,"curse")
+B.EF=new A.a(1,"yawn")
+B.I8=new A.a(5,"growl")
+B.vC=new A.a(9,"water_gun")
+B.De=new A.a(14,"confusion")
+B.E2=new A.a(19,"disable")
+B.Fg=new A.a(23,"headbutt")
+B.Gw=new A.a(32,"zen_headbutt")
+B.GT=new A.a(36,"slack_off")
+B.atg=new A.a(37,"withdraw")
+B.Hj=new A.a(43,"amnesia")
+B.aze=new A.a(55,"rain_dance")
+B.aAE=new A.a(62,"psych_up")
+B.aB7=new A.a(68,"heal_pulse")
+B.aIV=s([B.Ec,B.EF,B.ac,B.b2,B.I8,B.vC,B.De,B.E2,B.Fg,B.oo,B.Gw,B.GT,B.atg,B.Hj,B.ve,B.aze,B.aAE,B.aB7],t._)
+B.aUN=new A.ab(80,"Slowbro",B.vJ,95,75,110,100,80,30,75,172,1.6,78.5,2,!1,!1,!1,!1,!1,37,null,null,B.aIV,"oblivious","own_tempo","regenerator",!0)
+B.aH2=s([B.ak,B.aL],t.U)
+B.anC=new A.a(1,"wood_hammer")
+B.aqT=new A.a(32,"earthquake")
+B.arh=new A.a(33,"leech_seed")
+B.avW=new A.a(45,"crunch")
+B.ayh=new A.a(51,"giga_drain")
+B.azK=new A.a(57,"leaf_storm")
+B.aMf=s([B.anC,B.ac,B.jd,B.j8,B.oi,B.vk,B.vv,B.um,B.ux,B.F1,B.FS,B.aqT,B.arh,B.H6,B.avW,B.ayh,B.azK],t._)
+B.aUO=new A.ab(389,"Torterra",B.aH2,95,109,105,75,85,56,45,236,2.2,310,3,!0,!1,!1,!1,!1,32,null,null,B.aMf,"overgrow",null,"shell_armor",!1)
+B.ED=new A.a(1,"vise_grip")
+B.axF=new A.a(4,"bind")
+B.aBX=new A.a(8,"seismic_toss")
+B.uf=new A.a(11,"harden")
+B.alJ=new A.a(15,"revenge")
+B.am8=new A.a(18,"brick_break")
+B.aon=new A.a(22,"vital_throw")
+B.apj=new A.a(26,"submission")
+B.aqm=new A.a(29,"x_scissor")
+B.arw=new A.a(33,"storm_throw")
+B.asC=new A.a(36,"thrash")
+B.auf=new A.a(40,"swords_dance")
+B.avz=new A.a(43,"superpower")
+B.awR=new A.a(47,"guillotine")
+B.aLT=s([B.ED,B.fc,B.axF,B.aBX,B.uf,B.alJ,B.am8,B.aon,B.apj,B.aqm,B.arw,B.asC,B.auf,B.avz,B.awR],t._)
+B.aUP=new A.ab(127,"Pinsir",B.vH,65,125,100,55,70,85,45,175,1.5,55,1,!1,!1,!1,!1,!1,25,null,null,B.aLT,"hyper_cutter","mold_breaker","moxie",!0)
+B.Ei=new A.a(1,"kinesis")
+B.Dw=new A.a(16,"confusion")
+B.DV=new A.a(18,"disable")
+B.F7=new A.a(22,"miracle_eye")
+B.Fs=new A.a(24,"ally_switch")
+B.G1=new A.a(28,"psybeam")
+B.Gj=new A.a(30,"reflect")
+B.GI=new A.a(34,"telekinesis")
+B.GR=new A.a(36,"recover")
+B.Hb=new A.a(40,"psycho_cut")
+B.av1=new A.a(42,"role_play")
+B.Hz=new A.a(46,"psychic")
+B.HH=new A.a(48,"future_sight")
+B.HW=new A.a(52,"trick")
+B.aEJ=s([B.uO,B.Ei,B.hD,B.Dw,B.DV,B.F7,B.Fs,B.G1,B.Gj,B.GI,B.GR,B.Hb,B.av1,B.Hz,B.HH,B.HW],t._)
+B.aUQ=new A.ab(64,"Kadabra",B.hI,40,35,30,120,70,105,100,140,1.3,56.5,2,!1,!1,!1,!1,!1,16,null,65,B.aEJ,"synchronize","inner_focus","magic_guard",!0)
+B.anf=new A.a(1,"screech")
+B.amD=new A.a(1,"astonish")
+B.aoJ=new A.a(24,"swift")
+B.apA=new A.a(28,"air_cutter")
+B.ar5=new A.a(33,"acrobatics")
+B.atr=new A.a(38,"mean_look")
+B.av_=new A.a(42,"poison_fang")
+B.awS=new A.a(47,"haze")
+B.ayq=new A.a(52,"air_slash")
+B.aEE=s([B.anf,B.uK,B.hG,B.amD,B.ov,B.Iz,B.D1,B.Dv,B.ob,B.aoJ,B.apA,B.ar5,B.atr,B.av_,B.awS,B.ayq],t._)
+B.aUR=new A.ab(42,"Golbat",B.Jb,75,80,70,65,75,90,90,159,1.6,55,2,!1,!1,!1,!1,!1,22,null,null,B.aEE,"inner_focus",null,"infiltrator",!0)
+B.auj=new A.a(41,"amnesia")
+B.awe=new A.a(45,"psychic")
+B.axx=new A.a(49,"rain_dance")
+B.az_=new A.a(54,"psych_up")
+B.azV=new A.a(58,"heal_pulse")
+B.aEh=s([B.Ec,B.EF,B.ac,B.I8,B.vC,B.De,B.E2,B.Fg,B.oo,B.Gw,B.GT,B.auj,B.awe,B.axx,B.az_,B.azV],t._)
+B.aUS=new A.ab(79,"Slowpoke",B.vJ,90,65,65,40,40,15,190,63,1.2,36,1,!1,!1,!1,!1,!1,2,37,80,B.aEh,"oblivious","own_tempo","regenerator",!0)
+B.aH_=s([B.ar,B.aA],t.U)
+B.amH=new A.a(1,"bubble_beam")
+B.anr=new A.a(1,"submission")
+B.aqS=new A.a(32,"dynamic_punch")
+B.avo=new A.a(43,"mind_reader")
+B.ayE=new A.a(53,"circle_throw")
+B.aHI=s([B.amH,B.fJ,B.uF,B.anr,B.aqS,B.avo,B.ayE],t._)
+B.aUT=new A.ab(62,"Poliwrath",B.aH_,90,95,95,70,90,70,45,230,1.3,54,3,!1,!1,!1,!1,!1,36,null,null,B.aHI,"water_absorb","damp","swift_swim",!0)
+B.EB=new A.a(1,"tri_attack")
+B.Et=new A.a(1,"sonic_boom")
+B.arK=new A.a(34,"electro_ball")
+B.atI=new A.a(39,"flash_cannon")
+B.awi=new A.a(45,"screech")
+B.aye=new A.a(51,"discharge")
+B.azv=new A.a(56,"lock_on")
+B.aAC=new A.a(62,"magnet_rise")
+B.aB0=new A.a(67,"gyro_ball")
+B.aBp=new A.a(73,"zap_cannon")
+B.aKn=s([B.EB,B.ac,B.hG,B.l8,B.Et,B.ov,B.Iy,B.CX,B.Dt,B.DW,B.F0,B.Fz,B.G9,B.arK,B.atI,B.awi,B.aye,B.azv,B.aAC,B.aB0,B.aBp],t._)
+B.aUU=new A.ab(82,"Magneton",B.J9,50,60,95,120,70,70,60,163,1,60,2,!1,!1,!1,!1,!1,30,null,null,B.aKn,"magnet_pull","sturdy","analytic",!0)
 B.axM=new A.a(4,"withdraw")
 B.aC_=new A.a(8,"supersonic")
 B.alr=new A.a(13,"icicle_spear")
@@ -128836,211 +128869,38 @@ B.ayv=new A.a(52,"ice_beam")
 B.azz=new A.a(56,"shell_smash")
 B.aAn=new A.a(61,"hydro_pump")
 B.aJy=s([B.ac,B.axM,B.aC_,B.alr,B.alT,B.anJ,B.aoO,B.apF,B.ar0,B.asI,B.auh,B.avD,B.axt,B.ayv,B.azz,B.aAn],t._)
-B.aUR=new A.ab(90,"Shellder",B.bC,30,65,100,45,25,40,190,61,0.3,1,!1,!1,!1,!1,!1,2,null,91,B.aJy,"shell_armor","skill_link","overcoat",!0)
-B.akY=new A.a(10,"confusion")
-B.alj=new A.a(12,"poison_powder")
-B.alm=new A.a(12,"stun_spore")
-B.all=new A.a(12,"sleep_powder")
-B.alQ=new A.a(16,"gust")
-B.amf=new A.a(18,"supersonic")
-B.aop=new A.a(22,"whirlwind")
-B.aoH=new A.a(24,"psybeam")
-B.apO=new A.a(28,"silver_wind")
-B.aqu=new A.a(30,"tailwind")
-B.arS=new A.a(34,"rage_powder")
-B.GR=new A.a(36,"safeguard")
-B.atX=new A.a(40,"captivate")
-B.auO=new A.a(42,"bug_buzz")
-B.awF=new A.a(46,"quiver_dance")
-B.aIA=s([B.hD,B.akY,B.alj,B.alm,B.all,B.alQ,B.amf,B.aop,B.aoH,B.apO,B.aqu,B.arS,B.GR,B.atX,B.auO,B.awF],t._)
-B.aUS=new A.ab(12,"Butterfree",B.J1,60,45,50,90,80,70,45,178,1.1,3,!1,!1,!1,!1,!1,10,null,null,B.aIA,"compound_eyes",null,"tinted_lens",!0)
-B.al6=new A.a(10,"thunder_wave")
-B.am9=new A.a(18,"electro_ball")
-B.anR=new A.a(21,"double_team")
-B.api=new A.a(26,"slam")
-B.aqi=new A.a(29,"thunderbolt")
-B.arN=new A.a(34,"feint")
-B.auR=new A.a(42,"discharge")
-B.aw6=new A.a(45,"light_screen")
-B.ay8=new A.a(50,"thunder")
-B.aHu=s([B.b2,B.l8,B.ld,B.al6,B.ed,B.am9,B.anR,B.api,B.aqi,B.arN,B.os,B.auR,B.aw6,B.ay8],t._)
-B.aUT=new A.ab(25,"Pikachu",B.jh,35,55,40,50,50,90,190,112,0.4,1,!1,!1,!1,!1,!1,2,null,26,B.aHu,"static",null,"lightning_rod",!0)
-B.vo=new A.a(7,"bubble")
-B.ud=new A.a(10,"withdraw")
-B.un=new A.a(13,"water_gun")
-B.uv=new A.a(16,"bite")
-B.amp=new A.a(19,"rapid_spin")
-B.aog=new A.a(22,"protect")
-B.apB=new A.a(28,"aqua_tail")
-B.aqK=new A.a(31,"skull_bash")
-B.arQ=new A.a(34,"iron_defense")
-B.at4=new A.a(37,"rain_dance")
-B.aCZ=s([B.ac,B.fM,B.vo,B.ud,B.un,B.uv,B.amp,B.aog,B.uX,B.apB,B.aqK,B.arQ,B.at4,B.H9],t._)
-B.aUU=new A.ab(7,"Squirtle",B.bC,44,48,65,50,64,43,45,63,0.5,1,!0,!1,!1,!1,!1,2,16,8,B.aCZ,"torrent",null,"rain_dish",!0)
-B.vA=new A.a(9,"taunt")
-B.Di=new A.a(14,"mach_punch")
-B.Dx=new A.a(16,"fury_swipes")
-B.FH=new A.a(26,"feint")
-B.aqj=new A.a(29,"torment")
-B.GN=new A.a(36,"close_combat")
-B.atG=new A.a(39,"fire_spin")
-B.awn=new A.a(46,"acrobatics")
-B.axB=new A.a(49,"slack_off")
-B.azr=new A.a(56,"flare_blitz")
-B.aM1=s([B.br,B.b3,B.dt,B.fd,B.vA,B.Di,B.Dx,B.uC,B.FH,B.aqj,B.GN,B.atG,B.awn,B.axB,B.azr],t._)
-B.aUV=new A.ab(391,"Monferno",B.jg,64,78,52,78,52,81,45,142,0.9,2,!0,!1,!1,!1,!1,14,36,392,B.aM1,"blaze",null,"iron_fist",!1)
-B.ano=new A.a(1,"spite")
-B.ap2=new A.a(25,"shadow_punch")
-B.apJ=new A.a(28,"payback")
-B.ars=new A.a(33,"shadow_ball")
-B.atC=new A.a(39,"dream_eater")
-B.avF=new A.a(44,"dark_pulse")
-B.axR=new A.a(50,"destiny_bond")
-B.az8=new A.a(55,"hex")
-B.aAq=new A.a(61,"nightmare")
-B.Jf=s([B.fJ,B.of,B.ano,B.Ib,B.IB,B.D1,B.Dn,B.ob,B.F8,B.ap2,B.apJ,B.ars,B.atC,B.avF,B.axR,B.az8,B.aAq],t._)
-B.aUW=new A.ab(93,"Haunter",B.vI,45,50,45,115,55,95,90,142,1.6,2,!1,!1,!1,!1,!1,25,null,94,B.Jf,"levitate",null,null,!0)
-B.asm=new A.a(36,"encore")
-B.auk=new A.a(41,"aqua_tail")
-B.avN=new A.a(44,"retaliate")
-B.axD=new A.a(49,"swords_dance")
-B.aMo=s([B.ac,B.cb,B.eC,B.fK,B.ld,B.vq,B.l1,B.o5,B.uy,B.EI,B.uX,B.G1,B.Gw,B.asm,B.auk,B.avN,B.axD,B.vh],t._)
-B.aUX=new A.ab(502,"Dewott",B.bC,75,75,60,83,60,60,45,145,0.8,2,!0,!1,!1,!1,!1,17,36,503,B.aMo,"torrent",null,"shell_armor",!1)
-B.ap4=new A.a(25,"smack_down")
-B.aqc=new A.a(29,"self_destruct")
-B.aqP=new A.a(32,"bulldoze")
-B.asA=new A.a(36,"stealth_rock")
-B.atE=new A.a(39,"earthquake")
-B.avf=new A.a(43,"explosion")
-B.awt=new A.a(46,"double_edge")
-B.ay5=new A.a(50,"stone_edge")
-B.aD6=s([B.ac,B.hE,B.vg,B.vu,B.uh,B.l3,B.DZ,B.uU,B.ap4,B.aqc,B.aqP,B.asA,B.atE,B.avf,B.awt,B.ay5],t._)
-B.aUY=new A.ab(74,"Geodude",B.oA,40,80,100,30,30,20,255,60,0.4,1,!1,!1,!1,!1,!1,2,25,75,B.aD6,"rock_head","sturdy","sand_veil",!0)
-B.Eu=new A.a(1,"string_shot")
-B.Dk=new A.a(15,"bug_bite")
-B.aKT=s([B.hF,B.Eu,B.Dk],t._)
-B.aUZ=new A.ab(13,"Weedle",B.lf,40,35,30,20,20,50,255,39,0.3,1,!1,!1,!1,!1,!1,2,7,14,B.aKT,"shield_dust",null,"run_away",!0)
-B.alP=new A.a(16,"fury_cutter")
-B.awN=new A.a(47,"detect")
-B.ayH=new A.a(53,"false_swipe")
-B.aA4=new A.a(59,"leaf_storm")
-B.aIw=s([B.dW,B.b3,B.j8,B.eB,B.le,B.ug,B.alP,B.DO,B.Fl,B.G7,B.GI,B.va,B.awN,B.ayH,B.aA4],t._)
-B.aV_=new A.ab(253,"Grovyle",B.dY,50,65,45,85,65,95,45,142,0.9,2,!0,!1,!1,!1,!1,16,36,254,B.aIw,"overgrow",null,"unburden",!1)
-B.Gr=new A.a(32,"petal_dance")
-B.arY=new A.a(34,"sweet_scent")
-B.au8=new A.a(40,"light_screen")
-B.awq=new A.a(46,"body_slam")
-B.az0=new A.a(54,"safeguard")
-B.aAg=new A.a(60,"aromatherapy")
-B.aAZ=new A.a(66,"solar_beam")
-B.aEt=s([B.ac,B.b2,B.oi,B.oh,B.vm,B.vz,B.uj,B.DY,B.F5,B.FJ,B.Gr,B.arY,B.au8,B.awq,B.az0,B.aAg,B.aAZ],t._)
-B.aV0=new A.ab(154,"Meganium",B.dY,80,82,100,83,100,80,45,236,1.8,3,!0,!1,!1,!1,!1,32,null,null,B.aEt,"overgrow",null,"leaf_guard",!1)
-B.arr=new A.a(33,"self_destruct")
-B.asB=new A.a(36,"swift")
-B.au9=new A.a(40,"magnet_rise")
-B.avk=new A.a(43,"gyro_ball")
-B.awP=new A.a(47,"explosion")
-B.axZ=new A.a(50,"mirror_coat")
-B.aJj=s([B.E9,B.Id,B.IC,B.D6,B.Dp,B.E5,B.F1,B.uY,B.G4,B.arr,B.asB,B.au9,B.avk,B.awP,B.axZ],t._)
-B.aV1=new A.ab(100,"Voltorb",B.jh,40,30,50,55,55,100,190,66,0.5,1,!1,!1,!1,!1,!1,2,30,101,B.aJj,"soundproof","static","aftermath",!0)
-B.En=new A.a(1,"rage")
-B.ET=new A.a(21,"ice_fang")
-B.Ft=new A.a(24,"flail")
-B.aqQ=new A.a(32,"crunch")
-B.ay2=new A.a(50,"screech")
-B.aA_=new A.a(58,"thrash")
-B.aAG=new A.a(63,"aqua_tail")
-B.aBl=new A.a(71,"superpower")
-B.aBs=new A.a(76,"hydro_pump")
-B.aLA=s([B.br,B.b3,B.eC,B.En,B.ow,B.vt,B.o3,B.ut,B.ET,B.Ft,B.Ge,B.aqQ,B.GV,B.Ht,B.ay2,B.aA_,B.aAG,B.aBl,B.aBs],t._)
-B.aV2=new A.ab(160,"Feraligatr",B.bC,85,105,100,79,83,78,45,239,2.3,3,!0,!1,!1,!1,!1,30,null,null,B.aLA,"torrent",null,"sheer_force",!1)
-B.Ja=s([B.aK,B.aM],t.U)
-B.Iy=new A.a(8,"astonish")
-B.D0=new A.a(12,"bite")
-B.Du=new A.a(15,"wing_attack")
-B.aoA=new A.a(23,"swift")
-B.apb=new A.a(26,"air_cutter")
-B.aqn=new A.a(30,"acrobatics")
-B.arR=new A.a(34,"mean_look")
-B.at2=new A.a(37,"poison_fang")
-B.avT=new A.a(45,"air_slash")
-B.aKv=s([B.uK,B.ov,B.Iy,B.D0,B.Du,B.ob,B.aoA,B.apb,B.aqn,B.arR,B.at2,B.Hd,B.avT],t._)
-B.aV3=new A.ab(41,"Zubat",B.Ja,40,45,35,30,40,55,255,49,0.8,1,!1,!1,!1,!1,!1,2,22,42,B.aKv,"inner_focus",null,"infiltrator",!0)
-B.apu=new A.a(27,"slash")
-B.arf=new A.a(33,"growth")
-B.ato=new A.a(38,"giga_drain")
-B.av7=new A.a(43,"aromatherapy")
-B.axw=new A.a(49,"rage_powder")
-B.az3=new A.a(54,"x_scissor")
-B.aL7=s([B.br,B.Im,B.Il,B.CU,B.DI,B.F7,B.apu,B.arf,B.ato,B.av7,B.axw,B.az3],t._)
-B.aV4=new A.ab(46,"Paras",B.J0,35,70,55,45,55,25,190,57,0.3,1,!1,!1,!1,!1,!1,2,24,47,B.aL7,"effect_spore","dry_skin","damp",!0)
-B.aoD=new A.a(24,"bide")
-B.ate=new A.a(37,"whirlpool")
-B.auZ=new A.a(42,"mist")
-B.awu=new A.a(46,"drill_peck")
-B.ayk=new A.a(51,"hydro_pump")
-B.aLf=s([B.ac,B.b2,B.lb,B.vr,B.l1,B.us,B.Dz,B.oa,B.aoD,B.FY,B.or,B.ate,B.auZ,B.awu,B.ayk],t._)
-B.aV5=new A.ab(394,"Prinplup",B.bC,64,66,68,81,76,50,45,142,0.8,2,!0,!1,!1,!1,!1,16,36,395,B.aLf,"torrent",null,"defiant",!1)
-B.any=new A.a(1,"thunderbolt")
-B.aIY=s([B.l8,B.cb,B.eB,B.any],t._)
-B.aV6=new A.ab(26,"Raichu",B.jh,60,90,55,90,80,110,75,218,0.8,2,!1,!1,!1,!1,!1,22,null,null,B.aIY,"static",null,"lightning_rod",!0)
-B.alD=new A.a(15,"fury_swipes")
-B.aox=new A.a(23,"nasty_plot")
-B.ap9=new A.a(25,"torment")
-B.aqB=new A.a(31,"facade")
-B.arc=new A.a(33,"fire_spin")
-B.atx=new A.a(39,"acrobatics")
-B.auG=new A.a(41,"slack_off")
-B.aKc=s([B.br,B.b3,B.fd,B.vA,B.alD,B.DG,B.aox,B.ap9,B.aqB,B.arc,B.atx,B.auG,B.HC],t._)
-B.aV7=new A.ab(390,"Chimchar",B.cT,44,58,44,58,44,61,45,62,0.5,1,!0,!1,!1,!1,!1,5,14,391,B.aKc,"blaze",null,"iron_fist",!1)
-B.anb=new A.a(1,"reflect_type")
-B.al1=new A.a(10,"mega_punch")
-B.anL=new A.a(20,"metronome")
-B.aqs=new A.a(30,"psychic")
-B.atW=new A.a(40,"barrier")
-B.axP=new A.a(50,"ancient_power")
-B.aAf=new A.a(60,"amnesia")
-B.aBe=new A.a(70,"me_first")
-B.aBK=new A.a(80,"baton_pass")
-B.aC2=new A.a(90,"nasty_plot")
-B.akV=new A.a(100,"aura_sphere")
-B.aLZ=s([B.dW,B.anb,B.Ez,B.al1,B.anL,B.aqs,B.atW,B.axP,B.aAf,B.aBe,B.aBK,B.aC2,B.akV],t._)
-B.aV8=new A.ab(151,"Mew",B.hI,100,100,100,100,100,100,45,270,0.4,1,!1,!1,!1,!1,!0,50,null,null,B.aLZ,"synchronize",null,null,!0)
-B.as9=new A.a(35,"thrash")
-B.azX=new A.a(58,"megahorn")
-B.aET=s([B.ee,B.fc,B.uE,B.hF,B.Fe,B.as9,B.Hl,B.azX],t._)
-B.aV9=new A.ab(34,"Nidoking",B.J9,81,102,77,85,75,85,45,227,1.4,3,!1,!1,!1,!1,!1,36,null,null,B.aET,"poison_point","rivalry","sheer_force",!0)
-B.aBc=new A.a(6,"agility")
-B.ala=new A.a(11,"pursuit")
-B.alR=new A.a(16,"mach_punch")
-B.alM=new A.a(16,"bullet_punch")
-B.anS=new A.a(21,"feint")
-B.apk=new A.a(26,"vacuum_wave")
-B.aqH=new A.a(31,"quick_guard")
-B.asD=new A.a(36,"thunder_punch")
-B.asr=new A.a(36,"ice_punch")
-B.asn=new A.a(36,"fire_punch")
-B.auF=new A.a(41,"sky_uppercut")
-B.awB=new A.a(46,"mega_punch")
-B.azs=new A.a(56,"focus_punch")
-B.aAk=new A.a(61,"counter")
-B.aAX=new A.a(66,"close_combat")
-B.aIC=s([B.Eo,B.Ea,B.aBc,B.ala,B.alR,B.alM,B.anS,B.apk,B.aqH,B.asD,B.asr,B.asn,B.auF,B.awB,B.HS,B.azs,B.aAk,B.aAX],t._)
-B.aVa=new A.ab(107,"Hitmonchan",B.hJ,50,105,79,35,110,76,45,159,1.4,1,!1,!1,!1,!1,!1,25,null,null,B.aIC,"keen_eye","iron_fist","inner_focus",!0)
-B.Ip=new A.a(7,"bite")
-B.DA=new A.a(16,"rollout")
-B.E2=new A.a(19,"leer")
-B.FA=new A.a(25,"mud_shot")
-B.FU=new A.a(28,"brine")
-B.GF=new A.a(34,"protect")
-B.GU=new A.a(37,"ancient_power")
-B.avA=new A.a(43,"tickle")
-B.awG=new A.a(46,"rock_blast")
-B.ayA=new A.a(52,"shell_smash")
-B.az9=new A.a(55,"hydro_pump")
-B.aIt=s([B.od,B.jd,B.Ip,B.l0,B.DA,B.E2,B.FA,B.FU,B.GF,B.GU,B.avA,B.awG,B.ayA,B.az9],t._)
-B.aVb=new A.ab(138,"Omanyte",B.oz,35,40,100,90,55,35,45,71,0.4,1,!1,!0,!1,!1,!1,2,40,139,B.aIt,"swift_swim","shell_armor","weak_armor",!0)
-B.aVc=new A.ab(14,"Kakuna",B.lf,45,25,50,25,25,35,120,72,0.6,2,!1,!1,!1,!1,!1,7,10,15,B.Jk,"shed_skin",null,null,!0)
+B.aUV=new A.ab(90,"Shellder",B.bC,30,65,100,45,25,40,190,61,0.3,4,1,!1,!1,!1,!1,!1,2,null,91,B.aJy,"shell_armor","skill_link","overcoat",!0)
+B.anv=new A.a(1,"taunt")
+B.aq9=new A.a(29,"punishment")
+B.auV=new A.a(42,"fire_spin")
+B.ayp=new A.a(52,"acrobatics")
+B.azT=new A.a(58,"calm_mind")
+B.aB6=new A.a(68,"flare_blitz")
+B.aFX=s([B.br,B.b3,B.dt,B.anv,B.fd,B.vA,B.Dj,B.Dy,B.uC,B.FI,B.aq9,B.GO,B.auV,B.ayp,B.azT,B.aB6],t._)
+B.aUW=new A.ab(392,"Infernape",B.jg,76,104,71,104,71,108,45,240,1.2,55,3,!0,!1,!1,!1,!1,36,null,null,B.aFX,"blaze",null,"iron_fist",!1)
+B.aC7=new A.a(9,"growl")
+B.anQ=new A.a(21,"covet")
+B.apY=new A.a(29,"charm")
+B.ar6=new A.a(33,"baton_pass")
+B.asO=new A.a(37,"double_edge")
+B.awm=new A.a(45,"trump_card")
+B.aIO=s([B.oe,B.ac,B.cb,B.hH,B.aC7,B.ed,B.DF,B.anQ,B.FE,B.apY,B.ar6,B.asO,B.ot,B.awm],t._)
+B.aUX=new A.ab(133,"Eevee",B.dX,55,55,50,45,65,55,45,65,0.3,6.5,1,!1,!1,!1,!1,!1,2,null,134,B.aIO,"run_away","adaptability","anticipation",!0)
+B.aUY=new A.ab(93,"Haunter",B.vI,45,50,45,115,55,95,90,142,1.6,0.1,2,!1,!1,!1,!1,!1,25,null,94,B.Jg,"levitate",null,null,!0)
+B.If=new A.a(5,"vise_grip")
+B.IM=new A.a(9,"leer")
+B.Dk=new A.a(15,"bubble_beam")
+B.E4=new A.a(19,"mud_shot")
+B.EW=new A.a(21,"metal_claw")
+B.FD=new A.a(25,"stomp")
+B.aq8=new A.a(29,"protect")
+B.aqC=new A.a(31,"guillotine")
+B.as7=new A.a(35,"slam")
+B.atz=new A.a(39,"brine")
+B.aun=new A.a(41,"crabhammer")
+B.aw1=new A.a(45,"flail")
+B.aEa=s([B.l6,B.fI,B.If,B.IM,B.uf,B.Dk,B.E4,B.EW,B.FD,B.aq8,B.aqC,B.as7,B.atz,B.aun,B.aw1],t._)
+B.aUZ=new A.ab(98,"Krabby",B.bC,30,105,90,25,25,50,225,65,0.4,6.5,1,!1,!1,!1,!1,!1,2,28,99,B.aEa,"hyper_cutter","shell_armor","sheer_force",!0)
 B.aH0=s([B.ar,B.aM],t.U)
 B.anw=new A.a(1,"thrash")
 B.anE=new A.a(20,"bite")
@@ -129053,275 +128913,419 @@ B.aux=new A.a(41,"hydro_pump")
 B.avG=new A.a(44,"dragon_dance")
 B.awW=new A.a(47,"hyper_beam")
 B.aIP=s([B.anw,B.anE,B.aor,B.apd,B.aqk,B.aqW,B.v7,B.atu,B.aux,B.avG,B.awW],t._)
-B.aVd=new A.ab(130,"Gyarados",B.aH0,95,125,79,60,100,81,45,189,6.5,2,!1,!1,!0,!1,!1,20,null,null,B.aIP,"intimidate",null,"moxie",!0)
-B.atT=new A.a(39,"worry_seed")
-B.awk=new A.a(45,"synthesis")
-B.ayR=new A.a(53,"solar_beam")
-B.aKa=s([B.ac,B.b2,B.Ei,B.jc,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.EL,B.Fp,B.FZ,B.v4,B.Gr,B.atT,B.awk,B.ayR],t._)
-B.aVe=new A.ab(3,"Venusaur",B.fe,80,82,83,100,100,80,45,236,2,3,!0,!1,!1,!1,!1,32,null,null,B.aKa,"overgrow",null,"chlorophyll",!0)
-B.amP=new A.a(1,"feint")
-B.auc=new A.a(40,"slash")
-B.aw9=new A.a(45,"metal_sound")
-B.ayS=new A.a(54,"ancient_power")
-B.aAO=new A.a(63,"wring_out")
-B.aBn=new A.a(72,"night_slash")
-B.aMk=s([B.amP,B.br,B.ja,B.j8,B.b3,B.le,B.CV,B.o8,B.ok,B.FG,B.op,B.GO,B.auc,B.aw9,B.ayS,B.aAO,B.aBn],t._)
-B.aVf=new A.ab(141,"Kabutops",B.oz,60,115,105,65,70,80,45,173,1.3,2,!1,!0,!1,!1,!1,40,null,null,B.aMk,"swift_swim","battle_armor","weak_armor",!0)
-B.aBJ=new A.a(7,"water_sport")
-B.atb=new A.a(37,"take_down")
-B.auq=new A.a(41,"dive")
-B.awX=new A.a(47,"ice_beam")
-B.ayl=new A.a(51,"safeguard")
-B.ayK=new A.a(53,"hail")
-B.aJs=s([B.uJ,B.la,B.aBJ,B.CT,B.D8,B.DJ,B.EX,B.Fd,B.FO,B.op,B.or,B.atb,B.auq,B.Hj,B.awX,B.ayl,B.ayK],t._)
-B.aVg=new A.ab(86,"Seel",B.bC,65,45,55,45,70,45,190,65,1.1,1,!1,!1,!1,!1,!1,2,34,87,B.aJs,"thick_fat","hydration","ice_body",!0)
-B.anu=new A.a(1,"swords_dance")
-B.anM=new A.a(20,"scary_face")
-B.aoE=new A.a(24,"crunch")
-B.arX=new A.a(34,"super_fang")
-B.atB=new A.a(39,"double_edge")
-B.avH=new A.a(44,"endeavor")
-B.aM8=s([B.anu,B.ac,B.cb,B.eB,B.fc,B.HO,B.eD,B.CO,B.o7,B.Dy,B.E6,B.anM,B.aoE,B.G2,B.arX,B.atB,B.avH],t._)
-B.aVh=new A.ab(20,"Raticate",B.dX,55,81,60,50,70,97,127,145,0.7,2,!1,!1,!1,!1,!1,20,null,null,B.aM8,"run_away","guts","hustle",!0)
-B.aGo=s([B.jc,B.Ir,B.CY,B.l2,B.Do,B.DS,B.Fb,B.uZ,B.Gb,B.GK,B.H4,B.va,B.HF],t._)
-B.aVi=new A.ab(69,"Bellsprout",B.fe,50,75,35,70,30,40,255,60,0.7,1,!1,!1,!1,!1,!1,2,21,70,B.aGo,"chlorophyll",null,"gluttony",!0)
-B.EK=new A.a(20,"rapid_spin")
-B.Fv=new A.a(24,"protect")
-B.asw=new A.a(36,"skull_bash")
-B.au6=new A.a(40,"iron_defense")
-B.avM=new A.a(44,"rain_dance")
-B.HH=new A.a(48,"hydro_pump")
-B.aIl=s([B.ac,B.cb,B.fI,B.fM,B.vo,B.ud,B.un,B.uv,B.EK,B.Fv,B.oo,B.oq,B.asw,B.au6,B.avM,B.HH],t._)
-B.aVj=new A.ab(8,"Wartortle",B.bC,59,63,80,65,80,58,45,142,1,2,!0,!1,!1,!1,!1,16,36,9,B.aIl,"torrent",null,"rain_dish",!0)
-B.aqL=new A.a(31,"thrash")
-B.are=new A.a(33,"fling")
-B.asK=new A.a(37,"bone_rush")
-B.aut=new A.a(41,"endeavor")
-B.avd=new A.a(43,"double_edge")
-B.ax1=new A.a(47,"retaliate")
-B.aMt=s([B.b2,B.je,B.Iq,B.CR,B.Dc,B.DH,B.EP,B.Fh,B.FP,B.aqL,B.are,B.asK,B.aut,B.avd,B.ax1],t._)
-B.aVk=new A.ab(104,"Cubone",B.ji,50,50,95,40,50,35,190,64,0.4,1,!1,!1,!1,!1,!1,2,28,105,B.aMt,"rock_head","lightning_rod","battle_armor",!0)
-B.aVl=new A.ab(94,"Gengar",B.vI,60,65,60,130,75,110,45,225,1.5,3,!1,!1,!1,!1,!1,38,null,null,B.Jf,"levitate",null,null,!0)
-B.arK=new A.a(34,"electro_ball")
-B.atI=new A.a(39,"flash_cannon")
-B.awi=new A.a(45,"screech")
-B.aye=new A.a(51,"discharge")
-B.azv=new A.a(56,"lock_on")
-B.aAC=new A.a(62,"magnet_rise")
-B.aB0=new A.a(67,"gyro_ball")
-B.aBp=new A.a(73,"zap_cannon")
-B.aKn=s([B.EA,B.ac,B.hG,B.l8,B.Es,B.ov,B.Ix,B.CW,B.Ds,B.DV,B.F_,B.Fy,B.G8,B.arK,B.atI,B.awi,B.aye,B.azv,B.aAC,B.aB0,B.aBp],t._)
-B.aVm=new A.ab(82,"Magneton",B.J8,50,60,95,120,70,70,60,163,1,2,!1,!1,!1,!1,!1,30,null,null,B.aKn,"magnet_pull","sturdy","analytic",!0)
-B.au3=new A.a(40,"fury_attack")
-B.aFh=s([B.uN,B.Ej,B.b2,B.eB,B.cb,B.dt,B.fM,B.vw,B.D9,B.DR,B.ES,B.om,B.Gc,B.Gz,B.os,B.au3,B.Hc,B.Hs,B.HJ],t._)
-B.aVn=new A.ab(78,"Rapidash",B.cT,65,100,70,80,80,105,60,175,1.7,2,!1,!1,!1,!1,!1,40,null,null,B.aFh,"run_away","flash_fire","flame_body",!0)
-B.aCe=new A.a(9,"stomp")
-B.auW=new A.a(42,"hammer_arm")
-B.awO=new A.a(47,"drill_run")
-B.azB=new A.a(56,"stone_edge")
-B.aAw=new A.a(62,"earthquake")
-B.aBi=new A.a(71,"horn_drill")
-B.aBu=new A.a(77,"megahorn")
-B.aFx=s([B.Ee,B.cb,B.Et,B.uH,B.aCe,B.D3,B.uD,B.Fi,B.Gg,B.GC,B.ou,B.auW,B.awO,B.azB,B.aAw,B.aBi,B.aBu],t._)
-B.aVo=new A.ab(112,"Rhydon",B.Jb,105,130,120,45,45,40,60,170,1.9,2,!1,!1,!1,!1,!1,42,null,null,B.aFx,"lightning_rod","rock_head","reckless",!0)
-B.as_=new A.a(34,"water_pulse")
-B.att=new A.a(38,"poison_jab")
-B.avx=new A.a(43,"screech")
-B.awT=new A.a(47,"hex")
-B.azA=new A.a(56,"sludge_wave")
-B.aAu=new A.a(61,"wring_out")
-B.aEN=s([B.hF,B.hG,B.od,B.lc,B.Iz,B.CZ,B.Dt,B.oa,B.Fa,B.FF,B.G3,B.as_,B.att,B.avx,B.awT,B.vh,B.azA,B.aAu],t._)
-B.aVp=new A.ab(73,"Tentacruel",B.J5,80,70,65,80,120,100,60,180,1.6,2,!1,!1,!1,!1,!1,30,null,null,B.aEN,"clear_body","liquid_ooze","rain_dish",!0)
-B.El=new A.a(1,"pluck")
-B.arZ=new A.a(34,"tri_attack")
-B.aui=new A.a(41,"agility")
-B.HA=new A.a(47,"drill_peck")
-B.ayU=new A.a(54,"endeavor")
-B.aAi=new A.a(60,"thrash")
-B.aI7=s([B.El,B.ee,B.b2,B.eB,B.En,B.Ia,B.ub,B.Df,B.E4,B.Fq,B.FT,B.arZ,B.aui,B.HA,B.ayU,B.aAi],t._)
-B.aVq=new A.ab(85,"Dodrio",B.fN,60,110,70,60,60,110,45,165,1.8,2,!1,!1,!1,!1,!1,31,null,null,B.aI7,"run_away","early_bird","tangled_feet",!0)
-B.aqb=new A.a(29,"scary_face")
-B.arv=new A.a(33,"smog")
-B.aw_=new A.a(45,"fire_blast")
-B.aJQ=s([B.oe,B.ac,B.cb,B.hH,B.vw,B.ed,B.DE,B.EQ,B.om,B.aqb,B.arv,B.GW,B.ot,B.aw_],t._)
-B.aVr=new A.ab(136,"Flareon",B.cT,65,130,60,95,110,65,45,184,0.9,2,!1,!1,!1,!1,!1,25,null,null,B.aJQ,"flash_fire",null,"guts",!0)
-B.amR=new A.a(1,"fling")
-B.apM=new A.a(28,"rage")
-B.as8=new A.a(35,"swagger")
-B.auo=new A.a(41,"cross_chop")
-B.ax4=new A.a(47,"thrash")
-B.ayP=new A.a(53,"punishment")
-B.aA1=new A.a(59,"close_combat")
-B.aAH=new A.a(63,"final_gambit")
-B.aL8=s([B.amR,B.br,B.l5,B.b3,B.fc,B.IK,B.Db,B.DP,B.uS,B.uW,B.apM,B.as8,B.auo,B.ax4,B.ayP,B.aA1,B.aAH],t._)
-B.aVs=new A.ab(57,"Primeape",B.hJ,65,105,60,60,70,95,75,159,1,2,!1,!1,!1,!1,!1,28,null,null,B.aL8,"vital_spirit","anger_point","defiant",!0)
+B.aV_=new A.ab(130,"Gyarados",B.aH0,95,125,79,60,100,81,45,189,6.5,235,2,!1,!1,!0,!1,!1,20,null,null,B.aIP,"intimidate",null,"moxie",!0)
+B.asj=new A.a(36,"coil")
+B.au5=new A.a(40,"giga_drain")
+B.avS=new A.a(44,"wring_out")
+B.ax8=new A.a(48,"gastro_acid")
+B.aLx=s([B.ac,B.b3,B.jc,B.fL,B.vf,B.ox,B.ue,B.uk,B.uw,B.EK,B.Fv,B.v_,B.Gr,B.asj,B.au5,B.avS,B.ax8,B.HV],t._)
+B.aV0=new A.ab(496,"Servine",B.dY,60,60,75,60,75,83,45,145,0.8,16,2,!0,!1,!1,!1,!1,17,36,497,B.aLx,"overgrow",null,"contrary",!1)
+B.anP=new A.a(21,"aurora_beam")
+B.aoL=new A.a(25,"aqua_ring")
+B.apV=new A.a(29,"acid_armor")
+B.arg=new A.a(33,"haze")
+B.aw4=new A.a(45,"hydro_pump")
+B.aEk=s([B.oe,B.ac,B.cb,B.hH,B.vC,B.ed,B.uz,B.anP,B.aoL,B.apV,B.arg,B.GY,B.ot,B.aw4],t._)
+B.aV1=new A.ab(134,"Vaporeon",B.bC,130,65,60,110,95,65,45,184,1,29,2,!1,!1,!1,!1,!1,25,null,null,B.aEk,"water_absorb",null,"hydration",!0)
+B.an4=new A.a(1,"nasty_plot")
+B.amI=new A.a(1,"confuse_ray")
+B.and=new A.a(1,"safeguard")
+B.aLO=s([B.an4,B.dt,B.eB,B.amI,B.and],t._)
+B.aV2=new A.ab(38,"Ninetales",B.cU,73,76,75,81,100,100,75,177,1.1,19.9,2,!1,!1,!1,!1,!1,22,null,null,B.aLO,"flash_fire",null,"drought",!0)
+B.ank=new A.a(1,"silver_wind")
+B.aqD=new A.a(31,"gust")
+B.at9=new A.a(37,"signal_beam")
+B.ax_=new A.a(47,"poison_fang")
+B.azd=new A.a(55,"psychic")
+B.aA0=new A.a(59,"bug_buzz")
+B.aAM=new A.a(63,"quiver_dance")
+B.aG9=s([B.ank,B.ac,B.l4,B.Ee,B.hG,B.lc,B.CQ,B.hC,B.DL,B.Fo,B.l9,B.Gb,B.aqD,B.at9,B.vb,B.ax_,B.azd,B.aA0,B.aAM],t._)
+B.aV3=new A.ab(49,"Venomoth",B.lf,70,65,60,90,75,90,75,158,1.5,12.5,2,!1,!1,!1,!1,!1,31,null,null,B.aG9,"shield_dust","tinted_lens","wonder_skin",!0)
+B.al6=new A.a(10,"thunder_wave")
+B.am9=new A.a(18,"electro_ball")
+B.anR=new A.a(21,"double_team")
+B.api=new A.a(26,"slam")
+B.aqi=new A.a(29,"thunderbolt")
+B.arN=new A.a(34,"feint")
+B.auR=new A.a(42,"discharge")
+B.aw6=new A.a(45,"light_screen")
+B.ay8=new A.a(50,"thunder")
+B.aHu=s([B.b2,B.l8,B.ld,B.al6,B.ed,B.am9,B.anR,B.api,B.aqi,B.arN,B.os,B.auR,B.aw6,B.ay8],t._)
+B.aV4=new A.ab(25,"Pikachu",B.jh,35,55,40,50,50,90,190,112,0.4,6,1,!1,!1,!1,!1,!1,2,null,26,B.aHu,"static",null,"lightning_rod",!0)
+B.aph=new A.a(26,"sand_tomb")
+B.apH=new A.a(28,"mud_bomb")
+B.arb=new A.a(33,"earth_power")
+B.atY=new A.a(40,"dig")
+B.axT=new A.a(50,"earthquake")
+B.azG=new A.a(57,"fissure")
+B.aFr=s([B.El,B.EB,B.br,B.jb,B.b2,B.lb,B.Ip,B.D6,B.l3,B.DU,B.Fp,B.aph,B.apH,B.arb,B.atY,B.Hu,B.axT,B.azG],t._)
+B.aV5=new A.ab(51,"Dugtrio",B.ji,35,100,50,50,70,120,50,149,0.7,33.3,2,!1,!1,!1,!1,!1,26,null,null,B.aFr,"sand_veil","arena_trap","sand_force",!0)
+B.arB=new A.a(33,"water_pulse")
+B.asu=new A.a(36,"poison_jab")
+B.aub=new A.a(40,"screech")
+B.awV=new A.a(47,"hydro_pump")
+B.ay4=new A.a(50,"sludge_wave")
+B.az2=new A.a(54,"wring_out")
+B.aE0=s([B.hF,B.lc,B.IA,B.D_,B.Du,B.oa,B.Fb,B.FG,B.G4,B.arB,B.asu,B.aub,B.Hn,B.awV,B.ay4,B.az2],t._)
+B.aV6=new A.ab(72,"Tentacool",B.J6,40,40,35,50,100,70,190,67,0.9,45.5,1,!1,!1,!1,!1,!1,2,30,73,B.aE0,"clear_body","liquid_ooze","rain_dish",!0)
+B.al_=new A.a(10,"fury_attack")
+B.alX=new A.a(16,"twinneedle")
+B.amo=new A.a(19,"rage")
+B.aoi=new A.a(22,"pursuit")
+B.apa=new A.a(25,"toxic_spikes")
+B.apK=new A.a(28,"pin_missile")
+B.arF=new A.a(34,"assurance")
+B.au0=new A.a(40,"endeavor")
+B.aHh=s([B.uH,B.al_,B.o5,B.alX,B.amo,B.aoi,B.apa,B.apK,B.v3,B.arF,B.GZ,B.au0],t._)
+B.aV7=new A.ab(15,"Beedrill",B.lf,65,90,40,45,80,75,45,178,1,29.5,3,!1,!1,!1,!1,!1,10,null,null,B.aHh,"swarm",null,"sniper",!0)
+B.vm=new A.a(6,"razor_leaf")
+B.vz=new A.a(9,"poison_powder")
+B.uj=new A.a(12,"synthesis")
+B.DZ=new A.a(18,"reflect")
+B.F6=new A.a(22,"magical_leaf")
+B.FK=new A.a(26,"natural_gift")
+B.ar3=new A.a(32,"sweet_scent")
+B.ast=new A.a(36,"light_screen")
+B.H8=new A.a(40,"body_slam")
+B.awH=new A.a(46,"safeguard")
+B.axQ=new A.a(50,"aromatherapy")
+B.az1=new A.a(54,"solar_beam")
+B.aLt=s([B.ac,B.b2,B.oi,B.oh,B.vm,B.vz,B.uj,B.DZ,B.F6,B.FK,B.ar3,B.ast,B.H8,B.awH,B.axQ,B.az1],t._)
+B.aV8=new A.ab(153,"Bayleef",B.dY,60,62,80,63,80,60,45,142,1.2,15.8,2,!0,!1,!1,!1,!1,16,32,154,B.aLt,"overgrow",null,"leaf_guard",!1)
+B.aCb=new A.a(9,"refresh")
+B.ale=new A.a(12,"double_slap")
+B.alV=new A.a(16,"soft_boiled")
+B.anD=new A.a(20,"bestow")
+B.aov=new A.a(23,"minimize")
+B.apy=new A.a(27,"take_down")
+B.aqJ=new A.a(31,"sing")
+B.arO=new A.a(34,"fling")
+B.atp=new A.a(38,"heal_pulse")
+B.auT=new A.a(42,"egg_bomb")
+B.Hy=new A.a(46,"light_screen")
+B.axW=new A.a(50,"healing_wish")
+B.ayT=new A.a(54,"double_edge")
+B.aDh=s([B.hE,B.dW,B.b2,B.ld,B.aCb,B.ale,B.alV,B.anD,B.aov,B.apy,B.aqJ,B.arO,B.atp,B.auT,B.Hy,B.axW,B.ayT],t._)
+B.aV9=new A.ab(113,"Chansey",B.dX,250,5,5,35,105,50,30,395,1.1,34.6,1,!1,!1,!1,!1,!1,24,null,null,B.aDh,"natural_cure","serene_grace","healer",!0)
+B.anX=new A.a(21,"mirror_move")
+B.arq=new A.a(33,"roost")
+B.asQ=new A.a(37,"drill_peck")
+B.aJR=s([B.ee,B.b2,B.I9,B.IK,B.o7,B.DC,B.anX,B.ol,B.G3,B.arq,B.asQ],t._)
+B.aVa=new A.ab(21,"Spearow",B.fN,40,60,30,31,31,70,255,52,0.3,2,1,!1,!1,!1,!1,!1,2,20,22,B.aJR,"keen_eye",null,"sniper",!0)
+B.aGd=s([B.EA],t._)
+B.aVb=new A.ab(132,"Ditto",B.dX,48,48,48,48,48,48,35,101,0.3,4,1,!1,!1,!1,!1,!1,20,null,null,B.aGd,"limber",null,"imposter",!0)
+B.aqo=new A.a(30,"crunch")
+B.ar8=new A.a(33,"chip_away")
+B.axc=new A.a(48,"thrash")
+B.ayb=new A.a(51,"aqua_tail")
+B.azP=new A.a(57,"superpower")
+B.aM4=s([B.br,B.b3,B.eC,B.ow,B.vt,B.o3,B.ut,B.EU,B.Fu,B.aqo,B.ar8,B.v9,B.Hh,B.axc,B.ayb,B.azP,B.Ig],t._)
+B.aVc=new A.ab(159,"Croconaw",B.bC,65,80,80,59,63,58,45,142,1.1,25,2,!0,!1,!1,!1,!1,18,30,160,B.aM4,"torrent",null,"sheer_force",!1)
 B.apm=new A.a(27,"bubble_beam")
 B.aqY=new A.a(32,"mud_shot")
 B.asJ=new A.a(37,"belly_drum")
 B.avB=new A.a(43,"wake_up_slap")
 B.ayO=new A.a(53,"mud_bomb")
-B.aLC=s([B.fK,B.fI,B.fJ,B.I5,B.IA,B.o2,B.up,B.DX,B.EO,B.apm,B.aqY,B.asJ,B.avB,B.HH,B.ayO],t._)
-B.aVt=new A.ab(61,"Poliwhirl",B.bC,65,65,65,50,50,90,120,135,1,2,!1,!1,!1,!1,!1,25,null,62,B.aLC,"water_absorb","damp","swift_swim",!0)
-B.aow=new A.a(23,"mirror_move")
-B.as0=new A.a(35,"assurance")
-B.auE=new A.a(41,"roost")
-B.ayF=new A.a(53,"drill_run")
-B.aFK=s([B.El,B.ee,B.b2,B.b3,B.uH,B.I8,B.IJ,B.o7,B.DB,B.aow,B.v1,B.as0,B.auE,B.HA,B.ayF],t._)
-B.aVu=new A.ab(22,"Fearow",B.fN,65,90,65,61,61,100,90,155,1.2,2,!1,!1,!1,!1,!1,20,null,null,B.aFK,"keen_eye",null,"sniper",!0)
+B.aLC=s([B.fK,B.fI,B.fJ,B.I6,B.IB,B.o2,B.up,B.DY,B.EP,B.apm,B.aqY,B.asJ,B.avB,B.HI,B.ayO],t._)
+B.aVd=new A.ab(61,"Poliwhirl",B.bC,65,65,65,50,50,90,120,135,1,20,2,!1,!1,!1,!1,!1,25,null,62,B.aLC,"water_absorb","damp","swift_swim",!0)
+B.ar_=new A.a(32,"protect")
+B.asX=new A.a(37,"guillotine")
+B.avQ=new A.a(44,"slam")
+B.ayd=new A.a(51,"brine")
+B.azo=new A.a(56,"crabhammer")
+B.aAI=new A.a(63,"flail")
+B.aFg=s([B.uQ,B.l6,B.fI,B.ED,B.b3,B.If,B.IM,B.uf,B.Dk,B.E4,B.EW,B.FD,B.ar_,B.asX,B.avQ,B.ayd,B.azo,B.aAI],t._)
+B.aVe=new A.ab(99,"Kingler",B.bC,55,130,115,50,50,75,60,166,1.3,60,2,!1,!1,!1,!1,!1,28,null,null,B.aFg,"hyper_cutter","shell_armor","sheer_force",!0)
+B.axJ=new A.a(4,"encore")
+B.aBI=new A.a(7,"sing")
+B.akZ=new A.a(10,"double_slap")
+B.alO=new A.a(16,"follow_me")
+B.amh=new A.a(19,"bestow")
+B.aoo=new A.a(22,"wake_up_slap")
+B.Fy=new A.a(25,"minimize")
+B.apR=new A.a(28,"stored_power")
+B.aqF=new A.a(31,"metronome")
+B.arH=new A.a(34,"cosmic_power")
+B.at_=new A.a(37,"lucky_chant")
+B.avq=new A.a(43,"moonlight")
+B.axq=new A.a(49,"gravity")
+B.ayx=new A.a(52,"meteor_mash")
+B.az7=new A.a(55,"healing_wish")
+B.azS=new A.a(58,"after_you")
+B.aIR=s([B.dW,B.b2,B.axJ,B.aBI,B.akZ,B.o4,B.alO,B.amh,B.aoo,B.Fy,B.apR,B.aqF,B.arH,B.at_,B.H8,B.avq,B.Hy,B.axq,B.ayx,B.az7,B.azS],t._)
+B.aVf=new A.ab(35,"Clefairy",B.J4,70,45,48,60,65,35,150,113,0.6,7.5,1,!1,!1,!1,!1,!1,2,null,36,B.aIR,"cute_charm","magic_guard","friend_guard",!0)
+B.ap6=new A.a(25,"stockpile")
+B.ap7=new A.a(25,"swallow")
+B.ap5=new A.a(25,"spit_up")
+B.apz=new A.a(28,"acid_spray")
+B.arl=new A.a(33,"mud_bomb")
+B.asp=new A.a(36,"gastro_acid")
+B.avE=new A.a(44,"coil")
+B.aCR=s([B.fL,B.b3,B.HO,B.IH,B.D5,B.o9,B.EG,B.ap6,B.ap7,B.ap5,B.apz,B.arl,B.asp,B.He,B.avE,B.HL],t._)
+B.aVg=new A.ab(23,"Ekans",B.eE,35,60,44,40,54,55,255,58,2,6.9,1,!1,!1,!1,!1,!1,2,22,24,B.aCR,"intimidate","shed_skin","unnerve",!0)
+B.aAd=new A.a(5,"rage")
+B.aBS=new A.a(8,"horn_attack")
+B.alb=new A.a(11,"scary_face")
+B.alI=new A.a(15,"pursuit")
+B.amr=new A.a(19,"rest")
+B.aoG=new A.a(24,"payback")
+B.aql=new A.a(29,"work_up")
+B.asb=new A.a(35,"zen_headbutt")
+B.axb=new A.a(48,"swagger")
+B.azi=new A.a(55,"thrash")
+B.aAJ=new A.a(63,"giga_impact")
+B.aKX=s([B.ac,B.je,B.aAd,B.aBS,B.alb,B.alI,B.amr,B.aoG,B.aql,B.asb,B.ou,B.axb,B.azi,B.aAJ],t._)
+B.aVh=new A.ab(128,"Tauros",B.dX,75,100,95,40,70,110,45,172,1.4,88.4,1,!1,!1,!1,!1,!1,25,null,null,B.aKX,"intimidate","anger_point","sheer_force",!0)
+B.auP=new A.a(42,"calm_mind")
+B.aI4=s([B.uO,B.Ei,B.hD,B.Dw,B.DV,B.F7,B.Fs,B.G1,B.Gj,B.GI,B.GR,B.Hb,B.auP,B.Hz,B.HH,B.HW],t._)
+B.aVi=new A.ab(65,"Alakazam",B.hI,55,50,45,135,95,120,50,225,1.5,48,3,!1,!1,!1,!1,!1,36,null,null,B.aI4,"synchronize","inner_focus","magic_guard",!0)
+B.atf=new A.a(37,"wing_attack")
+B.av2=new A.a(42,"roost")
+B.ax3=new A.a(47,"tailwind")
+B.ayy=new A.a(52,"mirror_move")
+B.azC=new A.a(57,"air_slash")
+B.aAy=new A.a(62,"hurricane")
+B.aEc=s([B.ac,B.jb,B.uI,B.hH,B.vx,B.ed,B.uA,B.Fa,B.FR,B.Gp,B.atf,B.av2,B.ax3,B.ayy,B.azC,B.aAy],t._)
+B.aVj=new A.ab(17,"Pidgeotto",B.fN,63,60,55,50,50,71,120,122,1.1,30,2,!1,!1,!1,!1,!1,18,36,18,B.aEc,"keen_eye","tangled_feet","big_pecks",!0)
+B.ao3=new A.a(22,"bide")
+B.aoV=new A.a(25,"fury_attack")
+B.apX=new A.a(29,"brine")
+B.ar4=new A.a(32,"whirlpool")
+B.atD=new A.a(39,"drill_peck")
+B.aKF=s([B.dW,B.lb,B.vr,B.l1,B.us,B.uB,B.ao3,B.aoV,B.apX,B.ar4,B.GQ,B.atD,B.Ho],t._)
+B.aVk=new A.ab(393,"Piplup",B.bC,53,51,53,61,56,40,45,63,0.4,5.2,1,!0,!1,!1,!1,!1,5,16,394,B.aKF,"torrent",null,"defiant",!1)
+B.aGZ=s([B.ar,B.aW],t.U)
+B.alc=new A.a(11,"swords_dance")
+B.aoI=new A.a(24,"swagger")
+B.asd=new A.a(36,"aqua_jet")
+B.atS=new A.a(39,"whirlpool")
+B.awC=new A.a(46,"mist")
+B.ayr=new A.a(52,"drill_peck")
+B.aA3=new A.a(59,"hydro_pump")
+B.aDZ=s([B.ac,B.b2,B.fI,B.lb,B.vr,B.alc,B.us,B.DA,B.oa,B.aoI,B.FZ,B.or,B.asd,B.atS,B.awC,B.ayr,B.aA3],t._)
+B.aVl=new A.ab(395,"Empoleon",B.aGZ,84,86,88,111,101,60,45,239,1.7,84.5,3,!0,!1,!1,!1,!1,36,null,null,B.aDZ,"torrent",null,"defiant",!1)
+B.apS=new A.a(28,"super_fang")
+B.arL=new A.a(34,"endeavor")
+B.aDj=s([B.ac,B.cb,B.HP,B.eD,B.CP,B.o7,B.Dz,B.E7,B.F3,B.uW,B.apS,B.v4,B.arL],t._)
+B.aVm=new A.ab(19,"Rattata",B.dX,30,56,35,25,35,72,255,51,0.3,3.5,1,!1,!1,!1,!1,!1,2,20,20,B.aDj,"run_away","guts","hustle",!0)
+B.E_=new A.a(18,"rollout")
+B.ap4=new A.a(25,"smack_down")
+B.aqc=new A.a(29,"self_destruct")
+B.aqP=new A.a(32,"bulldoze")
+B.asA=new A.a(36,"stealth_rock")
+B.atE=new A.a(39,"earthquake")
+B.avf=new A.a(43,"explosion")
+B.awt=new A.a(46,"double_edge")
+B.ay5=new A.a(50,"stone_edge")
+B.aD6=s([B.ac,B.hE,B.vg,B.vu,B.uh,B.l3,B.E_,B.uU,B.ap4,B.aqc,B.aqP,B.asA,B.atE,B.avf,B.awt,B.ay5],t._)
+B.aVn=new A.ab(74,"Geodude",B.oA,40,80,100,30,30,20,255,60,0.4,20,1,!1,!1,!1,!1,!1,2,25,75,B.aD6,"rock_head","sturdy","sand_veil",!0)
+B.anA=new A.a(1,"uproar")
+B.aBE=new A.a(7,"reflect")
+B.al8=new A.a(11,"leech_seed")
+B.am1=new A.a(17,"bullet_seed")
+B.amx=new A.a(19,"stun_spore")
+B.anY=new A.a(21,"poison_powder")
+B.aoz=new A.a(23,"sleep_powder")
+B.apn=new A.a(27,"confusion")
+B.arE=new A.a(33,"worry_seed")
+B.at1=new A.a(37,"natural_gift")
+B.avy=new A.a(43,"solar_beam")
+B.awQ=new A.a(47,"extrasensory")
+B.ayD=new A.a(53,"bestow")
+B.aF6=s([B.E8,B.anA,B.fJ,B.aBE,B.al8,B.am1,B.amx,B.anY,B.aoz,B.apn,B.arE,B.at1,B.avy,B.awQ,B.ayD],t._)
+B.aVo=new A.ab(102,"Exeggcute",B.J8,60,40,80,60,45,40,90,65,0.4,2.5,1,!1,!1,!1,!1,!1,2,null,103,B.aF6,"chlorophyll",null,"harvest",!0)
+B.Ea=new A.a(1,"charge")
+B.anm=new A.a(1,"spark")
+B.Ie=new A.a(5,"tackle")
+B.ID=new A.a(8,"sonic_boom")
+B.D7=new A.a(12,"spark")
+B.Dq=new A.a(15,"rollout")
+B.E6=new A.a(19,"screech")
+B.F2=new A.a(22,"charge_beam")
+B.G5=new A.a(29,"electro_ball")
+B.as5=new A.a(35,"self_destruct")
+B.aue=new A.a(40,"swift")
+B.awA=new A.a(46,"magnet_rise")
+B.ayi=new A.a(51,"gyro_ball")
+B.azF=new A.a(57,"explosion")
+B.aAD=new A.a(62,"mirror_coat")
+B.aI5=s([B.Ea,B.ac,B.Et,B.anm,B.Ie,B.ID,B.D7,B.Dq,B.E6,B.F2,B.uY,B.G5,B.as5,B.aue,B.awA,B.ayi,B.azF,B.aAD],t._)
+B.aVp=new A.ab(101,"Electrode",B.jh,60,50,70,80,80,150,60,168,1.2,66.6,2,!1,!1,!1,!1,!1,30,null,null,B.aI5,"soundproof","static","aftermath",!0)
+B.ax6=new A.a(48,"dragon_dance")
+B.azE=new A.a(57,"dragon_pulse")
+B.aIq=s([B.fI,B.l7,B.b3,B.eC,B.HR,B.vs,B.o2,B.Df,B.uB,B.Fd,B.FN,B.Gg,B.Ha,B.ax6,B.azE],t._)
+B.aVq=new A.ab(117,"Seadra",B.bC,55,65,95,95,45,85,75,154,1.2,25,2,!1,!1,!1,!1,!1,32,null,null,B.aIq,"poison_point","sniper","damp",!0)
+B.amB=new A.a(1,"aqua_jet")
+B.IE=new A.a(8,"water_gun")
+B.CR=new A.a(11,"disable")
+B.Dn=new A.a(15,"confusion")
+B.E1=new A.a(18,"water_pulse")
+B.F5=new A.a(22,"fury_swipes")
+B.FC=new A.a(25,"screech")
+B.Ge=new A.a(29,"zen_headbutt")
+B.atv=new A.a(38,"soak")
+B.avu=new A.a(43,"psych_up")
+B.axe=new A.a(49,"amnesia")
+B.ayX=new A.a(54,"hydro_pump")
+B.aAj=new A.a(60,"wonder_room")
+B.aIz=s([B.amB,B.fK,B.br,B.cb,B.eC,B.fM,B.IE,B.CR,B.Dn,B.E1,B.F5,B.FC,B.Ge,B.oq,B.atv,B.avu,B.axe,B.ayX,B.aAj],t._)
+B.aVr=new A.ab(55,"Golduck",B.bC,80,82,78,95,80,85,75,175,1.7,76.6,2,!1,!1,!1,!1,!1,33,null,null,B.aIz,"damp","cloud_nine","swift_swim",!0)
+B.ao6=new A.a(22,"crush_claw")
+B.aEp=s([B.br,B.hE,B.jb,B.hF,B.H7,B.Ia,B.Iu,B.IN,B.CY,B.Dh,B.DM,B.uR,B.ao6,B.Fl,B.FL,B.Gi,B.GF,B.H3,B.Hg,B.vd],t._)
+B.aVs=new A.ab(28,"Sandslash",B.ji,75,100,110,45,55,65,90,158,1,29.5,2,!1,!1,!1,!1,!1,22,null,null,B.aEp,"sand_veil",null,"sand_rush",!0)
+B.amZ=new A.a(1,"ingrain")
+B.axL=new A.a(4,"sleep_powder")
+B.akX=new A.a(10,"absorb")
+B.alw=new A.a(14,"poison_powder")
+B.am_=new A.a(17,"bind")
+B.anH=new A.a(20,"growth")
+B.aqt=new A.a(30,"stun_spore")
+B.arm=new A.a(33,"natural_gift")
+B.asq=new A.a(36,"giga_drain")
+B.atV=new A.a(40,"ancient_power")
+B.awK=new A.a(46,"tickle")
+B.aLJ=s([B.amZ,B.od,B.axL,B.ox,B.akX,B.alw,B.am_,B.anH,B.Fh,B.uZ,B.aqt,B.arm,B.asq,B.atV,B.Hq,B.awK,B.HM,B.I0],t._)
+B.aVt=new A.ab(114,"Tangela",B.dY,65,55,115,100,40,60,45,87,1,35,1,!1,!1,!1,!1,!1,20,null,null,B.aLJ,"chlorophyll","leaf_guard","regenerator",!0)
+B.arY=new A.a(34,"sweet_scent")
+B.au8=new A.a(40,"light_screen")
+B.awq=new A.a(46,"body_slam")
+B.az0=new A.a(54,"safeguard")
+B.aAg=new A.a(60,"aromatherapy")
+B.aAZ=new A.a(66,"solar_beam")
+B.aEt=s([B.ac,B.b2,B.oi,B.oh,B.vm,B.vz,B.uj,B.DZ,B.F6,B.FK,B.Gs,B.arY,B.au8,B.awq,B.az0,B.aAg,B.aAZ],t._)
+B.aVu=new A.ab(154,"Meganium",B.dY,80,82,100,83,100,80,45,236,1.8,100.5,3,!0,!1,!1,!1,!1,32,null,null,B.aEt,"overgrow",null,"leaf_guard",!1)
+B.atK=new A.a(39,"muddy_water")
+B.awE=new A.a(46,"protect")
+B.ays=new A.a(52,"earthquake")
+B.aAl=new A.a(61,"endeavor")
+B.aBa=new A.a(69,"hammer_arm")
+B.aEq=s([B.ac,B.b2,B.uL,B.eC,B.vl,B.l0,B.uo,B.o8,B.EI,B.FA,B.Gn,B.atK,B.awE,B.ays,B.aAl,B.aBa],t._)
+B.aVv=new A.ab(260,"Swampert",B.J7,100,110,90,85,90,60,45,241,1.5,81.9,3,!0,!1,!1,!1,!1,36,null,null,B.aEq,"torrent",null,"damp",!1)
+B.amV=new A.a(1,"gyro_ball")
+B.avm=new A.a(43,"lava_plume")
+B.ax7=new A.a(48,"flamethrower")
+B.azu=new A.a(56,"inferno")
+B.aAs=new A.a(61,"rollout")
+B.aB9=new A.a(69,"double_edge")
+B.aBq=new A.a(74,"eruption")
+B.aKK=s([B.amV,B.ac,B.b3,B.l7,B.dt,B.vn,B.o1,B.ed,B.EH,B.Ft,B.v5,B.GK,B.avm,B.ax7,B.azu,B.aAs,B.aB9,B.aBq],t._)
+B.aVw=new A.ab(157,"Typhlosion",B.cU,78,84,78,109,85,100,45,240,1.7,79.5,3,!0,!1,!1,!1,!1,36,null,null,B.aKK,"blaze",null,"flash_fire",!1)
+B.asz=new A.a(36,"soak")
+B.atL=new A.a(39,"psych_up")
+B.awx=new A.a(46,"hydro_pump")
+B.ay9=new A.a(50,"wonder_room")
+B.aK9=s([B.fK,B.br,B.fM,B.IE,B.CR,B.Dn,B.E1,B.F5,B.FC,B.Ge,B.oq,B.asz,B.atL,B.Hj,B.awx,B.ay9],t._)
+B.aVx=new A.ab(54,"Psyduck",B.bC,50,52,48,65,50,55,190,64,0.8,19.6,1,!1,!1,!1,!1,!1,2,33,55,B.aK9,"damp","cloud_nine","swift_swim",!0)
+B.ao7=new A.a(22,"defense_curl")
+B.apD=new A.a(28,"flame_charge")
+B.au2=new A.a(40,"flamethrower")
+B.axy=new A.a(49,"rollout")
+B.az5=new A.a(55,"double_edge")
+B.azU=new A.a(58,"eruption")
+B.aD1=s([B.ac,B.b3,B.vn,B.o1,B.ed,B.uC,B.ao7,B.apD,B.v5,B.GX,B.au2,B.Hx,B.axy,B.az5,B.azU],t._)
+B.aVy=new A.ab(155,"Cyndaquil",B.cU,39,52,43,60,50,65,45,62,0.5,7.9,1,!0,!1,!1,!1,!1,5,17,156,B.aD1,"blaze",null,"flash_fire",!1)
+B.aLP=s([B.b2,B.ac,B.fM,B.vw,B.Da,B.DS,B.ET,B.om,B.Gd,B.GA,B.os,B.Hd,B.Ht,B.HK],t._)
+B.aVz=new A.ab(77,"Ponyta",B.cU,50,85,55,65,65,90,190,82,1,30,1,!1,!1,!1,!1,!1,2,40,78,B.aLP,"run_away","flash_fire","flame_body",!0)
+B.auz=new A.a(41,"metal_sound")
+B.awo=new A.a(46,"ancient_power")
+B.ayo=new A.a(51,"wring_out")
+B.aGN=s([B.br,B.ja,B.le,B.CW,B.o8,B.ok,B.FH,B.op,B.GP,B.auz,B.awo,B.ayo],t._)
+B.aVA=new A.ab(140,"Kabuto",B.oz,30,80,90,55,45,55,45,71,0.5,11.5,1,!1,!0,!1,!1,!1,2,40,141,B.aGN,"swift_swim","battle_armor","weak_armor",!0)
+B.arr=new A.a(33,"self_destruct")
+B.asB=new A.a(36,"swift")
+B.au9=new A.a(40,"magnet_rise")
+B.avk=new A.a(43,"gyro_ball")
+B.awP=new A.a(47,"explosion")
+B.axZ=new A.a(50,"mirror_coat")
+B.aJj=s([B.Ea,B.Ie,B.ID,B.D7,B.Dq,B.E6,B.F2,B.uY,B.G5,B.arr,B.asB,B.au9,B.avk,B.awP,B.axZ],t._)
+B.aVB=new A.ab(100,"Voltorb",B.jh,40,30,50,55,55,100,190,66,0.5,10.4,1,!1,!1,!1,!1,!1,2,30,101,B.aJj,"soundproof","static","aftermath",!0)
+B.aAc=new A.a(5,"meditate")
+B.aCd=new A.a(9,"rolling_kick")
+B.als=new A.a(13,"jump_kick")
+B.am0=new A.a(17,"brick_break")
+B.anT=new A.a(21,"focus_energy")
+B.aoT=new A.a(25,"feint")
+B.aq3=new A.a(29,"high_jump_kick")
+B.arj=new A.a(33,"mind_reader")
+B.asU=new A.a(37,"foresight")
+B.auL=new A.a(41,"wide_guard")
+B.avV=new A.a(45,"blaze_kick")
+B.axo=new A.a(49,"endure")
+B.ayN=new A.a(53,"mega_kick")
+B.azD=new A.a(57,"close_combat")
+B.aAr=new A.a(61,"reversal")
+B.aDO=s([B.Ep,B.uE,B.aAc,B.aCd,B.als,B.am0,B.anT,B.aoT,B.aq3,B.arj,B.asU,B.auL,B.avV,B.axo,B.ayN,B.azD,B.aAr],t._)
+B.aVC=new A.ab(106,"Hitmonlee",B.hJ,50,120,53,35,110,87,45,159,1.5,49.8,1,!1,!1,!1,!1,!1,25,null,null,B.aDO,"limber","reckless","unburden",!0)
 B.amq=new A.a(19,"razor_leaf")
 B.ao_=new A.a(21,"sweet_scent")
 B.aoX=new A.a(25,"growth")
 B.app=new A.a(27,"double_edge")
 B.aqN=new A.a(31,"worry_seed")
 B.at8=new A.a(37,"seed_bomb")
-B.aM_=s([B.ac,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.amq,B.ao_,B.aoX,B.app,B.aqN,B.GB,B.at8],t._)
-B.aVv=new A.ab(1,"Bulbasaur",B.fe,45,49,49,65,65,45,45,64,0.7,1,!0,!1,!1,!1,!1,2,16,2,B.aM_,"overgrow",null,"chlorophyll",!0)
-B.alU=new A.a(16,"pursuit")
-B.ape=new A.a(26,"mega_drain")
-B.asx=new A.a(36,"slam")
-B.aup=new A.a(41,"detect")
-B.aww=new A.a(46,"giga_drain")
-B.ayg=new A.a(51,"energy_ball")
-B.aLL=s([B.dW,B.b3,B.le,B.ug,B.alU,B.uS,B.ape,B.v3,B.asx,B.aup,B.aww,B.ayg],t._)
-B.aVw=new A.ab(252,"Treecko",B.dY,40,45,35,65,55,70,45,62,0.5,1,!0,!1,!1,!1,!1,5,16,253,B.aLL,"overgrow",null,"unburden",!1)
-B.aud=new A.a(40,"spike_cannon")
-B.axd=new A.a(48,"tickle")
-B.azy=new A.a(56,"rock_blast")
-B.aB3=new A.a(67,"shell_smash")
-B.aBr=new A.a(75,"hydro_pump")
-B.aGK=s([B.od,B.jd,B.j9,B.Ip,B.l0,B.DA,B.E2,B.FA,B.FU,B.GF,B.GU,B.aud,B.axd,B.azy,B.aB3,B.aBr],t._)
-B.aVx=new A.ab(139,"Omastar",B.oz,70,60,125,115,70,55,45,173,1,2,!1,!0,!1,!1,!1,40,null,null,B.aGK,"swift_swim","shell_armor","weak_armor",!0)
-B.aqo=new A.a(30,"crunch")
-B.ar8=new A.a(33,"chip_away")
-B.Hg=new A.a(42,"screech")
-B.axc=new A.a(48,"thrash")
-B.ayb=new A.a(51,"aqua_tail")
-B.azP=new A.a(57,"superpower")
-B.If=new A.a(60,"hydro_pump")
-B.aM4=s([B.br,B.b3,B.eC,B.ow,B.vt,B.o3,B.ut,B.ET,B.Ft,B.aqo,B.ar8,B.v9,B.Hg,B.axc,B.ayb,B.azP,B.If],t._)
-B.aVy=new A.ab(159,"Croconaw",B.bC,65,80,80,59,63,58,45,142,1.1,2,!0,!1,!1,!1,!1,18,30,160,B.aM4,"torrent",null,"sheer_force",!1)
-B.alS=new A.a(16,"peck")
-B.amu=new A.a(19,"sand_attack")
-B.apL=new A.a(28,"quick_attack")
-B.at0=new A.a(37,"mirror_move")
-B.aEY=s([B.br,B.b2,B.eD,B.o1,B.alS,B.amu,B.om,B.apL,B.v6,B.at0,B.vc],t._)
-B.aVz=new A.ab(255,"Torchic",B.cT,45,60,40,70,50,45,45,62,0.4,1,!0,!1,!1,!1,!1,5,16,256,B.aEY,"blaze",null,"speed_boost",!1)
-B.an0=new A.a(1,"magical_leaf")
-B.an8=new A.a(1,"quick_guard")
-B.an6=new A.a(1,"power_swap")
-B.amU=new A.a(1,"guard_swap")
-B.axG=new A.a(4,"copycat")
-B.aBV=new A.a(8,"meditate")
-B.al7=new A.a(11,"double_slap")
-B.alG=new A.a(15,"mimic")
-B.alH=new A.a(15,"psywave")
-B.ama=new A.a(18,"encore")
-B.aoc=new A.a(22,"light_screen")
-B.aol=new A.a(22,"reflect")
-B.aqg=new A.a(29,"substitute")
-B.ar1=new A.a(32,"recycle")
-B.asE=new A.a(36,"trick")
-B.atM=new A.a(39,"psychic")
-B.avw=new A.a(43,"role_play")
-B.awp=new A.a(46,"baton_pass")
-B.ay1=new A.a(50,"safeguard")
-B.aKR=s([B.an0,B.an8,B.uQ,B.an6,B.amU,B.E8,B.hD,B.axG,B.aBV,B.al7,B.alG,B.alH,B.ama,B.aoc,B.aol,B.l9,B.aqg,B.ar1,B.asE,B.atM,B.avw,B.awp,B.ay1],t._)
-B.aVA=new A.ab(122,"Mr. Mime",B.J_,40,45,65,100,120,90,45,161,1.3,1,!1,!1,!1,!1,!1,2,null,null,B.aKR,"soundproof","filter","technician",!0)
-B.aFV=s([B.dW,B.fJ,B.I6,B.IH,B.Da,B.DN,B.EU,B.l9,B.G6,B.GA,B.H0,B.vb,B.Hu,B.ve,B.HY,B.I2,B.Ih],t._)
-B.aVB=new A.ab(96,"Drowzee",B.hI,60,48,45,43,90,42,190,66,1,1,!1,!1,!1,!1,!1,2,26,97,B.aFV,"insomnia","forewarn","inner_focus",!0)
-B.amQ=new A.a(1,"flash_cannon")
-B.atQ=new A.a(39,"skull_bash")
-B.awy=new A.a(46,"iron_defense")
-B.ayQ=new A.a(53,"rain_dance")
-B.aIK=s([B.amQ,B.ac,B.cb,B.fI,B.jd,B.fM,B.vo,B.ud,B.un,B.uv,B.EK,B.Fv,B.oo,B.oq,B.atQ,B.awy,B.ayQ,B.If],t._)
-B.aVC=new A.ab(9,"Blastoise",B.bC,79,83,100,85,105,78,45,239,1.6,3,!0,!1,!1,!1,!1,36,null,null,B.aIK,"torrent",null,"rain_dish",!0)
-B.aCf=new A.a(9,"thunder_shock")
-B.am2=new A.a(17,"double_kick")
-B.ao0=new A.a(21,"thunder_fang")
-B.ap1=new A.a(25,"pin_missile")
-B.arz=new A.a(33,"thunder_wave")
-B.asN=new A.a(37,"discharge")
-B.awl=new A.a(45,"thunder")
-B.aE8=s([B.oe,B.ac,B.cb,B.hH,B.aCf,B.ed,B.am2,B.ao0,B.ap1,B.v1,B.arz,B.asN,B.ot,B.awl],t._)
-B.aVD=new A.ab(135,"Jolteon",B.jh,65,65,60,110,95,130,45,184,0.8,2,!1,!1,!1,!1,!1,25,null,null,B.aE8,"volt_absorb",null,"quick_feet",!0)
-B.anf=new A.a(1,"screech")
-B.amD=new A.a(1,"astonish")
-B.aoJ=new A.a(24,"swift")
-B.apA=new A.a(28,"air_cutter")
-B.ar5=new A.a(33,"acrobatics")
-B.atr=new A.a(38,"mean_look")
-B.av_=new A.a(42,"poison_fang")
-B.awS=new A.a(47,"haze")
-B.ayq=new A.a(52,"air_slash")
-B.aEE=s([B.anf,B.uK,B.hG,B.amD,B.ov,B.Iy,B.D0,B.Du,B.ob,B.aoJ,B.apA,B.ar5,B.atr,B.av_,B.awS,B.ayq],t._)
-B.aVE=new A.ab(42,"Golbat",B.Ja,75,80,70,65,75,90,90,159,1.6,2,!1,!1,!1,!1,!1,22,null,null,B.aEE,"inner_focus",null,"infiltrator",!0)
-B.anv=new A.a(1,"taunt")
-B.aq9=new A.a(29,"punishment")
-B.auV=new A.a(42,"fire_spin")
-B.ayp=new A.a(52,"acrobatics")
-B.azT=new A.a(58,"calm_mind")
-B.aB6=new A.a(68,"flare_blitz")
-B.aFX=s([B.br,B.b3,B.dt,B.anv,B.fd,B.vA,B.Di,B.Dx,B.uC,B.FH,B.aq9,B.GN,B.auV,B.ayp,B.azT,B.aB6],t._)
-B.aVF=new A.ab(392,"Infernape",B.jg,76,104,71,104,71,108,45,240,1.2,3,!0,!1,!1,!1,!1,36,null,null,B.aFX,"blaze",null,"iron_fist",!1)
-B.aD3=s([B.ac,B.Eu,B.Dk],t._)
-B.aVG=new A.ab(10,"Caterpie",B.vH,45,30,35,20,20,45,255,39,0.3,1,!1,!1,!1,!1,!1,2,7,11,B.aD3,"shield_dust",null,"run_away",!0)
-B.aAe=new A.a(5,"thunder_shock")
-B.aBU=new A.a(8,"low_kick")
-B.aln=new A.a(12,"swift")
-B.alK=new A.a(15,"shock_wave")
-B.amy=new A.a(19,"thunder_wave")
-B.ao8=new A.a(22,"electro_ball")
-B.aqh=new A.a(29,"thunder_punch")
-B.asl=new A.a(36,"discharge")
-B.axE=new A.a(49,"thunderbolt")
-B.azj=new A.a(55,"thunder")
-B.aGs=s([B.eB,B.b3,B.l8,B.aAe,B.aBU,B.aln,B.alK,B.amy,B.ao8,B.uY,B.aqh,B.asl,B.Hg,B.axE,B.azj],t._)
-B.aVH=new A.ab(125,"Electabuzz",B.jh,65,83,57,95,85,105,45,172,1.1,1,!1,!1,!1,!1,!1,28,null,null,B.aGs,"static",null,"vital_spirit",!0)
-B.aqM=new A.a(31,"vital_throw")
-B.arW=new A.a(34,"submission")
-B.atc=new A.a(37,"wake_up_slap")
-B.av9=new A.a(43,"cross_chop")
-B.awI=new A.a(46,"scary_face")
-B.axm=new A.a(49,"dynamic_punch")
-B.aG4=s([B.l5,B.b3,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.aqM,B.arW,B.atc,B.av9,B.awI,B.axm],t._)
-B.aVI=new A.ab(66,"Machop",B.hJ,70,80,50,35,35,35,180,61,0.8,1,!1,!1,!1,!1,!1,2,28,67,B.aG4,"guts","no_guard","steadfast",!0)
-B.apw=new A.a(27,"stockpile")
-B.apx=new A.a(27,"swallow")
-B.apv=new A.a(27,"spit_up")
-B.aqO=new A.a(32,"acid_spray")
-B.atJ=new A.a(39,"mud_bomb")
-B.avI=new A.a(44,"gastro_acid")
-B.ayj=new A.a(51,"haze")
-B.azn=new A.a(56,"coil")
-B.aAK=new A.a(63,"gunk_shot")
-B.aHc=s([B.Ef,B.uP,B.uG,B.fL,B.b3,B.hF,B.j9,B.HN,B.IG,B.D4,B.o9,B.EF,B.F2,B.apw,B.apx,B.apv,B.aqO,B.atJ,B.avI,B.ayj,B.azn,B.aAK],t._)
-B.aVJ=new A.ab(24,"Arbok",B.eE,60,95,69,65,79,80,90,157,3.5,2,!1,!1,!1,!1,!1,22,null,null,B.aHc,"intimidate","shed_skin","unnerve",!0)
-B.aqr=new A.a(30,"pay_day")
-B.art=new A.a(33,"slash")
-B.ats=new A.a(38,"nasty_plot")
-B.aul=new A.a(41,"assurance")
-B.awr=new A.a(46,"captivate")
-B.axv=new A.a(49,"night_slash")
-B.ayV=new A.a(54,"feint")
-B.aIH=s([B.br,B.b2,B.Ik,B.II,B.Dh,B.o9,B.F3,B.FE,B.aqr,B.art,B.ats,B.aul,B.awr,B.axv,B.ayV],t._)
-B.aVK=new A.ab(52,"Meowth",B.dX,40,45,35,40,40,90,255,58,0.4,1,!1,!1,!1,!1,!1,2,28,53,B.aIH,"pickup","technician","unnerve",!0)
-B.aBF=new A.a(7,"roar")
-B.al3=new A.a(10,"quick_attack")
-B.alg=new A.a(12,"fire_spin")
-B.alA=new A.a(15,"confuse_ray")
-B.amc=new A.a(18,"imprison")
-B.anF=new A.a(20,"feint_attack")
-B.aos=new A.a(23,"flame_burst")
-B.apl=new A.a(26,"will_o_wisp")
-B.apE=new A.a(28,"hex")
-B.aqG=new A.a(31,"payback")
-B.atF=new A.a(39,"extrasensory")
-B.auU=new A.a(42,"fire_blast")
-B.avJ=new A.a(44,"grudge")
-B.awM=new A.a(47,"captivate")
-B.axY=new A.a(50,"inferno")
-B.aJ8=s([B.dt,B.fM,B.aBF,B.al3,B.alg,B.alA,B.amc,B.anF,B.aos,B.apl,B.apE,B.aqG,B.GD,B.GR,B.atF,B.auU,B.avJ,B.awM,B.axY],t._)
-B.aVL=new A.ab(37,"Vulpix",B.cT,38,41,40,50,65,65,190,60,0.6,1,!1,!1,!1,!1,!1,2,null,38,B.aJ8,"flash_fire",null,"drought",!0)
+B.aM_=s([B.ac,B.la,B.vp,B.vB,B.hC,B.l2,B.uu,B.amq,B.ao_,B.aoX,B.app,B.aqN,B.GC,B.at8],t._)
+B.aVD=new A.ab(1,"Bulbasaur",B.fe,45,49,49,65,65,45,45,64,0.7,6.9,1,!0,!1,!1,!1,!1,2,16,2,B.aM_,"overgrow",null,"chlorophyll",!0)
+B.aBR=new A.a(8,"fire_spin")
+B.aly=new A.a(15,"agility")
+B.ao9=new A.a(22,"endure")
+B.aso=new A.a(36,"flamethrower")
+B.axN=new A.a(50,"air_slash")
+B.aAQ=new A.a(64,"heat_wave")
+B.aBk=new A.a(71,"solar_beam")
+B.aBw=new A.a(78,"sky_attack")
+B.aBP=new A.a(85,"sunny_day")
+B.aKW=s([B.EE,B.dt,B.aBR,B.aly,B.ao9,B.v2,B.aso,B.Hp,B.axN,B.vi,B.aAQ,B.aBk,B.aBw,B.aBP,B.IF],t._)
+B.aVE=new A.ab(146,"Moltres",B.J5,90,100,90,125,85,90,3,261,2,60,1,!1,!1,!1,!0,!1,50,null,null,B.aKW,"pressure",null,"flame_body",!0)
+B.amW=new A.a(1,"hammer_arm")
+B.atk=new A.a(38,"assurance")
+B.axV=new A.a(50,"head_smash")
+B.azg=new A.a(55,"roar")
+B.aAx=new A.a(62,"flare_blitz")
+B.aFj=s([B.amW,B.ac,B.cb,B.dt,B.uM,B.je,B.fd,B.vy,B.o4,B.ur,B.DE,B.EN,B.Fk,B.v0,B.Gl,B.atk,B.vc,B.axV,B.azg,B.aAx],t._)
+B.aVF=new A.ab(500,"Emboar",B.jg,110,123,65,100,65,65,45,238,1.6,150,3,!0,!1,!1,!1,!1,36,null,null,B.aFj,"blaze",null,"reckless",!1)
+B.alD=new A.a(15,"fury_swipes")
+B.aox=new A.a(23,"nasty_plot")
+B.ap9=new A.a(25,"torment")
+B.aqB=new A.a(31,"facade")
+B.arc=new A.a(33,"fire_spin")
+B.atx=new A.a(39,"acrobatics")
+B.auG=new A.a(41,"slack_off")
+B.aKc=s([B.br,B.b3,B.fd,B.vA,B.alD,B.DH,B.aox,B.ap9,B.aqB,B.arc,B.atx,B.auG,B.HD],t._)
+B.aVG=new A.ab(390,"Chimchar",B.cU,44,58,44,58,44,61,45,62,0.5,6.2,1,!0,!1,!1,!1,!1,5,14,391,B.aKc,"blaze",null,"iron_fist",!1)
+B.am4=new A.a(17,"reflect")
+B.anK=new A.a(20,"magical_leaf")
+B.aoy=new A.a(23,"natural_gift")
+B.apT=new A.a(28,"sweet_scent")
+B.aqE=new A.a(31,"light_screen")
+B.arG=new A.a(34,"body_slam")
+B.atO=new A.a(39,"safeguard")
+B.auN=new A.a(42,"aromatherapy")
+B.awj=new A.a(45,"solar_beam")
+B.aDL=s([B.ac,B.b2,B.vm,B.vz,B.uj,B.am4,B.anK,B.aoy,B.apT,B.aqE,B.arG,B.atO,B.auN,B.awj],t._)
+B.aVH=new A.ab(152,"Chikorita",B.dY,45,49,65,49,65,45,45,64,0.9,6.4,1,!0,!1,!1,!1,!1,5,16,153,B.aDL,"overgrow",null,"leaf_guard",!1)
+B.aCP=s([B.ac,B.hE,B.l6,B.Er,B.vg,B.vu,B.uh,B.l3,B.E_,B.uU,B.FT,B.Gm,B.GN,B.Hi,B.HC,B.HY,B.I5,B.Ij],t._)
+B.aVI=new A.ab(75,"Graveler",B.oA,55,95,115,45,45,35,120,137,1,105,2,!1,!1,!1,!1,!1,25,null,76,B.aCP,"rock_head","sturdy","sand_veil",!0)
+B.al4=new A.a(10,"rapid_spin")
+B.alk=new A.a(12,"recover")
+B.alz=new A.a(15,"camouflage")
+B.amg=new A.a(18,"swift")
+B.ao4=new A.a(22,"bubble_beam")
+B.aqq=new A.a(30,"gyro_ball")
+B.ari=new A.a(33,"light_screen")
+B.ash=new A.a(36,"brine")
+B.aua=new A.a(40,"reflect_type")
+B.avt=new A.a(43,"power_gem")
+B.ax5=new A.a(48,"cosmic_power")
+B.aLr=s([B.ac,B.ja,B.ow,B.al4,B.alk,B.alz,B.amg,B.ao4,B.Fy,B.aqq,B.ari,B.ash,B.aua,B.avt,B.ax5,B.vh],t._)
+B.aVJ=new A.ab(120,"Staryu",B.bC,30,45,55,70,55,85,225,68,0.8,34.5,1,!1,!1,!1,!1,!1,2,null,121,B.aLr,"illuminate","natural_cure","analytic",!0)
+B.atd=new A.a(37,"waterfall")
+B.auw=new A.a(41,"horn_drill")
+B.awL=new A.a(47,"agility")
+B.aym=new A.a(51,"soak")
+B.azL=new A.a(57,"megahorn")
+B.aKM=s([B.ee,B.cb,B.fK,B.Iw,B.CT,B.uz,B.ES,B.FO,B.Gk,B.atd,B.auw,B.awL,B.aym,B.azL],t._)
+B.aVK=new A.ab(118,"Goldeen",B.bC,45,67,60,35,50,63,225,64,0.6,15,1,!1,!1,!1,!1,!1,2,33,119,B.aKM,"swift_swim","water_veil","lightning_rod",!0)
+B.aHU=s([B.uQ,B.l5,B.b3,B.fc,B.Eh,B.eD,B.ua,B.ul,B.oc,B.uV,B.on,B.Gv,B.GU,B.Hc,B.Hr,B.HU,B.I2],t._)
+B.aVL=new A.ab(68,"Machamp",B.hJ,90,130,80,65,85,55,45,227,1.6,130,3,!1,!1,!1,!1,!1,38,null,null,B.aHU,"guts","no_guard","steadfast",!0)
 B.aVM=new A.Fb(null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aVN=new A.iO(null,4,4,null,null,null,B.hA,null)
 B.aVO=new A.iO(2,2,null,null,null,null,B.nW,null)
@@ -129330,13 +129334,13 @@ B.agO=new A.ar(B.f9,14,B.h,null,null)
 B.aVQ=new A.iO(null,4,4,null,null,null,B.agO,null)
 B.agx=new A.ar(B.tU,10,B.r,null,null)
 B.aVR=new A.iO(null,2,2,null,null,null,B.agx,null)
-B.Cu=new A.ar(B.f9,10,B.h,null,null)
-B.aVS=new A.iO(null,2,2,null,null,null,B.Cu,null)
+B.Cv=new A.ar(B.f9,10,B.h,null,null)
+B.aVS=new A.iO(null,2,2,null,null,null,B.Cv,null)
 B.ws=new A.uj(0,"platformDefault")
-B.Sy=new A.uj(1,"inAppWebView")
-B.Sz=new A.uj(2,"inAppBrowserView")
+B.Sz=new A.uj(1,"inAppWebView")
+B.SA=new A.uj(2,"inAppBrowserView")
 B.aVT=new A.uj(3,"externalApplication")
-B.SA=new A.uj(4,"externalNonBrowserApplication")
+B.SB=new A.uj(4,"externalNonBrowserApplication")
 B.aVU=new A.ya(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a6U=new A.h(0.26666666666666666,0.30196078431372547,0.8156862745098039,0.8823529411764706,B.f)
 B.a4l=new A.h(1,0.0392156862745098,0.06274509803921569,0.09411764705882353,B.f)
@@ -129344,7 +129348,7 @@ B.aJu=s([B.a6U,B.a4l],t.O)
 B.aVV=new A.fM(B.H,0.5,B.V,null,0,B.aJu,null,null)
 B.aVW=new A.Ff(null,null,null,null,null,null,null,null,null)
 B.aVX=new A.ba(10,10)
-B.SB=new A.ba(1,1)
+B.SC=new A.ba(1,1)
 B.jA=new A.ba(2,2)
 B.aVY=new A.ba(-1/0,-1/0)
 B.aVZ=new A.ba(1.5,1.5)
@@ -129384,35 +129388,35 @@ B.aWV=new A.Fl(0,0,0,0)
 B.lI=new A.Fm(0,"release")
 B.p6=new A.Fm(1,"loop")
 B.p7=new A.Fm(2,"stop")
-B.SJ=new A.yj(0,"start")
+B.SK=new A.yj(0,"start")
 B.wA=new A.yj(1,"stable")
 B.aWW=new A.yj(2,"changed")
 B.aWX=new A.yj(3,"unstable")
 B.fg=new A.Fs(0,"identical")
 B.aWY=new A.Fs(2,"paint")
 B.dy=new A.Fs(3,"layout")
-B.SK=new A.uw(null)
-B.SL=new A.ano(null)
+B.SL=new A.uw(null)
+B.SM=new A.ano(null)
 B.jz=new A.ba(28,28)
 B.a0y=new A.d5(B.jz,B.jz,B.a7,B.a7)
 B.aWZ=new A.aZ(B.a0y,B.I)
 B.a0B=new A.d5(B.jz,B.jz,B.jz,B.jz)
 B.aX_=new A.aZ(B.a0B,B.I)
 B.a0C=new A.d5(B.jy,B.jy,B.a7,B.a7)
-B.SM=new A.aZ(B.a0C,B.I)
-B.SD=new A.ba(24,24)
-B.a0x=new A.d5(B.SD,B.SD,B.a7,B.a7)
+B.SN=new A.aZ(B.a0C,B.I)
+B.SE=new A.ba(24,24)
+B.a0x=new A.d5(B.SE,B.SE,B.a7,B.a7)
 B.fQ=new A.aZ(B.a0x,B.I)
 B.a0z=new A.d5(B.jA,B.jA,B.jA,B.jA)
-B.SN=new A.aZ(B.a0z,B.I)
+B.SO=new A.aZ(B.a0z,B.I)
 B.aX0=new A.aZ(B.mt,B.I)
-B.SC=new A.ba(20,20)
-B.a0t=new A.d5(B.SC,B.SC,B.a7,B.a7)
+B.SD=new A.ba(20,20)
+B.a0t=new A.d5(B.SD,B.SD,B.a7,B.a7)
 B.lJ=new A.aZ(B.a0t,B.I)
-B.SO=new A.anr(0,"none")
+B.SP=new A.anr(0,"none")
 B.p8=new A.yn(0,"pop")
 B.jE=new A.yn(1,"doNotPop")
-B.SP=new A.yn(2,"bubble")
+B.SQ=new A.yn(2,"bubble")
 B.lK=new A.jA(null,null)
 B.aeJ=new A.ai(57662,"MaterialIcons",!1)
 B.ahM=new A.ar(B.aeJ,18,B.h,null,null)
@@ -129421,14 +129425,14 @@ B.xl=new A.k(!0,B.h,null,null,null,null,12,B.N,null,null,null,null,null,null,nul
 B.baU=new A.a0("Gym Leader Rematch Rewards",null,B.xl,null,null,null,null,null,null,null)
 B.aMA=s([B.ahM,B.ag,B.baU],t.p)
 B.aX2=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aMA,null)
-B.Sx=new A.nV(12,!0,null)
+B.Sy=new A.nV(12,!0,null)
 B.bx=new A.ce(4,null,null,null)
 B.py=new A.k(!0,B.d,null,null,null,null,8,B.y,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbr=new A.a0("CAUGHT",null,B.py,null,null,null,null,null,null,null)
-B.aK_=s([B.Sx,B.bx,B.bbr],t.p)
+B.aK_=s([B.Sy,B.bx,B.bbr],t.p)
 B.aX3=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aK_,null)
-B.Cf=new A.ai(63509,"MaterialIcons",!1)
-B.aho=new A.ar(B.Cf,15,B.r,null,null)
+B.Cg=new A.ai(63509,"MaterialIcons",!1)
+B.aho=new A.ar(B.Cg,15,B.r,null,null)
 B.b67=new A.k(!0,B.b1,null,null,null,null,10.5,null,null,null,null,null,1.25,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.baC=new A.a0("Saved locally on this device. Social & friend features will expand with trainer accounts.",null,B.b67,null,null,null,null,null,null,null)
 B.aaM=new A.dJ(1,B.c_,B.baC,null)
@@ -129440,26 +129444,26 @@ B.m8=new A.k(!0,B.S,null,null,null,null,10.5,B.y,null,0.9,null,null,null,null,nu
 B.baa=new A.a0("POK\xc9MON CENTER \u2022 NURSE JOY",null,B.m8,null,null,null,null,null,null,null)
 B.aJd=s([B.ahm,B.a3,B.baa],t.p)
 B.aX6=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aJd,null)
-B.ag8=new A.ar(B.Cl,11,B.h,null,null)
+B.ag8=new A.ar(B.Cm,11,B.h,null,null)
 B.jK=new A.ce(2,null,null,null)
 B.b3r=new A.k(!0,B.h,null,null,null,null,8.5,B.y,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b9Q=new A.a0("FRIEND",null,B.b3r,null,null,null,null,null,null,null)
 B.aHS=s([B.ag8,B.jK,B.b9Q],t.p)
 B.aX7=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aHS,null)
-B.agD=new A.ar(B.Cf,18,B.b5,null,null)
+B.agD=new A.ar(B.Cg,18,B.b5,null,null)
 B.i6=new A.ce(9,null,null,null)
 B.b5b=new A.k(!0,B.b1,null,null,null,null,11.5,null,null,null,null,null,1.4,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bal=new A.a0("Event items and 16-character Mystery Gift codes are announced through external channels and are not listed in-app.",null,B.b5b,null,null,null,null,null,null,null)
 B.aaP=new A.dJ(1,B.c_,B.bal,null)
 B.aLm=s([B.agD,B.i6,B.aaP],t.p)
 B.aX8=new A.de(B.ao,B.j,B.k,B.L,null,B.aE,null,0,B.aLm,null)
-B.agX=new A.ar(B.Ca,12,B.M,null,null)
+B.agX=new A.ar(B.Cb,12,B.M,null,null)
 B.i5=new A.ce(3,null,null,null)
 B.b2j=new A.k(!0,B.M,null,null,null,null,8.5,B.y,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.baH=new A.a0("CLEARED",null,B.b2j,null,null,null,null,null,null,null)
 B.aE2=s([B.agX,B.i5,B.baH],t.p)
 B.aX9=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aE2,null)
-B.ah6=new A.ar(B.Cq,null,B.z,null,null)
+B.ah6=new A.ar(B.Cr,null,B.z,null,null)
 B.baJ=new A.a0("Delete Saved Progress?",null,B.m6,null,null,null,null,null,null,null)
 B.aEo=s([B.ah6,B.ag,B.baJ],t.p)
 B.aXa=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aEo,null)
@@ -129470,7 +129474,7 @@ B.baf=new A.a0("Trade 1 Heart Scale to awaken an Egg Move for any party Pok\xe9m
 B.aaH=new A.dJ(1,B.c_,B.baf,null)
 B.aEi=s([B.agt,B.bw,B.aaH],t.p)
 B.aXb=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aEi,null)
-B.agf=new A.ar(B.C2,24,B.bX,null,null)
+B.agf=new A.ar(B.C3,24,B.bX,null,null)
 B.b4R=new A.k(!0,B.bX,null,null,null,null,14.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbd=new A.a0("FOSSIL RESTORATION COMPLETE!",null,B.b4R,null,null,null,null,null,null,null)
 B.aaG=new A.dJ(1,B.c_,B.bbd,null)
@@ -129489,7 +129493,7 @@ B.aKs=s([B.agC,B.cj,B.bbs],t.p)
 B.aXe=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aKs,null)
 B.eP=new A.k(!0,B.b1,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbU=new A.a0("= Caught Pok\xe9mon",null,B.eP,null,null,null,null,null,null,null)
-B.aGl=s([B.Sx,B.bx,B.bbU],t.p)
+B.aGl=s([B.Sy,B.bx,B.bbU],t.p)
 B.aX4=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aGl,null)
 B.aSF=new A.nV(12,!1,null)
 B.b9B=new A.a0("= Encountered Only",null,B.eP,null,null,null,null,null,null,null)
@@ -129502,10 +129506,10 @@ B.b3e=new A.k(!0,B.h,null,null,null,null,8,B.y,null,0.4,null,null,null,null,null
 B.baA=new A.a0("SEEN",null,B.b3e,null,null,null,null,null,null,null)
 B.aFQ=s([B.aSE,B.bx,B.baA],t.p)
 B.aXg=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aFQ,null)
-B.agK=new A.ar(B.Cb,28,B.R,null,null)
+B.agK=new A.ar(B.Cc,28,B.R,null,null)
 B.dL=new A.ce(12,null,null,null)
-B.Uv=new A.k(!0,B.d,null,null,null,null,12.5,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.ban=new A.a0("PC TERMINAL READY",null,B.Uv,null,null,null,null,null,null,null)
+B.Uw=new A.k(!0,B.d,null,null,null,null,12.5,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.ban=new A.a0("PC TERMINAL READY",null,B.Uw,null,null,null,null,null,null,null)
 B.id=new A.k(!0,B.b1,null,null,null,null,10.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bc_=new A.a0("Tap any Pok\xe9mon in the Box above or your Party below to view info, withdraw, deposit, swap, move between boxes, or release.",null,B.id,null,null,null,null,null,null,null)
 B.aIf=s([B.ban,B.bS,B.bc_],t.p)
@@ -129515,7 +129519,7 @@ B.aLg=s([B.agK,B.dL,B.aaB],t.p)
 B.aXi=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aLg,null)
 B.b5n=new A.k(!0,B.h,null,null,null,null,8.5,B.y,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbn=new A.a0("SHINY",null,B.b5n,null,null,null,null,null,null,null)
-B.aJl=s([B.Cu,B.jK,B.bbn],t.p)
+B.aJl=s([B.Cv,B.jK,B.bbn],t.p)
 B.aXj=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aJl,null)
 B.agu=new A.ar(B.nS,20,B.M,null,null)
 B.b72=new A.k(!0,null,null,null,null,null,15,B.y,null,1.1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -129545,8 +129549,8 @@ B.aMn=s([B.agW,B.bx,B.b9u],t.p)
 B.aXn=new A.de(B.ao,B.j,B.Y,B.o,null,B.aE,null,0,B.aMn,null)
 B.afw=new A.ai(63624,"MaterialIcons",!1)
 B.ag3=new A.ar(B.afw,15,B.h,null,null)
-B.Uw=new A.k(!0,B.h,null,null,null,null,11,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bbb=new A.a0("BADGE PROGRESSION UNLOCKS",null,B.Uw,null,null,null,null,null,null,null)
+B.Ux=new A.k(!0,B.h,null,null,null,null,11,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.bbb=new A.a0("BADGE PROGRESSION UNLOCKS",null,B.Ux,null,null,null,null,null,null,null)
 B.aJU=s([B.ag3,B.a3,B.bbb],t.p)
 B.aXo=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aJU,null)
 B.agT=new A.ar(B.j3,26,B.aC,null,null)
@@ -129557,8 +129561,8 @@ B.aaJ=new A.dJ(1,B.c_,B.b9t,null)
 B.aG2=s([B.agT,B.po,B.aaJ],t.p)
 B.aXp=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aG2,null)
 B.agh=new A.ar(B.bi,22,B.h,null,null)
-B.Uu=new A.k(!0,B.d,null,null,null,null,16.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bax=new A.a0("Choose Your Version",null,B.Uu,null,null,null,null,null,null,null)
+B.Uv=new A.k(!0,B.d,null,null,null,null,16.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.bax=new A.a0("Choose Your Version",null,B.Uv,null,null,null,null,null,null,null)
 B.aaL=new A.dJ(1,B.c_,B.bax,null)
 B.aKN=s([B.agh,B.ag,B.aaL],t.p)
 B.aXq=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aKN,null)
@@ -129569,7 +129573,7 @@ B.baw=new A.a0("Update Available!",null,B.ic,null,null,null,null,null,null,null)
 B.aaK=new A.dJ(1,B.c_,B.baw,null)
 B.aF_=s([B.ahh,B.i6,B.aaK],t.p)
 B.aXr=new A.de(B.ao,B.j,B.k,B.o,null,B.aE,null,0,B.aF_,null)
-B.ahQ=new A.ar(B.Cc,20,B.M,null,null)
+B.ahQ=new A.ar(B.Cd,20,B.M,null,null)
 B.xe=new A.k(!0,B.d,null,null,null,null,13.5,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbe=new A.a0("GET WITH CODE / PASSWORD",null,B.xe,null,null,null,null,null,null,null)
 B.aEj=s([B.ahQ,B.ag,B.bbe],t.p)
@@ -129583,29 +129587,29 @@ B.aXu=new A.G_(1333)
 B.wB=new A.G_(2222)
 B.aXv=new A.TM(null,null)
 B.i3=new A.uz(0,"idle")
-B.SQ=new A.uz(1,"transientCallbacks")
-B.SR=new A.uz(2,"midFrameMicrotasks")
+B.SR=new A.uz(1,"transientCallbacks")
+B.SS=new A.uz(2,"midFrameMicrotasks")
 B.jF=new A.uz(3,"persistentCallbacks")
 B.wC=new A.uz(4,"postFrameCallbacks")
-B.SS=new A.anU(0,"englishLike")
+B.ST=new A.anU(0,"englishLike")
 B.jG=new A.G6(0,"idle")
 B.wD=new A.G6(1,"forward")
 B.wE=new A.G6(2,"reverse")
 B.bfY=new A.uD(0,"explicit")
 B.fh=new A.uD(1,"keepVisibleAtEnd")
 B.fi=new A.uD(2,"keepVisibleAtStart")
-B.SX=new A.U3(0,"manual")
-B.SY=new A.U3(1,"onDrag")
-B.SZ=new A.yq(0,"left")
-B.T_=new A.yq(1,"right")
+B.SY=new A.U3(0,"manual")
+B.SZ=new A.U3(1,"onDrag")
+B.T_=new A.yq(0,"left")
+B.T0=new A.yq(1,"right")
 B.aXA=new A.yq(2,"top")
-B.T0=new A.yq(3,"bottom")
+B.T1=new A.yq(3,"bottom")
 B.aXB=new A.G9(null,null,null,null,null,null,null,null,null,null,null)
 B.aXC=new A.Ga(null,null,null,null,null,null,null,null,null,null,null,null)
 B.aXD=new A.Gb(null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.aXE=new A.Gc(null,null)
 B.cv=new A.kk(0,"tap")
-B.T1=new A.kk(1,"doubleTap")
+B.T2=new A.kk(1,"doubleTap")
 B.dK=new A.kk(2,"longPress")
 B.lL=new A.kk(3,"forcePress")
 B.bZ=new A.kk(5,"toolbar")
@@ -129618,8 +129622,8 @@ B.wH=new A.yt(1,"nextLine")
 B.pc=new A.yt(2,"forward")
 B.pd=new A.yt(3,"backward")
 B.fS=new A.Gg(2,"none")
-B.T2=new A.qc(null,null,B.fS,B.vM,!0)
-B.T3=new A.qc(null,null,B.fS,B.vM,!1)
+B.T3=new A.qc(null,null,B.fS,B.vM,!0)
+B.T4=new A.qc(null,null,B.fS,B.vM,!1)
 B.aB=new A.qd(0,"next")
 B.aR=new A.qd(1,"previous")
 B.b0=new A.qd(2,"end")
@@ -129630,15 +129634,15 @@ B.aXH=new A.Gg(1,"collapsed")
 B.aO=new A.HC(0,"none")
 B.pf=new A.Gl(B.iv,B.aO,B.aO,B.aO,B.aO,B.aO,B.aO,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1,!1)
 B.fj=new A.Gm(0,"defer")
-B.Tk=new A.Gm(1,"opaque")
-B.Tl=new A.Gm(2,"transparent")
+B.Tl=new A.Gm(1,"opaque")
+B.Tm=new A.Gm(2,"transparent")
 B.wN=new A.uL(0,"none")
-B.Tm=new A.uL(1,"text")
+B.Tn=new A.uL(1,"text")
 B.aYc=new A.uL(2,"url")
 B.aYd=new A.uL(3,"phone")
 B.aYe=new A.uL(5,"email")
 B.pg=new A.i5(0,"none")
-B.Tn=new A.i5(1,"tab")
+B.To=new A.i5(1,"tab")
 B.aYf=new A.i5(15,"menuItem")
 B.aYg=new A.i5(16,"menuItemCheckbox")
 B.aYh=new A.i5(17,"menuItemRadio")
@@ -129648,18 +129652,18 @@ B.aYk=new A.i5(23,"progressBar")
 B.aYl=new A.i5(3,"tabPanel")
 B.aYm=new A.i5(4,"dialog")
 B.aYn=new A.i5(5,"alertDialog")
-B.To=new A.eo("RenderViewport.twoPane")
+B.Tp=new A.eo("RenderViewport.twoPane")
 B.aYp=new A.eo("_InputDecoratorState.suffixIcon")
 B.aYq=new A.eo("RenderViewport.excludeFromScrolling")
-B.Tp=new A.eo("_InputDecoratorState.suffix")
+B.Tq=new A.eo("_InputDecoratorState.suffix")
 B.aYr=new A.eo("_InputDecoratorState.prefix")
 B.aYs=new A.eo("_InputDecoratorState.prefixIcon")
 B.ph=new A.Go(0,"idle")
 B.aYt=new A.Go(1,"updating")
 B.aYu=new A.Go(2,"postUpdate")
 B.jH=new A.Gp(0,"none")
-B.Tq=new A.Gp(1,"valid")
-B.Tr=new A.Gp(2,"invalid")
+B.Tr=new A.Gp(1,"valid")
+B.Ts=new A.Gp(2,"invalid")
 B.aYv=new A.uN(B.k6,t.n5)
 B.aQl={growl:0,roar:1,sing:2,supersonic:3,screech:4,snore:5,uproar:6,metal_sound:7,hyper_voice:8,bug_buzz:9,round:10,perish_song:11}
 B.pi=new A.bP(B.aQl,12,t.M)
@@ -129678,7 +129682,7 @@ B.aYD=new A.ch([6,8,9,10,20,31,32,34,39,40,44,50],t.V)
 B.aPu={absorb:0,mega_drain:1,giga_drain:2,dream_eater:3,leech_life:4,drain_punch:5}
 B.aYE=new A.bP(B.aPu,6,t.M)
 B.aPA={me_first:0,counter:1,mirror_coat:2,focus_punch:3}
-B.Ts=new A.bP(B.aPA,4,t.M)
+B.Tt=new A.bP(B.aPA,4,t.M)
 B.aYF=new A.ch([35,36,39,40,150],t.V)
 B.aYG=new A.ch([1,2,3,10,11,12,13,14,15,25,26,43,44,45,48,49,69,70,71,102,103,113,114,123,127,151],t.V)
 B.aYH=new A.ch([6,115,142,143],t.V)
@@ -129725,7 +129729,7 @@ B.aQi={earthquake:0,rock_throw:1,rock_slide:2,stone_edge:3,rock_blast:4,rock_tom
 B.aZ4=new A.bP(B.aQi,34,t.M)
 B.aPB={sunny_day:0,rain_dance:1,sandstorm:2}
 B.aZ5=new A.bP(B.aPB,3,t.M)
-B.Tt=new A.ch([B.eJ,B.cY,B.bY,B.dJ,B.de],t.Lu)
+B.Tu=new A.ch([B.eJ,B.cZ,B.bY,B.dJ,B.de],t.Lu)
 B.aZ6=new A.ch([29,30,31,32,33,34,86,87,111,112,118,119,128],t.V)
 B.aZ7=new A.ch([52,53,63,64,65,81,82,88,89,92,93,94,96,97,100,101,109,110,122,124,125,132,135,137,145],t.V)
 B.aQ3={javascript:0}
@@ -129743,7 +129747,7 @@ B.aZe=new A.bP(B.aPY,10,t.M)
 B.aZf=new A.ch([12,35,36,39,40,79,80,113,120,121,130,137,147,148,149],t.V)
 B.aPq={comet_punch:0,mega_punch:1,fire_punch:2,ice_punch:3,thunder_punch:4,dizzy_punch:5,mach_punch:6,dynamic_punch:7,focus_punch:8,sky_uppercut:9,meteor_mash:10,shadow_punch:11,bullet_punch:12,hammer_arm:13,drain_punch:14}
 B.aZg=new A.bP(B.aPq,15,t.M)
-B.aZh=new A.ch([B.bE,B.aI,B.cZ],A.aX("ch<hI>"))
+B.aZh=new A.ch([B.bE,B.aI,B.d_],A.aX("ch<hI>"))
 B.aZi=new A.ch([138,139,140,141,142],t.V)
 B.aQk={energy_ball:0,mud_bomb:1,mud_shot:2,gunk_shot:3,sludge_wave:4,smog:5,clear_smog:6,magnet_bomb:7,vacuum_wave:8,brick_break:9,hurricane:10,twister:11,gyro_ball:12,rapid_spin:13,bullet_seed:14,barrage:15,rock_blast:16}
 B.aZj=new A.bP(B.aQk,17,t.M)
@@ -129782,11 +129786,11 @@ B.aZC=new A.bP(B.aPx,6,t.M)
 B.aZD=new A.ch([12,35,36,39,40,48,49,54,55,60,61,62,113,120,121,137],t.V)
 B.aZE=new A.ch([19,20,25,26,52,53,56,57,112,143],t.V)
 B.aYo=new A.i5(8,"row")
-B.aZF=new A.ch([B.aYo,B.Tn],A.aX("ch<i5>"))
+B.aZF=new A.ch([B.aYo,B.To],A.aX("ch<i5>"))
 B.aQ5={guillotine:0,horn_drill:1,fissure:2,sheer_cold:3}
 B.wP=new A.bP(B.aQ5,4,t.M)
 B.aZG=new A.ch([12,15,49,123,127,142,149],t.V)
-B.Tu=new A.ch([B.bY,B.cY,B.eJ,B.de,B.dJ],t.Lu)
+B.Tv=new A.ch([B.bY,B.cZ,B.eJ,B.de,B.dJ],t.Lu)
 B.aZH=new A.ch([12,15,41,42,48,49,72,73,92,93,94,140,141],t.V)
 B.aZI=new A.ch([19,20,25,26,31,34,35,36,39,40,52,53,88,89,92,93,94,109,110,112,113,115,120,121,128,130,131,137,143,147,148,149,150],t.V)
 B.aZJ=new A.ch([4,5,6,15,27,28,46,47,83,98,99,108,123,127,140,141],t.V)
@@ -129804,30 +129808,30 @@ B.aZP=new A.bP(B.aPw,31,t.M)
 B.aPQ={meteor_mash:0,double_hit:1,fake_out:2,feint:3,flail:4,reversal:5,endeavor:6,super_fang:7,final_gambit:8,vital_throw:9,storm_throw:10,circle_throw:11,heart_stamp:12,trump_card:13,wring_out:14,natural_gift:15,fling:16,knock_off:17,covet:18,bestow:19}
 B.aZQ=new A.bP(B.aPQ,20,t.M)
 B.cl=new A.d2(4,"selected")
-B.Tv=new A.ch([B.cl],t.El)
+B.Tw=new A.ch([B.cl],t.El)
 B.a6t=new A.h(0.23529411764705882,0,0,0,B.f)
 B.a0W=new A.cg(0.5,B.aZ,B.a6t,B.hZ,10)
 B.aJc=s([B.a0W],t.E)
-B.aX1=new A.mm(B.ys,B.I)
+B.aX1=new A.mm(B.yt,B.I)
 B.aZR=new A.km(null,null,null,B.aJc,B.aX1)
 B.wQ=new A.qj(0,"onlyForDiscrete")
-B.Tw=new A.qj(1,"onlyForContinuous")
-B.Tx=new A.qj(2,"always")
-B.Ty=new A.qj(3,"onDrag")
-B.Tz=new A.qj(4,"alwaysVisible")
-B.TA=new A.qj(5,"never")
+B.Tx=new A.qj(1,"onlyForContinuous")
+B.Ty=new A.qj(2,"always")
+B.Tz=new A.qj(3,"onDrag")
+B.TA=new A.qj(4,"alwaysVisible")
+B.TB=new A.qj(5,"never")
 B.aZS=new A.aS(B.ln,!1,!0,!1,!1,B.X)
-B.TB=new A.aS(B.vP,!1,!1,!1,!0,B.X)
-B.aZT=new A.aS(B.Jq,!0,!1,!1,!1,B.X)
+B.TC=new A.aS(B.vP,!1,!1,!1,!0,B.X)
+B.aZT=new A.aS(B.Jr,!0,!1,!1,!1,B.X)
 B.dv=new A.Eg(1,"locked")
 B.aZU=new A.aS(B.hS,!1,!0,!1,!1,B.dv)
 B.aZV=new A.aS(B.lu,!1,!0,!1,!1,B.dv)
-B.TD=new A.aS(B.vO,!1,!1,!1,!0,B.X)
-B.aZW=new A.aS(B.Of,!0,!1,!1,!1,B.X)
+B.TE=new A.aS(B.vO,!1,!1,!1,!0,B.X)
+B.aZW=new A.aS(B.Og,!0,!1,!1,!1,B.X)
 B.aZX=new A.aS(B.w_,!0,!1,!1,!1,B.X)
 B.aZY=new A.aS(B.vP,!0,!1,!1,!1,B.X)
 B.aZZ=new A.aS(B.hO,!0,!0,!1,!1,B.dv)
-B.TE=new A.aS(B.w_,!1,!1,!1,!0,B.X)
+B.TF=new A.aS(B.w_,!1,!1,!1,!0,B.X)
 B.b__=new A.aS(B.ln,!0,!1,!1,!1,B.X)
 B.dw=new A.Eg(2,"unlocked")
 B.b_5=new A.aS(B.lr,!1,!1,!1,!1,B.dw)
@@ -129847,20 +129851,20 @@ B.b_e=new A.aS(B.hO,!1,!1,!1,!1,B.dw)
 B.b_h=new A.aS(B.hP,!0,!1,!1,!1,B.dw)
 B.b_g=new A.aS(B.hQ,!0,!1,!1,!1,B.dw)
 B.b_f=new A.aS(B.hR,!0,!1,!1,!1,B.dw)
-B.b_j=new A.aS(B.Jr,!0,!1,!1,!1,B.X)
-B.b_k=new A.aS(B.Jt,!0,!1,!1,!1,B.X)
+B.b_j=new A.aS(B.Js,!0,!1,!1,!1,B.X)
+B.b_k=new A.aS(B.Ju,!0,!1,!1,!1,B.X)
 B.pl=new A.aS(B.hL,!0,!1,!1,!1,B.X)
 B.pk=new A.aS(B.hM,!0,!1,!1,!1,B.X)
 B.b_m=new A.aS(B.lj,!0,!1,!1,!1,B.X)
 B.b_n=new A.aS(B.lj,!1,!0,!1,!0,B.X)
 B.b_p=new A.aS(B.eG,!1,!0,!1,!0,B.X)
-B.TN=new A.aS(B.ef,!1,!0,!1,!0,B.X)
-B.TO=new A.aS(B.eg,!1,!0,!1,!0,B.X)
+B.TO=new A.aS(B.ef,!1,!0,!1,!0,B.X)
+B.TP=new A.aS(B.eg,!1,!0,!1,!0,B.X)
 B.b_o=new A.aS(B.eH,!1,!0,!1,!0,B.X)
 B.b_q=new A.aS(B.hS,!0,!1,!1,!1,B.dw)
 B.b_s=new A.aS(B.hS,!1,!1,!1,!1,B.dw)
 B.b_t=new A.aS(B.lu,!1,!1,!1,!1,B.dw)
-B.b_u=new A.aS(B.Js,!0,!1,!1,!1,B.X)
+B.b_u=new A.aS(B.Jt,!0,!1,!1,!1,B.X)
 B.b_w=new A.aS(B.hO,!1,!0,!1,!1,B.dv)
 B.b_x=new A.aS(B.lj,!0,!0,!1,!1,B.X)
 B.b_z=new A.aS(B.eG,!0,!0,!1,!1,B.X)
@@ -129868,18 +129872,18 @@ B.b_y=new A.aS(B.eH,!0,!0,!1,!1,B.X)
 B.wW=new A.aS(B.hL,!0,!0,!1,!1,B.X)
 B.wV=new A.aS(B.hM,!0,!0,!1,!1,B.X)
 B.wX=new A.aS(B.vZ,!0,!1,!1,!1,B.X)
-B.b_B=new A.aS(B.Jp,!0,!1,!1,!1,B.X)
+B.b_B=new A.aS(B.Jq,!0,!1,!1,!1,B.X)
 B.b_E=new A.aS(B.hP,!0,!0,!1,!1,B.dv)
 B.b_D=new A.aS(B.hQ,!0,!0,!1,!1,B.dv)
 B.b_C=new A.aS(B.hR,!0,!0,!1,!1,B.dv)
-B.TU=new A.aS(B.eG,!1,!0,!1,!1,B.X)
+B.TV=new A.aS(B.eG,!1,!0,!1,!1,B.X)
 B.wY=new A.aS(B.ef,!1,!0,!1,!1,B.X)
 B.wZ=new A.aS(B.eg,!1,!0,!1,!1,B.X)
-B.TT=new A.aS(B.eH,!1,!0,!1,!1,B.X)
+B.TU=new A.aS(B.eH,!1,!0,!1,!1,B.X)
 B.lV=new A.aS(B.hL,!1,!0,!1,!1,B.X)
 B.lU=new A.aS(B.hM,!1,!0,!1,!1,B.X)
 B.x_=new A.aS(B.ll,!1,!0,!1,!1,B.X)
-B.TV=new A.aS(B.vZ,!1,!1,!1,!0,B.X)
+B.TW=new A.aS(B.vZ,!1,!1,!1,!0,B.X)
 B.lY=new A.aS(B.hL,!1,!1,!1,!1,B.X)
 B.lX=new A.aS(B.hM,!1,!1,!1,!1,B.X)
 B.x3=new A.aS(B.eG,!1,!0,!0,!1,B.X)
@@ -129892,24 +129896,24 @@ B.b_H=new A.aS(B.lj,!1,!1,!1,!0,B.X)
 B.b_I=new A.aS(B.hO,!0,!1,!1,!1,B.dw)
 B.b_J=new A.S(0,32)
 B.b_K=new A.S(1e5,1e5)
-B.TW=new A.S(10,10)
+B.TX=new A.S(10,10)
 B.pn=new A.S(1,1)
-B.TX=new A.S(1,-1)
+B.TY=new A.S(1,-1)
 B.b_M=new A.S(22,22)
-B.TY=new A.S(32,4)
+B.TZ=new A.S(32,4)
 B.b_O=new A.S(48,36)
 B.b_P=new A.S(48,48)
 B.b_R=new A.S(1/0,46)
 B.b_S=new A.S(80,47.5)
-B.TZ=new A.S(-1,1)
-B.U_=new A.S(-1,-1)
+B.U_=new A.S(-1,1)
+B.U0=new A.S(-1,-1)
 B.b_T=new A.S(77.37,37.9)
 B.bD=new A.ce(0,0,null,null)
-B.U0=new A.ce(14,null,null,null)
+B.U1=new A.ce(14,null,null,null)
 B.V4=new A.k(!0,B.S,null,null,null,null,12.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bc0=new A.a0("Music (BGM)",null,B.V4,null,null,null,null,null,null,null)
 B.b_V=new A.ce(92,null,B.bc0,null)
-B.U1=new A.ce(1/0,1/0,null,null)
+B.U2=new A.ce(1/0,1/0,null,null)
 B.bga=new A.auj(0,"material")
 B.a2n=new A.rz(2,null,null,B.r,null,null,null,null)
 B.b_W=new A.ce(14,14,B.a2n,null)
@@ -129932,7 +129936,7 @@ B.a8=new A.ce(null,8,null,null)
 B.m1=new A.ce(null,9,null,null)
 B.b0_=new A.aqf(0,"tapAndSlide")
 B.b00=new A.yA(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.U2=new A.Uz(0,0,0,0,0,0,!1,!1,null,0)
+B.U3=new A.Uz(0,0,0,0,0,0,!1,!1,null,0)
 B.b01=new A.GB(2,9,9,0.84)
 B.b02=new A.GB(4,8,8,1.45)
 B.b03=new A.GB(2,8,8,2.35)
@@ -129982,7 +129986,7 @@ B.b0r=new A.eJ(B.ba5,null,null,null,null,null,null,null,null,null,null,null,null
 B.baX=new A.a0("Copied APK download link to clipboard!",null,null,null,null,null,null,null,null,null)
 B.a8Q=new A.aP(3e6)
 B.b0s=new A.eJ(B.baX,null,null,null,null,null,null,null,null,null,null,null,null,B.a8Q,!1,null,null,null,B.O,null)
-B.U3=new A.GF(0,"permissive")
+B.U4=new A.GF(0,"permissive")
 B.b0t=new A.GF(1,"normal")
 B.b0u=new A.GF(2,"forced")
 B.b0v=new A.GG(14,null)
@@ -130007,13 +130011,13 @@ B.b0I=new A.uS(B.b0K,"INIT","Preparing phone step sync...",null)
 B.dA=new A.eZ("")
 B.v=new A.GT(0,"butt")
 B.K=new A.GT(1,"round")
-B.U5=new A.GT(2,"square")
+B.U6=new A.GT(2,"square")
 B.w=new A.V0(0,"miter")
 B.i8=new A.V0(1,"round")
 B.b0L=new A.yL(null,null,null,null,0,null,null,null,0,null,null)
 B.b0M=new A.yM(0,"background")
-B.U6=new A.yM(1,"shadows")
-B.U7=new A.yM(2,"decorations")
+B.U7=new A.yM(1,"shadows")
+B.U8=new A.yM(2,"decorations")
 B.b0N=new A.yM(3,"text")
 B.b0O=new A.GV(null,null,null,null,null,null,null,null,null,null)
 B.b0P=new A.h4("_removeAt@package:flutter/src/widgets/snapshot_widget.dart")
@@ -130028,30 +130032,30 @@ B.b0X=new A.h4("_notificationCallStackDepth=@package:flutter/src/widgets/snapsho
 B.b0Y=new A.h4("_count@package:flutter/src/widgets/snapshot_widget.dart")
 B.i9=new A.qm("basic")
 B.x9=new A.qm("click")
-B.Ua=new A.qm("text")
-B.Ub=new A.V1(0,"click")
-B.Uc=new A.V1(2,"alert")
-B.Ud=new A.ms(B.A,null,B.c7,null,null,B.c7,B.bW,null)
-B.Ue=new A.ms(B.A,null,B.c7,null,null,B.bW,B.c7,null)
-B.Uf=new A.ara(2,"fill")
-B.Ug=new A.arb(1,"label")
+B.Ub=new A.qm("text")
+B.Uc=new A.V1(0,"click")
+B.Ud=new A.V1(2,"alert")
+B.Ue=new A.ms(B.A,null,B.c7,null,null,B.c7,B.bW,null)
+B.Uf=new A.ms(B.A,null,B.c7,null,null,B.bW,B.c7,null)
+B.Ug=new A.ara(2,"fill")
+B.Uh=new A.arb(1,"label")
 B.b0Z=new A.yS(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xy=new A.k(!0,null,null,null,null,null,11,B.y,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xz=new A.k(!0,null,null,null,null,null,11,B.y,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b1_=new A.GY(null)
 B.b10=new A.V4(0,"linear")
 B.b11=new A.V4(1,"elastic")
-B.Uh=new A.arj("tap")
+B.Ui=new A.arj("tap")
 B.bg_=new A.arl(0,"dontCare")
-B.Ui=new A.V8(0)
-B.Uj=new A.V8(-1)
+B.Uj=new A.V8(0)
+B.Uk=new A.V8(-1)
 B.Z=new A.qn(0,"alphabetic")
 B.bc=new A.qn(1,"ideographic")
 B.b15=new A.Ha(null)
 B.xa=new A.yW(3,"none")
-B.Uk=new A.Hb(B.xa)
-B.Ul=new A.yW(0,"words")
-B.Um=new A.yW(1,"sentences")
-B.Un=new A.yW(2,"characters")
+B.Ul=new A.Hb(B.xa)
+B.Um=new A.yW(0,"words")
+B.Un=new A.yW(1,"sentences")
+B.Uo=new A.yW(2,"characters")
 B.b16=new A.V9(2,"characters")
 B.b17=new A.V9(3,"none")
 B.b19=new A.Va(2,"dotted")
@@ -130059,20 +130063,20 @@ B.xb=new A.uV(1)
 B.b1a=new A.uV(2)
 B.b1b=new A.uV(4)
 B.xd=new A.i9(0,0,B.J,!1,0,0)
-B.b1c=new A.dF("",B.xd,B.d_)
+B.b1c=new A.dF("",B.xd,B.d0)
 B.xc=new A.uX(0,"character")
 B.b1d=new A.uX(1,"word")
-B.Up=new A.uX(2,"paragraph")
+B.Uq=new A.uX(2,"paragraph")
 B.b1e=new A.uX(3,"line")
 B.b1f=new A.uX(4,"document")
 B.pq=new A.Vi(0,"proportional")
-B.Uq=new A.Hf(B.pq)
+B.Ur=new A.Hf(B.pq)
 B.b1g=new A.i8(0,"none")
 B.b1h=new A.i8(1,"unspecified")
 B.b1i=new A.i8(10,"route")
 B.b1j=new A.i8(11,"emergencyCall")
-B.Ur=new A.i8(12,"newline")
-B.Us=new A.i8(2,"done")
+B.Us=new A.i8(12,"newline")
+B.Ut=new A.i8(2,"done")
 B.b1k=new A.i8(3,"go")
 B.b1l=new A.i8(4,"search")
 B.b1m=new A.i8(5,"send")
@@ -130082,7 +130086,7 @@ B.b1p=new A.i8(8,"continueAction")
 B.b1q=new A.i8(9,"join")
 B.b1r=new A.mx(0,null,null,null)
 B.b1s=new A.mx(10,null,null,null)
-B.Ut=new A.mx(1,null,null,null)
+B.Uu=new A.mx(1,null,null,null)
 B.b1t=new A.mx(3,null,null,null)
 B.b1u=new A.mx(5,null,null,null)
 B.b1v=new A.mx(6,null,null,null)
@@ -130105,22 +130109,22 @@ B.b1U=new A.k(!0,B.d,null,null,null,null,19,B.y,null,null,null,null,null,null,nu
 B.b24=new A.k(!0,null,null,null,null,null,11,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b26=new A.k(!0,B.d,null,null,null,null,13.5,B.N,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xf=new A.k(!0,B.b5,null,null,null,null,11,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.zi=new A.h(1,1,0.5450980392156862,0.7019607843137254,B.f)
-B.b2a=new A.k(!0,B.zi,null,null,null,null,11,B.y,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.zj=new A.h(1,1,0.5450980392156862,0.7019607843137254,B.f)
+B.b2a=new A.k(!0,B.zj,null,null,null,null,11,B.y,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.m5=new A.k(!0,B.h,null,null,null,null,10.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b2k=new A.k(!0,B.d,null,null,null,null,11.5,B.ch,null,1.1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.F=new A.uV(0)
 B.b2n=new A.k(!1,B.nc,null,"CupertinoSystemText",null,null,17,null,null,-0.41,null,null,null,null,null,null,null,B.F,null,null,null,null,null,null,null,null)
 B.b2x=new A.k(!0,B.b1,null,null,null,null,12,null,null,null,null,null,1.4,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b2C=new A.k(!0,B.d,null,null,null,null,15,B.N,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Ux=new A.k(!0,B.b5,null,null,null,null,11.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.Uy=new A.k(!0,B.b5,null,null,null,null,11.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b2F=new A.k(!0,B.d,null,null,null,null,12,B.y,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Uy=new A.k(!0,null,null,null,null,null,12.5,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.Uz=new A.k(!0,null,null,null,null,null,12.5,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xh=new A.k(!0,B.d,null,null,null,null,12.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xi=new A.k(!0,null,null,null,null,null,null,B.y,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Uz=new A.k(!0,B.d,null,null,null,null,15,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UA=new A.k(!0,B.S,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UB=new A.k(!0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,B.xb,null,null,null,null,null,null,null,null)
+B.UA=new A.k(!0,B.d,null,null,null,null,15,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UB=new A.k(!0,B.S,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UC=new A.k(!0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,B.xb,null,null,null,null,null,null,null,null)
 B.b2P=new A.k(!0,B.S,null,null,null,null,10.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b2Q=new A.k(!0,B.r,null,null,null,null,9,B.ch,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b2U=new A.k(!0,B.h,null,null,null,null,8.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130138,11 +130142,11 @@ B.ab6=new A.Q_(1,"italic")
 B.b3h=new A.k(!0,B.S,null,null,null,null,12.5,null,B.ab6,null,null,null,1.35,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.m9=new A.k(!0,B.d,null,null,null,null,12.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.fl=new A.k(!0,null,null,null,null,null,10.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UD=new A.k(!0,B.h,null,null,null,null,9,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UE=new A.k(!0,B.h,null,null,null,null,9,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xm=new A.k(!0,B.d,null,null,null,null,12,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b3y=new A.k(!1,null,null,null,null,null,15,B.a0,null,-0.15,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b3G=new A.k(!0,B.S,null,null,null,null,11.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UE=new A.k(!0,B.aQ,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UF=new A.k(!0,B.aQ,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b3O=new A.k(!0,B.d,null,null,null,null,10,B.y,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b3U=new A.k(!0,B.d,null,null,null,null,12.5,B.db,null,null,null,null,1.28,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b3W=new A.k(!0,B.h,null,null,null,null,10,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130170,20 +130174,20 @@ B.b58=new A.k(!0,B.d,null,null,null,null,11.5,B.db,null,null,null,null,null,null
 B.xs=new A.k(!0,B.d,null,null,null,null,13.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xt=new A.k(!0,B.d,null,null,null,null,null,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5c=new A.k(!0,B.d,null,null,null,null,10.5,B.y,null,1.1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.d0=new A.k(!0,B.d,null,null,null,null,13,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UG=new A.k(!0,B.h,null,null,null,null,11.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UH=new A.k(!0,B.d,null,null,null,null,15,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.d1=new A.k(!0,B.d,null,null,null,null,13,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UH=new A.k(!0,B.h,null,null,null,null,11.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UI=new A.k(!0,B.d,null,null,null,null,15,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.xu=new A.k(!0,null,null,null,null,null,null,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UI=new A.k(!0,B.M,null,null,null,null,11,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UJ=new A.k(!0,B.M,null,null,null,null,11,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5i=new A.k(!0,B.b5,null,null,null,null,9,B.ch,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a6w=new A.h(0.8156862745098039,1,0,0,B.f)
 B.b18=new A.Va(1,"double")
-B.b5j=new A.k(!0,B.a6w,null,"monospace",null,null,48,B.y,null,null,null,null,null,null,null,null,null,B.xb,B.zF,B.b18,null,"fallback style; consider putting your text in a Material",null,null,null,null)
+B.b5j=new A.k(!0,B.a6w,null,"monospace",null,null,48,B.y,null,null,null,null,null,null,null,null,null,B.xb,B.zG,B.b18,null,"fallback style; consider putting your text in a Material",null,null,null,null)
 B.b5m=new A.k(!0,B.S,null,null,null,null,9.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UJ=new A.k(!0,null,null,null,null,null,13.5,B.y,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UK=new A.k(!0,B.d,null,null,null,null,14,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UK=new A.k(!0,null,null,null,null,null,13.5,B.y,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.UL=new A.k(!0,B.d,null,null,null,null,14,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5o=new A.k(!0,B.d,null,null,null,null,14,B.y,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.UL=new A.k(!0,B.S,null,null,null,null,11,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xv=new A.k(!0,B.S,null,null,null,null,11,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5s=new A.k(!0,B.S,null,null,null,null,11,B.db,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.UM=new A.k(!0,B.d,null,null,null,null,12,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5u=new A.k(!0,B.h,null,null,null,null,10.5,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130191,7 +130195,7 @@ B.b5w=new A.k(!0,B.M,null,null,null,null,10,B.y,null,null,null,null,null,null,nu
 B.b5B=new A.k(!0,B.aC,null,null,null,null,11.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5C=new A.k(!0,null,null,null,null,null,10.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.UN=new A.k(!0,B.b1,null,null,null,null,9.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xv=new A.k(!0,B.h,null,null,null,null,11,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xw=new A.k(!0,B.h,null,null,null,null,11,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5G=new A.k(!0,B.z,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.UO=new A.k(!0,B.h,null,null,null,null,9.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5I=new A.k(!0,B.hg,null,null,null,null,16,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130200,7 +130204,7 @@ B.b5O=new A.k(!0,B.hg,null,null,null,null,11,B.y,null,null,null,null,null,null,n
 B.UP=new A.k(!0,B.h,null,null,null,null,13,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.UQ=new A.k(!0,B.b5,null,null,null,null,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5U=new A.k(!0,B.d,null,null,null,null,11,B.db,null,null,null,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xw=new A.k(!0,B.d,null,null,null,null,14,B.N,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xx=new A.k(!0,B.d,null,null,null,null,14,B.N,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b5Y=new A.k(!0,B.S,null,null,null,null,12.5,null,null,null,null,null,1.4,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.US=new A.k(!0,B.S,null,null,null,null,11.5,null,null,null,null,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b63=new A.k(!0,null,null,null,null,null,13,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130219,7 +130223,7 @@ B.b6u=new A.k(!0,B.b5,null,null,null,null,12,B.db,null,null,null,null,null,null,
 B.UV=new A.k(!0,B.M,null,null,null,null,11,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b6y=new A.k(!0,B.d,null,null,null,null,14.5,B.y,null,0.3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b6z=new A.k(!0,B.b1,null,null,null,null,11.5,B.db,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xx=new A.k(!0,B.S,null,null,null,null,10.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xy=new A.k(!0,B.S,null,null,null,null,10.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b6I=new A.k(!0,B.M,null,null,null,null,9.5,B.y,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.fV=new A.k(!0,null,null,null,null,null,11,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b6N=new A.k(!0,B.d,null,null,null,null,16,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130236,7 +130240,7 @@ B.b7a=new A.k(!0,B.d,null,null,null,null,11,B.N,null,null,null,null,null,null,nu
 B.b7f=new A.k(!0,B.r,null,null,null,null,9,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b7i=new A.k(!0,B.d,null,null,null,null,9,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.V2=new A.k(!0,B.d,null,null,null,null,8.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xz=new A.k(!0,null,null,null,null,null,13,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xA=new A.k(!0,null,null,null,null,null,13,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b7F=new A.k(!0,B.M,null,null,null,null,8.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b7M=new A.k(!0,B.d,null,null,null,null,13.5,B.y,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b7N=new A.k(!0,B.S,null,null,null,null,10,B.db,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130251,7 +130255,7 @@ B.V6=new A.k(!0,B.S,null,null,null,null,9.5,B.N,null,null,null,null,null,null,nu
 B.V7=new A.k(!0,B.r,null,null,null,null,10.5,B.y,null,0.9,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8b=new A.k(!0,B.d,null,null,null,null,8.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8g=new A.k(!0,B.S,null,null,null,null,13.5,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.xA=new A.k(!0,B.b5,null,null,null,null,9.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.xB=new A.k(!0,B.b5,null,null,null,null,9.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8o=new A.k(!0,B.S,null,null,null,null,11.5,null,null,null,null,null,1.32,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.V8=new A.k(!0,B.r,null,null,null,null,12,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8p=new A.k(!0,B.S,null,null,null,null,11.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130288,22 +130292,22 @@ B.b4G=new A.k(!0,B.aJ,null,"CupertinoSystemText",null,null,null,null,null,null,n
 B.b5_=new A.k(!0,B.A,null,"CupertinoSystemText",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackCupertino labelMedium",null,null,null,null)
 B.b1I=new A.k(!0,B.A,null,"CupertinoSystemText",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackCupertino labelSmall",null,null,null,null)
 B.b8u=new A.fc(B.b1Z,B.b5d,B.b5S,B.b3A,B.b20,B.b6C,B.b2_,B.b7g,B.b4Y,B.b8n,B.b1O,B.b57,B.b4G,B.b5_,B.b1I)
-B.bn=s(["Ubuntu","Adwaita Sans","Cantarell","DejaVu Sans","Liberation Sans","Arial"],t.s)
-B.b7p=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displayLarge",null,null,null,null)
-B.b5l=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displayMedium",null,null,null,null)
-B.b6X=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displaySmall",null,null,null,null)
-B.b6g=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineLarge",null,null,null,null)
-B.b3w=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineMedium",null,null,null,null)
-B.b23=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineSmall",null,null,null,null)
-B.b2i=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleLarge",null,null,null,null)
-B.b5F=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleMedium",null,null,null,null)
-B.b7b=new A.k(!0,B.A,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleSmall",null,null,null,null)
-B.b7s=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodyLarge",null,null,null,null)
-B.b3g=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodyMedium",null,null,null,null)
-B.b6H=new A.k(!0,B.aT,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodySmall",null,null,null,null)
-B.b3M=new A.k(!0,B.aJ,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelLarge",null,null,null,null)
-B.b4p=new A.k(!0,B.A,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelMedium",null,null,null,null)
-B.b7Y=new A.k(!0,B.A,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelSmall",null,null,null,null)
+B.bo=s(["Ubuntu","Adwaita Sans","Cantarell","DejaVu Sans","Liberation Sans","Arial"],t.s)
+B.b7p=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displayLarge",null,null,null,null)
+B.b5l=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displayMedium",null,null,null,null)
+B.b6X=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki displaySmall",null,null,null,null)
+B.b6g=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineLarge",null,null,null,null)
+B.b3w=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineMedium",null,null,null,null)
+B.b23=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki headlineSmall",null,null,null,null)
+B.b2i=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleLarge",null,null,null,null)
+B.b5F=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleMedium",null,null,null,null)
+B.b7b=new A.k(!0,B.A,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki titleSmall",null,null,null,null)
+B.b7s=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodyLarge",null,null,null,null)
+B.b3g=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodyMedium",null,null,null,null)
+B.b6H=new A.k(!0,B.aT,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki bodySmall",null,null,null,null)
+B.b3M=new A.k(!0,B.aJ,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelLarge",null,null,null,null)
+B.b4p=new A.k(!0,B.A,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelMedium",null,null,null,null)
+B.b7Y=new A.k(!0,B.A,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackHelsinki labelSmall",null,null,null,null)
 B.b8v=new A.fc(B.b7p,B.b5l,B.b6X,B.b6g,B.b3w,B.b23,B.b2i,B.b5F,B.b7b,B.b7s,B.b3g,B.b6H,B.b3M,B.b4p,B.b7Y)
 B.b7v=new A.k(!0,B.S,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteRedwoodCity displayLarge",null,null,null,null)
 B.b2m=new A.k(!0,B.S,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteRedwoodCity displayMedium",null,null,null,null)
@@ -130465,21 +130469,21 @@ B.b2T=new A.k(!0,B.aJ,null,"Segoe UI",null,null,null,null,null,null,null,null,nu
 B.b8i=new A.k(!0,B.A,null,"Segoe UI",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackRedmond labelMedium",null,null,null,null)
 B.b88=new A.k(!0,B.A,null,"Segoe UI",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackRedmond labelSmall",null,null,null,null)
 B.b8F=new A.fc(B.b2O,B.b4o,B.b8h,B.b3N,B.b4x,B.b7_,B.b5a,B.b6o,B.b7K,B.b3R,B.b3j,B.b1L,B.b2T,B.b8i,B.b88)
-B.b2L=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displayLarge",null,null,null,null)
-B.b6K=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displayMedium",null,null,null,null)
-B.b3Q=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displaySmall",null,null,null,null)
-B.b82=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineLarge",null,null,null,null)
-B.b4C=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineMedium",null,null,null,null)
-B.b2f=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineSmall",null,null,null,null)
-B.b1K=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleLarge",null,null,null,null)
-B.b7E=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleMedium",null,null,null,null)
-B.b3x=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleSmall",null,null,null,null)
-B.b7X=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodyLarge",null,null,null,null)
-B.b5H=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodyMedium",null,null,null,null)
-B.b8f=new A.k(!0,B.S,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodySmall",null,null,null,null)
-B.b5E=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelLarge",null,null,null,null)
-B.b7y=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelMedium",null,null,null,null)
-B.b2t=new A.k(!0,B.d,null,"Roboto",B.bn,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelSmall",null,null,null,null)
+B.b2L=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displayLarge",null,null,null,null)
+B.b6K=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displayMedium",null,null,null,null)
+B.b3Q=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki displaySmall",null,null,null,null)
+B.b82=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineLarge",null,null,null,null)
+B.b4C=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineMedium",null,null,null,null)
+B.b2f=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki headlineSmall",null,null,null,null)
+B.b1K=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleLarge",null,null,null,null)
+B.b7E=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleMedium",null,null,null,null)
+B.b3x=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki titleSmall",null,null,null,null)
+B.b7X=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodyLarge",null,null,null,null)
+B.b5H=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodyMedium",null,null,null,null)
+B.b8f=new A.k(!0,B.S,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki bodySmall",null,null,null,null)
+B.b5E=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelLarge",null,null,null,null)
+B.b7y=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelMedium",null,null,null,null)
+B.b2t=new A.k(!0,B.d,null,"Roboto",B.bo,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"whiteHelsinki labelSmall",null,null,null,null)
 B.b8G=new A.fc(B.b2L,B.b6K,B.b3Q,B.b82,B.b4C,B.b2f,B.b1K,B.b7E,B.b3x,B.b7X,B.b5H,B.b8f,B.b5E,B.b7y,B.b2t)
 B.b6B=new A.k(!0,B.aT,null,"Roboto",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackMountainView displayLarge",null,null,null,null)
 B.b1Q=new A.k(!0,B.aT,null,"Roboto",null,null,null,null,null,null,null,null,null,null,null,null,null,B.F,null,null,null,"blackMountainView displayMedium",null,null,null,null)
@@ -130519,7 +130523,7 @@ B.b4l=new A.k(!0,B.z,null,null,null,null,8.5,B.N,null,null,null,null,null,null,n
 B.V9=new A.a0("FAINTED",null,B.b4l,null,null,null,null,null,null,null)
 B.b2r=new A.k(!0,B.S,null,null,null,null,16,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8K=new A.a0("Your Bag is empty!",null,B.b2r,null,null,null,null,null,null,null)
-B.b8L=new A.a0("NEXT: CHOOSE PARTNER \u2192",null,B.xz,null,null,null,null,null,null,null)
+B.b8L=new A.a0("NEXT: CHOOSE PARTNER \u2192",null,B.xA,null,null,null,null,null,null,null)
 B.b7d=new A.k(!0,B.T,null,null,null,null,8.5,B.y,null,0.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b8N=new A.a0("NURSE JOY",null,B.b7d,null,null,null,null,null,null,null)
 B.b8O=new A.a0("Use on Pok\xe9mon",null,B.fV,null,null,null,null,null,null,null)
@@ -130544,7 +130548,7 @@ B.b8Z=new A.a0("\u20bd",null,B.b3I,null,null,null,null,null,null,null)
 B.b4v=new A.k(!0,null,null,null,null,null,15,B.y,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b90=new A.a0("POK\xc9DEX",null,B.b4v,null,null,null,null,null,null,null)
 B.b91=new A.a0("Delete Progress",null,B.eO,null,null,null,null,null,null,null)
-B.b92=new A.a0("Rest checkpoint: heal up with Bag items or reorganize your party before continuing.",null,B.xx,null,null,null,null,null,null,null)
+B.b92=new A.a0("Rest checkpoint: heal up with Bag items or reorganize your party before continuing.",null,B.xy,null,null,null,null,null,null,null)
 B.b93=new A.a0("No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pok\xe9mon League to earn rare TM drops!",null,B.xf,B.aU,null,null,null,null,null,null)
 B.b94=new A.a0("Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",null,B.mb,null,null,null,null,null,null,null)
 B.b95=new A.a0("TRAINER BAG",null,B.m6,null,null,null,null,null,null,null)
@@ -130572,10 +130576,10 @@ B.b3p=new A.k(!0,B.d,null,null,null,null,14,B.y,null,0.9,null,null,null,null,nul
 B.b9p=new A.a0("INDIGO PLATEAU",null,B.b3p,null,null,null,null,null,null,null)
 B.b8d=new A.k(!0,null,null,null,null,null,10.5,B.y,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b9r=new A.a0("BOXES",null,B.b8d,null,null,null,null,null,null,null)
-B.b9s=new A.a0("Full Party of 6 \u2022 Lv. 99",null,B.xv,null,null,null,null,null,null,null)
-B.b9v=new A.a0("Choose Your First Partner Pok\xe9mon!",null,B.Uu,B.aU,null,null,null,null,null,null)
+B.b9s=new A.a0("Full Party of 6 \u2022 Lv. 99",null,B.xw,null,null,null,null,null,null,null)
+B.b9v=new A.a0("Choose Your First Partner Pok\xe9mon!",null,B.Uv,B.aU,null,null,null,null,null,null)
 B.b9w=new A.a0("SHOW ALL RIVALS",null,B.eO,null,null,null,null,null,null,null)
-B.b9x=new A.a0("Adventure Map: unlocks this Biome in Go on an Adventure",null,B.xA,null,null,null,null,null,null,null)
+B.b9x=new A.a0("Adventure Map: unlocks this Biome in Go on an Adventure",null,B.xB,null,null,null,null,null,null,null)
 B.b74=new A.k(!0,B.aC,null,null,null,null,15,B.y,null,0.8,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b9z=new A.a0("LINK TRADE COMPLETE!",null,B.b74,null,null,null,null,null,null,null)
 B.xn=new A.k(!0,B.b1,null,null,null,null,11,B.N,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130598,8 +130602,8 @@ B.b34=new A.k(!0,null,null,null,null,null,10,B.y,null,0.4,null,null,null,null,nu
 B.b9S=new A.a0("ADD FRIEND",null,B.b34,null,null,null,null,null,null,null)
 B.b4m=new A.k(!0,null,null,null,null,null,12,B.y,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.b9T=new A.a0("TRY BUMP AGAIN",null,B.b4m,null,null,null,null,null,null,null)
-B.b9U=new A.a0("BUY",null,B.xy,null,null,null,null,null,null,null)
-B.b3L=new A.k(!0,B.zi,null,null,null,null,8.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.b9U=new A.a0("BUY",null,B.xz,null,null,null,null,null,null,null)
+B.b3L=new A.k(!0,B.zj,null,null,null,null,8.5,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.Vb=new A.a0("EGG",null,B.b3L,null,null,null,null,null,null,null)
 B.b9W=new A.a0("CONTINUE",null,B.eO,null,null,null,null,null,null,null)
 B.b9X=new A.a0("Move",null,B.fl,null,null,null,null,null,null,null)
@@ -130619,11 +130623,11 @@ B.bab=new A.a0("RIVALS",null,B.b3m,null,null,null,null,null,null,null)
 B.jN=new A.k(!0,B.d,null,null,null,null,15,B.y,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bac=new A.a0("GO ON AN ADVENTURE",null,B.jN,null,null,null,null,null,null,null)
 B.bad=new A.a0("Remove Friend",null,B.eO,null,null,null,null,null,null,null)
-B.bag=new A.a0("No Berries or Held Items in your Bag right now.\nDefeat or catch wild Pok\xe9mon for Berries, or re-challenge Gym Leaders for rare Held Items!",null,B.Ux,B.aU,null,null,null,null,null,null)
+B.bag=new A.a0("No Berries or Held Items in your Bag right now.\nDefeat or catch wild Pok\xe9mon for Berries, or re-challenge Gym Leaders for rare Held Items!",null,B.Uy,B.aU,null,null,null,null,null,null)
 B.bah=new A.a0("Put in 1st Spot",null,B.fV,null,null,null,null,null,null,null)
 B.bai=new A.a0("Scan for official Pocket Bump event items and seasonal distributions.",null,B.pw,null,null,null,null,null,null,null)
-B.UC=new A.k(!0,null,null,null,null,null,10,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.baj=new A.a0("INFO / MOVES",null,B.UC,null,null,null,null,null,null,null)
+B.UD=new A.k(!0,null,null,null,null,null,10,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.baj=new A.a0("INFO / MOVES",null,B.UD,null,null,null,null,null,null,null)
 B.b6O=new A.k(!0,B.d,null,null,null,null,18,B.y,null,0.4,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bam=new A.a0("Choose Your Trainer Identity",null,B.b6O,B.aU,null,null,null,null,null,null)
 B.b5z=new A.k(!0,B.b1,null,null,null,null,11,null,null,null,null,null,1.4,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -130661,9 +130665,9 @@ B.baT=new A.a0("PARTY CONDITION (NO REST BETWEEN BATTLES)",null,B.b4X,null,null,
 B.baZ=new A.a0("POK\xc9MON LEAGUE",null,B.jN,null,null,null,null,null,null,null)
 B.b3k=new A.k(!0,B.d,null,null,null,null,10.5,B.y,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bb_=new A.a0("PROFESSOR OAK'S LAB",null,B.b3k,null,null,null,null,null,null,null)
-B.bb0=new A.a0("Reorder or swap below",null,B.UE,null,null,null,null,null,null,null)
+B.bb0=new A.a0("Reorder or swap below",null,B.UF,null,null,null,null,null,null,null)
 B.bb1=new A.a0("AWESOME!",null,B.eO,null,null,null,null,null,null,null)
-B.bb2=new A.a0("NEXT: TRAINER IDENTITY \u2192",null,B.xz,null,null,null,null,null,null,null)
+B.bb2=new A.a0("NEXT: TRAINER IDENTITY \u2192",null,B.xA,null,null,null,null,null,null,null)
 B.bb3=new A.a0("Evolve Pok\xe9mon",null,B.fV,null,null,null,null,null,null,null)
 B.bb4=new A.a0("RETURN TO EXPEDITIONS",null,B.xi,null,null,null,null,null,null,null)
 B.bb5=new A.a0("LEVEL-UP LEARNSET",null,B.xn,null,null,null,null,null,null,null)
@@ -130715,7 +130719,7 @@ B.Vd=new A.a0("Release",null,null,null,null,null,null,null,null,null)
 B.b54=new A.k(!0,B.S,null,null,null,null,11,B.ch,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbL=new A.a0("CHOOSE MOVE",null,B.b54,null,null,null,null,null,null,null)
 B.bbM=new A.a0("POK\xc9MON SUMMARY",null,null,null,null,null,null,null,null,null)
-B.bbN=new A.a0("HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pok\xe9mon before the next match!",null,B.xx,null,null,null,null,null,null,null)
+B.bbN=new A.a0("HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pok\xe9mon before the next match!",null,B.xy,null,null,null,null,null,null,null)
 B.bbP=new A.a0("POK\xc9 MART",null,B.jN,null,null,null,null,null,null,null)
 B.bbQ=new A.a0("GIVE",null,B.fV,null,null,null,null,null,null,null)
 B.bbR=new A.a0("MANAGE POK\xc9MON",null,B.xo,null,null,null,null,null,null,null)
@@ -130729,11 +130733,11 @@ B.bbX=new A.a0("LINK RADAR \u2022 FIST-BUMP",null,B.b2G,null,null,null,null,null
 B.bbY=new A.a0("UNLOCK",null,B.V_,null,null,null,null,null,null,null)
 B.b2u=new A.k(!0,B.bX,null,null,null,null,10,B.y,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bbZ=new A.a0("Lv. 10",null,B.b2u,null,null,null,null,null,null,null)
-B.b3C=new A.k(!0,B.cW,null,null,null,null,null,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.b3C=new A.k(!0,B.cX,null,null,null,null,null,B.N,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bc1=new A.a0("STAY",null,B.b3C,null,null,null,null,null,null,null)
 B.b4i=new A.k(!0,B.d,null,null,null,null,10.5,B.y,null,1.3,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bc2=new A.a0("WELCOME TO POCKET BUMP",null,B.b4i,null,null,null,null,null,null,null)
-B.bc3=new A.a0("LEAD",null,B.xv,null,null,null,null,null,null,null)
+B.bc3=new A.a0("LEAD",null,B.xw,null,null,null,null,null,null,null)
 B.bc4=new A.a0("MAKE LEAD",null,B.fl,null,null,null,null,null,null,null)
 B.b3b=new A.k(!0,B.h,null,null,null,null,13.5,B.y,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bc5=new A.a0("CAPTURE ATTEMPT",null,B.b3b,B.aU,null,null,null,null,null,null)
@@ -130744,7 +130748,7 @@ B.b79=new A.k(!0,B.aQ,null,null,null,null,null,null,null,null,null,null,null,nul
 B.bc8=new A.a0("Skip",null,B.b79,null,null,null,null,null,null,null)
 B.bc9=new A.a0("POK\xc9MON LAB",null,B.jN,null,null,null,null,null,null,null)
 B.bca=new A.a0("PREHISTORIC REVIVAL SPECIMENS (LV. 10)",null,B.m8,null,null,null,null,null,null,null)
-B.Ve=new A.a0("INFO",null,B.UC,null,null,null,null,null,null,null)
+B.Ve=new A.a0("INFO",null,B.UD,null,null,null,null,null,null,null)
 B.bg0=new A.as4(0,"system")
 B.aR2=new A.e(0.056,0.024)
 B.aRw=new A.e(0.108,0.3085)
@@ -130756,7 +130760,7 @@ B.Vf=new A.Hn(0)
 B.bcc=new A.Hn(0.5)
 B.bcd=new A.Ho(null)
 B.bce=new A.Hr(2,"mirror")
-B.xB=new A.Hr(3,"decal")
+B.xC=new A.Hr(3,"decal")
 B.bcf=new A.Hs(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bcg=new A.Hv(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bch=new A.Hw(0.01,1/0)
@@ -130768,7 +130772,7 @@ B.Vh=new A.Vt(!1,!1,!1,!1)
 B.bcj=new A.Vt(!0,!0,!0,!0)
 B.bck=new A.Hz(null,null,null,null,null,null,null,null,null,null)
 B.bcl=new A.asb(1,"longPress")
-B.xC=new A.HB(0,"identity")
+B.xD=new A.HB(0,"identity")
 B.Vi=new A.HB(1,"transform2d")
 B.Vj=new A.HB(2,"complex")
 B.fn=new A.qt(0,"up")
@@ -130797,7 +130801,7 @@ B.bcF=A.bm("Cn")
 B.bcG=A.bm("rO")
 B.bcH=A.bm("rP")
 B.Vn=A.bm("aTW")
-B.xD=A.bm("iv")
+B.xE=A.bm("iv")
 B.bcI=A.bm("b9q")
 B.bcJ=A.bm("kW")
 B.bcK=A.bm("lV")
@@ -130813,7 +130817,7 @@ B.bcS=A.bm("ae")
 B.bcT=A.bm("c_<ap<ak>>")
 B.bcU=A.bm("as")
 B.bcV=A.bm("xE")
-B.xE=A.bm("l4")
+B.xF=A.bm("l4")
 B.bcW=A.bm("b_d")
 B.dh=A.bm("tE")
 B.bcX=A.bm("tT")
@@ -130827,9 +130831,9 @@ B.bd2=A.bm("rX")
 B.bd3=A.bm("q1")
 B.bd4=A.bm("lc")
 B.bd5=A.bm("aV8")
-B.xF=A.bm("h0")
+B.xG=A.bm("h0")
 B.bd6=A.bm("o7")
-B.xG=A.bm("beb")
+B.xH=A.bm("beb")
 B.bd7=A.bm("qi")
 B.Vo=A.bm("uP")
 B.bd8=A.bm("E")
@@ -130855,7 +130859,7 @@ B.bdo=A.bm("mL")
 B.bdp=A.bm("rQ")
 B.bdr=A.bm("nh")
 B.bdq=A.bm("nj")
-B.xH=A.bm("jm")
+B.xI=A.bm("jm")
 B.bds=A.bm("nP")
 B.bdt=A.bm("o6")
 B.bdu=A.bm("qJ")
@@ -130865,12 +130869,12 @@ B.bdx=A.bm("ni")
 B.bdy=A.bm("mt")
 B.pE=A.bm("jI")
 B.a0G=new A.aT(B.A,1,B.U,-1)
-B.bdz=new A.lm(B.yt,B.a0G)
+B.bdz=new A.lm(B.yu,B.a0G)
 B.bdA=new A.VC(0,"undo")
 B.bdB=new A.VC(1,"redo")
 B.bdC=new A.zc(!1,!1)
 B.bdD=new A.VE(0,"scope")
-B.xI=new A.VE(1,"previouslyFocusedChild")
+B.xJ=new A.VE(1,"previouslyFocusedChild")
 B.fW=new A.VN(!1)
 B.bdE=new A.VN(!0)
 B.bU=new A.ln(0,"monochrome")
@@ -130883,18 +130887,18 @@ B.ih=new A.ln(6,"fidelity")
 B.bdJ=new A.ln(7,"rainbow")
 B.bdK=new A.ln(8,"fruitSalad")
 B.Vr=new A.qw(B.C,0,B.ap,B.C)
-B.xK=new A.qw(B.C,1,B.ap,B.C)
+B.xL=new A.qw(B.C,1,B.ap,B.C)
 B.fX=new A.jH(B.C)
 B.Vs=new A.HK(0,"undefined")
 B.Vt=new A.HK(1,"forward")
 B.bdL=new A.HK(2,"backward")
 B.bdM=new A.VR(0,"unfocused")
-B.xL=new A.VR(1,"focused")
+B.xM=new A.VR(1,"focused")
 B.me=new A.oq(0,0)
 B.bdP=new A.oq(-2,-2)
-B.xM=new A.atF(0,"never")
+B.xN=new A.atF(0,"never")
 B.jT=new A.bO(0,t.XR)
-B.xN=new A.bO(18,t.XR)
+B.xO=new A.bO(18,t.XR)
 B.pF=new A.bO(24,t.XR)
 B.di=new A.bO(B.a6,t.De)
 B.bdQ=new A.bO(B.a6,t.rc)
@@ -130904,16 +130908,16 @@ B.pG=new A.bO(B.hv,t.mD)
 B.b_N=new A.S(40,40)
 B.pH=new A.bO(B.b_N,t.W7)
 B.b_Q=new A.S(64,40)
-B.xO=new A.bO(B.b_Q,t.W7)
+B.xP=new A.bO(B.b_Q,t.W7)
 B.b0C=new A.i6(B.I)
 B.ij=new A.bO(B.b0C,t.dy)
 B.jU=new A.d2(3,"dragged")
-B.xP=new A.d2(5,"scrolledUnder")
+B.xQ=new A.d2(5,"scrolledUnder")
 B.ax=new A.d2(6,"disabled")
 B.fY=new A.d2(7,"error")
-B.d1=new A.qA(0,"start")
+B.d2=new A.qA(0,"start")
 B.bdR=new A.qA(1,"end")
-B.xQ=new A.qA(2,"center")
+B.xR=new A.qA(2,"center")
 B.bdS=new A.qA(3,"spaceBetween")
 B.bdT=new A.qA(4,"spaceAround")
 B.bdU=new A.qA(5,"spaceEvenly")
@@ -130931,30 +130935,30 @@ B.bdZ=new A.mE(3,"bounce")
 B.Vy=new A.mE(4,"wobble")
 B.be_=new A.mE(5,"locked")
 B.be0=new A.mE(6,"breakout")
-B.xR=new A.mE(7,"blocked")
+B.xS=new A.mE(7,"blocked")
 B.Vz=new A.zu(0,"scanning")
 B.h_=new A.zu(1,"linking")
 B.ej=new A.zu(2,"matched")
-B.xS=new A.zu(3,"timedOut")
+B.xT=new A.zu(3,"timedOut")
 B.be1=new A.Ic(0,"checkbox")
 B.be2=new A.Ic(1,"radio")
 B.be3=new A.Ic(2,"toggle")
 B.be4=new A.Id(B.kd)
-B.be5=new A.Id(B.yX)
-B.be6=new A.Id(B.yY)
+B.be5=new A.Id(B.yY)
+B.be6=new A.Id(B.yZ)
 B.bgb=new A.aAD(0,"plain")
 B.a7t=new A.h(0.01568627450980392,0,0,0,B.f)
 B.aCS=s([B.a7t,B.a6],t.O)
 B.be7=new A.lt(B.aCS)
 B.be8=new A.lt(null)
-B.xT=new A.vp(0,"backButton")
-B.xU=new A.vp(1,"nextButton")
+B.xU=new A.vp(0,"backButton")
+B.xV=new A.vp(1,"nextButton")
 B.jW=new A.Yf(0,"horizontal")
 B.jX=new A.Yf(1,"vertical")
 B.fr=new A.IE(0,"ready")
 B.mg=new A.IF(0,"ready")
 B.VE=new A.IE(1,"possible")
-B.xW=new A.IF(1,"possible")
+B.xX=new A.IF(1,"possible")
 B.mh=new A.IE(2,"accepted")
 B.jY=new A.IF(2,"accepted")
 B.by=new A.vt(0,"initial")
@@ -130967,10 +130971,10 @@ B.bem=new A.vu(1,"wildInterlude")
 B.ben=new A.vu(2,"rocketBalloon")
 B.beo=new A.vu(3,"legendaryReveal")
 B.ik=new A.vu(4,"summary")
-B.xX=new A.IR(0,"none")
+B.xY=new A.IR(0,"none")
 B.bep=new A.IR(1,"forward")
 B.beq=new A.IR(2,"reverse")
-B.xY=new A.vw(0,"ready")
+B.xZ=new A.vw(0,"ready")
 B.pK=new A.vw(1,"possible")
 B.VH=new A.vw(2,"accepted")
 B.pL=new A.vw(3,"started")
@@ -130988,9 +130992,9 @@ B.co=new A.vB(2,"minHeight")
 B.cQ=new A.vB(3,"maxHeight")
 B.c5=new A.j0(1)
 B.mj=new A.dX(0,"size")
-B.xZ=new A.dX(1,"width")
+B.y_=new A.dX(1,"width")
 B.beF=new A.dX(11,"viewPadding")
-B.y_=new A.dX(13,"accessibleNavigation")
+B.y0=new A.dX(13,"accessibleNavigation")
 B.beG=new A.dX(14,"invertColors")
 B.VK=new A.dX(15,"highContrast")
 B.beH=new A.dX(17,"disableAnimations")
@@ -131006,7 +131010,7 @@ B.pR=new A.dX(27,"wordSpacingOverride")
 B.beK=new A.dX(29,"displayCornerRadii")
 B.beL=new A.dX(3,"orientation")
 B.eQ=new A.dX(4,"devicePixelRatio")
-B.d3=new A.dX(6,"textScaler")
+B.d4=new A.dX(6,"textScaler")
 B.pS=new A.dX(7,"platformBrightness")
 B.e3=new A.dX(8,"padding")
 B.pT=new A.dX(9,"viewInsets")
@@ -131039,7 +131043,7 @@ B.bf7=new A.a_s(null)
 B.bf9=new A.a_w(null)
 B.bf8=new A.a_y(null)
 B.bfc=new A.Ac(250)
-B.y0=new A.Ae(0,"all")
+B.y1=new A.Ae(0,"all")
 B.VN=new A.Ae(1,"caught")
 B.VO=new A.Ae(2,"encountered")
 B.VP=new A.Ae(3,"unseen")
@@ -131057,25 +131061,25 @@ B.pV=new A.h8(13,"dispose")
 B.bfj=new A.h8(14,"disposing")
 B.pW=new A.h8(15,"disposed")
 B.bfk=new A.h8(2,"adding")
-B.y1=new A.h8(3,"push")
-B.y2=new A.h8(4,"pushReplace")
+B.y2=new A.h8(3,"push")
+B.y3=new A.h8(4,"pushReplace")
 B.VT=new A.h8(5,"pushing")
 B.bfl=new A.h8(6,"replace")
 B.ml=new A.h8(7,"idle")
-B.y3=new A.h8(8,"pop")
+B.y4=new A.h8(8,"pop")
 B.bfm=new A.h8(9,"complete")
 B.pX=new A.j2(0,"body")
 B.pY=new A.j2(1,"appBar")
-B.y5=new A.j2(10,"endDrawer")
+B.y6=new A.j2(10,"endDrawer")
 B.pZ=new A.j2(11,"statusBar")
 B.q_=new A.j2(2,"bodyScrim")
 B.q0=new A.j2(3,"bottomSheet")
 B.k1=new A.j2(4,"snackBar")
 B.q1=new A.j2(5,"materialBanner")
-B.y6=new A.j2(6,"persistentFooter")
-B.y7=new A.j2(7,"bottomNavigationBar")
+B.y7=new A.j2(6,"persistentFooter")
+B.y8=new A.j2(7,"bottomNavigationBar")
 B.q2=new A.j2(8,"floatingActionButton")
-B.y8=new A.j2(9,"drawer")
+B.y9=new A.j2(9,"drawer")
 B.b_L=new A.S(100,0)
 B.bfn=new A.oG(B.b_L,B.bD,B.jx,null,null)
 B.bfo=new A.oG(B.a2,B.bD,B.jx,null,null)
@@ -131083,8 +131087,8 @@ B.bgc=new A.aNa(0,"material")
 B.VV=new A.Az(0,"first")
 B.bft=new A.Az(1,"middle")
 B.VW=new A.Az(2,"last")
-B.y9=new A.Az(3,"only")
-B.bfu=new A.Ln(B.Ap,B.kC)
+B.ya=new A.Az(3,"only")
+B.bfu=new A.Ln(B.Aq,B.kC)
 B.q3=new A.Ls(0,"leading")
 B.q4=new A.Ls(1,"middle")
 B.q5=new A.Ls(2,"trailing")
@@ -131107,7 +131111,7 @@ $.aZs=0
 $.aZt=0
 $.aZr=0
 $.kD=A.b([],t.qj)
-$.MD=B.Aq
+$.MD=B.Ar
 $.AJ=null
 $.aW9=B.oQ
 $.aUA=null
@@ -131312,7 +131316,7 @@ q.adH()
 return q})
 s($,"bro","b79",()=>{var q=t.N,p=A.aX("+breaks,graphemes,words(z9,z9,z9)"),o=A.aUD(1e5,q,p),n=A.aUD(1e4,q,p)
 return new A.a12(A.aUD(20,q,p),n,o)})
-s($,"bpV","b6l",()=>A.aK([B.CH,A.b3s("grapheme"),B.CI,A.b3s("word")],A.aX("DT"),t.m))
+s($,"bpV","b6l",()=>A.aK([B.CI,A.b3s("grapheme"),B.CJ,A.b3s("word")],A.aX("DT"),t.m))
 s($,"bqW","b71",()=>{var q="v8BreakIterator"
 if(A.a_(A.a_(A.oT(),"Intl"),q)==null)A.aE(A.ez("v8BreakIterator is not supported."))
 return A.bhv(A.a5J(A.a5J(A.oT(),"Intl"),q),A.bbv([]),A.b_B(B.aOC))})
@@ -131373,7 +131377,7 @@ return $.alk})
 s($,"bnZ","b54",()=>{var q=new A.aFy(A.bct(8))
 q.ae_()
 return q})
-s($,"bms","fk",()=>J.Na(B.OF.gcO(A.bcB(A.ik(A.b([1],t.t)))),0,null).getInt8(0)===1?B.cw:B.a1b)
+s($,"bms","fk",()=>J.Na(B.OG.gcO(A.bcB(A.ik(A.b([1],t.t)))),0,null).getInt8(0)===1?B.cw:B.a1b)
 s($,"br1","a69",()=>new A.a8R(A.G(t.N,A.aX("ot"))))
 s($,"bpn","b5W",()=>A.bgX(new A.aPa()))
 s($,"bpe","b5S",()=>new A.aKV(50,A.G(A.aX("JX"),t.ke)))
@@ -131382,7 +131386,7 @@ r($,"bqY","bE",()=>$.b4a())
 r($,"bqr","aT9",()=>{A.bf2()
 return B.a1e})
 s($,"bpN","aXq",()=>new A.akz())
-r($,"blG","b45",()=>{var q=B.yV.a6C()
+r($,"blG","b45",()=>{var q=B.yW.a6C()
 return new A.a74(A.G(t.N,t.Xu),q)})
 s($,"blJ","aX_",()=>{var q=new A.ae2()
 q.b=$.aSX().Qo()
@@ -131426,10 +131430,10 @@ s($,"bpx","b64",()=>A.fQ(0,0.6,t.PM).fN(A.fl(B.aij)))
 s($,"bpy","b65",()=>A.fQ(1,0,t.i).fN(A.fl(B.ain)))
 s($,"bpA","b67",()=>A.fQ(1,1.05,t.i).fN($.a67()))
 s($,"bpz","b66",()=>A.fQ(1,0.9,t.i).fN($.a67()))
-s($,"bp8","b5O",()=>A.fQ(B.OP,B.C,t.B).fN(A.fl(B.jR)))
-s($,"bp7","b5N",()=>A.fQ(B.C,B.OP,t.B).fN(A.fl(B.jR)))
-s($,"bmz","b4m",()=>A.fQ(B.C,B.OM,t.B).fN(A.fl(B.jR)))
-s($,"bmA","b4n",()=>A.fQ(B.OM,B.C,t.B).fN(A.fl(B.jR)))
+s($,"bp8","b5O",()=>A.fQ(B.OQ,B.C,t.B).fN(A.fl(B.jR)))
+s($,"bp7","b5N",()=>A.fQ(B.C,B.OQ,t.B).fN(A.fl(B.jR)))
+s($,"bmz","b4m",()=>A.fQ(B.C,B.ON,t.B).fN(A.fl(B.jR)))
+s($,"bmA","b4n",()=>A.fQ(B.ON,B.C,t.B).fN(A.fl(B.jR)))
 s($,"bmx","aX8",()=>A.fQ(0,1,t.i).fN(A.fl(B.ail)))
 s($,"bmy","aX9",()=>A.fQ(1,0,t.i).fN(A.fl(B.aim)))
 s($,"bp1","b5I",()=>A.fl(B.aiq).fN(A.fl(B.wB)))
@@ -131487,58 +131491,58 @@ q.a=B.aRB
 q.gauJ().no(q.gano())
 return q})
 r($,"boS","b5B",()=>{var q=A.aX("~(bR<bK>)")
-return A.aK([B.bcI,A.aZ6(!0),B.bcu,A.aZ6(!1),B.bd5,new A.TD(A.EP(q)),B.bcX,new A.RT(A.EP(q)),B.bd0,new A.SI(A.EP(q)),B.Vn,new A.CG(!1,A.EP(q)),B.xF,A.bdZ(),B.bd1,new A.SN(A.EP(q)),B.bdk,new A.VT(A.EP(q))],t.C,t.od)})
+return A.aK([B.bcI,A.aZ6(!0),B.bcu,A.aZ6(!1),B.bd5,new A.TD(A.EP(q)),B.bcX,new A.RT(A.EP(q)),B.bd0,new A.SI(A.EP(q)),B.Vn,new A.CG(!1,A.EP(q)),B.xG,A.bdZ(),B.bd1,new A.SN(A.EP(q)),B.bdk,new A.VT(A.EP(q))],t.C,t.od)})
 s($,"bmc","aSV",()=>{var q,p,o,n=t.vz,m=A.G(t.Vz,n)
 for(q=A.aX("aS"),p=0;p<2;++p){o=B.vN[p]
-m.J(0,A.aK([A.h1(B.cU,!1,!1,!1,o),B.rP,A.h1(B.cU,!1,!0,!1,o),B.rS,A.h1(B.cU,!0,!1,!1,o),B.rQ,A.h1(B.cV,!1,!0,!1,o),B.kE,A.h1(B.cV,!0,!1,!1,o),B.rR],q,n))}m.t(0,B.TF,B.kD)
+m.J(0,A.aK([A.h1(B.cV,!1,!1,!1,o),B.rP,A.h1(B.cV,!1,!0,!1,o),B.rS,A.h1(B.cV,!0,!1,!1,o),B.rQ,A.h1(B.cW,!1,!0,!1,o),B.kE,A.h1(B.cW,!0,!1,!1,o),B.rR],q,n))}m.t(0,B.TG,B.kD)
 m.t(0,B.jI,B.iV)
 m.t(0,B.jJ,B.iW)
 m.t(0,B.lZ,B.iZ)
 m.t(0,B.m_,B.j_)
 m.t(0,B.wY,B.nC)
 m.t(0,B.wZ,B.nD)
-m.t(0,B.TT,B.kT)
-m.t(0,B.TU,B.kU)
+m.t(0,B.TU,B.kT)
+m.t(0,B.TV,B.kU)
 m.t(0,B.wR,B.hw)
 m.t(0,B.wS,B.hx)
 m.t(0,B.wT,B.iX)
 m.t(0,B.wU,B.iY)
-m.t(0,B.x0,B.Be)
-m.t(0,B.x1,B.Bf)
+m.t(0,B.x0,B.Bf)
+m.t(0,B.x1,B.Bg)
 m.t(0,B.x2,B.nE)
 m.t(0,B.x3,B.nF)
-m.t(0,B.TL,B.nG)
-m.t(0,B.TM,B.nH)
-m.t(0,B.TP,B.Bo)
+m.t(0,B.TM,B.nG)
+m.t(0,B.TN,B.nH)
 m.t(0,B.TQ,B.Bp)
-m.t(0,B.b_y,B.Bk)
-m.t(0,B.b_z,B.Bl)
+m.t(0,B.TR,B.Bq)
+m.t(0,B.b_y,B.Bl)
+m.t(0,B.b_z,B.Bm)
 m.t(0,B.lT,B.tK)
 m.t(0,B.lW,B.tL)
 m.t(0,B.x4,B.nI)
 m.t(0,B.x_,B.nJ)
 return m})
-s($,"bmb","a60",()=>A.aK([B.aZY,B.rM,B.aZX,B.rL,B.b_7,B.qj,B.TC,B.rM,B.b__,B.rL,B.aZS,B.qj,B.wX,B.yR,B.b_m,B.yU,B.b_x,B.yN,B.pj,B.a1,B.pm,B.a1],t.Vz,t.vz))
+s($,"bmb","a60",()=>A.aK([B.aZY,B.rM,B.aZX,B.rL,B.b_7,B.qj,B.TD,B.rM,B.b__,B.rL,B.aZS,B.qj,B.wX,B.yS,B.b_m,B.yV,B.b_x,B.yO,B.pj,B.a1,B.pm,B.a1],t.Vz,t.vz))
 s($,"bma","aX4",()=>{var q=A.ny($.aSV(),t.Vz,t.vz)
 q.J(0,$.a60())
-q.t(0,B.lX,B.Bi)
-q.t(0,B.lY,B.Bj)
-q.t(0,B.lU,B.Bg)
-q.t(0,B.lV,B.Bh)
+q.t(0,B.lX,B.Bj)
+q.t(0,B.lY,B.Bk)
+q.t(0,B.lU,B.Bh)
+q.t(0,B.lV,B.Bi)
 q.t(0,B.pk,B.iX)
 q.t(0,B.pl,B.iY)
 q.t(0,B.wV,B.nE)
 q.t(0,B.wW,B.nF)
 return q})
 s($,"bmd","b4e",()=>$.aX4())
-s($,"bmf","aX5",()=>A.aK([B.b_8,B.nD,B.b_9,B.nC,B.aZU,B.kT,B.b_a,B.kU,B.b_C,B.Bp,B.b_D,B.Bo,B.b_G,B.Bk,B.b_E,B.Bl,B.aZV,B.nI,B.b_b,B.nJ,B.b_c,B.kT,B.b_d,B.kU,B.b_w,B.kD,B.aZZ,B.kE,B.b_0,B.iW,B.b_1,B.iV,B.b_s,B.iZ,B.b_2,B.j_,B.b_f,B.nH,B.b_g,B.nG,B.b_q,B.aaX,B.b_h,B.aaY,B.b_t,B.tK,B.b_3,B.tL,B.b_4,B.iZ,B.b_5,B.j_,B.b_e,B.kD,B.b_I,B.kE],t.Vz,t.vz))
+s($,"bmf","aX5",()=>A.aK([B.b_8,B.nD,B.b_9,B.nC,B.aZU,B.kT,B.b_a,B.kU,B.b_C,B.Bq,B.b_D,B.Bp,B.b_G,B.Bl,B.b_E,B.Bm,B.aZV,B.nI,B.b_b,B.nJ,B.b_c,B.kT,B.b_d,B.kU,B.b_w,B.kD,B.aZZ,B.kE,B.b_0,B.iW,B.b_1,B.iV,B.b_s,B.iZ,B.b_2,B.j_,B.b_f,B.nH,B.b_g,B.nG,B.b_q,B.aaX,B.b_h,B.aaY,B.b_t,B.tK,B.b_3,B.tL,B.b_4,B.iZ,B.b_5,B.j_,B.b_e,B.kD,B.b_I,B.kE],t.Vz,t.vz))
 s($,"bmg","b4g",()=>{var q=A.ny($.aSV(),t.Vz,t.vz)
 q.J(0,$.a60())
 q.J(0,$.aX5())
 q.t(0,B.lX,B.hw)
 q.t(0,B.lY,B.hx)
-q.t(0,B.lU,B.Be)
-q.t(0,B.lV,B.Bf)
+q.t(0,B.lU,B.Bf)
+q.t(0,B.lV,B.Bg)
 q.t(0,B.pk,B.iX)
 q.t(0,B.pl,B.iY)
 q.t(0,B.wV,B.nE)
@@ -131546,45 +131550,45 @@ q.t(0,B.wW,B.nF)
 return q})
 s($,"bmi","aX6",()=>{var q,p,o,n=t.vz,m=A.G(t.Vz,n)
 for(q=A.aX("aS"),p=0;p<2;++p){o=B.vN[p]
-m.J(0,A.aK([A.h1(B.cU,!1,!1,!1,o),B.rP,A.h1(B.cU,!0,!1,!1,o),B.rS,A.h1(B.cU,!1,!1,!0,o),B.rQ,A.h1(B.cV,!1,!1,!1,o),B.kD,A.h1(B.cV,!0,!1,!1,o),B.kE,A.h1(B.cV,!1,!1,!0,o),B.rR],q,n))}m.t(0,B.jI,B.iV)
+m.J(0,A.aK([A.h1(B.cV,!1,!1,!1,o),B.rP,A.h1(B.cV,!0,!1,!1,o),B.rS,A.h1(B.cV,!1,!1,!0,o),B.rQ,A.h1(B.cW,!1,!1,!1,o),B.kD,A.h1(B.cW,!0,!1,!1,o),B.kE,A.h1(B.cW,!1,!1,!0,o),B.rR],q,n))}m.t(0,B.jI,B.iV)
 m.t(0,B.jJ,B.iW)
 m.t(0,B.lZ,B.iZ)
 m.t(0,B.m_,B.j_)
 m.t(0,B.wY,B.nC)
 m.t(0,B.wZ,B.nD)
-m.t(0,B.TT,B.kT)
-m.t(0,B.TU,B.kU)
+m.t(0,B.TU,B.kT)
+m.t(0,B.TV,B.kU)
 m.t(0,B.wR,B.nG)
 m.t(0,B.wS,B.nH)
 m.t(0,B.wT,B.hw)
 m.t(0,B.wU,B.hx)
-m.t(0,B.x0,B.Bq)
-m.t(0,B.x1,B.Br)
-m.t(0,B.x2,B.Bm)
-m.t(0,B.x3,B.Bn)
-m.t(0,B.TH,B.hw)
-m.t(0,B.TI,B.hx)
-m.t(0,B.TJ,B.iX)
-m.t(0,B.TK,B.iY)
-m.t(0,B.TN,B.Bc)
+m.t(0,B.x0,B.Br)
+m.t(0,B.x1,B.Bs)
+m.t(0,B.x2,B.Bn)
+m.t(0,B.x3,B.Bo)
+m.t(0,B.TI,B.hw)
+m.t(0,B.TJ,B.hx)
+m.t(0,B.TK,B.iX)
+m.t(0,B.TL,B.iY)
 m.t(0,B.TO,B.Bd)
+m.t(0,B.TP,B.Be)
 m.t(0,B.b_o,B.tI)
 m.t(0,B.b_p,B.tJ)
-m.t(0,B.b_k,B.yT)
-m.t(0,B.lX,B.SV)
-m.t(0,B.lY,B.SW)
+m.t(0,B.b_k,B.yU)
+m.t(0,B.lX,B.SW)
+m.t(0,B.lY,B.SX)
 m.t(0,B.lU,B.tI)
 m.t(0,B.lV,B.tJ)
 m.t(0,B.lT,B.wF)
 m.t(0,B.lW,B.pb)
 m.t(0,B.x4,B.nI)
 m.t(0,B.x_,B.nJ)
-m.t(0,B.TB,B.rM)
-m.t(0,B.TE,B.rL)
-m.t(0,B.TD,B.qj)
-m.t(0,B.TV,B.yR)
-m.t(0,B.b_H,B.yU)
-m.t(0,B.b_n,B.yN)
+m.t(0,B.TC,B.rM)
+m.t(0,B.TF,B.rL)
+m.t(0,B.TE,B.qj)
+m.t(0,B.TW,B.yS)
+m.t(0,B.b_H,B.yV)
+m.t(0,B.b_n,B.yO)
 m.t(0,B.b_B,B.hx)
 m.t(0,B.wX,B.hw)
 m.t(0,B.aZT,B.iW)
@@ -131599,10 +131603,10 @@ s($,"bmk","b4i",()=>{var q=A.ny($.aSV(),t.Vz,t.vz)
 q.J(0,$.a60())
 q.t(0,B.lT,B.tK)
 q.t(0,B.lW,B.tL)
-q.t(0,B.lX,B.Bi)
-q.t(0,B.lY,B.Bj)
-q.t(0,B.lU,B.Bg)
-q.t(0,B.lV,B.Bh)
+q.t(0,B.lX,B.Bj)
+q.t(0,B.lY,B.Bk)
+q.t(0,B.lU,B.Bh)
+q.t(0,B.lV,B.Bi)
 q.t(0,B.pk,B.iX)
 q.t(0,B.pl,B.iY)
 q.t(0,B.wV,B.nE)
@@ -131610,27 +131614,27 @@ q.t(0,B.wW,B.nF)
 return q})
 s($,"bmj","aX7",()=>{var q,p,o,n=t.vz,m=A.G(t.Vz,n)
 for(q=A.aX("aS"),p=0;p<2;++p){o=B.vN[p]
-m.J(0,A.aK([A.h1(B.cU,!1,!1,!1,o),B.a1,A.h1(B.cV,!1,!1,!1,o),B.a1,A.h1(B.cU,!0,!1,!1,o),B.a1,A.h1(B.cV,!0,!1,!1,o),B.a1,A.h1(B.cU,!1,!0,!1,o),B.a1,A.h1(B.cV,!1,!0,!1,o),B.a1,A.h1(B.cU,!1,!1,!0,o),B.a1,A.h1(B.cV,!1,!1,!0,o),B.a1],q,n))}m.J(0,B.Oh)
+m.J(0,A.aK([A.h1(B.cV,!1,!1,!1,o),B.a1,A.h1(B.cW,!1,!1,!1,o),B.a1,A.h1(B.cV,!0,!1,!1,o),B.a1,A.h1(B.cW,!0,!1,!1,o),B.a1,A.h1(B.cV,!1,!0,!1,o),B.a1,A.h1(B.cW,!1,!0,!1,o),B.a1,A.h1(B.cV,!1,!1,!0,o),B.a1,A.h1(B.cW,!1,!1,!0,o),B.a1],q,n))}m.J(0,B.Oi)
 for(n=$.a60().gcr(0).gan(0);n.C();)m.t(0,n.gV(0),B.a1)
-m.t(0,B.TB,B.a1)
+m.t(0,B.TC,B.a1)
+m.t(0,B.TF,B.a1)
 m.t(0,B.TE,B.a1)
-m.t(0,B.TD,B.a1)
 m.t(0,B.wX,B.a1)
-m.t(0,B.TV,B.a1)
+m.t(0,B.TW,B.a1)
 return m})
-s($,"bmh","b4h",()=>{var q=A.ny(B.Oh,t.Vz,t.vz)
-q.J(0,B.Oj)
-q.t(0,B.TR,B.a1)
+s($,"bmh","b4h",()=>{var q=A.ny(B.Oi,t.Vz,t.vz)
+q.J(0,B.Ok)
 q.t(0,B.TS,B.a1)
-q.t(0,B.TG,B.a1)
+q.t(0,B.TT,B.a1)
+q.t(0,B.TH,B.a1)
 q.t(0,B.x3,B.a1)
 q.t(0,B.x2,B.a1)
 q.t(0,B.wY,B.a1)
 q.t(0,B.wZ,B.a1)
 q.t(0,B.x0,B.a1)
 q.t(0,B.x1,B.a1)
-q.t(0,B.TN,B.a1)
 q.t(0,B.TO,B.a1)
+q.t(0,B.TP,B.a1)
 q.t(0,B.lT,B.a1)
 q.t(0,B.lW,B.a1)
 q.t(0,B.lY,B.a1)
@@ -131762,8 +131766,8 @@ s($,"bmG","b4r",()=>A.yd(null))
 s($,"bmN","aSZ",()=>A.yd(null))
 s($,"bnW","N4",()=>A.yd(null))
 s($,"bnX","eA",()=>{var q=null,p="atk",o="def",n="sleep",m="burn",l="confusion",k="spe",j="poison",i="Unsanitary sludge is hurled at the target.",h="paralysis",g="acc",f="freeze",e="badly_poison",d="Rampages for 2 to 3 turns, then becomes confused due to fatigue.",c="spd",b="A Normal-type physical attack.",a="Status move that lowers target's Accuracy.",a0="A Grass-type special attack.",a1="A Water-type physical attack.",a2="Hits 2-5 times.",a3="A Dark-type physical attack.",a4="Status move that harshly lowers target's Attack.",a5="A Ground-type physical attack.",a6="A Fighting-type physical attack.",a7="A Normal-type special attack.",a8="Status move that harshly lowers target's Sp. Def.",a9="A Flying-type physical attack.",b0="spa",b1="A Fighting-type special attack.",b2="A Steel-type physical attack."
-return A.aK(["tackle",A.o(100,B.x,0,q,q,q,"A physical charge attack.","tackle",1,35,1,"Tackle",40,0,B.i,0,q,0,q,B.G),"scratch",A.o(100,B.x,0,q,q,q,"Hard, pointed, sharp claws rake the target.","scratch",1,35,1,"Scratch",40,0,B.i,0,q,0,q,B.G),"quick_attack",A.o(100,B.x,0,q,q,q,"An almost invisibly fast strike with high priority.","quick_attack",1,30,1,"Quick Attack",40,1,B.i,0,q,0,q,B.G),"hyper_fang",A.o(90,B.x,0,q,q,q,"Bites hard on the target with sharp front fangs.","hyper_fang",1,15,1,"Hyper Fang",80,0,B.i,0,q,0,q,B.G),"slash",A.o(100,B.x,0,q,q,q,"The target is attacked with a slash of claws or blades.","slash",1,20,1,"Slash",70,0,B.i,0,q,0,q,B.G),"growl",A.o(100,B.D,0,q,q,q,"Growls endearingly, lowering the target's Attack.","growl",1,40,1,"Growl",0,0,B.i,-1,p,0,q,B.G),"tail_whip",A.o(100,B.D,0,q,q,q,"Wags its tail to lower the target's Defense.","tail_whip",1,30,1,"Tail Whip",0,0,B.i,-1,o,0,q,B.G),"harden",A.o(100,B.D,0,q,q,q,"Stiffens all muscles to raise Defense.","harden",1,30,1,"Harden",0,0,B.i,1,o,0,q,B.G),"swords_dance",A.o(100,B.D,0,q,q,q,"A frenetic dance that sharply raises Attack.","swords_dance",1,20,1,"Swords Dance",0,0,B.i,2,p,0,q,B.G),"vine_whip",A.o(100,B.x,0,q,q,q,"The target is struck with slender, whiplike vines.","vine_whip",1,25,1,"Vine Whip",45,0,B.i,0,q,0,q,B.ak),"razor_leaf",A.o(95,B.x,0,q,q,q,"Sharp-edged leaves are launched to slice the target.","razor_leaf",1,25,1,"Razor Leaf",55,0,B.i,0,q,0,q,B.ak),"solar_beam",A.o(100,B.P,0,q,"absorbed light!",q,"Absorbs sunlight on turn 1, then blasts a powerful solar beam on turn 2.","solar_beam",1,10,1,"Solar Beam",120,0,B.hW,0,q,0,q,B.ak),"sleep_powder",A.o(75,B.D,0,q,q,q,"Scatters a big cloud of sleep-inducing dust.","sleep_powder",1,15,1,"Sleep Powder",0,0,B.i,0,q,100,n,B.ak),"ember",A.o(100,B.P,0,q,q,q,"Small flames that may inflict a burn.","ember",1,25,1,"Ember",40,0,B.i,0,q,10,m,B.aj),"fire_fang",A.o(95,B.x,0,q,q,q,"Bites with flame-cloaked fangs; may cause a burn.","fire_fang",1,15,1,"Fire Fang",65,0,B.i,0,q,20,m,B.aj),"flamethrower",A.o(100,B.P,0,q,q,q,"Scorches the target with an intense blast of fire.","flamethrower",1,15,1,"Flamethrower",90,0,B.i,0,q,15,m,B.aj),"fire_blast",A.o(85,B.P,0,q,q,q,"An intense blast of all-consuming fire.","fire_blast",1,5,1,"Fire Blast",110,0,B.i,0,q,20,m,B.aj),"water_gun",A.o(100,B.P,0,q,q,q,"Blasts the target with a forceful shot of water.","water_gun",1,25,1,"Water Gun",40,0,B.i,0,q,0,q,B.ar),"water_pulse",A.o(100,B.P,0,q,q,q,"Attacks the target with a pulsing blast of water; may confuse.","water_pulse",1,20,1,"Water Pulse",60,0,B.i,0,q,20,l,B.ar),"surf",A.o(100,B.P,0,q,q,q,"Swamps the battlefield with a giant wave.","surf",1,15,1,"Surf",90,0,B.i,0,q,0,q,B.ar),"hydro_pump",A.o(80,B.P,0,q,q,q,"Blasts the target with high-pressure water.","hydro_pump",1,5,1,"Hydro Pump",110,0,B.i,0,q,0,q,B.ar),"string_shot",A.o(95,B.D,0,q,q,q,"Binds the target with silk, lowering its Speed.","string_shot",1,40,1,"String Shot",0,0,B.i,-1,k,0,q,B.bk),"bug_bite",A.o(100,B.x,0,q,q,q,"The user bites the target forcefully.","bug_bite",1,20,1,"Bug Bite",60,0,B.i,0,q,0,q,B.bk),"twinneedle",A.o(100,B.x,0,q,q,q,"Jabs the target twice with twin stingers; each hit may poison.","twinneedle",2,20,2,"Twineedle",25,0,B.i,0,q,20,j,B.bk),"silver_wind",A.o(100,B.P,0,q,q,q,"Powdery scales are blown at the target on a gust.","silver_wind",1,5,1,"Silver Wind",60,0,B.i,0,q,0,q,B.bk),"poison_sting",A.o(100,B.x,0,q,q,q,"Stabs with a toxic barb; may poison the target.","poison_sting",1,35,1,"Poison Sting",25,0,B.i,0,q,30,j,B.aK),"poison_powder",A.o(75,B.D,0,q,q,q,"Scatters toxic dust that poisons the target.","poison_powder",1,35,1,"Poison Powder",0,0,B.i,0,q,100,j,B.aK),"sludge_bomb",A.o(100,B.P,0,q,q,q,i,"sludge_bomb",1,10,1,"Sludge Bomb",90,0,B.i,0,q,30,j,B.aK),"poison_jab",A.o(100,B.x,0,q,q,q,"Stabs the target with a tentacle or arm steeped in poison.","poison_jab",1,20,1,"Poison Jab",80,0,B.i,0,q,30,j,B.aK),"gust",A.o(100,B.P,0,q,q,q,"A gust of wind whipped up by wings.","gust",1,35,1,"Gust",40,0,B.i,0,q,0,q,B.aM),"wing_attack",A.o(100,B.x,0,q,q,q,"Strikes the target with large, imposing wings.","wing_attack",1,35,1,"Wing Attack",60,0,B.i,0,q,0,q,B.aM),"air_slash",A.o(95,B.P,0,q,q,q,"Attacks with a blade of air that slices even the sky.","air_slash",1,15,1,"Air Slash",75,0,B.i,0,q,0,q,B.aM),"agility",A.o(100,B.D,0,q,q,q,"Relaxes and lightens the body to sharply boost Speed.","agility",1,30,1,"Agility",0,0,B.i,2,k,0,q,B.a5),"thunder_shock",A.o(100,B.P,0,q,q,q,"A jolt of electricity; may cause paralysis.","thunder_shock",1,30,1,"Thunder Shock",40,0,B.i,0,q,10,h,B.bg),"electro_ball",A.o(100,B.P,0,q,q,q,"Hurls an electric orb at the target.","electro_ball",1,10,1,"Electro Ball",65,0,B.i,0,q,0,q,B.bg),"thunderbolt",A.o(100,B.P,0,q,q,q,"A strong electric blast crashes down on the target.","thunderbolt",1,15,1,"Thunderbolt",90,0,B.i,0,q,15,h,B.bg),"thunder_wave",A.o(90,B.D,0,q,q,q,"A weak electric charge that paralyzes the target.","thunder_wave",1,20,1,"Thunder Wave",0,0,B.i,0,q,100,h,B.bg),"confusion",A.o(100,B.P,0,q,q,q,"Hit by a weak telekinetic force; may leave the target confused.",l,1,25,1,"Confusion",50,0,B.i,0,q,10,l,B.a5),"psybeam",A.o(100,B.P,0,q,q,q,"Attacks the target with a peculiar ray; may confuse.","psybeam",1,20,1,"Psybeam",65,0,B.i,0,q,10,l,B.a5),"bite",A.o(100,B.x,0,q,q,q,"The target is bitten with viciously sharp fangs.","bite",1,25,1,"Bite",60,0,B.i,0,q,0,q,B.bl),"crunch",A.o(100,B.x,0,q,q,q,"Crunches up the target with sharp fangs.","crunch",1,15,1,"Crunch",80,0,B.i,0,q,0,q,B.bl),"peck",A.o(100,B.x,0,q,q,q,"Jabs the target with a sharply pointed beak or horn.","peck",1,35,1,"Peck",35,0,B.i,0,q,0,q,B.aM),"drill_peck",A.o(100,B.x,0,q,q,q,"A corkscrewing attack with the beak acting like a drill.","drill_peck",1,20,1,"Drill Peck",80,0,B.i,0,q,0,q,B.aM),"double_kick",A.o(100,B.x,0,q,q,q,"Strikes the target twice in succession with rapid kicks.","double_kick",2,30,2,"Double Kick",30,0,B.i,0,q,0,q,B.aA),"mud_slap",A.o(100,B.P,0,q,q,q,"Hurls mud in the target's face to inflict damage and lower Accuracy.","mud_slap",1,20,1,"Mud-Slap",30,0,B.i,-1,g,0,q,B.aL),"dig",A.o(100,B.x,0,q,"burrowed its way under the ground!",q,"Burrows underground on turn 1 to dodge attacks, then strikes from below on turn 2.","dig",1,10,1,"Dig",80,0,B.fP,0,q,0,q,B.aL),"earthquake",A.o(100,B.x,0,q,q,q,"Sets off an earthquake that shakes the entire arena.","earthquake",1,10,1,"Earthquake",100,0,B.i,0,q,0,q,B.aL),"rock_throw",A.o(90,B.x,0,q,q,q,"Drops heavy stones onto the target.","rock_throw",1,15,1,"Rock Throw",50,0,B.i,0,q,0,q,B.aH),"rock_slide",A.o(90,B.x,0,q,q,q,"Large boulders are hurled crashing down on the foe.","rock_slide",1,10,1,"Rock Slide",75,0,B.i,0,q,0,q,B.aH),"power_gem",A.o(100,B.P,0,q,q,q,"Fires a focused ray of light that sparkles like gemstones.","power_gem",1,20,1,"Power Gem",80,0,B.i,0,q,0,q,B.aH),"sing",A.o(65,B.D,0,q,q,q,"A soothing lullaby that puts the target in a deep sleep.","sing",1,15,1,"Sing",0,0,B.i,0,q,100,n,B.G),"body_slam",A.o(100,B.x,0,q,q,q,"Drops its full body weight onto the target; may paralyze.","body_slam",1,15,1,"Body Slam",85,0,B.i,0,q,30,h,B.G),"swift",A.o(100,B.P,0,q,q,q,"Star-shaped rays are shot at the target and never miss.","swift",1,20,1,"Swift",60,0,B.i,0,q,0,q,B.G),"splash",A.o(100,B.D,0,q,q,q,"Flops and splashes around without having any effect.","splash",1,40,1,"Splash",0,0,B.i,0,q,0,q,B.G),"disarming_voice",A.o(100,B.P,0,q,q,q,"Lets out a charming cry that does emotional damage.","disarming_voice",1,15,1,"Disarming Voice",45,0,B.i,0,q,0,q,B.df),"moonblast",A.o(100,B.P,0,q,q,q,"Borrows the power of the moon to attack the target.","moonblast",1,15,1,"Moonblast",95,0,B.i,0,q,0,q,B.df),"acid",A.o(100,B.P,0,q,q,q,"Sprays harsh hide-melting acid; may inflict poison.","acid",1,30,1,"Acid",40,0,B.i,0,q,20,j,B.aK),"glare",A.o(90,B.D,0,q,q,q,"Intimidates the target with gleaming eyes to paralyze it.","glare",1,30,1,"Glare",0,0,B.i,0,q,100,h,B.G),"aqua_tail",A.o(90,B.x,0,q,q,q,"Swings its tail as if it were a vicious wave in a raging storm.","aqua_tail",1,10,1,"Aqua Tail",90,0,B.i,0,q,0,q,B.ar),"absorb",A.o(100,B.P,0,q,q,q,"A nutrient-draining grass attack. Half the damage dealt is restored as HP.","absorb",1,25,1,"Absorb",35,0,B.i,0,q,0,q,B.ak),"leech_seed",A.o(90,B.D,0,q,q,q,"Plants a seed on the target that drains 1/8 of its max HP each turn to heal the user.","leech_seed",1,10,1,"Leech Seed",0,0,B.i,0,q,0,q,B.ak),"petal_blizzard",A.o(100,B.x,0,q,q,q,"Stirs up a violent storm of sharp petals.","petal_blizzard",1,15,1,"Petal Blizzard",90,0,B.i,0,q,0,q,B.ak),"psychic",A.o(100,B.P,0,q,q,q,"Strikes the target with a strong telekinetic force.","psychic",1,10,1,"Psychic",90,0,B.i,0,q,0,q,B.a5),"karate_chop",A.o(100,B.x,0,q,q,q,"A sharp chopping blow delivered with high critical focus.","karate_chop",1,25,1,"Karate Chop",50,0,B.i,0,q,0,q,B.aA),"submission",A.o(80,B.x,0,q,q,q,"Grabs and slams the target recklessly to the ground.","submission",1,20,1,"Submission",80,0,B.i,0,q,0,q,B.aA),"cross_chop",A.o(80,B.x,0,q,q,q,"Delivers a double chop with crossed forearms.","cross_chop",1,5,1,"Cross Chop",100,0,B.i,0,q,0,q,B.aA),"pay_day",A.o(100,B.x,0,q,q,q,"Numerous coins are hurled at the target.","pay_day",1,20,1,"Pay Day",40,0,B.i,0,q,0,q,B.G),"fury_swipes",A.o(80,B.x,0,q,q,q,"Rakes the target rapidly with sharp claws 2 to 5 times in a row.","fury_swipes",5,15,2,"Fury Swipes",18,0,B.i,0,q,0,q,B.G),"horn_attack",A.o(100,B.x,0,q,q,q,"Jabs the target with a sharply pointed horn.","horn_attack",1,25,1,"Horn Attack",65,0,B.i,0,q,0,q,B.G),"sonic_boom",A.o(90,B.P,0,q,q,q,"Launches destructive shockwaves at the target.","sonic_boom",1,20,1,"Sonic Boom",55,0,B.i,0,q,0,q,B.G),"bubble_beam",A.o(100,B.P,0,q,q,q,"Forcefully sprays bubbles that may lower Speed.","bubble_beam",1,20,1,"Bubble Beam",65,0,B.i,-1,k,0,q,B.ar),"waterfall",A.o(100,B.x,0,q,q,q,"Charges at the target like climbing a waterfall.","waterfall",1,15,1,"Waterfall",80,0,B.i,0,q,0,q,B.ar),"crabhammer",A.o(90,B.x,0,q,q,q,"A giant pincer hammers the target with crushing force.","crabhammer",1,10,1,"Crabhammer",100,0,B.i,0,q,0,q,B.ar),"aurora_beam",A.o(100,B.P,0,q,q,q,"A rainbow-colored beam that may lower Attack.","aurora_beam",1,20,1,"Aurora Beam",65,0,B.i,-1,p,0,q,B.bh),"ice_beam",A.o(100,B.P,0,q,q,q,"Strikes the target with an icy-cold beam; may freeze.","ice_beam",1,10,1,"Ice Beam",90,0,B.i,0,q,10,f,B.bh),"spore",A.o(100,B.D,0,q,q,q,"Scatters bursts of sleep-inducing spores.","spore",1,15,1,"Spore",0,0,B.i,0,q,100,n,B.ak),"x_scissor",A.o(100,B.x,0,q,q,q,"Slashes at the target by crossing scythes or claws like scissors.","x_scissor",1,15,1,"X-Scissor",80,0,B.i,0,q,0,q,B.bk),"hypnosis",A.o(60,B.D,0,q,q,q,"Hypnotic suggestion puts the target into a deep sleep.","hypnosis",1,20,1,"Hypnosis",0,0,B.i,0,q,100,n,B.a5),"lick",A.o(100,B.x,0,q,q,q,"Licks with a long tongue; may cause paralysis.","lick",1,30,1,"Lick",30,0,B.i,0,q,30,h,B.ba),"night_shade",A.o(100,B.P,0,q,q,q,"Makes the target see a frightening mirage.","night_shade",1,15,1,"Night Shade",65,0,B.i,0,q,0,q,B.ba),"shadow_ball",A.o(100,B.P,0,q,q,q,"Hurls a shadowy blob at the target.","shadow_ball",1,15,1,"Shadow Ball",80,0,B.i,0,q,0,q,B.ba),"headbutt",A.o(100,B.x,0,q,q,q,"The user sticks out its head and attacks by ramming into the target.","headbutt",1,15,1,"Headbutt",70,0,B.i,0,q,0,q,B.G),"take_down",A.o(85,B.x,0,q,q,q,"A reckless full-body charge attack.","take_down",1,20,1,"Take Down",90,0,B.i,0,q,0,q,B.G),"stomp",A.o(100,B.x,0,q,q,q,"The target is stomped with a big foot.","stomp",1,20,1,"Stomp",65,0,B.i,0,q,0,q,B.G),"mega_punch",A.o(85,B.x,0,q,q,q,"The target is slugged by a punch thrown with muscle-packed power.","mega_punch",1,20,1,"Mega Punch",80,0,B.i,0,q,0,q,B.G),"mega_kick",A.o(75,B.x,0,q,q,q,"The target is attacked by a kick powered with great force.","mega_kick",1,5,1,"Mega Kick",120,0,B.i,0,q,0,q,B.G),"hyper_beam",A.o(90,B.P,0,q,q,q,"A colossal beam of intense energy is blasted at the target; requires a recharge turn.","hyper_beam",1,5,1,"Hyper Beam",150,0,B.wb,0,q,0,q,B.G),"fire_punch",A.o(100,B.x,0,q,q,q,"The target is punched with a fiery fist.","fire_punch",1,15,1,"Fire Punch",75,0,B.i,0,q,10,m,B.aj),"ice_punch",A.o(100,B.x,0,q,q,q,"The target is punched with an icy fist; may freeze.","ice_punch",1,15,1,"Ice Punch",75,0,B.i,0,q,10,f,B.bh),"thunder_punch",A.o(100,B.x,0,q,q,q,"The target is punched with an electrified fist.","thunder_punch",1,15,1,"Thunder Punch",75,0,B.i,0,q,10,h,B.bg),"blizzard",A.o(70,B.P,0,q,q,q,"A howling blizzard is summoned to strike the opposing Pok\xe9mon; may freeze.","blizzard",1,5,1,"Blizzard",110,0,B.i,0,q,10,f,B.bh),"thunder",A.o(70,B.P,0,q,q,q,"A wicked thunderbolt drops on the target to inflict damage.","thunder",1,10,1,"Thunder",110,0,B.i,0,q,30,h,B.bg),"sludge",A.o(100,B.P,0,q,q,q,i,"sludge",1,20,1,"Sludge",65,0,B.i,0,q,30,j,B.aK),"toxic",A.o(90,B.D,0,q,q,q,"A move that leaves the target badly poisoned, dealing escalating damage each turn.","toxic",1,10,1,"Toxic",0,0,B.i,0,q,100,e,B.aK),"bone_club",A.o(85,B.x,0,q,q,q,"The user clubs the target with a bone.","bone_club",1,20,1,"Bone Club",65,0,B.i,0,q,0,q,B.aL),"bonemerang",A.o(90,B.x,0,q,q,q,"Throws a bone that strikes the target twice in a row.","bonemerang",2,10,2,"Bonemerang",50,0,B.i,0,q,0,q,B.aL),"drill_run",A.o(95,B.x,0,q,q,q,"The user crashes into the target while rotating like a drill.","drill_run",1,10,1,"Drill Run",80,0,B.i,0,q,0,q,B.aL),"horn_drill",A.o(50,B.x,0,q,q,q,"The user spins its horn like a drill and rams the foe.","horn_drill",1,5,1,"Horn Drill",130,0,B.i,0,q,0,q,B.G),"tri_attack",A.o(100,B.P,0,q,q,q,"The user strikes with a simultaneous blast of three beams.","tri_attack",1,10,1,"Tri Attack",80,0,B.i,0,q,0,q,B.G),"pin_missile",A.o(95,B.x,0,q,q,q,"Sharp pins are fired repeatedly at the target 2 to 5 times.","pin_missile",5,20,2,"Pin Missile",25,0,B.i,0,q,0,q,B.bk),"dragon_rage",A.o(100,B.P,0,q,q,q,"This attack hits the target with shock waves of pure draconic wrath.","dragon_rage",1,10,1,"Dragon Rage",40,0,B.i,0,q,0,q,B.c1),"dragon_claw",A.o(100,B.x,0,q,q,q,"The user slashes the target with huge, sharp claws.","dragon_claw",1,15,1,"Dragon Claw",80,0,B.i,0,q,0,q,B.c1),"dragon_breath",A.o(100,B.P,0,q,q,q,"The user exhales a breath of draconic fire.","dragon_breath",1,20,1,"Dragon Breath",60,0,B.i,0,q,30,h,B.c1),"outrage",A.o(100,B.x,0,q,q,q,d,"outrage",1,10,1,"Outrage",120,0,B.wc,0,q,0,q,B.c1),"ancient_power",A.o(100,B.P,0,q,q,q,"The user attacks with prehistoric power.","ancient_power",1,5,1,"Ancient Power",60,0,B.i,0,q,0,q,B.aH),"egg_bomb",A.o(75,B.x,0,q,q,q,"A large egg is hurled with great force at the target.","egg_bomb",1,10,1,"Egg Bomb",100,0,B.i,0,q,0,q,B.G),"fire_spin",A.o(85,B.P,0,q,q,q,"Traps the target in an intense vortex of fire for 4 to 5 turns.","fire_spin",1,15,1,"Fire Spin",35,0,B.hX,0,q,0,q,B.aj),"rest",A.o(100,B.D,0,q,q,q,"The user goes to sleep to fully restore its HP and cure status ailments.","rest",1,10,1,"Rest",0,0,B.i,0,q,0,q,B.a5),"flash_cannon",A.o(100,B.P,0,q,q,q,"The user gathers all its light energy and releases it at once.","flash_cannon",1,10,1,"Flash Cannon",80,0,B.i,0,q,0,q,B.aW),"mach_punch",A.o(100,B.x,0,q,q,q,"The user throws a punch at blinding speed.","mach_punch",1,30,1,"Mach Punch",40,1,B.i,0,q,0,q,B.aA),"close_combat",A.o(100,B.x,0,q,q,q,"The user fights up close without guarding itself.","close_combat",1,5,1,"Close Combat",120,0,B.i,0,q,0,q,B.aA),"rollout",A.o(90,B.x,0,q,q,q,"Rolls into the target for up to 5 turns, doubling power each hit.","rollout",1,20,1,"Rollout",30,0,B.OB,0,q,0,q,B.aH),"explosion",A.o(100,B.x,0,q,q,q,"The user explodes to inflict massive damage, causing it to faint.","explosion",1,5,1,"Explosion",250,0,B.i,0,q,0,q,B.G),"extreme_speed",A.o(100,B.x,0,q,q,q,"The user charges the target at blinding, supersonic speed.","extreme_speed",1,5,1,"Extreme Speed",80,2,B.i,0,q,0,q,B.G),"seed_bomb",A.o(100,B.x,0,q,q,q,"A barrage of hard-shelled seeds is slammed onto the target.","seed_bomb",1,15,1,"Seed Bomb",80,0,B.i,0,q,0,q,B.ak),"transform",A.o(100,B.D,0,q,q,q,"The user transforms into a copy of the target Pok\xe9mon.","transform",1,10,1,"Transform",0,0,B.i,0,q,0,q,B.G),"struggle",A.o(100,B.x,0,q,q,q,"An attack that is used in desperation.","struggle",1,1,1,"Struggle",50,0,B.i,0,q,0,q,B.G),"poison_gas",A.o(90,B.D,0,q,q,q,"A cloud of toxic gas is sprayed into the foe.","poison_gas",1,40,1,"Poison Gas",0,0,B.i,0,q,100,j,B.aK),"acid_armor",A.o(100,B.D,0,q,q,q,"The user alters its cellular structure to liquefy and sharply raise defense.","acid_armor",1,20,1,"Acid Armor",0,0,B.i,2,o,0,q,B.aK),"confuse_ray",A.o(100,B.D,0,q,q,q,"A sinister ray of light that confuses the foe.","confuse_ray",1,10,1,"Confuse Ray",0,0,B.i,0,q,100,l,B.ba),"fury_attack",A.o(85,B.x,0,q,q,q,"The target is jabbed repeatedly 2 to 5 times with a beak or horn.","fury_attack",5,20,2,"Fury Attack",15,0,B.i,0,q,0,q,B.G),"pound",A.o(100,B.x,0,q,q,q,"The target is physically pounded with a long tail or forelegs.","pound",1,35,1,"Pound",40,0,B.i,0,q,0,q,B.G),"comet_punch",A.o(85,B.x,0,q,q,q,"The target is hit with a flurry of 2 to 5 punches.","comet_punch",5,15,2,"Comet Punch",18,0,B.i,0,q,0,q,B.G),"wrap",A.o(90,B.x,0,q,q,q,"Wraps and squeezes the target for 4 to 5 turns.","wrap",1,20,1,"Wrap",15,0,B.hX,0,q,0,q,B.G),"slam",A.o(75,B.x,0,q,q,q,"The target is slammed with a long tail, vine, or its whole body.","slam",1,20,1,"Slam",80,0,B.i,0,q,0,q,B.G),"smokescreen",A.o(100,B.D,0,q,q,q,"Looses an obscuring cloud of smoke or ink that lowers the target's Accuracy.","smokescreen",1,20,1,"Smokescreen",0,0,B.i,-1,g,0,q,B.G),"double_slap",A.o(85,B.x,0,q,q,q,"The target is slapped repeatedly 2 to 5 times in quick succession.","double_slap",5,10,2,"Double Slap",15,0,B.i,0,q,0,q,B.G),"soft_boiled",A.o(100,B.D,0,q,q,q,"Restores the user's HP by up to half of its max HP.","soft_boiled",1,10,1,"Soft-Boiled",0,0,B.i,0,q,0,q,B.G),"light_screen",A.o(100,B.D,0,q,q,q,"A wondrous wall of light is put up to suppress special damage.","light_screen",1,30,1,"Light Screen",0,0,B.i,2,c,0,q,B.a5),"mega_drain",A.o(100,B.P,0,q,q,q,"A nutrient-draining attack. Half the damage dealt is restored as HP.","mega_drain",1,15,1,"Mega Drain",40,0,B.i,0,q,0,q,B.ak),"giga_drain",A.o(100,B.P,0,q,q,q,"A powerful nutrient-draining attack. Restores HP.","giga_drain",1,10,1,"Giga Drain",75,0,B.i,0,q,0,q,B.ak),"dizzy_punch",A.o(100,B.x,0,q,q,q,"The target is hit with rhythmic punches; may cause confusion.","dizzy_punch",1,10,1,"Dizzy Punch",70,0,B.i,0,q,20,l,B.G),"powder_snow",A.o(100,B.P,0,q,q,q,"The user attacks with a chilling gust of powdery snow; may freeze.","powder_snow",1,25,1,"Powder Snow",40,0,B.i,0,q,10,f,B.bh),"shock_wave",A.o(100,B.P,0,q,q,q,"The user strikes the target with a quick jolt of electricity.","shock_wave",1,20,1,"Shock Wave",60,0,B.i,0,q,0,q,B.bg),"vise_grip",A.o(100,B.x,0,q,q,q,"Huge, impressive pincers grip and squeeze the target.","vise_grip",1,30,1,"Vise Grip",55,0,B.i,0,q,0,q,B.G),"seismic_toss",A.o(100,B.x,0,q,q,q,"The target is thrown using the power of gravity.","seismic_toss",1,20,1,"Seismic Toss",60,0,B.i,0,q,0,q,B.aA),"guillotine",A.o(30,B.x,0,q,q,q,"A vicious, tearing attack with big pincers.","guillotine",1,5,1,"Guillotine",130,0,B.i,0,q,0,q,B.G),"zen_headbutt",A.o(90,B.x,0,q,q,q,"The user focuses its willpower to its head and attacks the target.","zen_headbutt",1,15,1,"Zen Headbutt",80,0,B.i,0,q,0,q,B.a5),"flame_wheel",A.o(100,B.x,0,q,q,q,"The user cloaks itself in fire and charges at the target.","flame_wheel",1,25,1,"Flame Wheel",60,0,B.i,0,q,10,m,B.aj),"sharpen",A.o(100,B.D,0,q,q,q,"The user makes its edges more jagged, raising its Attack stat.","sharpen",1,30,1,"Sharpen",0,0,B.i,1,p,0,q,B.G),"recover",A.o(100,B.D,0,q,q,q,"A self-healing move that restores up to half of the user's max HP.","recover",1,10,1,"Recover",0,0,B.i,0,q,0,q,B.G),"discharge",A.o(100,B.P,0,q,q,q,"A flare of electricity is loosed to attack everyone around the user.","discharge",1,15,1,"Discharge",80,0,B.i,0,q,30,h,B.bg),"spike_cannon",A.o(100,B.x,0,q,q,q,"Sharp spikes are shot at the target 2 to 5 times in rapid bursts.","spike_cannon",5,15,2,"Spike Cannon",20,0,B.i,0,q,0,q,B.G),"aqua_jet",A.o(100,B.x,0,q,q,q,"The user lunges at the target at a speed that makes it almost invisible.","aqua_jet",1,20,1,"Aqua Jet",40,1,B.i,0,q,0,q,B.ar),"iron_head",A.o(100,B.x,0,q,q,q,"The user slams the target with its steel-hard head.","iron_head",1,15,1,"Iron Head",80,0,B.i,0,q,0,q,B.aW),"snore",A.o(100,B.P,0,q,q,q,"An attack that can be used while sleeping with a loud snore.","snore",1,15,1,"Snore",50,0,B.i,0,q,0,q,B.G),"constrict",A.o(100,B.x,0,q,q,q,"The target is bound with long tentacles or vines.","constrict",1,35,1,"Constrict",10,0,B.i,0,q,0,q,B.G),"withdraw",A.o(100,B.D,0,q,q,q,"The user withdraws its body into its hard shell to boost defense.","withdraw",1,40,1,"Withdraw",0,0,B.i,1,o,0,q,B.ar),"jump_kick",A.o(95,B.x,0,q,q,q,"The user jumps up high, then kicks the target.","jump_kick",1,10,1,"Jump Kick",100,0,B.i,0,q,0,q,B.aA),"high_jump_kick",A.o(90,B.x,0,q,q,q,"The target is attacked with a knee kick from a jump.","high_jump_kick",1,10,1,"High Jump Kick",130,0,B.i,0,q,0,q,B.aA),"rolling_kick",A.o(85,B.x,0,q,q,q,"A quick kick delivered by spinning rapidly.","rolling_kick",1,15,1,"Rolling Kick",60,0,B.i,0,q,0,q,B.aA),"thrash",A.o(100,B.x,0,q,q,q,d,"thrash",1,10,1,"Thrash",120,0,B.wc,0,q,0,q,B.G),"razor_wind",A.o(100,B.P,0,q,"whipped up a whirlwind!",q,"Whips up a slicing whirlwind on turn 1, then strikes on turn 2.","razor_wind",1,10,1,"Razor Wind",80,0,B.hW,0,q,0,q,B.G),"whirlwind",A.o(100,B.D,0,q,q,q,"The target is blown away to force a switch or destabilize its stance.","whirlwind",1,20,1,"Whirlwind",0,-6,B.i,0,q,0,q,B.G),"double_edge",A.o(100,B.x,0,q,q,q,"A reckless, life-risking charge at full strength.","double_edge",1,15,1,"Double-Edge",120,0,B.i,0,q,0,q,B.G),"counter",A.o(100,B.x,0,q,q,q,"Retaliates against physical attacks with double the damage taken.","counter",1,20,1,"Counter",0,-5,B.i,0,q,0,q,B.aA),"rage",A.o(100,B.x,0,q,q,q,"An angry strike fueled by battle intensity.","rage",1,20,1,"Rage",55,0,B.i,0,q,0,q,B.G),"fissure",A.o(65,B.x,0,q,q,q,"Splits the earth beneath the foe in a devastating chasm.","fissure",1,5,1,"Fissure",130,0,B.i,0,q,0,q,B.aL),"teleport",A.o(100,B.D,0,q,q,q,"Use it to flee from any wild Pok\xe9mon or warp across the arena.","teleport",1,20,1,"Teleport",0,0,B.i,0,q,0,q,B.a5),"mimic",A.o(100,B.D,0,q,q,q,"Copies the target's last move for the rest of the battle.","mimic",1,10,1,"Mimic",0,0,B.i,0,q,0,q,B.G),"double_team",A.o(100,B.D,0,q,q,q,"Creates illusory copies to raise Evasiveness.","double_team",1,15,1,"Double Team",0,0,B.i,1,"eva",0,q,B.G),"reflect",A.o(100,B.D,0,q,q,q,"Raises a shimmering psychic wall that sharply boosts Defense.","reflect",1,20,1,"Reflect",0,0,B.i,2,o,0,q,B.a5),"bide",A.o(100,B.x,0,q,q,q,"Endures hits for 2 turns, then unleashes double the stored damage.","bide",1,10,1,"Bide",80,1,B.OA,0,q,0,q,B.G),"metronome",A.o(100,B.D,0,q,q,q,"Waggles a finger to summon and perform almost any move at random.","metronome",1,10,1,"Metronome",0,0,B.i,0,q,0,q,B.G),"self_destruct",A.o(100,B.x,0,q,q,q,"Causes a massive blast that damages the target and makes the user faint.","self_destruct",1,5,1,"Self-Destruct",200,0,B.i,0,q,0,q,B.G),"skull_bash",A.o(100,B.x,1,o,"tucked in its head!",q,"Tucks in its head and boosts Defense on turn 1, then charges on turn 2.","skull_bash",1,10,1,"Skull Bash",130,0,B.hW,0,q,0,q,B.G),"dream_eater",A.o(100,B.P,0,q,q,q,"Devours the dreams of a sleeping target. Half the damage dealt is restored as HP.","dream_eater",1,15,1,"Dream Eater",100,0,B.i,0,q,0,q,B.a5),"sky_attack",A.o(90,B.x,0,q,"became cloaked in a harsh light!",q,"Gathers radiant energy on turn 1, then dives at the foe on turn 2.","sky_attack",1,5,1,"Sky Attack",140,0,B.hW,0,q,0,q,B.aM),"psywave",A.o(100,B.P,0,q,q,q,"Attacks the target with a fluctuating psychic pulse.","psywave",1,15,1,"Psywave",75,0,B.i,0,q,0,q,B.a5),"substitute",A.o(100,B.D,0,q,q,q,"Sacrifices 1/4 of max HP to create a decoy that absorbs hits.","substitute",1,10,1,"Substitute",0,0,B.i,0,q,0,q,B.G),"bind",A.o(85,B.x,0,q,q,q,b,"bind",1,20,1,"Bind",15,0,B.hX,0,q,0,q,B.G),"sand_attack",A.o(100,B.D,0,q,q,q,a,"sand_attack",1,15,1,"Sand Attack",0,0,B.i,-1,g,0,q,B.aL),"leer",A.o(100,B.D,0,q,q,q,"Status move that lowers target's Defense.","leer",1,30,1,"Leer",0,0,B.i,-1,o,0,q,B.G),"roar",A.o(100,B.D,0,q,q,q,"Forces a switch or ends a wild battle in terror.","roar",1,20,1,"Roar",0,-6,B.i,0,q,0,q,B.G),"supersonic",A.o(55,B.D,0,q,q,q,"Inflicts confusion on the target.","supersonic",1,20,1,"Supersonic",0,0,B.i,0,q,100,l,B.G),"disable",A.o(100,B.D,0,q,q,q,"Temporarily disables the target's last used move.","disable",1,20,1,"Disable",0,0,B.i,0,q,0,q,B.G),"mist",A.o(100,B.D,0,q,q,q,"Shrouds the user's side in mist to prevent stat reductions for 5 turns.","mist",1,30,1,"Mist",0,0,B.i,0,q,0,q,B.bh),"low_kick",A.o(100,B.x,0,q,q,q,"Trips heavy foes; deals greater damage to heavier Pok\xe9mon.","low_kick",1,20,1,"Low Kick",0,0,B.i,0,q,0,q,B.aA),"growth",A.o(100,B.D,0,q,q,q,"Forces body growth to raise Attack and Sp. Atk (doubled in harsh sunlight).","growth",1,20,1,"Growth",0,0,B.i,1,p,0,q,B.G),"stun_spore",A.o(75,B.D,0,q,q,q,"Inflicts paralysis on the target.","stun_spore",1,30,1,"Stun Spore",0,0,B.i,0,q,100,h,B.ak),"petal_dance",A.o(100,B.P,0,q,q,q,a0,"petal_dance",1,10,1,"Petal Dance",120,0,B.i,0,q,0,q,B.ak),"meditate",A.o(100,B.D,0,q,q,q,"Status move that raises user's Attack.","meditate",1,40,1,"Meditate",0,0,B.i,1,p,0,q,B.a5),"screech",A.o(85,B.D,0,q,q,q,"Status move that harshly lowers target's Defense.","screech",1,40,1,"Screech",0,0,B.i,-2,o,0,q,B.G),"minimize",A.o(100,B.D,0,q,q,q,"Compresses its body to sharply boost Evasiveness.","minimize",1,10,1,"Minimize",0,0,B.i,2,"eva",0,q,B.G),"defense_curl",A.o(100,B.D,0,q,q,q,"Status move that raises user's Defense.","defense_curl",1,40,1,"Defense Curl",0,0,B.i,1,o,0,q,B.G),"barrier",A.o(100,B.D,0,q,q,q,"Throws up a sturdy wall that sharply raises Defense.","barrier",1,20,1,"Barrier",0,0,B.i,2,o,0,q,B.a5),"haze",A.o(100,B.D,0,q,q,q,"Eliminates all stat stage changes from both Pok\xe9mon on the field.","haze",1,30,1,"Haze",0,0,B.i,0,q,0,q,B.bh),"focus_energy",A.o(100,B.D,0,q,q,q,"Takes a deep breath to raise critical-hit ratio.","focus_energy",1,30,1,"Focus Energy",0,0,B.i,0,q,0,q,B.G),"mirror_move",A.o(100,B.D,0,q,q,q,"Counters by mimicking the last move used by the target.","mirror_move",1,20,1,"Mirror Move",0,0,B.i,0,q,0,q,B.aM),"smog",A.o(70,B.P,0,q,q,q,"A Poison-type special attack, 40% poison chance.","smog",1,20,1,"Smog",30,0,B.i,0,q,40,j,B.aK),"clamp",A.o(85,B.x,0,q,q,q,a1,"clamp",1,15,1,"Clamp",35,0,B.hX,0,q,0,q,B.ar),"amnesia",A.o(100,B.D,0,q,q,q,"Empties the mind to sharply raise Sp. Def.","amnesia",1,20,1,"Amnesia",0,0,B.i,2,c,0,q,B.a5),"kinesis",A.o(80,B.D,0,q,q,q,a,"kinesis",1,15,1,"Kinesis",0,0,B.i,-1,g,0,q,B.a5),"barrage",A.o(85,B.x,0,q,q,q,a2,"barrage",5,20,2,"Barrage",15,0,B.i,0,q,0,q,B.G),"leech_life",A.o(100,B.x,0,q,q,q,"Bites and drains HP equal to half of the damage dealt.","leech_life",1,10,1,"Leech Life",80,0,B.i,0,q,0,q,B.bk),"lovely_kiss",A.o(75,B.D,0,q,q,q,"Inflicts sleep on the target.","lovely_kiss",1,10,1,"Lovely Kiss",0,0,B.i,0,q,100,n,B.G),"bubble",A.o(100,B.P,0,q,q,q,"A Water-type special attack, 10% chance to lowers Speed.","bubble",1,30,1,"Bubble",40,0,B.i,0,q,0,q,B.ar),"conversion",A.o(100,B.D,0,q,q,q,"Changes the user's type to match its first move.","conversion",1,30,1,"Conversion",0,0,B.i,0,q,0,q,B.G),"super_fang",A.o(90,B.x,0,q,q,q,"Chomps hard with sharp fangs to cut the target's remaining HP in half.","super_fang",1,10,1,"Super Fang",0,0,B.i,0,q,0,q,B.G),"mind_reader",A.o(100,B.D,0,q,q,q,"Reads the target's movements so the next attack cannot miss.","mind_reader",1,5,1,"Mind Reader",0,0,B.i,0,q,0,q,B.G),"nightmare",A.o(100,B.D,0,q,q,q,"Sleeping targets lose 1/4 of max HP at the end of each turn.","nightmare",1,15,1,"Nightmare",0,0,B.i,0,q,0,q,B.ba),"curse",A.o(100,B.D,0,q,q,q,"Boosts Attack and Defense at the cost of Speed (Ghost-types curse foes for 1/4 HP per turn).","curse",1,10,1,"Curse",0,0,B.i,0,q,0,q,B.ba),"flail",A.o(100,B.x,0,q,q,q,"Strikes harder the lower the user's remaining HP is.","flail",1,15,1,"Flail",0,0,B.i,0,q,0,q,B.G),"conversion_2",A.o(100,B.D,0,q,q,q,"Changes type to resist the foe's last attacking move.","conversion_2",1,30,1,"Conversion 2",0,0,B.i,0,q,0,q,B.G),"reversal",A.o(100,B.x,0,q,q,q,"An all-out strike whose power grows massively at low HP.","reversal",1,15,1,"Reversal",0,0,B.i,0,q,0,q,B.aA),"spite",A.o(100,B.D,0,q,q,q,"Reduces the PP of the target's last used move by 4.","spite",1,10,1,"Spite",0,0,B.i,0,q,0,q,B.ba),"protect",A.o(100,B.D,0,q,q,q,"Completely protects the user from most attacks for one turn; consecutive uses may fail.","protect",1,10,1,"Protect",0,4,B.i,0,q,0,q,B.G),"scary_face",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Speed.","scary_face",1,10,1,"Scary Face",0,0,B.i,-2,k,0,q,B.G),"feint_attack",A.o(100,B.x,0,q,q,q,a3,"feint_attack",1,20,1,"Faint Attack",60,0,B.i,0,q,0,q,B.bl),"belly_drum",A.o(100,B.D,0,q,q,q,"Sacrifices half max HP to maximize Attack stage (+6).","belly_drum",1,10,1,"Belly Drum",0,0,B.i,0,q,0,q,B.G),"spikes",A.o(100,B.D,0,q,q,q,"Sets sharp spikes around the opponent's side to hurt switch-ins.","spikes",1,20,1,"Spikes",0,0,B.i,0,q,0,q,B.aL),"zap_cannon",A.o(50,B.P,0,q,q,q,"A Electric-type special attack, 100% paralysis chance.","zap_cannon",1,5,1,"Zap Cannon",120,0,B.i,0,q,100,h,B.bg),"foresight",A.o(100,B.D,0,q,q,q,"Reveals Ghost-type foes so Normal and Fighting moves can hit them.","foresight",1,40,1,"Foresight",0,0,B.i,0,q,0,q,B.G),"destiny_bond",A.o(100,B.D,0,q,q,q,"If the user faints from an attack before its next move, the foe faints too.","destiny_bond",1,5,1,"Destiny Bond",0,0,B.i,0,q,0,q,B.ba),"perish_song",A.o(100,B.D,0,q,q,q,"Any Pok\xe9mon hearing this song faints in 3 turns unless switched out.","perish_song",1,5,1,"Perish Song",0,0,B.i,0,q,0,q,B.G),"icy_wind",A.o(95,B.P,0,q,q,q,"A Ice-type special attack, 100% chance to lowers Speed.","icy_wind",1,15,1,"Icy Wind",55,0,B.i,-1,k,0,q,B.bh),"detect",A.o(100,B.D,0,q,q,q,"Enables the user to evade all attacks for one turn; consecutive uses may fail.","detect",1,5,1,"Detect",0,4,B.i,0,q,0,q,B.aA),"bone_rush",A.o(90,B.x,0,q,q,q,a2,"bone_rush",5,10,2,"Bone Rush",25,0,B.i,0,q,0,q,B.aL),"lock_on",A.o(100,B.D,0,q,q,q,"Takes careful aim so the user's next move is guaranteed to hit.","lock_on",1,5,1,"Lock-On",0,0,B.i,0,q,0,q,B.G),"sandstorm",A.o(100,B.D,0,q,q,q,"Rages a 5-turn sandstorm that damages non Rock/Ground/Steel Pok\xe9mon.","sandstorm",1,10,1,"Sandstorm",0,0,B.i,0,q,0,q,B.aH),"endure",A.o(100,B.D,0,q,q,q,"Endures any hit this turn with at least 1 HP remaining.","endure",1,10,1,"Endure",0,4,B.i,0,q,0,q,B.G),"charm",A.o(100,B.D,0,q,q,q,a4,"charm",1,20,1,"Charm",0,0,B.i,-2,p,0,q,B.df),"false_swipe",A.o(100,B.x,0,q,q,q,"A restrained attack that always leaves the target with at least 1 HP.","false_swipe",1,40,1,"False Swipe",40,0,B.i,0,q,0,q,B.G),"swagger",A.o(85,B.D,0,q,q,q,"Status move that sharply raises user's Attack.","swagger",1,15,1,"Swagger",0,0,B.i,0,q,100,l,B.G),"spark",A.o(100,B.x,0,q,q,q,"A Electric-type physical attack, 30% paralysis chance.","spark",1,20,1,"Spark",65,0,B.i,0,q,30,h,B.bg),"fury_cutter",A.o(95,B.x,0,q,q,q,"Doubles in power with each consecutive hit.","fury_cutter",1,20,1,"Fury Cutter",40,0,B.i,0,q,0,q,B.bk),"mean_look",A.o(100,B.D,0,q,q,q,"Fixes the target with a dark look that prevents escape.","mean_look",1,5,1,"Mean Look",0,0,B.i,0,q,0,q,B.G),"sleep_talk",A.o(100,B.D,0,q,q,q,"Randomly uses one of the user's other known moves while asleep.","sleep_talk",1,10,1,"Sleep Talk",0,0,B.i,0,q,0,q,B.G),"safeguard",A.o(100,B.D,0,q,q,q,"Protects the user's side from status conditions for 5 turns.","safeguard",1,25,1,"Safeguard",0,0,B.i,0,q,0,q,B.G),"magnitude",A.o(100,B.x,0,q,q,q,a5,"magnitude",1,30,1,"Magnitude",0,0,B.i,0,q,0,q,B.aL),"dynamic_punch",A.o(50,B.x,0,q,q,q,"A Fighting-type physical attack, 100% confusion chance.","dynamic_punch",1,5,1,"Dynamic Punch",100,0,B.i,0,q,100,l,B.aA),"megahorn",A.o(85,B.x,0,q,q,q,"A Bug-type physical attack.","megahorn",1,10,1,"Megahorn",120,0,B.i,0,q,0,q,B.bk),"baton_pass",A.o(100,B.D,0,q,q,q,"Switches out while passing stat boosts to the replacement.","baton_pass",1,40,1,"Baton Pass",0,0,B.i,0,q,0,q,B.G),"encore",A.o(100,B.D,0,q,q,q,"Compels the target to repeat its last used move for 3 turns.","encore",1,5,1,"Encore",0,0,B.i,0,q,0,q,B.G),"pursuit",A.o(100,B.x,0,q,q,q,a3,"pursuit",1,20,1,"Pursuit",40,0,B.i,0,q,0,q,B.bl),"rapid_spin",A.o(100,B.x,0,q,q,q,"Spins rapidly to clear traps and Leech Seed, raising Speed.","rapid_spin",1,40,1,"Rapid Spin",50,0,B.i,1,k,0,q,B.G),"sweet_scent",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Evasiveness.","sweet_scent",1,20,1,"Sweet Scent",0,0,B.i,-2,"eva",0,q,B.G),"iron_tail",A.o(75,B.x,0,q,q,q,"A Steel-type physical attack, 30% chance to lowers Defense.","iron_tail",1,15,1,"Iron Tail",100,0,B.i,0,q,0,q,B.aW),"metal_claw",A.o(95,B.x,0,q,q,q,"A Steel-type physical attack, 10% chance to raises Attack.","metal_claw",1,35,1,"Metal Claw",50,0,B.i,0,q,0,q,B.aW),"vital_throw",A.o(100,B.x,0,q,q,q,a6,"vital_throw",1,10,1,"Vital Throw",70,-1,B.i,0,q,0,q,B.aA),"synthesis",A.o(100,B.D,0,q,q,q,"Restores HP based on the weather (1/2 normally, 2/3 in Sun, 1/4 otherwise).","synthesis",1,5,1,"Synthesis",0,0,B.i,0,q,0,q,B.ak),"moonlight",A.o(100,B.D,0,q,q,q,"Restores HP using moonlight based on the weather.","moonlight",1,5,1,"Moonlight",0,0,B.i,0,q,0,q,B.df),"twister",A.o(100,B.P,0,q,q,q,"A Dragon-type special attack, 20% flinch chance.","twister",1,20,1,"Twister",40,0,B.i,0,q,0,q,B.c1),"rain_dance",A.o(100,B.D,0,q,q,q,"Summons heavy rain for 5 turns, powering up Water moves and weakening Fire moves.","rain_dance",1,5,1,"Rain Dance",0,0,B.i,0,q,0,q,B.ar),"sunny_day",A.o(100,B.D,0,q,q,q,"Intensifies sunlight for 5 turns, powering up Fire moves and weakening Water moves.","sunny_day",1,5,1,"Sunny Day",0,0,B.i,0,q,0,q,B.aj),"mirror_coat",A.o(100,B.P,0,q,q,q,"Retaliates against special attacks with double the damage taken.","mirror_coat",1,20,1,"Mirror Coat",0,-5,B.i,0,q,0,q,B.a5),"psych_up",A.o(100,B.D,0,q,q,q,"Copies the target's current stat stage changes.","psych_up",1,10,1,"Psych Up",0,0,B.i,0,q,0,q,B.G),"future_sight",A.o(100,B.P,0,q,q,q,u.a,"future_sight",1,10,1,"Future Sight",120,0,B.i,0,q,0,q,B.a5),"whirlpool",A.o(85,B.P,0,q,q,q,"A Water-type special attack.","whirlpool",1,15,1,"Whirlpool",35,0,B.hX,0,q,0,q,B.ar),"fake_out",A.o(100,B.x,0,q,q,q,"Strikes first on entry and guarantees a flinch on the target.","fake_out",1,10,1,"Fake Out",40,3,B.i,0,q,0,q,B.G),"uproar",A.o(100,B.P,0,q,q,q,"Attacks for 3 turns in an uproar that wakes everyone and blocks sleep.","uproar",1,10,1,"Uproar",90,0,B.i,0,q,0,q,B.G),"stockpile",A.o(100,B.D,0,q,q,q,"Charges power (up to 3 stacks), raising Defense & Sp. Def.","stockpile",1,20,1,"Stockpile",0,0,B.i,1,o,0,q,B.G),"spit_up",A.o(100,B.P,0,q,q,q,"Releases stored Stockpile power (100/200/300 power).","spit_up",1,10,1,"Spit Up",0,0,B.i,0,q,0,q,B.G),"swallow",A.o(100,B.D,0,q,q,q,"Absorbs stored Stockpile power to restore HP.","swallow",1,10,1,"Swallow",0,0,B.i,0,q,0,q,B.G),"heat_wave",A.o(90,B.P,0,q,q,q,"A Fire-type special attack, 10% burn chance.","heat_wave",1,10,1,"Heat Wave",95,0,B.i,0,q,10,m,B.aj),"hail",A.o(100,B.D,0,q,q,q,"Summons a 5-turn hailstorm that damages non Ice-type Pok\xe9mon.","hail",1,10,1,"Hail",0,0,B.i,0,q,0,q,B.bh),"flatter",A.o(100,B.D,0,q,q,q,"Status move that raises user's Sp. Atk.","flatter",1,15,1,"Flatter",0,0,B.i,0,q,100,l,B.bl),"will_o_wisp",A.o(85,B.D,0,q,q,q,"Inflicts burn on the target.","will_o_wisp",1,15,1,"Will-O-Wisp",0,0,B.i,0,q,100,m,B.aj),"memento",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Attack, harshly lowers target's Sp. Atk.","memento",1,10,1,"Memento",0,0,B.i,-2,p,0,q,B.bl),"focus_punch",A.o(100,B.x,0,q,q,q,"Focuses tightly to unleash a huge punch if the user isn't hit first.","focus_punch",1,20,1,"Focus Punch",150,-3,B.i,0,q,0,q,B.aA),"follow_me",A.o(100,B.D,0,q,q,q,"Draws the target's attention toward the user.","follow_me",1,20,1,"Follow Me",0,2,B.i,0,q,0,q,B.G),"charge",A.o(100,B.D,0,q,q,q,"Charges electrical power to boost the next Electric move and raise Sp. Def.","charge",1,20,1,"Charge",0,0,B.i,1,c,0,q,B.bg),"taunt",A.o(100,B.D,0,q,q,q,"Taunts the target so it can only use attacking moves for 3 turns.","taunt",1,20,1,"Taunt",0,0,B.i,0,q,0,q,B.bl),"helping_hand",A.o(100,B.D,0,q,q,q,"Powers up damage.","helping_hand",1,20,1,"Helping Hand",0,5,B.i,0,q,0,q,B.G),"trick",A.o(100,B.D,0,q,q,q,"Swaps held items with the target.","trick",1,10,1,"Trick",0,0,B.i,0,q,0,q,B.a5),"role_play",A.o(100,B.D,0,q,q,q,"Mimics the target, copying its Ability.","role_play",1,10,1,"Role Play",0,0,B.i,0,q,0,q,B.a5),"ingrain",A.o(100,B.D,0,q,q,q,"Plants roots to restore 1/16 max HP every turn.","ingrain",1,20,1,"Ingrain",0,0,B.i,0,q,0,q,B.ak),"superpower",A.o(100,B.x,0,q,q,q,"Attacks with huge strength, then lowers Attack and Defense by 1 stage.","superpower",1,5,1,"Superpower",120,0,B.i,-1,p,0,q,B.aA),"magic_coat",A.o(100,B.D,0,q,q,q,"Bounces back status moves targeted at the user.","magic_coat",1,15,1,"Magic Coat",0,4,B.i,0,q,0,q,B.a5),"recycle",A.o(100,B.D,0,q,q,q,"Recycles a consumed Berry or held item for reuse.","recycle",1,10,1,"Recycle",0,0,B.i,0,q,0,q,B.G),"revenge",A.o(100,B.x,0,q,q,q,"Power doubles if the user was hit by the foe earlier in the turn.","revenge",1,10,1,"Revenge",60,-4,B.i,0,q,0,q,B.aA),"brick_break",A.o(100,B.x,0,q,q,q,"Chops fiercely, shattering barriers like Reflect and Light Screen.","brick_break",1,15,1,"Brick Break",75,0,B.i,0,q,0,q,B.aA),"yawn",A.o(100,B.D,0,q,q,q,"A huge yawn lulls the target into falling asleep on the next turn.","yawn",1,10,1,"Yawn",0,0,B.i,0,q,0,q,B.G),"knock_off",A.o(100,B.x,0,q,q,q,"Slaps away and deals bonus damage if the target holds an item.","knock_off",1,20,1,"Knock Off",65,0,B.i,0,q,0,q,B.bl),"endeavor",A.o(100,B.x,0,q,q,q,"Attacks to cut the foe's HP to match the user's remaining HP.","endeavor",1,5,1,"Endeavor",0,0,B.i,0,q,0,q,B.G),"imprison",A.o(100,B.D,0,q,q,q,"Seals moves shared with the user so the foe cannot use them.","imprison",1,10,1,"Imprison",0,0,B.i,0,q,0,q,B.a5),"refresh",A.o(100,B.D,0,q,q,q,"Cures the user of burn, poison, or paralysis.","refresh",1,20,1,"Refresh",0,0,B.i,0,q,0,q,B.G),"grudge",A.o(100,B.D,0,q,q,q,"If KO'd, drains all PP from the move that knocked out the user.","grudge",1,5,1,"Grudge",0,0,B.i,0,q,0,q,B.ba),"dive",A.o(100,B.x,0,q,"hid underwater!",q,a1,"dive",1,10,1,"Dive",80,0,B.fP,0,q,0,q,B.ar),"camouflage",A.o(100,B.D,0,q,q,q,"Adapts the user's type to the battle terrain.","camouflage",1,20,1,"Camouflage",0,0,B.i,0,q,0,q,B.G),"feather_dance",A.o(100,B.D,0,q,q,q,a4,"feather_dance",1,15,1,"Feather Dance",0,0,B.i,-2,p,0,q,B.aM),"blaze_kick",A.o(90,B.x,0,q,q,q,"A Fire-type physical attack, high critical-hit ratio, 10% burn chance.","blaze_kick",1,10,1,"Blaze Kick",85,0,B.i,0,q,10,m,B.aj),"mud_sport",A.o(100,B.D,0,q,q,q,"Splashes mud to halve Electric move power.","mud_sport",1,15,1,"Mud Sport",0,0,B.i,0,q,0,q,B.aL),"slack_off",A.o(100,B.D,0,q,q,q,"Slacks off, restoring half of maximum HP.","slack_off",1,5,1,"Slack Off",0,0,B.i,0,q,0,q,B.G),"hyper_voice",A.o(100,B.P,0,q,q,q,a7,"hyper_voice",1,10,1,"Hyper Voice",90,0,B.i,0,q,0,q,B.G),"poison_fang",A.o(100,B.x,0,q,q,q,"Bites with toxic fangs that may badly poison the target.","poison_fang",1,15,1,"Poison Fang",50,0,B.i,0,q,50,e,B.aK),"crush_claw",A.o(95,B.x,0,q,q,q,"A Normal-type physical attack, 50% chance to lowers Defense.","crush_claw",1,10,1,"Crush Claw",75,0,B.i,0,q,0,q,B.G),"meteor_mash",A.o(90,B.x,0,q,q,q,"A Steel-type physical attack, 20% chance to raises Attack.","meteor_mash",1,10,1,"Meteor Mash",90,0,B.i,0,q,0,q,B.aW),"astonish",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack, 30% flinch chance.","astonish",1,15,1,"Astonish",30,0,B.i,0,q,0,q,B.ba),"aromatherapy",A.o(100,B.D,0,q,q,q,"Releases soothing scent to cure status conditions of the active Pok\xe9mon and party.","aromatherapy",1,5,1,"Aromatherapy",0,0,B.i,0,q,0,q,B.ak),"fake_tears",A.o(100,B.D,0,q,q,q,a8,"fake_tears",1,20,1,"Fake Tears",0,0,B.i,-2,c,0,q,B.bl),"air_cutter",A.o(95,B.P,0,q,q,q,"A Flying-type special attack, high critical-hit ratio.","air_cutter",1,25,1,"Air Cutter",60,0,B.i,0,q,0,q,B.aM),"odor_sleuth",A.o(100,B.D,0,q,q,q,"Identifies elusive targets so Normal/Fighting moves hit Ghost-types.","odor_sleuth",1,40,1,"Odor Sleuth",0,0,B.i,0,q,0,q,B.G),"rock_tomb",A.o(95,B.x,0,q,q,q,"A Rock-type physical attack, 100% chance to lowers Speed.","rock_tomb",1,15,1,"Rock Tomb",60,0,B.i,-1,k,0,q,B.aH),"metal_sound",A.o(85,B.D,0,q,q,q,a8,"metal_sound",1,40,1,"Metal Sound",0,0,B.i,-2,c,0,q,B.aW),"tickle",A.o(100,B.D,0,q,q,q,"Status move that lowers target's Attack, lowers target's Defense.","tickle",1,20,1,"Tickle",0,0,B.i,-1,p,0,q,B.G),"cosmic_power",A.o(100,B.D,0,q,q,q,"Absorbs mystic power to raise Defense and Sp. Def by 1 stage each.","cosmic_power",1,20,1,"Cosmic Power",0,0,B.i,1,o,0,q,B.a5),"signal_beam",A.o(100,B.P,0,q,q,q,"A Bug-type special attack, 10% confusion chance.","signal_beam",1,15,1,"Signal Beam",75,0,B.i,0,q,10,l,B.bk),"shadow_punch",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack.","shadow_punch",1,20,1,"Shadow Punch",60,0,B.i,0,q,0,q,B.ba),"extrasensory",A.o(100,B.P,0,q,q,q,"A Psychic-type special attack, 10% flinch chance.","extrasensory",1,20,1,"Extrasensory",80,0,B.i,0,q,0,q,B.a5),"sky_uppercut",A.o(90,B.x,0,q,q,q,a6,"sky_uppercut",1,15,1,"Sky Uppercut",85,0,B.i,0,q,0,q,B.aA),"sand_tomb",A.o(85,B.x,0,q,q,q,a5,"sand_tomb",1,15,1,"Sand Tomb",35,0,B.hX,0,q,0,q,B.aL),"sheer_cold",A.o(30,B.P,0,q,q,q,"A chilling absolute-zero attack that causes an instant KO if it hits.","sheer_cold",1,5,1,"Sheer Cold",0,0,B.i,0,q,0,q,B.bh),"muddy_water",A.o(85,B.P,0,q,q,q,"A Water-type special attack, 30% chance to lowers Accuracy.","muddy_water",1,10,1,"Muddy Water",90,0,B.i,0,q,0,q,B.ar),"bullet_seed",A.o(100,B.x,0,q,q,q,a2,"bullet_seed",5,30,2,"Bullet Seed",25,0,B.i,0,q,0,q,B.ak),"aerial_ace",A.o(100,B.x,0,q,q,q,a9,"aerial_ace",1,20,1,"Aerial Ace",60,0,B.i,0,q,0,q,B.aM),"icicle_spear",A.o(100,B.x,0,q,q,q,a2,"icicle_spear",5,30,2,"Icicle Spear",25,0,B.i,0,q,0,q,B.bh),"iron_defense",A.o(100,B.D,0,q,q,q,"Hardens the body surface like iron to sharply raise Defense.","iron_defense",1,15,1,"Iron Defense",0,0,B.i,2,o,0,q,B.aW),"block",A.o(100,B.D,0,q,q,q,"Blocks the target's escape path with wide arms.","block",1,5,1,"Block",0,0,B.i,0,q,0,q,B.G),"bounce",A.o(85,B.x,0,q,"sprang high into the air!",q,"A Flying-type physical attack, 30% paralysis chance.","bounce",1,5,1,"Bounce",85,0,B.fP,0,q,30,h,B.aM),"mud_shot",A.o(95,B.P,0,q,q,q,"A Ground-type special attack, 100% chance to lowers Speed.","mud_shot",1,15,1,"Mud Shot",55,0,B.i,-1,k,0,q,B.aL),"covet",A.o(100,B.x,0,q,q,q,"Cutely strikes and steals an unheld target's item.","covet",1,25,1,"Covet",60,0,B.i,0,q,0,q,B.G),"magical_leaf",A.o(100,B.P,0,q,q,q,a0,"magical_leaf",1,20,1,"Magical Leaf",60,0,B.i,0,q,0,q,B.ak),"water_sport",A.o(100,B.D,0,q,q,q,"Soaks the field to halve Fire move power.","water_sport",1,15,1,"Water Sport",0,0,B.i,0,q,0,q,B.ar),"calm_mind",A.o(100,B.D,0,q,q,q,"Focuses the mind to raise both Sp. Atk and Sp. Def by 1 stage.","calm_mind",1,20,1,"Calm Mind",0,0,B.i,1,b0,0,q,B.a5),"leaf_blade",A.o(100,B.x,0,q,q,q,"A Grass-type physical attack, high critical-hit ratio.","leaf_blade",1,15,1,"Leaf Blade",90,0,B.i,0,q,0,q,B.ak),"dragon_dance",A.o(100,B.D,0,q,q,q,"A fierce dance that boosts Attack and Speed by 1 stage each.","dragon_dance",1,20,1,"Dragon Dance",0,0,B.i,1,p,0,q,B.c1),"rock_blast",A.o(90,B.x,0,q,q,q,a2,"rock_blast",5,10,2,"Rock Blast",25,0,B.i,0,q,0,q,B.aH),"roost",A.o(100,B.D,0,q,q,q,"The user lands and rests its body, restoring half its max HP.","roost",1,5,1,"Roost",0,0,B.i,0,q,0,q,B.aM),"gravity",A.o(100,B.D,0,q,q,q,"Intensifies gravity for 5 turns, grounding Flying and Levitate Pok\xe9mon.","gravity",1,5,1,"Gravity",0,0,B.i,0,q,0,q,B.a5),"miracle_eye",A.o(100,B.D,0,q,q,q,"Negates Dark-type immunity to Psychic-type moves.","miracle_eye",1,40,1,"Miracle Eye",0,0,B.i,0,q,0,q,B.a5),"wake_up_slap",A.o(100,B.x,0,q,q,q,"Power doubles against sleeping targets, waking them up.","wake_up_slap",1,10,1,"Wake-Up Slap",70,0,B.i,0,q,0,q,B.aA),"hammer_arm",A.o(90,B.x,0,q,q,q,"Swings a heavy fist for great damage, lowering user Speed.","hammer_arm",1,10,1,"Hammer Arm",100,0,B.i,-1,k,0,q,B.aA),"gyro_ball",A.o(100,B.x,0,q,q,q,"Spins rapidly; deals higher damage the slower the user is compared to the foe.","gyro_ball",1,5,1,"Gyro Ball",0,0,B.i,0,q,0,q,B.aW),"healing_wish",A.o(100,B.D,0,q,q,q,"Faints to fully heal and cure the replacement Pok\xe9mon.","healing_wish",1,10,1,"Healing Wish",0,0,B.i,0,q,0,q,B.a5),"brine",A.o(100,B.P,0,q,q,q,"Power doubles when the target is at half HP or below.","brine",1,10,1,"Brine",65,0,B.i,0,q,0,q,B.ar),"natural_gift",A.o(100,B.x,0,q,q,q,"Draws power from a held Berry to attack.","natural_gift",1,15,1,"Natural Gift",0,0,B.i,0,q,0,q,B.G),"feint",A.o(100,B.x,0,q,q,q,"Breaks through Protect/Detect to strike the target.","feint",1,10,1,"Feint",30,2,B.i,0,q,0,q,B.G),"pluck",A.o(100,B.x,0,q,q,q,"Pecks hard and consumes the target's held Berry if any.","pluck",1,20,1,"Pluck",60,0,B.i,0,q,0,q,B.aM),"tailwind",A.o(100,B.D,0,q,q,q,"Whips up a turbulent whirlwind that doubles Speed for 4 turns.","tailwind",1,15,1,"Tailwind",0,0,B.i,0,q,0,q,B.aM),"acupressure",A.o(100,B.D,0,q,q,q,"A tactical Normal-type status move.","acupressure",1,30,1,"Acupressure",0,0,B.i,0,q,0,q,B.G),"payback",A.o(100,B.x,0,q,q,q,"Power doubles if the user moves after the target.","payback",1,10,1,"Payback",50,0,B.i,0,q,0,q,B.bl),"assurance",A.o(100,B.x,0,q,q,q,"Power doubles if the target has already taken damage this turn.","assurance",1,10,1,"Assurance",60,0,B.i,0,q,0,q,B.bl),"fling",A.o(100,B.x,0,q,q,q,"Hurls the user's held item at the target.","fling",1,10,1,"Fling",0,0,B.i,0,q,0,q,B.bl),"trump_card",A.o(100,B.P,0,q,q,q,"The fewer PP left on this move, the greater its attack power.","trump_card",1,5,1,"Trump Card",0,0,B.i,0,q,0,q,B.G),"wring_out",A.o(100,B.P,0,q,q,q,"Wrings the target tightly; stronger when the target has higher remaining HP.","wring_out",1,5,1,"Wring Out",0,0,B.i,0,q,0,q,B.G),"gastro_acid",A.o(100,B.D,0,q,q,q,"Suppresses the target's Ability until it switches out.","gastro_acid",1,10,1,"Gastro Acid",0,0,B.i,0,q,0,q,B.aK),"lucky_chant",A.o(100,B.D,0,q,q,q,"Chants an incantation that prevents foe critical hits for 5 turns.","lucky_chant",1,30,1,"Lucky Chant",0,0,B.i,0,q,0,q,B.G),"me_first",A.o(100,B.D,0,q,q,q,"Copies and powers up the foe's intended damaging move.","me_first",1,20,1,"Me First",0,0,B.i,0,q,0,q,B.G),"copycat",A.o(100,B.D,0,q,q,q,"Mimics the move used immediately prior in battle.","copycat",1,20,1,"Copycat",0,0,B.i,0,q,0,q,B.G),"power_swap",A.o(100,B.D,0,q,q,q,"Swaps Attack and Sp. Atk stat changes with the target.","power_swap",1,10,1,"Power Swap",0,0,B.i,0,q,0,q,B.a5),"guard_swap",A.o(100,B.D,0,q,q,q,"Swaps Defense and Sp. Def stat changes with the target.","guard_swap",1,10,1,"Guard Swap",0,0,B.i,0,q,0,q,B.a5),"punishment",A.o(100,B.x,0,q,q,q,a3,"punishment",1,5,1,"Punishment",0,0,B.i,0,q,0,q,B.bl),"last_resort",A.o(100,B.x,0,q,q,q,b,"last_resort",1,5,1,"Last Resort",140,0,B.i,0,q,0,q,B.G),"worry_seed",A.o(100,B.D,0,q,q,q,"Changes the target's Ability to Insomnia.","worry_seed",1,10,1,"Worry Seed",0,0,B.i,0,q,0,q,B.ak),"sucker_punch",A.o(100,B.x,0,q,q,q,"Strikes with priority if the target is preparing an attacking move.","sucker_punch",1,5,1,"Sucker Punch",70,1,B.i,0,q,0,q,B.bl),"toxic_spikes",A.o(100,B.D,0,q,q,q,"Scatters poison spikes that poison incoming grounded foes.","toxic_spikes",1,20,1,"Toxic Spikes",0,0,B.i,0,q,0,q,B.aK),"aqua_ring",A.o(100,B.D,0,q,q,q,"Surrounds the user with a veil of water that restores 1/16 max HP each turn.","aqua_ring",1,20,1,"Aqua Ring",0,0,B.i,0,q,0,q,B.ar),"magnet_rise",A.o(100,B.D,0,q,q,q,"Levitates via electromagnetism to evade Ground-type moves for 5 turns.","magnet_rise",1,10,1,"Magnet Rise",0,0,B.i,0,q,0,q,B.bg),"flare_blitz",A.o(100,B.x,0,q,q,q,"Cloaks in flames for massive damage and 1/3 recoil; may burn target.","flare_blitz",1,15,1,"Flare Blitz",120,0,B.i,0,q,10,m,B.aj),"aura_sphere",A.o(100,B.P,0,q,q,q,b1,"aura_sphere",1,20,1,"Aura Sphere",80,0,B.i,0,q,0,q,B.aA),"rock_polish",A.o(100,B.D,0,q,q,q,"Polishes the body to sharply raise Speed by 2 stages.","rock_polish",1,20,1,"Rock Polish",0,0,B.i,2,k,0,q,B.aH),"dark_pulse",A.o(100,B.P,0,q,q,q,"A Dark-type special attack, 20% flinch chance.","dark_pulse",1,15,1,"Dark Pulse",80,0,B.i,0,q,0,q,B.bl),"night_slash",A.o(100,B.x,0,q,q,q,"A Dark-type physical attack, high critical-hit ratio.","night_slash",1,15,1,"Night Slash",70,0,B.i,0,q,0,q,B.bl),"bug_buzz",A.o(100,B.P,0,q,q,q,"A Bug-type special attack, 10% chance to lowers Sp. Def.","bug_buzz",1,10,1,"Bug Buzz",90,0,B.i,0,q,0,q,B.bk),"dragon_pulse",A.o(100,B.P,0,q,q,q,"A Dragon-type special attack.","dragon_pulse",1,10,1,"Dragon Pulse",85,0,B.i,0,q,0,q,B.c1),"dragon_rush",A.o(75,B.x,0,q,q,q,"A Dragon-type physical attack, 20% flinch chance.","dragon_rush",1,10,1,"Dragon Rush",100,0,B.i,0,q,0,q,B.c1),"vacuum_wave",A.o(100,B.P,0,q,q,q,b1,"vacuum_wave",1,30,1,"Vacuum Wave",40,1,B.i,0,q,0,q,B.aA),"brave_bird",A.o(100,B.x,0,q,q,q,"A reckless dive from the sky; user takes 1/3 recoil damage.","brave_bird",1,15,1,"Brave Bird",120,0,B.i,0,q,0,q,B.aM),"earth_power",A.o(100,B.P,0,q,q,q,"A Ground-type special attack, 10% chance to lowers Sp. Def.","earth_power",1,10,1,"Earth Power",90,0,B.i,0,q,0,q,B.aL),"switcheroo",A.o(100,B.D,0,q,q,q,"Trades held items with the target in a flash.","switcheroo",1,10,1,"Switcheroo",0,0,B.i,0,q,0,q,B.bl),"giga_impact",A.o(90,B.x,0,q,q,q,b,"giga_impact",1,5,1,"Giga Impact",150,0,B.wb,0,q,0,q,B.G),"nasty_plot",A.o(100,B.D,0,q,q,q,"Thinks bad thoughts to sharply raise Sp. Atk by 2 stages.","nasty_plot",1,20,1,"Nasty Plot",0,0,B.i,2,b0,0,q,B.bl),"bullet_punch",A.o(100,B.x,0,q,q,q,b2,"bullet_punch",1,30,1,"Bullet Punch",40,1,B.i,0,q,0,q,B.aW),"avalanche",A.o(100,B.x,0,q,q,q,"Power doubles if the user took damage from the target this turn.","avalanche",1,10,1,"Avalanche",60,-4,B.i,0,q,0,q,B.bh),"ice_shard",A.o(100,B.x,0,q,q,q,"A Ice-type physical attack.","ice_shard",1,30,1,"Ice Shard",40,1,B.i,0,q,0,q,B.bh),"shadow_claw",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack, high critical-hit ratio.","shadow_claw",1,15,1,"Shadow Claw",70,0,B.i,0,q,0,q,B.ba),"thunder_fang",A.o(95,B.x,0,q,q,q,"A Electric-type physical attack, 10% flinch chance, 10% paralysis chance.","thunder_fang",1,15,1,"Thunder Fang",65,0,B.i,0,q,10,h,B.bg),"ice_fang",A.o(95,B.x,0,q,q,q,"A Ice-type physical attack, 10% flinch chance, 10% freeze chance.","ice_fang",1,15,1,"Ice Fang",65,0,B.i,0,q,10,f,B.bh),"mud_bomb",A.o(85,B.P,0,q,q,q,"A Ground-type special attack, 30% chance to lowers Accuracy.","mud_bomb",1,10,1,"Mud Bomb",65,0,B.i,0,q,0,q,B.aL),"psycho_cut",A.o(100,B.x,0,q,q,q,"A Psychic-type physical attack, high critical-hit ratio.","psycho_cut",1,20,1,"Psycho Cut",70,0,B.i,0,q,0,q,B.a5),"mirror_shot",A.o(85,B.P,0,q,q,q,"A Steel-type special attack, 30% chance to lowers Accuracy.","mirror_shot",1,10,1,"Mirror Shot",65,0,B.i,0,q,0,q,B.aW),"lava_plume",A.o(100,B.P,0,q,q,q,"A Fire-type special attack, 30% burn chance.","lava_plume",1,15,1,"Lava Plume",80,0,B.i,0,q,30,m,B.aj),"leaf_storm",A.o(90,B.P,0,q,q,q,"Whips up a storm of sharp leaves, then sharply lowers Sp. Atk.","leaf_storm",1,5,1,"Leaf Storm",130,0,B.i,-2,b0,0,q,B.ak),"power_whip",A.o(85,B.x,0,q,q,q,"A Grass-type physical attack.","power_whip",1,10,1,"Power Whip",120,0,B.i,0,q,0,q,B.ak),"cross_poison",A.o(100,B.x,0,q,q,q,"A Poison-type physical attack, high critical-hit ratio, 10% poison chance.","cross_poison",1,20,1,"Cross Poison",70,0,B.i,0,q,10,j,B.aK),"gunk_shot",A.o(80,B.x,0,q,q,q,"A Poison-type physical attack, 30% poison chance.","gunk_shot",1,5,1,"Gunk Shot",120,0,B.i,0,q,30,j,B.aK),"magnet_bomb",A.o(100,B.x,0,q,q,q,b2,"magnet_bomb",1,20,1,"Magnet Bomb",60,0,B.i,0,q,0,q,B.aW),"stone_edge",A.o(80,B.x,0,q,q,q,"A Rock-type physical attack, high critical-hit ratio.","stone_edge",1,5,1,"Stone Edge",100,0,B.i,0,q,0,q,B.aH),"captivate",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Sp. Atk.","captivate",1,20,1,"Captivate",0,0,B.i,-2,b0,0,q,B.G),"stealth_rock",A.o(100,B.D,0,q,q,q,"Surrounds the foe's side with pointed rocks that damage switch-ins.","stealth_rock",1,20,1,"Stealth Rock",0,0,B.i,0,q,0,q,B.aH),"charge_beam",A.o(90,B.P,0,q,q,q,"A Electric-type special attack, 70% chance to raises Sp. Atk.","charge_beam",1,10,1,"Charge Beam",50,0,B.i,0,q,0,q,B.bg),"wood_hammer",A.o(100,B.x,0,q,q,q,"Slams the target with a rugged body, causing 1/3 recoil damage.","wood_hammer",1,15,1,"Wood Hammer",120,0,B.i,0,q,0,q,B.ak),"double_hit",A.o(90,B.x,0,q,q,q,"Hits 2 times.","double_hit",2,10,2,"Double Hit",35,0,B.i,0,q,0,q,B.G),"wide_guard",A.o(100,B.D,0,q,q,q,"Protects against wide-area attacks for one turn.","wide_guard",1,10,1,"Wide Guard",0,3,B.i,0,q,0,q,B.aH),"wonder_room",A.o(100,B.D,0,q,q,q,"Swaps Defense and Sp. Def stats for 5 turns.","wonder_room",1,10,1,"Wonder Room",0,0,B.i,0,q,0,q,B.a5),"psyshock",A.o(100,B.P,0,q,q,q,"Attacks with an odd psychic wave that inflicts physical damage vs target Defense.","psyshock",1,10,1,"Psyshock",80,0,B.i,0,q,0,q,B.a5),"rage_powder",A.o(100,B.D,0,q,q,q,"Scatters irritating powder to redirect incoming attacks.","rage_powder",1,20,1,"Rage Powder",0,2,B.i,0,q,0,q,B.bk),"telekinesis",A.o(100,B.D,0,q,q,q,"Floats the target psychically for 3 turns so attacks land cleanly.","telekinesis",1,15,1,"Telekinesis",0,0,B.i,0,q,0,q,B.a5),"smack_down",A.o(100,B.x,0,q,q,q,"Knocks flying or levitating targets to the ground so Ground moves can hit.","smack_down",1,15,1,"Smack Down",50,0,B.i,0,q,0,q,B.aH),"storm_throw",A.o(100,B.x,0,q,q,q,"A fierce blow that always results in a critical hit.","storm_throw",1,10,1,"Storm Throw",60,0,B.i,0,q,0,q,B.aA),"flame_burst",A.o(100,B.P,0,q,q,q,"A Fire-type special attack.","flame_burst",1,15,1,"Flame Burst",70,0,B.i,0,q,0,q,B.aj),"sludge_wave",A.o(100,B.P,0,q,q,q,"A Poison-type special attack, 10% poison chance.","sludge_wave",1,10,1,"Sludge Wave",95,0,B.i,0,q,10,j,B.aK),"quiver_dance",A.o(100,B.D,0,q,q,q,"A mystical dance that raises Sp. Atk, Sp. Def, and Speed by 1 stage each.","quiver_dance",1,20,1,"Quiver Dance",0,0,B.i,1,b0,0,q,B.bk),"heavy_slam",A.o(100,B.x,0,q,q,q,"Slams the foe with heavy weight; stronger when the user is much heavier.","heavy_slam",1,10,1,"Heavy Slam",0,0,B.i,0,q,0,q,B.aW),"synchronoise",A.o(100,B.P,0,q,q,q,"A powerful shockwave that only hits targets sharing a type with the user.","synchronoise",1,10,1,"Synchronoise",120,0,B.i,0,q,0,q,B.a5),"soak",A.o(100,B.D,0,q,q,q,"Drenches the target, changing its type to pure Water.","soak",1,20,1,"Soak",0,0,B.i,0,q,0,q,B.ar),"flame_charge",A.o(100,B.x,0,q,q,q,"A Fire-type physical attack, 100% chance to raises Speed.","flame_charge",1,20,1,"Flame Charge",50,0,B.i,1,k,0,q,B.aj),"coil",A.o(100,B.D,0,q,q,q,"Coils up to raise Attack, Defense, and Accuracy by 1 stage each.","coil",1,20,1,"Coil",0,0,B.i,1,p,0,q,B.aK),"low_sweep",A.o(100,B.x,0,q,q,q,"A Fighting-type physical attack, 100% chance to lowers Speed.","low_sweep",1,20,1,"Low Sweep",65,0,B.i,-1,k,0,q,B.aA),"acid_spray",A.o(100,B.P,0,q,q,q,"A Poison-type special attack, 100% chance to lowers Sp. Def.","acid_spray",1,20,1,"Acid Spray",40,0,B.i,-2,c,0,q,B.aK),"after_you",A.o(100,B.D,0,q,q,q,"Allows an ally to act right away.","after_you",1,15,1,"After You",0,0,B.i,0,q,0,q,B.G),"round",A.o(100,B.P,0,q,q,q,a7,"round",1,15,1,"Round",60,0,B.i,0,q,0,q,B.G),"chip_away",A.o(100,B.x,0,q,q,q,b,"chip_away",1,20,1,"Chip Away",70,0,B.i,0,q,0,q,B.G),"clear_smog",A.o(100,B.P,0,q,q,q,"Throws a clump of special mud that resets all target stat changes.","clear_smog",1,15,1,"Clear Smog",50,0,B.i,0,q,0,q,B.aK),"stored_power",A.o(100,B.P,0,q,q,q,"Power increases by +20 for every positive stat boost on the user.","stored_power",1,10,1,"Stored Power",20,0,B.i,0,q,0,q,B.a5),"quick_guard",A.o(100,B.D,0,q,q,q,"Protects against priority attacks for one turn.","quick_guard",1,15,1,"Quick Guard",0,3,B.i,0,q,0,q,B.aA),"ally_switch",A.o(100,B.D,0,q,q,q,"Shifts battle position swiftly.","ally_switch",1,15,1,"Ally Switch",0,2,B.i,0,q,0,q,B.a5),"shell_smash",A.o(100,B.D,0,q,q,q,"Lowers Defense & Sp. Def by 1 stage, sharply boosting Attack, Sp. Atk, and Speed by 2.","shell_smash",1,15,1,"Shell Smash",0,0,B.i,-1,o,0,q,B.G),"heal_pulse",A.o(100,B.D,0,q,q,q,"Emits a healing pulse that restores half of target HP.","heal_pulse",1,10,1,"Heal Pulse",0,0,B.i,0,q,0,q,B.a5),"hex",A.o(100,B.P,0,q,q,q,"Power doubles if the target is afflicted with a status condition.","hex",1,10,1,"Hex",65,0,B.i,0,q,0,q,B.ba),"sky_drop",A.o(100,B.x,0,q,"carried the target into the sky!",q,a9,"sky_drop",1,10,1,"Sky Drop",60,0,B.fP,0,q,0,q,B.aM),"circle_throw",A.o(90,B.x,0,q,q,q,"Throws the target, forcing a switch in trainer battles.","circle_throw",1,10,1,"Circle Throw",60,-6,B.i,0,q,0,q,B.aA),"acrobatics",A.o(100,B.x,0,q,q,q,"Strikes deftly; power doubles if the user is holding no item.","acrobatics",1,15,1,"Acrobatics",55,0,B.i,0,q,0,q,B.aM),"reflect_type",A.o(100,B.D,0,q,q,q,"Reflects the target's type, making the user share its typing.","reflect_type",1,15,1,"Reflect Type",0,0,B.i,0,q,0,q,B.G),"retaliate",A.o(100,B.x,0,q,q,q,"Strikes fiercely; deals double damage if an ally fainted recently.","retaliate",1,5,1,"Retaliate",70,0,B.i,0,q,0,q,B.G),"final_gambit",A.o(100,B.P,0,q,q,q,"Sacrifices the user to deal damage equal to its current HP.","final_gambit",1,5,1,"Final Gambit",0,0,B.i,0,q,0,q,B.aA),"bestow",A.o(100,B.D,0,q,q,q,"Hands the user's held item to a target holding nothing.","bestow",1,15,1,"Bestow",0,0,B.i,0,q,0,q,B.G),"inferno",A.o(50,B.P,0,q,q,q,"A Fire-type special attack, 100% burn chance.","inferno",1,5,1,"Inferno",100,0,B.i,0,q,100,m,B.aj),"bulldoze",A.o(100,B.x,0,q,q,q,"A Ground-type physical attack, 100% chance to lowers Speed.","bulldoze",1,20,1,"Bulldoze",60,0,B.i,-1,k,0,q,B.aL),"dragon_tail",A.o(90,B.x,0,q,q,q,"Whips the target away, forcing a switch in trainer battles.","dragon_tail",1,10,1,"Dragon Tail",60,-6,B.i,0,q,0,q,B.c1),"work_up",A.o(100,B.D,0,q,q,q,"Rouses the user to raise both Attack and Sp. Atk by 1 stage.","work_up",1,30,1,"Work Up",0,0,B.i,1,p,0,q,B.G),"heart_stamp",A.o(100,B.x,0,q,q,q,"Strikes after a cute act; may cause flinching.","heart_stamp",1,25,1,"Heart Stamp",60,0,B.i,0,q,0,q,B.a5),"razor_shell",A.o(95,B.x,0,q,q,q,"Slices with a sharp shell; 50% chance to lower Defense.","razor_shell",1,10,1,"Razor Shell",75,0,B.i,0,q,0,q,B.ar),"leaf_tornado",A.o(90,B.P,0,q,q,q,"A Grass-type special attack, 50% chance to lowers Accuracy.","leaf_tornado",1,10,1,"Leaf Tornado",65,0,B.i,0,q,0,q,B.ak),"steamroller",A.o(100,B.x,0,q,q,q,"Crushes the target heavily; may cause flinching.","steamroller",1,20,1,"Steamroller",65,0,B.i,0,q,0,q,B.bk),"psystrike",A.o(100,B.P,0,q,q,q,"Materializes a psychic wave that inflicts physical damage based on target Defense.","psystrike",1,10,1,"Psystrike",100,0,B.i,0,q,0,q,B.a5),"hurricane",A.o(70,B.P,0,q,q,q,"A Flying-type special attack, 30% confusion chance.","hurricane",1,10,1,"Hurricane",110,0,B.i,0,q,30,l,B.aM),"icicle_crash",A.o(90,B.x,0,q,q,q,"Drops large icicles; may cause the target to flinch.","icicle_crash",1,10,1,"Icicle Crash",85,0,B.i,0,q,0,q,B.bh),"torment",A.o(100,B.D,0,q,q,q,"Torments and enrages the target, disrupting repeated moves.","torment",1,15,1,"Torment",0,0,B.i,0,q,0,q,B.bl),"facade",A.o(100,B.x,0,q,q,q,"An attack move that doubles its power if the user is poisoned, burned, or paralyzed.","facade",1,20,1,"Facade",70,0,B.i,0,q,0,q,B.G),"eruption",A.o(100,B.P,0,q,q,q,"The user attacks in an explosive fury; lower user HP reduces its power.","eruption",1,5,1,"Eruption",150,0,B.i,0,q,0,q,B.aj),"arm_thrust",A.o(100,B.x,0,q,q,q,"Lets loose a flurry of open-palmed arm thrusts that strike 2 to 5 times.","arm_thrust",5,20,2,"Arm Thrust",15,0,B.i,0,q,0,q,B.aA),"bulk_up",A.o(100,B.D,0,q,q,q,"Tenses muscles to bulk up the body, raising both Attack and Defense.","bulk_up",1,20,1,"Bulk Up",0,0,B.i,1,p,0,q,B.aA),"energy_ball",A.o(100,B.P,0,q,q,q,"Draws power from nature and fires it at the target; may lower Sp. Def.","energy_ball",1,10,1,"Energy Ball",90,0,B.i,0,q,0,q,B.ak),"head_smash",A.o(80,B.x,0,q,q,q,"An all-out, hazardous headbutt that inflicts massive 50% recoil damage.","head_smash",1,5,1,"Head Smash",150,0,B.i,0,q,0,q,B.aH),"heat_crash",A.o(100,B.x,0,q,q,q,"Slams the target with a flame-cloaked body; stronger if the user is heavier.","heat_crash",1,10,1,"Heat Crash",60,0,B.i,0,q,0,q,B.aj)],t.N,t.EW)})
-s($,"bnY","e9",()=>A.aK([1,B.aVv,2,B.aTN,3,B.aVe,4,B.aT8,5,B.aUK,6,B.aSY,7,B.aUU,8,B.aVj,9,B.aVC,10,B.aVG,11,B.aUc,12,B.aUS,13,B.aUZ,14,B.aVc,15,B.aUk,16,B.aUr,17,B.aTY,18,B.aTE,19,B.aUC,20,B.aVh,25,B.aUT,26,B.aV6,21,B.aU1,22,B.aVu,23,B.aTZ,24,B.aVJ,27,B.aTR,28,B.aTA,29,B.aT6,30,B.aUs,31,B.aUM,32,B.aT0,33,B.aSR,34,B.aV9,35,B.aU5,36,B.aT3,37,B.aVL,38,B.aUj,39,B.aTK,40,B.aTr,43,B.aSV,44,B.aTV,45,B.aTs,63,B.aTc,64,B.aUp,65,B.aUA,69,B.aVi,70,B.aT2,71,B.aTl,72,B.aTI,73,B.aVp,74,B.aUY,75,B.aUJ,76,B.aTT,77,B.aTi,78,B.aVn,79,B.aTC,80,B.aU3,81,B.aUI,82,B.aVm,95,B.aU9,120,B.aUG,121,B.aTf,129,B.aT4,130,B.aVd,131,B.aTD,132,B.aTe,133,B.aSZ,134,B.aUL,135,B.aVD,136,B.aVr,137,B.aTy,138,B.aVb,139,B.aVx,140,B.aTo,141,B.aVf,142,B.aT_,143,B.aTk,147,B.aTt,148,B.aUe,149,B.aTB,144,B.aUo,145,B.aUq,146,B.aUH,150,B.aUQ,151,B.aV8,41,B.aV3,42,B.aVE,46,B.aV4,47,B.aTJ,48,B.aTg,49,B.aTO,50,B.aSW,51,B.aTb,52,B.aVK,53,B.aSS,54,B.aUE,55,B.aSQ,56,B.aUN,57,B.aVs,58,B.aUi,59,B.aT9,60,B.aTh,61,B.aVt,62,B.aTU,66,B.aVI,67,B.aTz,68,B.aSO,83,B.aU_,84,B.aU6,85,B.aVq,86,B.aVg,87,B.aUl,88,B.aT7,89,B.aUn,90,B.aUR,91,B.aTv,92,B.aTX,93,B.aUW,94,B.aVl,96,B.aVB,97,B.aUt,98,B.aU0,99,B.aUf,100,B.aV1,101,B.aTa,102,B.aUF,103,B.aTw,104,B.aVk,105,B.aTn,106,B.aTH,107,B.aVa,108,B.aTL,109,B.aUu,110,B.aTS,111,B.aUB,112,B.aVo,113,B.aTd,114,B.aUh,115,B.aTj,116,B.aTq,117,B.aUP,118,B.aSX,119,B.aUz,122,B.aVA,123,B.aU8,124,B.aTu,125,B.aVH,126,B.aU4,127,B.aST,128,B.aTF,152,B.aUO,153,B.aTW,154,B.aV0,155,B.aU7,156,B.aSU,157,B.aT1,158,B.aTM,159,B.aVy,160,B.aV2,252,B.aVw,253,B.aV_,254,B.aUw,255,B.aVz,256,B.aUx,257,B.aTG,258,B.aUD,259,B.aUa,260,B.aUv,387,B.aUg,388,B.aTm,389,B.aTx,390,B.aV7,391,B.aUV,392,B.aVF,393,B.aTp,394,B.aV5,395,B.aU2,495,B.aTQ,496,B.aUb,497,B.aUy,498,B.aUd,499,B.aUm,500,B.aTP,501,B.aSP,502,B.aUX,503,B.aT5],t.S,A.aX("ab")))
+return A.aK(["tackle",A.o(100,B.x,0,q,q,q,"A physical charge attack.","tackle",1,35,1,"Tackle",40,0,B.i,0,q,0,q,B.G),"scratch",A.o(100,B.x,0,q,q,q,"Hard, pointed, sharp claws rake the target.","scratch",1,35,1,"Scratch",40,0,B.i,0,q,0,q,B.G),"quick_attack",A.o(100,B.x,0,q,q,q,"An almost invisibly fast strike with high priority.","quick_attack",1,30,1,"Quick Attack",40,1,B.i,0,q,0,q,B.G),"hyper_fang",A.o(90,B.x,0,q,q,q,"Bites hard on the target with sharp front fangs.","hyper_fang",1,15,1,"Hyper Fang",80,0,B.i,0,q,0,q,B.G),"slash",A.o(100,B.x,0,q,q,q,"The target is attacked with a slash of claws or blades.","slash",1,20,1,"Slash",70,0,B.i,0,q,0,q,B.G),"growl",A.o(100,B.D,0,q,q,q,"Growls endearingly, lowering the target's Attack.","growl",1,40,1,"Growl",0,0,B.i,-1,p,0,q,B.G),"tail_whip",A.o(100,B.D,0,q,q,q,"Wags its tail to lower the target's Defense.","tail_whip",1,30,1,"Tail Whip",0,0,B.i,-1,o,0,q,B.G),"harden",A.o(100,B.D,0,q,q,q,"Stiffens all muscles to raise Defense.","harden",1,30,1,"Harden",0,0,B.i,1,o,0,q,B.G),"swords_dance",A.o(100,B.D,0,q,q,q,"A frenetic dance that sharply raises Attack.","swords_dance",1,20,1,"Swords Dance",0,0,B.i,2,p,0,q,B.G),"vine_whip",A.o(100,B.x,0,q,q,q,"The target is struck with slender, whiplike vines.","vine_whip",1,25,1,"Vine Whip",45,0,B.i,0,q,0,q,B.ak),"razor_leaf",A.o(95,B.x,0,q,q,q,"Sharp-edged leaves are launched to slice the target.","razor_leaf",1,25,1,"Razor Leaf",55,0,B.i,0,q,0,q,B.ak),"solar_beam",A.o(100,B.P,0,q,"absorbed light!",q,"Absorbs sunlight on turn 1, then blasts a powerful solar beam on turn 2.","solar_beam",1,10,1,"Solar Beam",120,0,B.hW,0,q,0,q,B.ak),"sleep_powder",A.o(75,B.D,0,q,q,q,"Scatters a big cloud of sleep-inducing dust.","sleep_powder",1,15,1,"Sleep Powder",0,0,B.i,0,q,100,n,B.ak),"ember",A.o(100,B.P,0,q,q,q,"Small flames that may inflict a burn.","ember",1,25,1,"Ember",40,0,B.i,0,q,10,m,B.aj),"fire_fang",A.o(95,B.x,0,q,q,q,"Bites with flame-cloaked fangs; may cause a burn.","fire_fang",1,15,1,"Fire Fang",65,0,B.i,0,q,20,m,B.aj),"flamethrower",A.o(100,B.P,0,q,q,q,"Scorches the target with an intense blast of fire.","flamethrower",1,15,1,"Flamethrower",90,0,B.i,0,q,15,m,B.aj),"fire_blast",A.o(85,B.P,0,q,q,q,"An intense blast of all-consuming fire.","fire_blast",1,5,1,"Fire Blast",110,0,B.i,0,q,20,m,B.aj),"water_gun",A.o(100,B.P,0,q,q,q,"Blasts the target with a forceful shot of water.","water_gun",1,25,1,"Water Gun",40,0,B.i,0,q,0,q,B.ar),"water_pulse",A.o(100,B.P,0,q,q,q,"Attacks the target with a pulsing blast of water; may confuse.","water_pulse",1,20,1,"Water Pulse",60,0,B.i,0,q,20,l,B.ar),"surf",A.o(100,B.P,0,q,q,q,"Swamps the battlefield with a giant wave.","surf",1,15,1,"Surf",90,0,B.i,0,q,0,q,B.ar),"hydro_pump",A.o(80,B.P,0,q,q,q,"Blasts the target with high-pressure water.","hydro_pump",1,5,1,"Hydro Pump",110,0,B.i,0,q,0,q,B.ar),"string_shot",A.o(95,B.D,0,q,q,q,"Binds the target with silk, lowering its Speed.","string_shot",1,40,1,"String Shot",0,0,B.i,-1,k,0,q,B.bk),"bug_bite",A.o(100,B.x,0,q,q,q,"The user bites the target forcefully.","bug_bite",1,20,1,"Bug Bite",60,0,B.i,0,q,0,q,B.bk),"twinneedle",A.o(100,B.x,0,q,q,q,"Jabs the target twice with twin stingers; each hit may poison.","twinneedle",2,20,2,"Twineedle",25,0,B.i,0,q,20,j,B.bk),"silver_wind",A.o(100,B.P,0,q,q,q,"Powdery scales are blown at the target on a gust.","silver_wind",1,5,1,"Silver Wind",60,0,B.i,0,q,0,q,B.bk),"poison_sting",A.o(100,B.x,0,q,q,q,"Stabs with a toxic barb; may poison the target.","poison_sting",1,35,1,"Poison Sting",25,0,B.i,0,q,30,j,B.aK),"poison_powder",A.o(75,B.D,0,q,q,q,"Scatters toxic dust that poisons the target.","poison_powder",1,35,1,"Poison Powder",0,0,B.i,0,q,100,j,B.aK),"sludge_bomb",A.o(100,B.P,0,q,q,q,i,"sludge_bomb",1,10,1,"Sludge Bomb",90,0,B.i,0,q,30,j,B.aK),"poison_jab",A.o(100,B.x,0,q,q,q,"Stabs the target with a tentacle or arm steeped in poison.","poison_jab",1,20,1,"Poison Jab",80,0,B.i,0,q,30,j,B.aK),"gust",A.o(100,B.P,0,q,q,q,"A gust of wind whipped up by wings.","gust",1,35,1,"Gust",40,0,B.i,0,q,0,q,B.aM),"wing_attack",A.o(100,B.x,0,q,q,q,"Strikes the target with large, imposing wings.","wing_attack",1,35,1,"Wing Attack",60,0,B.i,0,q,0,q,B.aM),"air_slash",A.o(95,B.P,0,q,q,q,"Attacks with a blade of air that slices even the sky.","air_slash",1,15,1,"Air Slash",75,0,B.i,0,q,0,q,B.aM),"agility",A.o(100,B.D,0,q,q,q,"Relaxes and lightens the body to sharply boost Speed.","agility",1,30,1,"Agility",0,0,B.i,2,k,0,q,B.a5),"thunder_shock",A.o(100,B.P,0,q,q,q,"A jolt of electricity; may cause paralysis.","thunder_shock",1,30,1,"Thunder Shock",40,0,B.i,0,q,10,h,B.bg),"electro_ball",A.o(100,B.P,0,q,q,q,"Hurls an electric orb at the target.","electro_ball",1,10,1,"Electro Ball",65,0,B.i,0,q,0,q,B.bg),"thunderbolt",A.o(100,B.P,0,q,q,q,"A strong electric blast crashes down on the target.","thunderbolt",1,15,1,"Thunderbolt",90,0,B.i,0,q,15,h,B.bg),"thunder_wave",A.o(90,B.D,0,q,q,q,"A weak electric charge that paralyzes the target.","thunder_wave",1,20,1,"Thunder Wave",0,0,B.i,0,q,100,h,B.bg),"confusion",A.o(100,B.P,0,q,q,q,"Hit by a weak telekinetic force; may leave the target confused.",l,1,25,1,"Confusion",50,0,B.i,0,q,10,l,B.a5),"psybeam",A.o(100,B.P,0,q,q,q,"Attacks the target with a peculiar ray; may confuse.","psybeam",1,20,1,"Psybeam",65,0,B.i,0,q,10,l,B.a5),"bite",A.o(100,B.x,0,q,q,q,"The target is bitten with viciously sharp fangs.","bite",1,25,1,"Bite",60,0,B.i,0,q,0,q,B.bl),"crunch",A.o(100,B.x,0,q,q,q,"Crunches up the target with sharp fangs.","crunch",1,15,1,"Crunch",80,0,B.i,0,q,0,q,B.bl),"peck",A.o(100,B.x,0,q,q,q,"Jabs the target with a sharply pointed beak or horn.","peck",1,35,1,"Peck",35,0,B.i,0,q,0,q,B.aM),"drill_peck",A.o(100,B.x,0,q,q,q,"A corkscrewing attack with the beak acting like a drill.","drill_peck",1,20,1,"Drill Peck",80,0,B.i,0,q,0,q,B.aM),"double_kick",A.o(100,B.x,0,q,q,q,"Strikes the target twice in succession with rapid kicks.","double_kick",2,30,2,"Double Kick",30,0,B.i,0,q,0,q,B.aA),"mud_slap",A.o(100,B.P,0,q,q,q,"Hurls mud in the target's face to inflict damage and lower Accuracy.","mud_slap",1,20,1,"Mud-Slap",30,0,B.i,-1,g,0,q,B.aL),"dig",A.o(100,B.x,0,q,"burrowed its way under the ground!",q,"Burrows underground on turn 1 to dodge attacks, then strikes from below on turn 2.","dig",1,10,1,"Dig",80,0,B.fP,0,q,0,q,B.aL),"earthquake",A.o(100,B.x,0,q,q,q,"Sets off an earthquake that shakes the entire arena.","earthquake",1,10,1,"Earthquake",100,0,B.i,0,q,0,q,B.aL),"rock_throw",A.o(90,B.x,0,q,q,q,"Drops heavy stones onto the target.","rock_throw",1,15,1,"Rock Throw",50,0,B.i,0,q,0,q,B.aH),"rock_slide",A.o(90,B.x,0,q,q,q,"Large boulders are hurled crashing down on the foe.","rock_slide",1,10,1,"Rock Slide",75,0,B.i,0,q,0,q,B.aH),"power_gem",A.o(100,B.P,0,q,q,q,"Fires a focused ray of light that sparkles like gemstones.","power_gem",1,20,1,"Power Gem",80,0,B.i,0,q,0,q,B.aH),"sing",A.o(65,B.D,0,q,q,q,"A soothing lullaby that puts the target in a deep sleep.","sing",1,15,1,"Sing",0,0,B.i,0,q,100,n,B.G),"body_slam",A.o(100,B.x,0,q,q,q,"Drops its full body weight onto the target; may paralyze.","body_slam",1,15,1,"Body Slam",85,0,B.i,0,q,30,h,B.G),"swift",A.o(100,B.P,0,q,q,q,"Star-shaped rays are shot at the target and never miss.","swift",1,20,1,"Swift",60,0,B.i,0,q,0,q,B.G),"splash",A.o(100,B.D,0,q,q,q,"Flops and splashes around without having any effect.","splash",1,40,1,"Splash",0,0,B.i,0,q,0,q,B.G),"disarming_voice",A.o(100,B.P,0,q,q,q,"Lets out a charming cry that does emotional damage.","disarming_voice",1,15,1,"Disarming Voice",45,0,B.i,0,q,0,q,B.df),"moonblast",A.o(100,B.P,0,q,q,q,"Borrows the power of the moon to attack the target.","moonblast",1,15,1,"Moonblast",95,0,B.i,0,q,0,q,B.df),"acid",A.o(100,B.P,0,q,q,q,"Sprays harsh hide-melting acid; may inflict poison.","acid",1,30,1,"Acid",40,0,B.i,0,q,20,j,B.aK),"glare",A.o(90,B.D,0,q,q,q,"Intimidates the target with gleaming eyes to paralyze it.","glare",1,30,1,"Glare",0,0,B.i,0,q,100,h,B.G),"aqua_tail",A.o(90,B.x,0,q,q,q,"Swings its tail as if it were a vicious wave in a raging storm.","aqua_tail",1,10,1,"Aqua Tail",90,0,B.i,0,q,0,q,B.ar),"absorb",A.o(100,B.P,0,q,q,q,"A nutrient-draining grass attack. Half the damage dealt is restored as HP.","absorb",1,25,1,"Absorb",35,0,B.i,0,q,0,q,B.ak),"leech_seed",A.o(90,B.D,0,q,q,q,"Plants a seed on the target that drains 1/8 of its max HP each turn to heal the user.","leech_seed",1,10,1,"Leech Seed",0,0,B.i,0,q,0,q,B.ak),"petal_blizzard",A.o(100,B.x,0,q,q,q,"Stirs up a violent storm of sharp petals.","petal_blizzard",1,15,1,"Petal Blizzard",90,0,B.i,0,q,0,q,B.ak),"psychic",A.o(100,B.P,0,q,q,q,"Strikes the target with a strong telekinetic force.","psychic",1,10,1,"Psychic",90,0,B.i,0,q,0,q,B.a5),"karate_chop",A.o(100,B.x,0,q,q,q,"A sharp chopping blow delivered with high critical focus.","karate_chop",1,25,1,"Karate Chop",50,0,B.i,0,q,0,q,B.aA),"submission",A.o(80,B.x,0,q,q,q,"Grabs and slams the target recklessly to the ground.","submission",1,20,1,"Submission",80,0,B.i,0,q,0,q,B.aA),"cross_chop",A.o(80,B.x,0,q,q,q,"Delivers a double chop with crossed forearms.","cross_chop",1,5,1,"Cross Chop",100,0,B.i,0,q,0,q,B.aA),"pay_day",A.o(100,B.x,0,q,q,q,"Numerous coins are hurled at the target.","pay_day",1,20,1,"Pay Day",40,0,B.i,0,q,0,q,B.G),"fury_swipes",A.o(80,B.x,0,q,q,q,"Rakes the target rapidly with sharp claws 2 to 5 times in a row.","fury_swipes",5,15,2,"Fury Swipes",18,0,B.i,0,q,0,q,B.G),"horn_attack",A.o(100,B.x,0,q,q,q,"Jabs the target with a sharply pointed horn.","horn_attack",1,25,1,"Horn Attack",65,0,B.i,0,q,0,q,B.G),"sonic_boom",A.o(90,B.P,0,q,q,q,"Launches destructive shockwaves at the target.","sonic_boom",1,20,1,"Sonic Boom",55,0,B.i,0,q,0,q,B.G),"bubble_beam",A.o(100,B.P,0,q,q,q,"Forcefully sprays bubbles that may lower Speed.","bubble_beam",1,20,1,"Bubble Beam",65,0,B.i,-1,k,0,q,B.ar),"waterfall",A.o(100,B.x,0,q,q,q,"Charges at the target like climbing a waterfall.","waterfall",1,15,1,"Waterfall",80,0,B.i,0,q,0,q,B.ar),"crabhammer",A.o(90,B.x,0,q,q,q,"A giant pincer hammers the target with crushing force.","crabhammer",1,10,1,"Crabhammer",100,0,B.i,0,q,0,q,B.ar),"aurora_beam",A.o(100,B.P,0,q,q,q,"A rainbow-colored beam that may lower Attack.","aurora_beam",1,20,1,"Aurora Beam",65,0,B.i,-1,p,0,q,B.bh),"ice_beam",A.o(100,B.P,0,q,q,q,"Strikes the target with an icy-cold beam; may freeze.","ice_beam",1,10,1,"Ice Beam",90,0,B.i,0,q,10,f,B.bh),"spore",A.o(100,B.D,0,q,q,q,"Scatters bursts of sleep-inducing spores.","spore",1,15,1,"Spore",0,0,B.i,0,q,100,n,B.ak),"x_scissor",A.o(100,B.x,0,q,q,q,"Slashes at the target by crossing scythes or claws like scissors.","x_scissor",1,15,1,"X-Scissor",80,0,B.i,0,q,0,q,B.bk),"hypnosis",A.o(60,B.D,0,q,q,q,"Hypnotic suggestion puts the target into a deep sleep.","hypnosis",1,20,1,"Hypnosis",0,0,B.i,0,q,100,n,B.a5),"lick",A.o(100,B.x,0,q,q,q,"Licks with a long tongue; may cause paralysis.","lick",1,30,1,"Lick",30,0,B.i,0,q,30,h,B.ba),"night_shade",A.o(100,B.P,0,q,q,q,"Makes the target see a frightening mirage.","night_shade",1,15,1,"Night Shade",65,0,B.i,0,q,0,q,B.ba),"shadow_ball",A.o(100,B.P,0,q,q,q,"Hurls a shadowy blob at the target.","shadow_ball",1,15,1,"Shadow Ball",80,0,B.i,0,q,0,q,B.ba),"headbutt",A.o(100,B.x,0,q,q,q,"The user sticks out its head and attacks by ramming into the target.","headbutt",1,15,1,"Headbutt",70,0,B.i,0,q,0,q,B.G),"take_down",A.o(85,B.x,0,q,q,q,"A reckless full-body charge attack.","take_down",1,20,1,"Take Down",90,0,B.i,0,q,0,q,B.G),"stomp",A.o(100,B.x,0,q,q,q,"The target is stomped with a big foot.","stomp",1,20,1,"Stomp",65,0,B.i,0,q,0,q,B.G),"mega_punch",A.o(85,B.x,0,q,q,q,"The target is slugged by a punch thrown with muscle-packed power.","mega_punch",1,20,1,"Mega Punch",80,0,B.i,0,q,0,q,B.G),"mega_kick",A.o(75,B.x,0,q,q,q,"The target is attacked by a kick powered with great force.","mega_kick",1,5,1,"Mega Kick",120,0,B.i,0,q,0,q,B.G),"hyper_beam",A.o(90,B.P,0,q,q,q,"A colossal beam of intense energy is blasted at the target; requires a recharge turn.","hyper_beam",1,5,1,"Hyper Beam",150,0,B.wb,0,q,0,q,B.G),"fire_punch",A.o(100,B.x,0,q,q,q,"The target is punched with a fiery fist.","fire_punch",1,15,1,"Fire Punch",75,0,B.i,0,q,10,m,B.aj),"ice_punch",A.o(100,B.x,0,q,q,q,"The target is punched with an icy fist; may freeze.","ice_punch",1,15,1,"Ice Punch",75,0,B.i,0,q,10,f,B.bh),"thunder_punch",A.o(100,B.x,0,q,q,q,"The target is punched with an electrified fist.","thunder_punch",1,15,1,"Thunder Punch",75,0,B.i,0,q,10,h,B.bg),"blizzard",A.o(70,B.P,0,q,q,q,"A howling blizzard is summoned to strike the opposing Pok\xe9mon; may freeze.","blizzard",1,5,1,"Blizzard",110,0,B.i,0,q,10,f,B.bh),"thunder",A.o(70,B.P,0,q,q,q,"A wicked thunderbolt drops on the target to inflict damage.","thunder",1,10,1,"Thunder",110,0,B.i,0,q,30,h,B.bg),"sludge",A.o(100,B.P,0,q,q,q,i,"sludge",1,20,1,"Sludge",65,0,B.i,0,q,30,j,B.aK),"toxic",A.o(90,B.D,0,q,q,q,"A move that leaves the target badly poisoned, dealing escalating damage each turn.","toxic",1,10,1,"Toxic",0,0,B.i,0,q,100,e,B.aK),"bone_club",A.o(85,B.x,0,q,q,q,"The user clubs the target with a bone.","bone_club",1,20,1,"Bone Club",65,0,B.i,0,q,0,q,B.aL),"bonemerang",A.o(90,B.x,0,q,q,q,"Throws a bone that strikes the target twice in a row.","bonemerang",2,10,2,"Bonemerang",50,0,B.i,0,q,0,q,B.aL),"drill_run",A.o(95,B.x,0,q,q,q,"The user crashes into the target while rotating like a drill.","drill_run",1,10,1,"Drill Run",80,0,B.i,0,q,0,q,B.aL),"horn_drill",A.o(50,B.x,0,q,q,q,"The user spins its horn like a drill and rams the foe.","horn_drill",1,5,1,"Horn Drill",130,0,B.i,0,q,0,q,B.G),"tri_attack",A.o(100,B.P,0,q,q,q,"The user strikes with a simultaneous blast of three beams.","tri_attack",1,10,1,"Tri Attack",80,0,B.i,0,q,0,q,B.G),"pin_missile",A.o(95,B.x,0,q,q,q,"Sharp pins are fired repeatedly at the target 2 to 5 times.","pin_missile",5,20,2,"Pin Missile",25,0,B.i,0,q,0,q,B.bk),"dragon_rage",A.o(100,B.P,0,q,q,q,"This attack hits the target with shock waves of pure draconic wrath.","dragon_rage",1,10,1,"Dragon Rage",40,0,B.i,0,q,0,q,B.c1),"dragon_claw",A.o(100,B.x,0,q,q,q,"The user slashes the target with huge, sharp claws.","dragon_claw",1,15,1,"Dragon Claw",80,0,B.i,0,q,0,q,B.c1),"dragon_breath",A.o(100,B.P,0,q,q,q,"The user exhales a breath of draconic fire.","dragon_breath",1,20,1,"Dragon Breath",60,0,B.i,0,q,30,h,B.c1),"outrage",A.o(100,B.x,0,q,q,q,d,"outrage",1,10,1,"Outrage",120,0,B.wc,0,q,0,q,B.c1),"ancient_power",A.o(100,B.P,0,q,q,q,"The user attacks with prehistoric power.","ancient_power",1,5,1,"Ancient Power",60,0,B.i,0,q,0,q,B.aH),"egg_bomb",A.o(75,B.x,0,q,q,q,"A large egg is hurled with great force at the target.","egg_bomb",1,10,1,"Egg Bomb",100,0,B.i,0,q,0,q,B.G),"fire_spin",A.o(85,B.P,0,q,q,q,"Traps the target in an intense vortex of fire for 4 to 5 turns.","fire_spin",1,15,1,"Fire Spin",35,0,B.hX,0,q,0,q,B.aj),"rest",A.o(100,B.D,0,q,q,q,"The user goes to sleep to fully restore its HP and cure status ailments.","rest",1,10,1,"Rest",0,0,B.i,0,q,0,q,B.a5),"flash_cannon",A.o(100,B.P,0,q,q,q,"The user gathers all its light energy and releases it at once.","flash_cannon",1,10,1,"Flash Cannon",80,0,B.i,0,q,0,q,B.aW),"mach_punch",A.o(100,B.x,0,q,q,q,"The user throws a punch at blinding speed.","mach_punch",1,30,1,"Mach Punch",40,1,B.i,0,q,0,q,B.aA),"close_combat",A.o(100,B.x,0,q,q,q,"The user fights up close without guarding itself.","close_combat",1,5,1,"Close Combat",120,0,B.i,0,q,0,q,B.aA),"rollout",A.o(90,B.x,0,q,q,q,"Rolls into the target for up to 5 turns, doubling power each hit.","rollout",1,20,1,"Rollout",30,0,B.OC,0,q,0,q,B.aH),"explosion",A.o(100,B.x,0,q,q,q,"The user explodes to inflict massive damage, causing it to faint.","explosion",1,5,1,"Explosion",250,0,B.i,0,q,0,q,B.G),"extreme_speed",A.o(100,B.x,0,q,q,q,"The user charges the target at blinding, supersonic speed.","extreme_speed",1,5,1,"Extreme Speed",80,2,B.i,0,q,0,q,B.G),"seed_bomb",A.o(100,B.x,0,q,q,q,"A barrage of hard-shelled seeds is slammed onto the target.","seed_bomb",1,15,1,"Seed Bomb",80,0,B.i,0,q,0,q,B.ak),"transform",A.o(100,B.D,0,q,q,q,"The user transforms into a copy of the target Pok\xe9mon.","transform",1,10,1,"Transform",0,0,B.i,0,q,0,q,B.G),"struggle",A.o(100,B.x,0,q,q,q,"An attack that is used in desperation.","struggle",1,1,1,"Struggle",50,0,B.i,0,q,0,q,B.G),"poison_gas",A.o(90,B.D,0,q,q,q,"A cloud of toxic gas is sprayed into the foe.","poison_gas",1,40,1,"Poison Gas",0,0,B.i,0,q,100,j,B.aK),"acid_armor",A.o(100,B.D,0,q,q,q,"The user alters its cellular structure to liquefy and sharply raise defense.","acid_armor",1,20,1,"Acid Armor",0,0,B.i,2,o,0,q,B.aK),"confuse_ray",A.o(100,B.D,0,q,q,q,"A sinister ray of light that confuses the foe.","confuse_ray",1,10,1,"Confuse Ray",0,0,B.i,0,q,100,l,B.ba),"fury_attack",A.o(85,B.x,0,q,q,q,"The target is jabbed repeatedly 2 to 5 times with a beak or horn.","fury_attack",5,20,2,"Fury Attack",15,0,B.i,0,q,0,q,B.G),"pound",A.o(100,B.x,0,q,q,q,"The target is physically pounded with a long tail or forelegs.","pound",1,35,1,"Pound",40,0,B.i,0,q,0,q,B.G),"comet_punch",A.o(85,B.x,0,q,q,q,"The target is hit with a flurry of 2 to 5 punches.","comet_punch",5,15,2,"Comet Punch",18,0,B.i,0,q,0,q,B.G),"wrap",A.o(90,B.x,0,q,q,q,"Wraps and squeezes the target for 4 to 5 turns.","wrap",1,20,1,"Wrap",15,0,B.hX,0,q,0,q,B.G),"slam",A.o(75,B.x,0,q,q,q,"The target is slammed with a long tail, vine, or its whole body.","slam",1,20,1,"Slam",80,0,B.i,0,q,0,q,B.G),"smokescreen",A.o(100,B.D,0,q,q,q,"Looses an obscuring cloud of smoke or ink that lowers the target's Accuracy.","smokescreen",1,20,1,"Smokescreen",0,0,B.i,-1,g,0,q,B.G),"double_slap",A.o(85,B.x,0,q,q,q,"The target is slapped repeatedly 2 to 5 times in quick succession.","double_slap",5,10,2,"Double Slap",15,0,B.i,0,q,0,q,B.G),"soft_boiled",A.o(100,B.D,0,q,q,q,"Restores the user's HP by up to half of its max HP.","soft_boiled",1,10,1,"Soft-Boiled",0,0,B.i,0,q,0,q,B.G),"light_screen",A.o(100,B.D,0,q,q,q,"A wondrous wall of light is put up to suppress special damage.","light_screen",1,30,1,"Light Screen",0,0,B.i,2,c,0,q,B.a5),"mega_drain",A.o(100,B.P,0,q,q,q,"A nutrient-draining attack. Half the damage dealt is restored as HP.","mega_drain",1,15,1,"Mega Drain",40,0,B.i,0,q,0,q,B.ak),"giga_drain",A.o(100,B.P,0,q,q,q,"A powerful nutrient-draining attack. Restores HP.","giga_drain",1,10,1,"Giga Drain",75,0,B.i,0,q,0,q,B.ak),"dizzy_punch",A.o(100,B.x,0,q,q,q,"The target is hit with rhythmic punches; may cause confusion.","dizzy_punch",1,10,1,"Dizzy Punch",70,0,B.i,0,q,20,l,B.G),"powder_snow",A.o(100,B.P,0,q,q,q,"The user attacks with a chilling gust of powdery snow; may freeze.","powder_snow",1,25,1,"Powder Snow",40,0,B.i,0,q,10,f,B.bh),"shock_wave",A.o(100,B.P,0,q,q,q,"The user strikes the target with a quick jolt of electricity.","shock_wave",1,20,1,"Shock Wave",60,0,B.i,0,q,0,q,B.bg),"vise_grip",A.o(100,B.x,0,q,q,q,"Huge, impressive pincers grip and squeeze the target.","vise_grip",1,30,1,"Vise Grip",55,0,B.i,0,q,0,q,B.G),"seismic_toss",A.o(100,B.x,0,q,q,q,"The target is thrown using the power of gravity.","seismic_toss",1,20,1,"Seismic Toss",60,0,B.i,0,q,0,q,B.aA),"guillotine",A.o(30,B.x,0,q,q,q,"A vicious, tearing attack with big pincers.","guillotine",1,5,1,"Guillotine",130,0,B.i,0,q,0,q,B.G),"zen_headbutt",A.o(90,B.x,0,q,q,q,"The user focuses its willpower to its head and attacks the target.","zen_headbutt",1,15,1,"Zen Headbutt",80,0,B.i,0,q,0,q,B.a5),"flame_wheel",A.o(100,B.x,0,q,q,q,"The user cloaks itself in fire and charges at the target.","flame_wheel",1,25,1,"Flame Wheel",60,0,B.i,0,q,10,m,B.aj),"sharpen",A.o(100,B.D,0,q,q,q,"The user makes its edges more jagged, raising its Attack stat.","sharpen",1,30,1,"Sharpen",0,0,B.i,1,p,0,q,B.G),"recover",A.o(100,B.D,0,q,q,q,"A self-healing move that restores up to half of the user's max HP.","recover",1,10,1,"Recover",0,0,B.i,0,q,0,q,B.G),"discharge",A.o(100,B.P,0,q,q,q,"A flare of electricity is loosed to attack everyone around the user.","discharge",1,15,1,"Discharge",80,0,B.i,0,q,30,h,B.bg),"spike_cannon",A.o(100,B.x,0,q,q,q,"Sharp spikes are shot at the target 2 to 5 times in rapid bursts.","spike_cannon",5,15,2,"Spike Cannon",20,0,B.i,0,q,0,q,B.G),"aqua_jet",A.o(100,B.x,0,q,q,q,"The user lunges at the target at a speed that makes it almost invisible.","aqua_jet",1,20,1,"Aqua Jet",40,1,B.i,0,q,0,q,B.ar),"iron_head",A.o(100,B.x,0,q,q,q,"The user slams the target with its steel-hard head.","iron_head",1,15,1,"Iron Head",80,0,B.i,0,q,0,q,B.aW),"snore",A.o(100,B.P,0,q,q,q,"An attack that can be used while sleeping with a loud snore.","snore",1,15,1,"Snore",50,0,B.i,0,q,0,q,B.G),"constrict",A.o(100,B.x,0,q,q,q,"The target is bound with long tentacles or vines.","constrict",1,35,1,"Constrict",10,0,B.i,0,q,0,q,B.G),"withdraw",A.o(100,B.D,0,q,q,q,"The user withdraws its body into its hard shell to boost defense.","withdraw",1,40,1,"Withdraw",0,0,B.i,1,o,0,q,B.ar),"jump_kick",A.o(95,B.x,0,q,q,q,"The user jumps up high, then kicks the target.","jump_kick",1,10,1,"Jump Kick",100,0,B.i,0,q,0,q,B.aA),"high_jump_kick",A.o(90,B.x,0,q,q,q,"The target is attacked with a knee kick from a jump.","high_jump_kick",1,10,1,"High Jump Kick",130,0,B.i,0,q,0,q,B.aA),"rolling_kick",A.o(85,B.x,0,q,q,q,"A quick kick delivered by spinning rapidly.","rolling_kick",1,15,1,"Rolling Kick",60,0,B.i,0,q,0,q,B.aA),"thrash",A.o(100,B.x,0,q,q,q,d,"thrash",1,10,1,"Thrash",120,0,B.wc,0,q,0,q,B.G),"razor_wind",A.o(100,B.P,0,q,"whipped up a whirlwind!",q,"Whips up a slicing whirlwind on turn 1, then strikes on turn 2.","razor_wind",1,10,1,"Razor Wind",80,0,B.hW,0,q,0,q,B.G),"whirlwind",A.o(100,B.D,0,q,q,q,"The target is blown away to force a switch or destabilize its stance.","whirlwind",1,20,1,"Whirlwind",0,-6,B.i,0,q,0,q,B.G),"double_edge",A.o(100,B.x,0,q,q,q,"A reckless, life-risking charge at full strength.","double_edge",1,15,1,"Double-Edge",120,0,B.i,0,q,0,q,B.G),"counter",A.o(100,B.x,0,q,q,q,"Retaliates against physical attacks with double the damage taken.","counter",1,20,1,"Counter",0,-5,B.i,0,q,0,q,B.aA),"rage",A.o(100,B.x,0,q,q,q,"An angry strike fueled by battle intensity.","rage",1,20,1,"Rage",55,0,B.i,0,q,0,q,B.G),"fissure",A.o(65,B.x,0,q,q,q,"Splits the earth beneath the foe in a devastating chasm.","fissure",1,5,1,"Fissure",130,0,B.i,0,q,0,q,B.aL),"teleport",A.o(100,B.D,0,q,q,q,"Use it to flee from any wild Pok\xe9mon or warp across the arena.","teleport",1,20,1,"Teleport",0,0,B.i,0,q,0,q,B.a5),"mimic",A.o(100,B.D,0,q,q,q,"Copies the target's last move for the rest of the battle.","mimic",1,10,1,"Mimic",0,0,B.i,0,q,0,q,B.G),"double_team",A.o(100,B.D,0,q,q,q,"Creates illusory copies to raise Evasiveness.","double_team",1,15,1,"Double Team",0,0,B.i,1,"eva",0,q,B.G),"reflect",A.o(100,B.D,0,q,q,q,"Raises a shimmering psychic wall that sharply boosts Defense.","reflect",1,20,1,"Reflect",0,0,B.i,2,o,0,q,B.a5),"bide",A.o(100,B.x,0,q,q,q,"Endures hits for 2 turns, then unleashes double the stored damage.","bide",1,10,1,"Bide",80,1,B.OB,0,q,0,q,B.G),"metronome",A.o(100,B.D,0,q,q,q,"Waggles a finger to summon and perform almost any move at random.","metronome",1,10,1,"Metronome",0,0,B.i,0,q,0,q,B.G),"self_destruct",A.o(100,B.x,0,q,q,q,"Causes a massive blast that damages the target and makes the user faint.","self_destruct",1,5,1,"Self-Destruct",200,0,B.i,0,q,0,q,B.G),"skull_bash",A.o(100,B.x,1,o,"tucked in its head!",q,"Tucks in its head and boosts Defense on turn 1, then charges on turn 2.","skull_bash",1,10,1,"Skull Bash",130,0,B.hW,0,q,0,q,B.G),"dream_eater",A.o(100,B.P,0,q,q,q,"Devours the dreams of a sleeping target. Half the damage dealt is restored as HP.","dream_eater",1,15,1,"Dream Eater",100,0,B.i,0,q,0,q,B.a5),"sky_attack",A.o(90,B.x,0,q,"became cloaked in a harsh light!",q,"Gathers radiant energy on turn 1, then dives at the foe on turn 2.","sky_attack",1,5,1,"Sky Attack",140,0,B.hW,0,q,0,q,B.aM),"psywave",A.o(100,B.P,0,q,q,q,"Attacks the target with a fluctuating psychic pulse.","psywave",1,15,1,"Psywave",75,0,B.i,0,q,0,q,B.a5),"substitute",A.o(100,B.D,0,q,q,q,"Sacrifices 1/4 of max HP to create a decoy that absorbs hits.","substitute",1,10,1,"Substitute",0,0,B.i,0,q,0,q,B.G),"bind",A.o(85,B.x,0,q,q,q,b,"bind",1,20,1,"Bind",15,0,B.hX,0,q,0,q,B.G),"sand_attack",A.o(100,B.D,0,q,q,q,a,"sand_attack",1,15,1,"Sand Attack",0,0,B.i,-1,g,0,q,B.aL),"leer",A.o(100,B.D,0,q,q,q,"Status move that lowers target's Defense.","leer",1,30,1,"Leer",0,0,B.i,-1,o,0,q,B.G),"roar",A.o(100,B.D,0,q,q,q,"Forces a switch or ends a wild battle in terror.","roar",1,20,1,"Roar",0,-6,B.i,0,q,0,q,B.G),"supersonic",A.o(55,B.D,0,q,q,q,"Inflicts confusion on the target.","supersonic",1,20,1,"Supersonic",0,0,B.i,0,q,100,l,B.G),"disable",A.o(100,B.D,0,q,q,q,"Temporarily disables the target's last used move.","disable",1,20,1,"Disable",0,0,B.i,0,q,0,q,B.G),"mist",A.o(100,B.D,0,q,q,q,"Shrouds the user's side in mist to prevent stat reductions for 5 turns.","mist",1,30,1,"Mist",0,0,B.i,0,q,0,q,B.bh),"low_kick",A.o(100,B.x,0,q,q,q,"Trips heavy foes; deals greater damage to heavier Pok\xe9mon.","low_kick",1,20,1,"Low Kick",0,0,B.i,0,q,0,q,B.aA),"growth",A.o(100,B.D,0,q,q,q,"Forces body growth to raise Attack and Sp. Atk (doubled in harsh sunlight).","growth",1,20,1,"Growth",0,0,B.i,1,p,0,q,B.G),"stun_spore",A.o(75,B.D,0,q,q,q,"Inflicts paralysis on the target.","stun_spore",1,30,1,"Stun Spore",0,0,B.i,0,q,100,h,B.ak),"petal_dance",A.o(100,B.P,0,q,q,q,a0,"petal_dance",1,10,1,"Petal Dance",120,0,B.i,0,q,0,q,B.ak),"meditate",A.o(100,B.D,0,q,q,q,"Status move that raises user's Attack.","meditate",1,40,1,"Meditate",0,0,B.i,1,p,0,q,B.a5),"screech",A.o(85,B.D,0,q,q,q,"Status move that harshly lowers target's Defense.","screech",1,40,1,"Screech",0,0,B.i,-2,o,0,q,B.G),"minimize",A.o(100,B.D,0,q,q,q,"Compresses its body to sharply boost Evasiveness.","minimize",1,10,1,"Minimize",0,0,B.i,2,"eva",0,q,B.G),"defense_curl",A.o(100,B.D,0,q,q,q,"Status move that raises user's Defense.","defense_curl",1,40,1,"Defense Curl",0,0,B.i,1,o,0,q,B.G),"barrier",A.o(100,B.D,0,q,q,q,"Throws up a sturdy wall that sharply raises Defense.","barrier",1,20,1,"Barrier",0,0,B.i,2,o,0,q,B.a5),"haze",A.o(100,B.D,0,q,q,q,"Eliminates all stat stage changes from both Pok\xe9mon on the field.","haze",1,30,1,"Haze",0,0,B.i,0,q,0,q,B.bh),"focus_energy",A.o(100,B.D,0,q,q,q,"Takes a deep breath to raise critical-hit ratio.","focus_energy",1,30,1,"Focus Energy",0,0,B.i,0,q,0,q,B.G),"mirror_move",A.o(100,B.D,0,q,q,q,"Counters by mimicking the last move used by the target.","mirror_move",1,20,1,"Mirror Move",0,0,B.i,0,q,0,q,B.aM),"smog",A.o(70,B.P,0,q,q,q,"A Poison-type special attack, 40% poison chance.","smog",1,20,1,"Smog",30,0,B.i,0,q,40,j,B.aK),"clamp",A.o(85,B.x,0,q,q,q,a1,"clamp",1,15,1,"Clamp",35,0,B.hX,0,q,0,q,B.ar),"amnesia",A.o(100,B.D,0,q,q,q,"Empties the mind to sharply raise Sp. Def.","amnesia",1,20,1,"Amnesia",0,0,B.i,2,c,0,q,B.a5),"kinesis",A.o(80,B.D,0,q,q,q,a,"kinesis",1,15,1,"Kinesis",0,0,B.i,-1,g,0,q,B.a5),"barrage",A.o(85,B.x,0,q,q,q,a2,"barrage",5,20,2,"Barrage",15,0,B.i,0,q,0,q,B.G),"leech_life",A.o(100,B.x,0,q,q,q,"Bites and drains HP equal to half of the damage dealt.","leech_life",1,10,1,"Leech Life",80,0,B.i,0,q,0,q,B.bk),"lovely_kiss",A.o(75,B.D,0,q,q,q,"Inflicts sleep on the target.","lovely_kiss",1,10,1,"Lovely Kiss",0,0,B.i,0,q,100,n,B.G),"bubble",A.o(100,B.P,0,q,q,q,"A Water-type special attack, 10% chance to lowers Speed.","bubble",1,30,1,"Bubble",40,0,B.i,0,q,0,q,B.ar),"conversion",A.o(100,B.D,0,q,q,q,"Changes the user's type to match its first move.","conversion",1,30,1,"Conversion",0,0,B.i,0,q,0,q,B.G),"super_fang",A.o(90,B.x,0,q,q,q,"Chomps hard with sharp fangs to cut the target's remaining HP in half.","super_fang",1,10,1,"Super Fang",0,0,B.i,0,q,0,q,B.G),"mind_reader",A.o(100,B.D,0,q,q,q,"Reads the target's movements so the next attack cannot miss.","mind_reader",1,5,1,"Mind Reader",0,0,B.i,0,q,0,q,B.G),"nightmare",A.o(100,B.D,0,q,q,q,"Sleeping targets lose 1/4 of max HP at the end of each turn.","nightmare",1,15,1,"Nightmare",0,0,B.i,0,q,0,q,B.ba),"curse",A.o(100,B.D,0,q,q,q,"Boosts Attack and Defense at the cost of Speed (Ghost-types curse foes for 1/4 HP per turn).","curse",1,10,1,"Curse",0,0,B.i,0,q,0,q,B.ba),"flail",A.o(100,B.x,0,q,q,q,"Strikes harder the lower the user's remaining HP is.","flail",1,15,1,"Flail",0,0,B.i,0,q,0,q,B.G),"conversion_2",A.o(100,B.D,0,q,q,q,"Changes type to resist the foe's last attacking move.","conversion_2",1,30,1,"Conversion 2",0,0,B.i,0,q,0,q,B.G),"reversal",A.o(100,B.x,0,q,q,q,"An all-out strike whose power grows massively at low HP.","reversal",1,15,1,"Reversal",0,0,B.i,0,q,0,q,B.aA),"spite",A.o(100,B.D,0,q,q,q,"Reduces the PP of the target's last used move by 4.","spite",1,10,1,"Spite",0,0,B.i,0,q,0,q,B.ba),"protect",A.o(100,B.D,0,q,q,q,"Completely protects the user from most attacks for one turn; consecutive uses may fail.","protect",1,10,1,"Protect",0,4,B.i,0,q,0,q,B.G),"scary_face",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Speed.","scary_face",1,10,1,"Scary Face",0,0,B.i,-2,k,0,q,B.G),"feint_attack",A.o(100,B.x,0,q,q,q,a3,"feint_attack",1,20,1,"Faint Attack",60,0,B.i,0,q,0,q,B.bl),"belly_drum",A.o(100,B.D,0,q,q,q,"Sacrifices half max HP to maximize Attack stage (+6).","belly_drum",1,10,1,"Belly Drum",0,0,B.i,0,q,0,q,B.G),"spikes",A.o(100,B.D,0,q,q,q,"Sets sharp spikes around the opponent's side to hurt switch-ins.","spikes",1,20,1,"Spikes",0,0,B.i,0,q,0,q,B.aL),"zap_cannon",A.o(50,B.P,0,q,q,q,"A Electric-type special attack, 100% paralysis chance.","zap_cannon",1,5,1,"Zap Cannon",120,0,B.i,0,q,100,h,B.bg),"foresight",A.o(100,B.D,0,q,q,q,"Reveals Ghost-type foes so Normal and Fighting moves can hit them.","foresight",1,40,1,"Foresight",0,0,B.i,0,q,0,q,B.G),"destiny_bond",A.o(100,B.D,0,q,q,q,"If the user faints from an attack before its next move, the foe faints too.","destiny_bond",1,5,1,"Destiny Bond",0,0,B.i,0,q,0,q,B.ba),"perish_song",A.o(100,B.D,0,q,q,q,"Any Pok\xe9mon hearing this song faints in 3 turns unless switched out.","perish_song",1,5,1,"Perish Song",0,0,B.i,0,q,0,q,B.G),"icy_wind",A.o(95,B.P,0,q,q,q,"A Ice-type special attack, 100% chance to lowers Speed.","icy_wind",1,15,1,"Icy Wind",55,0,B.i,-1,k,0,q,B.bh),"detect",A.o(100,B.D,0,q,q,q,"Enables the user to evade all attacks for one turn; consecutive uses may fail.","detect",1,5,1,"Detect",0,4,B.i,0,q,0,q,B.aA),"bone_rush",A.o(90,B.x,0,q,q,q,a2,"bone_rush",5,10,2,"Bone Rush",25,0,B.i,0,q,0,q,B.aL),"lock_on",A.o(100,B.D,0,q,q,q,"Takes careful aim so the user's next move is guaranteed to hit.","lock_on",1,5,1,"Lock-On",0,0,B.i,0,q,0,q,B.G),"sandstorm",A.o(100,B.D,0,q,q,q,"Rages a 5-turn sandstorm that damages non Rock/Ground/Steel Pok\xe9mon.","sandstorm",1,10,1,"Sandstorm",0,0,B.i,0,q,0,q,B.aH),"endure",A.o(100,B.D,0,q,q,q,"Endures any hit this turn with at least 1 HP remaining.","endure",1,10,1,"Endure",0,4,B.i,0,q,0,q,B.G),"charm",A.o(100,B.D,0,q,q,q,a4,"charm",1,20,1,"Charm",0,0,B.i,-2,p,0,q,B.df),"false_swipe",A.o(100,B.x,0,q,q,q,"A restrained attack that always leaves the target with at least 1 HP.","false_swipe",1,40,1,"False Swipe",40,0,B.i,0,q,0,q,B.G),"swagger",A.o(85,B.D,0,q,q,q,"Status move that sharply raises user's Attack.","swagger",1,15,1,"Swagger",0,0,B.i,0,q,100,l,B.G),"spark",A.o(100,B.x,0,q,q,q,"A Electric-type physical attack, 30% paralysis chance.","spark",1,20,1,"Spark",65,0,B.i,0,q,30,h,B.bg),"fury_cutter",A.o(95,B.x,0,q,q,q,"Doubles in power with each consecutive hit.","fury_cutter",1,20,1,"Fury Cutter",40,0,B.i,0,q,0,q,B.bk),"mean_look",A.o(100,B.D,0,q,q,q,"Fixes the target with a dark look that prevents escape.","mean_look",1,5,1,"Mean Look",0,0,B.i,0,q,0,q,B.G),"sleep_talk",A.o(100,B.D,0,q,q,q,"Randomly uses one of the user's other known moves while asleep.","sleep_talk",1,10,1,"Sleep Talk",0,0,B.i,0,q,0,q,B.G),"safeguard",A.o(100,B.D,0,q,q,q,"Protects the user's side from status conditions for 5 turns.","safeguard",1,25,1,"Safeguard",0,0,B.i,0,q,0,q,B.G),"magnitude",A.o(100,B.x,0,q,q,q,a5,"magnitude",1,30,1,"Magnitude",0,0,B.i,0,q,0,q,B.aL),"dynamic_punch",A.o(50,B.x,0,q,q,q,"A Fighting-type physical attack, 100% confusion chance.","dynamic_punch",1,5,1,"Dynamic Punch",100,0,B.i,0,q,100,l,B.aA),"megahorn",A.o(85,B.x,0,q,q,q,"A Bug-type physical attack.","megahorn",1,10,1,"Megahorn",120,0,B.i,0,q,0,q,B.bk),"baton_pass",A.o(100,B.D,0,q,q,q,"Switches out while passing stat boosts to the replacement.","baton_pass",1,40,1,"Baton Pass",0,0,B.i,0,q,0,q,B.G),"encore",A.o(100,B.D,0,q,q,q,"Compels the target to repeat its last used move for 3 turns.","encore",1,5,1,"Encore",0,0,B.i,0,q,0,q,B.G),"pursuit",A.o(100,B.x,0,q,q,q,a3,"pursuit",1,20,1,"Pursuit",40,0,B.i,0,q,0,q,B.bl),"rapid_spin",A.o(100,B.x,0,q,q,q,"Spins rapidly to clear traps and Leech Seed, raising Speed.","rapid_spin",1,40,1,"Rapid Spin",50,0,B.i,1,k,0,q,B.G),"sweet_scent",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Evasiveness.","sweet_scent",1,20,1,"Sweet Scent",0,0,B.i,-2,"eva",0,q,B.G),"iron_tail",A.o(75,B.x,0,q,q,q,"A Steel-type physical attack, 30% chance to lowers Defense.","iron_tail",1,15,1,"Iron Tail",100,0,B.i,0,q,0,q,B.aW),"metal_claw",A.o(95,B.x,0,q,q,q,"A Steel-type physical attack, 10% chance to raises Attack.","metal_claw",1,35,1,"Metal Claw",50,0,B.i,0,q,0,q,B.aW),"vital_throw",A.o(100,B.x,0,q,q,q,a6,"vital_throw",1,10,1,"Vital Throw",70,-1,B.i,0,q,0,q,B.aA),"synthesis",A.o(100,B.D,0,q,q,q,"Restores HP based on the weather (1/2 normally, 2/3 in Sun, 1/4 otherwise).","synthesis",1,5,1,"Synthesis",0,0,B.i,0,q,0,q,B.ak),"moonlight",A.o(100,B.D,0,q,q,q,"Restores HP using moonlight based on the weather.","moonlight",1,5,1,"Moonlight",0,0,B.i,0,q,0,q,B.df),"twister",A.o(100,B.P,0,q,q,q,"A Dragon-type special attack, 20% flinch chance.","twister",1,20,1,"Twister",40,0,B.i,0,q,0,q,B.c1),"rain_dance",A.o(100,B.D,0,q,q,q,"Summons heavy rain for 5 turns, powering up Water moves and weakening Fire moves.","rain_dance",1,5,1,"Rain Dance",0,0,B.i,0,q,0,q,B.ar),"sunny_day",A.o(100,B.D,0,q,q,q,"Intensifies sunlight for 5 turns, powering up Fire moves and weakening Water moves.","sunny_day",1,5,1,"Sunny Day",0,0,B.i,0,q,0,q,B.aj),"mirror_coat",A.o(100,B.P,0,q,q,q,"Retaliates against special attacks with double the damage taken.","mirror_coat",1,20,1,"Mirror Coat",0,-5,B.i,0,q,0,q,B.a5),"psych_up",A.o(100,B.D,0,q,q,q,"Copies the target's current stat stage changes.","psych_up",1,10,1,"Psych Up",0,0,B.i,0,q,0,q,B.G),"future_sight",A.o(100,B.P,0,q,q,q,u.a,"future_sight",1,10,1,"Future Sight",120,0,B.i,0,q,0,q,B.a5),"whirlpool",A.o(85,B.P,0,q,q,q,"A Water-type special attack.","whirlpool",1,15,1,"Whirlpool",35,0,B.hX,0,q,0,q,B.ar),"fake_out",A.o(100,B.x,0,q,q,q,"Strikes first on entry and guarantees a flinch on the target.","fake_out",1,10,1,"Fake Out",40,3,B.i,0,q,0,q,B.G),"uproar",A.o(100,B.P,0,q,q,q,"Attacks for 3 turns in an uproar that wakes everyone and blocks sleep.","uproar",1,10,1,"Uproar",90,0,B.i,0,q,0,q,B.G),"stockpile",A.o(100,B.D,0,q,q,q,"Charges power (up to 3 stacks), raising Defense & Sp. Def.","stockpile",1,20,1,"Stockpile",0,0,B.i,1,o,0,q,B.G),"spit_up",A.o(100,B.P,0,q,q,q,"Releases stored Stockpile power (100/200/300 power).","spit_up",1,10,1,"Spit Up",0,0,B.i,0,q,0,q,B.G),"swallow",A.o(100,B.D,0,q,q,q,"Absorbs stored Stockpile power to restore HP.","swallow",1,10,1,"Swallow",0,0,B.i,0,q,0,q,B.G),"heat_wave",A.o(90,B.P,0,q,q,q,"A Fire-type special attack, 10% burn chance.","heat_wave",1,10,1,"Heat Wave",95,0,B.i,0,q,10,m,B.aj),"hail",A.o(100,B.D,0,q,q,q,"Summons a 5-turn hailstorm that damages non Ice-type Pok\xe9mon.","hail",1,10,1,"Hail",0,0,B.i,0,q,0,q,B.bh),"flatter",A.o(100,B.D,0,q,q,q,"Status move that raises user's Sp. Atk.","flatter",1,15,1,"Flatter",0,0,B.i,0,q,100,l,B.bl),"will_o_wisp",A.o(85,B.D,0,q,q,q,"Inflicts burn on the target.","will_o_wisp",1,15,1,"Will-O-Wisp",0,0,B.i,0,q,100,m,B.aj),"memento",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Attack, harshly lowers target's Sp. Atk.","memento",1,10,1,"Memento",0,0,B.i,-2,p,0,q,B.bl),"focus_punch",A.o(100,B.x,0,q,q,q,"Focuses tightly to unleash a huge punch if the user isn't hit first.","focus_punch",1,20,1,"Focus Punch",150,-3,B.i,0,q,0,q,B.aA),"follow_me",A.o(100,B.D,0,q,q,q,"Draws the target's attention toward the user.","follow_me",1,20,1,"Follow Me",0,2,B.i,0,q,0,q,B.G),"charge",A.o(100,B.D,0,q,q,q,"Charges electrical power to boost the next Electric move and raise Sp. Def.","charge",1,20,1,"Charge",0,0,B.i,1,c,0,q,B.bg),"taunt",A.o(100,B.D,0,q,q,q,"Taunts the target so it can only use attacking moves for 3 turns.","taunt",1,20,1,"Taunt",0,0,B.i,0,q,0,q,B.bl),"helping_hand",A.o(100,B.D,0,q,q,q,"Powers up damage.","helping_hand",1,20,1,"Helping Hand",0,5,B.i,0,q,0,q,B.G),"trick",A.o(100,B.D,0,q,q,q,"Swaps held items with the target.","trick",1,10,1,"Trick",0,0,B.i,0,q,0,q,B.a5),"role_play",A.o(100,B.D,0,q,q,q,"Mimics the target, copying its Ability.","role_play",1,10,1,"Role Play",0,0,B.i,0,q,0,q,B.a5),"ingrain",A.o(100,B.D,0,q,q,q,"Plants roots to restore 1/16 max HP every turn.","ingrain",1,20,1,"Ingrain",0,0,B.i,0,q,0,q,B.ak),"superpower",A.o(100,B.x,0,q,q,q,"Attacks with huge strength, then lowers Attack and Defense by 1 stage.","superpower",1,5,1,"Superpower",120,0,B.i,-1,p,0,q,B.aA),"magic_coat",A.o(100,B.D,0,q,q,q,"Bounces back status moves targeted at the user.","magic_coat",1,15,1,"Magic Coat",0,4,B.i,0,q,0,q,B.a5),"recycle",A.o(100,B.D,0,q,q,q,"Recycles a consumed Berry or held item for reuse.","recycle",1,10,1,"Recycle",0,0,B.i,0,q,0,q,B.G),"revenge",A.o(100,B.x,0,q,q,q,"Power doubles if the user was hit by the foe earlier in the turn.","revenge",1,10,1,"Revenge",60,-4,B.i,0,q,0,q,B.aA),"brick_break",A.o(100,B.x,0,q,q,q,"Chops fiercely, shattering barriers like Reflect and Light Screen.","brick_break",1,15,1,"Brick Break",75,0,B.i,0,q,0,q,B.aA),"yawn",A.o(100,B.D,0,q,q,q,"A huge yawn lulls the target into falling asleep on the next turn.","yawn",1,10,1,"Yawn",0,0,B.i,0,q,0,q,B.G),"knock_off",A.o(100,B.x,0,q,q,q,"Slaps away and deals bonus damage if the target holds an item.","knock_off",1,20,1,"Knock Off",65,0,B.i,0,q,0,q,B.bl),"endeavor",A.o(100,B.x,0,q,q,q,"Attacks to cut the foe's HP to match the user's remaining HP.","endeavor",1,5,1,"Endeavor",0,0,B.i,0,q,0,q,B.G),"imprison",A.o(100,B.D,0,q,q,q,"Seals moves shared with the user so the foe cannot use them.","imprison",1,10,1,"Imprison",0,0,B.i,0,q,0,q,B.a5),"refresh",A.o(100,B.D,0,q,q,q,"Cures the user of burn, poison, or paralysis.","refresh",1,20,1,"Refresh",0,0,B.i,0,q,0,q,B.G),"grudge",A.o(100,B.D,0,q,q,q,"If KO'd, drains all PP from the move that knocked out the user.","grudge",1,5,1,"Grudge",0,0,B.i,0,q,0,q,B.ba),"dive",A.o(100,B.x,0,q,"hid underwater!",q,a1,"dive",1,10,1,"Dive",80,0,B.fP,0,q,0,q,B.ar),"camouflage",A.o(100,B.D,0,q,q,q,"Adapts the user's type to the battle terrain.","camouflage",1,20,1,"Camouflage",0,0,B.i,0,q,0,q,B.G),"feather_dance",A.o(100,B.D,0,q,q,q,a4,"feather_dance",1,15,1,"Feather Dance",0,0,B.i,-2,p,0,q,B.aM),"blaze_kick",A.o(90,B.x,0,q,q,q,"A Fire-type physical attack, high critical-hit ratio, 10% burn chance.","blaze_kick",1,10,1,"Blaze Kick",85,0,B.i,0,q,10,m,B.aj),"mud_sport",A.o(100,B.D,0,q,q,q,"Splashes mud to halve Electric move power.","mud_sport",1,15,1,"Mud Sport",0,0,B.i,0,q,0,q,B.aL),"slack_off",A.o(100,B.D,0,q,q,q,"Slacks off, restoring half of maximum HP.","slack_off",1,5,1,"Slack Off",0,0,B.i,0,q,0,q,B.G),"hyper_voice",A.o(100,B.P,0,q,q,q,a7,"hyper_voice",1,10,1,"Hyper Voice",90,0,B.i,0,q,0,q,B.G),"poison_fang",A.o(100,B.x,0,q,q,q,"Bites with toxic fangs that may badly poison the target.","poison_fang",1,15,1,"Poison Fang",50,0,B.i,0,q,50,e,B.aK),"crush_claw",A.o(95,B.x,0,q,q,q,"A Normal-type physical attack, 50% chance to lowers Defense.","crush_claw",1,10,1,"Crush Claw",75,0,B.i,0,q,0,q,B.G),"meteor_mash",A.o(90,B.x,0,q,q,q,"A Steel-type physical attack, 20% chance to raises Attack.","meteor_mash",1,10,1,"Meteor Mash",90,0,B.i,0,q,0,q,B.aW),"astonish",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack, 30% flinch chance.","astonish",1,15,1,"Astonish",30,0,B.i,0,q,0,q,B.ba),"aromatherapy",A.o(100,B.D,0,q,q,q,"Releases soothing scent to cure status conditions of the active Pok\xe9mon and party.","aromatherapy",1,5,1,"Aromatherapy",0,0,B.i,0,q,0,q,B.ak),"fake_tears",A.o(100,B.D,0,q,q,q,a8,"fake_tears",1,20,1,"Fake Tears",0,0,B.i,-2,c,0,q,B.bl),"air_cutter",A.o(95,B.P,0,q,q,q,"A Flying-type special attack, high critical-hit ratio.","air_cutter",1,25,1,"Air Cutter",60,0,B.i,0,q,0,q,B.aM),"odor_sleuth",A.o(100,B.D,0,q,q,q,"Identifies elusive targets so Normal/Fighting moves hit Ghost-types.","odor_sleuth",1,40,1,"Odor Sleuth",0,0,B.i,0,q,0,q,B.G),"rock_tomb",A.o(95,B.x,0,q,q,q,"A Rock-type physical attack, 100% chance to lowers Speed.","rock_tomb",1,15,1,"Rock Tomb",60,0,B.i,-1,k,0,q,B.aH),"metal_sound",A.o(85,B.D,0,q,q,q,a8,"metal_sound",1,40,1,"Metal Sound",0,0,B.i,-2,c,0,q,B.aW),"tickle",A.o(100,B.D,0,q,q,q,"Status move that lowers target's Attack, lowers target's Defense.","tickle",1,20,1,"Tickle",0,0,B.i,-1,p,0,q,B.G),"cosmic_power",A.o(100,B.D,0,q,q,q,"Absorbs mystic power to raise Defense and Sp. Def by 1 stage each.","cosmic_power",1,20,1,"Cosmic Power",0,0,B.i,1,o,0,q,B.a5),"signal_beam",A.o(100,B.P,0,q,q,q,"A Bug-type special attack, 10% confusion chance.","signal_beam",1,15,1,"Signal Beam",75,0,B.i,0,q,10,l,B.bk),"shadow_punch",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack.","shadow_punch",1,20,1,"Shadow Punch",60,0,B.i,0,q,0,q,B.ba),"extrasensory",A.o(100,B.P,0,q,q,q,"A Psychic-type special attack, 10% flinch chance.","extrasensory",1,20,1,"Extrasensory",80,0,B.i,0,q,0,q,B.a5),"sky_uppercut",A.o(90,B.x,0,q,q,q,a6,"sky_uppercut",1,15,1,"Sky Uppercut",85,0,B.i,0,q,0,q,B.aA),"sand_tomb",A.o(85,B.x,0,q,q,q,a5,"sand_tomb",1,15,1,"Sand Tomb",35,0,B.hX,0,q,0,q,B.aL),"sheer_cold",A.o(30,B.P,0,q,q,q,"A chilling absolute-zero attack that causes an instant KO if it hits.","sheer_cold",1,5,1,"Sheer Cold",0,0,B.i,0,q,0,q,B.bh),"muddy_water",A.o(85,B.P,0,q,q,q,"A Water-type special attack, 30% chance to lowers Accuracy.","muddy_water",1,10,1,"Muddy Water",90,0,B.i,0,q,0,q,B.ar),"bullet_seed",A.o(100,B.x,0,q,q,q,a2,"bullet_seed",5,30,2,"Bullet Seed",25,0,B.i,0,q,0,q,B.ak),"aerial_ace",A.o(100,B.x,0,q,q,q,a9,"aerial_ace",1,20,1,"Aerial Ace",60,0,B.i,0,q,0,q,B.aM),"icicle_spear",A.o(100,B.x,0,q,q,q,a2,"icicle_spear",5,30,2,"Icicle Spear",25,0,B.i,0,q,0,q,B.bh),"iron_defense",A.o(100,B.D,0,q,q,q,"Hardens the body surface like iron to sharply raise Defense.","iron_defense",1,15,1,"Iron Defense",0,0,B.i,2,o,0,q,B.aW),"block",A.o(100,B.D,0,q,q,q,"Blocks the target's escape path with wide arms.","block",1,5,1,"Block",0,0,B.i,0,q,0,q,B.G),"bounce",A.o(85,B.x,0,q,"sprang high into the air!",q,"A Flying-type physical attack, 30% paralysis chance.","bounce",1,5,1,"Bounce",85,0,B.fP,0,q,30,h,B.aM),"mud_shot",A.o(95,B.P,0,q,q,q,"A Ground-type special attack, 100% chance to lowers Speed.","mud_shot",1,15,1,"Mud Shot",55,0,B.i,-1,k,0,q,B.aL),"covet",A.o(100,B.x,0,q,q,q,"Cutely strikes and steals an unheld target's item.","covet",1,25,1,"Covet",60,0,B.i,0,q,0,q,B.G),"magical_leaf",A.o(100,B.P,0,q,q,q,a0,"magical_leaf",1,20,1,"Magical Leaf",60,0,B.i,0,q,0,q,B.ak),"water_sport",A.o(100,B.D,0,q,q,q,"Soaks the field to halve Fire move power.","water_sport",1,15,1,"Water Sport",0,0,B.i,0,q,0,q,B.ar),"calm_mind",A.o(100,B.D,0,q,q,q,"Focuses the mind to raise both Sp. Atk and Sp. Def by 1 stage.","calm_mind",1,20,1,"Calm Mind",0,0,B.i,1,b0,0,q,B.a5),"leaf_blade",A.o(100,B.x,0,q,q,q,"A Grass-type physical attack, high critical-hit ratio.","leaf_blade",1,15,1,"Leaf Blade",90,0,B.i,0,q,0,q,B.ak),"dragon_dance",A.o(100,B.D,0,q,q,q,"A fierce dance that boosts Attack and Speed by 1 stage each.","dragon_dance",1,20,1,"Dragon Dance",0,0,B.i,1,p,0,q,B.c1),"rock_blast",A.o(90,B.x,0,q,q,q,a2,"rock_blast",5,10,2,"Rock Blast",25,0,B.i,0,q,0,q,B.aH),"roost",A.o(100,B.D,0,q,q,q,"The user lands and rests its body, restoring half its max HP.","roost",1,5,1,"Roost",0,0,B.i,0,q,0,q,B.aM),"gravity",A.o(100,B.D,0,q,q,q,"Intensifies gravity for 5 turns, grounding Flying and Levitate Pok\xe9mon.","gravity",1,5,1,"Gravity",0,0,B.i,0,q,0,q,B.a5),"miracle_eye",A.o(100,B.D,0,q,q,q,"Negates Dark-type immunity to Psychic-type moves.","miracle_eye",1,40,1,"Miracle Eye",0,0,B.i,0,q,0,q,B.a5),"wake_up_slap",A.o(100,B.x,0,q,q,q,"Power doubles against sleeping targets, waking them up.","wake_up_slap",1,10,1,"Wake-Up Slap",70,0,B.i,0,q,0,q,B.aA),"hammer_arm",A.o(90,B.x,0,q,q,q,"Swings a heavy fist for great damage, lowering user Speed.","hammer_arm",1,10,1,"Hammer Arm",100,0,B.i,-1,k,0,q,B.aA),"gyro_ball",A.o(100,B.x,0,q,q,q,"Spins rapidly; deals higher damage the slower the user is compared to the foe.","gyro_ball",1,5,1,"Gyro Ball",0,0,B.i,0,q,0,q,B.aW),"healing_wish",A.o(100,B.D,0,q,q,q,"Faints to fully heal and cure the replacement Pok\xe9mon.","healing_wish",1,10,1,"Healing Wish",0,0,B.i,0,q,0,q,B.a5),"brine",A.o(100,B.P,0,q,q,q,"Power doubles when the target is at half HP or below.","brine",1,10,1,"Brine",65,0,B.i,0,q,0,q,B.ar),"natural_gift",A.o(100,B.x,0,q,q,q,"Draws power from a held Berry to attack.","natural_gift",1,15,1,"Natural Gift",0,0,B.i,0,q,0,q,B.G),"feint",A.o(100,B.x,0,q,q,q,"Breaks through Protect/Detect to strike the target.","feint",1,10,1,"Feint",30,2,B.i,0,q,0,q,B.G),"pluck",A.o(100,B.x,0,q,q,q,"Pecks hard and consumes the target's held Berry if any.","pluck",1,20,1,"Pluck",60,0,B.i,0,q,0,q,B.aM),"tailwind",A.o(100,B.D,0,q,q,q,"Whips up a turbulent whirlwind that doubles Speed for 4 turns.","tailwind",1,15,1,"Tailwind",0,0,B.i,0,q,0,q,B.aM),"acupressure",A.o(100,B.D,0,q,q,q,"A tactical Normal-type status move.","acupressure",1,30,1,"Acupressure",0,0,B.i,0,q,0,q,B.G),"payback",A.o(100,B.x,0,q,q,q,"Power doubles if the user moves after the target.","payback",1,10,1,"Payback",50,0,B.i,0,q,0,q,B.bl),"assurance",A.o(100,B.x,0,q,q,q,"Power doubles if the target has already taken damage this turn.","assurance",1,10,1,"Assurance",60,0,B.i,0,q,0,q,B.bl),"fling",A.o(100,B.x,0,q,q,q,"Hurls the user's held item at the target.","fling",1,10,1,"Fling",0,0,B.i,0,q,0,q,B.bl),"trump_card",A.o(100,B.P,0,q,q,q,"The fewer PP left on this move, the greater its attack power.","trump_card",1,5,1,"Trump Card",0,0,B.i,0,q,0,q,B.G),"wring_out",A.o(100,B.P,0,q,q,q,"Wrings the target tightly; stronger when the target has higher remaining HP.","wring_out",1,5,1,"Wring Out",0,0,B.i,0,q,0,q,B.G),"gastro_acid",A.o(100,B.D,0,q,q,q,"Suppresses the target's Ability until it switches out.","gastro_acid",1,10,1,"Gastro Acid",0,0,B.i,0,q,0,q,B.aK),"lucky_chant",A.o(100,B.D,0,q,q,q,"Chants an incantation that prevents foe critical hits for 5 turns.","lucky_chant",1,30,1,"Lucky Chant",0,0,B.i,0,q,0,q,B.G),"me_first",A.o(100,B.D,0,q,q,q,"Copies and powers up the foe's intended damaging move.","me_first",1,20,1,"Me First",0,0,B.i,0,q,0,q,B.G),"copycat",A.o(100,B.D,0,q,q,q,"Mimics the move used immediately prior in battle.","copycat",1,20,1,"Copycat",0,0,B.i,0,q,0,q,B.G),"power_swap",A.o(100,B.D,0,q,q,q,"Swaps Attack and Sp. Atk stat changes with the target.","power_swap",1,10,1,"Power Swap",0,0,B.i,0,q,0,q,B.a5),"guard_swap",A.o(100,B.D,0,q,q,q,"Swaps Defense and Sp. Def stat changes with the target.","guard_swap",1,10,1,"Guard Swap",0,0,B.i,0,q,0,q,B.a5),"punishment",A.o(100,B.x,0,q,q,q,a3,"punishment",1,5,1,"Punishment",0,0,B.i,0,q,0,q,B.bl),"last_resort",A.o(100,B.x,0,q,q,q,b,"last_resort",1,5,1,"Last Resort",140,0,B.i,0,q,0,q,B.G),"worry_seed",A.o(100,B.D,0,q,q,q,"Changes the target's Ability to Insomnia.","worry_seed",1,10,1,"Worry Seed",0,0,B.i,0,q,0,q,B.ak),"sucker_punch",A.o(100,B.x,0,q,q,q,"Strikes with priority if the target is preparing an attacking move.","sucker_punch",1,5,1,"Sucker Punch",70,1,B.i,0,q,0,q,B.bl),"toxic_spikes",A.o(100,B.D,0,q,q,q,"Scatters poison spikes that poison incoming grounded foes.","toxic_spikes",1,20,1,"Toxic Spikes",0,0,B.i,0,q,0,q,B.aK),"aqua_ring",A.o(100,B.D,0,q,q,q,"Surrounds the user with a veil of water that restores 1/16 max HP each turn.","aqua_ring",1,20,1,"Aqua Ring",0,0,B.i,0,q,0,q,B.ar),"magnet_rise",A.o(100,B.D,0,q,q,q,"Levitates via electromagnetism to evade Ground-type moves for 5 turns.","magnet_rise",1,10,1,"Magnet Rise",0,0,B.i,0,q,0,q,B.bg),"flare_blitz",A.o(100,B.x,0,q,q,q,"Cloaks in flames for massive damage and 1/3 recoil; may burn target.","flare_blitz",1,15,1,"Flare Blitz",120,0,B.i,0,q,10,m,B.aj),"aura_sphere",A.o(100,B.P,0,q,q,q,b1,"aura_sphere",1,20,1,"Aura Sphere",80,0,B.i,0,q,0,q,B.aA),"rock_polish",A.o(100,B.D,0,q,q,q,"Polishes the body to sharply raise Speed by 2 stages.","rock_polish",1,20,1,"Rock Polish",0,0,B.i,2,k,0,q,B.aH),"dark_pulse",A.o(100,B.P,0,q,q,q,"A Dark-type special attack, 20% flinch chance.","dark_pulse",1,15,1,"Dark Pulse",80,0,B.i,0,q,0,q,B.bl),"night_slash",A.o(100,B.x,0,q,q,q,"A Dark-type physical attack, high critical-hit ratio.","night_slash",1,15,1,"Night Slash",70,0,B.i,0,q,0,q,B.bl),"bug_buzz",A.o(100,B.P,0,q,q,q,"A Bug-type special attack, 10% chance to lowers Sp. Def.","bug_buzz",1,10,1,"Bug Buzz",90,0,B.i,0,q,0,q,B.bk),"dragon_pulse",A.o(100,B.P,0,q,q,q,"A Dragon-type special attack.","dragon_pulse",1,10,1,"Dragon Pulse",85,0,B.i,0,q,0,q,B.c1),"dragon_rush",A.o(75,B.x,0,q,q,q,"A Dragon-type physical attack, 20% flinch chance.","dragon_rush",1,10,1,"Dragon Rush",100,0,B.i,0,q,0,q,B.c1),"vacuum_wave",A.o(100,B.P,0,q,q,q,b1,"vacuum_wave",1,30,1,"Vacuum Wave",40,1,B.i,0,q,0,q,B.aA),"brave_bird",A.o(100,B.x,0,q,q,q,"A reckless dive from the sky; user takes 1/3 recoil damage.","brave_bird",1,15,1,"Brave Bird",120,0,B.i,0,q,0,q,B.aM),"earth_power",A.o(100,B.P,0,q,q,q,"A Ground-type special attack, 10% chance to lowers Sp. Def.","earth_power",1,10,1,"Earth Power",90,0,B.i,0,q,0,q,B.aL),"switcheroo",A.o(100,B.D,0,q,q,q,"Trades held items with the target in a flash.","switcheroo",1,10,1,"Switcheroo",0,0,B.i,0,q,0,q,B.bl),"giga_impact",A.o(90,B.x,0,q,q,q,b,"giga_impact",1,5,1,"Giga Impact",150,0,B.wb,0,q,0,q,B.G),"nasty_plot",A.o(100,B.D,0,q,q,q,"Thinks bad thoughts to sharply raise Sp. Atk by 2 stages.","nasty_plot",1,20,1,"Nasty Plot",0,0,B.i,2,b0,0,q,B.bl),"bullet_punch",A.o(100,B.x,0,q,q,q,b2,"bullet_punch",1,30,1,"Bullet Punch",40,1,B.i,0,q,0,q,B.aW),"avalanche",A.o(100,B.x,0,q,q,q,"Power doubles if the user took damage from the target this turn.","avalanche",1,10,1,"Avalanche",60,-4,B.i,0,q,0,q,B.bh),"ice_shard",A.o(100,B.x,0,q,q,q,"A Ice-type physical attack.","ice_shard",1,30,1,"Ice Shard",40,1,B.i,0,q,0,q,B.bh),"shadow_claw",A.o(100,B.x,0,q,q,q,"A Ghost-type physical attack, high critical-hit ratio.","shadow_claw",1,15,1,"Shadow Claw",70,0,B.i,0,q,0,q,B.ba),"thunder_fang",A.o(95,B.x,0,q,q,q,"A Electric-type physical attack, 10% flinch chance, 10% paralysis chance.","thunder_fang",1,15,1,"Thunder Fang",65,0,B.i,0,q,10,h,B.bg),"ice_fang",A.o(95,B.x,0,q,q,q,"A Ice-type physical attack, 10% flinch chance, 10% freeze chance.","ice_fang",1,15,1,"Ice Fang",65,0,B.i,0,q,10,f,B.bh),"mud_bomb",A.o(85,B.P,0,q,q,q,"A Ground-type special attack, 30% chance to lowers Accuracy.","mud_bomb",1,10,1,"Mud Bomb",65,0,B.i,0,q,0,q,B.aL),"psycho_cut",A.o(100,B.x,0,q,q,q,"A Psychic-type physical attack, high critical-hit ratio.","psycho_cut",1,20,1,"Psycho Cut",70,0,B.i,0,q,0,q,B.a5),"mirror_shot",A.o(85,B.P,0,q,q,q,"A Steel-type special attack, 30% chance to lowers Accuracy.","mirror_shot",1,10,1,"Mirror Shot",65,0,B.i,0,q,0,q,B.aW),"lava_plume",A.o(100,B.P,0,q,q,q,"A Fire-type special attack, 30% burn chance.","lava_plume",1,15,1,"Lava Plume",80,0,B.i,0,q,30,m,B.aj),"leaf_storm",A.o(90,B.P,0,q,q,q,"Whips up a storm of sharp leaves, then sharply lowers Sp. Atk.","leaf_storm",1,5,1,"Leaf Storm",130,0,B.i,-2,b0,0,q,B.ak),"power_whip",A.o(85,B.x,0,q,q,q,"A Grass-type physical attack.","power_whip",1,10,1,"Power Whip",120,0,B.i,0,q,0,q,B.ak),"cross_poison",A.o(100,B.x,0,q,q,q,"A Poison-type physical attack, high critical-hit ratio, 10% poison chance.","cross_poison",1,20,1,"Cross Poison",70,0,B.i,0,q,10,j,B.aK),"gunk_shot",A.o(80,B.x,0,q,q,q,"A Poison-type physical attack, 30% poison chance.","gunk_shot",1,5,1,"Gunk Shot",120,0,B.i,0,q,30,j,B.aK),"magnet_bomb",A.o(100,B.x,0,q,q,q,b2,"magnet_bomb",1,20,1,"Magnet Bomb",60,0,B.i,0,q,0,q,B.aW),"stone_edge",A.o(80,B.x,0,q,q,q,"A Rock-type physical attack, high critical-hit ratio.","stone_edge",1,5,1,"Stone Edge",100,0,B.i,0,q,0,q,B.aH),"captivate",A.o(100,B.D,0,q,q,q,"Status move that harshly lowers target's Sp. Atk.","captivate",1,20,1,"Captivate",0,0,B.i,-2,b0,0,q,B.G),"stealth_rock",A.o(100,B.D,0,q,q,q,"Surrounds the foe's side with pointed rocks that damage switch-ins.","stealth_rock",1,20,1,"Stealth Rock",0,0,B.i,0,q,0,q,B.aH),"charge_beam",A.o(90,B.P,0,q,q,q,"A Electric-type special attack, 70% chance to raises Sp. Atk.","charge_beam",1,10,1,"Charge Beam",50,0,B.i,0,q,0,q,B.bg),"wood_hammer",A.o(100,B.x,0,q,q,q,"Slams the target with a rugged body, causing 1/3 recoil damage.","wood_hammer",1,15,1,"Wood Hammer",120,0,B.i,0,q,0,q,B.ak),"double_hit",A.o(90,B.x,0,q,q,q,"Hits 2 times.","double_hit",2,10,2,"Double Hit",35,0,B.i,0,q,0,q,B.G),"wide_guard",A.o(100,B.D,0,q,q,q,"Protects against wide-area attacks for one turn.","wide_guard",1,10,1,"Wide Guard",0,3,B.i,0,q,0,q,B.aH),"wonder_room",A.o(100,B.D,0,q,q,q,"Swaps Defense and Sp. Def stats for 5 turns.","wonder_room",1,10,1,"Wonder Room",0,0,B.i,0,q,0,q,B.a5),"psyshock",A.o(100,B.P,0,q,q,q,"Attacks with an odd psychic wave that inflicts physical damage vs target Defense.","psyshock",1,10,1,"Psyshock",80,0,B.i,0,q,0,q,B.a5),"rage_powder",A.o(100,B.D,0,q,q,q,"Scatters irritating powder to redirect incoming attacks.","rage_powder",1,20,1,"Rage Powder",0,2,B.i,0,q,0,q,B.bk),"telekinesis",A.o(100,B.D,0,q,q,q,"Floats the target psychically for 3 turns so attacks land cleanly.","telekinesis",1,15,1,"Telekinesis",0,0,B.i,0,q,0,q,B.a5),"smack_down",A.o(100,B.x,0,q,q,q,"Knocks flying or levitating targets to the ground so Ground moves can hit.","smack_down",1,15,1,"Smack Down",50,0,B.i,0,q,0,q,B.aH),"storm_throw",A.o(100,B.x,0,q,q,q,"A fierce blow that always results in a critical hit.","storm_throw",1,10,1,"Storm Throw",60,0,B.i,0,q,0,q,B.aA),"flame_burst",A.o(100,B.P,0,q,q,q,"A Fire-type special attack.","flame_burst",1,15,1,"Flame Burst",70,0,B.i,0,q,0,q,B.aj),"sludge_wave",A.o(100,B.P,0,q,q,q,"A Poison-type special attack, 10% poison chance.","sludge_wave",1,10,1,"Sludge Wave",95,0,B.i,0,q,10,j,B.aK),"quiver_dance",A.o(100,B.D,0,q,q,q,"A mystical dance that raises Sp. Atk, Sp. Def, and Speed by 1 stage each.","quiver_dance",1,20,1,"Quiver Dance",0,0,B.i,1,b0,0,q,B.bk),"heavy_slam",A.o(100,B.x,0,q,q,q,"Slams the foe with heavy weight; stronger when the user is much heavier.","heavy_slam",1,10,1,"Heavy Slam",0,0,B.i,0,q,0,q,B.aW),"synchronoise",A.o(100,B.P,0,q,q,q,"A powerful shockwave that only hits targets sharing a type with the user.","synchronoise",1,10,1,"Synchronoise",120,0,B.i,0,q,0,q,B.a5),"soak",A.o(100,B.D,0,q,q,q,"Drenches the target, changing its type to pure Water.","soak",1,20,1,"Soak",0,0,B.i,0,q,0,q,B.ar),"flame_charge",A.o(100,B.x,0,q,q,q,"A Fire-type physical attack, 100% chance to raises Speed.","flame_charge",1,20,1,"Flame Charge",50,0,B.i,1,k,0,q,B.aj),"coil",A.o(100,B.D,0,q,q,q,"Coils up to raise Attack, Defense, and Accuracy by 1 stage each.","coil",1,20,1,"Coil",0,0,B.i,1,p,0,q,B.aK),"low_sweep",A.o(100,B.x,0,q,q,q,"A Fighting-type physical attack, 100% chance to lowers Speed.","low_sweep",1,20,1,"Low Sweep",65,0,B.i,-1,k,0,q,B.aA),"acid_spray",A.o(100,B.P,0,q,q,q,"A Poison-type special attack, 100% chance to lowers Sp. Def.","acid_spray",1,20,1,"Acid Spray",40,0,B.i,-2,c,0,q,B.aK),"after_you",A.o(100,B.D,0,q,q,q,"Allows an ally to act right away.","after_you",1,15,1,"After You",0,0,B.i,0,q,0,q,B.G),"round",A.o(100,B.P,0,q,q,q,a7,"round",1,15,1,"Round",60,0,B.i,0,q,0,q,B.G),"chip_away",A.o(100,B.x,0,q,q,q,b,"chip_away",1,20,1,"Chip Away",70,0,B.i,0,q,0,q,B.G),"clear_smog",A.o(100,B.P,0,q,q,q,"Throws a clump of special mud that resets all target stat changes.","clear_smog",1,15,1,"Clear Smog",50,0,B.i,0,q,0,q,B.aK),"stored_power",A.o(100,B.P,0,q,q,q,"Power increases by +20 for every positive stat boost on the user.","stored_power",1,10,1,"Stored Power",20,0,B.i,0,q,0,q,B.a5),"quick_guard",A.o(100,B.D,0,q,q,q,"Protects against priority attacks for one turn.","quick_guard",1,15,1,"Quick Guard",0,3,B.i,0,q,0,q,B.aA),"ally_switch",A.o(100,B.D,0,q,q,q,"Shifts battle position swiftly.","ally_switch",1,15,1,"Ally Switch",0,2,B.i,0,q,0,q,B.a5),"shell_smash",A.o(100,B.D,0,q,q,q,"Lowers Defense & Sp. Def by 1 stage, sharply boosting Attack, Sp. Atk, and Speed by 2.","shell_smash",1,15,1,"Shell Smash",0,0,B.i,-1,o,0,q,B.G),"heal_pulse",A.o(100,B.D,0,q,q,q,"Emits a healing pulse that restores half of target HP.","heal_pulse",1,10,1,"Heal Pulse",0,0,B.i,0,q,0,q,B.a5),"hex",A.o(100,B.P,0,q,q,q,"Power doubles if the target is afflicted with a status condition.","hex",1,10,1,"Hex",65,0,B.i,0,q,0,q,B.ba),"sky_drop",A.o(100,B.x,0,q,"carried the target into the sky!",q,a9,"sky_drop",1,10,1,"Sky Drop",60,0,B.fP,0,q,0,q,B.aM),"circle_throw",A.o(90,B.x,0,q,q,q,"Throws the target, forcing a switch in trainer battles.","circle_throw",1,10,1,"Circle Throw",60,-6,B.i,0,q,0,q,B.aA),"acrobatics",A.o(100,B.x,0,q,q,q,"Strikes deftly; power doubles if the user is holding no item.","acrobatics",1,15,1,"Acrobatics",55,0,B.i,0,q,0,q,B.aM),"reflect_type",A.o(100,B.D,0,q,q,q,"Reflects the target's type, making the user share its typing.","reflect_type",1,15,1,"Reflect Type",0,0,B.i,0,q,0,q,B.G),"retaliate",A.o(100,B.x,0,q,q,q,"Strikes fiercely; deals double damage if an ally fainted recently.","retaliate",1,5,1,"Retaliate",70,0,B.i,0,q,0,q,B.G),"final_gambit",A.o(100,B.P,0,q,q,q,"Sacrifices the user to deal damage equal to its current HP.","final_gambit",1,5,1,"Final Gambit",0,0,B.i,0,q,0,q,B.aA),"bestow",A.o(100,B.D,0,q,q,q,"Hands the user's held item to a target holding nothing.","bestow",1,15,1,"Bestow",0,0,B.i,0,q,0,q,B.G),"inferno",A.o(50,B.P,0,q,q,q,"A Fire-type special attack, 100% burn chance.","inferno",1,5,1,"Inferno",100,0,B.i,0,q,100,m,B.aj),"bulldoze",A.o(100,B.x,0,q,q,q,"A Ground-type physical attack, 100% chance to lowers Speed.","bulldoze",1,20,1,"Bulldoze",60,0,B.i,-1,k,0,q,B.aL),"dragon_tail",A.o(90,B.x,0,q,q,q,"Whips the target away, forcing a switch in trainer battles.","dragon_tail",1,10,1,"Dragon Tail",60,-6,B.i,0,q,0,q,B.c1),"work_up",A.o(100,B.D,0,q,q,q,"Rouses the user to raise both Attack and Sp. Atk by 1 stage.","work_up",1,30,1,"Work Up",0,0,B.i,1,p,0,q,B.G),"heart_stamp",A.o(100,B.x,0,q,q,q,"Strikes after a cute act; may cause flinching.","heart_stamp",1,25,1,"Heart Stamp",60,0,B.i,0,q,0,q,B.a5),"razor_shell",A.o(95,B.x,0,q,q,q,"Slices with a sharp shell; 50% chance to lower Defense.","razor_shell",1,10,1,"Razor Shell",75,0,B.i,0,q,0,q,B.ar),"leaf_tornado",A.o(90,B.P,0,q,q,q,"A Grass-type special attack, 50% chance to lowers Accuracy.","leaf_tornado",1,10,1,"Leaf Tornado",65,0,B.i,0,q,0,q,B.ak),"steamroller",A.o(100,B.x,0,q,q,q,"Crushes the target heavily; may cause flinching.","steamroller",1,20,1,"Steamroller",65,0,B.i,0,q,0,q,B.bk),"psystrike",A.o(100,B.P,0,q,q,q,"Materializes a psychic wave that inflicts physical damage based on target Defense.","psystrike",1,10,1,"Psystrike",100,0,B.i,0,q,0,q,B.a5),"hurricane",A.o(70,B.P,0,q,q,q,"A Flying-type special attack, 30% confusion chance.","hurricane",1,10,1,"Hurricane",110,0,B.i,0,q,30,l,B.aM),"icicle_crash",A.o(90,B.x,0,q,q,q,"Drops large icicles; may cause the target to flinch.","icicle_crash",1,10,1,"Icicle Crash",85,0,B.i,0,q,0,q,B.bh),"torment",A.o(100,B.D,0,q,q,q,"Torments and enrages the target, disrupting repeated moves.","torment",1,15,1,"Torment",0,0,B.i,0,q,0,q,B.bl),"facade",A.o(100,B.x,0,q,q,q,"An attack move that doubles its power if the user is poisoned, burned, or paralyzed.","facade",1,20,1,"Facade",70,0,B.i,0,q,0,q,B.G),"eruption",A.o(100,B.P,0,q,q,q,"The user attacks in an explosive fury; lower user HP reduces its power.","eruption",1,5,1,"Eruption",150,0,B.i,0,q,0,q,B.aj),"arm_thrust",A.o(100,B.x,0,q,q,q,"Lets loose a flurry of open-palmed arm thrusts that strike 2 to 5 times.","arm_thrust",5,20,2,"Arm Thrust",15,0,B.i,0,q,0,q,B.aA),"bulk_up",A.o(100,B.D,0,q,q,q,"Tenses muscles to bulk up the body, raising both Attack and Defense.","bulk_up",1,20,1,"Bulk Up",0,0,B.i,1,p,0,q,B.aA),"energy_ball",A.o(100,B.P,0,q,q,q,"Draws power from nature and fires it at the target; may lower Sp. Def.","energy_ball",1,10,1,"Energy Ball",90,0,B.i,0,q,0,q,B.ak),"head_smash",A.o(80,B.x,0,q,q,q,"An all-out, hazardous headbutt that inflicts massive 50% recoil damage.","head_smash",1,5,1,"Head Smash",150,0,B.i,0,q,0,q,B.aH),"heat_crash",A.o(100,B.x,0,q,q,q,"Slams the target with a flame-cloaked body; stronger if the user is heavier.","heat_crash",1,10,1,"Heat Crash",60,0,B.i,0,q,0,q,B.aj)],t.N,t.EW)})
+s($,"bnY","e9",()=>A.aK([1,B.aVD,2,B.aUo,3,B.aSU,4,B.aTq,5,B.aTQ,6,B.aTf,7,B.aTz,8,B.aUk,9,B.aUv,10,B.aTE,11,B.aTr,12,B.aTd,13,B.aTT,14,B.aU2,15,B.aV7,16,B.aUg,17,B.aVj,18,B.aSW,19,B.aVm,20,B.aTn,25,B.aV4,26,B.aTV,21,B.aVa,22,B.aTc,23,B.aVg,24,B.aUK,27,B.aTG,28,B.aVs,29,B.aTJ,30,B.aTg,31,B.aUr,32,B.aTB,33,B.aSX,34,B.aUC,35,B.aVf,36,B.aU3,37,B.aTm,38,B.aV2,39,B.aUl,40,B.aTs,43,B.aTa,44,B.aUD,45,B.aTH,63,B.aUi,64,B.aUQ,65,B.aVi,69,B.aTl,70,B.aUn,71,B.aTk,72,B.aV6,73,B.aUb,74,B.aVn,75,B.aVI,76,B.aUJ,77,B.aVz,78,B.aUd,79,B.aUS,80,B.aUN,81,B.aTL,82,B.aUU,95,B.aU_,120,B.aVJ,121,B.aTh,129,B.aTK,130,B.aV_,131,B.aST,132,B.aVb,133,B.aUX,134,B.aV1,135,B.aTW,136,B.aSP,137,B.aUu,138,B.aTC,139,B.aUm,140,B.aVA,141,B.aUe,142,B.aT0,143,B.aTO,147,B.aTu,148,B.aT1,149,B.aT9,144,B.aU1,145,B.aTP,146,B.aVE,150,B.aTS,151,B.aT7,41,B.aTo,42,B.aUR,46,B.aU9,47,B.aUw,48,B.aT2,49,B.aV3,50,B.aT3,51,B.aV5,52,B.aUa,53,B.aT4,54,B.aVx,55,B.aVr,56,B.aUB,57,B.aTR,58,B.aUq,59,B.aTb,60,B.aUI,61,B.aVd,62,B.aUT,66,B.aUp,67,B.aUf,68,B.aVL,83,B.aTw,84,B.aU8,85,B.aTj,86,B.aSZ,87,B.aUG,88,B.aTy,89,B.aU6,90,B.aUV,91,B.aT6,92,B.aTZ,93,B.aUY,94,B.aU0,96,B.aUh,97,B.aUL,98,B.aUZ,99,B.aVe,100,B.aVB,101,B.aVp,102,B.aVo,103,B.aTI,104,B.aTt,105,B.aUM,106,B.aVC,107,B.aSV,108,B.aTY,109,B.aUA,110,B.aSO,111,B.aTF,112,B.aSR,113,B.aV9,114,B.aVt,115,B.aTN,116,B.aTD,117,B.aVq,118,B.aVK,119,B.aTU,122,B.aTx,123,B.aTp,124,B.aTv,125,B.aUc,126,B.aT5,127,B.aUP,128,B.aVh,152,B.aVH,153,B.aV8,154,B.aVu,155,B.aVy,156,B.aTA,157,B.aVw,158,B.aTe,159,B.aVc,160,B.aTi,252,B.aUy,253,B.aUs,254,B.aUj,255,B.aUt,256,B.aU5,257,B.aUx,258,B.aTM,259,B.aUz,260,B.aVv,387,B.aT8,388,B.aTX,389,B.aUO,390,B.aVG,391,B.aT_,392,B.aUW,393,B.aVk,394,B.aSQ,395,B.aVl,495,B.aSS,496,B.aV0,497,B.aUE,498,B.aUF,499,B.aU7,500,B.aVF,501,B.aUH,502,B.aU4,503,B.aSY],t.S,A.aX("ab")))
 s($,"bok","bV",()=>A.beA())
 s($,"bon","aXj",()=>A.bfK(B.b0I))
 s($,"bpW","b6m",()=>!A.aX("a3<v>").b(A.b([],t.Z)))
