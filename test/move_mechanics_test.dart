@@ -122,6 +122,54 @@ void main() {
       }
     });
 
+    test('Sleep Talk never selects Rest or itself', () {
+      final sleeper = _makeMon(
+        name: 'Snorlax',
+        moveIds: ['sleep_talk', 'rest', 'tackle'],
+      );
+      final target = _makeMon(name: 'Dummy', moveIds: ['tackle']);
+
+      for (int seed = 0; seed < 20; seed++) {
+        sleeper.currentHp = 60;
+        sleeper.status = StatusCondition.sleep;
+        sleeper.sleepTurnsRemaining = 3;
+        final events = BattleEngine.executeSingleAttack(
+          sleeper,
+          sleeper.moves[0],
+          target,
+          isPlayer: true,
+          rng: Random(seed),
+        );
+        expect(events.any((e) => e.moveId == 'tackle'), isTrue);
+        expect(events.any((e) => e.moveId == 'rest'), isFalse);
+        expect(events.any((e) => e.message.contains('used Sleep Talk! (Sleep Talk)')), isFalse);
+        expect(events.any((e) => e.message.contains('used Sleep Talk! (Rest)')), isFalse);
+      }
+    });
+
+    test('Sleep Talk fails when only Rest and Sleep Talk are known', () {
+      final sleeper = _makeMon(
+        name: 'Snorlax',
+        moveIds: ['sleep_talk', 'rest'],
+      );
+      final target = _makeMon(name: 'Dummy', moveIds: ['tackle']);
+
+      sleeper.currentHp = 50;
+      sleeper.status = StatusCondition.sleep;
+      sleeper.sleepTurnsRemaining = 3;
+
+      final events = BattleEngine.executeSingleAttack(
+        sleeper,
+        sleeper.moves[0],
+        target,
+        isPlayer: true,
+        rng: Random(0),
+      );
+      expect(events.any((e) => e.message.contains('used Sleep Talk, but it failed!')), isTrue);
+      expect(events.any((e) => e.moveId == 'rest'), isFalse);
+      expect(sleeper.currentHp, 50);
+    });
+
     test('Rest heals full HP, sets deterministic sleep turns, and Early Bird wakes faster', () {
       final bird = _makeMon(
         name: 'Dodrio',

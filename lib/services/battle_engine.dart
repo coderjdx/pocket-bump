@@ -796,6 +796,29 @@ class BattleEngine {
     return dbMove?.copy() ?? selectedMove;
   }
 
+  static const Set<String> _uncallableSleepTalkMoves = {
+    'sleep_talk',
+    'rest',
+    'bide',
+    'focus_punch',
+    'metronome',
+    'mirror_move',
+    'copycat',
+    'me_first',
+    'uproar',
+    'mimic',
+    'struggle',
+  };
+
+  static List<Move> _sleepTalkCandidates(PokemonInstance mon) {
+    return mon.activeMoves
+        .where(
+          (m) =>
+              !_uncallableSleepTalkMoves.contains(m.id) && !m.isTwoTurnCharge,
+        )
+        .toList();
+  }
+
   static Move? selectOpponentMove(
     PokemonInstance opponent, {
     PokemonInstance? target,
@@ -838,8 +861,12 @@ class BattleEngine {
       if (m.id == 'rest' && field != null && field.uproarTurns > 0) {
         return false;
       }
-      if ((m.id == 'snore' || m.id == 'sleep_talk') &&
-          opponent.status != StatusCondition.sleep) {
+      if (m.id == 'snore' && opponent.status != StatusCondition.sleep) {
+        return false;
+      }
+      if (m.id == 'sleep_talk' &&
+          (opponent.status != StatusCondition.sleep ||
+              _sleepTalkCandidates(opponent).isEmpty)) {
         return false;
       }
       if ((m.id == 'dream_eater' || m.id == 'nightmare') &&
@@ -1924,9 +1951,9 @@ class BattleEngine {
       return events;
     }
 
-    // Sleep Talk picks another move cleanly
+    // Sleep Talk picks another move cleanly (never itself, Rest, or uncallable moves)
     if (move.id == 'sleep_talk') {
-      if (attacker.status != StatusCondition.sleep) {
+      if (isSubMove || attacker.status != StatusCondition.sleep) {
         events.add(BattleStepEvent(
           message: "$attackerName used Sleep Talk, but it failed!",
           isPlayerActor: isPlayer,
@@ -1939,12 +1966,8 @@ class BattleEngine {
         ));
         return events;
       }
-      const uncallableSleepTalk = {
-        'sleep_talk', 'bide', 'focus_punch', 'metronome',
-        'mirror_move', 'copycat', 'me_first', 'uproar',
-      };
-      final candidates = attacker.activeMoves
-          .where((m) => !uncallableSleepTalk.contains(m.id) && !m.isTwoTurnCharge)
+      final candidates = _sleepTalkCandidates(attacker)
+          .where((m) => m.id != move.id)
           .toList();
       if (candidates.isEmpty) {
         events.add(BattleStepEvent(
