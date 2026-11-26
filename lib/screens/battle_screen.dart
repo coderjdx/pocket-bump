@@ -19,6 +19,7 @@ import '../services/sound_service.dart';
 import '../widgets/hp_bar.dart';
 import '../widgets/move_learn_dialog.dart';
 import '../widgets/move_pp_picker_dialog.dart';
+import '../widgets/move_vfx_effects.dart';
 import '../widgets/pokeball_sprite.dart';
 import '../widgets/sound_controls.dart';
 import '../widgets/trainer_sprite.dart';
@@ -183,6 +184,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   // Active full-arena VFX overlay state
   String? _activeMoveId;
   PokemonType? _activeVfxType;
+  MoveCategory? _activeVfxCategory;
   bool _vfxAttackerIsPlayer = true;
   bool _vfxTargetIsSelf = false;
   String? _floatingCallout;
@@ -633,9 +635,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Future<void> _performPokemonSwitch(
     PokemonInstance nextMon, {
     required bool forced,
+    bool batonPass = false,
   }) async {
     if (!mounted) return;
-    if (widget.pvpSession != null && !forced) {
+    if (widget.pvpSession != null && !forced && !batonPass) {
       await _executePvpTurn(<String, dynamic>{
         'type': 'switch',
         'partyIndex': _trainer.party.indexOf(nextMon),
@@ -643,6 +646,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       });
       return;
     }
+
+    final int bpAtk = batonPass ? _playerPokemon.atkStage : 0;
+    final int bpDef = batonPass ? _playerPokemon.defStage : 0;
+    final int bpSpa = batonPass ? _playerPokemon.spaStage : 0;
+    final int bpSpd = batonPass ? _playerPokemon.spdStage : 0;
+    final int bpSpe = batonPass ? _playerPokemon.speStage : 0;
+    final int bpAcc = batonPass ? _playerPokemon.accStage : 0;
+    final int bpEva = batonPass ? _playerPokemon.evaStage : 0;
+    final bool bpFocus = batonPass && _playerPokemon.hasFocusEnergy;
+    final bool bpIngrain = batonPass && _playerPokemon.isIngrained;
+    final bool bpAqua = batonPass && _playerPokemon.hasAquaRing;
+    final int bpSub = batonPass ? _playerPokemon.substituteHp : 0;
 
     setState(() {
       _isSelectingMove = false;
@@ -676,12 +691,29 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     _opponentPokemon.isMeanLookTrapped = false;
     _playerKoController.reset();
     _recordParticipant(nextMon);
+    if (batonPass) {
+      nextMon
+        ..atkStage = bpAtk
+        ..defStage = bpDef
+        ..spaStage = bpSpa
+        ..spdStage = bpSpd
+        ..speStage = bpSpe
+        ..accStage = bpAcc
+        ..evaStage = bpEva
+        ..hasFocusEnergy = bpFocus
+        ..isIngrained = bpIngrain
+        ..hasAquaRing = bpAqua
+        ..substituteHp = bpSub;
+      _playerPokemon.clearVolatileBattleState();
+    }
     setState(() {
       _playerSubmerged = false;
       _visualPlayerFainted = false;
       _playerPokemon = nextMon;
       _displayedPlayerHp = nextMon.currentHp;
-      _currentMessage = "${_trainer.name}: Go! ${nextMon.nickname}!";
+      _currentMessage = batonPass
+          ? "${_trainer.name}: Go! ${nextMon.nickname} received the Baton Pass!"
+          : "${_trainer.name}: Go! ${nextMon.nickname}!";
     });
 
     await _animateTrainerSummonThrow(nextMon);
@@ -689,7 +721,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     await _playEntryAbility(nextMon, _opponentPokemon, isPlayer: true);
     if (!mounted) return;
 
-    if (widget.pvpSession != null && forced) {
+    if (widget.pvpSession != null && (forced || batonPass)) {
       await widget.pvpSession!.sendForcedSwitch(
         turn: _pvpTurnIndex,
         partyIndex: _trainer.party.indexOf(nextMon),
@@ -704,6 +736,11 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _isProcessingTurn = false;
       });
+      return;
+    }
+
+    if (batonPass) {
+      await _checkPostTurnConditions();
       return;
     }
 
@@ -899,6 +936,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _activeMoveId = event.moveId ??
               (event.moveType == PokemonType.fire ? 'status_burn' : 'status_poison');
           _activeVfxType = event.moveType ?? PokemonType.normal;
+          _activeVfxCategory = event.moveCategory ?? MoveCategory.status;
           _vfxAttackerIsPlayer = hurtPlayer;
           _vfxTargetIsSelf = true;
           _floatingCallout = "-${event.damageDealt}";
@@ -949,6 +987,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _activeMoveId = null;
         _activeVfxType = null;
+        _activeVfxCategory = null;
         _floatingCallout = null;
       });
       return;
@@ -980,48 +1019,32 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   bool _isHeavyMove(String moveId) {
     const heavyMoves = {
-      'earthquake',
-      'rock_slide',
-      'body_slam',
-      'submission',
-      'cross_chop',
-      'crabhammer',
-      'drill_peck',
-      'aqua_tail',
-      'fire_blast',
-      'hydro_pump',
-      'solar_beam',
-      'thunderbolt',
-      'self_destruct',
-      'explosion',
+      'earthquake', 'rock_slide', 'body_slam', 'submission', 'cross_chop',
+      'crabhammer', 'drill_peck', 'aqua_tail', 'fire_blast', 'hydro_pump',
+      'solar_beam', 'thunderbolt', 'thunder', 'zap_cannon', 'self_destruct',
+      'explosion', 'flare_blitz', 'brave_bird', 'giga_impact', 'stone_edge',
+      'earth_power', 'leaf_storm', 'eruption', 'head_smash', 'meteor_mash',
+      'superpower', 'focus_punch', 'hurricane', 'iron_tail', 'dragon_rush',
+      'wood_hammer', 'gunk_shot', 'psystrike', 'icicle_crash', 'megahorn',
+      'dragon_pulse', 'aura_sphere', 'dark_pulse', 'sludge_wave', 'muddy_water',
+      'leaf_blade', 'outrage',
     };
     return heavyMoves.contains(moveId);
   }
 
   Offset _lungeForMove(String moveId, bool isPlayer) {
     const highLeapMoves = {
-      'body_slam',
-      'submission',
-      'double_kick',
-      'crabhammer',
-      'waterfall',
-      'splash',
+      'body_slam', 'submission', 'double_kick', 'crabhammer', 'waterfall',
+      'splash', 'brave_bird', 'bounce', 'high_jump_kick', 'jump_kick',
+      'flying_press', 'sky_attack', 'head_smash', 'heavy_slam', 'heat_crash',
     };
     const rapidBlitzMoves = {
-      'quick_attack',
-      'drill_peck',
-      'peck',
-      'horn_attack',
-      'slash',
-      'x_scissor',
-      'karate_chop',
-      'cross_chop',
-      'fury_swipes',
-      'aqua_tail',
-      'wing_attack',
-      'poison_jab',
-      'twinneedle',
-      'tackle',
+      'quick_attack', 'extreme_speed', 'aqua_jet', 'mach_punch', 'bullet_punch',
+      'ice_shard', 'shadow_punch', 'sucker_punch', 'feint', 'fake_out',
+      'drill_peck', 'peck', 'horn_attack', 'slash', 'night_slash', 'shadow_claw',
+      'x_scissor', 'karate_chop', 'cross_chop', 'fury_swipes', 'aqua_tail',
+      'wing_attack', 'aerial_ace', 'acrobatics', 'poison_jab', 'twinneedle',
+      'tackle', 'spark', 'flame_charge', 'dragon_rush', 'flare_blitz',
     };
     if (highLeapMoves.contains(moveId)) {
       return isPlayer ? const Offset(0.18, -0.26) : const Offset(-0.18, 0.22);
@@ -1056,6 +1079,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         setState(() {
           _activeMoveId = moveId;
           _activeVfxType = event.moveType;
+          _activeVfxCategory = event.moveCategory ?? MoveCategory.physical;
           _vfxAttackerIsPlayer = isPlayer;
           _vfxTargetIsSelf = true;
         });
@@ -1065,6 +1089,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         setState(() {
           _activeMoveId = null;
           _activeVfxType = null;
+          _activeVfxCategory = null;
           _playerSubmerged = _playerPokemon.isUnderground;
           _opponentSubmerged = _opponentPokemon.isUnderground;
         });
@@ -1105,6 +1130,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         _opponentLungeOffset = Offset.zero;
         _activeMoveId = moveId;
         _activeVfxType = event.moveType;
+        _activeVfxCategory = event.moveCategory ?? MoveCategory.physical;
         _vfxAttackerIsPlayer = isPlayer;
         _vfxTargetIsSelf = isSelfEffect;
       });
@@ -1237,6 +1263,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       setState(() {
         _activeMoveId = null;
         _activeVfxType = null;
+        _activeVfxCategory = null;
         _floatingCallout = null;
       });
     } else {
@@ -1302,9 +1329,35 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       field: _fieldState,
     );
 
+    bool batonPassRequested = false;
     for (final event in events) {
+      if (event.requestBatonPassSwitch && event.isPlayerActor) {
+        batonPassRequested = true;
+      }
       await _playStepEvent(event);
       if (!mounted) return;
+    }
+
+    if (batonPassRequested &&
+        !_playerPokemon.isFainted &&
+        !_opponentPokemon.isFainted) {
+      final hasReserve =
+          _trainer.party.any((m) => m != _playerPokemon && !m.isFainted);
+      if (hasReserve) {
+        setState(() {
+          _isProcessingTurn = false;
+          _currentMessage =
+              "Choose a Pokémon to receive ${_playerPokemon.nickname}'s Baton Pass!";
+        });
+        _openSwitchModal(forced: true, batonPass: true);
+        return;
+      } else {
+        setState(() {
+          _currentMessage = "But there was no teammate to pass boosts to!";
+        });
+        await Future.delayed(const Duration(milliseconds: 900));
+        if (!mounted) return;
+      }
     }
 
     await _checkPostTurnConditions();
@@ -1381,6 +1434,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       } else if (roll < 75) {
         // 3. Napping (inflicts sleep)
         _playerPokemon.status = StatusCondition.sleep;
+        _playerPokemon.sleepTurnsRemaining = 2 + Random().nextInt(3);
         setState(() {
           _isSelectingMove = false;
           _isProcessingTurn = true;
@@ -1462,9 +1516,35 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       field: _fieldState,
     );
 
+    bool batonPassRequested = false;
     for (final event in events) {
+      if (event.requestBatonPassSwitch && event.isPlayerActor) {
+        batonPassRequested = true;
+      }
       await _playStepEvent(event);
       if (!mounted) return;
+    }
+
+    if (batonPassRequested &&
+        !_playerPokemon.isFainted &&
+        !_opponentPokemon.isFainted) {
+      final hasReserve =
+          _trainer.party.any((m) => m != _playerPokemon && !m.isFainted);
+      if (hasReserve) {
+        setState(() {
+          _isProcessingTurn = false;
+          _currentMessage =
+              "Choose a Pokémon to receive ${_playerPokemon.nickname}'s Baton Pass!";
+        });
+        _openSwitchModal(forced: true, batonPass: true);
+        return;
+      } else {
+        setState(() {
+          _currentMessage = "But there was no teammate to pass boosts to!";
+        });
+        await Future.delayed(const Duration(milliseconds: 900));
+        if (!mounted) return;
+      }
     }
 
     await _checkPostTurnConditions();
@@ -3523,6 +3603,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                         painter: _MoveVfxPainter(
                                           moveId: _activeMoveId!,
                                           moveType: _activeVfxType!,
+                                          moveCategory: _activeVfxCategory ??
+                                              MoveCategory.physical,
                                           attackerCenter: atkCenter,
                                           defenderCenter: defCenter,
                                           attackerSize: atkSize,
@@ -5960,7 +6042,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     );
   }
 
-  void _openSwitchModal({bool forced = false}) {
+  void _openSwitchModal({bool forced = false, bool batonPass = false}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -5983,9 +6065,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                 children: [
                   Row(
                     children: [
-                      const Text(
-                        "SWITCH POKÉMON",
-                        style: TextStyle(
+                      Text(
+                        batonPass ? "BATON PASS • SWITCH" : "SWITCH POKÉMON",
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -6198,7 +6280,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                                           ? () {
                                               Navigator.pop(ctx);
                                               _performPokemonSwitch(mon,
-                                                  forced: forced);
+                                                  forced: forced,
+                                                  batonPass: batonPass);
                                             }
                                           : null,
                                       style: ElevatedButton.styleFrom(
@@ -6759,10 +6842,84 @@ class _MoveVfxPainter extends CustomPainter {
     'extreme_speed',
     'aqua_jet',
     'take_down',
+    'charge',
+    'magnet_rise',
+    'sunny_day',
+    'rain_dance',
+    'sandstorm',
+    'hail',
+    'protect',
+    'detect',
+    'endure',
+    'quick_guard',
+    'wide_guard',
+    'magic_coat',
+    'safeguard',
+    'mist',
+    'lucky_chant',
+    'dragon_dance',
+    'quiver_dance',
+    'calm_mind',
+    'shell_smash',
+    'nasty_plot',
+    'bulk_up',
+    'belly_drum',
+    'work_up',
+    'growth',
+    'coil',
+    'cosmic_power',
+    'rock_polish',
+    'focus_energy',
+    'acupressure',
+    'meditate',
+    'defense_curl',
+    'minimize',
+    'stockpile',
+    'swallow',
+    'synthesis',
+    'moonlight',
+    'roost',
+    'slack_off',
+    'ingrain',
+    'aqua_ring',
+    'aromatherapy',
+    'refresh',
+    'healing_wish',
+    'destiny_bond',
+    'grudge',
+    'imprison',
+    'baton_pass',
+    'helping_hand',
+    'after_you',
+    'ally_switch',
+    'psych_up',
+    'barrier',
+    'iron_defense',
+    'amnesia',
+    'conversion',
+    'conversion_2',
+    'camouflage',
+    'reflect_type',
+    'sleep_talk',
+    'flare_blitz',
+    'brave_bird',
+    'giga_impact',
+    'eruption',
+    'lava_plume',
+    'sludge_wave',
+    'bulldoze',
+    'magnitude',
+    'rapid_spin',
+    'spark',
+    'flame_charge',
+    'dragon_rush',
+    'head_smash',
+    'wood_hammer',
   };
 
   final String moveId;
   final PokemonType moveType;
+  final MoveCategory moveCategory;
   final Offset attackerCenter;
   final Offset defenderCenter;
   final double attackerSize;
@@ -6772,6 +6929,7 @@ class _MoveVfxPainter extends CustomPainter {
   _MoveVfxPainter({
     required this.moveId,
     required this.moveType,
+    this.moveCategory = MoveCategory.physical,
     required this.attackerCenter,
     required this.defenderCenter,
     this.attackerSize = 140.0,
@@ -6835,6 +6993,27 @@ class _MoveVfxPainter extends CustomPainter {
     Offset unit,
     Offset perp,
   ) {
+
+    if (MoveVfxEffects.tryPaintMove(
+      canvas: canvas,
+      size: size,
+      moveId: moveId,
+      moveType: moveType,
+      moveCategory: moveCategory,
+      t: t,
+      fade: fade,
+      isSelfTarget: isSelfTarget,
+      attackerCenter: attackerCenter,
+      defenderCenter: defenderCenter,
+      attackerSize: attackerSize,
+      defenderSize: defenderSize,
+      dir: dir,
+      dist: dist,
+      unit: unit,
+      perp: perp,
+    )) {
+      return;
+    }
 
     switch (moveId) {
       // ─── FIRE MOVES ─────────────────────────────────────────────────────
@@ -11143,10 +11322,18 @@ class _MoveVfxPainter extends CustomPainter {
         break;
 
       default:
-        canvas.drawCircle(
-          defenderCenter,
-          16 + t * 34,
-          Paint()..color = moveType.color.withOpacity(0.6 * fade),
+        MoveVfxEffects.paintFallback(
+          canvas: canvas,
+          size: size,
+          moveType: moveType,
+          moveCategory: moveCategory,
+          t: t,
+          fade: fade,
+          isSelfTarget: isSelfTarget,
+          attackerCenter: attackerCenter,
+          defenderCenter: defenderCenter,
+          unit: unit,
+          perp: perp,
         );
         break;
     }
@@ -11154,20 +11341,13 @@ class _MoveVfxPainter extends CustomPainter {
 
   void _drawLightningBolt(
       Canvas canvas, Offset start, Offset end, double fade, double strokeW) {
-    final p1 = Offset.lerp(start, end, 0.33)! + const Offset(14, 0);
-    final p2 = Offset.lerp(start, end, 0.66)! + const Offset(-14, 0);
-    final path = Path()
-      ..moveTo(start.dx, start.dy)
-      ..lineTo(p1.dx, p1.dy)
-      ..lineTo(p2.dx, p2.dy)
-      ..lineTo(end.dx, end.dy);
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = Colors.yellowAccent.withOpacity(fade)
-        ..strokeWidth = strokeW
-        ..strokeCap = StrokeCap.round
-        ..style = PaintingStyle.stroke,
+    MoveVfxEffects.drawArcLightning(
+      canvas,
+      start,
+      end,
+      progress,
+      fade,
+      strokeWidth: strokeW,
     );
   }
 
@@ -11352,6 +11532,8 @@ class _MoveVfxPainter extends CustomPainter {
   bool shouldRepaint(covariant _MoveVfxPainter oldDelegate) =>
       oldDelegate.progress != progress ||
       oldDelegate.moveId != moveId ||
+      oldDelegate.moveType != moveType ||
+      oldDelegate.moveCategory != moveCategory ||
       oldDelegate.attackerCenter != attackerCenter ||
       oldDelegate.defenderCenter != defenderCenter ||
       oldDelegate.attackerSize != attackerSize ||

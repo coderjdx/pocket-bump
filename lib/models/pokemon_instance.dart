@@ -60,11 +60,13 @@ class PokemonInstance {
   List<String> learnedMoveIds;
   int currentExp;
   StatusCondition _status;
+  int sleepTurnsRemaining = 0;
   StatusCondition get status => _status;
   set status(StatusCondition value) {
     _status = value;
     if (value != StatusCondition.sleep) {
       hasNightmare = false;
+      sleepTurnsRemaining = 0;
     }
   }
   String? heldItemId;
@@ -135,6 +137,12 @@ class PokemonInstance {
   bool isTormented = false;
   String? disabledMoveId;
   int disableTurnsRemaining = 0;
+  bool isRoostedThisTurn = false;
+  bool isChargedElectric = false;
+  bool hasMagicCoatThisTurn = false;
+  bool isImprisoning = false;
+  bool hasGrudge = false;
+  bool helpingHandBoosted = false;
   List<PokemonType>? activeTypesOverride;
   List<Move>? transformedMoves;
   Map<String, int>? transformedBaseStats;
@@ -630,6 +638,12 @@ class PokemonInstance {
     isTormented = false;
     disabledMoveId = null;
     disableTurnsRemaining = 0;
+    isRoostedThisTurn = false;
+    isChargedElectric = false;
+    hasMagicCoatThisTurn = false;
+    isImprisoning = false;
+    hasGrudge = false;
+    helpingHandBoosted = false;
     activeTypesOverride = null;
     transformedMoves = null;
     transformedBaseStats = null;
@@ -689,6 +703,7 @@ class PokemonInstance {
       'currentHp': currentHp,
       'currentExp': currentExp,
       'status': status.name,
+      'sleepTurnsRemaining': sleepTurnsRemaining,
       'heldItemId': heldItemId,
       'caughtBall': caughtBall,
       'isShiny': isShiny,
@@ -764,7 +779,7 @@ class PokemonInstance {
     final rawLearned = json['learnedMoveIds'] as List<dynamic>?;
     final List<String>? savedLearnedIds =
         rawLearned?.whereType<String>().toList();
-    return PokemonInstance(
+    final instance = PokemonInstance(
       species: spec,
       nickname: (rawNickname != null && rawNickname.trim().isNotEmpty)
           ? rawNickname
@@ -781,5 +796,9 @@ class PokemonInstance {
       abilityId: resolvedAbilityId,
       abilitySlot: resolvedSlot,
     );
+    instance.sleepTurnsRemaining = restoredStatus == StatusCondition.sleep
+        ? ((json['sleepTurnsRemaining'] as num?)?.toInt() ?? 2).clamp(1, 4)
+        : 0;
+    return instance;
   }
 }
