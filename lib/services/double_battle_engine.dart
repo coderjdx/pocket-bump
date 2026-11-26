@@ -2035,7 +2035,6 @@ class DoubleBattleEngine {
         isPlayer: isPlayer,
         isWild: false,
         field: BattleFieldState(), // weather handled globally above
-        rng: random,
       );
       for (final ev in statusEvents) {
         events.add(_adaptStepEvent(

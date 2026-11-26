@@ -412,7 +412,6 @@ class BattleEngine {
     String? actorLabel,
     bool? isPlayerActor,
     BattleFieldState? field,
-    bool hideMoveVfx = false,
   }) =>
       _applySingleStatStage(
         target: target,
@@ -428,7 +427,6 @@ class BattleEngine {
         actorLabel: actorLabel,
         isPlayerActor: isPlayerActor,
         field: field,
-        hideMoveVfx: hideMoveVfx,
       );
 
   static List<PokemonType> _defensiveTypes(PokemonInstance mon) {
