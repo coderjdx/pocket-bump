@@ -1114,6 +1114,16 @@ class BattleEngine {
         return moveType == PokemonType.fire ? 1.20 : 1.0;
       case 'soft_sand':
         return moveType == PokemonType.ground ? 1.20 : 1.0;
+      case 'never_melt_ice':
+        return moveType == PokemonType.ice ? 1.20 : 1.0;
+      case 'black_belt':
+        return moveType == PokemonType.fighting ? 1.20 : 1.0;
+      case 'spell_tag':
+        return moveType == PokemonType.ghost ? 1.20 : 1.0;
+      case 'dragon_fang':
+        return moveType == PokemonType.dragon ? 1.20 : 1.0;
+      case 'life_orb':
+        return 1.30;
       default:
         return 1.0;
     }
@@ -3084,6 +3094,33 @@ class BattleEngine {
         message: "$attackerName was damaged by the recoil!",
         isPlayerActor: isPlayer,
         damageDealt: recoil,
+        targetHpAfter: attacker.currentHp,
+        targetFainted: attacker.isFainted,
+        isSelfDamage: true,
+        hideMoveVfx: true,
+      ));
+      if (attacker.isFainted) {
+        events.add(BattleStepEvent(
+          message: "$attackerName fainted!",
+          isPlayerActor: !isPlayer,
+          targetHpAfter: 0,
+          targetFainted: true,
+        ));
+      }
+    }
+
+    // Life Orb (+30% power, 10% max HP recoil on damaging hits unless Magic Guard / Sheer Force)
+    if (totalDamageDealt > 0 &&
+        !attacker.isFainted &&
+        attacker.heldItemId == 'life_orb' &&
+        atkAb != 'magic_guard' &&
+        !sheerForceBlocksSec) {
+      final int orbRecoil = max(1, attacker.maxHp ~/ 10);
+      attacker.currentHp = (attacker.currentHp - orbRecoil).clamp(0, attacker.maxHp);
+      events.add(BattleStepEvent(
+        message: "$attackerName lost some of its HP from Life Orb!",
+        isPlayerActor: isPlayer,
+        damageDealt: orbRecoil,
         targetHpAfter: attacker.currentHp,
         targetFainted: attacker.isFainted,
         isSelfDamage: true,

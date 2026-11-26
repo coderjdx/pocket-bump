@@ -380,6 +380,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
           isWild: false,
           trainerName: rocket.name,
           trainerTitle: rocket.title,
+          trainerIntroLine: rocket.introDialogue,
+          trainerDefeatLine: rocket.defeatDialogue,
           opponentSpriteId: rocket.spriteId,
           prizeMoney: rocket.prizeMoney,
           battleBackgroundAsset: widget.destination.backgroundAsset,

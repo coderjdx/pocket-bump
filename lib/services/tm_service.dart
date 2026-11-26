@@ -197,6 +197,52 @@ class TmService {
       case 49: // Tri Attack
         return const {35, 36, 81, 82, 84, 85, 113, 120, 121, 137, 150}.contains(id);
 
+      case 51: // Giga Impact
+        return species.isFinalStage || species.isPseudoLegendary || species.isLegendary || species.isMythical;
+
+      case 52: // Ice Punch
+        return types.contains(PokemonType.ice) ||
+            types.contains(PokemonType.water) ||
+            types.contains(PokemonType.fighting) ||
+            const {
+              7, 8, 9, 31, 34, 35, 36, 39, 40, 54, 55, 62, 63, 64, 65,
+              79, 80, 92, 93, 94, 96, 97, 106, 107, 108, 112, 113, 115,
+              122, 124, 125, 143, 149, 150,
+            }.contains(id);
+
+      case 53: // Close Combat
+        return types.contains(PokemonType.fighting) ||
+            const {
+              6, 9, 25, 26, 31, 34, 56, 57, 58, 59, 62, 66, 67, 68, 76,
+              106, 107, 112, 115, 123, 127, 128, 141, 142, 143, 149, 150,
+            }.contains(id);
+
+      case 54: // Shadow Ball
+        return types.contains(PokemonType.ghost) ||
+            types.contains(PokemonType.psychic) ||
+            types.contains(PokemonType.poison) ||
+            const {
+              12, 19, 20, 35, 36, 39, 40, 52, 53, 79, 80, 92, 93, 94,
+              96, 97, 108, 113, 115, 120, 121, 122, 124, 131, 133, 134,
+              135, 136, 137, 143, 144, 150,
+            }.contains(id);
+
+      case 55: // Dragon Claw
+        return types.contains(PokemonType.dragon) ||
+            const {
+              4, 5, 6, 31, 34, 108, 112, 115, 123, 127, 130, 141, 142,
+              147, 148, 149, 150,
+            }.contains(id);
+
+      case 56: // Dark Pulse
+        return types.contains(PokemonType.ghost) ||
+            types.contains(PokemonType.psychic) ||
+            types.contains(PokemonType.poison) ||
+            const {
+              9, 23, 24, 52, 53, 58, 59, 92, 93, 94, 109, 110, 130,
+              131, 133, 134, 135, 136, 142, 149, 150,
+            }.contains(id);
+
       default:
         return true;
     }

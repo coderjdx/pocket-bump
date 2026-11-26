@@ -42,6 +42,8 @@ class BattleScreen extends StatefulWidget {
   final bool isWild;
   final String? trainerName;
   final String? trainerTitle;
+  final String? trainerIntroLine;
+  final String? trainerDefeatLine;
   final String? opponentSpriteId;
   final int prizeMoney;
   final bool preservePartyHpOnExit;
@@ -59,6 +61,8 @@ class BattleScreen extends StatefulWidget {
     this.isWild = true,
     this.trainerName,
     this.trainerTitle,
+    this.trainerIntroLine,
+    this.trainerDefeatLine,
     this.opponentSpriteId,
     this.prizeMoney = 0,
     this.preservePartyHpOnExit = false,
@@ -434,6 +438,18 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     }
 
     if (!widget.isWild) {
+      if (widget.pvpSession == null) {
+        final String introLine =
+            (widget.trainerIntroLine?.trim().isNotEmpty ?? false)
+                ? widget.trainerIntroLine!.trim()
+                : "Let's see what you and your Pokémon can do!";
+        setState(() {
+          _currentMessage =
+              "${widget.trainerName ?? 'Trainer'}: \"$introLine\"";
+        });
+        await Future.delayed(const Duration(milliseconds: 1650));
+        if (!mounted) return;
+      }
       setState(() {
         _currentMessage =
             "${widget.trainerName ?? 'Trainer'} sent out ${_opponentPokemon.species.name}!";
@@ -1762,6 +1778,21 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           if (!mounted) return;
         }
       } else {
+        if (widget.pvpSession == null) {
+          final String defeatLine =
+              (widget.trainerDefeatLine?.trim().isNotEmpty ?? false)
+                  ? widget.trainerDefeatLine!.trim()
+                  : "No way! You bested my team!";
+          setState(() {
+            _showOpponentTrainerSprite = true;
+            _opponentTrainerPose = 0;
+            _opponentTrainerSlideX = 0.0;
+            _currentMessage =
+                "${widget.trainerName ?? 'Trainer'}: \"$defeatLine\"";
+          });
+          await Future.delayed(const Duration(milliseconds: 1750));
+          if (!mounted) return;
+        }
         // Trainer defeated! Award prize money
         final purse = widget.prizeMoney;
         if (purse > 0) {

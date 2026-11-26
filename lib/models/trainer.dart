@@ -57,6 +57,9 @@ class Trainer extends ChangeNotifier {
   bool expShareEnabled;
   bool hasEarnedExpeditionMasterBall;
   Set<int> caughtExpeditionLegendaryIds;
+  bool victoryRoadCleared;
+  int championClears;
+  List<Map<String, dynamic>> hallOfFameEntries;
   Set<String> redeemedGiftCodes;
   Set<String> claimedEventGiftIds;
   List<RivalRecord> rivals;
@@ -101,6 +104,9 @@ class Trainer extends ChangeNotifier {
     this.expShareEnabled = false,
     this.hasEarnedExpeditionMasterBall = false,
     Set<int>? caughtExpeditionLegendaryIds,
+    this.victoryRoadCleared = false,
+    this.championClears = 0,
+    List<Map<String, dynamic>>? hallOfFameEntries,
     Set<String>? redeemedGiftCodes,
     Set<String>? claimedEventGiftIds,
     List<RivalRecord>? rivals,
@@ -116,6 +122,7 @@ class Trainer extends ChangeNotifier {
         gymTodaySteps = gymTodaySteps ?? {},
         customItems = customItems ?? {},
         caughtExpeditionLegendaryIds = caughtExpeditionLegendaryIds ?? {},
+        hallOfFameEntries = hallOfFameEntries ?? [],
         redeemedGiftCodes = redeemedGiftCodes ?? {},
         claimedEventGiftIds = claimedEventGiftIds ?? {},
         rivals = rivals ?? [] {
@@ -626,6 +633,35 @@ class Trainer extends ChangeNotifier {
 
   bool get isExpShareActive => hasExpShare && expShareEnabled;
 
+  bool get isVictoryRoadUnlocked => clearedGymIds.length >= 8;
+
+  bool get isChampion => championClears > 0;
+
+  void markVictoryRoadCleared() {
+    if (victoryRoadCleared) return;
+    victoryRoadCleared = true;
+    notifyListeners();
+  }
+
+  void recordChampionVictory() {
+    victoryRoadCleared = true;
+    championClears += 1;
+    hallOfFameEntries.add({
+      'runNumber': championClears,
+      'inductedAt': DateTime.now().toUtc().toIso8601String(),
+      'party': party
+          .map((mon) => {
+                'speciesId': mon.species.id,
+                'nickname': mon.nickname,
+                'level': mon.level,
+                'isShiny': mon.isShiny,
+                'originalTrainerName': mon.originalTrainerName ?? name,
+              })
+          .toList(),
+    });
+    notifyListeners();
+  }
+
   double get atkBadgeMultiplier =>
       (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
 
@@ -1026,6 +1062,9 @@ class Trainer extends ChangeNotifier {
       'hasEarnedExpeditionMasterBall': hasEarnedExpeditionMasterBall,
       'caughtExpeditionLegendaryIds':
           caughtExpeditionLegendaryIds.toList()..sort(),
+      'victoryRoadCleared': victoryRoadCleared,
+      'championClears': championClears,
+      'hallOfFameEntries': hallOfFameEntries,
       'redeemedGiftCodes': redeemedGiftCodes.toList()..sort(),
       'claimedEventGiftIds': claimedEventGiftIds.toList()..sort(),
       'rivals': rivals.map((r) => r.toJson()).toList(),
@@ -1119,6 +1158,19 @@ class Trainer extends ChangeNotifier {
             .whereType<num>()
             .map((n) => n.toInt())
             .toSet();
+    victoryRoadCleared = json['victoryRoadCleared'] == true;
+    championClears = max(0, (json['championClears'] as num?)?.toInt() ?? 0);
+    final rawHof = json['hallOfFameEntries'] as List<dynamic>? ?? const [];
+    hallOfFameEntries = [
+      for (final item in rawHof)
+        if (item is Map) Map<String, dynamic>.from(item),
+    ];
+    if (hallOfFameEntries.isNotEmpty && championClears < hallOfFameEntries.length) {
+      championClears = hallOfFameEntries.length;
+    }
+    if (championClears > 0) {
+      victoryRoadCleared = true;
+    }
     redeemedGiftCodes =
         (json['redeemedGiftCodes'] as List<dynamic>? ?? const [])
             .whereType<String>()
@@ -1292,6 +1344,9 @@ class Trainer extends ChangeNotifier {
     expShareEnabled = false;
     hasEarnedExpeditionMasterBall = false;
     caughtExpeditionLegendaryIds = {};
+    victoryRoadCleared = false;
+    championClears = 0;
+    hallOfFameEntries = [];
     redeemedGiftCodes = {};
     claimedEventGiftIds = {};
     rivals = [];

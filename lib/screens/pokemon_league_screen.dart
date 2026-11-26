@@ -11,6 +11,8 @@ import '../services/tm_service.dart';
 import '../widgets/gauntlet_checkpoint_sheets.dart';
 import '../widgets/poke_theme.dart';
 import 'battle_screen.dart';
+import 'hall_of_fame_screen.dart';
+import 'victory_road_screen.dart';
 
 class PokemonLeagueScreen extends StatefulWidget {
   const PokemonLeagueScreen({super.key});
@@ -644,7 +646,19 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   // === ELITE FOUR TEASER CARD ===
   Widget _buildEliteFourTeaser(Trainer trainer) {
     final badges = trainer.clearedGymIds.length;
-    final bool unlocked = badges >= 8;
+    final bool unlocked = trainer.isVictoryRoadUnlocked;
+    final String stateBadge = !unlocked
+        ? "LOCKED ($badges/8 BADGES)"
+        : (!trainer.victoryRoadCleared
+            ? "VICTORY ROAD READY"
+            : (!trainer.isChampion ? "FINAL FOUR READY" : "LV.99 REMATCH"));
+    final String description = !unlocked
+        ? "Victory Road, the Final Four (Lorelei, Bruno, Agatha, Lance), and Champion Blue unlock as soon as you collect all 8 Kanto Gym Badges!"
+        : (!trainer.victoryRoadCleared
+            ? "All 8 Gym Badges earned! Clear the 6-stage Victory Road mountain gauntlet (Wild → Trainer) to unlock the Indigo Plateau Final Four."
+            : (!trainer.isChampion
+                ? "Victory Road cleared! Challenge Lorelei, Bruno, Agatha, Lance, and the Indigo Champion in one continuous run."
+                : "Champion title claimed (${trainer.championClears} clears)! Re-enter Victory Road at Lv. 99 to battle Final Four Masters & Blue for exclusive drops."));
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -652,7 +666,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
         fill: unlocked ? PokeColors.cardWhite : PokeColors.creamSurface,
         border: unlocked ? PokeColors.badgeGold : PokeColors.frameBorderSoft,
         radius: 16,
-        borderWidth: 1.5,
+        borderWidth: 1.6,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -676,16 +690,16 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "INDIGO PLATEAU",
+                      "VICTORY ROAD & INDIGO PLATEAU",
                       style: TextStyle(
                         color: PokeColors.inkDark,
                         fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                        letterSpacing: 0.9,
+                        fontSize: 13.5,
+                        letterSpacing: 0.7,
                       ),
                     ),
                     Text(
-                      "Pokémon League Champion Road",
+                      "Final Four & Championship Challenge",
                       style: TextStyle(
                         color: PokeColors.inkMuted,
                         fontSize: 11,
@@ -708,7 +722,7 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                   ),
                 ),
                 child: Text(
-                  unlocked ? "READY" : "LOCKED (8 BADGES)",
+                  stateBadge,
                   style: TextStyle(
                     color: unlocked
                         ? PokeColors.badgeGoldDark
@@ -721,14 +735,84 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "The Elite Four (Lorelei, Bruno, Agatha, Lance) and the Regional Champion await the master trainer who conquers all 8 Kanto Gyms. Keep training and collecting badges!",
-            style: TextStyle(
+          Text(
+            description,
+            style: const TextStyle(
               color: PokeColors.inkMuted,
               fontSize: 11,
               height: 1.4,
             ),
           ),
+          if (unlocked) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      SoundService.instance.playUiTap();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const VictoryRoadScreen()),
+                      );
+                    },
+                    icon: const Icon(Icons.hiking_rounded, size: 17),
+                    label: Text(
+                      !trainer.victoryRoadCleared
+                          ? "ENTER VICTORY ROAD"
+                          : (!trainer.isChampion
+                              ? "CHALLENGE FINAL FOUR"
+                              : "ENTER LV.99 REMATCH"),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 11.5,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PokeColors.leagueIndigo,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                    ),
+                  ),
+                ),
+                if (trainer.hallOfFameEntries.isNotEmpty) ...[
+                  const SizedBox(width: 8),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      SoundService.instance.playUiTap();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const HallOfFameScreen()),
+                      );
+                    },
+                    icon: const Icon(Icons.workspace_premium_rounded, size: 16),
+                    label: const Text(
+                      "HOF",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: PokeColors.badgeGoldDark,
+                      side: const BorderSide(color: PokeColors.badgeGoldDark),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -807,6 +891,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
             isWild: false,
             trainerName: currentOpponent.name,
             trainerTitle: currentOpponent.title,
+            trainerIntroLine: currentOpponent.introDialogue,
+            trainerDefeatLine: currentOpponent.defeatDialogue,
             opponentSpriteId: currentOpponent.spriteId,
             prizeMoney: currentOpponent.prizeMoney,
             preservePartyHpOnExit: true,

@@ -50,6 +50,7 @@ class GymTrainer {
   final String spriteId;
   final int prizeMoney;
   final String introDialogue;
+  final String defeatDialogue;
   final List<GymPokemonSpec> team;
 
   const GymTrainer({
@@ -59,6 +60,7 @@ class GymTrainer {
     this.spriteId = 'npc_camper',
     required this.prizeMoney,
     required this.introDialogue,
+    this.defeatDialogue = "Whoa! You really outmatched my team!",
     required this.team,
   });
 }
@@ -236,6 +238,7 @@ class GymDatabase {
         title: 'Pewter Gym Leader',
         prizeMoney: 2400,
         introDialogue: "I'm Brock! I'm Pewter's Gym Leader! My rock-hard willpower is evident even in my Pokémon!",
+        defeatDialogue: "I took you for granted... You really earned this Boulder Badge!",
         team: [
           GymPokemonSpec(speciesId: 27, level: 17), // Sandshrew
           GymPokemonSpec(speciesId: 140, level: 18), // Kabuto
@@ -368,6 +371,7 @@ class GymDatabase {
         title: 'Cerulean Gym Leader',
         prizeMoney: 3200,
         introDialogue: "Hi, you're a new face! Only trainers with true policy and skill can win against my Water Pokémon!",
+        defeatDialogue: "Wow! You're too much! All right, you can have the Cascade Badge!",
         team: [
           GymPokemonSpec(speciesId: 118, level: 22), // Goldeen
           GymPokemonSpec(speciesId: 54, level: 23), // Psyduck
@@ -500,6 +504,7 @@ class GymDatabase {
         title: 'Vermilion Gym Leader',
         prizeMoney: 4200,
         introDialogue: "Ten-hut! You won't live long in combat with just guts! I tell you, electric Pokémon saved me during the war!",
+        defeatDialogue: "Whoa! Now that's electric! Take the Thunder Badge—you earned it, kid!",
         team: [
           GymPokemonSpec(speciesId: 100, level: 31), // Voltorb
           GymPokemonSpec(speciesId: 25, level: 32), // Pikachu
@@ -632,6 +637,7 @@ class GymDatabase {
         title: 'Celadon Gym Leader',
         prizeMoney: 5400,
         introDialogue: "Hello... Lovely weather, isn't it? It's so pleasant. My name is Erika. I am the Leader of Celadon Gym.",
+        defeatDialogue: "Oh! I concede defeat. You are remarkably strong—here is the Rainbow Badge.",
         team: [
           GymPokemonSpec(speciesId: 103, level: 39), // Exeggutor
           GymPokemonSpec(speciesId: 47, level: 40), // Parasect
@@ -764,6 +770,7 @@ class GymDatabase {
         title: 'Fuchsia Gym Leader',
         prizeMoney: 6800,
         introDialogue: "Fwahahaha! A mere child challenges me? Very well, despair before the creeping terror of poison and sleep!",
+        defeatDialogue: "Hmph! You've proven your worth beyond my shadows. Take the Soul Badge!",
         team: [
           GymPokemonSpec(speciesId: 109, level: 47), // Koffing
           GymPokemonSpec(speciesId: 42, level: 48), // Golbat
@@ -896,6 +903,7 @@ class GymDatabase {
         title: 'Saffron Gym Leader',
         prizeMoney: 8200,
         introDialogue: "I had a vision of your arrival! I have had psychic powers since I was a child. I do not like to fight, but I will not lose!",
+        defeatDialogue: "I'm shocked... Your bond with your Pokémon surpassed my psychic power. Take the Marsh Badge.",
         team: [
           GymPokemonSpec(speciesId: 64, level: 57), // Kadabra
           GymPokemonSpec(speciesId: 80, level: 58), // Slowbro
@@ -1028,6 +1036,7 @@ class GymDatabase {
         title: 'Cinnabar Gym Leader',
         prizeMoney: 9800,
         introDialogue: "Hah! I am Blaine, the red-hot quiz master! My fiery Pokémon will incinerate all challengers! You better have Burn Heal ready!",
+        defeatDialogue: "I've burnt out! You truly earned the Volcano Badge!",
         team: [
           GymPokemonSpec(speciesId: 58, level: 67), // Growlithe
           GymPokemonSpec(speciesId: 77, level: 68), // Ponyta
@@ -1160,6 +1169,7 @@ class GymDatabase {
         title: 'Viridian Gym Leader',
         prizeMoney: 12000,
         introDialogue: "Fwahaha! Welcome to my hideout! It seems you've made quite a name for yourself. But this is the end of the line! Behold the ultimate power of Earth!",
+        defeatDialogue: "Ha! That was a truly intense fight. You have won—the Earth Badge is yours!",
         team: [
           GymPokemonSpec(speciesId: 111, level: 79), // Rhyhorn
           GymPokemonSpec(speciesId: 53, level: 80), // Persian
@@ -1268,6 +1278,7 @@ class GymDatabase {
         spriteId: baseTrainer.spriteId,
         prizeMoney: scaledPrize,
         introDialogue: baseTrainer.introDialogue,
+        defeatDialogue: baseTrainer.defeatDialogue,
         team: team,
       ));
     }
@@ -1294,6 +1305,7 @@ class GymDatabase {
       spriteId: gym.leader.spriteId,
       prizeMoney: leaderPrize,
       introDialogue: gym.leader.introDialogue,
+      defeatDialogue: gym.leader.defeatDialogue,
       team: leaderTeam,
     ));
 

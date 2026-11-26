@@ -36,6 +36,7 @@ import 'pokemon_center_screen.dart';
 import 'pokemon_detail_screen.dart';
 import 'pokemon_league_screen.dart';
 import 'rivals_screen.dart';
+import 'victory_road_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -1070,6 +1071,12 @@ class _HomeScreenState extends State<HomeScreen> {
   // ─── 4. CATEGORY SUBMENUS (PORTRAIT-BUTTON ROWS IN CREAM SHEETS) ──────────
   void _openBattleMenuSheet(Trainer trainer) {
     final badges = trainer.clearedGymIds.length;
+    final String victoryRoadSub = !trainer.isVictoryRoadUnlocked
+        ? "$badges/8 Badges"
+        : (!trainer.victoryRoadCleared
+            ? "First Ascent"
+            : (!trainer.isChampion ? "Final Four" : "Lv.99 Rematch"));
+
     showModalBottomSheet(
       context: context,
       backgroundColor: PokeColors.creamSurface,
@@ -1078,7 +1085,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       builder: (ctx) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 22),
+          padding: const EdgeInsets.fromLTRB(14, 16, 14, 22),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1095,13 +1102,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: PokePortraitButton(
-                      label: "ADVENTURES",
+                      label: "ADVENTURE",
                       subtitle: "5-Stage Wild",
                       icon: Icons.explore_rounded,
                       topColor: PokeColors.pokeGreen,
                       bottomColor: PokeColors.pokeGreenDark,
                       height: 136,
-                      iconSize: 38,
+                      iconSize: 34,
                       onTap: () {
                         SoundService.instance.playUiTap();
                         Navigator.pop(ctx);
@@ -1109,16 +1116,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 9),
+                  const SizedBox(width: 7),
                   Expanded(
                     child: PokePortraitButton(
-                      label: "GYM BATTLES",
-                      subtitle: "Kanto League",
+                      label: "GYM\nBATTLES",
+                      subtitle: "Kanto Gyms",
                       icon: Icons.military_tech_rounded,
                       topColor: PokeColors.leagueIndigo,
                       bottomColor: PokeColors.leagueIndigoDark,
                       height: 136,
-                      iconSize: 38,
+                      iconSize: 34,
                       badgeText: "$badges/8",
                       onTap: () {
                         SoundService.instance.playUiTap();
@@ -1131,10 +1138,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 9),
+                  const SizedBox(width: 7),
                   Expanded(
                     child: PokePortraitButton(
-                      label: "EXPEDITIONS",
+                      label: "EXPEDITION",
                       subtitle: trainer.isExpeditionsUnlocked
                           ? "Lv.99 Sites"
                           : "$badges/8 Badges",
@@ -1142,7 +1149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       topColor: PokeColors.linkTeal,
                       bottomColor: PokeColors.linkTealDark,
                       height: 136,
-                      iconSize: 38,
+                      iconSize: 34,
                       locked: !trainer.isExpeditionsUnlocked,
                       onTap: () {
                         SoundService.instance.playUiTap();
@@ -1158,6 +1165,38 @@ class _HomeScreenState extends State<HomeScreen> {
                             SnackBar(
                               content: Text(
                                   "Expeditions unlock after earning all 8 Gym Badges! ($badges/8 earned)"),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 7),
+                  Expanded(
+                    child: PokePortraitButton(
+                      label: "VICTORY\nROAD",
+                      subtitle: victoryRoadSub,
+                      icon: Icons.emoji_events_rounded,
+                      topColor: PokeColors.bagOrange,
+                      bottomColor: PokeColors.bagOrangeDark,
+                      height: 136,
+                      iconSize: 34,
+                      locked: !trainer.isVictoryRoadUnlocked,
+                      onTap: () {
+                        SoundService.instance.playUiTap();
+                        Navigator.pop(ctx);
+                        if (trainer.isVictoryRoadUnlocked) {
+                          Navigator.push(
+                            this.context,
+                            MaterialPageRoute(
+                                builder: (_) => const VictoryRoadScreen()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(this.context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Victory Road unlocks after earning all 8 Gym Badges! ($badges/8 earned)"),
                               duration: const Duration(seconds: 2),
                             ),
                           );

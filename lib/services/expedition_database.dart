@@ -35,6 +35,7 @@ class RocketChallenger {
   final String spriteId;
   final bool isJessieOrJames;
   final String introDialogue;
+  final String defeatDialogue;
   final int prizeMoney;
   final List<PokemonInstance> team;
 
@@ -44,6 +45,7 @@ class RocketChallenger {
     required this.spriteId,
     required this.isJessieOrJames,
     required this.introDialogue,
+    this.defeatDialogue = "No way! Back to the balloon!",
     required this.prizeMoney,
     required this.team,
   });
@@ -188,6 +190,8 @@ class ExpeditionDatabase {
         isJessieOrJames: true,
         introDialogue:
             "Prepare for trouble! This rare hunting ground belongs to Team Rocket now!",
+        defeatDialogue:
+            "This isn't over! Looks like Team Rocket's blasting off again!",
         prizeMoney: 10000,
         team: team,
       );
@@ -211,6 +215,8 @@ class ExpeditionDatabase {
         isJessieOrJames: true,
         introDialogue:
             "And make it double! Hand over your rarest Pokémon and step aside!",
+        defeatDialogue:
+            "Jessie, hold on! Why do we always get blasted off again?!",
         prizeMoney: 10000,
         team: team,
       );
@@ -232,6 +238,8 @@ class ExpeditionDatabase {
       isJessieOrJames: false,
       introDialogue:
           "Hold it! Team Rocket spotted a legendary energy spike here—no intruders allowed!",
+      defeatDialogue:
+          "Tch! Wait till the boss hears about a trainer this strong!",
       prizeMoney: 6000,
       team: team,
     );

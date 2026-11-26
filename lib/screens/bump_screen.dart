@@ -297,6 +297,10 @@ class _BumpScreenState extends State<BumpScreen>
             opponentPokemon: rivalMon,
             isWild: false,
             trainerName: 'Rival Blue',
+            trainerIntroLine:
+                "Hey! Think your team's tough enough? Smell ya if you lose!",
+            trainerDefeatLine:
+                "What?! You actually beat me here? Next time I won't go easy!",
             opponentSpriteId: 'male_blue',
             battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
             bgmCategory: BattleBgmCategory.special,
