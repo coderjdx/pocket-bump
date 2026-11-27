@@ -1318,7 +1318,8 @@ class Trainer extends ChangeNotifier {
     if (frontierCustomItems[itemId]! <= 0) {
       frontierCustomItems.remove(itemId);
     }
-    final prev = mon.equipHeldItem(itemId);
+    final prev = mon.unequipHeldItem();
+    mon.equipHeldItem(itemId);
     if (prev != null) {
       frontierCustomItems[prev] =
           ((frontierCustomItems[prev] ?? 0) + 1).clamp(0, 99);

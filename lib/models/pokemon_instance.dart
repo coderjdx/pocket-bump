@@ -630,12 +630,13 @@ class PokemonInstance {
       abilitySlot = 3;
       return true;
     }
-    if (species.ability2Id != null && species.ability2Id != species.ability1Id) {
+    if (species.abilitySlot2Id != null &&
+        species.abilitySlot2Id != species.abilitySlot1Id) {
       if (abilitySlot == 1) {
-        abilityId = species.ability2Id!;
+        abilityId = species.abilitySlot2Id!;
         abilitySlot = 2;
       } else {
-        abilityId = species.ability1Id;
+        abilityId = species.abilitySlot1Id;
         abilitySlot = 1;
       }
       return true;

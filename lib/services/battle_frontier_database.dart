@@ -1,5 +1,6 @@
 import 'dart:math';
 import '../models/game_region.dart';
+import '../models/move.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_nature.dart';
 import 'pokedex_database.dart';
@@ -30,19 +31,27 @@ class FrontierRentalTemplate {
       chosenAbility = spec.hiddenAbilityId!;
       abilitySlot = 3;
     } else {
-      final rolled = PokedexDatabase.rollAbility(
+      final rolled = PokemonInstance.rollAbilityForSpecies(
         spec,
-        hiddenAbilityChance: 0.12,
+        hiddenChance: 0.12,
         rng: rng,
       );
       chosenAbility = rolled.id;
       abilitySlot = rolled.slot;
     }
 
-    return PokedexDatabase.createPokemon(
-      speciesId,
+    final resolvedMoves = moveIds
+        .map((id) => PokedexDatabase.moves[id]?.copy())
+        .whereType<Move>()
+        .toList();
+    final moves = resolvedMoves.isNotEmpty
+        ? resolvedMoves
+        : PokedexDatabase.movesForSpeciesAtLevel(spec, level);
+
+    return PokemonInstance(
+      species: spec,
       level: level,
-      explicitMoveIds: moveIds,
+      moves: moves,
       heldItemId: heldItemId,
       nature: nature,
       hpIv: 31,
@@ -53,9 +62,9 @@ class FrontierRentalTemplate {
       speIv: 31,
       abilityId: chosenAbility,
       abilitySlot: abilitySlot,
-      respectMinEncounterLevel: false,
-      originRegion:
-          speciesId <= 151 ? GameRegion.kanto.storageKey : GameRegion.johto.storageKey,
+      originRegion: speciesId <= 151
+          ? GameRegion.kanto.storageKey
+          : GameRegion.johto.storageKey,
       rng: rng,
     );
   }
