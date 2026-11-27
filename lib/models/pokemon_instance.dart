@@ -353,7 +353,7 @@ class PokemonInstance {
         spd = 5,
         spe = 5 {
     maxHp = _calculateMaxHp(species.baseHp, level, iv: this.hpIv);
-    currentHp = (currentHp ?? maxHp).clamp(0, maxHp);
+    this.currentHp = (currentHp ?? maxHp).clamp(0, maxHp);
     atk = _calculateStat(species.baseAtk, level,
         iv: this.atkIv, natureMult: this.nature.multiplierFor('atk'));
     def = _calculateStat(species.baseDef, level,
@@ -759,6 +759,7 @@ class PokemonInstance {
       level++;
       leveledUp = true;
       recalculateStats();
+      addFriendship(5);
 
       final newMoves = unlockedLookup(species, level);
       for (final m in newMoves) {
@@ -789,6 +790,7 @@ class PokemonInstance {
       level++;
       leveledUp = true;
       recalculateStats();
+      addFriendship(5);
     }
     return leveledUp;
   }

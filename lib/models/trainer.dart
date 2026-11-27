@@ -48,6 +48,7 @@ class Trainer extends ChangeNotifier {
   // Transient battle override (never saved; used by Battle Frontier & Frontier PvP)
   List<PokemonInstance>? _battlePartyOverride;
   bool _suppressBadgeBonuses = false;
+  bool hp10MigrationApplied = true;
 
   Trainer({
     required this.name,
@@ -1016,13 +1017,11 @@ class Trainer extends ChangeNotifier {
   void _advancePartyFriendshipFromSteps(int delta) {
     if (delta <= 0 || party.isEmpty) return;
     activeSave.friendshipStepCarry += delta;
-    final int gained = activeSave.friendshipStepCarry ~/ 150;
+    final int gained = activeSave.friendshipStepCarry ~/ 50;
     if (gained > 0) {
-      activeSave.friendshipStepCarry %= 150;
+      activeSave.friendshipStepCarry %= 50;
       for (final mon in party) {
-        if (!mon.isFainted) {
-          mon.addFriendship(gained);
-        }
+        mon.addFriendship(gained);
       }
     }
   }
@@ -1066,12 +1065,12 @@ class Trainer extends ChangeNotifier {
         activeSave.incubatingEgg!.advance(eggGain)) {
       changed = true;
     }
-    final int friendshipGain = won ? 3 : 1;
+    final int baseGain = won ? (isTrainerBattle ? 6 : 4) : 2;
     for (final mon in party) {
-      if (!mon.isFainted) {
-        mon.addFriendship(friendshipGain);
-        changed = true;
-      }
+      final int monGain =
+          mon.isFainted ? (baseGain ~/ 2).clamp(1, baseGain) : baseGain;
+      mon.addFriendship(monGain);
+      changed = true;
     }
     if (changed) {
       notifyListeners();
@@ -1604,6 +1603,7 @@ class Trainer extends ChangeNotifier {
   Map<String, dynamic> toJson() {
     return {
       'schemaVersion': currentSchemaVersion,
+      'hp10MigrationApplied': hp10MigrationApplied,
       'savedAt': DateTime.now().toUtc().toIso8601String(),
       'name': name,
       'accountId': accountId,
@@ -1765,6 +1765,37 @@ class Trainer extends ChangeNotifier {
       frontierPcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
     }
 
+    hp10MigrationApplied = json['hp10MigrationApplied'] == true;
+    if (!hp10MigrationApplied) {
+      for (final save in regionSaves.values) {
+        for (final mon in save.party) {
+          if (mon.currentHp == 10 && mon.maxHp > 10) {
+            mon.currentHp = mon.maxHp;
+          }
+        }
+        for (final box in save.pcBoxes) {
+          for (final mon in box) {
+            if (mon.currentHp == 10 && mon.maxHp > 10) {
+              mon.currentHp = mon.maxHp;
+            }
+          }
+        }
+      }
+      for (final mon in frontierParty) {
+        if (mon.currentHp == 10 && mon.maxHp > 10) {
+          mon.currentHp = mon.maxHp;
+        }
+      }
+      for (final box in frontierPcBoxes) {
+        for (final mon in box) {
+          if (mon.currentHp == 10 && mon.maxHp > 10) {
+            mon.currentHp = mon.maxHp;
+          }
+        }
+      }
+      hp10MigrationApplied = true;
+    }
+
     _syncDailyRollover();
   }
 
@@ -1793,9 +1824,15 @@ class Trainer extends ChangeNotifier {
       if (raw != null && raw.isNotEmpty) {
         final decoded = jsonDecode(raw);
         if (decoded is Map) {
+          final decodedMap = Map<String, dynamic>.from(decoded);
+          final bool hadHp10Migration =
+              decodedMap['hp10MigrationApplied'] == true;
           final trainer = Trainer(name: 'Red');
-          trainer.applyFromJson(Map<String, dynamic>.from(decoded));
+          trainer.applyFromJson(decodedMap);
           if (trainer.hasAnySaveData) {
+            if (!hadHp10Migration) {
+              await trainer.saveProgress();
+            }
             return trainer;
           }
         }
@@ -1833,6 +1870,7 @@ class Trainer extends ChangeNotifier {
     frontierTowerBestDoubles = 0;
     frontierFactoryBestSingles = 0;
     frontierFactoryBestDoubles = 0;
+    hp10MigrationApplied = true;
     _suppressAutoSave = false;
     super.notifyListeners();
   }

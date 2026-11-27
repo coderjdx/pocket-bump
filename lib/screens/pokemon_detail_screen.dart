@@ -917,6 +917,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 3),
+                    const Text(
+                      "Grows in party via steps & battles",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
