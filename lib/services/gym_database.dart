@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../models/game_region.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
+import 'johto_gym_data.dart';
 import 'pokedex_database.dart';
 
 class GymPokemonSpec {
@@ -67,6 +69,7 @@ class GymTrainer {
 
 class GymDefinition {
   final int id;
+  final GameRegion region;
   final String name;
   final String city;
   final String leaderName;
@@ -90,6 +93,7 @@ class GymDefinition {
 
   const GymDefinition({
     required this.id,
+    this.region = GameRegion.kanto,
     required this.name,
     required this.city,
     required this.leaderName,
@@ -1312,8 +1316,18 @@ class GymDatabase {
     return result;
   }
 
-  static GymDefinition? getGymById(int id) {
-    if (id < 1 || id > gyms.length) return null;
-    return gyms[id - 1];
+  static List<GymDefinition> get johtoGyms => johtoGymDefinitions;
+
+  static List<GymDefinition> gymsForRegion(GameRegion region) {
+    return region == GameRegion.johto ? johtoGyms : gyms;
+  }
+
+  static GymDefinition? getGymById(
+    int id, {
+    GameRegion region = GameRegion.kanto,
+  }) {
+    final list = gymsForRegion(region);
+    if (id < 1 || id > list.length) return null;
+    return list[id - 1];
   }
 }

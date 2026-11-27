@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/game_region.dart';
 import '../models/pokemon_type.dart';
 
 class AdventureBiome {
@@ -11,6 +12,7 @@ class AdventureBiome {
   final Color accentColor;
   final IconData icon;
   final String sourceGymName;
+  final String johtoSourceGymName;
 
   const AdventureBiome({
     required this.id,
@@ -22,9 +24,14 @@ class AdventureBiome {
     required this.accentColor,
     required this.icon,
     required this.sourceGymName,
+    required this.johtoSourceGymName,
   });
 
   Set<PokemonType> get typeSet => types.toSet();
+
+  String sourceGymNameForRegion(GameRegion region) {
+    return region == GameRegion.johto ? johtoSourceGymName : sourceGymName;
+  }
 }
 
 class AdventureDatabase {
@@ -39,6 +46,7 @@ class AdventureDatabase {
       accentColor: Color(0xFFBCAAA4),
       icon: Icons.terrain_rounded,
       sourceGymName: 'Pewter Gym (Brock)',
+      johtoSourceGymName: 'Olivine Gym (Jasmine)',
     ),
     AdventureBiome(
       id: 'deep_sea',
@@ -50,6 +58,7 @@ class AdventureDatabase {
       accentColor: Color(0xFF29B6F6),
       icon: Icons.water_rounded,
       sourceGymName: 'Cerulean Gym (Misty)',
+      johtoSourceGymName: 'Mahogany Gym (Pryce)',
     ),
     AdventureBiome(
       id: 'thunder_plains',
@@ -61,6 +70,7 @@ class AdventureDatabase {
       accentColor: Color(0xFFFFD54F),
       icon: Icons.bolt_rounded,
       sourceGymName: 'Vermilion Gym (Lt. Surge)',
+      johtoSourceGymName: 'Violet Gym (Falkner)',
     ),
     AdventureBiome(
       id: 'emerald_forest',
@@ -72,6 +82,7 @@ class AdventureDatabase {
       accentColor: Color(0xFF66BB6A),
       icon: Icons.forest_rounded,
       sourceGymName: 'Celadon Gym (Erika)',
+      johtoSourceGymName: 'Azalea Gym (Bugsy)',
     ),
     AdventureBiome(
       id: 'toxic_marsh',
@@ -83,6 +94,7 @@ class AdventureDatabase {
       accentColor: Color(0xFFAB47BC),
       icon: Icons.bubble_chart_rounded,
       sourceGymName: 'Fuchsia Gym (Koga)',
+      johtoSourceGymName: 'Ecruteak Gym (Morty)',
     ),
     AdventureBiome(
       id: 'mystic_sanctum',
@@ -94,6 +106,7 @@ class AdventureDatabase {
       accentColor: Color(0xFFEC407A),
       icon: Icons.auto_awesome_rounded,
       sourceGymName: 'Saffron Gym (Sabrina)',
+      johtoSourceGymName: 'Goldenrod Gym (Whitney)',
     ),
     AdventureBiome(
       id: 'volcanic_ridge',
@@ -105,6 +118,7 @@ class AdventureDatabase {
       accentColor: Color(0xFFFF7043),
       icon: Icons.local_fire_department_rounded,
       sourceGymName: 'Cinnabar Gym (Blaine)',
+      johtoSourceGymName: 'Blackthorn Gym (Clair)',
     ),
     AdventureBiome(
       id: 'victory_highlands',
@@ -116,6 +130,7 @@ class AdventureDatabase {
       accentColor: Color(0xFF8D6E63),
       icon: Icons.landscape_rounded,
       sourceGymName: 'Viridian Gym (Giovanni)',
+      johtoSourceGymName: 'Cianwood Gym (Chuck)',
     ),
   ];
 

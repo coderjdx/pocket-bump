@@ -1222,6 +1222,16 @@ class BattleEngine {
         return moveType == PokemonType.ghost ? 1.20 : 1.0;
       case 'dragon_fang':
         return moveType == PokemonType.dragon ? 1.20 : 1.0;
+      case 'metal_coat':
+        return moveType == PokemonType.steel ? 1.20 : 1.0;
+      case 'sharp_beak':
+        return moveType == PokemonType.flying ? 1.20 : 1.0;
+      case 'silver_powder':
+        return moveType == PokemonType.bug ? 1.20 : 1.0;
+      case 'silk_scarf':
+        return moveType == PokemonType.normal ? 1.20 : 1.0;
+      case 'black_glasses':
+        return moveType == PokemonType.dark ? 1.20 : 1.0;
       case 'life_orb':
         return 1.30;
       default:

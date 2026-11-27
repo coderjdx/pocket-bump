@@ -645,7 +645,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeTrainerColumn(Trainer trainer) {
-    final gyms = GymDatabase.gyms;
+    final gyms = GymDatabase.gymsForRegion(trainer.activeRegion);
     return InkWell(
       onTap: () {
         SoundService.instance.playUiTap();
@@ -1146,7 +1146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: PokePortraitButton(
                       label: "GYM\nBATTLES",
-                      subtitle: "Kanto Gyms",
+                      subtitle: "${trainer.activeRegion.displayName} Gyms",
                       icon: Icons.military_tech_rounded,
                       topColor: PokeColors.leagueIndigo,
                       bottomColor: PokeColors.leagueIndigoDark,
@@ -1359,7 +1359,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _openTrainerMenuSheet(Trainer trainer) {
     final int caught = trainer.caughtCount;
-    const int totalSpecies = PokedexDatabase.gen1TotalSpecies;
+    final int totalSpecies =
+        PokedexDatabase.speciesIdsForRegion(trainer.activeRegion).length;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1448,7 +1449,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       child: PokePortraitButton(
                         label: "POKÉDEX",
-                        subtitle: "Kanto Dex",
+                        subtitle: "${trainer.activeRegion.displayName} Dex",
                         icon: Icons.menu_book_rounded,
                         iconOverride:
                             const PokeBallSymbol(size: 32, isCaught: true),
@@ -1661,9 +1662,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
-                      "KANTO GYM BADGES",
-                      style: TextStyle(
+                    Text(
+                      "${trainer.activeRegion.displayName.toUpperCase()} GYM BADGES",
+                      style: const TextStyle(
                         color: PokeColors.inkMuted,
                         fontSize: 11,
                         fontWeight: FontWeight.w900,
@@ -1674,7 +1675,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: GymDatabase.gyms.map((g) {
+                      children: GymDatabase.gymsForRegion(trainer.activeRegion).map((g) {
                         final earned = trainer.clearedGymIds.contains(g.id);
                         return Container(
                           width: 72,
@@ -1774,12 +1775,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const Icon(Icons.lock_outline_rounded,
                                     color: PokeColors.inkSubtle, size: 18),
                                 const SizedBox(width: 10),
-                                const Expanded(
+                                Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "EXP Share",
                                         style: TextStyle(
                                           color: PokeColors.inkMuted,
@@ -1787,10 +1788,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 13,
                                         ),
                                       ),
-                                      SizedBox(height: 1),
+                                      const SizedBox(height: 1),
                                       Text(
-                                        "Defeat Giovanni (8th Gym) to unlock",
-                                        style: TextStyle(
+                                        "Defeat ${GymDatabase.gymsForRegion(trainer.activeRegion).last.leaderName} (8th Gym) to unlock",
+                                        style: const TextStyle(
                                           color: PokeColors.inkSubtle,
                                           fontSize: 10.5,
                                         ),

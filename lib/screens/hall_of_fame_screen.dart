@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
@@ -103,10 +104,10 @@ class HallOfFameScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          "You defeated the Final Four and Champion Blue! Your winning Pokémon are permanently enshrined in Kanto's Hall of Fame.",
+                        Text(
+                          "You defeated the Final Four and ${trainer.activeRegion == GameRegion.johto ? 'Champion Lance' : 'Champion Blue'}! Your winning Pokémon are permanently enshrined in ${trainer.activeRegion.displayName}'s Hall of Fame.",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: PokeColors.inkMuted,
                             fontSize: 11.5,
                             fontWeight: FontWeight.w600,
@@ -164,7 +165,7 @@ class HallOfFameScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              "Champion Clears: ${trainer.championClears} • Caught: ${trainer.caughtCount}/${PokedexDatabase.gen1TotalSpecies}",
+                              "Champion Clears: ${trainer.championClears} • Caught: ${trainer.caughtCount}/${PokedexDatabase.speciesIdsForRegion(trainer.activeRegion).length}",
                               style: const TextStyle(
                                 color: PokeColors.inkMuted,
                                 fontSize: 11,

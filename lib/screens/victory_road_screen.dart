@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
@@ -75,7 +76,9 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
     late final List<VictoryRoadStage> stages;
     switch (mode) {
       case _VictoryRoadMode.firstAscent:
-        stages = EliteFourDatabase.buildFirstAscentStages();
+        stages = EliteFourDatabase.buildFirstAscentStages(
+          region: trainer.activeRegion,
+        );
         break;
       case _VictoryRoadMode.eliteFourAndChampion:
         final bosses =
@@ -137,6 +140,7 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
         final wildMon = EliteFourDatabase.rollWildVictoryRoadPokemon(
           level: stage.wildLevel ?? 85,
           gameVersion: trainer.gameVersion,
+          region: trainer.activeRegion,
         );
         await Navigator.push<bool>(
           context,
@@ -405,15 +409,15 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
             borderRadius: BorderRadius.circular(20),
             side: const BorderSide(color: PokeColors.badgeGoldDark, width: 2.0),
           ),
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.emoji_events_rounded,
+              const Icon(Icons.emoji_events_rounded,
                   color: PokeColors.badgeGoldDark, size: 28),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  "NEW KANTO CHAMPION!",
-                  style: TextStyle(
+                  "NEW ${trainer.activeRegion.displayName.toUpperCase()} CHAMPION!",
+                  style: const TextStyle(
                     color: PokeColors.inkDark,
                     fontWeight: FontWeight.w900,
                     fontSize: 17,
@@ -426,9 +430,11 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "You defeated all four Elite Trainers and toppled Champion Blue in one unstoppable run!\n\nLvl. 99 Victory Road Master Rematches are now unlocked.",
-                style: TextStyle(
+              Text(
+                trainer.activeRegion == GameRegion.johto
+                    ? "You defeated all four Elite Trainers and toppled Champion Lance in one unstoppable run!\n\nLvl. 99 Johto Victory Road Master Rematches are now unlocked."
+                    : "You defeated all four Elite Trainers and toppled Champion Blue in one unstoppable run!\n\nJohto Region Travel, Battle Frontier access, and Lvl. 99 Victory Road Master Rematches are now unlocked.",
+                style: const TextStyle(
                   color: PokeColors.inkMuted,
                   fontSize: 12.5,
                   height: 1.4,
@@ -815,7 +821,7 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
           ),
           const SizedBox(height: 6),
           Text(
-            "Earn all 8 Kanto Gym Badges to enter Victory Road and challenge the Final Four.\n\nCurrent Progress: ${trainer.clearedGymIds.length}/8 Badges",
+            "Earn all 8 ${trainer.activeRegion.displayName} Gym Badges to enter Victory Road and challenge the Final Four.\n\nCurrent Progress: ${trainer.clearedGymIds.length}/8 Badges",
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: PokeColors.inkMuted,
@@ -890,13 +896,13 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          _stagePatternBanner(const [
-            "1. Wild Lv.85",
-            "2. Ace Naomi",
-            "3. Wild Lv.86",
-            "4. Black Belt",
-            "5. Wild Lv.88",
-            "6. Veteran Marcus",
+          _stagePatternBanner([
+            for (final st in EliteFourDatabase.buildFirstAscentStages(
+              region: trainer.activeRegion,
+            ))
+              st.isWild
+                  ? "${st.stageNumber}. Wild Lv.${st.wildLevel ?? 85}"
+                  : "${st.stageNumber}. ${st.trainer?.name ?? st.label}",
           ]),
           const SizedBox(height: 14),
           SizedBox(
@@ -1165,22 +1171,22 @@ class _VictoryRoadScreenState extends State<VictoryRoadScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            "Alternate 6 intense Lv. 99 battles (Wild → Master 2v2 Doubles → Wild → Master 2v2 Doubles → Wild → 1v1 Random Final Four or Blue). The final boss drops their signature exclusive Held Item & Rare TM!",
-            style: TextStyle(
+          Text(
+            "Alternate 6 intense Lv. 99 battles (Wild → Master 2v2 Doubles → Wild → Master 2v2 Doubles → Wild → 1v1 Random Final Four or ${trainer.activeRegion == GameRegion.johto ? 'Lance' : 'Blue'}). The final boss drops their signature exclusive Held Item & Rare TM!",
+            style: const TextStyle(
               color: PokeColors.inkMuted,
               fontSize: 11.5,
               height: 1.38,
             ),
           ),
           const SizedBox(height: 10),
-          _stagePatternBanner(const [
+          _stagePatternBanner([
             "1. Wild Lv.99",
             "2. Master 2v2",
             "3. Wild Lv.99",
             "4. Master 2v2",
             "5. Wild Lv.99",
-            "6. Final 4 / Blue (1v1)",
+            "6. Final 4 / ${trainer.activeRegion == GameRegion.johto ? 'Lance' : 'Blue'} (1v1)",
           ]),
           const SizedBox(height: 12),
           const Text(

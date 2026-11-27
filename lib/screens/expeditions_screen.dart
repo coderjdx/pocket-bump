@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
@@ -47,7 +48,9 @@ class ExpeditionsScreen extends StatelessWidget {
               children: [
                 _buildOverviewBanner(trainer, unlocked),
                 const SizedBox(height: 12),
-                for (final dest in ExpeditionDatabase.destinations) ...[
+                for (final dest in ExpeditionDatabase.destinationsForRegion(
+                  trainer.activeRegion,
+                )) ...[
                   _buildDestinationCard(context, trainer, dest, unlocked),
                   const SizedBox(height: 12),
                 ],
@@ -97,9 +100,9 @@ class ExpeditionsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          const Text(
-            "Endure 3 Lv.99 wild battles with zero rest and defeat a Lv.99 Team Rocket ambush deep in uncharted Kanto.",
-            style: TextStyle(
+          Text(
+            "Endure 3 Lv.99 wild battles with zero rest and defeat a Lv.99 ${trainer.activeRegion == GameRegion.johto ? 'Neo Team Rocket' : 'Team Rocket'} ambush deep in uncharted ${trainer.activeRegion.displayName}.",
+            style: const TextStyle(
               color: PokeColors.inkMuted,
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -353,7 +356,9 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
         _phase = _ExpeditionPhase.wildInterlude;
       });
     } else {
-      _rocketChallenger = ExpeditionDatabase.generateRocketChallenger();
+      _rocketChallenger = ExpeditionDatabase.generateRocketChallenger(
+        region: trainer.activeRegion,
+      );
       setState(() {
         _phase = _ExpeditionPhase.rocketBalloon;
       });
@@ -872,8 +877,12 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                       ),
                       child: Text(
                         rocket.isJessieOrJames
-                            ? "RARE 2v2 DOUBLE BATTLE • TEAM ROCKET DUO"
-                            : "TEAM ROCKET BALLOON DESCENDED!",
+                            ? (trainer.activeRegion == GameRegion.johto
+                                ? "RARE 2v2 DOUBLE BATTLE • ROCKET EXECUTIVES"
+                                : "RARE 2v2 DOUBLE BATTLE • TEAM ROCKET DUO")
+                            : (trainer.activeRegion == GameRegion.johto
+                                ? "NEO TEAM ROCKET AMBUSH!"
+                                : "TEAM ROCKET BALLOON DESCENDED!"),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -938,8 +947,9 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
 
       case _ExpeditionPhase.legendaryReveal:
         final boss = _bossEncounter!;
-        final bool isMew = boss.species.id == ExpeditionDatabase.mewSpeciesId;
-        final Color bossColor = isMew ? PokeColors.centerRose : darkAccent;
+        final bool isMythical =
+            ExpeditionDatabase.isMythicalExpeditionSpecies(boss.species.id);
+        final Color bossColor = isMythical ? PokeColors.centerRose : darkAccent;
         return Column(
           children: [
             Expanded(
@@ -955,7 +965,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      isMew
+                      isMythical
                           ? "MYTHICAL POKÉMON APPEARED!"
                           : "LEGENDARY POKÉMON APPEARED!",
                       style: TextStyle(
@@ -1002,7 +1012,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
               const SizedBox(height: 10),
             ],
             if (_earnedMasterBall) ...[
-              _buildMasterBallRewardBanner(),
+              _buildMasterBallRewardBanner(
+                trainer.activeRegion == GameRegion.johto
+                    ? "Archer & Ariana"
+                    : "Jessie & James",
+              ),
               const SizedBox(height: 10),
             ],
             SizedBox(
@@ -1096,7 +1110,11 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   ],
                   if (_earnedMasterBall) ...[
                     const SizedBox(height: 14),
-                    _buildMasterBallRewardBanner(),
+                    _buildMasterBallRewardBanner(
+                      trainer.activeRegion == GameRegion.johto
+                          ? "Archer & Ariana"
+                          : "Jessie & James",
+                    ),
                   ],
                 ],
               ),
@@ -1199,7 +1217,7 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
     );
   }
 
-  Widget _buildMasterBallRewardBanner() {
+  Widget _buildMasterBallRewardBanner(String sourceDuoName) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
@@ -1209,15 +1227,15 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFFFFD54F), width: 1.5),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          PokeBallSpriteWidget(ballType: 'master_ball', size: 28),
-          SizedBox(width: 10),
+          const PokeBallSpriteWidget(ballType: 'master_ball', size: 28),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "RARE REWARD: MASTER BALL!",
                   style: TextStyle(
                     color: Color(0xFFFFD54F),
@@ -1226,8 +1244,8 @@ class _ExpeditionRunScreenState extends State<_ExpeditionRunScreen>
                   ),
                 ),
                 Text(
-                  "Jessie & James dropped your one-time Master Ball!",
-                  style: TextStyle(
+                  "$sourceDuoName dropped your one-time Master Ball!",
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 11,
                   ),

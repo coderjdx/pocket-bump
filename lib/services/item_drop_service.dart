@@ -342,23 +342,31 @@ class ItemDropService {
     );
   }
 
+  static const List<String> _johtoEvolutionItemIds = [
+    'sun_stone',
+    'metal_coat',
+    'kings_rock',
+    'dragon_scale',
+    'up_grade',
+  ];
+
+  static ItemDrop _regionSpecialtyDrop(GymDefinition gym, Random r, {required bool secondSlot}) {
+    if (gym.region.hasFossilLab) {
+      return _itemDropFromId(secondSlot ? 'fossil_restoration_voucher' : 'unknown_fossil');
+    }
+    if (secondSlot) {
+      return _itemDropFromId(r.nextDouble() < 0.55 ? 'rare_candy' : 'max_revive');
+    }
+    final picked = _johtoEvolutionItemIds[r.nextInt(_johtoEvolutionItemIds.length)];
+    return _itemDropFromId(picked);
+  }
+
   /// Guaranteed 1–3 item drops on Gym Leader rematch clears (no empty drops).
   /// Heart Scales drop exclusively from Gym Leaders and Team Rocket.
   ///
-  /// When the gym's Adventure Map is still unowned:
-  /// - 15% Adventure Map (unique per player, never repeats)
-  /// - 24% TM (never repeats TMs already in [ownedTmIds] or this roll)
-  /// - 15% Heart Scale
-  /// - 14% Signature held item
-  /// - 12% Signature stone / Leftovers
-  /// - 10% Unknown Fossil
-  /// - 10% Fossil Restoration Voucher
-  ///
-  /// Once the Adventure Map is owned (or already rolled):
-  /// - 28% TM / 18% Heart Scale / 16% held item / 14% stone / 12% fossil / 12% voucher
-  ///
-  /// Whenever all of [gym.tmDrops] are already owned, the TM weight is
-  /// redistributed proportionally across the remaining buckets.
+  /// Kanto Gyms drop Unknown Fossils / Vouchers; Johto Gyms drop Gen 2
+  /// Evolution Items (Sun Stone, Metal Coat, King's Rock, Dragon Scale, Up-Grade)
+  /// and Rare Candy / Max Revive instead of Kanto fossils.
   static List<ItemDrop> rollGymRematchDrops({
     required GymDefinition gym,
     required Set<String> ownedTmIds,
@@ -399,9 +407,9 @@ class ItemDropService {
         } else if (roll < 0.80) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
         } else if (roll < 0.90) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: false));
         } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: true));
         }
       } else if (canDropMap) {
         // Unowned Adventure Map, all TMs owned: 15:15:14:12:10:10 (sum 76)
@@ -415,9 +423,9 @@ class ItemDropService {
         } else if (roll < 56 / 76) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
         } else if (roll < 66 / 76) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: false));
         } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: true));
         }
       } else if (availableTms.isNotEmpty) {
         if (roll < 0.28) {
@@ -435,9 +443,9 @@ class ItemDropService {
         } else if (roll < 0.76) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
         } else if (roll < 0.88) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: false));
         } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: true));
         }
       } else {
         // All TMs & Map owned: 18:16:14:12:12 (sum 72)
@@ -448,9 +456,9 @@ class ItemDropService {
         } else if (roll < 48 / 72) {
           rawDrops.add(_itemDropFromId(gym.signatureStoneDrop));
         } else if (roll < 60 / 72) {
-          rawDrops.add(_itemDropFromId('unknown_fossil'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: false));
         } else {
-          rawDrops.add(_itemDropFromId('fossil_restoration_voucher'));
+          rawDrops.add(_regionSpecialtyDrop(gym, r, secondSlot: true));
         }
       }
     }

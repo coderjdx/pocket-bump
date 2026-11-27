@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../models/game_region.dart';
 import '../models/game_version.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
@@ -7,6 +8,7 @@ import '../models/pokemon_species.dart';
 import '../models/trainer.dart';
 import 'gym_database.dart';
 import 'item_drop_service.dart';
+import 'johto_elite_four_data.dart';
 import 'pokedex_database.dart';
 import 'sound_service.dart';
 
@@ -108,14 +110,18 @@ class EliteFourDatabase {
   static PokemonInstance rollWildVictoryRoadPokemon({
     required int level,
     GameVersion? gameVersion,
+    GameRegion region = GameRegion.kanto,
     Random? rng,
   }) {
     final random = rng ?? _rng;
-    final filtered = victoryRoadWildPool.where((id) {
+    final basePool = region == GameRegion.johto
+        ? johtoVictoryRoadWildSpeciesPool
+        : victoryRoadWildPool;
+    final filtered = basePool.where((id) {
       final spec = PokedexDatabase.species[id];
       return spec != null && spec.isAvailableInVersion(gameVersion);
     }).toList();
-    final pool = filtered.isNotEmpty ? filtered : victoryRoadWildPool;
+    final pool = filtered.isNotEmpty ? filtered : basePool;
     final chosenId = pool[random.nextInt(pool.length)];
     final spec = PokedexDatabase.species[chosenId]!;
     final bool isShiny = PokedexDatabase.rollShiny(spec);
@@ -131,7 +137,12 @@ class EliteFourDatabase {
   }
 
   /// State 1: First Ascent Victory Road (6 stages: Wild → Trainer → Wild → Trainer → Wild → Trainer, Lv. 85–90).
-  static List<VictoryRoadStage> buildFirstAscentStages() {
+  static List<VictoryRoadStage> buildFirstAscentStages({
+    GameRegion region = GameRegion.kanto,
+  }) {
+    if (region == GameRegion.johto) {
+      return buildJohtoFirstAscentStages();
+    }
     return const [
       VictoryRoadStage.wild(
         stageNumber: 1,
@@ -234,10 +245,13 @@ class EliteFourDatabase {
     return 6;
   }
 
-  /// State 2: Indigo Plateau Final Four → Champion Blue (5 consecutive chambers, Lv. 88–98).
+  /// State 2: Indigo Plateau Final Four → Regional Champion (5 consecutive chambers, Lv. 88–98).
   static List<LeagueBossTrainer> buildEliteFourAndChampionStages(
     Trainer trainer,
   ) {
+    if (trainer.activeRegion == GameRegion.johto) {
+      return buildJohtoEliteFourAndChampionStages(trainer);
+    }
     final int blueAceId = championStarterCounterId(trainer);
     final List<GymPokemonSpec> blueTeam;
     if (blueAceId == 6) {
@@ -436,8 +450,11 @@ class EliteFourDatabase {
     return rewards;
   }
 
-  /// Lv. 99 Master Rematch pool for Final Stage 6 (random pick of the Final Four or Champion Blue).
+  /// Lv. 99 Master Rematch pool for Final Stage 6 (random pick of the regional Final Four or Champion).
   static List<LeagueBossTrainer> buildRematchLeagueBossPool(Trainer trainer) {
+    if (trainer.activeRegion == GameRegion.johto) {
+      return buildJohtoRematchLeagueBossPool(trainer);
+    }
     final int blueAceId = championStarterCounterId(trainer);
     final int supportA = blueAceId == 6 ? 130 : 59; // Gyarados vs Arcanine
     final int supportB = blueAceId == 3 ? 130 : 103; // Gyarados vs Exeggutor
@@ -599,12 +616,15 @@ class EliteFourDatabase {
     ];
   }
 
-  /// State 3: Master Rematch (6 alternating Lv. 99 stages: Wild → Trainer → Wild → Trainer → Wild → Random Final Four / Blue).
+  /// State 3: Master Rematch (6 alternating Lv. 99 stages: Wild → Trainer → Wild → Trainer → Wild → Random Final Four / Champion).
   static List<VictoryRoadStage> buildMasterRematchStages(
     Trainer trainer, {
     Random? rng,
   }) {
     final random = rng ?? _rng;
+    if (trainer.activeRegion == GameRegion.johto) {
+      return buildJohtoMasterRematchStages(trainer, random: random);
+    }
     final bossPool = buildRematchLeagueBossPool(trainer);
     final LeagueBossTrainer finalBoss = bossPool[random.nextInt(bossPool.length)];
 
@@ -839,8 +859,9 @@ class EliteFourDatabase {
     }
 
     // 3. Heart Scales & Max-tier Recovery
-    final bool isBlue = boss.id.contains('blue');
-    if (isBlue) {
+    final bool isChampionBoss =
+        boss.id.contains('blue') || boss.id.contains('johto_lance');
+    if (isChampionBoss) {
       drops.add(const ItemDrop(
         itemId: 'heart_scale',
         itemName: 'Heart Scale',

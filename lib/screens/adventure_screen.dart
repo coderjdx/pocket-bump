@@ -371,7 +371,7 @@ class AdventureScreen extends StatelessWidget {
                     const SizedBox(width: 7),
                     Expanded(
                       child: Text(
-                        'Locked • Rematch ${biome.sourceGymName} for its Adventure Map',
+                        'Locked • Rematch ${biome.sourceGymNameForRegion(trainer.activeRegion)} for its Adventure Map',
                         style: const TextStyle(
                           color: PokeColors.badgeGoldDark,
                           fontSize: 10.5,

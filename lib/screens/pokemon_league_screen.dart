@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
@@ -87,9 +88,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                       const Icon(Icons.military_tech_rounded,
                           color: PokeColors.leagueIndigo, size: 18),
                       const SizedBox(width: 7),
-                      const Text(
-                        "KANTO GYM GAUNTLETS",
-                        style: TextStyle(
+                      Text(
+                        "${trainer.activeRegion.displayName.toUpperCase()} GYM GAUNTLETS",
+                        style: const TextStyle(
                           color: PokeColors.inkDark,
                           fontWeight: FontWeight.w900,
                           fontSize: 12,
@@ -111,8 +112,8 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                 ),
                 const SizedBox(height: 10),
 
-                // 8 Gym Cards
-                for (final gym in GymDatabase.gyms) ...[
+                // 8 Regional Gym Cards
+                for (final gym in GymDatabase.gymsForRegion(trainer.activeRegion)) ...[
                   _buildGymCard(context, trainer, gym),
                   const SizedBox(height: 11),
                 ],
@@ -129,18 +130,9 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
     );
   }
 
-  // === ROYAL NAVY KANTO BADGE CASE ===
+  // === ROYAL NAVY REGIONAL BADGE CASE ===
   Widget _buildBadgeShowcase(Trainer trainer) {
-    const badgeNames = [
-      "Boulder",
-      "Cascade",
-      "Thunder",
-      "Rainbow",
-      "Soul",
-      "Marsh",
-      "Volcano",
-      "Earth",
-    ];
+    final gyms = GymDatabase.gymsForRegion(trainer.activeRegion);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(13, 12, 13, 12),
@@ -169,14 +161,14 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.workspace_premium_rounded,
+                  const Icon(Icons.workspace_premium_rounded,
                       color: Color(0xFFFFD54F), size: 15),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Text(
-                    "KANTO BADGE CASE",
-                    style: TextStyle(
+                    "${trainer.activeRegion.displayName.toUpperCase()} BADGE CASE",
+                    style: const TextStyle(
                       color: Color(0xFFFFD54F),
                       fontSize: 10.5,
                       fontWeight: FontWeight.w900,
@@ -210,11 +202,10 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (int id = 1; id <= 8; id++) ...[
+              for (final gym in gyms) ...[
                 _buildBadgeSlot(
-                  id: id,
-                  name: badgeNames[id - 1],
-                  isEarned: trainer.clearedGymIds.contains(id),
+                  gym: gym,
+                  isEarned: trainer.clearedGymIds.contains(gym.id),
                 ),
               ],
             ],
@@ -225,14 +216,12 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   }
 
   Widget _buildBadgeSlot({
-    required int id,
-    required String name,
+    required GymDefinition gym,
     required bool isEarned,
   }) {
-    final gym = GymDatabase.getGymById(id);
-    final color = gym?.elementColor ?? Colors.amber;
-    final String badgeAsset =
-        gym?.badgeAsset ?? 'assets/images/badges/boulder_badge.png';
+    final color = gym.elementColor;
+    final String badgeAsset = gym.badgeAsset;
+    final String name = gym.badgeName.replaceAll(' Badge', '');
 
     return Column(
       children: [
@@ -647,18 +636,28 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
   Widget _buildEliteFourTeaser(Trainer trainer) {
     final badges = trainer.clearedGymIds.length;
     final bool unlocked = trainer.isVictoryRoadUnlocked;
+    final String regionName = trainer.activeRegion.displayName;
+    final String rosterSummary = trainer.activeRegion == GameRegion.johto
+        ? "the Final Four (Will, Koga, Bruno, Karen), and Champion Lance"
+        : "the Final Four (Lorelei, Bruno, Agatha, Lance), and Champion Blue";
+    final String bossSummary = trainer.activeRegion == GameRegion.johto
+        ? "Will, Koga, Bruno, Karen, and Champion Lance"
+        : "Lorelei, Bruno, Agatha, Lance, and the Indigo Champion";
+    final String rematchBossLabel = trainer.activeRegion == GameRegion.johto
+        ? "Final Four Masters & Lance"
+        : "Final Four Masters & Blue";
     final String stateBadge = !unlocked
         ? "LOCKED ($badges/8 BADGES)"
         : (!trainer.victoryRoadCleared
             ? "VICTORY ROAD READY"
             : (!trainer.isChampion ? "FINAL FOUR READY" : "LV.99 REMATCH"));
     final String description = !unlocked
-        ? "Victory Road, the Final Four (Lorelei, Bruno, Agatha, Lance), and Champion Blue unlock as soon as you collect all 8 Kanto Gym Badges!"
+        ? "Victory Road, $rosterSummary unlock as soon as you collect all 8 $regionName Gym Badges!"
         : (!trainer.victoryRoadCleared
             ? "All 8 Gym Badges earned! Clear the 6-stage Victory Road mountain gauntlet (Wild → Trainer) to unlock the Indigo Plateau Final Four."
             : (!trainer.isChampion
-                ? "Victory Road cleared! Challenge Lorelei, Bruno, Agatha, Lance, and the Indigo Champion in one continuous run."
-                : "Champion title claimed (${trainer.championClears} clears)! Re-enter Victory Road at Lv. 99 to battle Final Four Masters & Blue for exclusive drops."));
+                ? "Victory Road cleared! Challenge $bossSummary in one continuous run."
+                : "Champion title claimed (${trainer.championClears} clears)! Re-enter Victory Road at Lv. 99 to battle $rematchBossLabel for exclusive drops."));
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -1409,11 +1408,11 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "KEY ITEM REWARD: EXP SHARE!",
                                 style: TextStyle(
                                   color: PokeColors.pokeBlueDark,
@@ -1421,10 +1420,10 @@ class _PokemonLeagueScreenState extends State<PokemonLeagueScreen> {
                                   fontSize: 12.5,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
-                                "Giovanni handed over the EXP Share! Enabled automatically — toggle it anytime in Bag (Key & Special) or Trainer Info.",
-                                style: TextStyle(
+                                "${gym.leaderName} handed over the EXP Share! Enabled automatically — toggle it anytime in Bag (Key & Special) or Trainer Info.",
+                                style: const TextStyle(
                                   color: PokeColors.inkMuted,
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
