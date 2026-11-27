@@ -29124,15 +29124,15 @@ case 1:return"blue_green"
 case 2:return"gold"
 case 3:return"silver"}},
 b7l(a){switch(a.a){case 0:return"Red Version"
-case 1:return"Blue / Green Version"
+case 1:return"Blue Version"
 case 2:return"Gold Version"
 case 3:return"Silver Version"}},
 RZ(a){switch(a.a){case 0:return"RED"
-case 1:return"BLUE / GREEN"
+case 1:return"BLUE"
 case 2:return"GOLD"
 case 3:return"SILVER"}},
 bk1(a){switch(a.a){case 0:return"FIRE"
-case 1:return"WATER / LEAF"
+case 1:return"WATER"
 case 2:return"SUNLIT SKY"
 case 3:return"DEEP TIDE"}},
 ja(a){switch(a.a){case 0:return B.A
@@ -32517,7 +32517,7 @@ s=1
 break}a=A.b3(J.aY(m,"tag_name"))
 a0=a==null?null:B.n.bo(a)
 l=a0==null?"":a0
-if(J.c2(l)===0||!A.bh2(l,"1.0.109")){q=null
+if(J.c2(l)===0||!A.bh2(l,"1.0.110")){q=null
 s=1
 break}s=!a5?8:9
 break
@@ -32542,7 +32542,7 @@ break}}}b=A.b3(J.aY(m,"name"))
 c=b==null?null:B.n.bo(b)
 b=h
 if(!(c!=null&&c.length!==0))A.x(l)
-q=new A.Pj("1.0.109",l,b)
+q=new A.Pj("1.0.110",l,b)
 s=1
 break
 p=2
@@ -109092,7 +109092,7 @@ for(l=k.length,p=0;p<k.length;k.length===l||(0,A.H)(k),++p)B.c.I(r,A.b([this.Vb(
 for(l=j.length,p=0;p<j.length;j.length===l||(0,A.H)(j),++p)B.c.I(r,A.b([this.Vb(a,n,j[p],!1),B.a4],q))
 return A.dP(m,B.bO,A.ce(B.aR,A.b([B.bkf,A.cE(!0,A.hb(r,B.hS,o,B.a7),B.ae,!1)],q),B.N,B.bL),!1)},
 aiT(a,b){var s=null,r=A.aq(B.Z,1.8,B.d,18),q=A.e(36,B.Z.h()>>>16&255,B.Z.h()>>>8&255,B.Z.h()&255),p=A.w(12),o=t.p
-return A.t(s,A.V(A.b([A.K(A.b([A.t(s,B.auc,B.j,s,s,new A.a3(q,s,A.at(A.e(140,B.Z.h()>>>16&255,B.Z.h()>>>8&255,B.Z.h()&255),1),p,s,s,B.u),s,s,s,B.h5,s,s,s),B.cd,B.ahN],o),B.k,B.f,B.h,0),B.nJ,B.bFf,B.ad,A.aU(A.cv(B.auu,B.bJb,new A.a8O(this,a,b),A.bh(s,s,B.Z,s,s,s,s,s,s,B.d,s,s,B.uW,s,new A.ar(A.w(12),B.H),s,s,s,s,s)),s,1/0)],o),B.D,B.f,B.h),B.j,s,s,r,s,s,s,B.iJ,s,s,s)},
+return A.t(s,A.V(A.b([A.K(A.b([A.t(s,B.auc,B.j,s,s,new A.a3(q,s,A.at(A.e(140,B.Z.h()>>>16&255,B.Z.h()>>>8&255,B.Z.h()&255),1),p,s,s,B.u),s,s,s,B.h5,s,s,s),B.cd,B.ahN],o),B.k,B.f,B.h,0),B.nJ,B.bFg,B.ad,A.aU(A.cv(B.auu,B.bJb,new A.a8O(this,a,b),A.bh(s,s,B.Z,s,s,s,s,s,s,B.d,s,s,B.uW,s,new A.ar(A.w(12),B.H),s,s,s,s,s)),s,1/0)],o),B.D,B.f,B.h),B.j,s,s,r,s,s,s,B.iJ,s,s,s)},
 Vb(a,b,c,d){var s,r,q,p,o=null,n=c.r,m=A.dc(n,0.16),l=d?1:0.82,k=d?B.d:B.E,j=d?n:B.X
 k=A.aq(j,d?1.6:1.2,k,16)
 j=d?A.e(38,n.h()>>>16&255,n.h()>>>8&255,n.h()&255):B.az
@@ -109228,7 +109228,7 @@ r=A.aq(s,1.8,B.E,20)
 if(m.f)o=B.ki
 else o=m.r?B.vY:B.iV
 n=t.p
-return A.V(A.b([A.t(l,A.V(A.b([A.b9(o,s,l,52),B.ad,A.l(q,l,l,l,l,B.B1,l,l),B.a9,A.l(p,l,l,l,l,B.ld,B.an,l)],n),B.k,B.f,B.h),B.j,l,l,r,l,l,l,B.eq,l,l,1/0),B.rE,A.aU(A.cB(B.bFh,new A.axv(m),A.bh(l,l,A.dc(m.gq6(),0.16),l,l,l,l,l,l,B.d,l,l,l,l,new A.ar(A.w(14),B.H),l,l,l,l,l)),50,1/0)],n),B.k,B.bk,B.h)}}
+return A.V(A.b([A.t(l,A.V(A.b([A.b9(o,s,l,52),B.ad,A.l(q,l,l,l,l,B.B1,l,l),B.a9,A.l(p,l,l,l,l,B.ld,B.an,l)],n),B.k,B.f,B.h),B.j,l,l,r,l,l,l,B.eq,l,l,1/0),B.rE,A.aU(A.cB(B.bFi,new A.axv(m),A.bh(l,l,A.dc(m.gq6(),0.16),l,l,l,l,l,l,B.d,l,l,l,l,new A.ar(A.w(14),B.H),l,l,l,l,l)),50,1/0)],n),B.k,B.bk,B.h)}}
 A.axF.prototype={
 $1(a){var s=this.a
 if(s.c!=null&&s.e===0)s.tX()},
@@ -109831,7 +109831,7 @@ s.push(A.cg(!1,m,!0,A.t(m,A.K(A.b([new A.iz(q,24,6,m),B.d9,A.l(q.b+" Lv."+q.f,m,
 j=A.aq(B.A,1.7,B.d,18)
 i=A.e(36,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
 s=A.w(12)
-j=A.t(m,A.V(A.b([A.K(A.b([A.t(m,B.avN,B.j,m,m,new A.a3(i,m,A.at(B.A,1),s,m,m,B.u),m,m,m,B.h5,m,m,m),B.cd,B.ahE],k),B.k,B.f,B.h,0),B.a4,B.bFr,B.ad,A.K(A.b([A.Y(A.cv(B.avy,B.bGq,new A.az2(n,a),A.bh(m,m,B.A,m,m,m,m,m,m,B.d,m,m,B.iH,m,new A.ar(A.w(11),B.H),m,m,m,m,m)),1),B.a1,A.Y(A.cv(B.GM,B.bHL,new A.az3(n,a),A.bh(m,m,B.aI,m,m,m,m,m,m,B.d,m,m,B.iH,m,new A.ar(A.w(11),B.H),m,m,m,m,m)),1)],k),B.k,B.f,B.h,0)],k),B.D,B.f,B.h),B.j,m,m,j,m,m,m,B.iJ,m,m,m)
+j=A.t(m,A.V(A.b([A.K(A.b([A.t(m,B.avN,B.j,m,m,new A.a3(i,m,A.at(B.A,1),s,m,m,B.u),m,m,m,B.h5,m,m,m),B.cd,B.ahE],k),B.k,B.f,B.h,0),B.a4,B.bFs,B.ad,A.K(A.b([A.Y(A.cv(B.avy,B.bGq,new A.az2(n,a),A.bh(m,m,B.A,m,m,m,m,m,m,B.d,m,m,B.iH,m,new A.ar(A.w(11),B.H),m,m,m,m,m)),1),B.a1,A.Y(A.cv(B.GM,B.bHL,new A.az3(n,a),A.bh(m,m,B.aI,m,m,m,m,m,m,B.d,m,m,B.iH,m,new A.ar(A.w(11),B.H),m,m,m,m,m)),1)],k),B.k,B.f,B.h,0)],k),B.D,B.f,B.h),B.j,m,m,j,m,m,m,B.iJ,m,m,m)
 s=A.aq(B.bH,1.7,B.d,18)
 i=A.e(36,B.cj.h()>>>16&255,B.cj.h()>>>8&255,B.cj.h()&255)
 q=A.w(12)
@@ -109852,7 +109852,7 @@ l.push(A.K(A.b([A.l("FRONTIER PC ("+a.gaLu()+" STORED)",m,m,m,m,B.AI,m,m)],r),B.
 l.push(B.ay)
 l.push(A.aU(A.eA(new A.aza(n,a),16,m,B.at,new A.azb(),!1),36,m))
 l.push(B.a9)
-if(s.length===0)l.push(A.t(m,B.bFt,B.j,m,m,A.aq(B.X,1.6,B.d,14),m,m,m,B.cu,m,m,m))
+if(s.length===0)l.push(A.t(m,B.bFu,B.j,m,m,A.aq(B.X,1.6,B.d,14),m,m,m,B.cu,m,m,m))
 else for(q=0;q<s.length;++q)B.c.I(l,A.b([n.aik(a,s[q],new A.azc(n,a,s,q)),B.dk],r))
 return A.hb(l,B.hS,m,B.a7)},
 Vi(a,b,c,d){var s,r,q,p,o,n,m=null,l=A.ud(b.ok),k=b.cx
@@ -110565,7 +110565,7 @@ p=this.c
 p=A.Y(A.eA(new A.aJk(r,p,b),p.length,m,B.a7,new A.aJl(),!1),1)
 o=A.Y(A.lU(B.bHx,new A.aJm(s),m),1)
 s=r.b!=null&&r.a!=null?new A.aJn(r,s):m
-return new A.an(B.bV,A.V(A.b([l,B.a4,B.bFU,B.cx,j,B.ad,B.bFo,B.cx,p,B.a9,A.K(A.b([o,B.a1,A.Y(A.cB(B.bIr,s,A.bh(m,m,B.bH,m,m,m,m,m,m,B.d,m,m,m,m,m,m,m,m,m,m)),1)],k),B.k,B.f,B.h,0)],k),B.bU,B.f,B.h),m)},
+return new A.an(B.bV,A.V(A.b([l,B.a4,B.bFU,B.cx,j,B.ad,B.bFp,B.cx,p,B.a9,A.K(A.b([o,B.a1,A.Y(A.cB(B.bIr,s,A.bh(m,m,B.bH,m,m,m,m,m,m,B.d,m,m,m,m,m,m,m,m,m,m)),1)],k),B.k,B.f,B.h,0)],k),B.bU,B.f,B.h),m)},
 $S:164}
 A.aJj.prototype={
 $1(a){return this.b.$1(new A.aJi(this.a,this.c))},
@@ -114882,7 +114882,7 @@ if(r){g=A.e(41,B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255)
 l=A.w(8)
 l=A.t(h,B.bIi,B.j,h,h,new A.a3(g,h,A.at(A.e(B.b.t(127.5),B.x.h()>>>16&255,B.x.h()>>>8&255,B.x.h()&255),1),l,h,h,B.u),h,h,h,B.d5,h,h,h)
 g=l}else{g=q?new A.aC7(g,i.b,s,i.c,i.d):h
-g=A.cB(B.bFn,g,A.bh(h,h,h,h,h,h,h,h,h,h,h,B.a0o,B.p6,h,h,h,h,B.r1,h,h))}return A.t(h,A.K(A.b([n,B.b2,j,B.b2,g],m),B.k,B.f,B.h,0),B.j,h,h,new A.a3(f,h,o,p,h,h,B.u),h,h,h,B.d5,h,h,h)},
+g=A.cB(B.bFo,g,A.bh(h,h,h,h,h,h,h,h,h,h,h,B.a0o,B.p6,h,h,h,h,B.r1,h,h))}return A.t(h,A.K(A.b([n,B.b2,j,B.b2,g],m),B.k,B.f,B.h,0),B.j,h,h,new A.a3(f,h,o,p,h,h,B.u),h,h,h,B.d5,h,h,h)},
 $S:51}
 A.aC7.prototype={
 $0(){var s=this
@@ -118855,7 +118855,7 @@ n=A.aq(A.e(166,g.h()>>>16&255,g.h()>>>8&255,g.h()&255),1.6,n,16)
 c.push(A.t(j,A.V(A.b([A.l(k.are(),j,j,j,j,A.av(j,j,g,j,j,j,j,j,j,j,j,15.5,j,j,B.o,j,j,!0,j,0.5,j,j,j,j,j,j),B.an,j),B.cx,A.l(k.ayf(),j,j,j,j,B.AU,B.an,j)],e),B.k,B.f,B.h),B.j,j,j,n,j,j,j,B.agp,j,j,1/0))
 c.push(B.ce)
 b=k.r
-if(b===B.Bl){b=A.aU(A.cv(B.avR,B.bFB,k.ga1F(),A.bh(j,j,B.A,j,j,j,3,j,j,B.d,j,j,j,j,new A.ar(A.w(14),B.H),j,j,j,j,j)),48,1/0)
+if(b===B.Bl){b=A.aU(A.cv(B.avR,B.bFC,k.ga1F(),A.bh(j,j,B.A,j,j,j,3,j,j,B.d,j,j,j,j,new A.ar(A.w(14),B.H),j,j,j,j,j)),48,1/0)
 B.c.I(c,A.b([b,B.a9,A.aU(A.jm(B.auy,A.l(k.w===B.db?i:h,j,j,j,j,B.bzQ,j,j),k.gZh(),A.fj(j,j,B.d,j,j,j,j,j,j,j,j,j,j,j,new A.ar(A.w(12),B.H),B.a8P,j,j,j,j)),42,1/0)],e))}else{a=b===B.hw
 b=a||b===B.fb?j:k.ga1F()
 n=A.b9(a?B.pC:B.Gt,j,j,19)
@@ -121174,7 +121174,7 @@ r=t.p
 s=A.Y(A.t(d,A.V(A.b([A.fx(A.w(14),A.ff(a1.w,B.O,d,B.q,B.fM,!1,155,d,1/0)),B.e0,A.l("Arriving at "+a1.b,d,d,d,d,B.nP,d,d),B.a9,A.l(a1.e,d,d,d,d,B.ld,B.an,d)],r),B.k,B.bk,B.h),B.j,d,d,s,d,d,d,B.cu,d,d,d),1)
 q=e.JU(a0)
 p=e.as?d:new A.aIg(e)
-return A.V(A.b([s,B.ad,q,B.ad,A.aU(A.cv(B.auj,B.bFl,p,A.bh(d,d,a,d,d,d,d,d,d,B.d,d,d,d,d,new A.ar(A.w(14),B.H),d,d,d,d,d)),50,1/0)],r),B.k,B.f,B.h)
+return A.V(A.b([s,B.ad,q,B.ad,A.aU(A.cv(B.auj,B.bFm,p,A.bh(d,d,a,d,d,d,d,d,d,B.d,d,d,d,d,new A.ar(A.w(14),B.H),d,d,d,d,d)),50,1/0)],r),B.k,B.f,B.h)
 case 1:s=A.aq(a,1.6,B.E,20)
 r=t.p
 s=A.Y(A.t(d,A.V(A.b([A.b9(B.GG,a,d,48),B.ad,A.l("Wild Encounter "+e.e+" of 3 Cleared!",d,d,d,d,B.bBv,d,d),B.a9,A.l("Another fierce Lv.99 wild Pok\xe9mon blocks the path deeper into "+a1.b+". Your team gets no rest!",d,d,d,d,B.ld,B.an,d)],r),B.k,B.bk,B.h),B.j,d,d,s,d,d,d,B.p9,d,d,d),1)
@@ -121218,7 +121218,7 @@ i=j?B.aT:a
 s=A.aq(i,2,B.E,20)
 r=j?"MYTHICAL POK\xc9MON APPEARED!":"LEGENDARY POK\xc9MON APPEARED!"
 q=t.p
-s=A.b([A.Y(A.t(d,A.V(A.b([A.l(r,d,d,d,d,A.av(d,d,i,d,d,d,d,d,d,d,d,13,d,d,B.o,d,d,!0,d,1,d,d,d,d,d,d),d,d),B.c6,A.fl(k,B.O,i,72,132,!1,132),B.a4,A.l("Wild "+k.a.b+" \u2022 Lv. "+k.f,d,d,d,d,B.B1,d,d),B.a9,B.bFz],q),B.k,B.bk,B.h),B.j,d,d,s,d,d,d,B.p9,d,d,d),1),B.ad],q)
+s=A.b([A.Y(A.t(d,A.V(A.b([A.l(r,d,d,d,d,A.av(d,d,i,d,d,d,d,d,d,d,d,13,d,d,B.o,d,d,!0,d,1,d,d,d,d,d,d),d,d),B.c6,A.fl(k,B.O,i,72,132,!1,132),B.a4,A.l("Wild "+k.a.b+" \u2022 Lv. "+k.f,d,d,d,d,B.B1,d,d),B.a9,B.bFA],q),B.k,B.bk,B.h),B.j,d,d,s,d,d,d,B.p9,d,d,d),1),B.ad],q)
 if(e.w.length!==0)B.c.I(s,A.b([e.Vt(),B.a4],q))
 if(e.x)B.c.I(s,A.b([e.Vm(a0.y===B.aO?c:b),B.a4],q))
 r=e.as?d:e.gaxY()
@@ -121402,7 +121402,7 @@ s.push(B.c6)
 q=f.length
 if(q===0)s.push(A.t(j,B.ae9,B.j,j,j,A.aq(B.X,1.6,B.d,16),j,j,j,B.Es,j,j,j))
 else for(k=0;k<f.length;f.length===q||(0,A.H)(f),++k)B.c.I(s,A.b([this.ait(i,f[k]),B.ad],h))
-if(r)B.c.I(s,A.b([B.ay,A.aU(A.cv(B.avh,B.bFq,new A.agN(a),A.bh(j,j,B.aI,j,j,j,j,j,j,B.d,j,j,j,j,new A.ar(A.w(14),B.H),j,j,j,j,j)),48,j)],h))
+if(r)B.c.I(s,A.b([B.ay,A.aU(A.cv(B.avh,B.bFr,new A.agN(a),A.bh(j,j,B.aI,j,j,j,j,j,j,B.d,j,j,j,j,new A.ar(A.w(14),B.H),j,j,j,j,j)),48,j)],h))
 return A.dP(g,B.bO,A.ce(B.aR,A.b([B.bkd,A.cE(!0,A.hb(s,B.Eh,j,B.a7),B.ae,!1)],h),B.N,B.bL),!1)},
 ait(a,b){var s,r,q,p=null,o=J.bi(b),n=A.bz(o.i(b,"runNumber")),m=n==null?p:B.b.aF(n)
 if(m==null)m=1
@@ -122461,7 +122461,7 @@ s=A.aq(B.hG,1.6,B.d,18)
 r=A.av(n,n,h?B.aY:B.S,n,n,n,n,n,n,n,n,11,n,n,B.o,n,n,!0,n,n,n,n,n,n,n,n)
 r=A.b30(!1,l,A.ahE(n,n,n,n,n,n,"",n,!0,new A.hg(4,A.w(12),B.tC),n,n,n,n,n,B.E,!0,n,n,n,n,new A.hg(4,A.w(12),B.a8J),n,n,n,n,n,n,n,n,B.bz1,"ENTER 16-CHAR CODE",n,n,n,n,n,n,n,n,n,!0,!0,!1,n,n,n,n,n,n,n,n,n,n,n,r,""+i+"/16",n),19,new A.aNM(o),n,B.bAS,B.bwk)
 l=h?new A.aNN(o,m):n
-return A.dP(k,B.bO,A.cE(!0,A.hb(A.b([j,B.e0,A.t(n,A.V(A.b([B.bqE,B.a9,B.bFA,B.ad,r,B.ad,A.aU(A.cv(B.auS,B.bHb,l,A.bh(n,n,B.hG,B.az,B.a2,n,n,n,n,B.d,n,n,n,n,new A.ar(A.w(12),B.H),n,n,n,n,n)),46,1/0)],p),B.D,B.f,B.h),B.j,n,n,s,n,n,n,B.cu,n,n,n),B.e0,A.t(n,B.br2,B.j,n,n,A.aq(B.X,1.6,B.E,16),n,n,n,B.bV,n,n,n)],p),B.cu,n,B.a7),B.ae,!1),!1)}}
+return A.dP(k,B.bO,A.cE(!0,A.hb(A.b([j,B.e0,A.t(n,A.V(A.b([B.bqE,B.a9,B.bFB,B.ad,r,B.ad,A.aU(A.cv(B.auS,B.bHb,l,A.bh(n,n,B.hG,B.az,B.a2,n,n,n,n,B.d,n,n,n,n,new A.ar(A.w(12),B.H),n,n,n,n,n)),46,1/0)],p),B.D,B.f,B.h),B.j,n,n,s,n,n,n,B.cu,n,n,n),B.e0,A.t(n,B.br2,B.j,n,n,A.aq(B.X,1.6,B.E,16),n,n,n,B.bV,n,n,n)],p),B.cu,n,B.a7),B.ae,!1),!1)}}
 A.aNz.prototype={
 $0(){return this.a.e=!0},
 $S:0}
@@ -122733,7 +122733,7 @@ r=e.aw8(b)
 q=A.dM(g,g,B.wc,g,g,new A.aOL(a),g,g,g)
 p=t.p
 o=A.V(A.b([B.bGG,A.l(""+b.gI5()+"/320 Stored \u2022 16 Boxes \xd7 20 Slots",g,g,g,g,B.a1E,g,g)],p),B.D,B.f,B.h)
-o=A.pR(A.b([new A.an(B.afW,A.cv(B.auE,B.bFu,new A.aOM(e,b),A.bh(g,g,B.d,g,g,g,g,g,g,B.fi,g,g,B.mb,g,new A.ar(A.w(10),B.H),g,g,g,g,g)),g)],p),!0,B.cS,new A.vu(A.t(g,g,B.j,B.fi,g,g,g,3,g,g,g,g,g),B.a0t,g),g,2,B.d,q,g,B.aa,o,g)
+o=A.pR(A.b([new A.an(B.afW,A.cv(B.auE,B.bFv,new A.aOM(e,b),A.bh(g,g,B.d,g,g,g,g,g,g,B.fi,g,g,B.mb,g,new A.ar(A.w(10),B.H),g,g,g,g,g)),g)],p),!0,B.cS,new A.vu(A.t(g,g,B.j,B.fi,g,g,g,3,g,g,g,g,g),B.a0t,g),g,2,B.d,q,g,B.aa,o,g)
 q=J.bi(s)
 n=e.ai0(b,f,q.gH(s))
 m=A.w(15)
@@ -123961,7 +123961,7 @@ q.push(A.t(s,A.l("All moves unlocked up to Lv. "+b.f+" are already equipped abov
 q.push(B.c6)
 q.push(A.l("TEACH GEN 1 TM FROM BAG ("+o.length+")",s,s,s,s,B.bCE,s,s))
 q.push(B.a9)
-if(o.length===0)q.push(A.t(s,B.bF9,B.j,s,s,A.aq(B.X,1.6,B.E,14),s,s,s,B.bV,s,s,s))
+if(o.length===0)q.push(A.t(s,B.bFa,B.j,s,s,A.aq(B.X,1.6,B.E,14),s,s,s,B.bV,s,s,s))
 else B.c.I(q,new A.a1(o,new A.aQX(this,b,a),A.a5(o).j("a1<1,i>")))
 return A.hb(q,B.bV,s,B.a7)}}
 A.aR3.prototype={
@@ -124425,7 +124425,7 @@ k=t.p
 j=A.K(A.b([A.b9(B.iR,n,g,18),B.c5,A.l("MATCH "+h.f+" OF 5 CLEARED",g,g,g,g,A.av(g,g,n,g,g,g,g,g,g,g,g,11,g,g,B.o,g,g,!0,g,0.8,g,g,g,g,g,g),g,g)],k),B.k,B.f,B.h,0)
 i=""+o
 r=""+r.length
-e=A.t(g,A.V(A.b([j,B.ay,A.l(p?"NEXT: FINAL BATTLE WITH LEADER "+e.e.toUpperCase()+" ("+r+f+i+")!":"NEXT: "+q.b.toUpperCase()+" ("+q.c+" \u2022 "+r+f+i+")",g,g,g,g,B.dp,g,g),B.bQ,B.bFg],k),B.D,B.f,B.h),B.j,g,g,l,g,g,g,B.bV,g,g,1/0)
+e=A.t(g,A.V(A.b([j,B.ay,A.l(p?"NEXT: FINAL BATTLE WITH LEADER "+e.e.toUpperCase()+" ("+r+f+i+")!":"NEXT: "+q.b.toUpperCase()+" ("+q.c+" \u2022 "+r+f+i+")",g,g,g,g,B.dp,g,g),B.bQ,B.bFh],k),B.D,B.f,B.h),B.j,g,g,l,g,g,g,B.bV,g,g,1/0)
 r=A.Y(A.eA(new A.aRy(a),a.gap().length,g,B.a7,new A.aRz(),!1),1)
 l=p?"NEXT:\nLEADER":"NEXT\nBATTLE"
 return A.oK(!1,A.dP(m,B.bO,A.ce(B.aR,A.b([B.bkb,A.cE(!0,new A.an(B.bV,A.V(A.b([e,B.c6,B.B3,B.a9,r,B.ad,A.b1Y(h.w,n,l,new A.aRA(h,a),new A.aRB(h,a),new A.aRC(h,a),new A.aRD(h,a))],k),B.D,B.f,B.h),g),B.ae,!1)],k),B.N,B.bL),!1),new A.aRE(h,a),t.K)},
@@ -124528,7 +124528,7 @@ s.f=0},
 $S:0}
 A.aRO.prototype={
 $1(a){var s=null,r=A.w(18)
-return A.eF(A.b([A.cB(B.a1W,new A.aRH(a),A.bh(s,s,B.aI,s,s,s,s,s,s,B.d,s,s,s,s,s,s,s,s,s,s))],t.p),s,B.E,B.bFs,s,new A.ar(r,B.oc),B.bIx,s)},
+return A.eF(A.b([A.cB(B.a1W,new A.aRH(a),A.bh(s,s,B.aI,s,s,s,s,s,s,B.d,s,s,s,s,s,s,s,s,s,s))],t.p),s,B.E,B.bFt,s,new A.ar(r,B.oc),B.bIx,s)},
 $S:15}
 A.aRH.prototype={
 $0(){var s=this.a,r=A.k8(s,null,t.X)
@@ -124690,7 +124690,7 @@ return A.dP(o,B.bO,A.ce(B.aR,A.b([B.bk6,A.cE(!0,A.hb(n,B.hS,r,B.a7),B.ae,!1)],m)
 ahY(a){var s,r=null,q=a.gix(),p=q?B.d:B.az,o=q?B.aI:B.X
 p=A.aq(o,q?1.8:1.4,p,18)
 o=t.p
-s=A.b([A.t(r,B.bFe,B.j,r,r,new A.a3(B.aI,r,r,A.w(10),r,r,B.u),r,r,r,B.hQ,r,r,r),B.ce],o)
+s=A.b([A.t(r,B.bFf,B.j,r,r,new A.a3(B.aI,r,r,A.w(10),r,r,B.u),r,r,r,B.hQ,r,r,r),B.ce],o)
 if(q)s.push(A.l(""+a.ax+" BP \u2022 "+a.as.length+"/6 Squad",r,r,r,r,B.hq,r,r))
 else s.push(B.a_e)
 s=A.K(s,B.k,B.f,B.h,0)
@@ -124725,7 +124725,7 @@ if(k)s.push(A.t(m,B.bJ4,B.j,m,m,new A.a3(A.e(36,B.Z.h()>>>16&255,B.Z.h()>>>8&255
 else if(!l)s.push(B.a_e)
 c=A.b([A.K(s,B.k,B.f,B.h,0),B.a4],q)
 if(!l)c.push(B.bF3)
-else if(h)c.push(B.bFw)
+else if(h)c.push(B.bFx)
 else{h=A.K(A.b([A.l("Badges: "+j.dy+"/8",m,m,m,m,B.a1r,m,m),B.rD,A.l("Dex: "+r+"/"+f,m,m,m,m,B.a1r,m,m),B.rD,A.l("\u20bd"+j.db,m,m,m,m,B.bCe,m,m)],q),B.k,B.f,B.h,0)
 e=A.iG(i,0,A.ny(6,"count",t.S),e.c)
 i=e.$ti.j("a1<aE.E,an>")
@@ -124920,7 +124920,7 @@ o=A.b9(o,q?B.G:B.T,r,46)
 s=A.l(q?"No Friends Added Yet":"No Rivals Yet",r,r,r,r,B.cy,r,r)
 o=A.b([o,B.ad,s,B.ay,A.l(q?"Switch to All Rivals and tap Add Friend on any trainer you've battled.":"Complete a Fist-Bump Battle with another player to record your rivalry, match count, and wins here.",r,r,r,r,B.a1k,B.an,r),B.e0],t.p)
 if(q)o.push(A.lU(B.bJ8,new A.aTU(this),A.fj(r,r,B.d,r,r,r,r,r,r,B.b4,r,r,r,r,new A.ar(A.w(12),B.H),B.a8R,r,r,r,r)))
-else o.push(A.cv(B.aw8,B.bFi,new A.aTV(this),A.bh(r,r,B.A,r,r,r,r,r,r,B.d,r,r,B.agx,r,new A.ar(A.w(12),B.H),r,r,r,r,r)))
+else o.push(A.cv(B.aw8,B.bFj,new A.aTV(this),A.bh(r,r,B.A,r,r,r,r,r,r,B.d,r,r,B.agx,r,new A.ar(A.w(12),B.H),r,r,r,r,r)))
 return A.cz(new A.an(B.agH,A.t(r,A.V(o,B.k,B.f,B.Y),B.j,r,r,p,r,r,r,B.Er,r,r,r),r),r,r)}}
 A.aU3.prototype={
 $1(a){var s,r=null,q=A.w(18),p=this.a,o=p.b,n=A.l("Remove "+o+"?",r,r,r,r,B.cy,r,r)
@@ -125032,7 +125032,7 @@ n=o.c?"Female":"Male"
 return A.V(A.b([B.c7,i,B.a9,j,B.a4,s,B.a4,r,B.a4,A.Y(A.t(l,A.V(A.b([p,B.a9,A.l(o.b+" ("+n+")",l,l,l,l,B.bzx,l,l),B.a9,A.b30(!1,m.w,A.ahE(l,new A.hg(4,A.w(12),B.jH),l,B.eZ,l,l,"",l,!0,new A.hg(4,A.w(12),B.tC),l,l,l,l,l,B.d,!0,l,l,l,l,new A.hg(4,A.w(12),B.a8S),l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,l,B.byO,"TRAINER NAME",!0,!0,!1,l,l,l,l,l,l,l,l,l,l,l,l,l,l),14,l,l,B.hp,B.bwl)],h),B.k,B.bk,B.h),B.j,l,l,q,l,l,l,B.agn,l,l,1/0),1),B.a4,A.aU(A.cB(B.bED,new A.aVo(m),A.bh(l,l,B.A,l,l,l,4,l,l,B.d,l,l,l,l,new A.ar(A.w(14),B.H),l,l,l,l,l)),50,1/0)],h),B.k,B.f,B.h)},
 Xy(a,b,c,d,e){var s=null,r=c?d:B.aa,q=A.w(10),p=A.b9(b,c?B.d:B.S,s,16)
 return A.h7(s,A.kz(A.K(A.b([p,B.a8,A.l(a,s,s,s,s,A.av(s,s,c?B.d:B.S,s,s,s,s,s,s,s,s,11.5,s,s,B.o,s,s,!0,s,s,s,s,s,s,s,s),s,s)],t.p),B.k,B.f,B.h,0),B.av,new A.a3(r,s,s,q,s,s,B.u),B.hP,s,s,B.agE,s,s,s),B.b5,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,s,e,s,s,s,s,s,s)},
-aiY(){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=this,e=null,d=A.b8P(f.x,"kanto"),c=A.bU(B.c.gS(d.a.c)),b=t.p,a=A.K(A.b([f.V9(new A.aVb(f)),f.JR("PROFESSOR OAK'S LAB",B.Z,B.aY),B.a0C],b),B.k,B.bl,B.h,0),a0=A.t(e,B.bFv,B.j,e,e,A.aq(B.X,1.2,A.e(235,B.E.h()>>>16&255,B.E.h()>>>8&255,B.E.h()&255),11),e,e,e,B.agi,e,e,e),a1=f.y,a2=A.a5(a1).j("a1<1,cx>")
+aiY(){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=this,e=null,d=A.b8P(f.x,"kanto"),c=A.bU(B.c.gS(d.a.c)),b=t.p,a=A.K(A.b([f.V9(new A.aVb(f)),f.JR("PROFESSOR OAK'S LAB",B.Z,B.aY),B.a0C],b),B.k,B.bl,B.h,0),a0=A.t(e,B.bFw,B.j,e,e,A.aq(B.X,1.2,A.e(235,B.E.h()>>>16&255,B.E.h()>>>8&255,B.E.h()&255),11),e,e,e,B.agi,e,e,e),a1=f.y,a2=A.a5(a1).j("a1<1,cx>")
 a1=A.a_(new A.a1(a1,new A.aVc(f),a2),a2.j("aE.E"))
 a1=A.K(a1,B.k,B.f,B.h,0)
 a2=A.aq(c,1.8,A.e(245,B.E.h()>>>16&255,B.E.h()>>>8&255,B.E.h()&255),18)
@@ -125841,7 +125841,7 @@ return null},
 $S:0}
 A.aY1.prototype={
 $1(a){var s=null,r=A.w(20),q=this.b,p=t.p,o=A.K(A.b([B.av8,B.a1,A.Y(A.l("NEW "+A.fA(q.y).toUpperCase()+" CHAMPION!",s,s,s,s,B.lc,s,s),1)],p),B.k,B.f,B.h,0),n=A.V(A.b([A.l(q.y===B.aO?"You defeated all four Elite Trainers and toppled Champion Lance in one unstoppable run!\n\nLvl. 99 Johto Victory Road Master Rematches are now unlocked.":"You defeated all four Elite Trainers and toppled Champion Blue in one unstoppable run!\n\nJohto Region Travel, Battle Frontier access, and Lvl. 99 Victory Road Master Rematches are now unlocked.",s,s,s,s,B.lf,s,s),B.ad,this.a.MG("CHAMPIONSHIP PRIZE REWARDS",this.c)],p),B.D,B.f,B.Y)
-return A.eF(A.b([A.cv(B.aui,B.bFj,new A.aXY(a),A.bh(s,s,B.G,s,s,s,s,s,s,B.d,s,s,s,s,s,s,s,s,s,s))],p),s,B.E,n,s,new A.ar(r,B.a8N),o,s)},
+return A.eF(A.b([A.cv(B.aui,B.bFk,new A.aXY(a),A.bh(s,s,B.G,s,s,s,s,s,s,B.d,s,s,s,s,s,s,s,s,s,s))],p),s,B.E,n,s,new A.ar(r,B.a8N),o,s)},
 $S:15}
 A.aXY.prototype={
 $0(){A.ag(this.a,!1).am(null)
@@ -127991,7 +127991,7 @@ e=m.c
 e=A.l(e==null?f.b+" already knows 4 moves. Pick a move below to replace with "+s+":":e,l,l,l,l,B.a1n,l,l)
 r=A.w(14)
 q=A.at(A.bU(i),1.8)
-i=A.K(A.b([A.t(l,B.bFD,B.j,l,l,new A.a3(B.L,l,l,A.w(5),l,l,B.u),l,l,l,B.dU,l,l,l),B.a8,A.Y(A.l(s,l,l,l,l,B.hp,l,l),1),new A.fq(i,l)],d),B.k,B.f,B.h,0)
+i=A.K(A.b([A.t(l,B.bFE,B.j,l,l,new A.a3(B.L,l,l,A.w(5),l,l,B.u),l,l,l,B.dU,l,l,l),B.a8,A.Y(A.l(s,l,l,l,l,B.hp,l,l),1),new A.fq(i,l)],d),B.k,B.f,B.h,0)
 p=j.d
 o=A.b3T(p)
 o=A.e(36,o.h()>>>16&255,o.h()>>>8&255,o.h()&255)
@@ -128013,7 +128013,7 @@ r=t.p
 s=A.Y(A.V(A.b([A.K(A.b([new A.cn(1,B.aQ,A.l(o.b,p,B.a5,p,p,B.rP,p,p),p),B.a8,new A.fq(m,p),B.a8,A.l(A.bc8(s),p,p,p,p,A.av(p,p,A.b3T(s),p,p,p,p,p,p,p,p,9,p,p,B.a_,p,p,!0,p,p,p,p,p,p,p,p),p,p)],r),B.k,B.f,B.h,0),B.b9,A.l("PWR "+o.gnH()+" \u2022 ACC "+o.f+"% \u2022 PP "+o.w+"/"+o.r,p,p,p,p,B.ez,p,p),A.l(o.y,1,B.a5,p,p,B.AV,p,p)],r),B.D,B.f,B.h),1)
 m=A.e(31,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255)
 q=A.w(8)
-return A.cg(!1,n,!0,A.t(p,A.K(A.b([s,B.a1,A.t(p,B.bFp,B.j,p,p,new A.a3(m,p,A.at(A.e(166,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),1),q,p,p,B.u),p,p,p,B.v3,p,p,p)],r),B.k,B.f,B.h,0),B.j,p,p,l,p,p,p,B.ep,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.b_S(this.b,o),p,p,p,p,p,p,p)},
+return A.cg(!1,n,!0,A.t(p,A.K(A.b([s,B.a1,A.t(p,B.bFq,B.j,p,p,new A.a3(m,p,A.at(A.e(166,B.A.h()>>>16&255,B.A.h()>>>8&255,B.A.h()&255),1),q,p,p,B.u),p,p,p,B.v3,p,p,p)],r),B.k,B.f,B.h,0),B.j,p,p,l,p,p,p,B.ep,p,p,p),p,!0,p,p,p,p,p,p,p,p,new A.b_S(this.b,o),p,p,p,p,p,p,p)},
 $S:36}
 A.b_S.prototype={
 $0(){A.ag(this.a,!1).am(this.b)
@@ -128129,7 +128129,7 @@ if(s!=null)p.push(A.l(s,q,q,q,q,B.rQ,q,q))
 return A.K(A.b([n,B.b2,A.Y(A.V(p,B.D,B.f,B.h),1),A.dM(q,q,B.wa,q,q,r.f,q,q,q)],o),B.k,B.f,B.h,0)}}
 A.Gy.prototype={
 T(a){var s=null,r=A.w(12),q=A.at(B.L,1.5)
-return A.t(s,A.K(A.b([B.bFd,B.eP,A.l(""+this.c,s,s,s,s,B.AH,s,s)],t.p),B.k,B.f,B.Y,0),B.j,s,s,new A.a3(B.d,s,q,r,s,s,B.u),s,s,B.Ea,B.hQ,s,s,s)}}
+return A.t(s,A.K(A.b([B.bFe,B.eP,A.l(""+this.c,s,s,s,s,B.AH,s,s)],t.p),B.k,B.f,B.Y,0),B.j,s,s,new A.a3(B.d,s,q,r,s,s,B.u),s,s,B.Ea,B.hQ,s,s,s)}}
 A.oI.prototype={
 T(a){var s=null,r=A.w(12),q=this.d,p=A.at(A.e(166,q.h()>>>16&255,q.h()>>>8&255,q.h()&255),1.5)
 return A.t(s,A.K(A.b([A.b9(this.c,q,s,14),B.bP,A.l(this.e,s,s,s,s,B.rV,s,s)],t.p),B.k,B.f,B.Y,0),B.j,s,s,new A.a3(B.d,s,p,r,s,s,B.u),s,s,B.Ea,B.hQ,s,s,s)}}
@@ -128493,7 +128493,7 @@ A.b0o.prototype={
 $2(a,b){var s,r,q=null,p=A.w(20),o=this.a,n=o.a,m=A.ja(n),l=t.p
 n=A.K(A.b([A.b9(B.cM,A.ja(n),q,22),B.a1,B.ahx],l),B.k,B.f,B.h,0)
 s=o.a
-s=A.p_(A.V(A.b([B.bFE,B.ad,new A.ph(B.f0,s===B.f0,new A.b0l(o,b),!0,q),B.a4,new A.ph(B.hT,s===B.hT,new A.b0m(o,b),!0,q),B.a4,B.bGx],l),B.bU,B.f,B.Y),q,B.b5,q,q,B.a7)
+s=A.p_(A.V(A.b([B.bF9,B.ad,new A.ph(B.f0,s===B.f0,new A.b0l(o,b),!0,q),B.a4,new A.ph(B.hT,s===B.hT,new A.b0m(o,b),!0,q),B.a4,B.bGx],l),B.bU,B.f,B.Y),q,B.b5,q,q,B.a7)
 r=A.bh(q,q,A.ja(o.a),q,q,q,q,q,q,B.d,q,q,q,q,new A.ar(A.w(12),B.H),q,q,q,q,q)
 return A.oK(!1,A.eF(A.b([A.aU(A.cB(A.l("START IN "+A.b7l(o.a).toUpperCase(),q,q,q,q,B.a1L,q,q),new A.b0n(o,this.b,a),r),44,1/0)],l),B.Em,B.E,s,B.Eq,new A.ar(p,new A.aP(m,1.8,B.W,-1)),n,B.agz),q,t.z)},
 $S:805}
@@ -132809,8 +132809,8 @@ B.bG2=new A.L("No Pok\xe9 Balls in your Bag!",null,B.a14,null,null,null,null,nul
 B.aaD=new A.ew(B.O,null,null,B.bG2,null)
 B.jt=new A.k(!0,B.S,null,null,null,null,12,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.an=new A.p9(2,"center")
-B.bFc=new A.L("No Berries or Held Items in your Bag!\nFind berries on wild Pok\xe9mon or earn rare held items by re-challenging Gym Leaders.",null,B.jt,B.an,null,null,null,null,null,null)
-B.aaE=new A.ew(B.O,null,null,B.bFc,null)
+B.bFd=new A.L("No Berries or Held Items in your Bag!\nFind berries on wild Pok\xe9mon or earn rare held items by re-challenging Gym Leaders.",null,B.jt,B.an,null,null,null,null,null,null)
+B.aaE=new A.ew(B.O,null,null,B.bFd,null)
 B.AP=new A.k(!0,B.S,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bHU=new A.L("Pok\xe9mon not found.",null,B.AP,null,null,null,null,null,null,null)
 B.aaF=new A.ew(B.O,null,null,B.bHU,null)
@@ -133656,11 +133656,11 @@ B.bco=s([B.bGl,B.b9,B.bGB],t.p)
 B.aei=new A.f2(B.a7,B.f,B.h,B.D,null,B.aq,null,0,B.bco,null)
 B.ahr=new A.cx(1,B.bc,B.aei,null)
 B.cy=new A.k(!0,B.a0,null,null,null,null,16,B.o,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bFb=new A.L("BATTLE FACTORY",null,B.cy,null,null,null,null,null,null,null)
+B.bFc=new A.L("BATTLE FACTORY",null,B.cy,null,null,null,null,null,null,null)
 B.aE=new A.j8(800)
 B.by_=new A.k(!0,B.bH,null,null,null,null,10.5,B.aE,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bHG=new A.L("Lv. 70 Rental Draft \u2022 Post-Win 1-for-1 Swaps",null,B.by_,null,null,null,null,null,null,null)
-B.b8p=s([B.bFb,B.bHG],t.p)
+B.b8p=s([B.bFc,B.bHG],t.p)
 B.aej=new A.f2(B.a7,B.f,B.h,B.D,null,B.aq,null,0,B.b8p,null)
 B.ahs=new A.cx(1,B.bc,B.aej,null)
 B.bzX=new A.k(!0,B.aY,null,null,null,null,12,B.o,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -133676,8 +133676,8 @@ B.b2b=s([B.bI5,B.bF8],t.p)
 B.ael=new A.f2(B.a7,B.f,B.h,B.D,null,B.aq,null,0,B.b2b,null)
 B.ahv=new A.cx(1,B.bc,B.ael,null)
 B.bDQ=new A.k(!0,B.a0,null,null,null,null,16.5,B.o,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bFC=new A.L("Choose Your Version",null,B.bDQ,null,null,null,null,null,null,null)
-B.ahx=new A.cx(1,B.bc,B.bFC,null)
+B.bFD=new A.L("Choose Your Version",null,B.bDQ,null,null,null,null,null,null,null)
+B.ahx=new A.cx(1,B.bc,B.bFD,null)
 B.bBf=new A.k(!0,B.aI,null,null,null,null,11,B.o,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bIS=new A.L("ORIGIN-LOCKED TRANSFERS",null,B.bBf,null,null,null,null,null,null,null)
 B.dF=new A.k(!0,B.S,null,null,null,null,10.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -133715,8 +133715,8 @@ B.ae7=new A.f2(B.a7,B.f,B.h,B.D,null,B.aq,null,0,B.b52,null)
 B.ahK=new A.cx(1,B.bc,B.ae7,null)
 B.bE7=new A.k(!0,B.c1,null,null,null,null,10,B.o,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bHn=new A.L("STATE 1 \u2022 FIRST ASCENT",null,B.bE7,null,null,null,null,null,null,null)
-B.bFk=new A.L("Victory Road Cavern Trial",null,B.cy,null,null,null,null,null,null,null)
-B.bat=s([B.bHn,B.bFk],t.p)
+B.bFl=new A.L("Victory Road Cavern Trial",null,B.cy,null,null,null,null,null,null,null)
+B.bat=s([B.bHn,B.bFl],t.p)
 B.ae8=new A.f2(B.a7,B.f,B.h,B.D,null,B.aq,null,0,B.bat,null)
 B.ahL=new A.cx(1,B.bc,B.ae8,null)
 B.bFK=new A.L("FRONTIER TRAINING COUNTER",null,B.a1w,null,null,null,null,null,null,null)
@@ -133820,7 +133820,7 @@ B.ajh=new A.EW(2,"defunct")
 B.je=new A.c0(B.cO,[],t.eL)
 B.aji=new A.mL(!1,"Storage Full","Your Party and PC Boxes are full (320/320). Release a Pok\xe9mon first!",null,B.je)
 B.ajj=new A.mL(!1,"Invalid Gift Code","Gift codes must be exactly 16 alphanumeric characters (A\u2013Z, 0\u20139).",null,B.je)
-B.ajk=new A.mL(!1,"Choose Game Version First","Select Red Version or Blue/Green Version first to claim your version starter gift!",null,B.je)
+B.ajk=new A.mL(!1,"Choose Game Version First","Select Red Version or Blue Version first to claim your version starter gift!",null,B.je)
 B.ajl=new A.mL(!1,"Code Already Used","This Mystery Gift code can only be redeemed once per player.",null,B.je)
 B.ajm=new A.mL(!1,"Already Claimed","You have already received this Mystery Gift event.",null,B.je)
 B.vJ=new A.agC(0,"log")
@@ -140998,8 +140998,8 @@ B.b5X=s([B.av1,B.a1,B.ahF],t.p)
 B.bqW=new A.d5(B.at,B.f,B.h,B.k,null,B.aq,null,0,B.b5X,null)
 B.avd=new A.ai(B.pu,10,B.aw,null,null)
 B.bAj=new A.k(!0,B.d,null,null,null,null,10,B.aE,null,0.7,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bFx=new A.L("BACK",null,B.bAj,null,null,null,null,null,null,null)
-B.bd6=s([B.avd,B.bP,B.bFx],t.p)
+B.bFy=new A.L("BACK",null,B.bAj,null,null,null,null,null,null,null)
+B.bd6=s([B.avd,B.bP,B.bFy],t.p)
 B.bqX=new A.d5(B.at,B.f,B.Y,B.k,null,B.aq,null,0,B.bd6,null)
 B.avj=new A.ai(B.w7,20,B.T,null,null)
 B.bIZ=new A.L("EVENT DISTRIBUTIONS",null,B.B2,null,null,null,null,null,null,null)
@@ -141461,8 +141461,8 @@ B.bvd=new A.n9(5,"timeout")
 B.bve=new A.w2(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.nN=new A.k(!0,B.d,null,null,null,null,null,B.a_,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.bvf=new A.w2(B.a0,null,null,B.nN,null,null,null,null,null,null,null,null,null,null)
-B.bFm=new A.L(u.l,null,null,null,null,null,null,null,null,null)
-B.a0z=new A.e2(B.bFm,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
+B.bFn=new A.L(u.l,null,null,null,null,null,null,null,null,null)
+B.a0z=new A.e2(B.bFn,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bHg=new A.L("You need at least one Pok\xe9mon in your party!",null,null,null,null,null,null,null,null,null)
 B.bvg=new A.e2(B.bHg,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bIl=new A.L("Saved progress deleted. Starting a new adventure!",null,null,null,null,null,null,null,null,null)
@@ -141485,14 +141485,14 @@ B.bFL=new A.L(u.s,null,null,null,null,null,null,null,null,null)
 B.bvp=new A.e2(B.bFL,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bHp=new A.L("All Pok\xe9mon in your party are fainted! Heal first.",null,null,null,null,null,null,null,null,null)
 B.bvq=new A.e2(B.bHp,null,null,null,null,null,null,null,null,null,null,null,null,B.cU,!1,null,null,null,B.N,null)
-B.bFa=new A.L("All Pok\xe9mon in your party have fainted! Visit the Pok\xe9mon Center to heal your party.",null,null,null,null,null,null,null,null,null)
-B.nK=new A.e2(B.bFa,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
+B.bFb=new A.L("All Pok\xe9mon in your party have fainted! Visit the Pok\xe9mon Center to heal your party.",null,null,null,null,null,null,null,null,null)
+B.nK=new A.e2(B.bFb,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bGi=new A.L("You need 1 Unknown Fossil and 1 Fossil Restoration Voucher to restore a fossil.",null,null,null,null,null,null,null,null,null)
 B.bvr=new A.e2(B.bGi,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bIb=new A.L("Heal your party at the Pok\xe9 Center before starting an Expedition!",null,null,null,null,null,null,null,null,null)
 B.bvs=new A.e2(B.bIb,null,null,null,null,null,null,null,null,null,null,null,null,B.cU,!1,null,null,null,B.N,null)
-B.bFy=new A.L("All Pok\xe9mon in your party have fainted! Heal at the Pok\xe9mon Center first.",null,null,null,null,null,null,null,null,null)
-B.bvt=new A.e2(B.bFy,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
+B.bFz=new A.L("All Pok\xe9mon in your party have fainted! Heal at the Pok\xe9mon Center first.",null,null,null,null,null,null,null,null,null)
+B.bvt=new A.e2(B.bFz,null,null,null,null,null,null,null,null,null,null,null,null,B.aJ,!1,null,null,null,B.N,null)
 B.bEG=new A.L("It won't have any effect!",null,null,null,null,null,null,null,null,null)
 B.bvu=new A.e2(B.bEG,null,null,null,null,null,null,null,null,null,null,null,null,B.iD,!1,null,null,null,B.N,null)
 B.bHt=new A.L("You need a Heart Scale! Defeat Gym Leaders or Team Rocket to earn Heart Scales.",null,null,null,null,null,null,null,null,null)
@@ -142150,32 +142150,32 @@ B.bF0=new A.L("Your Johto save progresses independently with new Badges, Bag ite
 B.bF2=new A.L("No Pok\xe9mon in your Frontier Party yet. Import from Regional PC above, then tap a stored Pok\xe9mon below to add it!",null,B.lb,B.an,null,null,null,null,null,null)
 B.bF3=new A.L("Defeat the Kanto League (Hall of Fame Champion) to unlock travel to Johto!",null,B.nS,null,null,null,null,null,null,null)
 B.bF5=new A.L("SELECT",null,null,null,null,null,null,null,null,null)
-B.bF9=new A.L("No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pok\xe9mon League to earn rare TM drops!",null,B.eQ,B.an,null,null,null,null,null,null)
-B.bFd=new A.L("\u20bd",null,B.nT,null,null,null,null,null,null,null)
-B.bFe=new A.L("BATTLE FRONTIER",null,B.a1t,null,null,null,null,null,null,null)
-B.bFf=new A.L("Encounter 5 wild Pok\xe9mon across all habitats using standard wild encounter rates.",null,B.nS,null,null,null,null,null,null,null)
-B.bFg=new A.L("HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pok\xe9mon before the next match!",null,B.dF,null,null,null,null,null,null,null)
-B.bFh=new A.L("RETURN TO ADVENTURES",null,B.AM,null,null,null,null,null,null,null)
-B.bFi=new A.L("OPEN FIST-BUMP LINK",null,B.AZ,null,null,null,null,null,null,null)
-B.bFj=new A.L("ENTER HALL OF FAME",null,B.dn,null,null,null,null,null,null,null)
-B.bFl=new A.L("VENTURE INTO THE WILDS (1/3)",null,B.le,null,null,null,null,null,null,null)
-B.bFn=new A.L("SWITCH",null,B.ju,null,null,null,null,null,null,null)
-B.bFo=new A.L("CLAIM OPPONENT RENTAL:",null,B.jr,null,null,null,null,null,null,null)
+B.bF9=new A.L("Pocket Bump now features Red and Blue versions! Your existing Pok\xe9mon, items, and badges are completely safe. Pick your version to set which version-exclusive Pok\xe9mon appear in wild encounters:",null,B.rL,null,null,null,null,null,null,null)
+B.bFa=new A.L("No Gen 1 TMs in your Bag yet. Re-challenge cleared Gym Leaders in the Pok\xe9mon League to earn rare TM drops!",null,B.eQ,B.an,null,null,null,null,null,null)
+B.bFe=new A.L("\u20bd",null,B.nT,null,null,null,null,null,null,null)
+B.bFf=new A.L("BATTLE FRONTIER",null,B.a1t,null,null,null,null,null,null,null)
+B.bFg=new A.L("Encounter 5 wild Pok\xe9mon across all habitats using standard wild encounter rates.",null,B.nS,null,null,null,null,null,null,null)
+B.bFh=new A.L("HP, PP, and status do not auto-heal between gauntlet battles. Use Bag items or organize your Pok\xe9mon before the next match!",null,B.dF,null,null,null,null,null,null,null)
+B.bFi=new A.L("RETURN TO ADVENTURES",null,B.AM,null,null,null,null,null,null,null)
+B.bFj=new A.L("OPEN FIST-BUMP LINK",null,B.AZ,null,null,null,null,null,null,null)
+B.bFk=new A.L("ENTER HALL OF FAME",null,B.dn,null,null,null,null,null,null,null)
+B.bFm=new A.L("VENTURE INTO THE WILDS (1/3)",null,B.le,null,null,null,null,null,null,null)
+B.bFo=new A.L("SWITCH",null,B.ju,null,null,null,null,null,null,null)
+B.bFp=new A.L("CLAIM OPPONENT RENTAL:",null,B.jr,null,null,null,null,null,null,null)
 B.bCs=new A.k(!0,B.A,null,null,null,null,10,B.o,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bFp=new A.L("REPLACE",null,B.bCs,null,null,null,null,null,null,null)
-B.bFq=new A.L("RETURN TO VICTORY ROAD",null,B.js,null,null,null,null,null,null,null)
-B.bFr=new A.L("Enter with your Frontier Party using their exact real levels (up to 3 for Singles or 4 for Doubles). Opponents escalate from Lv. 50 toward Lv. 100, with Frontier Brain Bosses every 7th match!",null,B.nR,null,null,null,null,null,null,null)
-B.bFs=new A.L("Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",null,B.ie,null,null,null,null,null,null,null)
-B.bFt=new A.L("This Frontier PC Box is empty.",null,B.lb,B.an,null,null,null,null,null,null)
+B.bFq=new A.L("REPLACE",null,B.bCs,null,null,null,null,null,null,null)
+B.bFr=new A.L("RETURN TO VICTORY ROAD",null,B.js,null,null,null,null,null,null,null)
+B.bFs=new A.L("Enter with your Frontier Party using their exact real levels (up to 3 for Singles or 4 for Doubles). Opponents escalate from Lv. 50 toward Lv. 100, with Frontier Brain Bosses every 7th match!",null,B.nR,null,null,null,null,null,null,null)
+B.bFt=new A.L("Your party was defeated or retreated. In the Gym Gauntlet, you must defeat all 4 Gym Trainers and the Gym Leader in sequence.\n\nHeal up your party and try again!",null,B.ie,null,null,null,null,null,null,null)
+B.bFu=new A.L("This Frontier PC Box is empty.",null,B.lb,B.an,null,null,null,null,null,null)
 B.bE6=new A.k(!0,null,null,null,null,null,10.5,B.o,null,0.5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.bFu=new A.L("BOXES",null,B.bE6,null,null,null,null,null,null,null)
-B.bFv=new A.L("Choose Your First Partner Pok\xe9mon!",null,B.a1h,B.an,null,null,null,null,null,null)
-B.bFw=new A.L("Johto is unlocked! Pick Gold or Silver Version and claim your Lv. 5 Johto starter from Professor Elm.",null,B.nS,null,null,null,null,null,null,null)
-B.bFz=new A.L("Pok\xe9 Balls will be deflected while it can still fight! Knock it out to earn your chance to catch it (calms to Lv. 50 if caught).",null,B.rL,B.an,null,null,null,null,null,null)
-B.bFA=new A.L("Enter a 16-character alphanumeric event code (letters A\u2013Z and numbers 0\u20139). Each code can only be used once.",null,B.jt,null,null,null,null,null,null,null)
-B.bFB=new A.L("TRY BUMP AGAIN",null,B.js,null,null,null,null,null,null,null)
-B.bFD=new A.L("NEW",null,B.nU,null,null,null,null,null,null,null)
-B.bFE=new A.L("Pocket Bump now features Red and Blue / Green versions! Your existing Pok\xe9mon, items, and badges are completely safe. Pick your version to set which version-exclusive Pok\xe9mon appear in wild encounters:",null,B.rL,null,null,null,null,null,null,null)
+B.bFv=new A.L("BOXES",null,B.bE6,null,null,null,null,null,null,null)
+B.bFw=new A.L("Choose Your First Partner Pok\xe9mon!",null,B.a1h,B.an,null,null,null,null,null,null)
+B.bFx=new A.L("Johto is unlocked! Pick Gold or Silver Version and claim your Lv. 5 Johto starter from Professor Elm.",null,B.nS,null,null,null,null,null,null,null)
+B.bFA=new A.L("Pok\xe9 Balls will be deflected while it can still fight! Knock it out to earn your chance to catch it (calms to Lv. 50 if caught).",null,B.rL,B.an,null,null,null,null,null,null)
+B.bFB=new A.L("Enter a 16-character alphanumeric event code (letters A\u2013Z and numbers 0\u20139). Each code can only be used once.",null,B.jt,null,null,null,null,null,null,null)
+B.bFC=new A.L("TRY BUMP AGAIN",null,B.js,null,null,null,null,null,null,null)
+B.bFE=new A.L("NEW",null,B.nU,null,null,null,null,null,null,null)
 B.bFH=new A.L("Rest checkpoint: heal with Bag items or reorganize your party before the next match.",null,B.dF,null,null,null,null,null,null,null)
 B.bFJ=new A.L("LAB EQUIPMENT (2\xd7 HATCH SPEED)",null,B.a1R,null,null,null,null,null,null,null)
 B.bFN=new A.L("No Pok\xe9mon in this filter yet.\nWalk or battle to discover more!",null,B.ie,B.an,null,null,null,null,null,null)
