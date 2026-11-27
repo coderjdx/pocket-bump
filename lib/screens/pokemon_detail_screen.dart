@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/item.dart';
 import '../models/move.dart';
+import '../models/pokemon_gender.dart';
 import '../models/pokemon_instance.dart';
+import '../models/pokemon_nature.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
@@ -474,14 +477,32 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        mon.nickname,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          color: PokeColors.inkDark,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w900,
-                                        ),
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              mon.nickname,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: PokeColors.inkDark,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          ),
+                                          if (mon.gender !=
+                                              PokemonGender.genderless) ...[
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              mon.gender.symbol,
+                                              style: TextStyle(
+                                                color: mon.gender.color,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          ],
+                                        ],
                                       ),
                                       if (mon.nickname != mon.species.name)
                                         Text(
@@ -700,13 +721,15 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
     final bool obeys = mon.level <= trainer.maxObedienceLevel;
     final ability = mon.abilityDefinition;
     final stats = [
-      ('HP', mon.maxHp, mon.species.baseHp, PokeColors.pokeGreen),
-      ('Attack', mon.atk, mon.species.baseAtk, PokeColors.pokeRed),
-      ('Defense', mon.def, mon.species.baseDef, PokeColors.bagOrange),
-      ('Sp. Atk', mon.spa, mon.species.baseSpA, PokeColors.pokeBlue),
-      ('Sp. Def', mon.spd, mon.species.baseSpD, PokeColors.linkTeal),
-      ('Speed', mon.spe, mon.species.baseSpe, const Color(0xFF7B1FA2)),
+      ('hp', 'HP', mon.maxHp, mon.species.baseHp, mon.hpIv, PokeColors.pokeGreen),
+      ('atk', 'Attack', mon.atk, mon.species.baseAtk, mon.atkIv, PokeColors.pokeRed),
+      ('def', 'Defense', mon.def, mon.species.baseDef, mon.defIv, PokeColors.bagOrange),
+      ('spa', 'Sp. Atk', mon.spa, mon.species.baseSpA, mon.spaIv, PokeColors.pokeBlue),
+      ('spd', 'Sp. Def', mon.spd, mon.species.baseSpD, mon.spdIv, PokeColors.linkTeal),
+      ('spe', 'Speed', mon.spe, mon.species.baseSpe, mon.speIv, const Color(0xFF7B1FA2)),
     ];
+    final originDisplay =
+        GameRegionExtension.fromStorageKey(mon.originRegion).displayName;
 
     return ListView(
       padding: const EdgeInsets.all(14),
@@ -793,6 +816,114 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
           ),
         ),
         const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.cardWhite,
+                  border: PokeColors.frameBorderSoft,
+                  radius: 14,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "NATURE",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.7,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      mon.nature.displayName,
+                      style: const TextStyle(
+                        color: PokeColors.inkDark,
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Text(
+                      mon.nature.shortEffectLabel,
+                      style: const TextStyle(
+                        color: PokeColors.pokeBlueDark,
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: PokeDecorations.card(
+                  fill: PokeColors.cardWhite,
+                  border: PokeColors.frameBorderSoft,
+                  radius: 14,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "FRIENDSHIP",
+                          style: TextStyle(
+                            color: PokeColors.inkMuted,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.7,
+                          ),
+                        ),
+                        Icon(
+                          Icons.favorite_rounded,
+                          size: 13,
+                          color: mon.friendship >= 220
+                              ? PokeColors.centerRoseDark
+                              : PokeColors.centerRose,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      "${mon.friendship} / 255",
+                      style: const TextStyle(
+                        color: PokeColors.inkDark,
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: (mon.friendship / 255.0).clamp(0.0, 1.0),
+                        minHeight: 5,
+                        backgroundColor: PokeColors.panelSoft,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          mon.friendship >= 220
+                              ? PokeColors.centerRoseDark
+                              : PokeColors.centerRose,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(14),
           decoration: PokeDecorations.card(
@@ -803,39 +934,72 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "BATTLE STATS",
-                style: TextStyle(
-                  color: PokeColors.inkDark,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.9,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "BATTLE STATS",
+                    style: TextStyle(
+                      color: PokeColors.inkDark,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.9,
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: mon.ivTotal >= 151
+                          ? PokeColors.badgeGold.withOpacity(0.20)
+                          : PokeColors.panelSoft,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      "IVs ${mon.ivTotal}/186 • ${mon.ivRatingLabel}",
+                      style: TextStyle(
+                        color: mon.ivTotal >= 151
+                            ? PokeColors.badgeGoldDark
+                            : PokeColors.inkMuted,
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 10),
               ...stats.map((s) {
-                final String label = s.$1;
-                final int val = s.$2;
-                final int baseVal = s.$3;
-                final Color color = s.$4;
+                final String key = s.$1;
+                final String label = s.$2;
+                final int val = s.$3;
+                final int baseVal = s.$4;
+                final int iv = s.$5;
+                final Color color = s.$6;
+                final bool isUp = mon.nature.increasedStat == key;
+                final bool isDown = mon.nature.decreasedStat == key;
                 final double ratio = (val / 280.0).clamp(0.06, 1.0);
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 9),
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 60,
+                        width: 64,
                         child: Text(
-                          label,
-                          style: const TextStyle(
-                            color: PokeColors.inkMuted,
-                            fontSize: 11.5,
+                          isUp ? "$label ▲" : (isDown ? "$label ▼" : label),
+                          style: TextStyle(
+                            color: isUp
+                                ? PokeColors.pokeRedDark
+                                : (isDown
+                                    ? PokeColors.pokeBlueDark
+                                    : PokeColors.inkMuted),
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       SizedBox(
-                        width: 38,
+                        width: 34,
                         child: Text(
                           "$val",
                           textAlign: TextAlign.right,
@@ -846,7 +1010,7 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
@@ -858,11 +1022,34 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      SizedBox(
-                        width: 52,
+                      const SizedBox(width: 7),
+                      Container(
+                        width: 38,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: iv == 31
+                              ? PokeColors.badgeGold.withOpacity(0.20)
+                              : PokeColors.panelSoft,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         child: Text(
-                          "Base $baseVal",
+                          "IV $iv",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: iv == 31
+                                ? PokeColors.badgeGoldDark
+                                : PokeColors.inkMuted,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 44,
+                        child: Text(
+                          "B $baseVal",
                           textAlign: TextAlign.right,
                           style: const TextStyle(
                             color: PokeColors.inkSubtle,
@@ -900,6 +1087,8 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
               const SizedBox(height: 10),
               _infoRow("Species",
                   "#${mon.species.id.toString().padLeft(3, '0')} ${mon.species.name}"),
+              _infoRow("Gender", mon.gender.displayName),
+              _infoRow("Origin Region", originDisplay),
               _infoRow(
                 "Nickname",
                 mon.hasCustomNickname

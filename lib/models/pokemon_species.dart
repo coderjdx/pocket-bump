@@ -1,6 +1,41 @@
 import 'package:flutter/material.dart';
 import 'game_version.dart';
+import 'pokemon_gender.dart';
 import 'pokemon_type.dart';
+
+enum EvolutionStatCompare {
+  atkGreaterThanDef,
+  defGreaterThanAtk,
+  atkEqualsDef,
+}
+
+class EvolutionRule {
+  final int targetSpeciesId;
+  final int? minLevel;
+  final String? itemId;
+  final bool viaTrade;
+  final String? requiredHeldItemId;
+  final int? minFriendship;
+  final bool requiresDaytime;
+  final bool requiresNighttime;
+  final EvolutionStatCompare? statCompare;
+  final PokemonGender? requiredGender;
+  final String? requiredMoveId;
+
+  const EvolutionRule({
+    required this.targetSpeciesId,
+    this.minLevel,
+    this.itemId,
+    this.viaTrade = false,
+    this.requiredHeldItemId,
+    this.minFriendship,
+    this.requiresDaytime = false,
+    this.requiresNighttime = false,
+    this.statCompare,
+    this.requiredGender,
+    this.requiredMoveId,
+  });
+}
 
 enum PokemonRarity {
   common,
@@ -81,6 +116,7 @@ class PokemonSpecies {
   final int minEncounterLevel;
   final int? evolutionLevel;
   final int? evolutionSpeciesId;
+  final List<EvolutionRule> evolutionRules;
   final List<LearnedMove> learnset;
   final String abilitySlot1Id;
   final String? abilitySlot2Id;
@@ -111,6 +147,7 @@ class PokemonSpecies {
     this.minEncounterLevel = 2,
     this.evolutionLevel,
     this.evolutionSpeciesId,
+    this.evolutionRules = const [],
     this.learnset = const [LearnedMove(1, 'tackle')],
     this.abilitySlot1Id = 'run_away',
     this.abilitySlot2Id,
@@ -139,8 +176,10 @@ class PokemonSpecies {
     return 1;
   }
 
-  bool get isFinalStage => evolutionSpeciesId == null;
-  bool get isSingleStage => evolutionStage == 1 && evolutionSpeciesId == null;
+  bool get isFinalStage =>
+      evolutionSpeciesId == null && evolutionRules.isEmpty;
+  bool get isSingleStage =>
+      evolutionStage == 1 && evolutionSpeciesId == null && evolutionRules.isEmpty;
   bool get isFossilPokemon =>
       isFossil || const {138, 139, 140, 141, 142}.contains(id);
 
@@ -209,15 +248,34 @@ class PokemonSpecies {
     127, // Pinsir
   };
 
+  static const Set<int> goldExclusiveIds = {
+    167, 168, // Spinarak, Ariados
+    207, // Gligar
+    216, 217, // Teddiursa, Ursaring
+    226, // Mantine
+    250, // Ho-Oh
+  };
+
+  static const Set<int> silverExclusiveIds = {
+    165, 166, // Ledyba, Ledian
+    225, // Delibird
+    227, // Skarmory
+    231, 232, // Phanpy, Donphan
+    249, // Lugia
+  };
+
   GameVersion? get exclusiveVersion {
     if (redExclusiveIds.contains(id)) return GameVersion.red;
     if (blueGreenExclusiveIds.contains(id)) return GameVersion.blueGreen;
+    if (goldExclusiveIds.contains(id)) return GameVersion.gold;
+    if (silverExclusiveIds.contains(id)) return GameVersion.silver;
     return null;
   }
 
   bool isAvailableInVersion(GameVersion? version) {
     final ex = exclusiveVersion;
     if (ex == null || version == null) return true;
+    if (ex.region != version.region) return true;
     return ex == version;
   }
 

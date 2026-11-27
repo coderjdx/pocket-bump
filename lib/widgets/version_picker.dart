@@ -21,7 +21,6 @@ class VersionChoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isRed = version == GameVersion.red;
     final Color primary = version.primaryColor;
     final Color secondary = version.secondaryColor;
     final mascot = PokedexDatabase.species[version.mascotSpeciesId];
@@ -104,7 +103,7 @@ class VersionChoiceCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          isRed ? 'FIRE' : 'WATER / LEAF',
+                          version.elementTag,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 8,

@@ -1185,8 +1185,9 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
           _trainer.saveProgress();
         }
 
-        if (participant.checkCanEvolve()) {
-          final nextSpecies = PokedexDatabase.species[participant.species.evolutionSpeciesId];
+        final int? nextEvoId = participant.resolveLevelUpEvolutionSpeciesId();
+        if (nextEvoId != null) {
+          final nextSpecies = PokedexDatabase.species[nextEvoId];
           if (nextSpecies != null) {
             final oldName = participant.nickname;
             final fromSpecies = participant.species;
@@ -1224,6 +1225,7 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
 
   Future<void> _handleVictory() async {
     _recordPvpBattleOutcomeIfNeeded(playerWon: true);
+    _trainer.recordBattleCompleted(isTrainerBattle: true, won: true);
     SoundService.instance.playVictoryFanfare(isTrainer: true);
 
     setState(() {
@@ -1263,6 +1265,7 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
 
   void _handleDefeat() {
     _recordPvpBattleOutcomeIfNeeded(playerWon: false);
+    _trainer.recordBattleCompleted(isTrainerBattle: true, won: false);
     setState(() {
       _isProcessingTurn = false;
       _battleEnded = true;

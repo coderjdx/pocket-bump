@@ -1,9 +1,12 @@
 import 'dart:math';
 import 'ability.dart';
+import 'pokemon_gender.dart';
+import 'pokemon_nature.dart';
 import 'pokemon_species.dart';
 import 'pokemon_type.dart';
 import 'move.dart';
 import '../services/pokedex_database.dart';
+import '../services/time_of_day_service.dart';
 
 enum StatusCondition {
   none,
@@ -77,6 +80,17 @@ class PokemonInstance {
   final bool isShiny;
   String abilityId;
   int abilitySlot; // 1 = standard slot 1, 2 = standard slot 2, 3 = Hidden Ability
+  PokemonNature nature;
+  int hpIv;
+  int atkIv;
+  int defIv;
+  int spaIv;
+  int spdIv;
+  int speIv;
+  PokemonGender gender;
+  int friendship;
+  String originRegion;
+  String? formId;
 
   // In-battle stat stages (-6 to +6)
   int atkStage = 0;
@@ -254,6 +268,28 @@ class PokemonInstance {
     return (slot: 1, id: species.abilitySlot1Id);
   }
 
+  static Map<String, int> rollIvs({
+    int guaranteedPerfectCount = 0,
+    Random? rng,
+  }) {
+    final random = rng ?? Random();
+    final ivs = <String, int>{
+      'hp': random.nextInt(32),
+      'atk': random.nextInt(32),
+      'def': random.nextInt(32),
+      'spa': random.nextInt(32),
+      'spd': random.nextInt(32),
+      'spe': random.nextInt(32),
+    };
+    if (guaranteedPerfectCount > 0) {
+      final keys = ivs.keys.toList()..shuffle(random);
+      for (int i = 0; i < guaranteedPerfectCount.clamp(0, 6); i++) {
+        ivs[keys[i]] = 31;
+      }
+    }
+    return ivs;
+  }
+
   PokemonInstance({
     required this.species,
     String? nickname,
@@ -271,6 +307,18 @@ class PokemonInstance {
     bool isShiny = false,
     String? abilityId,
     int? abilitySlot,
+    PokemonNature? nature,
+    int? hpIv,
+    int? atkIv,
+    int? defIv,
+    int? spaIv,
+    int? spdIv,
+    int? speIv,
+    PokemonGender? gender,
+    int? friendship,
+    String? originRegion,
+    this.formId,
+    Random? rng,
   })  : _status = status,
         isShiny = isShiny && species.isShinyEligible,
         nickname = (nickname != null && nickname.trim().isNotEmpty)
@@ -280,18 +328,42 @@ class PokemonInstance {
         abilitySlot = abilitySlot ??
             (abilityId != null
                 ? species.slotForAbility(abilityId)
-                : rollAbilityForSpecies(species).slot),
+                : rollAbilityForSpecies(species, rng: rng).slot),
         abilityId = '',
+        nature = nature ?? PokemonNatureExtension.random(rng),
+        hpIv = (hpIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        atkIv = (atkIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        defIv = (defIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        spaIv = (spaIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        spdIv = (spdIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        speIv = (speIv ?? (rng ?? Random()).nextInt(32)).clamp(0, 31),
+        gender = gender ?? PokemonGenderExtension.rollForSpeciesId(species.id, rng),
+        friendship = (friendship ?? 70).clamp(0, 255),
+        originRegion = (originRegion != null && originRegion.trim().isNotEmpty)
+            ? originRegion.trim()
+            : 'kanto',
         moves = (moves ?? []).take(4).toList(),
         learnedMoveIds = <String>[],
         currentExp = currentExp ?? ((level - 1) * (level - 1) * (level - 1)),
-        maxHp = _calculateMaxHp(species.baseHp, level),
-        currentHp = currentHp ?? _calculateMaxHp(species.baseHp, level),
-        atk = _calculateStat(species.baseAtk, level),
-        def = _calculateStat(species.baseDef, level),
-        spa = _calculateStat(species.baseSpA, level),
-        spd = _calculateStat(species.baseSpD, level),
-        spe = _calculateStat(species.baseSpe, level) {
+        maxHp = 10,
+        currentHp = 10,
+        atk = 5,
+        def = 5,
+        spa = 5,
+        spd = 5,
+        spe = 5 {
+    maxHp = _calculateMaxHp(species.baseHp, level, iv: this.hpIv);
+    currentHp = (currentHp ?? maxHp).clamp(0, maxHp);
+    atk = _calculateStat(species.baseAtk, level,
+        iv: this.atkIv, natureMult: this.nature.multiplierFor('atk'));
+    def = _calculateStat(species.baseDef, level,
+        iv: this.defIv, natureMult: this.nature.multiplierFor('def'));
+    spa = _calculateStat(species.baseSpA, level,
+        iv: this.spaIv, natureMult: this.nature.multiplierFor('spa'));
+    spd = _calculateStat(species.baseSpD, level,
+        iv: this.spdIv, natureMult: this.nature.multiplierFor('spd'));
+    spe = _calculateStat(species.baseSpe, level,
+        iv: this.speIv, natureMult: this.nature.multiplierFor('spe'));
     this.abilityId = abilityId ?? species.abilityForSlot(this.abilitySlot);
     if (AbilityDatabase.byId(this.abilityId) == null) {
       this.abilitySlot = 1;
@@ -310,14 +382,66 @@ class PokemonInstance {
     }
   }
 
-  static int _calculateMaxHp(int base, int lvl) {
-    // Standard Pokémon Gen 4 HP formula assuming 31 IV & 0 EV
-    return (((2 * base + 31) * lvl) ~/ 100) + lvl + 10;
+  static int _calculateMaxHp(int base, int lvl, {int iv = 31}) {
+    // Standard Pokémon Gen 4 HP formula with per-Pokémon IV & 0 EV
+    return (((2 * base + iv) * lvl) ~/ 100) + lvl + 10;
   }
 
-  static int _calculateStat(int base, int lvl) {
-    // Standard Pokémon Gen 4 Stat formula
-    return (((2 * base + 31) * lvl) ~/ 100) + 5;
+  static int _calculateStat(
+    int base,
+    int lvl, {
+    int iv = 31,
+    double natureMult = 1.0,
+  }) {
+    // Standard Pokémon Gen 4 Stat formula with IV & Nature modifier
+    final int raw = (((2 * base + iv) * lvl) ~/ 100) + 5;
+    return (raw * natureMult).floor().clamp(1, 9999);
+  }
+
+  int get ivTotal => hpIv + atkIv + defIv + spaIv + spdIv + speIv;
+
+  String get ivRatingLabel {
+    if (ivTotal >= 151) return 'Amazing';
+    if (ivTotal >= 121) return 'Great';
+    if (ivTotal >= 91) return 'Good';
+    return 'Decent';
+  }
+
+  void addFriendship(int delta) {
+    if (delta == 0) return;
+    friendship = (friendship + delta).clamp(0, 255);
+  }
+
+  static const List<PokemonType> _hiddenPowerTypes = [
+    PokemonType.fighting,
+    PokemonType.flying,
+    PokemonType.poison,
+    PokemonType.ground,
+    PokemonType.rock,
+    PokemonType.bug,
+    PokemonType.ghost,
+    PokemonType.steel,
+    PokemonType.fire,
+    PokemonType.water,
+    PokemonType.grass,
+    PokemonType.electric,
+    PokemonType.psychic,
+    PokemonType.ice,
+    PokemonType.dragon,
+    PokemonType.dark,
+  ];
+
+  PokemonType get hiddenPowerType {
+    final int bit0 = hpIv & 1;
+    final int bit1 = atkIv & 1;
+    final int bit2 = defIv & 1;
+    final int bit3 = speIv & 1;
+    final int bit4 = spaIv & 1;
+    final int bit5 = spdIv & 1;
+    final int rawSum =
+        bit0 + 2 * bit1 + 4 * bit2 + 8 * bit3 + 16 * bit4 + 32 * bit5;
+    final int idx = ((rawSum * 15) ~/ 63).clamp(0, _hiddenPowerTypes.length - 1);
+    return _hiddenPowerTypes[idx];
   }
 
   /// Balanced Gen 5/7 EXP formula (midpoint between classic and boosted curves)
@@ -429,13 +553,18 @@ class PokemonInstance {
 
   void recalculateStats() {
     int oldMax = maxHp;
-    maxHp = _calculateMaxHp(species.baseHp, level);
+    maxHp = _calculateMaxHp(species.baseHp, level, iv: hpIv);
     currentHp = (currentHp + (maxHp - oldMax)).clamp(0, maxHp);
-    atk = _calculateStat(species.baseAtk, level);
-    def = _calculateStat(species.baseDef, level);
-    spa = _calculateStat(species.baseSpA, level);
-    spd = _calculateStat(species.baseSpD, level);
-    spe = _calculateStat(species.baseSpe, level);
+    atk = _calculateStat(species.baseAtk, level,
+        iv: atkIv, natureMult: nature.multiplierFor('atk'));
+    def = _calculateStat(species.baseDef, level,
+        iv: defIv, natureMult: nature.multiplierFor('def'));
+    spa = _calculateStat(species.baseSpA, level,
+        iv: spaIv, natureMult: nature.multiplierFor('spa'));
+    spd = _calculateStat(species.baseSpD, level,
+        iv: spdIv, natureMult: nature.multiplierFor('spd'));
+    spe = _calculateStat(species.baseSpe, level,
+        iv: speIv, natureMult: nature.multiplierFor('spe'));
   }
 
   /// Levels a newly caught Legendary/Mythical boss down cleanly (e.g. Lv.99 -> Lv.50),
@@ -454,13 +583,18 @@ class PokemonInstance {
     }
     clearVolatileBattleState();
     status = StatusCondition.none;
-    maxHp = _calculateMaxHp(species.baseHp, level);
+    maxHp = _calculateMaxHp(species.baseHp, level, iv: hpIv);
     currentHp = maxHp;
-    atk = _calculateStat(species.baseAtk, level);
-    def = _calculateStat(species.baseDef, level);
-    spa = _calculateStat(species.baseSpA, level);
-    spd = _calculateStat(species.baseSpD, level);
-    spe = _calculateStat(species.baseSpe, level);
+    atk = _calculateStat(species.baseAtk, level,
+        iv: atkIv, natureMult: nature.multiplierFor('atk'));
+    def = _calculateStat(species.baseDef, level,
+        iv: defIv, natureMult: nature.multiplierFor('def'));
+    spa = _calculateStat(species.baseSpA, level,
+        iv: spaIv, natureMult: nature.multiplierFor('spa'));
+    spd = _calculateStat(species.baseSpD, level,
+        iv: spdIv, natureMult: nature.multiplierFor('spd'));
+    spe = _calculateStat(species.baseSpe, level,
+        iv: speIv, natureMult: nature.multiplierFor('spe'));
   }
 
   void recordLearnedMoveId(String moveId) {
@@ -582,11 +716,51 @@ class PokemonInstance {
     return leveledUp;
   }
 
-  bool checkCanEvolve() {
-    return species.evolutionLevel != null &&
+  int? resolveLevelUpEvolutionSpeciesId({DateTime? now}) {
+    for (final rule in species.evolutionRules) {
+      if (rule.itemId != null || rule.viaTrade) continue;
+      if (!PokedexDatabase.species.containsKey(rule.targetSpeciesId)) continue;
+      if (rule.minLevel != null && level < rule.minLevel!) continue;
+      if (rule.minFriendship != null && friendship < rule.minFriendship!) {
+        continue;
+      }
+      if (rule.requiresDaytime && !TimeOfDayService.isDaytime(now)) continue;
+      if (rule.requiresNighttime && !TimeOfDayService.isNighttime(now)) {
+        continue;
+      }
+      if (rule.requiredGender != null && gender != rule.requiredGender) {
+        continue;
+      }
+      if (rule.requiredMoveId != null &&
+          !moves.any((m) => m.id == rule.requiredMoveId)) {
+        continue;
+      }
+      if (rule.statCompare != null) {
+        switch (rule.statCompare!) {
+          case EvolutionStatCompare.atkGreaterThanDef:
+            if (atk <= def) continue;
+            break;
+          case EvolutionStatCompare.defGreaterThanAtk:
+            if (def <= atk) continue;
+            break;
+          case EvolutionStatCompare.atkEqualsDef:
+            if (atk != def) continue;
+            break;
+        }
+      }
+      return rule.targetSpeciesId;
+    }
+
+    if (species.evolutionLevel != null &&
         species.evolutionSpeciesId != null &&
-        level >= species.evolutionLevel!;
+        level >= species.evolutionLevel! &&
+        PokedexDatabase.species.containsKey(species.evolutionSpeciesId!)) {
+      return species.evolutionSpeciesId;
+    }
+    return null;
   }
+
+  bool checkCanEvolve() => resolveLevelUpEvolutionSpeciesId() != null;
 
   List<String> evolve(
     PokemonSpecies nextSpecies,
@@ -751,6 +925,17 @@ class PokemonInstance {
       'isShiny': isShiny,
       'abilityId': abilityId,
       'abilitySlot': abilitySlot,
+      'nature': nature.name,
+      'hpIv': hpIv,
+      'atkIv': atkIv,
+      'defIv': defIv,
+      'spaIv': spaIv,
+      'spdIv': spdIv,
+      'speIv': speIv,
+      'gender': gender.name,
+      'friendship': friendship,
+      'originRegion': originRegion,
+      if (formId != null) 'formId': formId,
       'learnedMoveIds': learnedMoveIds,
       'moves': moves
           .map((m) => {
@@ -787,7 +972,29 @@ class PokemonInstance {
       restoredMoves.addAll(PokedexDatabase.movesForSpeciesAtLevel(spec, lvl));
     }
 
-    final int computedMaxHp = _calculateMaxHp(spec.baseHp, lvl);
+    final int restoredHpIv = (json['hpIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final int restoredAtkIv = (json['atkIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final int restoredDefIv = (json['defIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final int restoredSpaIv = (json['spaIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final int restoredSpdIv = (json['spdIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final int restoredSpeIv = (json['speIv'] as num?)?.toInt().clamp(0, 31) ?? 31;
+    final PokemonNature restoredNature =
+        PokemonNatureExtension.fromStorageKey(json['nature'] as String?);
+    final PokemonGender restoredGender = json['gender'] is String
+        ? PokemonGenderExtension.fromStorageKey(json['gender'] as String?)
+        : PokemonGenderExtension.rollForSpeciesId(spec.id);
+    final int restoredFriendship =
+        ((json['friendship'] as num?)?.toInt() ?? 70).clamp(0, 255);
+    final String restoredOriginRegion =
+        (json['originRegion'] as String?)?.trim().isNotEmpty == true
+            ? (json['originRegion'] as String).trim()
+            : 'kanto';
+    final String? restoredFormId =
+        (json['formId'] as String?)?.trim().isNotEmpty == true
+            ? (json['formId'] as String).trim()
+            : null;
+
+    final int computedMaxHp = _calculateMaxHp(spec.baseHp, lvl, iv: restoredHpIv);
     final int rawHp = (json['currentHp'] as num?)?.toInt() ?? computedMaxHp;
     final int hp = rawHp.clamp(0, computedMaxHp);
 
@@ -855,6 +1062,17 @@ class PokemonInstance {
       isShiny: isShiny,
       abilityId: resolvedAbilityId,
       abilitySlot: resolvedSlot,
+      nature: restoredNature,
+      hpIv: restoredHpIv,
+      atkIv: restoredAtkIv,
+      defIv: restoredDefIv,
+      spaIv: restoredSpaIv,
+      spdIv: restoredSpdIv,
+      speIv: restoredSpeIv,
+      gender: restoredGender,
+      friendship: restoredFriendship,
+      originRegion: restoredOriginRegion,
+      formId: restoredFormId,
     );
     instance.sleepTurnsRemaining = restoredStatus == StatusCondition.sleep
         ? ((json['sleepTurnsRemaining'] as num?)?.toInt() ?? 2).clamp(1, 4)

@@ -105,14 +105,22 @@ class _TradeScreenState extends State<TradeScreen>
     trainer.completeTradeSwap(partyIndex, transferredCopy);
     await trainer.saveProgress();
 
-    // Check Gen 1 Link Trade Evolution (Kadabra -> Alakazam, Machoke -> Machamp, Graveler -> Golem, Haunter -> Gengar)
-    final int? tradeEvoId =
-        PokedexDatabase.getTradeEvolutionTarget(transferredCopy.species.id);
+    // Check standard & held-item Link Trade Evolutions
+    final int? tradeEvoId = PokedexDatabase.getTradeEvolutionTarget(
+      transferredCopy.species.id,
+      heldItemId: transferredCopy.heldItemId,
+    );
     if (tradeEvoId != null) {
       final nextSpecies = PokedexDatabase.species[tradeEvoId];
       if (nextSpecies != null) {
         final fromSpecies = transferredCopy.species;
         final oldNickname = transferredCopy.nickname;
+        if (PokedexDatabase.doesTradeEvolutionConsumeHeldItem(
+          fromSpecies.id,
+          transferredCopy.heldItemId,
+        )) {
+          transferredCopy.unequipHeldItem();
+        }
         final List<Move> pendingEvoMoves = [];
         final learnedMoves = transferredCopy.evolve(
           nextSpecies,
@@ -181,7 +189,10 @@ class _TradeScreenState extends State<TradeScreen>
     final heldItem =
         mon?.heldItemId != null ? ItemDatabase.byId(mon!.heldItemId!) : null;
     final int? tradeEvoTargetId = mon != null
-        ? PokedexDatabase.getTradeEvolutionTarget(mon.species.id)
+        ? PokedexDatabase.getTradeEvolutionTarget(
+            mon.species.id,
+            heldItemId: mon.heldItemId,
+          )
         : null;
     final String? tradeEvoName = tradeEvoTargetId != null
         ? PokedexDatabase.species[tradeEvoTargetId]?.name
@@ -760,7 +771,9 @@ class _TradeScreenState extends State<TradeScreen>
                                             myOffer != null;
                                     final tradeEvo = PokedexDatabase
                                             .getTradeEvolutionTarget(
-                                                mon.species.id) !=
+                                          mon.species.id,
+                                          heldItemId: mon.heldItemId,
+                                        ) !=
                                         null;
                                     return InkWell(
                                       onTap: (_isAnimatingTrade ||

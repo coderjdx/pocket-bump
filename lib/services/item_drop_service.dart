@@ -1,7 +1,9 @@
 import 'dart:math';
 import '../models/item.dart';
+import '../models/mystery_egg.dart';
 import '../models/pokemon_species.dart';
 import 'gym_database.dart';
+import 'pokedex_database.dart';
 
 class ItemDrop {
   final String itemId;
@@ -496,5 +498,45 @@ class ItemDropService {
     }
 
     return mergeDrops(rawDrops);
+  }
+
+  /// Final-stage species of the 8 Baby Pokémon lines rarely drop a "Mystery Egg"
+  /// that remembers which baby species it came from.
+  static MysteryEgg? rollMysteryEggDrop(
+    PokemonSpecies defeated, {
+    required String originRegion,
+    double chance = 0.12,
+    Random? rng,
+  }) {
+    final int? babyId = MysteryEgg.babyEggSourceToBabySpecies[defeated.id];
+    if (babyId == null) return null;
+    if (!PokedexDatabase.species.containsKey(babyId)) return null;
+    final Random r = rng ?? _rng;
+    if (r.nextDouble() >= chance) return null;
+    return MysteryEgg(
+      eggId:
+          'egg_${babyId}_${DateTime.now().microsecondsSinceEpoch}_${r.nextInt(9999)}',
+      speciesId: babyId,
+      requiredProgress: MysteryEgg.requiredProgressForBaby(babyId),
+      originRegion: originRegion,
+    );
+  }
+
+  /// Rare reusable Lab Equipment drop (Flame Armor / Magma Armor, max 1 each).
+  static ItemDrop? rollLabArmorDrop({
+    required bool hasFlameArmor,
+    required bool hasMagmaArmor,
+    double chance = 0.03,
+    Random? rng,
+  }) {
+    final List<String> candidates = [
+      if (!hasFlameArmor) 'flame_armor',
+      if (!hasMagmaArmor) 'magma_armor',
+    ];
+    if (candidates.isEmpty) return null;
+    final Random r = rng ?? _rng;
+    if (r.nextDouble() >= chance) return null;
+    final String picked = candidates[r.nextInt(candidates.length)];
+    return _itemDropFromId(picked);
   }
 }

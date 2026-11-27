@@ -1,10 +1,13 @@
 import 'dart:math';
 import '../models/game_version.dart';
 import '../models/move.dart';
+import '../models/pokemon_gender.dart';
+import '../models/pokemon_nature.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/pokemon_instance.dart';
 import 'egg_move_service.dart';
+import 'time_of_day_service.dart';
 
 class PokedexDatabase {
   static final Random _rng = Random();
@@ -11893,8 +11896,37 @@ class PokedexDatabase {
     93: 94, // Haunter -> Gengar
   };
 
-  static int? getTradeEvolutionTarget(int speciesId) =>
-      tradeEvolutionTargets[speciesId];
+  static const Map<int, Map<String, int>> heldItemTradeEvolutionTargets = {
+    61: {'kings_rock': 186}, // Poliwhirl -> Politoed
+    79: {'kings_rock': 199}, // Slowpoke -> Slowking
+    95: {'metal_coat': 208}, // Onix -> Steelix
+    117: {'dragon_scale': 230}, // Seadra -> Kingdra
+    123: {'metal_coat': 212}, // Scyther -> Scizor
+    137: {'up_grade': 233}, // Porygon -> Porygon2
+  };
+
+  static int? getTradeEvolutionTarget(int speciesId, {String? heldItemId}) {
+    if (heldItemId != null && heldItemId.isNotEmpty) {
+      final int? heldTarget = heldItemTradeEvolutionTargets[speciesId]?[heldItemId];
+      if (heldTarget != null && species.containsKey(heldTarget)) {
+        return heldTarget;
+      }
+    }
+    final int? standardTarget = tradeEvolutionTargets[speciesId];
+    if (standardTarget != null && species.containsKey(standardTarget)) {
+      return standardTarget;
+    }
+    return null;
+  }
+
+  static bool doesTradeEvolutionConsumeHeldItem(
+    int speciesId,
+    String? heldItemId,
+  ) {
+    if (heldItemId == null || heldItemId.isEmpty) return false;
+    final int? target = heldItemTradeEvolutionTargets[speciesId]?[heldItemId];
+    return target != null && species.containsKey(target);
+  }
 
   static String? evolutionRequirementLabel(PokemonSpecies spec) {
     if (spec.evolutionSpeciesId != null && spec.evolutionLevel != null) {
@@ -11957,6 +11989,11 @@ class PokedexDatabase {
     int? abilitySlot,
     double hiddenAbilityChance = 0.02,
     double eggMoveChance = 0.0,
+    PokemonNature? nature,
+    PokemonGender? gender,
+    int? guaranteedPerfectIvs,
+    int? friendship,
+    String originRegion = 'kanto',
     Random? rng,
   }) {
     final spec = species[speciesId]!;
@@ -11985,6 +12022,12 @@ class PokedexDatabase {
         }
       }
     }
+    final int perfectIvFloor =
+        guaranteedPerfectIvs ?? ((spec.isLegendary || spec.isMythical) ? 3 : 0);
+    final ivs = PokemonInstance.rollIvs(
+      guaranteedPerfectCount: perfectIvFloor,
+      rng: rng,
+    );
     return PokemonInstance(
       species: spec,
       nickname: nickname,
@@ -11993,11 +12036,26 @@ class PokedexDatabase {
       isShiny: isShiny && spec.isShinyEligible,
       abilityId: resolvedAbility,
       abilitySlot: resolvedSlot,
+      nature: nature,
+      hpIv: ivs['hp'],
+      atkIv: ivs['atk'],
+      defIv: ivs['def'],
+      spaIv: ivs['spa'],
+      spdIv: ivs['spd'],
+      speIv: ivs['spe'],
+      gender: gender,
+      friendship: friendship,
+      originRegion: originRegion,
+      rng: rng,
     );
   }
 
   // ─── STARTER FACTORY ──────────────────────────────────────────────────
-  static PokemonInstance createStarter(int speciesId, {String? nickname}) {
+  static PokemonInstance createStarter(
+    int speciesId, {
+    String? nickname,
+    String originRegion = 'kanto',
+  }) {
     final spec = species[speciesId]!;
     return createPokemon(
       speciesId,
@@ -12005,6 +12063,8 @@ class PokedexDatabase {
       nickname: nickname,
       isShiny: rollShiny(spec),
       hiddenAbilityChance: 0.05,
+      guaranteedPerfectIvs: 2,
+      originRegion: originRegion,
     );
   }
 
@@ -12036,11 +12096,31 @@ class PokedexDatabase {
   static PokemonInstance generateWildEncounter({
     int playerLevel = 5,
     GameVersion? gameVersion,
+    String originRegion = 'kanto',
   }) {
     return generateAdventureEncounter(
       playerLevel: playerLevel,
       gameVersion: gameVersion,
+      originRegion: originRegion,
     );
+  }
+
+  /// Picks a species from [pool] weighted by global Day/Night waking hours.
+  static PokemonSpecies _pickWeightedSpeciesByTimeOfDay(
+    List<PokemonSpecies> pool,
+    Random r,
+  ) {
+    if (pool.length == 1) return pool.first;
+    final weights = pool
+        .map((s) => TimeOfDayService.encounterWeightForSpecies(s.id))
+        .toList();
+    final double totalWeight = weights.fold(0.0, (a, b) => a + b);
+    double cursor = r.nextDouble() * totalWeight;
+    for (int i = 0; i < pool.length; i++) {
+      cursor -= weights[i];
+      if (cursor <= 0) return pool[i];
+    }
+    return pool.last;
   }
 
   /// Generates a wild encounter using the standard Tall Grass rarity rates
@@ -12050,6 +12130,7 @@ class PokedexDatabase {
     int playerLevel = 5,
     GameVersion? gameVersion,
     Set<PokemonType>? allowedTypes,
+    String originRegion = 'kanto',
     Random? rng,
   }) {
     final Random r = rng ?? _rng;
@@ -12088,7 +12169,7 @@ class PokedexDatabase {
                         s.isWildEncounterable &&
                         s.isAvailableInVersion(gameVersion))
                     .toList()));
-    final chosen = pool[r.nextInt(pool.length)];
+    final chosen = _pickWeightedSpeciesByTimeOfDay(pool, r);
 
     final baseMin = (playerLevel - 2).clamp(2, 99);
     final baseMax = (playerLevel + 1).clamp(baseMin, 100);
@@ -12101,6 +12182,7 @@ class PokedexDatabase {
       level: level,
       isShiny: isShiny,
       eggMoveChance: hasTypeFilter ? 0.25 : 0.15,
+      originRegion: originRegion,
       rng: r,
     );
   }

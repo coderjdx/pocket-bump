@@ -2,97 +2,76 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/pokedex_database.dart';
+import 'game_region.dart';
 import 'game_version.dart';
 import 'item.dart';
+import 'mystery_egg.dart';
 import 'pokemon_instance.dart';
+import 'region_save.dart';
 import 'rival.dart';
 import 'trainer_avatar.dart';
 
 class Trainer extends ChangeNotifier {
   static const String _saveKey = 'pocket_bump_save_v1';
   static const String _backupSaveKey = 'pocket_bump_save_backup';
-  static const int currentSchemaVersion = 1;
-  static const int maxEncounterSteps = 400;
-  static const int numPcBoxes = 16;
-  static const int maxPokemonPerBox = 20;
+  static const int currentSchemaVersion = 2;
+  static const int maxEncounterSteps = RegionSave.maxEncounterSteps;
+  static const int numPcBoxes = RegionSave.numPcBoxes;
+  static const int maxPokemonPerBox = RegionSave.maxPokemonPerBox;
   static final Random _rng = Random();
 
   bool _suppressAutoSave = false;
   String name;
   String? accountId; // Reserved for live trainer accounts
   TrainerAvatar avatar;
-  GameVersion? gameVersion;
-  List<PokemonInstance> party;
-  late List<List<PokemonInstance>> pcBoxes;
-  int activePcBoxIndex;
-  int pokeBalls;
-  int greatBalls;
-  int ultraBalls;
-  int masterBalls;
-  int potions;
-  int superPotions;
-  int hyperPotions;
-  int revives;
-  int antidotes;
-  int paralyzeHeals;
-  int awakenings;
-  int burnHeals;
-  int iceHeals;
-  int fullHeals;
-  int fullRestores;
-  int money;
   int totalSteps;
   int dailySteps;
   String lastStepDate;
-  int encounterSteps;
-  int badges;
-  Set<int> seenSpeciesIds;
-  Set<int> caughtSpeciesIds;
-  Set<int> shinyCaughtSpeciesIds;
-  Set<int> unlockedGymIds;
-  Set<int> clearedGymIds;
-  Set<int> completedGymStepIds;
-  Map<int, int> gymTodaySteps;
-  Map<String, int> customItems;
-  bool expShareEnabled;
-  bool hasEarnedExpeditionMasterBall;
-  Set<int> caughtExpeditionLegendaryIds;
-  bool victoryRoadCleared;
-  int championClears;
-  List<Map<String, dynamic>> hallOfFameEntries;
   Set<String> redeemedGiftCodes;
-  Set<String> claimedEventGiftIds;
   List<RivalRecord> rivals;
+
+  GameRegion activeRegion;
+  Set<GameRegion> unlockedRegions;
+  late Map<GameRegion, RegionSave> regionSaves;
+
+  // Global Battle Frontier state
+  List<PokemonInstance> frontierParty;
+  late List<List<PokemonInstance>> frontierPcBoxes;
+  int frontierBattlePoints;
+  Map<String, int> frontierCustomItems;
+  int frontierTowerBestSingles;
+  int frontierTowerBestDoubles;
 
   Trainer({
     required this.name,
     this.accountId,
     TrainerAvatar? avatar,
-    this.gameVersion,
+    GameVersion? gameVersion,
     List<PokemonInstance>? party,
     List<List<PokemonInstance>>? pcBoxes,
-    this.activePcBoxIndex = 0,
-    this.pokeBalls = 20,
-    this.greatBalls = 0,
-    this.ultraBalls = 0,
-    this.masterBalls = 0,
-    this.potions = 10,
-    this.superPotions = 0,
-    this.hyperPotions = 0,
-    this.revives = 5,
-    this.antidotes = 0,
-    this.paralyzeHeals = 0,
-    this.awakenings = 0,
-    this.burnHeals = 0,
-    this.iceHeals = 0,
-    this.fullHeals = 0,
-    this.fullRestores = 0,
-    this.money = 3000,
+    int activePcBoxIndex = 0,
+    int pokeBalls = 20,
+    int greatBalls = 0,
+    int ultraBalls = 0,
+    int masterBalls = 0,
+    int potions = 10,
+    int superPotions = 0,
+    int hyperPotions = 0,
+    int revives = 5,
+    int antidotes = 0,
+    int paralyzeHeals = 0,
+    int awakenings = 0,
+    int burnHeals = 0,
+    int iceHeals = 0,
+    int fullHeals = 0,
+    int fullRestores = 0,
+    int money = 3000,
     this.totalSteps = 0,
     this.dailySteps = 0,
     String? lastStepDate,
-    this.encounterSteps = 0,
-    this.badges = 0,
+    int encounterSteps = 0,
+    int badges = 0,
     Set<int>? seenSpeciesIds,
     Set<int>? caughtSpeciesIds,
     Set<int>? shinyCaughtSpeciesIds,
@@ -101,57 +80,224 @@ class Trainer extends ChangeNotifier {
     Set<int>? completedGymStepIds,
     Map<int, int>? gymTodaySteps,
     Map<String, int>? customItems,
-    this.expShareEnabled = false,
-    this.hasEarnedExpeditionMasterBall = false,
+    bool expShareEnabled = false,
+    bool hasEarnedExpeditionMasterBall = false,
     Set<int>? caughtExpeditionLegendaryIds,
-    this.victoryRoadCleared = false,
-    this.championClears = 0,
+    bool victoryRoadCleared = false,
+    int championClears = 0,
     List<Map<String, dynamic>>? hallOfFameEntries,
     Set<String>? redeemedGiftCodes,
     Set<String>? claimedEventGiftIds,
     List<RivalRecord>? rivals,
+    this.activeRegion = GameRegion.kanto,
+    Set<GameRegion>? unlockedRegions,
+    Map<GameRegion, RegionSave>? regionSaves,
+    List<PokemonInstance>? frontierParty,
+    List<List<PokemonInstance>>? frontierPcBoxes,
+    this.frontierBattlePoints = 0,
+    Map<String, int>? frontierCustomItems,
+    this.frontierTowerBestSingles = 0,
+    this.frontierTowerBestDoubles = 0,
   })  : avatar = avatar ?? TrainerAvatar.presets.first,
-        party = party ?? [],
         lastStepDate = lastStepDate ?? todayDateKey(),
-        seenSpeciesIds = seenSpeciesIds ?? {},
-        caughtSpeciesIds = caughtSpeciesIds ?? {},
-        shinyCaughtSpeciesIds = shinyCaughtSpeciesIds ?? {},
-        unlockedGymIds = unlockedGymIds ?? {1},
-        clearedGymIds = clearedGymIds ?? {},
-        completedGymStepIds = completedGymStepIds ?? {},
-        gymTodaySteps = gymTodaySteps ?? {},
-        customItems = customItems ?? {},
-        caughtExpeditionLegendaryIds = caughtExpeditionLegendaryIds ?? {},
-        hallOfFameEntries = hallOfFameEntries ?? [],
         redeemedGiftCodes = redeemedGiftCodes ?? {},
-        claimedEventGiftIds = claimedEventGiftIds ?? {},
-        rivals = rivals ?? [] {
-    activePcBoxIndex = activePcBoxIndex.clamp(0, numPcBoxes - 1);
-    this.pcBoxes = List.generate(numPcBoxes, (boxIdx) {
-      if (pcBoxes != null && boxIdx < pcBoxes.length) {
+        rivals = rivals ?? [],
+        unlockedRegions = unlockedRegions ?? {GameRegion.kanto},
+        frontierParty = frontierParty ?? [],
+        frontierCustomItems = frontierCustomItems ?? {} {
+    if (regionSaves != null) {
+      this.regionSaves = Map<GameRegion, RegionSave>.from(regionSaves);
+      this.regionSaves.putIfAbsent(
+            activeRegion,
+            () => RegionSave(region: activeRegion),
+          );
+    } else {
+      this.regionSaves = {
+        activeRegion: RegionSave(
+          region: activeRegion,
+          gameVersion: gameVersion,
+          party: party,
+          pcBoxes: pcBoxes,
+          activePcBoxIndex: activePcBoxIndex,
+          pokeBalls: pokeBalls,
+          greatBalls: greatBalls,
+          ultraBalls: ultraBalls,
+          masterBalls: masterBalls,
+          potions: potions,
+          superPotions: superPotions,
+          hyperPotions: hyperPotions,
+          revives: revives,
+          antidotes: antidotes,
+          paralyzeHeals: paralyzeHeals,
+          awakenings: awakenings,
+          burnHeals: burnHeals,
+          iceHeals: iceHeals,
+          fullHeals: fullHeals,
+          fullRestores: fullRestores,
+          money: money,
+          encounterSteps: encounterSteps,
+          badges: badges,
+          seenSpeciesIds: seenSpeciesIds,
+          caughtSpeciesIds: caughtSpeciesIds,
+          shinyCaughtSpeciesIds: shinyCaughtSpeciesIds,
+          unlockedGymIds: unlockedGymIds,
+          clearedGymIds: clearedGymIds,
+          completedGymStepIds: completedGymStepIds,
+          gymTodaySteps: gymTodaySteps,
+          customItems: customItems,
+          expShareEnabled: expShareEnabled,
+          hasEarnedExpeditionMasterBall: hasEarnedExpeditionMasterBall,
+          caughtExpeditionLegendaryIds: caughtExpeditionLegendaryIds,
+          victoryRoadCleared: victoryRoadCleared,
+          championClears: championClears,
+          hallOfFameEntries: hallOfFameEntries,
+          claimedEventGiftIds: claimedEventGiftIds,
+        ),
+      };
+    }
+
+    this.frontierPcBoxes = List.generate(numPcBoxes, (boxIdx) {
+      if (frontierPcBoxes != null && boxIdx < frontierPcBoxes.length) {
         return List<PokemonInstance>.from(
-          pcBoxes[boxIdx].take(maxPokemonPerBox),
+          frontierPcBoxes[boxIdx].take(maxPokemonPerBox),
         );
       }
       return <PokemonInstance>[];
     });
-    for (final mon in this.party) {
-      this.seenSpeciesIds.add(mon.species.id);
-      this.caughtSpeciesIds.add(mon.species.id);
-      if (mon.isShiny) {
-        this.shinyCaughtSpeciesIds.add(mon.species.id);
-      }
-    }
-    for (final box in this.pcBoxes) {
-      for (final mon in box) {
-        this.seenSpeciesIds.add(mon.species.id);
-        this.caughtSpeciesIds.add(mon.species.id);
-        if (mon.isShiny) {
-          this.shinyCaughtSpeciesIds.add(mon.species.id);
-        }
-      }
-    }
   }
+
+  RegionSave get activeSave =>
+      regionSaves.putIfAbsent(activeRegion, () => RegionSave(region: activeRegion));
+
+  RegionSave saveForRegion(GameRegion region) =>
+      regionSaves.putIfAbsent(region, () => RegionSave(region: region));
+
+  bool get hasAnySaveData =>
+      regionSaves.values.any((s) => s.party.isNotEmpty) ||
+      frontierParty.isNotEmpty;
+
+  // ─── ACTIVE REGION DELEGATED ACCESSORS ─────────────────────────────────
+  GameVersion? get gameVersion => activeSave.gameVersion;
+  set gameVersion(GameVersion? v) => activeSave.gameVersion = v;
+
+  List<PokemonInstance> get party => activeSave.party;
+  set party(List<PokemonInstance> v) => activeSave.party = v;
+
+  List<List<PokemonInstance>> get pcBoxes => activeSave.pcBoxes;
+  set pcBoxes(List<List<PokemonInstance>> v) => activeSave.pcBoxes = v;
+
+  int get activePcBoxIndex => activeSave.activePcBoxIndex;
+  set activePcBoxIndex(int v) => activeSave.activePcBoxIndex = v;
+
+  int get pokeBalls => activeSave.pokeBalls;
+  set pokeBalls(int v) => activeSave.pokeBalls = v;
+
+  int get greatBalls => activeSave.greatBalls;
+  set greatBalls(int v) => activeSave.greatBalls = v;
+
+  int get ultraBalls => activeSave.ultraBalls;
+  set ultraBalls(int v) => activeSave.ultraBalls = v;
+
+  int get masterBalls => activeSave.masterBalls;
+  set masterBalls(int v) => activeSave.masterBalls = v;
+
+  int get potions => activeSave.potions;
+  set potions(int v) => activeSave.potions = v;
+
+  int get superPotions => activeSave.superPotions;
+  set superPotions(int v) => activeSave.superPotions = v;
+
+  int get hyperPotions => activeSave.hyperPotions;
+  set hyperPotions(int v) => activeSave.hyperPotions = v;
+
+  int get revives => activeSave.revives;
+  set revives(int v) => activeSave.revives = v;
+
+  int get antidotes => activeSave.antidotes;
+  set antidotes(int v) => activeSave.antidotes = v;
+
+  int get paralyzeHeals => activeSave.paralyzeHeals;
+  set paralyzeHeals(int v) => activeSave.paralyzeHeals = v;
+
+  int get awakenings => activeSave.awakenings;
+  set awakenings(int v) => activeSave.awakenings = v;
+
+  int get burnHeals => activeSave.burnHeals;
+  set burnHeals(int v) => activeSave.burnHeals = v;
+
+  int get iceHeals => activeSave.iceHeals;
+  set iceHeals(int v) => activeSave.iceHeals = v;
+
+  int get fullHeals => activeSave.fullHeals;
+  set fullHeals(int v) => activeSave.fullHeals = v;
+
+  int get fullRestores => activeSave.fullRestores;
+  set fullRestores(int v) => activeSave.fullRestores = v;
+
+  int get money => activeSave.money;
+  set money(int v) => activeSave.money = v;
+
+  int get encounterSteps => activeSave.encounterSteps;
+  set encounterSteps(int v) => activeSave.encounterSteps = v;
+
+  int get badges => activeSave.badges;
+  set badges(int v) => activeSave.badges = v;
+
+  Set<int> get seenSpeciesIds => activeSave.seenSpeciesIds;
+  set seenSpeciesIds(Set<int> v) => activeSave.seenSpeciesIds = v;
+
+  Set<int> get caughtSpeciesIds => activeSave.caughtSpeciesIds;
+  set caughtSpeciesIds(Set<int> v) => activeSave.caughtSpeciesIds = v;
+
+  Set<int> get shinyCaughtSpeciesIds => activeSave.shinyCaughtSpeciesIds;
+  set shinyCaughtSpeciesIds(Set<int> v) => activeSave.shinyCaughtSpeciesIds = v;
+
+  Set<int> get unlockedGymIds => activeSave.unlockedGymIds;
+  set unlockedGymIds(Set<int> v) => activeSave.unlockedGymIds = v;
+
+  Set<int> get clearedGymIds => activeSave.clearedGymIds;
+  set clearedGymIds(Set<int> v) => activeSave.clearedGymIds = v;
+
+  Set<int> get completedGymStepIds => activeSave.completedGymStepIds;
+  set completedGymStepIds(Set<int> v) => activeSave.completedGymStepIds = v;
+
+  Map<int, int> get gymTodaySteps => activeSave.gymTodaySteps;
+  set gymTodaySteps(Map<int, int> v) => activeSave.gymTodaySteps = v;
+
+  Map<String, int> get customItems => activeSave.customItems;
+  set customItems(Map<String, int> v) => activeSave.customItems = v;
+
+  bool get expShareEnabled => activeSave.expShareEnabled;
+  set expShareEnabled(bool v) => activeSave.expShareEnabled = v;
+
+  bool get hasEarnedExpeditionMasterBall =>
+      activeSave.hasEarnedExpeditionMasterBall;
+  set hasEarnedExpeditionMasterBall(bool v) =>
+      activeSave.hasEarnedExpeditionMasterBall = v;
+
+  Set<int> get caughtExpeditionLegendaryIds =>
+      activeSave.caughtExpeditionLegendaryIds;
+  set caughtExpeditionLegendaryIds(Set<int> v) =>
+      activeSave.caughtExpeditionLegendaryIds = v;
+
+  bool get victoryRoadCleared => activeSave.victoryRoadCleared;
+  set victoryRoadCleared(bool v) => activeSave.victoryRoadCleared = v;
+
+  int get championClears => activeSave.championClears;
+  set championClears(int v) => activeSave.championClears = v;
+
+  List<Map<String, dynamic>> get hallOfFameEntries =>
+      activeSave.hallOfFameEntries;
+  set hallOfFameEntries(List<Map<String, dynamic>> v) =>
+      activeSave.hallOfFameEntries = v;
+
+  Set<String> get claimedEventGiftIds => activeSave.claimedEventGiftIds;
+  set claimedEventGiftIds(Set<String> v) => activeSave.claimedEventGiftIds = v;
+
+  List<MysteryEgg> get mysteryEggs => activeSave.mysteryEggs;
+  MysteryEgg? get incubatingEgg => activeSave.incubatingEgg;
+  String? get equippedLabArmorId => activeSave.equippedLabArmorId;
+  int get labHatchMultiplier => equippedLabArmorId != null ? 2 : 1;
 
   static String todayDateKey() {
     final now = DateTime.now();
@@ -165,9 +311,7 @@ class Trainer extends ChangeNotifier {
     return party.firstWhere((p) => !p.isFainted, orElse: () => party.first);
   }
 
-  bool get hasConsciousPokemon {
-    return party.any((p) => !p.isFainted);
-  }
+  bool get hasConsciousPokemon => party.any((p) => !p.isFainted);
 
   int get totalPcPokemon => pcBoxes.fold(0, (sum, box) => sum + box.length);
   int get maxPcCapacity => numPcBoxes * maxPokemonPerBox;
@@ -200,6 +344,7 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ─── POKÉDEX (REGIONAL + NATIONAL) ────────────────────────────────────
   bool isSpeciesCaught(int speciesId) =>
       caughtSpeciesIds.contains(speciesId) ||
       party.any((p) => p.species.id == speciesId) ||
@@ -225,6 +370,82 @@ class Trainer extends ChangeNotifier {
       .union(_pcSpeciesIds)
       .length;
 
+  Set<int> get nationalSeenSpeciesIds {
+    final out = <int>{};
+    for (final save in regionSaves.values) {
+      out.addAll(save.seenSpeciesIds);
+      out.addAll(save.caughtSpeciesIds);
+      for (final m in save.party) {
+        out.add(m.species.id);
+      }
+      for (final b in save.pcBoxes) {
+        for (final m in b) {
+          out.add(m.species.id);
+        }
+      }
+    }
+    for (final m in frontierParty) {
+      out.add(m.species.id);
+    }
+    for (final b in frontierPcBoxes) {
+      for (final m in b) {
+        out.add(m.species.id);
+      }
+    }
+    return out;
+  }
+
+  Set<int> get nationalCaughtSpeciesIds {
+    final out = <int>{};
+    for (final save in regionSaves.values) {
+      out.addAll(save.caughtSpeciesIds);
+      for (final m in save.party) {
+        out.add(m.species.id);
+      }
+      for (final b in save.pcBoxes) {
+        for (final m in b) {
+          out.add(m.species.id);
+        }
+      }
+    }
+    for (final m in frontierParty) {
+      out.add(m.species.id);
+    }
+    for (final b in frontierPcBoxes) {
+      for (final m in b) {
+        out.add(m.species.id);
+      }
+    }
+    return out;
+  }
+
+  Set<int> get nationalShinyCaughtSpeciesIds {
+    final out = <int>{};
+    for (final save in regionSaves.values) {
+      out.addAll(save.shinyCaughtSpeciesIds);
+      for (final m in save.party) {
+        if (m.isShiny) out.add(m.species.id);
+      }
+      for (final b in save.pcBoxes) {
+        for (final m in b) {
+          if (m.isShiny) out.add(m.species.id);
+        }
+      }
+    }
+    for (final m in frontierParty) {
+      if (m.isShiny) out.add(m.species.id);
+    }
+    for (final b in frontierPcBoxes) {
+      for (final m in b) {
+        if (m.isShiny) out.add(m.species.id);
+      }
+    }
+    return out;
+  }
+
+  int get nationalCaughtCount => nationalCaughtSpeciesIds.length;
+  int get nationalSeenCount => nationalSeenSpeciesIds.length;
+
   void markPokemonSeen(int speciesId) {
     final added = seenSpeciesIds.add(speciesId);
     if (added && party.isNotEmpty) {
@@ -241,32 +462,16 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  int? _findAvailablePcBox([int? preferredIndex]) {
-    if (preferredIndex != null) {
-      if (preferredIndex < 0 || preferredIndex >= numPcBoxes) return null;
-      return pcBoxes[preferredIndex].length < maxPokemonPerBox
-          ? preferredIndex
-          : null;
-    }
-    if (pcBoxes[activePcBoxIndex].length < maxPokemonPerBox) {
-      return activePcBoxIndex;
-    }
-    for (int offset = 1; offset < numPcBoxes; offset++) {
-      final idx = (activePcBoxIndex + offset) % numPcBoxes;
-      if (pcBoxes[idx].length < maxPokemonPerBox) return idx;
-    }
-    return null;
-  }
-
-  /// Adds a newly captured Pokémon to the carried party (max 6) or stores it
-  /// into the first available PC Box (16 boxes × 20 slots). Returns `null` if
-  /// added to party, `1..16` if sent to a PC Box, or `-1` if all storage is full.
+  // ─── PARTY & PC STORAGE ────────────────────────────────────────────────
   int? addPokemon(PokemonInstance mon) {
     mon.resetBattleStateAndHeal();
     if (mon.originalTrainerName == null ||
         mon.originalTrainerName!.trim().isEmpty) {
       mon.originalTrainerName = name;
       mon.originalTrainerId = accountId;
+    }
+    if (mon.originRegion.trim().isEmpty) {
+      mon.originRegion = activeRegion.storageKey;
     }
     seenSpeciesIds.add(mon.species.id);
     caughtSpeciesIds.add(mon.species.id);
@@ -278,7 +483,7 @@ class Trainer extends ChangeNotifier {
       notifyListeners();
       return null;
     }
-    final boxIdx = _findAvailablePcBox();
+    final boxIdx = activeSave.findAvailablePcBox();
     if (boxIdx != null) {
       pcBoxes[boxIdx].add(mon);
       activePcBoxIndex = boxIdx;
@@ -289,7 +494,6 @@ class Trainer extends ChangeNotifier {
     return -1;
   }
 
-  /// Assigns a permanent nickname to [mon] if it has not been nicknamed yet.
   bool setPokemonNickname(PokemonInstance mon, String rawName) {
     final bool updated = mon.setPermanentNickname(rawName);
     if (updated) {
@@ -298,8 +502,6 @@ class Trainer extends ChangeNotifier {
     return updated;
   }
 
-  /// Replaces the traded Pokémon at [partyIndex] with [receivedMon], heals it,
-  /// and registers its species (and shiny status if applicable) in Pokédex data.
   bool completeTradeSwap(int partyIndex, PokemonInstance receivedMon) {
     if (partyIndex < 0 || partyIndex >= party.length) return false;
     receivedMon.resetBattleStateAndHeal();
@@ -317,7 +519,7 @@ class Trainer extends ChangeNotifier {
     if (party.length <= 1 || partyIndex < 0 || partyIndex >= party.length) {
       return false;
     }
-    final boxIdx = _findAvailablePcBox(targetBoxIndex);
+    final boxIdx = activeSave.findAvailablePcBox(targetBoxIndex);
     if (boxIdx == null) return false;
     final mon = party.removeAt(partyIndex);
     mon.resetBattleStateAndHeal();
@@ -512,6 +714,7 @@ class Trainer extends ChangeNotifier {
     return true;
   }
 
+  // ─── GYMS, BADGES & REGION TRAVEL ──────────────────────────────────────
   static int getGymStepRequirement(int gymId) {
     switch (gymId) {
       case 1:
@@ -623,19 +826,15 @@ class Trainer extends ChangeNotifier {
     final currentBadges = clearedGymIds.length;
     if (currentBadges >= requiredBadges) return 0.0;
     final missingBadges = (requiredBadges - currentBadges).clamp(1, 8);
-    // Scales smoothly from 0.35 (missing 1 badge) to 0.60 (missing 8 badges)
     return 0.35 + (missingBadges - 1) * ((0.60 - 0.35) / 7.0);
   }
 
   bool get hasEarthBadge => clearedGymIds.contains(8);
-
   bool get hasExpShare => hasEarthBadge;
-
   bool get isExpShareActive => hasExpShare && expShareEnabled;
-
   bool get isVictoryRoadUnlocked => clearedGymIds.length >= 8;
-
   bool get isChampion => championClears > 0;
+  bool isRegionUnlocked(GameRegion region) => unlockedRegions.contains(region);
 
   void markVictoryRoadCleared() {
     if (victoryRoadCleared) return;
@@ -648,6 +847,7 @@ class Trainer extends ChangeNotifier {
     championClears += 1;
     hallOfFameEntries.add({
       'runNumber': championClears,
+      'region': activeRegion.storageKey,
       'inductedAt': DateTime.now().toUtc().toIso8601String(),
       'party': party
           .map((mon) => {
@@ -659,29 +859,54 @@ class Trainer extends ChangeNotifier {
               })
           .toList(),
     });
+    final next = activeRegion.nextRegion;
+    if (next != null) {
+      unlockedRegions.add(next);
+    }
+    notifyListeners();
+  }
+
+  bool travelToRegion(GameRegion region) {
+    if (!unlockedRegions.contains(region)) return false;
+    if (activeRegion == region) return true;
+    activeRegion = region;
+    regionSaves.putIfAbsent(region, () => RegionSave(region: region));
+    notifyListeners();
+    return true;
+  }
+
+  void startNewRegionAdventure({
+    required GameRegion region,
+    required GameVersion version,
+    required PokemonInstance starter,
+  }) {
+    unlockedRegions.add(region);
+    final save = saveForRegion(region);
+    save.gameVersion = version;
+    if (save.party.isEmpty) {
+      starter.originRegion = region.storageKey;
+      starter.originalTrainerName = name;
+      starter.originalTrainerId = accountId;
+      save.party.add(starter);
+      save.syncDexFromStorage();
+    }
+    activeRegion = region;
     notifyListeners();
   }
 
   double get atkBadgeMultiplier =>
       (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
   double get spaBadgeMultiplier =>
       (clearedGymIds.contains(2) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
   double get speBadgeMultiplier =>
       (clearedGymIds.contains(3) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
   double get spdBadgeMultiplier =>
       (clearedGymIds.contains(4) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
   double get defBadgeMultiplier =>
       (clearedGymIds.contains(5) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
   double get hpBadgeMultiplier =>
       (clearedGymIds.contains(6) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-
-  double get critBadgeBonus =>
-      (clearedGymIds.contains(7) ? 0.10 : 0.0);
+  double get critBadgeBonus => (clearedGymIds.contains(7) ? 0.10 : 0.0);
 
   void setLeadPokemon(int index) {
     if (index <= 0 || index >= party.length) return;
@@ -715,12 +940,12 @@ class Trainer extends ChangeNotifier {
     return true;
   }
 
+  // ─── STEPS, FRIENDSHIP & EGG INCUBATION ───────────────────────────────
   int get todaySteps {
     _syncDailyRollover();
     return dailySteps;
   }
 
-  /// Proportional encounter chance: 0.0 (0%) at 0 steps, 0.25 (25%) at 100, 0.50 (50%) at 200, 1.0 (100%) at 400.
   double get encounterChance =>
       (encounterSteps / maxEncounterSteps).clamp(0.0, 1.0);
 
@@ -728,7 +953,9 @@ class Trainer extends ChangeNotifier {
     final today = todayDateKey();
     if (lastStepDate != today) {
       dailySteps = 0;
-      gymTodaySteps.clear();
+      for (final save in regionSaves.values) {
+        save.gymTodaySteps.clear();
+      }
       lastStepDate = today;
     }
   }
@@ -746,9 +973,20 @@ class Trainer extends ChangeNotifier {
     }
   }
 
-  /// Increments today's & lifetime step counters by [delta], updates Gym step
-  /// progression, and rolls the 0..400 wild encounter check when [allowEncounter]
-  /// is true.
+  void _advancePartyFriendshipFromSteps(int delta) {
+    if (delta <= 0 || party.isEmpty) return;
+    activeSave.friendshipStepCarry += delta;
+    final int gained = activeSave.friendshipStepCarry ~/ 150;
+    if (gained > 0) {
+      activeSave.friendshipStepCarry %= 150;
+      for (final mon in party) {
+        if (!mon.isFainted) {
+          mon.addFriendship(gained);
+        }
+      }
+    }
+  }
+
   bool recordStepsAndCheckEncounter(
     int delta, {
     bool allowEncounter = true,
@@ -758,6 +996,10 @@ class Trainer extends ChangeNotifier {
     _accumulateGymSteps(delta);
     dailySteps += delta;
     totalSteps += delta;
+    _advancePartyFriendshipFromSteps(delta);
+    if (activeSave.incubatingEgg != null) {
+      activeSave.incubatingEgg!.advance(delta * labHatchMultiplier);
+    }
     bool triggered = false;
     if (allowEncounter) {
       for (int i = 0; i < delta; i++) {
@@ -772,6 +1014,146 @@ class Trainer extends ChangeNotifier {
     }
     notifyListeners();
     return triggered;
+  }
+
+  void recordBattleCompleted({
+    required bool isTrainerBattle,
+    required bool won,
+  }) {
+    final int eggGain = (isTrainerBattle ? 450 : 250) * labHatchMultiplier;
+    bool changed = false;
+    if (activeSave.incubatingEgg != null &&
+        activeSave.incubatingEgg!.advance(eggGain)) {
+      changed = true;
+    }
+    final int friendshipGain = won ? 3 : 1;
+    for (final mon in party) {
+      if (!mon.isFainted) {
+        mon.addFriendship(friendshipGain);
+        changed = true;
+      }
+    }
+    if (changed) {
+      notifyListeners();
+    }
+  }
+
+  void addMysteryEgg(MysteryEgg egg) {
+    activeSave.mysteryEggs.add(egg);
+    if (activeSave.incubatingEgg == null && activeSave.mysteryEggs.isNotEmpty) {
+      activeSave.incubatingEgg = activeSave.mysteryEggs.removeAt(0);
+    }
+    notifyListeners();
+  }
+
+  bool startIncubatingEgg(int eggIndex) {
+    if (activeSave.incubatingEgg != null) return false;
+    if (eggIndex < 0 || eggIndex >= activeSave.mysteryEggs.length) {
+      return false;
+    }
+    activeSave.incubatingEgg = activeSave.mysteryEggs.removeAt(eggIndex);
+    notifyListeners();
+    return true;
+  }
+
+  bool equipLabArmor(String? armorId) {
+    if (armorId == null) {
+      if (activeSave.equippedLabArmorId == null) return false;
+      activeSave.equippedLabArmorId = null;
+      notifyListeners();
+      return true;
+    }
+    if (armorId != 'flame_armor' && armorId != 'magma_armor') return false;
+    if (getItemCount(armorId) <= 0) return false;
+    activeSave.equippedLabArmorId = armorId;
+    notifyListeners();
+    return true;
+  }
+
+  ({PokemonInstance pokemon, int? pcBoxNumber})? hatchIncubatingEgg() {
+    final egg = activeSave.incubatingEgg;
+    if (egg == null || !egg.isReadyToHatch) return null;
+    if (isStorageFull) return null;
+    final spec = PokedexDatabase.species[egg.speciesId];
+    if (spec == null) return null;
+
+    final hatchedMon = PokedexDatabase.createPokemon(
+      egg.speciesId,
+      level: 5,
+      isShiny: PokedexDatabase.rollShiny(spec),
+      hiddenAbilityChance: 0.05,
+      guaranteedPerfectIvs: 2,
+      friendship: 120,
+      originRegion: egg.originRegion,
+    );
+    activeSave.incubatingEgg = null;
+    final boxNum = addPokemon(hatchedMon);
+    return (pokemon: hatchedMon, pcBoxNumber: boxNum);
+  }
+
+  // ─── BATTLE FRONTIER ORIGIN-LOCKED TRANSFERS ──────────────────────────
+  bool get isBattleFrontierUnlocked =>
+      regionSaves[GameRegion.kanto]?.isChampion ?? false;
+
+  bool canTransferRegionToFrontier(GameRegion region) =>
+      isBattleFrontierUnlocked && unlockedRegions.contains(region);
+
+  int? _findAvailableFrontierPcBox([int? preferredIndex]) {
+    if (preferredIndex != null) {
+      if (preferredIndex < 0 || preferredIndex >= numPcBoxes) return null;
+      return frontierPcBoxes[preferredIndex].length < maxPokemonPerBox
+          ? preferredIndex
+          : null;
+    }
+    for (int i = 0; i < numPcBoxes; i++) {
+      if (frontierPcBoxes[i].length < maxPokemonPerBox) return i;
+    }
+    return null;
+  }
+
+  bool transferPcPokemonToFrontier(
+    GameRegion fromRegion,
+    int boxIndex,
+    int slotIndex,
+  ) {
+    if (!canTransferRegionToFrontier(fromRegion)) return false;
+    final srcSave = regionSaves[fromRegion];
+    if (srcSave == null || boxIndex < 0 || boxIndex >= numPcBoxes) {
+      return false;
+    }
+    final srcBox = srcSave.pcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= srcBox.length) return false;
+    final destBoxIdx = _findAvailableFrontierPcBox();
+    if (destBoxIdx == null) return false;
+
+    final mon = srcBox.removeAt(slotIndex);
+    mon.resetBattleStateAndHeal();
+    if (mon.originRegion.trim().isEmpty) {
+      mon.originRegion = fromRegion.storageKey;
+    }
+    frontierPcBoxes[destBoxIdx].add(mon);
+    notifyListeners();
+    return true;
+  }
+
+  bool returnFrontierPokemonToOrigin(int frontierBoxIndex, int frontierSlotIndex) {
+    if (frontierBoxIndex < 0 || frontierBoxIndex >= numPcBoxes) return false;
+    final srcBox = frontierPcBoxes[frontierBoxIndex];
+    if (frontierSlotIndex < 0 || frontierSlotIndex >= srcBox.length) {
+      return false;
+    }
+    final mon = srcBox[frontierSlotIndex];
+    final originRegion = GameRegionExtension.fromStorageKey(mon.originRegion);
+    final destSave = saveForRegion(originRegion);
+    final destBoxIdx = destSave.findAvailablePcBox();
+    if (destBoxIdx == null) return false;
+
+    srcBox.removeAt(frontierSlotIndex);
+    mon.resetBattleStateAndHeal();
+    destSave.pcBoxes[destBoxIdx].add(mon);
+    destSave.syncDexFromStorage();
+    notifyListeners();
+    return true;
   }
 
   bool toggleExpShare([bool? value]) {
@@ -828,7 +1210,6 @@ class Trainer extends ChangeNotifier {
   }
 
   bool hasTm(String tmId) => getItemCount(tmId) > 0;
-
   bool hasAdventureMap(String mapId) => getItemCount(mapId) > 0;
 
   int getItemCount(String itemId) {
@@ -917,8 +1298,8 @@ class Trainer extends ChangeNotifier {
         break;
       default:
         final itemDef = ItemDatabase.byId(itemId);
-        final bool isUniqueUnlock =
-            itemDef != null && (itemDef.isTm || itemDef.isAdventureMap);
+        final bool isUniqueUnlock = itemDef != null &&
+            (itemDef.isTm || itemDef.isAdventureMap || itemDef.isLabGear);
         final current = customItems[itemId] ?? 0;
         if (isUniqueUnlock) {
           if (current >= 1 && delta > 0) return;
@@ -970,9 +1351,8 @@ class Trainer extends ChangeNotifier {
     final cleanSprite =
         peerSpriteId.trim().isEmpty ? 'male_red' : peerSpriteId.trim();
 
-    int existingIdx = rivals.indexWhere((r) =>
-        cleanId.isNotEmpty &&
-        r.id == cleanId);
+    int existingIdx =
+        rivals.indexWhere((r) => cleanId.isNotEmpty && r.id == cleanId);
     if (existingIdx < 0) {
       existingIdx = rivals.indexWhere(
           (r) => r.name.toLowerCase() == cleanName.toLowerCase());
@@ -1028,51 +1408,27 @@ class Trainer extends ChangeNotifier {
       'name': name,
       'accountId': accountId,
       'avatarId': avatar.id,
-      'gameVersion': gameVersion?.storageKey,
-      'pokeBalls': pokeBalls,
-      'greatBalls': greatBalls,
-      'ultraBalls': ultraBalls,
-      'masterBalls': masterBalls,
-      'potions': potions,
-      'superPotions': superPotions,
-      'hyperPotions': hyperPotions,
-      'revives': revives,
-      'antidotes': antidotes,
-      'paralyzeHeals': paralyzeHeals,
-      'awakenings': awakenings,
-      'burnHeals': burnHeals,
-      'iceHeals': iceHeals,
-      'fullHeals': fullHeals,
-      'fullRestores': fullRestores,
-      'money': money,
       'totalSteps': totalSteps,
       'dailySteps': dailySteps,
       'lastStepDate': lastStepDate,
-      'encounterSteps': encounterSteps,
-      'badges': badges,
-      'seenSpeciesIds': seenSpeciesIds.toList()..sort(),
-      'caughtSpeciesIds': caughtSpeciesIds.toList()..sort(),
-      'shinyCaughtSpeciesIds': shinyCaughtSpeciesIds.toList()..sort(),
-      'unlockedGymIds': unlockedGymIds.toList()..sort(),
-      'clearedGymIds': clearedGymIds.toList()..sort(),
-      'completedGymStepIds': completedGymStepIds.toList()..sort(),
-      'gymTodaySteps': gymTodaySteps.map((k, v) => MapEntry(k.toString(), v)),
-      'customItems': customItems,
-      'expShareEnabled': expShareEnabled,
-      'hasEarnedExpeditionMasterBall': hasEarnedExpeditionMasterBall,
-      'caughtExpeditionLegendaryIds':
-          caughtExpeditionLegendaryIds.toList()..sort(),
-      'victoryRoadCleared': victoryRoadCleared,
-      'championClears': championClears,
-      'hallOfFameEntries': hallOfFameEntries,
       'redeemedGiftCodes': redeemedGiftCodes.toList()..sort(),
-      'claimedEventGiftIds': claimedEventGiftIds.toList()..sort(),
       'rivals': rivals.map((r) => r.toJson()).toList(),
-      'party': party.map((mon) => mon.toJson()).toList(),
-      'activePcBoxIndex': activePcBoxIndex,
-      'pcBoxes': pcBoxes
-          .map((box) => box.map((mon) => mon.toJson()).toList())
-          .toList(),
+      'activeRegion': activeRegion.storageKey,
+      'unlockedRegions': unlockedRegions.map((r) => r.storageKey).toList(),
+      'regions': {
+        for (final entry in regionSaves.entries)
+          entry.key.storageKey: entry.value.toJson(),
+      },
+      'frontier': {
+        'battlePoints': frontierBattlePoints,
+        'towerBestSingles': frontierTowerBestSingles,
+        'towerBestDoubles': frontierTowerBestDoubles,
+        'customItems': frontierCustomItems,
+        'party': frontierParty.map((m) => m.toJson()).toList(),
+        'pcBoxes': frontierPcBoxes
+            .map((box) => box.map((m) => m.toJson()).toList())
+            .toList(),
+      },
     };
   }
 
@@ -1086,99 +1442,14 @@ class Trainer extends ChangeNotifier {
       (a) => a.id == avatarId,
       orElse: () => TrainerAvatar.presets.first,
     );
-    gameVersion = GameVersionExtension.fromStorageKey(
-      json['gameVersion'] as String?,
-    );
-    pokeBalls = ((json['pokeBalls'] as num?)?.toInt() ?? 20).clamp(0, 99);
-    greatBalls = ((json['greatBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    ultraBalls = ((json['ultraBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    masterBalls = ((json['masterBalls'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    potions = ((json['potions'] as num?)?.toInt() ?? 10).clamp(0, 99);
-    superPotions = ((json['superPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    hyperPotions = ((json['hyperPotions'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    revives = ((json['revives'] as num?)?.toInt() ?? 5).clamp(0, 99);
-    antidotes = ((json['antidotes'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    paralyzeHeals = ((json['paralyzeHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    awakenings = ((json['awakenings'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    burnHeals = ((json['burnHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    iceHeals = ((json['iceHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    fullHeals = ((json['fullHeals'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    fullRestores = ((json['fullRestores'] as num?)?.toInt() ?? 0).clamp(0, 99);
-    money = (json['money'] as num?)?.toInt() ?? 3000;
     totalSteps = max(0, (json['totalSteps'] as num?)?.toInt() ?? 0);
     dailySteps = max(0, (json['dailySteps'] as num?)?.toInt() ?? 0);
     lastStepDate = (json['lastStepDate'] as String?) ?? todayDateKey();
-    encounterSteps = ((json['encounterSteps'] as num?)?.toInt() ?? 0)
-        .clamp(0, maxEncounterSteps);
-    _syncDailyRollover();
-    badges = max(0, (json['badges'] as num?)?.toInt() ?? 0);
 
-    unlockedGymIds = (json['unlockedGymIds'] as List<dynamic>? ?? [1])
-        .whereType<num>()
-        .map((n) => n.toInt())
-        .toSet();
-    if (unlockedGymIds.isEmpty) unlockedGymIds.add(1);
-
-    clearedGymIds = (json['clearedGymIds'] as List<dynamic>? ?? const [])
-        .whereType<num>()
-        .map((n) => n.toInt())
-        .toSet();
-    badges = clearedGymIds.length;
-
-    completedGymStepIds =
-        (json['completedGymStepIds'] as List<dynamic>? ?? const [])
-            .whereType<num>()
-            .map((n) => n.toInt())
-            .toSet();
-
-    gymTodaySteps = {};
-    final rawGymSteps = json['gymTodaySteps'] as Map<String, dynamic>? ?? {};
-    rawGymSteps.forEach((k, v) {
-      final gid = int.tryParse(k);
-      if (gid != null && v is num) {
-        gymTodaySteps[gid] = v.toInt();
-      }
-    });
-
-    customItems = {};
-    final rawCustom = json['customItems'] as Map<String, dynamic>? ?? {};
-    rawCustom.forEach((k, v) {
-      if (v is num && v.toInt() > 0) {
-        final itemDef = ItemDatabase.byId(k);
-        final bool isUniqueUnlock =
-            itemDef != null && (itemDef.isTm || itemDef.isAdventureMap);
-        customItems[k] = isUniqueUnlock ? 1 : v.toInt().clamp(0, 99);
-      }
-    });
-    expShareEnabled = hasExpShare && (json['expShareEnabled'] == true);
-    hasEarnedExpeditionMasterBall =
-        json['hasEarnedExpeditionMasterBall'] == true;
-    caughtExpeditionLegendaryIds =
-        (json['caughtExpeditionLegendaryIds'] as List<dynamic>? ?? const [])
-            .whereType<num>()
-            .map((n) => n.toInt())
-            .toSet();
-    victoryRoadCleared = json['victoryRoadCleared'] == true;
-    championClears = max(0, (json['championClears'] as num?)?.toInt() ?? 0);
-    final rawHof = json['hallOfFameEntries'] as List<dynamic>? ?? const [];
-    hallOfFameEntries = [
-      for (final item in rawHof)
-        if (item is Map) Map<String, dynamic>.from(item),
-    ];
-    if (hallOfFameEntries.isNotEmpty && championClears < hallOfFameEntries.length) {
-      championClears = hallOfFameEntries.length;
-    }
-    if (championClears > 0) {
-      victoryRoadCleared = true;
-    }
     redeemedGiftCodes =
         (json['redeemedGiftCodes'] as List<dynamic>? ?? const [])
             .whereType<String>()
             .map((s) => s.toUpperCase())
-            .toSet();
-    claimedEventGiftIds =
-        (json['claimedEventGiftIds'] as List<dynamic>? ?? const [])
-            .whereType<String>()
             .toSet();
 
     final rawRivals = json['rivals'] as List<dynamic>? ?? const [];
@@ -1191,76 +1462,106 @@ class Trainer extends ChangeNotifier {
     loadedRivals.sort((a, b) => b.lastBattledAt.compareTo(a.lastBattledAt));
     rivals = loadedRivals;
 
-    final rawParty = json['party'] as List<dynamic>? ?? const [];
-    final loadedParty = <PokemonInstance>[];
-    for (final item in rawParty) {
-      if (item is Map) {
-        loadedParty.add(
-          PokemonInstance.fromJson(Map<String, dynamic>.from(item)),
-        );
-      }
-      if (loadedParty.length >= 6) break;
-    }
-    party = loadedParty;
-
-    seenSpeciesIds = (json['seenSpeciesIds'] as List<dynamic>? ?? const [])
-        .whereType<num>()
-        .map((n) => n.toInt())
-        .toSet();
-    caughtSpeciesIds = (json['caughtSpeciesIds'] as List<dynamic>? ?? const [])
-        .whereType<num>()
-        .map((n) => n.toInt())
-        .toSet();
-    shinyCaughtSpeciesIds =
-        (json['shinyCaughtSpeciesIds'] as List<dynamic>? ?? const [])
-            .whereType<num>()
-            .map((n) => n.toInt())
-            .toSet();
-    for (final mon in party) {
-      if (mon.originalTrainerName == null ||
-          mon.originalTrainerName!.trim().isEmpty) {
-        mon.originalTrainerName = name;
-        mon.originalTrainerId = accountId;
-      }
-      seenSpeciesIds.add(mon.species.id);
-      caughtSpeciesIds.add(mon.species.id);
-      if (mon.isShiny) {
-        shinyCaughtSpeciesIds.add(mon.species.id);
-      }
-    }
-
-    activePcBoxIndex = ((json['activePcBoxIndex'] as num?)?.toInt() ?? 0)
-        .clamp(0, numPcBoxes - 1);
-    final rawBoxes = json['pcBoxes'] as List<dynamic>? ?? const [];
-    pcBoxes = List.generate(numPcBoxes, (boxIdx) {
-      if (boxIdx >= rawBoxes.length || rawBoxes[boxIdx] is! List) {
-        return <PokemonInstance>[];
-      }
-      final rawBox = rawBoxes[boxIdx] as List<dynamic>;
-      final loadedBox = <PokemonInstance>[];
-      for (final item in rawBox) {
-        if (item is Map) {
-          final mon = PokemonInstance.fromJson(Map<String, dynamic>.from(item));
-          if (mon.originalTrainerName == null ||
-              mon.originalTrainerName!.trim().isEmpty) {
-            mon.originalTrainerName = name;
-            mon.originalTrainerId = accountId;
-          }
-          loadedBox.add(mon);
-          seenSpeciesIds.add(mon.species.id);
-          caughtSpeciesIds.add(mon.species.id);
-          if (mon.isShiny) {
-            shinyCaughtSpeciesIds.add(mon.species.id);
-          }
+    final rawRegions = json['regions'];
+    if (rawRegions is Map) {
+      regionSaves = {};
+      rawRegions.forEach((key, val) {
+        if (val is Map) {
+          final reg = GameRegionExtension.fromStorageKey(key.toString());
+          regionSaves[reg] = RegionSave.fromJson(
+            reg,
+            Map<String, dynamic>.from(val),
+            defaultOtName: name,
+            defaultOtId: accountId,
+          );
         }
-        if (loadedBox.length >= maxPokemonPerBox) break;
+      });
+      if (regionSaves.isEmpty) {
+        regionSaves[GameRegion.kanto] = RegionSave(region: GameRegion.kanto);
       }
-      return loadedBox;
-    });
+      activeRegion =
+          GameRegionExtension.fromStorageKey(json['activeRegion'] as String?);
+      if (!regionSaves.containsKey(activeRegion)) {
+        regionSaves[activeRegion] = RegionSave(region: activeRegion);
+      }
+      unlockedRegions = {GameRegion.kanto};
+      for (final r in (json['unlockedRegions'] as List<dynamic>? ?? const [])) {
+        if (r is String) {
+          unlockedRegions.add(GameRegionExtension.fromStorageKey(r));
+        }
+      }
+      unlockedRegions.addAll(regionSaves.keys);
+      if (regionSaves[GameRegion.kanto]?.isChampion == true) {
+        unlockedRegions.add(GameRegion.johto);
+      }
+    } else {
+      // Schema v1 -> Schema v2 seamless Kanto migration
+      final kantoSave = RegionSave.fromJson(
+        GameRegion.kanto,
+        json,
+        defaultOtName: name,
+        defaultOtId: accountId,
+      );
+      regionSaves = {GameRegion.kanto: kantoSave};
+      activeRegion = GameRegion.kanto;
+      unlockedRegions = {
+        GameRegion.kanto,
+        if (kantoSave.isChampion) GameRegion.johto,
+      };
+    }
+
+    final rawFrontier = json['frontier'];
+    if (rawFrontier is Map) {
+      final fMap = Map<String, dynamic>.from(rawFrontier);
+      frontierBattlePoints =
+          max(0, (fMap['battlePoints'] as num?)?.toInt() ?? 0);
+      frontierTowerBestSingles =
+          max(0, (fMap['towerBestSingles'] as num?)?.toInt() ?? 0);
+      frontierTowerBestDoubles =
+          max(0, (fMap['towerBestDoubles'] as num?)?.toInt() ?? 0);
+      frontierCustomItems = {};
+      final rawFItems = fMap['customItems'] as Map<String, dynamic>? ?? {};
+      rawFItems.forEach((k, v) {
+        if (v is num && v.toInt() > 0) {
+          frontierCustomItems[k] = v.toInt().clamp(0, 99);
+        }
+      });
+      frontierParty = [];
+      for (final item in (fMap['party'] as List<dynamic>? ?? const [])) {
+        if (item is Map) {
+          frontierParty
+              .add(PokemonInstance.fromJson(Map<String, dynamic>.from(item)));
+        }
+        if (frontierParty.length >= 6) break;
+      }
+      final rawFBoxes = fMap['pcBoxes'] as List<dynamic>? ?? const [];
+      frontierPcBoxes = List.generate(numPcBoxes, (boxIdx) {
+        if (boxIdx >= rawFBoxes.length || rawFBoxes[boxIdx] is! List) {
+          return <PokemonInstance>[];
+        }
+        final box = <PokemonInstance>[];
+        for (final item in (rawFBoxes[boxIdx] as List<dynamic>)) {
+          if (item is Map) {
+            box.add(PokemonInstance.fromJson(Map<String, dynamic>.from(item)));
+          }
+          if (box.length >= maxPokemonPerBox) break;
+        }
+        return box;
+      });
+    } else {
+      frontierBattlePoints = 0;
+      frontierTowerBestSingles = 0;
+      frontierTowerBestDoubles = 0;
+      frontierCustomItems = {};
+      frontierParty = [];
+      frontierPcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
+    }
+
+    _syncDailyRollover();
   }
 
   Future<void> saveProgress() async {
-    if (party.isEmpty) return;
+    if (!hasAnySaveData) return;
     try {
       final prefs = await SharedPreferences.getInstance();
       final encoded = jsonEncode(toJson());
@@ -1272,7 +1573,7 @@ class Trainer extends ChangeNotifier {
   @override
   void notifyListeners() {
     super.notifyListeners();
-    if (!_suppressAutoSave && party.isNotEmpty) {
+    if (!_suppressAutoSave && hasAnySaveData) {
       saveProgress();
     }
   }
@@ -1286,7 +1587,7 @@ class Trainer extends ChangeNotifier {
         if (decoded is Map) {
           final trainer = Trainer(name: 'Red');
           trainer.applyFromJson(Map<String, dynamic>.from(decoded));
-          if (trainer.party.isNotEmpty) {
+          if (trainer.hasAnySaveData) {
             return trainer;
           }
         }
@@ -1308,48 +1609,20 @@ class Trainer extends ChangeNotifier {
     name = 'Red';
     accountId = null;
     avatar = TrainerAvatar.presets.first;
-    gameVersion = null;
-    party = [];
-    pcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
-    activePcBoxIndex = 0;
-    pokeBalls = 20;
-    greatBalls = 0;
-    ultraBalls = 0;
-    masterBalls = 0;
-    potions = 10;
-    superPotions = 0;
-    hyperPotions = 0;
-    revives = 5;
-    antidotes = 0;
-    paralyzeHeals = 0;
-    awakenings = 0;
-    burnHeals = 0;
-    iceHeals = 0;
-    fullHeals = 0;
-    fullRestores = 0;
-    money = 3000;
     totalSteps = 0;
     dailySteps = 0;
     lastStepDate = todayDateKey();
-    encounterSteps = 0;
-    badges = 0;
-    seenSpeciesIds = {};
-    caughtSpeciesIds = {};
-    shinyCaughtSpeciesIds = {};
-    unlockedGymIds = {1};
-    clearedGymIds = {};
-    completedGymStepIds = {};
-    gymTodaySteps = {};
-    customItems = {};
-    expShareEnabled = false;
-    hasEarnedExpeditionMasterBall = false;
-    caughtExpeditionLegendaryIds = {};
-    victoryRoadCleared = false;
-    championClears = 0;
-    hallOfFameEntries = [];
     redeemedGiftCodes = {};
-    claimedEventGiftIds = {};
     rivals = [];
+    activeRegion = GameRegion.kanto;
+    unlockedRegions = {GameRegion.kanto};
+    regionSaves = {GameRegion.kanto: RegionSave(region: GameRegion.kanto)};
+    frontierParty = [];
+    frontierPcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
+    frontierBattlePoints = 0;
+    frontierCustomItems = {};
+    frontierTowerBestSingles = 0;
+    frontierTowerBestDoubles = 0;
     _suppressAutoSave = false;
     super.notifyListeners();
   }

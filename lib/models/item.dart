@@ -13,6 +13,7 @@ enum ItemCategory {
   tm,
   adventureMap,
   tutorItem,
+  labGear,
 }
 
 class Item {
@@ -48,7 +49,8 @@ class Item {
   bool get isTm => category == ItemCategory.tm;
   bool get isAdventureMap => category == ItemCategory.adventureMap;
   bool get isTutorItem => category == ItemCategory.tutorItem;
-  bool get isReusable => isTm || isAdventureMap;
+  bool get isLabGear => category == ItemCategory.labGear;
+  bool get isReusable => isTm || isAdventureMap || isLabGear;
   bool get isBall => category == ItemCategory.pokeball;
   bool get isMedicine => category == ItemCategory.medicine;
 }
@@ -710,6 +712,87 @@ class ItemDatabase {
       rarity: PokemonRarity.rare,
       color: Color(0xFF9FA8DA),
       icon: Icons.nightlight_round,
+    ),
+    'sun_stone': Item(
+      id: 'sun_stone',
+      name: 'Sun Stone',
+      description: 'A peculiar stone that shines like the sun. Evolves certain Pokémon (e.g. Gloom, Sunkern).',
+      category: ItemCategory.evolutionStone,
+      price: 5000,
+      requiredBadges: 8,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFFA000),
+      icon: Icons.wb_sunny_rounded,
+    ),
+
+    // === HELD EVOLUTION ITEMS ===
+    'metal_coat': Item(
+      id: 'metal_coat',
+      name: 'Metal Coat',
+      description: 'Held Item: Boosts Steel-type moves by 20%. Triggers evolution in Onix or Scyther when Link Traded.',
+      category: ItemCategory.heldItem,
+      price: 5000,
+      requiredBadges: 8,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF90A4AE),
+      icon: Icons.shield_rounded,
+    ),
+    'kings_rock': Item(
+      id: 'kings_rock',
+      name: "King's Rock",
+      description: 'Held Item: May cause the foe to flinch. Triggers evolution in Poliwhirl or Slowpoke when Link Traded.',
+      category: ItemCategory.heldItem,
+      price: 5000,
+      requiredBadges: 8,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFFCA28),
+      icon: Icons.workspace_premium_rounded,
+    ),
+    'dragon_scale': Item(
+      id: 'dragon_scale',
+      name: 'Dragon Scale',
+      description: 'Held Item: A thick, lustrous scale. Triggers evolution in Seadra when Link Traded.',
+      category: ItemCategory.heldItem,
+      price: 5000,
+      requiredBadges: 8,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF5C6BC0),
+      icon: Icons.auto_awesome_rounded,
+    ),
+    'up_grade': Item(
+      id: 'up_grade',
+      name: 'Up-Grade',
+      description: 'Held Item: A Silph Co. data device. Triggers evolution in Porygon when Link Traded.',
+      category: ItemCategory.heldItem,
+      price: 5000,
+      requiredBadges: 8,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFF26C6DA),
+      icon: Icons.memory_rounded,
+    ),
+
+    // === LAB INCUBATOR GEAR (Unique Reusable Drops, max 1 each) ===
+    'flame_armor': Item(
+      id: 'flame_armor',
+      name: 'Flame Armor',
+      description: 'Lab Gear (Max 1): Equip in the Pokémon Lab Incubator to double Egg hatching speed from steps and battles.',
+      category: ItemCategory.labGear,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFFF5722),
+      icon: Icons.local_fire_department_rounded,
+    ),
+    'magma_armor': Item(
+      id: 'magma_armor',
+      name: 'Magma Armor',
+      description: 'Lab Gear (Max 1): Equip in the Pokémon Lab Incubator to double Egg hatching speed from steps and battles.',
+      category: ItemCategory.labGear,
+      price: null,
+      requiredBadges: 0,
+      rarity: PokemonRarity.rare,
+      color: Color(0xFFD84315),
+      icon: Icons.volcano_rounded,
     ),
 
     // === FOSSIL RESTORATION ITEMS (Gym Leader Repeat Rare Drops) ===
@@ -1563,6 +1646,10 @@ class ItemDatabase {
         if (speciesId == 33) return 34; // Nidorino -> Nidoking
         if (speciesId == 35) return 36; // Clefairy -> Clefable
         if (speciesId == 39) return 40; // Jigglypuff -> Wigglytuff
+        break;
+      case 'sun_stone':
+        if (speciesId == 44) return 182; // Gloom -> Bellossom
+        if (speciesId == 191) return 192; // Sunkern -> Sunflora
         break;
     }
     return null;

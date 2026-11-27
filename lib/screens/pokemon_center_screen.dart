@@ -113,6 +113,8 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
     final trainer = Provider.of<Trainer>(context);
     final int fossils = trainer.getItemCount('unknown_fossil');
     final int vouchers = trainer.getItemCount('fossil_restoration_voucher');
+    final int eggsCount = trainer.mysteryEggs.length +
+        (trainer.incubatingEgg != null ? 1 : 0);
     final int heartScales = trainer.getItemCount('heart_scale');
     final bool needsHeal = trainer.party.any(
       (mon) =>
@@ -216,7 +218,9 @@ class _PokemonCenterScreenState extends State<PokemonCenterScreen> {
                       Expanded(
                         child: PokePortraitButton(
                           label: "POKÉ LAB",
-                          subtitle: "${fossils + vouchers} Items",
+                          subtitle: trainer.incubatingEgg?.isReadyToHatch == true
+                              ? "Egg Ready!"
+                              : "${fossils + vouchers + eggsCount} Items",
                           icon: Icons.science_rounded,
                           topColor: PokeColors.pokeGreen,
                           bottomColor: PokeColors.pokeGreenDark,
@@ -767,6 +771,127 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     );
   }
 
+  void _hatchEgg(Trainer trainer) {
+    final egg = trainer.incubatingEgg;
+    if (egg == null || !egg.isReadyToHatch) return;
+    if (trainer.isStorageFull) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Both your Party and all 16 PC Boxes are full (320/320)! Release a Pokémon first.",
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    final result = trainer.hatchIncubatingEgg();
+    if (result == null) return;
+    final hatchedMon = result.pokemon;
+    final boxNum = result.pcBoxNumber;
+    trainer.saveProgress();
+    HapticFeedback.heavyImpact();
+    SoundService.instance.playPokemonCry(hatchedMon.species.id);
+    Future.delayed(const Duration(milliseconds: 350), () {
+      if (mounted) SoundService.instance.playLevelUpSfx();
+    });
+
+    showDialog(
+      context: context,
+      builder: (dlgCtx) => AlertDialog(
+        backgroundColor: PokeColors.creamSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: PokeColors.badgeGoldDark, width: 1.8),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.egg_rounded, color: PokeColors.badgeGoldDark, size: 24),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                "OH? MYSTERY EGG HATCHED!",
+                style: TextStyle(
+                  color: PokeColors.badgeGoldDark,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 14.5,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 90,
+              height: 90,
+              child: PokemonSpriteImage.fromInstance(
+                hatchedMon,
+                width: 90,
+                height: 90,
+                fallbackIconSize: 56,
+                fallbackIconColor: PokeColors.badgeGoldDark,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "A Lv. ${hatchedMon.level} ${hatchedMon.species.name} hatched from the Mystery Egg!",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: PokeColors.inkDark,
+                fontSize: 13.5,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              "Ability: ${hatchedMon.abilityDefinition?.name ?? hatchedMon.abilityId}${hatchedMon.isHiddenAbility ? ' (Hidden Ability!)' : ''}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: hatchedMon.isHiddenAbility
+                    ? PokeColors.badgeGoldDark
+                    : PokeColors.pokeBlueDark,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              boxNum == null
+                  ? "${hatchedMon.species.name} joined your Party!"
+                  : "${hatchedMon.species.name} was transferred to PC Box #$boxNum!",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: PokeColors.pokeGreenDark,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(dlgCtx);
+              setState(() {});
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: PokeColors.badgeGoldDark,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text(
+              "AWESOME!",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
@@ -774,241 +899,260 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
     final int vouchers = trainer.getItemCount('fossil_restoration_voucher');
     final bool canRestore = fossils > 0 && vouchers > 0 && !trainer.isStorageFull;
 
-    return Scaffold(
-      backgroundColor: PokeColors.canvasCream,
-      appBar: buildPokeAppBar(
-        context: context,
-        title: "POKÉMON LAB",
-        barColor: PokeColors.pokeGreen,
-        bottomBorderColor: PokeColors.pokeGreenDark,
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          const PokeBackdrop(
-            assetPath: 'assets/images/bg_pokemon_lab.png',
-            topOpacity: 0.18,
-            midOpacity: 0.44,
-            bottomOpacity: 0.86,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: PokeColors.canvasCream,
+        appBar: AppBar(
+          backgroundColor: PokeColors.pokeGreen,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            "POKÉMON LAB",
+            style: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 17,
+              letterSpacing: 1.0,
+            ),
           ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(44),
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: PokeColors.pokeGreenDark, width: 2),
+                ),
+              ),
+              child: const TabBar(
+                indicatorColor: Colors.white,
+                indicatorWeight: 3,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white70,
+                labelStyle: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.7,
+                ),
+                tabs: [
+                  Tab(text: "FOSSIL LAB"),
+                  Tab(text: "EGG INCUBATOR"),
+                ],
+              ),
+            ),
+          ),
+        ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            const PokeBackdrop(
+              assetPath: 'assets/images/bg_pokemon_lab.png',
+              topOpacity: 0.18,
+              midOpacity: 0.44,
+              bottomOpacity: 0.86,
+            ),
+            SafeArea(
+              top: false,
+              child: TabBarView(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: PokeDecorations.card(
-                      fill: PokeColors.creamSurface,
-                      border: PokeColors.pokeGreen,
-                      radius: 16,
-                      borderWidth: 1.6,
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: PokeColors.pokeGreen.withOpacity(0.14),
-                            borderRadius: BorderRadius.circular(11),
-                            border: Border.all(
-                              color: PokeColors.pokeGreen.withOpacity(0.55),
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.science_rounded,
-                            color: PokeColors.pokeGreenDark,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "FOSSIL RESTORATION CHAMBER",
-                                style: TextStyle(
-                                  color: PokeColors.pokeGreenDark,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 12,
-                                  letterSpacing: 0.7,
-                                ),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                "Combine 1 Unknown Fossil and 1 Fossil Restoration Voucher to revive a random Lv. 10 first-stage Fossil Pokémon!",
-                                style: TextStyle(
-                                  color: PokeColors.inkMuted,
-                                  fontSize: 10.8,
-                                  height: 1.35,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                  _buildFossilTab(trainer, fossils, vouchers, canRestore),
+                  _buildIncubatorTab(trainer),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFossilTab(
+    Trainer trainer,
+    int fossils,
+    int vouchers,
+    bool canRestore,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: PokeDecorations.card(
+              fill: PokeColors.creamSurface,
+              border: PokeColors.pokeGreen,
+              radius: 16,
+              borderWidth: 1.6,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: PokeColors.pokeGreen.withOpacity(0.14),
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(
+                      color: PokeColors.pokeGreen.withOpacity(0.55),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
+                  child: const Icon(
+                    Icons.science_rounded,
+                    color: PokeColors.pokeGreenDark,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: _buildCountCard(
-                          icon: Icons.album_rounded,
-                          color: PokeColors.bagOrangeDark,
-                          title: "Unknown Fossils",
-                          count: fossils,
+                      Text(
+                        "FOSSIL RESTORATION CHAMBER",
+                        style: TextStyle(
+                          color: PokeColors.pokeGreenDark,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 12,
+                          letterSpacing: 0.7,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _buildCountCard(
-                          icon: Icons.confirmation_number_rounded,
-                          color: PokeColors.pokeBlueDark,
-                          title: "Restoration Vouchers",
-                          count: vouchers,
+                      SizedBox(height: 3),
+                      Text(
+                        "Combine 1 Unknown Fossil and 1 Fossil Restoration Voucher to revive a random Lv. 10 first-stage Fossil Pokémon!",
+                        style: TextStyle(
+                          color: PokeColors.inkMuted,
+                          fontSize: 10.8,
+                          height: 1.35,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(14),
-                      decoration: PokeDecorations.card(
-                        fill: PokeColors.creamSurface,
-                        border: PokeColors.frameBorderSoft,
-                        radius: 18,
-                        borderWidth: 1.5,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _buildCountCard(
+                  icon: Icons.album_rounded,
+                  color: PokeColors.bagOrangeDark,
+                  title: "Unknown Fossils",
+                  count: fossils,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: _buildCountCard(
+                  icon: Icons.confirmation_number_rounded,
+                  color: PokeColors.pokeBlueDark,
+                  title: "Restoration Vouchers",
+                  count: vouchers,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: PokeDecorations.card(
+                fill: PokeColors.creamSurface,
+                border: PokeColors.frameBorderSoft,
+                radius: 18,
+                borderWidth: 1.5,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "PREHISTORIC REVIVAL SPECIMENS (LV. 10)",
+                    style: TextStyle(
+                      color: PokeColors.inkDark,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 10.5,
+                      letterSpacing: 0.9,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children:
+                        PokedexDatabase.firstStageFossilSpeciesIds.map((id) {
+                      final spec = PokedexDatabase.species[id]!;
+                      final bool obtained = trainer.isSpeciesCaught(id);
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
-                            "PREHISTORIC REVIVAL SPECIMENS (LV. 10)",
-                            style: TextStyle(
-                              color: PokeColors.inkDark,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 10.5,
-                              letterSpacing: 0.9,
+                          Container(
+                            width: 72,
+                            height: 72,
+                            decoration: PokeDecorations.card(
+                              fill: obtained
+                                  ? PokeColors.cardWhite
+                                  : PokeColors.panelSoft,
+                              border: obtained
+                                  ? PokeColors.pokeGreen
+                                  : PokeColors.frameBorderSoft,
+                              radius: 16,
+                              borderWidth: 1.5,
+                            ),
+                            child: Center(
+                              child: obtained
+                                  ? PokemonSpriteImage.fromSpecies(
+                                      spec,
+                                      width: 54,
+                                      height: 54,
+                                      fallbackIconSize: 30,
+                                      fallbackIconColor: PokeColors.pokeGreen,
+                                    )
+                                  : const Text(
+                                      "?",
+                                      style: TextStyle(
+                                        color: PokeColors.inkMuted,
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
                             ),
                           ),
-                          const SizedBox(height: 14),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: PokedexDatabase.firstStageFossilSpeciesIds
-                                .map((id) {
-                              final spec = PokedexDatabase.species[id]!;
-                              final bool obtained = trainer.isSpeciesCaught(id);
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 72,
-                                    height: 72,
-                                    decoration: PokeDecorations.card(
-                                      fill: obtained
-                                          ? PokeColors.cardWhite
-                                          : PokeColors.panelSoft,
-                                      border: obtained
-                                          ? PokeColors.pokeGreen
-                                          : PokeColors.frameBorderSoft,
-                                      radius: 16,
-                                      borderWidth: 1.5,
-                                    ),
-                                    child: Center(
-                                      child: obtained
-                                          ? PokemonSpriteImage.fromSpecies(
-                                              spec,
-                                              width: 54,
-                                              height: 54,
-                                              fallbackIconSize: 30,
-                                              fallbackIconColor:
-                                                  PokeColors.pokeGreen,
-                                            )
-                                          : const Text(
-                                              "?",
-                                              style: TextStyle(
-                                                color: PokeColors.inkMuted,
-                                                fontSize: 34,
-                                                fontWeight: FontWeight.w900,
-                                              ),
-                                            ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 7),
-                                  Text(
-                                    obtained ? spec.name : "???",
-                                    style: TextStyle(
-                                      color: obtained
-                                          ? PokeColors.inkDark
-                                          : PokeColors.inkMuted,
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 12.5,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Lv. 10",
-                                    style: TextStyle(
-                                      color: obtained
-                                          ? PokeColors.pokeGreenDark
-                                          : PokeColors.inkSubtle,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }).toList(),
+                          const SizedBox(height: 7),
+                          Text(
+                            obtained ? spec.name : "???",
+                            style: TextStyle(
+                              color: obtained
+                                  ? PokeColors.inkDark
+                                  : PokeColors.inkMuted,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 12.5,
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: PokeDecorations.inset(radius: 10),
-                            child: const Text(
-                              "Unknown Fossils and Fossil Restoration Vouchers drop as rare rewards when re-challenging Kanto Gym Leaders.",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: PokeColors.inkMuted,
-                                fontSize: 10.5,
-                                height: 1.35,
-                              ),
+                          Text(
+                            "Lv. 10",
+                            style: TextStyle(
+                              color: obtained
+                                  ? PokeColors.pokeGreenDark
+                                  : PokeColors.inkSubtle,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                         ],
-                      ),
-                    ),
+                      );
+                    }).toList(),
                   ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 50,
-                    child: ElevatedButton.icon(
-                      onPressed: canRestore ? () => _restoreFossil(trainer) : null,
-                      icon: const Icon(Icons.biotech_rounded, size: 20),
-                      label: Text(
-                        canRestore
-                            ? "RESTORE FOSSIL (1 FOSSIL + 1 VOUCHER)"
-                            : (trainer.isStorageFull
-                                ? "STORAGE FULL (320/320)"
-                                : "NEED 1 FOSSIL & 1 VOUCHER"),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 12.5,
-                          letterSpacing: 0.7,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: PokeColors.pokeGreen,
-                        foregroundColor: Colors.white,
-                        disabledBackgroundColor: PokeColors.panelSoft,
-                        disabledForegroundColor: PokeColors.inkSubtle,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
+                    decoration: PokeDecorations.inset(radius: 10),
+                    child: const Text(
+                      "Unknown Fossils and Fossil Restoration Vouchers drop as rare rewards when re-challenging Kanto Gym Leaders.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 10.5,
+                        height: 1.35,
                       ),
                     ),
                   ),
@@ -1016,7 +1160,447 @@ class _PokemonLabScreenState extends State<PokemonLabScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 50,
+            child: ElevatedButton.icon(
+              onPressed: canRestore ? () => _restoreFossil(trainer) : null,
+              icon: const Icon(Icons.biotech_rounded, size: 20),
+              label: Text(
+                canRestore
+                    ? "RESTORE FOSSIL (1 FOSSIL + 1 VOUCHER)"
+                    : (trainer.isStorageFull
+                        ? "STORAGE FULL (320/320)"
+                        : "NEED 1 FOSSIL & 1 VOUCHER"),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 12.5,
+                  letterSpacing: 0.7,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: PokeColors.pokeGreen,
+                foregroundColor: Colors.white,
+                disabledBackgroundColor: PokeColors.panelSoft,
+                disabledForegroundColor: PokeColors.inkSubtle,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildIncubatorTab(Trainer trainer) {
+    final activeEgg = trainer.incubatingEgg;
+    final bool hasFlame = trainer.getItemCount('flame_armor') > 0;
+    final bool hasMagma = trainer.getItemCount('magma_armor') > 0;
+    final String? equippedArmor = trainer.equippedLabArmorId;
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.creamSurface,
+            border: PokeColors.badgeGoldDark,
+            radius: 16,
+            borderWidth: 1.6,
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: PokeColors.badgeGold.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: const Icon(
+                  Icons.egg_rounded,
+                  color: PokeColors.badgeGoldDark,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "MYSTERY EGG INCUBATOR",
+                      style: TextStyle(
+                        color: PokeColors.badgeGoldDark,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                        letterSpacing: 0.7,
+                      ),
+                    ),
+                    SizedBox(height: 3),
+                    Text(
+                      "Mystery Eggs rarely drop from final-stage Baby Pokémon parents. Both walking steps AND wild/trainer battles advance incubation!",
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 10.8,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: activeEgg?.isReadyToHatch == true
+                ? PokeColors.badgeGoldDark
+                : PokeColors.frameBorderSoft,
+            radius: 18,
+            borderWidth: activeEgg?.isReadyToHatch == true ? 2.0 : 1.5,
+          ),
+          child: activeEgg == null
+              ? const Column(
+                  children: [
+                    Icon(Icons.egg_outlined,
+                        size: 46, color: PokeColors.inkSubtle),
+                    SizedBox(height: 8),
+                    Text(
+                      "Incubator Slot Empty (1 / 1)",
+                      style: TextStyle(
+                        color: PokeColors.inkDark,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      "Find a Mystery Egg from Raichu, Clefable, Wigglytuff, Togetic, Hitmonlee, Hitmonchan, Hitmontop, Jynx, Electabuzz, or Magmar.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 11,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          activeEgg.displayName.toUpperCase(),
+                          style: const TextStyle(
+                            color: PokeColors.inkDark,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 13.5,
+                            letterSpacing: 0.6,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: equippedArmor != null
+                                ? PokeColors.pokeRed.withOpacity(0.12)
+                                : PokeColors.panelSoft,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            equippedArmor != null
+                                ? "2× WARMTH SPEED"
+                                : "1× SPEED",
+                            style: TextStyle(
+                              color: equippedArmor != null
+                                  ? PokeColors.pokeRedDark
+                                  : PokeColors.inkMuted,
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 14),
+                    Icon(
+                      Icons.egg_rounded,
+                      size: 56,
+                      color: activeEgg.isReadyToHatch
+                          ? PokeColors.badgeGoldDark
+                          : PokeColors.bagOrange,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      activeEgg.statusHint,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: PokeColors.inkMuted,
+                        fontSize: 11.5,
+                        fontStyle: FontStyle.italic,
+                        height: 1.35,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: LinearProgressIndicator(
+                        value: activeEgg.progressPercent,
+                        minHeight: 10,
+                        backgroundColor: PokeColors.panelSoft,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          activeEgg.isReadyToHatch
+                              ? PokeColors.pokeGreen
+                              : PokeColors.badgeGoldDark,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      "${activeEgg.currentProgress} / ${activeEgg.requiredProgress} Hatch Progress (${(activeEgg.progressPercent * 100).round()}%)",
+                      style: const TextStyle(
+                        color: PokeColors.inkDark,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    if (activeEgg.isReadyToHatch) ...[
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 46,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _hatchEgg(trainer),
+                          icon: const Icon(Icons.auto_awesome_rounded),
+                          label: Text(
+                            trainer.isStorageFull
+                                ? "STORAGE FULL (320/320)"
+                                : "HATCH MYSTERY EGG!",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.7,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: PokeColors.badgeGoldDark,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.frameBorderSoft,
+            radius: 16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "LAB EQUIPMENT (2× HATCH SPEED)",
+                style: TextStyle(
+                  color: PokeColors.inkDark,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.8,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildArmorToggle(
+                      trainer: trainer,
+                      armorId: 'flame_armor',
+                      name: 'Flame Armor',
+                      icon: Icons.local_fire_department_rounded,
+                      owned: hasFlame,
+                      equipped: equippedArmor == 'flame_armor',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildArmorToggle(
+                      trainer: trainer,
+                      armorId: 'magma_armor',
+                      name: 'Magma Armor',
+                      icon: Icons.volcano_rounded,
+                      owned: hasMagma,
+                      equipped: equippedArmor == 'magma_armor',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: PokeDecorations.card(
+            fill: PokeColors.cardWhite,
+            border: PokeColors.frameBorderSoft,
+            radius: 16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "STORED MYSTERY EGGS (${trainer.mysteryEggs.length})",
+                style: const TextStyle(
+                  color: PokeColors.inkDark,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 0.8,
+                ),
+              ),
+              const SizedBox(height: 8),
+              if (trainer.mysteryEggs.isEmpty)
+                const Text(
+                  "No additional Mystery Eggs waiting.",
+                  style: TextStyle(color: PokeColors.inkMuted, fontSize: 11.5),
+                )
+              else
+                ...List.generate(trainer.mysteryEggs.length, (idx) {
+                  final queued = trainer.mysteryEggs[idx];
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 8),
+                    decoration: PokeDecorations.inset(radius: 12),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.egg_rounded,
+                            color: PokeColors.badgeGoldDark, size: 22),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                queued.displayName,
+                                style: const TextStyle(
+                                  color: PokeColors.inkDark,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 12.5,
+                                ),
+                              ),
+                              Text(
+                                "${queued.currentProgress} / ${queued.requiredProgress} progress",
+                                style: const TextStyle(
+                                  color: PokeColors.inkMuted,
+                                  fontSize: 10.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: activeEgg == null
+                              ? () {
+                                  trainer.startIncubatingEgg(idx);
+                                  trainer.saveProgress();
+                                  setState(() {});
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: PokeColors.pokeGreen,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            minimumSize: Size.zero,
+                          ),
+                          child: Text(
+                            activeEgg == null ? "INCUBATE" : "BUSY",
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildArmorToggle({
+    required Trainer trainer,
+    required String armorId,
+    required String name,
+    required IconData icon,
+    required bool owned,
+    required bool equipped,
+  }) {
+    final Color accent =
+        equipped ? PokeColors.pokeRedDark : PokeColors.bagOrangeDark;
+    return InkWell(
+      onTap: !owned
+          ? null
+          : () {
+              trainer.equipLabArmor(equipped ? null : armorId);
+              trainer.saveProgress();
+              setState(() {});
+            },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: PokeDecorations.card(
+          fill: equipped
+              ? PokeColors.pokeRed.withOpacity(0.08)
+              : (owned ? PokeColors.creamSurface : PokeColors.panelSoft),
+          border: equipped
+              ? PokeColors.pokeRedDark
+              : (owned ? accent.withOpacity(0.5) : PokeColors.frameBorderSoft),
+          radius: 12,
+          borderWidth: equipped ? 1.8 : 1.2,
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: owned ? accent : PokeColors.inkSubtle, size: 22),
+            const SizedBox(height: 4),
+            Text(
+              name,
+              style: TextStyle(
+                color: owned ? PokeColors.inkDark : PokeColors.inkSubtle,
+                fontSize: 11.5,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              !owned ? "Not Found" : (equipped ? "EQUIPPED" : "Tap to Equip"),
+              style: TextStyle(
+                color: !owned
+                    ? PokeColors.inkSubtle
+                    : (equipped ? PokeColors.pokeRedDark : PokeColors.inkMuted),
+                fontSize: 9.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

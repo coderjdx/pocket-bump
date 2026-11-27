@@ -90,10 +90,11 @@ class _BagScreenState extends State<BagScreen> {
         ItemCategory.tutorItem,
         ItemCategory.adventureMap,
         ItemCategory.fossil,
+        ItemCategory.labGear,
       ],
       includeExpShare: true,
       emptyHint:
-          'Evolution Stones, Heart Scales, Adventure Maps, and Fossils appear here.',
+          'Evolution Stones, Heart Scales, Adventure Maps, Fossils, and Lab Gear appear here.',
     ),
   ];
 
@@ -639,6 +640,13 @@ class _BagScreenState extends State<BagScreen> {
                     PokeColors.centerRose.withOpacity(0.12),
                     PokeColors.centerRoseDark,
                   ),
+                ] else if (item.isLabGear) ...[
+                  const SizedBox(height: 6),
+                  _hintChip(
+                    'Lab Equipment: equip at Facilities → Pokémon Lab → Egg Incubator',
+                    PokeColors.pokeRed.withOpacity(0.10),
+                    PokeColors.pokeRedDark,
+                  ),
                 ] else if (item.isFossil) ...[
                   const SizedBox(height: 6),
                   _hintChip(
@@ -702,11 +710,11 @@ class _BagScreenState extends State<BagScreen> {
     Trainer trainer,
     Item stoneItem,
   ) {
-    final compatible = trainer.party
-        .where((p) =>
-            ItemDatabase.getStoneEvolutionTarget(stoneItem.id, p.species.id) !=
-            null)
-        .toList();
+    final compatible = trainer.party.where((p) {
+      final targetId =
+          ItemDatabase.getStoneEvolutionTarget(stoneItem.id, p.species.id);
+      return targetId != null && PokedexDatabase.species.containsKey(targetId);
+    }).toList();
 
     if (compatible.isEmpty) {
       ScaffoldMessenger.of(parentContext).showSnackBar(

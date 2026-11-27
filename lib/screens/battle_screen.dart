@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../models/ability.dart';
+import '../models/game_region.dart';
 import '../models/item.dart';
 import '../models/move.dart';
 import '../models/pokemon_instance.dart';
@@ -1569,11 +1570,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   Future<void> _handleEvolution(PokemonInstance participant) async {
-    int nextId = participant.species.evolutionSpeciesId!;
-    if (participant.species.id == 133) {
-      const eeveelutions = [134, 135, 136];
-      nextId = eeveelutions[Random().nextInt(eeveelutions.length)];
-    }
+    final int? nextId = participant.resolveLevelUpEvolutionSpeciesId();
+    if (nextId == null) return;
     final nextSpecies = PokedexDatabase.species[nextId];
     if (nextSpecies == null) return;
 
@@ -1664,6 +1662,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (!_trainer.hasConsciousPokemon) {
       _playerWon = false;
       _recordPvpBattleOutcomeIfNeeded(playerWon: false);
+      _trainer.recordBattleCompleted(
+        isTrainerBattle: !widget.isWild,
+        won: false,
+      );
       setState(() {
         _displayedPlayerHp = 0;
         _visualPlayerFainted = true;
@@ -1778,6 +1780,37 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           await Future.delayed(const Duration(milliseconds: 1200));
           if (!mounted) return;
         }
+        final droppedEgg = ItemDropService.rollMysteryEggDrop(
+          _opponentPokemon.species,
+          originRegion: _trainer.activeRegion.storageKey,
+        );
+        if (droppedEgg != null) {
+          _trainer.addMysteryEgg(droppedEgg);
+          _trainer.saveProgress();
+          setState(() {
+            _currentMessage =
+                "${_opponentPokemon.nickname} dropped a Mystery Egg! Check the Pokémon Lab!";
+          });
+          await Future.delayed(const Duration(milliseconds: 1200));
+          if (!mounted) return;
+        }
+        if (_opponentPokemon.species.rarity == PokemonRarity.rare ||
+            _opponentPokemon.species.rarity == PokemonRarity.special) {
+          final armorDrop = ItemDropService.rollLabArmorDrop(
+            hasFlameArmor: _trainer.getItemCount('flame_armor') > 0,
+            hasMagmaArmor: _trainer.getItemCount('magma_armor') > 0,
+          );
+          if (armorDrop != null) {
+            _trainer.adjustItemCount(armorDrop.itemId, armorDrop.count);
+            _trainer.saveProgress();
+            setState(() {
+              _currentMessage =
+                  "Found rare Lab Gear: ${armorDrop.itemName}!";
+            });
+            await Future.delayed(const Duration(milliseconds: 1200));
+            if (!mounted) return;
+          }
+        }
       } else {
         if (widget.pvpSession == null) {
           final String defeatLine =
@@ -1818,6 +1851,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       SoundService.instance.playVictoryFanfare(isTrainer: !widget.isWild);
       _playerWon = true;
       _recordPvpBattleOutcomeIfNeeded(playerWon: true);
+      _trainer.recordBattleCompleted(
+        isTrainerBattle: !widget.isWild,
+        won: true,
+      );
       if (!mounted) return;
       setState(() {
         _battleEnded = true;
@@ -2101,10 +2138,27 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       final itemDrops = isLegendaryKoThrow
           ? const <ItemDrop>[]
           : ItemDropService.rollDrops(_opponentPokemon.species);
-      if (itemDrops.isNotEmpty) {
-        for (final drop in itemDrops) {
-          _trainer.adjustItemCount(drop.itemId, drop.count);
-        }
+      final droppedEgg = isLegendaryKoThrow
+          ? null
+          : ItemDropService.rollMysteryEggDrop(
+              _opponentPokemon.species,
+              originRegion: _trainer.activeRegion.storageKey,
+            );
+      if (droppedEgg != null) {
+        _trainer.addMysteryEgg(droppedEgg);
+      }
+      final armorDrop = (!isLegendaryKoThrow &&
+              (_opponentPokemon.species.rarity == PokemonRarity.rare ||
+                  _opponentPokemon.species.rarity == PokemonRarity.special))
+          ? ItemDropService.rollLabArmorDrop(
+              hasFlameArmor: _trainer.getItemCount('flame_armor') > 0,
+              hasMagmaArmor: _trainer.getItemCount('magma_armor') > 0,
+            )
+          : null;
+      if (armorDrop != null) {
+        _trainer.adjustItemCount(armorDrop.itemId, armorDrop.count);
+      }
+      if (itemDrops.isNotEmpty || droppedEgg != null || armorDrop != null) {
         _trainer.saveProgress();
       }
       final String boxNote = (sentToBox != null && sentToBox > 0)
@@ -2113,8 +2167,13 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
       final String healNote = ballType == 'heal_ball'
           ? "\n${_opponentPokemon.species.name} was fully healed by Heal Ball!"
           : "";
-      final String dropNote = itemDrops.isNotEmpty
-          ? "\n${_opponentPokemon.species.name} dropped ${ItemDropService.formatDrops(itemDrops)}!"
+      final List<String> extraDropParts = [
+        if (itemDrops.isNotEmpty) ItemDropService.formatDrops(itemDrops),
+        if (droppedEgg != null) '1x Mystery Egg',
+        if (armorDrop != null) '1x ${armorDrop.itemName}',
+      ];
+      final String dropNote = extraDropParts.isNotEmpty
+          ? "\n${_opponentPokemon.species.name} dropped ${extraDropParts.join(', ')}!"
           : "";
       HapticFeedback.heavyImpact();
       SoundService.instance.playBallCatchSfx();
@@ -2159,6 +2218,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           : "";
 
       _playerWon = true;
+      _trainer.recordBattleCompleted(isTrainerBattle: false, won: true);
       setState(() {
         _inLegendaryCapturePhase = false;
         _currentMessage = isLegendaryKoThrow
