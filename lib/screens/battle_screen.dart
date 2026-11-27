@@ -11,6 +11,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../services/battle_arena_layout.dart';
 import '../services/battle_engine.dart';
 import '../services/battle_sprite_metrics.dart';
 import '../services/item_drop_service.dart';
@@ -403,16 +404,6 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
     if (mounted) {
       Navigator.pop(context, won);
     }
-  }
-
-  /// Maps pixel coordinates from the 900x750 battle_bg_route.png into the BoxFit.cover arena
-  Offset _mapBgPoint(double bgX, double bgY, double arenaW, double arenaH) {
-    const double imgW = 900.0;
-    const double imgH = 750.0;
-    final double scale = max(arenaW / imgW, arenaH / imgH);
-    final double xOffset = (arenaW - imgW * scale) / 2.0;
-    final double yOffset = (arenaH - imgH * scale) / 2.0;
-    return Offset(xOffset + bgX * scale, yOffset + bgY * scale);
   }
 
   Future<void> _playShinySparkle({required bool isPlayer}) async {
@@ -3313,8 +3304,12 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                         final double bgScale = max(arenaW / 900.0, arenaH / 750.0);
                         final double viewportFactor = (bgScale / 0.455).clamp(0.76, 1.40);
 
-                        final oppPlatform = _mapBgPoint(693, 406, arenaW, arenaH);
-                        final playerPlatform = _mapBgPoint(284, 606, arenaW, arenaH);
+                        final arenaAnchor = BattleArenaLayout.forAsset(
+                            _resolvedBattleBackgroundAsset);
+                        final oppPlatform =
+                            arenaAnchor.mapOpponent(arenaW, arenaH);
+                        final playerPlatform =
+                            arenaAnchor.mapPlayer(arenaW, arenaH);
 
                         final double oppMaxW = min(
                           arenaW * 0.44,

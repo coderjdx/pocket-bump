@@ -9,6 +9,7 @@ import '../models/pokemon_instance.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
+import '../services/battle_arena_layout.dart';
 import '../services/battle_engine.dart';
 import '../services/battle_sprite_metrics.dart';
 import '../services/double_battle_engine.dart';
@@ -1867,15 +1868,6 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
     Navigator.pop(context, _playerWon);
   }
 
-  Offset _mapBgPoint(double bgX, double bgY, double arenaW, double arenaH) {
-    const double imgW = 900.0;
-    const double imgH = 750.0;
-    final double scale = max(arenaW / imgW, arenaH / imgH);
-    final double xOffset = (arenaW - imgW * scale) / 2.0;
-    final double yOffset = (arenaH - imgH * scale) / 2.0;
-    return Offset(xOffset + bgX * scale, yOffset + bgY * scale);
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -2017,8 +2009,10 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
                         final double vf = (bgScale / 0.455).clamp(0.75, 1.38);
 
                         // Staggered platform anchors for Opp pair & Player pair
-                        final oppBase = _mapBgPoint(685, 404, w, h);
-                        final playerBase = _mapBgPoint(290, 610, w, h);
+                        final arenaAnchor = BattleArenaLayout.forAsset(
+                            _resolvedBattleBackgroundAsset);
+                        final oppBase = arenaAnchor.mapOpponent(w, h);
+                        final playerBase = arenaAnchor.mapPlayer(w, h);
 
                         final oppOffsets = [
                           Offset(
@@ -2159,8 +2153,14 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
                             // Opponent Trainer(s) during intro & defeat
                             if (_showOpponentTrainerSprite)
                               Positioned(
-                                left: oppBase.dx - (widget.partnerSpriteId != null ? 92 : 60),
-                                top: oppBase.dy - 118 * vf,
+                                left: oppBase.dx -
+                                    (widget.partnerSpriteId != null
+                                        ? 102 * vf
+                                        : 59 * vf),
+                                top: oppBase.dy -
+                                    (widget.partnerSpriteId != null
+                                        ? 102 * vf
+                                        : 118 * vf),
                                 child: AnimatedSlide(
                                   offset: Offset(_opponentTrainerSlideX, 0),
                                   duration: const Duration(milliseconds: 260),
