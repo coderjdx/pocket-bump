@@ -1571,7 +1571,10 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
 
   Future<void> _handleEvolution(PokemonInstance participant) async {
     final int? nextId = participant.resolveLevelUpEvolutionSpeciesId();
-    if (nextId == null) return;
+    if (nextId == null ||
+        !PokedexDatabase.isSpeciesInRegion(nextId, _trainer.activeRegion)) {
+      return;
+    }
     final nextSpecies = PokedexDatabase.species[nextId];
     if (nextSpecies == null) return;
 

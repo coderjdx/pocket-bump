@@ -302,6 +302,16 @@ class PokemonSpecies {
         return 0.7;
       case 148: // Dragonair (4.0m length, slender coiled dragon)
         return 1.4;
+      case 162: // Furret (1.8m length, long slender ferret)
+        return 1.1;
+      case 206: // Dunsparce (1.5m length, stubby land snake)
+        return 0.7;
+      case 208: // Steelix (9.2m length, towering coiled steel serpent)
+        return 2.8;
+      case 249: // Lugia (5.2m wingspan/body)
+        return 2.4;
+      case 250: // Ho-Oh (3.8m wingspan)
+        return 2.2;
       case 497: // Serperior (3.3m length, regal coiled serpent)
         return 1.6;
       default:

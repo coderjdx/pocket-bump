@@ -447,6 +447,7 @@ class _AdventureRunScreenState extends State<_AdventureRunScreen> {
       final PokemonInstance wildMon = PokedexDatabase.generateAdventureEncounter(
         playerLevel: playerLevel,
         gameVersion: trainer.gameVersion,
+        region: trainer.activeRegion,
         allowedTypes: widget.biome?.typeSet,
       );
       final String bgAsset =

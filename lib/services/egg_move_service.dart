@@ -112,10 +112,48 @@ class EggMoveService {
     141: 140,
     // Dratini
     148: 147, 149: 147,
-    // Gen 2 Starters
+    // Gen 2 Starters & Evolutions
     153: 152, 154: 152,
     156: 155, 157: 155,
     159: 158, 160: 158,
+    // Gen 2 Families (#161-#251)
+    162: 161, // Sentret
+    164: 163, // Hoothoot
+    166: 165, // Ledyba
+    168: 167, // Spinarak
+    169: 41,  // Crobat -> Zubat root
+    171: 170, // Chinchou
+    172: 25,  // Pichu -> Pikachu root
+    173: 35,  // Cleffa -> Clefairy root
+    174: 39,  // Igglybuff -> Jigglypuff root
+    176: 175, // Togetic -> Togepi root
+    178: 177, // Natu
+    180: 179, 181: 179, // Mareep
+    182: 43,  // Bellossom -> Oddish root
+    184: 183, // Marill
+    186: 60,  // Politoed -> Poliwag root
+    188: 187, 189: 187, // Hoppip
+    192: 191, // Sunkern
+    195: 194, // Wooper
+    196: 133, 197: 133, // Espeon, Umbreon -> Eevee root
+    199: 79,  // Slowking -> Slowpoke root
+    205: 204, // Pineco
+    208: 95,  // Steelix -> Onix root
+    210: 209, // Snubbull
+    212: 123, // Scizor -> Scyther root
+    217: 216, // Teddiursa
+    219: 218, // Slugma
+    221: 220, // Swinub
+    224: 223, // Remoraid
+    229: 228, // Houndour
+    230: 116, // Kingdra -> Horsea root
+    232: 231, // Phanpy
+    236: 106, 237: 106, // Tyrogue, Hitmontop -> Tyrogue/Hitmon family
+    238: 124, // Smoochum -> Jynx
+    239: 125, // Elekid -> Electabuzz
+    240: 126, // Magby -> Magmar
+    242: 113, // Blissey -> Chansey
+    247: 246, 248: 246, // Larvitar line
     // Gen 3 Starters
     253: 252, 254: 252,
     256: 255, 257: 255,
@@ -200,10 +238,49 @@ class EggMoveService {
     142: ['roost', 'tailwind', 'pursuit', 'wide_guard', 'whirlwind', 'assurance'], // Aerodactyl
     143: ['curse', 'pursuit', 'double_edge', 'counter', 'whirlwind', 'zen_headbutt'], // Snorlax
     147: ['dragon_dance', 'extreme_speed', 'aqua_jet', 'iron_tail', 'dragon_pulse', 'haze'], // Dratini line
-    // Gen 2 Starters
+    // Gen 2 Starters & Non-Starter Families
     152: ['leech_seed', 'leaf_storm', 'ancient_power', 'aromatherapy', 'ingrain', 'counter'], // Chikorita line
     155: ['flare_blitz', 'extrasensory', 'reversal', 'double_kick', 'flame_burst', 'crush_claw'], // Cyndaquil line
     158: ['dragon_dance', 'aqua_jet', 'ice_punch', 'crunch', 'metal_claw', 'ancient_power'], // Totodile line
+    161: ['double_edge', 'pursuit', 'reversal', 'trick', 'charm', 'slash'], // Sentret line
+    163: ['hurricane', 'night_shade', 'feather_dance', 'mirror_move', 'agility', 'supersonic'], // Hoothoot line
+    165: ['bug_buzz', 'psybeam', 'encore', 'silver_wind', 'drain_punch', 'tailwind'], // Ledyba line
+    167: ['megahorn', 'night_slash', 'toxic_spikes', 'pursuit', 'baton_pass', 'psybeam'], // Spinarak line
+    170: ['agility', 'amnesia', 'psybeam', 'water_pulse', 'mist', 'screech'], // Chinchou line
+    175: ['nasty_plot', 'extrasensory', 'morning_sun', 'mirror_coat', 'mirror_move', 'stored_power'], // Togepi line
+    177: ['roost', 'feather_dance', 'zen_headbutt', 'refresh', 'drill_peck', 'haze'], // Natu line
+    179: ['agility', 'iron_tail', 'body_slam', 'flatter', 'charge', 'screech'], // Mareep line
+    183: ['aqua_jet', 'belly_drum', 'superpower', 'body_slam', 'perish_song', 'refresh'], // Marill line
+    185: ['rollout', 'curse', 'headbutt', 'sand_tomb', 'defense_curl', 'harden'], // Sudowoodo
+    187: ['aromatherapy', 'encore', 'confusion', 'amnesia', 'double_edge', 'helping_hand'], // Hoppip line
+    190: ['fake_out', 'pursuit', 'agility', 'counter', 'double_slap', 'bounce'], // Aipom
+    191: ['morning_sun', 'encore', 'leech_seed', 'curse', 'ingrain', 'sweet_scent'], // Sunkern line
+    193: ['whirlwind', 'silver_wind', 'reversal', 'signal_beam', 'feint', 'pursuit'], // Yanma
+    194: ['recover', 'curse', 'stockpile', 'encore', 'ancient_power', 'body_slam'], // Wooper line
+    198: ['brave_bird', 'roost', 'confuse_ray', 'perish_song', 'feather_dance', 'drill_peck'], // Murkrow
+    200: ['nasty_plot', 'destiny_bond', 'memento', 'curse', 'imprison', 'shadow_ball'], // Misdreavus
+    203: ['calm_mind', 'amnesia', 'mirror_coat', 'magic_coat', 'razor_wind', 'take_down'], // Girafarig
+    204: ['toxic_spikes', 'pin_missile', 'counter', 'flail', 'iron_defense', 'revenge'], // Pineco line
+    206: ['headbutt', 'curse', 'ancient_power', 'agility', 'bite', 'magic_coat'], // Dunsparce
+    207: ['baton_pass', 'night_slash', 'cross_poison', 'agility', 'counter', 'wing_attack'], // Gligar
+    209: ['close_combat', 'crunch', 'heal_bell', 'fire_fang', 'ice_fang', 'thunder_fang'], // Snubbull line
+    211: ['aqua_jet', 'haze', 'supersonic', 'signal_beam', 'bubble_beam', 'flail'], // Qwilfish
+    213: ['knock_off', 'rock_blast', 'mud_slap', 'sand_tomb', 'acid', 'helping_hand'], // Shuckle
+    214: ['rock_blast', 'pursuit', 'megahorn', 'double_edge', 'focus_punch', 'revenge'], // Heracross
+    215: ['ice_shard', 'icicle_crash', 'fake_out', 'pursuit', 'ice_punch', 'counter'], // Sneasel
+    216: ['close_combat', 'crunch', 'belly_drum', 'cross_chop', 'counter', 'metal_claw'], // Teddiursa line
+    218: ['earth_power', 'memento', 'acid_armor', 'curse', 'heat_wave', 'stockpile'], // Slugma line
+    220: ['icicle_crash', 'icicle_spear', 'curse', 'ancient_power', 'avalanche', 'double_edge'], // Swinub line
+    222: ['barrier', 'confuse_ray', 'ingrain', 'mist', 'icicle_spear', 'amnesia'], // Corsola
+    223: ['water_spout', 'aurora_beam', 'mud_shot', 'rock_blast', 'screech', 'supersonic'], // Remoraid line
+    225: ['ice_shard', 'fake_out', 'rapid_spin', 'spikes', 'icy_wind', 'splash'], // Delibird
+    226: ['mirror_coat', 'haze', 'hydro_pump', 'amnesia', 'mud_sport', 'twister'], // Mantine
+    227: ['brave_bird', 'whirlwind', 'spikes', 'drill_peck', 'pursuit', 'curse'], // Skarmory
+    228: ['sucker_punch', 'nasty_plot', 'pursuit', 'counter', 'fire_spin', 'reversal'], // Houndour line
+    231: ['ice_shard', 'head_smash', 'iron_head', 'ancient_power', 'body_slam', 'counter'], // Phanpy line
+    234: ['megahorn', 'zen_headbutt', 'disable', 'double_kick', 'bite', 'mud_sport'], // Stantler
+    241: ['curse', 'hammer_arm', 'seismic_toss', 'reversal', 'present', 'dizzy_punch'], // Miltank
+    246: ['dragon_dance', 'outrage', 'iron_head', 'pursuit', 'ancient_power', 'curse'], // Larvitar line
     // Gen 3 Starters
     252: ['leaf_storm', 'leech_seed', 'dragon_breath', 'crunch', 'synthesis', 'crush_claw'], // Treecko line
     255: ['baton_pass', 'night_slash', 'reversal', 'counter', 'agility', 'crush_claw'], // Torchic line

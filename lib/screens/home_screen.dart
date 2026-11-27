@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../models/game_region.dart';
 import '../models/game_version.dart';
 import '../models/item.dart';
 import '../models/pokemon_instance.dart';
@@ -36,6 +37,7 @@ import 'pokedex_screen.dart';
 import 'pokemon_center_screen.dart';
 import 'pokemon_detail_screen.dart';
 import 'pokemon_league_screen.dart';
+import 'region_travel_screen.dart';
 import 'rivals_screen.dart';
 import 'victory_road_screen.dart';
 
@@ -269,6 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final wildMon = PokedexDatabase.generateWildEncounter(
       playerLevel: playerLevel,
       gameVersion: trainer.gameVersion,
+      region: trainer.activeRegion,
     );
     await precacheImage(
       AssetImage(wildMon.species.battleBackgroundAsset),
@@ -377,21 +380,43 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (trainer.gameVersion != null) ...[
             const SizedBox(width: 6),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.22),
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: Colors.white.withOpacity(0.45)),
-              ),
-              child: Text(
-                trainer.gameVersion!.shortLabel,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 8.5,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.4,
+            InkWell(
+              onTap: () {
+                SoundService.instance.playUiTap();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const RegionTravelScreen(),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(6),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.22),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.white.withOpacity(0.45)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "${trainer.activeRegion.displayName.toUpperCase()} • ${trainer.gameVersion!.shortLabel}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                    if (trainer.isRegionUnlocked(GameRegion.johto)) ...[
+                      const SizedBox(width: 3),
+                      const Icon(Icons.public_rounded,
+                          color: Colors.white, size: 10),
+                    ],
+                  ],
                 ),
               ),
             ),

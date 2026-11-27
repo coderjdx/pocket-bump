@@ -15,8 +15,8 @@ class TmService {
     return PokedexDatabase.moves[moveId]?.copy();
   }
 
-  /// Non-TM learners in Gen 1
-  static const Set<int> _noTmSpeciesIds = {10, 11, 13, 14, 129, 132};
+  /// Non-TM learners (Gen 1–2)
+  static const Set<int> _noTmSpeciesIds = {10, 11, 13, 14, 129, 132, 201, 202, 235};
 
   static const Set<int> _universalTmNumbers = {
     6, // Toxic
@@ -38,9 +38,9 @@ class TmService {
     if (!tmItem.isTm || tmItem.moveId == null) return false;
     final id = species.id;
 
-    // Mew can learn every Gen 1 TM.
+    // Mew can learn every Gen 1 TM; Celebi can learn broad Grass/Psychic/Support TMs.
     if (id == 151) return true;
-    // Cocoon/basic bugs, Magikarp, Ditto cannot learn Gen 1 TMs.
+    // Cocoon/basic bugs, Magikarp, Ditto, Unown, Wobbuffet, Smeargle cannot learn TMs.
     if (_noTmSpeciesIds.contains(id)) return false;
 
     final int? tmNum = int.tryParse(tmItem.id.replaceFirst('tm_', ''));
@@ -152,7 +152,7 @@ class TmService {
       case 46: // Psywave
         return types.contains(PokemonType.psychic) ||
             types.contains(PokemonType.ghost) ||
-            const {12, 35, 36, 39, 40, 48, 49, 54, 55, 60, 61, 62, 113, 120, 121, 137}
+            const {12, 35, 36, 39, 40, 48, 49, 54, 55, 60, 61, 62, 113, 120, 121, 137, 163, 164, 173, 174, 175, 176, 198, 200, 211, 242, 249, 250, 251}
                 .contains(id);
 
       case 35: // Metronome

@@ -713,7 +713,9 @@ class _BagScreenState extends State<BagScreen> {
     final compatible = trainer.party.where((p) {
       final targetId =
           ItemDatabase.getStoneEvolutionTarget(stoneItem.id, p.species.id);
-      return targetId != null && PokedexDatabase.species.containsKey(targetId);
+      return targetId != null &&
+          PokedexDatabase.species.containsKey(targetId) &&
+          PokedexDatabase.isSpeciesInRegion(targetId, trainer.activeRegion);
     }).toList();
 
     if (compatible.isEmpty) {

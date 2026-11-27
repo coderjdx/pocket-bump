@@ -1186,7 +1186,9 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
         }
 
         final int? nextEvoId = participant.resolveLevelUpEvolutionSpeciesId();
-        if (nextEvoId != null) {
+        if (nextEvoId != null &&
+            PokedexDatabase.isSpeciesInRegion(
+                nextEvoId, _trainer.activeRegion)) {
           final nextSpecies = PokedexDatabase.species[nextEvoId];
           if (nextSpecies != null) {
             final oldName = participant.nickname;

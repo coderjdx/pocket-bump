@@ -577,6 +577,51 @@ class AbilityDatabase {
       name: 'Wonder Skin',
       description: 'Lowers the accuracy of status moves targeting this Pokémon to 50%.',
     ),
+    'sand_stream': AbilityDefinition(
+      id: 'sand_stream',
+      name: 'Sand Stream',
+      description: 'Summons a sandstorm when the Pokémon enters battle.',
+    ),
+    'huge_power': AbilityDefinition(
+      id: 'huge_power',
+      name: 'Huge Power',
+      description: 'Doubles the Pokémon\'s Attack stat for physical attacks.',
+    ),
+    'shadow_tag': AbilityDefinition(
+      id: 'shadow_tag',
+      name: 'Shadow Tag',
+      description: 'Prevents opposing Pokémon from fleeing or switching out.',
+    ),
+    'magma_armor': AbilityDefinition(
+      id: 'magma_armor',
+      name: 'Magma Armor',
+      description: 'Intense magma plates prevent this Pokémon from becoming frozen.',
+    ),
+    'suction_cups': AbilityDefinition(
+      id: 'suction_cups',
+      name: 'Suction Cups',
+      description: 'Negates moves and effects that force the Pokémon to switch out.',
+    ),
+    'magic_bounce': AbilityDefinition(
+      id: 'magic_bounce',
+      name: 'Magic Bounce',
+      description: 'Reflects status-lowering and status-inflicting moves back at the user.',
+    ),
+    'sap_sipper': AbilityDefinition(
+      id: 'sap_sipper',
+      name: 'Sap Sipper',
+      description: 'Absorbs Grass-type moves to boost Attack instead of taking damage.',
+    ),
+    'prankster': AbilityDefinition(
+      id: 'prankster',
+      name: 'Prankster',
+      description: 'Gives priority (+1) to the Pokémon\'s status moves.',
+    ),
+    'super_luck': AbilityDefinition(
+      id: 'super_luck',
+      name: 'Super Luck',
+      description: 'The Pokémon\'s keen instinct heightens its critical-hit ratio.',
+    ),
   };
 
   static AbilityDefinition? byId(String? id) =>

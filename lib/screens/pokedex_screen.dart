@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/ability.dart';
+import '../models/game_region.dart';
 import '../models/game_version.dart';
 import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
@@ -18,6 +19,12 @@ enum _PokedexFilter {
   unseen,
 }
 
+enum _PokedexScope {
+  kanto,
+  johto,
+  national,
+}
+
 class PokedexScreen extends StatefulWidget {
   const PokedexScreen({super.key});
 
@@ -27,27 +34,93 @@ class PokedexScreen extends StatefulWidget {
 
 class _PokedexScreenState extends State<PokedexScreen> {
   _PokedexFilter _filter = _PokedexFilter.all;
+  _PokedexScope? _scope;
+
+  bool _isScopeSeen(Trainer trainer, _PokedexScope scope, int id) {
+    switch (scope) {
+      case _PokedexScope.kanto:
+        final s = trainer.saveForRegion(GameRegion.kanto);
+        return s.seenSpeciesIds.contains(id) || _isScopeCaught(trainer, scope, id);
+      case _PokedexScope.johto:
+        final s = trainer.saveForRegion(GameRegion.johto);
+        return s.seenSpeciesIds.contains(id) || _isScopeCaught(trainer, scope, id);
+      case _PokedexScope.national:
+        return trainer.nationalSeenSpeciesIds.contains(id);
+    }
+  }
+
+  bool _isScopeCaught(Trainer trainer, _PokedexScope scope, int id) {
+    switch (scope) {
+      case _PokedexScope.kanto:
+        final s = trainer.saveForRegion(GameRegion.kanto);
+        return s.caughtSpeciesIds.contains(id) ||
+            s.party.any((p) => p.species.id == id) ||
+            s.pcBoxes.any((b) => b.any((p) => p.species.id == id));
+      case _PokedexScope.johto:
+        final s = trainer.saveForRegion(GameRegion.johto);
+        return s.caughtSpeciesIds.contains(id) ||
+            s.party.any((p) => p.species.id == id) ||
+            s.pcBoxes.any((b) => b.any((p) => p.species.id == id));
+      case _PokedexScope.national:
+        return trainer.nationalCaughtSpeciesIds.contains(id);
+    }
+  }
+
+  bool _isScopeShinyCaught(Trainer trainer, _PokedexScope scope, int id) {
+    switch (scope) {
+      case _PokedexScope.kanto:
+        final s = trainer.saveForRegion(GameRegion.kanto);
+        return s.shinyCaughtSpeciesIds.contains(id) ||
+            s.party.any((p) => p.species.id == id && p.isShiny) ||
+            s.pcBoxes.any((b) => b.any((p) => p.species.id == id && p.isShiny));
+      case _PokedexScope.johto:
+        final s = trainer.saveForRegion(GameRegion.johto);
+        return s.shinyCaughtSpeciesIds.contains(id) ||
+            s.party.any((p) => p.species.id == id && p.isShiny) ||
+            s.pcBoxes.any((b) => b.any((p) => p.species.id == id && p.isShiny));
+      case _PokedexScope.national:
+        return trainer.nationalShinyCaughtSpeciesIds.contains(id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final trainer = Provider.of<Trainer>(context);
-    final List<int> allIds = PokedexDatabase.gen1SpeciesIds;
-    final int total = PokedexDatabase.gen1TotalSpecies;
-    final int caughtTotal = trainer.caughtCount;
-    final int seenTotal = trainer.seenCount;
-    final int unseenTotal =
-        allIds.where((id) => !trainer.isSpeciesSeen(id)).length;
+    final bool johtoUnlocked = trainer.isRegionUnlocked(GameRegion.johto);
+    final _PokedexScope activeScope = _scope ??
+        (trainer.activeRegion == GameRegion.johto
+            ? _PokedexScope.johto
+            : _PokedexScope.kanto);
+
+    final List<int> allIds;
+    switch (activeScope) {
+      case _PokedexScope.kanto:
+        allIds = PokedexDatabase.gen1SpeciesIds;
+        break;
+      case _PokedexScope.johto:
+        allIds = PokedexDatabase.johtoSpeciesIds;
+        break;
+      case _PokedexScope.national:
+        allIds = PokedexDatabase.nationalSpeciesIds;
+        break;
+    }
+    final int total = allIds.length;
+    final int caughtTotal =
+        allIds.where((id) => _isScopeCaught(trainer, activeScope, id)).length;
+    final int seenTotal =
+        allIds.where((id) => _isScopeSeen(trainer, activeScope, id)).length;
+    final int unseenTotal = total - seenTotal;
 
     final List<int> filteredIds = allIds.where((id) {
       switch (_filter) {
         case _PokedexFilter.all:
           return true;
         case _PokedexFilter.caught:
-          return trainer.isSpeciesCaught(id);
+          return _isScopeCaught(trainer, activeScope, id);
         case _PokedexFilter.encountered:
-          return trainer.isSpeciesSeen(id);
+          return _isScopeSeen(trainer, activeScope, id);
         case _PokedexFilter.unseen:
-          return !trainer.isSpeciesSeen(id);
+          return !_isScopeSeen(trainer, activeScope, id);
       }
     }).toList();
 
@@ -86,6 +159,39 @@ class _PokedexScreenState extends State<PokedexScreen> {
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildFilterChip(
+                          label: "Kanto (151)",
+                          selected: activeScope == _PokedexScope.kanto,
+                          onTap: () =>
+                              setState(() => _scope = _PokedexScope.kanto),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      if (johtoUnlocked) ...[
+                        Expanded(
+                          child: _buildFilterChip(
+                            label: "Johto (232)",
+                            selected: activeScope == _PokedexScope.johto,
+                            onTap: () =>
+                                setState(() => _scope = _PokedexScope.johto),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                      ],
+                      Expanded(
+                        child: _buildFilterChip(
+                          label: "National (251)",
+                          selected: activeScope == _PokedexScope.national,
+                          onTap: () =>
+                              setState(() => _scope = _PokedexScope.national),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                   // ─── DEXTER SCANNER SUMMARY BANNER ───────────────────────
                   Container(
                     padding: const EdgeInsets.all(13),
@@ -277,10 +383,12 @@ class _PokedexScreenState extends State<PokedexScreen> {
                             itemBuilder: (context, idx) {
                               final id = filteredIds[idx];
                               final spec = PokedexDatabase.species[id]!;
-                              final bool isCaught = trainer.isSpeciesCaught(id);
-                              final bool isSeen = trainer.isSpeciesSeen(id);
-                              final bool isShinyCaught =
-                                  trainer.isSpeciesShinyCaught(id);
+                              final bool isCaught =
+                                  _isScopeCaught(trainer, activeScope, id);
+                              final bool isSeen =
+                                  _isScopeSeen(trainer, activeScope, id);
+                              final bool isShinyCaught = _isScopeShinyCaught(
+                                  trainer, activeScope, id);
                               return _buildDexCard(
                                 spec,
                                 isSeen: isSeen,

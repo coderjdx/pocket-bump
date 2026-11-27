@@ -1,4 +1,5 @@
 import 'dart:math';
+import '../models/game_region.dart';
 import '../models/game_version.dart';
 import '../models/move.dart';
 import '../models/pokemon_gender.dart';
@@ -7,14 +8,52 @@ import '../models/pokemon_species.dart';
 import '../models/pokemon_type.dart';
 import '../models/pokemon_instance.dart';
 import 'egg_move_service.dart';
+import 'gen2_species_data.dart';
 import 'time_of_day_service.dart';
 
 class PokedexDatabase {
   static final Random _rng = Random();
   static const int gen1TotalSpecies = 151;
+  static const int nationalTotalSpecies = 251;
 
   static List<int> get gen1SpeciesIds =>
       species.keys.where((id) => id <= gen1TotalSpecies).toList()..sort();
+
+  static List<int> get nationalSpeciesIds =>
+      species.keys.where((id) => id <= nationalTotalSpecies).toList()..sort();
+
+  /// Kanto-native lines absent from canon Gen 2 (Kanto Starters, Fossils, Legendaries/Mythicals).
+  static const Set<int> _kantoOnlyNotInJohtoIds = {
+    1, 2, 3,
+    4, 5, 6,
+    7, 8, 9,
+    138, 139, 140, 141, 142,
+    144, 145, 146, 150, 151,
+  };
+
+  static List<int> get johtoSpeciesIds => nationalSpeciesIds
+      .where((id) => !_kantoOnlyNotInJohtoIds.contains(id))
+      .toList();
+
+  static List<int> speciesIdsForRegion(GameRegion region) {
+    switch (region) {
+      case GameRegion.kanto:
+        return gen1SpeciesIds;
+      case GameRegion.johto:
+        return johtoSpeciesIds;
+    }
+  }
+
+  static bool isSpeciesInRegion(int speciesId, GameRegion region) {
+    switch (region) {
+      case GameRegion.kanto:
+        return speciesId >= 1 && speciesId <= gen1TotalSpecies;
+      case GameRegion.johto:
+        return speciesId >= 1 &&
+            speciesId <= nationalTotalSpecies &&
+            !_kantoOnlyNotInJohtoIds.contains(speciesId);
+    }
+  }
 
   // ─── MOVES ─────────────────────────────────────────────────────────────
   static final Map<String, Move> moves = {
@@ -4759,6 +4798,190 @@ class PokedexDatabase {
       maxPp: 10,
       description: 'Slams the target with a flame-cloaked body; stronger if the user is heavier.',
     ),
+
+    // === GEN 2 SIGNATURE & CORE MOVES ===
+    'aeroblast': Move(
+      id: 'aeroblast',
+      name: 'Aeroblast',
+      type: PokemonType.flying,
+      category: MoveCategory.special,
+      power: 100,
+      accuracy: 95,
+      maxPp: 5,
+      description: 'A vortex of air is shot at the target to inflict damage. High critical-hit ratio.',
+    ),
+    'sacred_fire': Move(
+      id: 'sacred_fire',
+      name: 'Sacred Fire',
+      type: PokemonType.fire,
+      category: MoveCategory.physical,
+      power: 100,
+      accuracy: 95,
+      maxPp: 5,
+      statusEffect: 'burn',
+      statusChance: 50,
+      description: 'The target is razed with a mystical fire of great intensity (50% burn, thaws user).',
+    ),
+    'morning_sun': Move(
+      id: 'morning_sun',
+      name: 'Morning Sun',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 5,
+      description: 'Restores the user\'s HP. The amount varies with weather conditions.',
+    ),
+    'milk_drink': Move(
+      id: 'milk_drink',
+      name: 'Milk Drink',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 10,
+      description: 'Restores the user\'s HP by up to half of its max HP.',
+    ),
+    'heal_bell': Move(
+      id: 'heal_bell',
+      name: 'Heal Bell',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 5,
+      description: 'The user makes a soothing bell chime to heal all status conditions.',
+    ),
+    'pain_split': Move(
+      id: 'pain_split',
+      name: 'Pain Split',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'Adds the user\'s and target\'s HP, then shares the total equally.',
+    ),
+    'hidden_power': Move(
+      id: 'hidden_power',
+      name: 'Hidden Power',
+      type: PokemonType.normal,
+      category: MoveCategory.special,
+      power: 60,
+      accuracy: 100,
+      maxPp: 15,
+      description: 'A unique attack whose type varies based on the Pokémon\'s individual values.',
+    ),
+    'return_move': Move(
+      id: 'return_move',
+      name: 'Return',
+      type: PokemonType.normal,
+      category: MoveCategory.physical,
+      power: 70,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'A full-power attack that grows stronger the more the Pokémon trusts its Trainer.',
+    ),
+    'frustration': Move(
+      id: 'frustration',
+      name: 'Frustration',
+      type: PokemonType.normal,
+      category: MoveCategory.physical,
+      power: 70,
+      accuracy: 100,
+      maxPp: 20,
+      description: 'A full-power attack that grows stronger the less the Pokémon trusts its Trainer.',
+    ),
+    'steel_wing': Move(
+      id: 'steel_wing',
+      name: 'Steel Wing',
+      type: PokemonType.steel,
+      category: MoveCategory.physical,
+      power: 70,
+      accuracy: 90,
+      maxPp: 25,
+      description: 'The target is hit with wings of steel; may raise the user\'s Defense.',
+    ),
+    'octazooka': Move(
+      id: 'octazooka',
+      name: 'Octazooka',
+      type: PokemonType.water,
+      category: MoveCategory.special,
+      power: 65,
+      accuracy: 85,
+      maxPp: 10,
+      statTarget: 'acc',
+      statChange: -1,
+      description: 'Sprays ink in the target\'s face, dealing damage and lowering accuracy.',
+    ),
+    'triple_kick': Move(
+      id: 'triple_kick',
+      name: 'Triple Kick',
+      type: PokemonType.fighting,
+      category: MoveCategory.physical,
+      power: 20,
+      accuracy: 90,
+      maxPp: 10,
+      minHits: 3,
+      maxHits: 3,
+      description: 'A 3-kick attack that strikes the target three times in a row.',
+    ),
+    'present': Move(
+      id: 'present',
+      name: 'Present',
+      type: PokemonType.normal,
+      category: MoveCategory.physical,
+      power: 60,
+      accuracy: 90,
+      maxPp: 15,
+      description: 'Hands the target a booby-trapped gift box with random damage.',
+    ),
+    'spider_web': Move(
+      id: 'spider_web',
+      name: 'Spider Web',
+      type: PokemonType.bug,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 10,
+      description: 'Ensnares the target with thin, gooey silk so it cannot flee or switch out.',
+    ),
+    'sweet_kiss': Move(
+      id: 'sweet_kiss',
+      name: 'Sweet Kiss',
+      type: PokemonType.fairy,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 75,
+      maxPp: 10,
+      statusEffect: 'confusion',
+      statusChance: 100,
+      description: 'The user kisses the target with a sweet, angelic cuteness that causes confusion.',
+    ),
+    'cotton_spore': Move(
+      id: 'cotton_spore',
+      name: 'Cotton Spore',
+      type: PokemonType.grass,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 40,
+      statTarget: 'spe',
+      statChange: -2,
+      description: 'Clings to the target with cotton-like spores, harshly lowering Speed.',
+    ),
+    'attract': Move(
+      id: 'attract',
+      name: 'Attract',
+      type: PokemonType.normal,
+      category: MoveCategory.status,
+      power: 0,
+      accuracy: 100,
+      maxPp: 15,
+      statTarget: 'atk',
+      statChange: -1,
+      description: 'Charms the opposing Pokémon, weakening its offensive resolve.',
+    ),
   };
 
   // ─── SPECIES (22 POKÉMON ACROSS 8 LINES) ────────────────────────────────
@@ -7168,7 +7391,18 @@ class PokedexDatabase {
       baseExp: 65,
       heightMeters: 0.3,
       weightKg: 6.5,
-      evolutionSpeciesId: 134,
+      evolutionRules: [
+        EvolutionRule(
+          targetSpeciesId: 196,
+          minFriendship: 220,
+          requiresDaytime: true,
+        ),
+        EvolutionRule(
+          targetSpeciesId: 197,
+          minFriendship: 220,
+          requiresNighttime: true,
+        ),
+      ],
       abilitySlot1Id: 'run_away',
       abilitySlot2Id: 'adaptability',
       hiddenAbilityId: 'anticipation',
@@ -7927,6 +8161,9 @@ class PokedexDatabase {
       weightKg: 55.0,
       evolutionStage: 2,
       minEncounterLevel: 22,
+      evolutionRules: [
+        EvolutionRule(targetSpeciesId: 169, minFriendship: 220),
+      ],
       abilitySlot1Id: 'inner_focus',
       hiddenAbilityId: 'infiltrator',
       learnset: const [
@@ -9837,6 +10074,9 @@ class PokedexDatabase {
       heightMeters: 1.1,
       weightKg: 34.6,
       minEncounterLevel: 24,
+      evolutionRules: [
+        EvolutionRule(targetSpeciesId: 242, minFriendship: 220),
+      ],
       abilitySlot1Id: 'natural_cure',
       abilitySlot2Id: 'serene_grace',
       hiddenAbilityId: 'healer',
@@ -10375,7 +10615,7 @@ class PokedexDatabase {
       weightKg: 6.4,
       evolutionStage: 1,
       isStarter: true,
-      allowWildEncounter: false,
+      allowWildEncounter: true,
       minEncounterLevel: 5,
       evolutionLevel: 16,
       evolutionSpeciesId: 153,
@@ -10495,7 +10735,7 @@ class PokedexDatabase {
       weightKg: 7.9,
       evolutionStage: 1,
       isStarter: true,
-      allowWildEncounter: false,
+      allowWildEncounter: true,
       minEncounterLevel: 5,
       evolutionLevel: 17,
       evolutionSpeciesId: 156,
@@ -10617,7 +10857,7 @@ class PokedexDatabase {
       weightKg: 9.5,
       evolutionStage: 1,
       isStarter: true,
-      allowWildEncounter: false,
+      allowWildEncounter: true,
       minEncounterLevel: 5,
       evolutionLevel: 18,
       evolutionSpeciesId: 159,
@@ -11805,6 +12045,7 @@ class PokedexDatabase {
         LearnedMove(62, 'hydro_pump'),
       ],
     ),
+    ...gen2SpeciesData,
   };
 
   static const Map<int, int> _specialPreEvolutionIds = {
@@ -11929,6 +12170,19 @@ class PokedexDatabase {
   }
 
   static String? evolutionRequirementLabel(PokemonSpecies spec) {
+    if (spec.id == 236) {
+      return 'Evolves at Lv. 20 (Atk > Def: Hitmonlee • Def > Atk: Hitmonchan • Atk = Def: Hitmontop)';
+    }
+    if (spec.id == 133) {
+      return 'Evolves via Evolution Stone or High Friendship (Day: Espeon • Night: Umbreon)';
+    }
+    if (spec.evolutionRules.isNotEmpty) {
+      final first = spec.evolutionRules.first;
+      final nextName = species[first.targetSpeciesId]?.name ?? 'next form';
+      if (first.minFriendship != null) {
+        return 'Evolves into $nextName with High Friendship (${first.minFriendship}+)';
+      }
+    }
     if (spec.evolutionSpeciesId != null && spec.evolutionLevel != null) {
       final next = species[spec.evolutionSpeciesId!];
       return "Evolves into ${next?.name ?? 'next form'} at Level ${spec.evolutionLevel}";
@@ -11940,18 +12194,23 @@ class PokedexDatabase {
       35: 'Evolves into Clefable via Moon Stone',
       37: 'Evolves into Ninetales via Fire Stone',
       39: 'Evolves into Wigglytuff via Moon Stone',
-      44: 'Evolves into Vileplume via Leaf Stone',
+      44: 'Evolves into Vileplume (Leaf Stone) or Bellossom (Sun Stone)',
       58: 'Evolves into Arcanine via Fire Stone',
-      61: 'Evolves into Poliwrath via Water Stone',
+      61: "Evolves into Poliwrath (Water Stone) or Politoed (Link Trade holding King's Rock)",
       64: 'Evolves into Alakazam via Link Trade (Fist Bump)',
       67: 'Evolves into Machamp via Link Trade (Fist Bump)',
       70: 'Evolves into Victreebel via Leaf Stone',
       75: 'Evolves into Golem via Link Trade (Fist Bump)',
+      79: "Evolves into Slowbro (Lv. 37) or Slowking (Link Trade holding King's Rock)",
       90: 'Evolves into Cloyster via Water Stone',
       93: 'Evolves into Gengar via Link Trade (Fist Bump)',
+      95: 'Evolves into Steelix via Link Trade holding Metal Coat',
       102: 'Evolves into Exeggutor via Leaf Stone',
+      117: 'Evolves into Kingdra via Link Trade holding Dragon Scale',
       120: 'Evolves into Starmie via Water Stone',
-      133: 'Evolves into Vaporeon / Jolteon / Flareon via Evolution Stone',
+      123: 'Evolves into Scizor via Link Trade holding Metal Coat',
+      137: 'Evolves into Porygon2 via Link Trade holding Up-Grade',
+      191: 'Evolves into Sunflora via Sun Stone',
     };
     return specialHints[spec.id];
   }
@@ -12096,12 +12355,12 @@ class PokedexDatabase {
   static PokemonInstance generateWildEncounter({
     int playerLevel = 5,
     GameVersion? gameVersion,
-    String originRegion = 'kanto',
+    GameRegion region = GameRegion.kanto,
   }) {
     return generateAdventureEncounter(
       playerLevel: playerLevel,
       gameVersion: gameVersion,
-      originRegion: originRegion,
+      region: region,
     );
   }
 
@@ -12125,17 +12384,18 @@ class PokedexDatabase {
 
   /// Generates a wild encounter using the standard Tall Grass rarity rates
   /// (65% Common, 30% Uncommon, 5% Rare), optionally restricted to [allowedTypes]
-  /// for Adventure Biomes. Never spawns Legendaries or Mythicals.
+  /// for Adventure Biomes and scoped to [region]. Never spawns Legendaries or Mythicals.
   static PokemonInstance generateAdventureEncounter({
     int playerLevel = 5,
     GameVersion? gameVersion,
+    GameRegion region = GameRegion.kanto,
     Set<PokemonType>? allowedTypes,
-    String originRegion = 'kanto',
     Random? rng,
   }) {
     final Random r = rng ?? _rng;
     final bool hasTypeFilter = allowedTypes != null && allowedTypes.isNotEmpty;
     bool matchesPool(PokemonSpecies s) {
+      if (!isSpeciesInRegion(s.id, region)) return false;
       if (s.isLegendary || s.isMythical) return false;
       if (!s.isWildEncounterable) return false;
       if (!s.isAvailableInVersion(gameVersion)) return false;
@@ -12164,6 +12424,7 @@ class PokedexDatabase {
                 ? fallbackPool
                 : species.values
                     .where((s) =>
+                        isSpeciesInRegion(s.id, region) &&
                         !s.isLegendary &&
                         !s.isMythical &&
                         s.isWildEncounterable &&
@@ -12182,7 +12443,7 @@ class PokedexDatabase {
       level: level,
       isShiny: isShiny,
       eggMoveChance: hasTypeFilter ? 0.25 : 0.15,
-      originRegion: originRegion,
+      originRegion: region.storageKey,
       rng: r,
     );
   }

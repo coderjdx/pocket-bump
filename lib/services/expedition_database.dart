@@ -103,7 +103,7 @@ class ExpeditionDatabase {
       accentColor: Color(0xFFFF7043),
       backgroundAsset: 'assets/images/battle_bg_victory_road.png',
       wildSpeciesPool: [
-        24, 28, 31, 34, 38, 45, 57, 59, 68, 71, 76, 78, 95, 105, 112, 126,
+        24, 28, 31, 34, 38, 45, 57, 59, 68, 71, 76, 78, 95, 105, 112, 126, 176,
       ],
     ),
     ExpeditionDestination(
@@ -119,7 +119,7 @@ class ExpeditionDatabase {
       backgroundAsset: 'assets/images/battle_bg_cerulean_cave.png',
       wildSpeciesPool: [
         42, 49, 55, 65, 80, 82, 94, 97, 101, 105, 112, 113, 121, 123, 124, 125,
-        126, 127, 130, 149,
+        126, 127, 130, 149, 176,
       ],
     ),
   ];

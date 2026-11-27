@@ -268,7 +268,7 @@ class BattleEngine {
     'karate_chop', 'razor_leaf', 'slash', 'crabhammer', 'cross_chop',
     'air_cutter', 'blaze_kick', 'leaf_blade', 'night_slash', 'shadow_claw',
     'psycho_cut', 'cross_poison', 'stone_edge', 'drill_run',
-    'razor_wind', 'sky_attack',
+    'razor_wind', 'sky_attack', 'aeroblast',
   };
 
   static const Set<String> _ohkoMoves = {
@@ -670,6 +670,18 @@ class BattleEngine {
           ));
         }
         break;
+      case 'sand_stream':
+        if (activeField.weather != BattleWeather.sandstorm) {
+          activeField.weather = BattleWeather.sandstorm;
+          activeField.weatherTurnsRemaining = -1;
+          events.add(BattleStepEvent(
+            message: "$monName's Sand Stream whipped up a sandstorm!",
+            isPlayerActor: isPlayer,
+            hideMoveVfx: true,
+            abilityTriggeredName: 'Sand Stream',
+          ));
+        }
+        break;
       case 'download':
         if (!foe.isFainted) {
           final String targetStat = foe.effectiveDef < foe.effectiveSpd ? 'atk' : 'spa';
@@ -1051,8 +1063,18 @@ class BattleEngine {
 
     bool playerGoesFirst = true;
     if (effectivePlayerMove != null && effectiveOppMove != null) {
-      final pPriority = playerMon.needsRecharge ? 0 : effectivePlayerMove.priority;
-      final oPriority = opponentMon.needsRecharge ? 0 : effectiveOppMove.priority;
+      int pPriority = playerMon.needsRecharge ? 0 : effectivePlayerMove.priority;
+      if (!playerMon.needsRecharge &&
+          effectivePlayerMove.category == MoveCategory.status &&
+          playerMon.effectiveAbilityId == 'prankster') {
+        pPriority += 1;
+      }
+      int oPriority = opponentMon.needsRecharge ? 0 : effectiveOppMove.priority;
+      if (!opponentMon.needsRecharge &&
+          effectiveOppMove.category == MoveCategory.status &&
+          opponentMon.effectiveAbilityId == 'prankster') {
+        oPriority += 1;
+      }
 
       if (pPriority != oPriority) {
         playerGoesFirst = pPriority > oPriority;
@@ -1429,6 +1451,13 @@ class BattleEngine {
         return (field?.sideFor(isPlayer).allyFaintedLastTurn ?? false)
             ? 140
             : 70;
+      case 'return_move':
+        return (attacker.friendship / 2.5).round().clamp(1, 102);
+      case 'frustration':
+        return ((255 - attacker.friendship) / 2.5).round().clamp(1, 102);
+      case 'present':
+        const presentPowers = [40, 40, 80, 80, 120];
+        return presentPowers[_rng.nextInt(presentPowers.length)];
       default:
         return move.power;
     }
@@ -1457,12 +1486,14 @@ class BattleEngine {
     final bool unawareDef = !bypassDefAb && defAb == 'unaware';
     final BattleWeather weather =
         field?.effectiveWeather(attacker, defender) ?? BattleWeather.none;
+    final PokemonType resolvedMoveType =
+        move.id == 'hidden_power' ? attacker.hiddenPowerType : move.type;
 
     double movePowerDouble = (powerOverride ??
             _resolveDynamicPower(attacker, move, defender,
                 field: field, isPlayer: isPlayer))
         .toDouble();
-    if (attacker.isChargedElectric && move.type == PokemonType.electric) {
+    if (attacker.isChargedElectric && resolvedMoveType == PokemonType.electric) {
       movePowerDouble *= 2.0;
     }
     if (attacker.helpingHandBoosted) {
@@ -1496,15 +1527,15 @@ class BattleEngine {
         attacker.effectiveTypes.any((t) => defender.effectiveTypes.contains(t))) {
       movePowerDouble *= 1.25;
     }
-    if (atkAb == 'flash_fire' && attacker.flashFireBoosted && move.type == PokemonType.fire) {
+    if (atkAb == 'flash_fire' && attacker.flashFireBoosted && resolvedMoveType == PokemonType.fire) {
       movePowerDouble *= 1.5;
     }
     // Pinch Abilities (<= 1/3 HP)
     if (attacker.hpPercent <= (1.0 / 3.0)) {
-      if ((atkAb == 'blaze' && move.type == PokemonType.fire) ||
-          (atkAb == 'overgrow' && move.type == PokemonType.grass) ||
-          (atkAb == 'torrent' && move.type == PokemonType.water) ||
-          (atkAb == 'swarm' && move.type == PokemonType.bug)) {
+      if ((atkAb == 'blaze' && resolvedMoveType == PokemonType.fire) ||
+          (atkAb == 'overgrow' && resolvedMoveType == PokemonType.grass) ||
+          (atkAb == 'torrent' && resolvedMoveType == PokemonType.water) ||
+          (atkAb == 'swarm' && resolvedMoveType == PokemonType.bug)) {
         movePowerDouble *= 1.5;
       }
     }
@@ -1512,10 +1543,10 @@ class BattleEngine {
       movePowerDouble *= 1.5;
     }
     if (field != null) {
-      if (field.mudSportActive && move.type == PokemonType.electric) {
+      if (field.mudSportActive && resolvedMoveType == PokemonType.electric) {
         movePowerDouble *= 0.33;
       }
-      if (field.waterSportActive && move.type == PokemonType.fire) {
+      if (field.waterSportActive && resolvedMoveType == PokemonType.fire) {
         movePowerDouble *= 0.33;
       }
     }
@@ -1530,13 +1561,16 @@ class BattleEngine {
     if (_highCritMoves.contains(move.id)) {
       critChanceDenom = max(2, critChanceDenom ~/ 2);
     }
+    if (atkAb == 'super_luck') {
+      critChanceDenom = max(2, critChanceDenom ~/ 2);
+    }
     if (attacker.hasFocusEnergy) {
       critChanceDenom = max(1, critChanceDenom ~/ 4);
     }
 
     double typeMultiplier = _applyIdentifiedTypeOverride(
-      PokemonTypeExtension.getEffectiveness(move.type, _defensiveTypes(defender)),
-      move.type,
+      PokemonTypeExtension.getEffectiveness(resolvedMoveType, _defensiveTypes(defender)),
+      resolvedMoveType,
       defender,
       bypassGhostWithScrappy: atkAb == 'scrappy',
     );
@@ -1570,6 +1604,9 @@ class BattleEngine {
       attackStat = (attackStat * badgeMult).round();
     }
     if (move.category == MoveCategory.physical) {
+      if (atkAb == 'huge_power') {
+        attackStat *= 2;
+      }
       if (atkAb == 'guts' && attacker.status != StatusCondition.none) {
         attackStat = (attackStat * 1.5).round();
       } else if (atkAb == 'hustle') {
@@ -1609,12 +1646,12 @@ class BattleEngine {
     final double base =
         (((2 * attacker.level / 5 + 2) * movePower * attackStat / max(1, defenseStat)) / 50) +
             2;
-    final bool hasStab = attacker.effectiveTypes.contains(move.type);
+    final bool hasStab = attacker.effectiveTypes.contains(resolvedMoveType);
     final double stab = hasStab ? (atkAb == 'adaptability' ? 2.0 : 1.5) : 1.0;
 
     final double crit = isCrit ? (atkAb == 'sniper' ? 2.25 : 1.5) : 1.0;
     final double randomVariance = (85 + random.nextInt(16)) / 100.0;
-    final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, move.type);
+    final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, resolvedMoveType);
 
     double abilityDamageMult = 1.0;
     if (atkAb == 'tinted_lens' && typeMultiplier > 0 && typeMultiplier < 1.0) {
@@ -1622,7 +1659,7 @@ class BattleEngine {
     }
     if (!bypassDefAb) {
       if (defAb == 'thick_fat' &&
-          (move.type == PokemonType.fire || move.type == PokemonType.ice)) {
+          (resolvedMoveType == PokemonType.fire || resolvedMoveType == PokemonType.ice)) {
         abilityDamageMult *= 0.5;
       }
       if (defAb == 'filter' && typeMultiplier >= 2.0) {
@@ -1637,7 +1674,7 @@ class BattleEngine {
       if (allyHasFriendGuard) {
         abilityDamageMult *= 0.75;
       }
-      if (defAb == 'dry_skin' && move.type == PokemonType.fire) {
+      if (defAb == 'dry_skin' && resolvedMoveType == PokemonType.fire) {
         abilityDamageMult *= 1.25;
       }
     }
@@ -1645,11 +1682,11 @@ class BattleEngine {
     // Weather damage multipliers
     double weatherMult = 1.0;
     if (weather == BattleWeather.sun) {
-      if (move.type == PokemonType.fire) weatherMult = 1.5;
-      if (move.type == PokemonType.water) weatherMult = 0.5;
+      if (resolvedMoveType == PokemonType.fire) weatherMult = 1.5;
+      if (resolvedMoveType == PokemonType.water) weatherMult = 0.5;
     } else if (weather == BattleWeather.rain) {
-      if (move.type == PokemonType.water) weatherMult = 1.5;
-      if (move.type == PokemonType.fire) weatherMult = 0.5;
+      if (resolvedMoveType == PokemonType.water) weatherMult = 1.5;
+      if (resolvedMoveType == PokemonType.fire) weatherMult = 0.5;
     }
 
     // Screens (Reflect / Light Screen) bypassed by Critical Hit, Brick Break, or Infiltrator
@@ -2386,7 +2423,8 @@ class BattleEngine {
           ((move.statChange > 0 && move.statTarget != null) ||
               move.id == 'recover' || move.id == 'soft_boiled' || move.id == 'rest' ||
               move.id == 'roost' || move.id == 'slack_off' || move.id == 'synthesis' ||
-              move.id == 'moonlight' || move.id == 'morning_sun' || move.id == 'belly_drum' ||
+              move.id == 'moonlight' || move.id == 'morning_sun' || move.id == 'milk_drink' ||
+              move.id == 'heal_bell' || move.id == 'belly_drum' ||
               move.id == 'substitute' || move.id == 'focus_energy' || move.id == 'acupressure' ||
               move.id == 'wonder_room' || move.id == 'recycle' || move.id == 'conversion' ||
               move.id == 'conversion_2' || move.id == 'camouflage' || move.id == 'reflect_type' ||
@@ -2552,6 +2590,19 @@ class BattleEngine {
         ));
         return events;
       }
+      if (move.type == PokemonType.grass && defAb == 'sap_sipper') {
+        defender.modifyStatStage('atk', 1);
+        events.add(BattleStepEvent(
+          message: "$defenderName's Sap Sipper absorbed the Grass move and raised Attack!",
+          isPlayerActor: defIsPlayer,
+          statChangedLabel: 'ATK ▲',
+          statTargetIsSelf: true,
+          hideMoveVfx: true,
+          abilityTriggeredName: 'Sap Sipper',
+          surfaceActorOnAttack: surfacedThisTurn,
+        ));
+        return events;
+      }
       if (move.type == PokemonType.water &&
           move.category != MoveCategory.status &&
           defAb == 'storm_drain') {
@@ -2574,11 +2625,13 @@ class BattleEngine {
       'swift', 'shock_wave', 'aerial_ace', 'feint_attack', 'magical_leaf',
       'aura_sphere', 'magnet_bomb', 'shadow_punch', 'vital_throw', 'clear_smog',
       'trump_card', 'roost', 'recover', 'soft_boiled', 'rest', 'slack_off',
-      'synthesis', 'moonlight', 'morning_sun', 'haze', 'belly_drum', 'refresh',
-      'aromatherapy', 'rain_dance', 'sunny_day', 'sandstorm', 'hail', 'safeguard',
+      'synthesis', 'moonlight', 'morning_sun', 'milk_drink', 'heal_bell',
+      'haze', 'belly_drum', 'refresh', 'aromatherapy', 'rain_dance',
+      'sunny_day', 'sandstorm', 'hail', 'safeguard',
       'mist', 'tailwind', 'spikes', 'toxic_spikes', 'stealth_rock', 'gravity',
       'lucky_chant', 'substitute', 'splash', 'focus_energy', 'destiny_bond',
-      'perish_song', 'magnet_rise', 'aqua_ring', 'ingrain', 'mean_look', 'block',
+      'perish_song', 'magnet_rise', 'aqua_ring', 'ingrain',
+      'mean_look', 'spider_web', 'block',
       'curse', 'mirror_move', 'copycat', 'metronome', 'mimic', 'transform',
       'conversion', 'conversion_2', 'camouflage', 'reflect_type', 'psych_up',
       'shell_smash', 'quiver_dance', 'calm_mind', 'dragon_dance', 'coil',
@@ -2645,16 +2698,17 @@ class BattleEngine {
 
     // 4. Status / Fixed-Damage / Utility Moves
     if (move.category == MoveCategory.status) {
-      if (!isSubMove && defender.hasMagicCoatThisTurn) {
+      if (!isSubMove &&
+          (defender.hasMagicCoatThisTurn || (!bypassDefAb && defAb == 'magic_bounce'))) {
         const selfOrFieldStatusMoves = {
           'rain_dance', 'sunny_day', 'sandstorm', 'hail', 'gravity', 'wonder_room',
           'mud_sport', 'water_sport', 'haze', 'reflect', 'light_screen', 'safeguard',
           'mist', 'tailwind', 'lucky_chant', 'protect', 'detect', 'endure',
           'quick_guard', 'wide_guard', 'magic_coat', 'substitute', 'recover',
           'soft_boiled', 'rest', 'roost', 'slack_off', 'synthesis', 'moonlight',
-          'morning_sun', 'swallow', 'stockpile', 'belly_drum', 'focus_energy',
+          'morning_sun', 'milk_drink', 'swallow', 'stockpile', 'belly_drum', 'focus_energy',
           'acupressure', 'psych_up', 'power_swap', 'guard_swap', 'recycle',
-          'refresh', 'aromatherapy', 'ingrain', 'aqua_ring', 'magnet_rise',
+          'refresh', 'aromatherapy', 'heal_bell', 'ingrain', 'aqua_ring', 'magnet_rise',
           'destiny_bond', 'perish_song', 'imprison', 'grudge', 'baton_pass',
           'helping_hand', 'after_you', 'ally_switch', 'follow_me', 'charge',
           'healing_wish', 'splash', 'teleport', 'conversion', 'conversion_2',
@@ -2669,14 +2723,18 @@ class BattleEngine {
                 (move.id == 'curse' &&
                     !attacker.effectiveTypes.contains(PokemonType.ghost));
         if (!selfOrFieldStatusMoves.contains(move.id) && !isSelfBuffStatus) {
+          final bool fromAbility = !defender.hasMagicCoatThisTurn;
           defender.hasMagicCoatThisTurn = false;
           events.add(BattleStepEvent(
-            message: "$defenderName bounced ${move.name} back with Magic Coat!",
+            message: fromAbility
+                ? "$defenderName bounced ${move.name} back with Magic Bounce!"
+                : "$defenderName bounced ${move.name} back with Magic Coat!",
             isPlayerActor: !isPlayer,
             moveId: 'magic_coat',
             moveType: PokemonType.psychic,
             moveCategory: MoveCategory.status,
             statTargetIsSelf: true,
+            abilityTriggeredName: fromAbility ? 'Magic Bounce' : null,
           ));
           events.addAll(executeSingleAttack(
             defender,
@@ -3781,7 +3839,7 @@ class BattleEngine {
     // 2. Healing & Rest moves
     if (const {
       'recover', 'soft_boiled', 'rest', 'roost', 'slack_off', 'heal_pulse',
-      'synthesis', 'moonlight', 'morning_sun', 'swallow',
+      'synthesis', 'moonlight', 'morning_sun', 'milk_drink', 'swallow',
     }.contains(move.id)) {
       if (attacker.currentHp >= attacker.maxHp) {
         events.add(BattleStepEvent(
@@ -4164,6 +4222,7 @@ class BattleEngine {
         ));
         return events;
       case 'mean_look':
+      case 'spider_web':
       case 'block':
         defender.isMeanLookTrapped = true;
         events.add(BattleStepEvent(
@@ -4279,11 +4338,25 @@ class BattleEngine {
         return events;
       case 'refresh':
       case 'aromatherapy':
+      case 'heal_bell':
         attacker.status = StatusCondition.none;
         attacker.isBadlyPoisoned = false;
         events.add(BattleStepEvent(
           message: "$attackerName cured its status conditions!",
           isPlayerActor: isPlayer, moveId: move.id, moveType: move.type, moveCategory: move.category, statTargetIsSelf: true, statusInflictedLabel: 'CURED',
+        ));
+        return events;
+      case 'pain_split':
+        final int avgHp = max(1, (attacker.currentHp + defender.currentHp) ~/ 2);
+        attacker.currentHp = avgHp.clamp(1, attacker.maxHp);
+        defender.currentHp = avgHp.clamp(1, defender.maxHp);
+        events.add(BattleStepEvent(
+          message: "The battlers shared their pain equally!",
+          isPlayerActor: isPlayer,
+          moveId: move.id,
+          moveType: move.type,
+          moveCategory: move.category,
+          targetHpAfter: defender.currentHp,
         ));
         return events;
       case 'ingrain':
@@ -6086,6 +6159,7 @@ class BattleEngine {
         return 'ASLEEP!';
       case 'freeze':
         if (target.effectiveTypes.contains(PokemonType.ice) ||
+            (!bypassDefAbility && ab == 'magma_armor') ||
             field?.effectiveWeather(target, source) == BattleWeather.sun) {
           return null;
         }
