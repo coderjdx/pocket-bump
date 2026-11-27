@@ -31458,7 +31458,7 @@ s=1
 break}a=A.b6(J.aZ(m,"tag_name"))
 a0=a==null?null:B.n.by(a)
 l=a0==null?"":a0
-if(J.cz(l)===0||!A.bcw(l,"1.0.100")){q=null
+if(J.cz(l)===0||!A.bcw(l,"1.0.101")){q=null
 s=1
 break}s=!a5?8:9
 break
@@ -31483,7 +31483,7 @@ break}}}b=A.b6(J.aZ(m,"name"))
 c=b==null?null:B.n.by(b)
 b=h
 if(!(c!=null&&c.length!==0))A.u(l)
-q=new A.Os("1.0.100",l,b)
+q=new A.Os("1.0.101",l,b)
 s=1
 break
 p=2
@@ -37392,7 +37392,7 @@ $iS2:1}
 A.aUs.prototype={
 $1(a){var s=A.ek().b
 s=s==null?null:s.canvasKitBaseUrl
-return(s==null?"https://www.gstatic.com/flutter-canvaskit/4d35714800b9266b6693a58e1225ecd7e9e45ed7/":s)+a},
+return(s==null?"canvaskit/":s)+a},
 $S:105}
 A.Pg.prototype={
 n(){if(this.b)return

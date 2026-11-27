@@ -18,7 +18,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Pocket Bump — Real-world Pokémon encounter and fist-bump battling game">
 
   <!--
     Uncomment the tag below to lay the app out underneath the parts of the
@@ -33,10 +33,13 @@
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> -->
 
   <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#050C24">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Pocket Bump">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
@@ -44,7 +47,85 @@
   <title>Pocket Bump</title>
   <link rel="manifest" href="manifest.json">
 <script>
-if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(sw){sw.unregister();});});}
+(function(){
+  if(window.__pbPwaInit)return;
+  window.__pbPwaInit=true;
+  if("serviceWorker" in navigator){
+    var hadController=!!navigator.serviceWorker.controller;
+    var reloading=false;
+    var toastEl=null;
+    var toastTimer=null;
+    function showToast(text,autoHideMs){
+      if(!document.body)return;
+      if(!toastEl){
+        toastEl=document.createElement("div");
+        toastEl.id="pb-pwa-toast";
+        toastEl.style.cssText="position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:2147483647;background:rgba(5,12,36,0.92);color:#E8F1FF;border:1px solid rgba(100,181,246,0.45);border-radius:999px;padding:7px 14px;font:600 12px/1.2 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:0.2px;box-shadow:0 6px 20px rgba(0,0,0,0.45);pointer-events:none;transition:opacity 0.3s ease;white-space:nowrap;";
+        document.body.appendChild(toastEl);
+      }
+      if(toastTimer){clearTimeout(toastTimer);toastTimer=null;}
+      toastEl.style.opacity="1";
+      toastEl.textContent=text;
+      if(autoHideMs>0){
+        toastTimer=setTimeout(function(){
+          if(!toastEl)return;
+          toastEl.style.opacity="0";
+          setTimeout(function(){
+            if(toastEl&&toastEl.parentNode){toastEl.parentNode.removeChild(toastEl);}
+            toastEl=null;
+          },320);
+        },autoHideMs);
+      }
+    }
+    function requestPrecache(reg){
+      var sw=(reg&&(reg.active||reg.waiting||reg.installing))||navigator.serviceWorker.controller;
+      if(sw&&typeof sw.postMessage==="function"){
+        try{sw.postMessage({type:"PRECACHE_ALL"});}catch(_){}
+      }
+    }
+    navigator.serviceWorker.addEventListener("controllerchange",function(){
+      if(hadController&&!reloading){
+        reloading=true;
+        showToast("Updating Pocket Bump\u2026",0);
+        window.location.reload();
+      }
+    });
+    navigator.serviceWorker.addEventListener("message",function(event){
+      var data=event&&event.data;
+      if(!data)return;
+      if(data.type==="PRECACHE_PROGRESS"&&data.downloaded>0&&data.total>0){
+        var pct=Math.min(100,Math.round((data.cached/data.total)*100));
+        showToast("Caching offline assets\u2026 "+pct+"%",0);
+      }else if(data.type==="PRECACHE_DONE"&&(toastEl||data.downloaded>0)){
+        showToast("Offline ready \u2713",2500);
+      }
+    });
+    window.addEventListener("load",function(){
+      navigator.serviceWorker.register("./sw.js",{scope:"./",updateViaCache:"none"}).then(function(reg){
+        try{reg.update();}catch(_){}
+        reg.addEventListener("updatefound",function(){
+          var nw=reg.installing;
+          if(!nw)return;
+          nw.addEventListener("statechange",function(){
+            if(nw.state==="activated"){requestPrecache(reg);}
+          });
+        });
+        navigator.serviceWorker.ready.then(function(readyReg){
+          requestPrecache(readyReg);
+        });
+        document.addEventListener("visibilitychange",function(){
+          if(document.visibilityState==="visible"){
+            try{reg.update();}catch(_){}
+          }
+        });
+        window.addEventListener("online",function(){
+          try{reg.update();}catch(_){}
+          requestPrecache(reg);
+        });
+      }).catch(function(_){});
+    });
+  }
+})();
 (function(){
   if(window.__pbMotionInit)return;
   window.__pbMotionInit=true;
