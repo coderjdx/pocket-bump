@@ -172,122 +172,18 @@ jobs:
           flutter create --platforms=web .
           mkdir -p web/icons
           cp assets/icons/favicon.png web/favicon.png
+          cp assets/icons/apple_touch_icon.png web/icons/apple-touch-icon.png
           cp assets/icons/ic_launcher_xxxhdpi.png web/icons/Icon-192.png
           cp assets/icons/ic_launcher_xxxhdpi.png web/icons/Icon-maskable-192.png
           cp assets/icons/app_icon_512.png web/icons/Icon-512.png
           cp assets/icons/app_icon_512.png web/icons/Icon-maskable-512.png
           flutter pub get
-          if ! flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none --dart-define=APP_VERSION=1.0.${{ github.run_number }} > /tmp/web_build.log 2>&1; then
+          if ! flutter build web --release --base-href "/pocket-bump/" --pwa-strategy=none --no-web-resources-cdn --build-name=1.0.${{ github.run_number }} --build-number=${{ github.run_number }} --dart-define=APP_VERSION=1.0.${{ github.run_number }} > /tmp/web_build.log 2>&1; then
             cat /tmp/web_build.log
             python3 -c 'import sys; log = open("/tmp/web_build.log", errors="replace").read().strip().splitlines(); print("::error::" + " | ".join(log[-25:])[:3500])'
             exit 1
           fi
-          python3 -c '
-          import json
-          with open("build/web/index.html", "r") as f:
-              html = f.read()
-          html = html.replace("<title>pocket_bump</title>", "<title>Pocket Bump</title>")
-          html = html.replace("content=\"pocket_bump\"", "content=\"Pocket Bump\"")
-          patch = """<script>
-          if("serviceWorker" in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(sw){sw.unregister();});});}
-          (function(){
-            if(window.__pbMotionInit)return;
-            window.__pbMotionInit=true;
-            var needsReq=typeof DeviceMotionEvent!=="undefined"&&typeof DeviceMotionEvent.requestPermission==="function";
-            window.__pbMotionState=needsReq?"prompt":"granted";
-            window.__pbMotionListeners=[];
-            window.__pbMotionBound=false;
-            window.__pbStartDeviceMotion=function(){
-              if(window.__pbMotionBound)return;
-              if(typeof window.addEventListener!=="function")return;
-              window.__pbMotionBound=true;
-              window.addEventListener("devicemotion",function(e){
-                var a=e.accelerationIncludingGravity||e.acceleration;
-                if(!a)return;
-                if(a.x===null&&a.y===null&&a.z===null)return;
-                var x=Number(a.x||0),y=Number(a.y||0),z=Number(a.z||0);
-                window.__pbMotionState="granted";
-                window.__pbLastMotion={x:x,y:y,z:z,ts:Date.now()};
-                var list=window.__pbMotionListeners.slice();
-                for(var i=0;i<list.length;i++){
-                  var inst=list[i];
-                  if(inst&&inst._active){
-                    inst.x=x;inst.y=y;inst.z=z;
-                    if(typeof inst.onreading==="function"){try{inst.onreading();}catch(_){}}
-                  }
-                }
-              },false);
-            };
-            var pendingReq=null;
-            window.__pbRequestMotionPermission=function(){
-              if(!needsReq){
-                window.__pbMotionState="granted";
-                window.__pbStartDeviceMotion();
-                return Promise.resolve(true);
-              }
-              if(window.__pbMotionState==="granted"){
-                window.__pbStartDeviceMotion();
-                return Promise.resolve(true);
-              }
-              if(pendingReq)return pendingReq;
-              try{
-                pendingReq=Promise.resolve(DeviceMotionEvent.requestPermission()).then(function(res){
-                  pendingReq=null;
-                  window.__pbMotionState=res||"denied";
-                  if(res==="granted"){window.__pbStartDeviceMotion();return true;}
-                  return false;
-                }).catch(function(){
-                  pendingReq=null;
-                  return false;
-                });
-                return pendingReq;
-              }catch(_){
-                pendingReq=null;
-                return Promise.resolve(false);
-              }
-            };
-            if(typeof window.Accelerometer==="undefined"){
-              window.Accelerometer=function(opts){
-                this.x=0;this.y=0;this.z=0;
-                this.onreading=null;this.onerror=null;
-                this._active=false;
-              };
-              window.Accelerometer.prototype.start=function(){
-                this._active=true;
-                if(window.__pbMotionListeners.indexOf(this)===-1){
-                  window.__pbMotionListeners.push(this);
-                }
-                if(!needsReq||window.__pbMotionState==="granted"){
-                  window.__pbStartDeviceMotion();
-                }
-              };
-              window.Accelerometer.prototype.stop=function(){
-                this._active=false;
-                var idx=window.__pbMotionListeners.indexOf(this);
-                if(idx!==-1)window.__pbMotionListeners.splice(idx,1);
-              };
-            }
-            if(!needsReq){window.__pbStartDeviceMotion();}
-            var onGesture=function(){
-              if(needsReq&&window.__pbMotionState!=="granted"){
-                window.__pbRequestMotionPermission();
-              }
-            };
-            document.addEventListener("touchend",onGesture,{capture:true,passive:true});
-            document.addEventListener("click",onGesture,{capture:true,passive:true});
-          })();
-          </script>"""
-          if "__pbMotionInit" not in html:
-              html = html.replace("</head>", patch + "\n</head>", 1)
-          with open("build/web/index.html", "w") as f:
-              f.write(html)
-          with open("build/web/manifest.json", "r") as f:
-              manifest = json.load(f)
-          manifest["name"] = "Pocket Bump"
-          manifest["short_name"] = "Pocket Bump"
-          with open("build/web/manifest.json", "w") as f:
-              json.dump(manifest, f, indent=2)
-          '
+          python3 tool/build_pwa.py --web-dir build/web --version "1.0.${{ github.run_number }}" --base-href "/pocket-bump/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
