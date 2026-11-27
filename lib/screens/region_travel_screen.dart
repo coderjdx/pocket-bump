@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/game_region.dart';
 import '../models/game_version.dart';
+import '../models/pokemon_type.dart';
 import '../models/trainer.dart';
 import '../services/pokedex_database.dart';
 import '../services/sound_service.dart';
