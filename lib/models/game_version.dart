@@ -47,7 +47,7 @@ extension GameVersionExtension on GameVersion {
       case GameVersion.red:
         return 'Red Version';
       case GameVersion.blueGreen:
-        return 'Blue / Green Version';
+        return 'Blue Version';
       case GameVersion.gold:
         return 'Gold Version';
       case GameVersion.silver:
@@ -60,7 +60,7 @@ extension GameVersionExtension on GameVersion {
       case GameVersion.red:
         return 'RED';
       case GameVersion.blueGreen:
-        return 'BLUE / GREEN';
+        return 'BLUE';
       case GameVersion.gold:
         return 'GOLD';
       case GameVersion.silver:
@@ -73,7 +73,7 @@ extension GameVersionExtension on GameVersion {
       case GameVersion.red:
         return 'FIRE';
       case GameVersion.blueGreen:
-        return 'WATER / LEAF';
+        return 'WATER';
       case GameVersion.gold:
         return 'SUNLIT SKY';
       case GameVersion.silver:

@@ -43,7 +43,7 @@ class GiftRedemptionResult {
 }
 
 class MysteryGiftService {
-  /// 16-character alphanumeric event code granting Lv.5 Chimchar (Red) or Piplup (Blue/Green).
+  /// 16-character alphanumeric event code granting Lv.5 Chimchar (Red) or Piplup (Blue).
   static const String sinnohStarterCode = 'SINNOH2026GIFT04';
 
   static const List<EventGiftDefinition> activeEventDistributions = [
@@ -164,7 +164,7 @@ class MysteryGiftService {
           success: false,
           title: 'Choose Game Version First',
           message:
-              'Select Red Version or Blue/Green Version first to claim your version starter gift!',
+              'Select Red Version or Blue Version first to claim your version starter gift!',
         );
       }
 

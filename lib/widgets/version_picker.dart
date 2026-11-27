@@ -186,7 +186,7 @@ Future<void> showVersionMigrationDialog(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
-                  "Pocket Bump now features Red and Blue / Green versions! Your existing Pokémon, items, and badges are completely safe. Pick your version to set which version-exclusive Pokémon appear in wild encounters:",
+                  "Pocket Bump now features Red and Blue versions! Your existing Pokémon, items, and badges are completely safe. Pick your version to set which version-exclusive Pokémon appear in wild encounters:",
                   style: TextStyle(
                     color: PokeColors.inkMuted,
                     fontSize: 12,
