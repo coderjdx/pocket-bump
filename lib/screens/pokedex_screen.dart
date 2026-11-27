@@ -39,10 +39,12 @@ class _PokedexScreenState extends State<PokedexScreen> {
   bool _isScopeSeen(Trainer trainer, _PokedexScope scope, int id) {
     switch (scope) {
       case _PokedexScope.kanto:
-        final s = trainer.saveForRegion(GameRegion.kanto);
+        final s = trainer.existingSaveForRegion(GameRegion.kanto);
+        if (s == null) return false;
         return s.seenSpeciesIds.contains(id) || _isScopeCaught(trainer, scope, id);
       case _PokedexScope.johto:
-        final s = trainer.saveForRegion(GameRegion.johto);
+        final s = trainer.existingSaveForRegion(GameRegion.johto);
+        if (s == null) return false;
         return s.seenSpeciesIds.contains(id) || _isScopeCaught(trainer, scope, id);
       case _PokedexScope.national:
         return trainer.nationalSeenSpeciesIds.contains(id);
@@ -52,12 +54,14 @@ class _PokedexScreenState extends State<PokedexScreen> {
   bool _isScopeCaught(Trainer trainer, _PokedexScope scope, int id) {
     switch (scope) {
       case _PokedexScope.kanto:
-        final s = trainer.saveForRegion(GameRegion.kanto);
+        final s = trainer.existingSaveForRegion(GameRegion.kanto);
+        if (s == null) return false;
         return s.caughtSpeciesIds.contains(id) ||
             s.party.any((p) => p.species.id == id) ||
             s.pcBoxes.any((b) => b.any((p) => p.species.id == id));
       case _PokedexScope.johto:
-        final s = trainer.saveForRegion(GameRegion.johto);
+        final s = trainer.existingSaveForRegion(GameRegion.johto);
+        if (s == null) return false;
         return s.caughtSpeciesIds.contains(id) ||
             s.party.any((p) => p.species.id == id) ||
             s.pcBoxes.any((b) => b.any((p) => p.species.id == id));
@@ -69,12 +73,14 @@ class _PokedexScreenState extends State<PokedexScreen> {
   bool _isScopeShinyCaught(Trainer trainer, _PokedexScope scope, int id) {
     switch (scope) {
       case _PokedexScope.kanto:
-        final s = trainer.saveForRegion(GameRegion.kanto);
+        final s = trainer.existingSaveForRegion(GameRegion.kanto);
+        if (s == null) return false;
         return s.shinyCaughtSpeciesIds.contains(id) ||
             s.party.any((p) => p.species.id == id && p.isShiny) ||
             s.pcBoxes.any((b) => b.any((p) => p.species.id == id && p.isShiny));
       case _PokedexScope.johto:
-        final s = trainer.saveForRegion(GameRegion.johto);
+        final s = trainer.existingSaveForRegion(GameRegion.johto);
+        if (s == null) return false;
         return s.shinyCaughtSpeciesIds.contains(id) ||
             s.party.any((p) => p.species.id == id && p.isShiny) ||
             s.pcBoxes.any((b) => b.any((p) => p.species.id == id && p.isShiny));

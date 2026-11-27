@@ -98,8 +98,8 @@ class _BattleFrontierScreenState extends State<BattleFrontierScreen>
       ),
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) {
-          final regionSave = trainer.saveForRegion(selectedRegion);
-          final boxList = regionSave.pcBoxes[selectedBox];
+          final regionSave = trainer.existingSaveForRegion(selectedRegion);
+          final boxList = regionSave?.pcBoxes[selectedBox] ?? const <PokemonInstance>[];
 
           return SafeArea(
             child: SizedBox(
@@ -151,7 +151,7 @@ class _BattleFrontierScreenState extends State<BattleFrontierScreen>
                         separatorBuilder: (_, __) => const SizedBox(width: 6),
                         itemBuilder: (_, idx) {
                           final sel = idx == selectedBox;
-                          final cnt = regionSave.pcBoxes[idx].length;
+                          final cnt = regionSave?.pcBoxes[idx].length ?? 0;
                           return ChoiceChip(
                             label: Text(
                               'Box ${idx + 1} ($cnt)',

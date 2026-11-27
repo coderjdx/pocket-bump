@@ -21,6 +21,7 @@ class RegionTravelScreen extends StatefulWidget {
 
 class _RegionTravelScreenState extends State<RegionTravelScreen> {
   Future<void> _startJohtoJourney(Trainer trainer) async {
+    if (!trainer.isRegionUnlocked(GameRegion.johto)) return;
     GameVersion chosenVersion = GameVersion.gold;
     int chosenStarterId = 152;
     int step = 0;
@@ -463,14 +464,17 @@ class _RegionTravelScreenState extends State<RegionTravelScreen> {
   Widget _buildRegionCard(Trainer trainer, GameRegion region) {
     final bool unlocked = trainer.isRegionUnlocked(region);
     final bool isActive = trainer.activeRegion == region;
-    final save = trainer.saveForRegion(region);
-    final bool started = save.party.isNotEmpty;
+    final save = trainer.existingSaveForRegion(region);
+    final bool started = save != null && save.party.isNotEmpty;
     final int dexTotal = PokedexDatabase.speciesIdsForRegion(region).length;
-    final int dexCaught = save.caughtSpeciesIds
-        .union(save.party.map((m) => m.species.id).toSet())
-        .union(save.pcBoxes.expand((b) => b.map((m) => m.species.id)).toSet())
-        .where((id) => PokedexDatabase.isSpeciesInRegion(id, region))
-        .length;
+    final int dexCaught = save == null
+        ? 0
+        : save.caughtSpeciesIds
+            .union(save.party.map((m) => m.species.id).toSet())
+            .union(
+                save.pcBoxes.expand((b) => b.map((m) => m.species.id)).toSet())
+            .where((id) => PokedexDatabase.isSpeciesInRegion(id, region))
+            .length;
 
     return Container(
       padding: const EdgeInsets.all(15),
@@ -507,12 +511,12 @@ class _RegionTravelScreenState extends State<RegionTravelScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              if (save.gameVersion != null)
+              if (save?.gameVersion != null)
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: save.gameVersion!.primaryColor.withOpacity(0.14),
+                    color: save!.gameVersion!.primaryColor.withOpacity(0.14),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: save.gameVersion!.primaryColor.withOpacity(0.5),
@@ -573,7 +577,7 @@ class _RegionTravelScreenState extends State<RegionTravelScreen> {
                 height: 1.35,
               ),
             )
-          else if (!started)
+          else if (save == null || save.party.isEmpty)
             const Text(
               "Johto is unlocked! Pick Gold or Silver Version and claim your Lv. 5 Johto starter from Professor Elm.",
               style: TextStyle(

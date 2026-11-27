@@ -178,6 +178,8 @@ class Trainer extends ChangeNotifier {
   RegionSave get activeSave =>
       regionSaves.putIfAbsent(activeRegion, () => RegionSave(region: activeRegion));
 
+  RegionSave? existingSaveForRegion(GameRegion region) => regionSaves[region];
+
   RegionSave saveForRegion(GameRegion region) =>
       regionSaves.putIfAbsent(region, () => RegionSave(region: region));
 
@@ -868,7 +870,14 @@ class Trainer extends ChangeNotifier {
   bool get isExpShareActive => hasExpShare && expShareEnabled;
   bool get isVictoryRoadUnlocked => clearedGymIds.length >= 8;
   bool get isChampion => championClears > 0;
-  bool isRegionUnlocked(GameRegion region) => unlockedRegions.contains(region);
+  bool isRegionUnlocked(GameRegion region) {
+    switch (region) {
+      case GameRegion.kanto:
+        return true;
+      case GameRegion.johto:
+        return regionSaves[GameRegion.kanto]?.isChampion == true;
+    }
+  }
 
   void markVictoryRoadCleared() {
     if (victoryRoadCleared) return;
@@ -901,7 +910,7 @@ class Trainer extends ChangeNotifier {
   }
 
   bool travelToRegion(GameRegion region) {
-    if (!unlockedRegions.contains(region)) return false;
+    if (!isRegionUnlocked(region)) return false;
     if (activeRegion == region) return true;
     activeRegion = region;
     regionSaves.putIfAbsent(region, () => RegionSave(region: region));
@@ -914,6 +923,7 @@ class Trainer extends ChangeNotifier {
     required GameVersion version,
     required PokemonInstance starter,
   }) {
+    if (!isRegionUnlocked(region)) return;
     unlockedRegions.add(region);
     final save = saveForRegion(region);
     save.gameVersion = version;
@@ -1135,7 +1145,7 @@ class Trainer extends ChangeNotifier {
       regionSaves[GameRegion.kanto]?.isChampion ?? false;
 
   bool canTransferRegionToFrontier(GameRegion region) =>
-      isBattleFrontierUnlocked && unlockedRegions.contains(region);
+      isBattleFrontierUnlocked && isRegionUnlocked(region);
 
   int? _findAvailableFrontierPcBox([int? preferredIndex]) {
     if (preferredIndex != null) {
@@ -1613,11 +1623,19 @@ class Trainer extends ChangeNotifier {
       'lastStepDate': lastStepDate,
       'redeemedGiftCodes': redeemedGiftCodes.toList()..sort(),
       'rivals': rivals.map((r) => r.toJson()).toList(),
-      'activeRegion': activeRegion.storageKey,
-      'unlockedRegions': unlockedRegions.map((r) => r.storageKey).toList(),
+      'activeRegion':
+          isRegionUnlocked(activeRegion) ? activeRegion.storageKey : GameRegion.kanto.storageKey,
+      'unlockedRegions': GameRegion.values
+          .where(isRegionUnlocked)
+          .map((r) => r.storageKey)
+          .toList(),
       'regions': {
         for (final entry in regionSaves.entries)
-          entry.key.storageKey: entry.value.toJson(),
+          if (entry.key == GameRegion.kanto ||
+              isRegionUnlocked(entry.key) ||
+              entry.value.party.isNotEmpty ||
+              entry.value.pcBoxes.any((b) => b.isNotEmpty))
+            entry.key.storageKey: entry.value.toJson(),
       },
       'frontier': {
         'battlePoints': frontierBattlePoints,
@@ -1681,20 +1699,21 @@ class Trainer extends ChangeNotifier {
       if (regionSaves.isEmpty) {
         regionSaves[GameRegion.kanto] = RegionSave(region: GameRegion.kanto);
       }
+      unlockedRegions = {
+        GameRegion.kanto,
+        if (regionSaves[GameRegion.kanto]?.isChampion == true) GameRegion.johto,
+      };
+      regionSaves.removeWhere((reg, save) =>
+          !isRegionUnlocked(reg) &&
+          save.party.isEmpty &&
+          save.pcBoxes.every((b) => b.isEmpty));
       activeRegion =
           GameRegionExtension.fromStorageKey(json['activeRegion'] as String?);
+      if (!isRegionUnlocked(activeRegion)) {
+        activeRegion = GameRegion.kanto;
+      }
       if (!regionSaves.containsKey(activeRegion)) {
         regionSaves[activeRegion] = RegionSave(region: activeRegion);
-      }
-      unlockedRegions = {GameRegion.kanto};
-      for (final r in (json['unlockedRegions'] as List<dynamic>? ?? const [])) {
-        if (r is String) {
-          unlockedRegions.add(GameRegionExtension.fromStorageKey(r));
-        }
-      }
-      unlockedRegions.addAll(regionSaves.keys);
-      if (regionSaves[GameRegion.kanto]?.isChampion == true) {
-        unlockedRegions.add(GameRegion.johto);
       }
     } else {
       // Schema v1 -> Schema v2 seamless Kanto migration
@@ -1827,10 +1846,18 @@ class Trainer extends ChangeNotifier {
           final decodedMap = Map<String, dynamic>.from(decoded);
           final bool hadHp10Migration =
               decodedMap['hp10MigrationApplied'] == true;
+          final rawUnlocked = decodedMap['unlockedRegions'] as List<dynamic>? ??
+              const <dynamic>[];
+          final rawRegionsMap = decodedMap['regions'] as Map?;
+          final bool hadRawJohto = rawUnlocked.contains('johto') ||
+              (rawRegionsMap != null && rawRegionsMap.containsKey('johto')) ||
+              decodedMap['activeRegion'] == 'johto';
           final trainer = Trainer(name: 'Red');
           trainer.applyFromJson(decodedMap);
           if (trainer.hasAnySaveData) {
-            if (!hadHp10Migration) {
+            final bool repairedJohtoPolluted =
+                hadRawJohto && !trainer.isRegionUnlocked(GameRegion.johto);
+            if (!hadHp10Migration || repairedJohtoPolluted) {
               await trainer.saveProgress();
             }
             return trainer;
