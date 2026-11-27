@@ -567,6 +567,82 @@ class PokemonInstance {
         iv: speIv, natureMult: nature.multiplierFor('spe'));
   }
 
+  void applyNatureMint(PokemonNature newNature) {
+    nature = newNature;
+    recalculateStats();
+  }
+
+  bool hyperTrainStat(String statKey) {
+    switch (statKey) {
+      case 'hp':
+        if (hpIv >= 31) return false;
+        hpIv = 31;
+        break;
+      case 'atk':
+        if (atkIv >= 31) return false;
+        atkIv = 31;
+        break;
+      case 'def':
+        if (defIv >= 31) return false;
+        defIv = 31;
+        break;
+      case 'spa':
+        if (spaIv >= 31) return false;
+        spaIv = 31;
+        break;
+      case 'spd':
+        if (spdIv >= 31) return false;
+        spdIv = 31;
+        break;
+      case 'spe':
+        if (speIv >= 31) return false;
+        speIv = 31;
+        break;
+      default:
+        return false;
+    }
+    recalculateStats();
+    return true;
+  }
+
+  bool hyperTrainAll() {
+    if (hpIv >= 31 &&
+        atkIv >= 31 &&
+        defIv >= 31 &&
+        spaIv >= 31 &&
+        spdIv >= 31 &&
+        speIv >= 31) {
+      return false;
+    }
+    hpIv = 31;
+    atkIv = 31;
+    defIv = 31;
+    spaIv = 31;
+    spdIv = 31;
+    speIv = 31;
+    recalculateStats();
+    return true;
+  }
+
+  bool applyAbilityPatch() {
+    if (species.hiddenAbilityId != null && abilitySlot != 3) {
+      abilityId = species.hiddenAbilityId!;
+      abilitySlot = 3;
+      return true;
+    }
+    if (species.ability2Id != null && species.ability2Id != species.ability1Id) {
+      if (abilitySlot == 1) {
+        abilityId = species.ability2Id!;
+        abilitySlot = 2;
+      } else {
+        abilityId = species.ability1Id;
+        abilitySlot = 1;
+      }
+      return true;
+    }
+    return false;
+  }
+
   /// Levels a newly caught Legendary/Mythical boss down cleanly (e.g. Lv.99 -> Lv.50),
   /// syncing EXP, moves, stats, full HP, and clearing status/volatile effects.
   void resetToCatchLevel(int targetLevel) {

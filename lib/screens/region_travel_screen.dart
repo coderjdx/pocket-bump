@@ -10,6 +10,7 @@ import '../widgets/poke_theme.dart';
 import '../widgets/pokemon_sprite_image.dart';
 import '../widgets/type_badge.dart';
 import '../widgets/version_picker.dart';
+import 'battle_frontier_screen.dart';
 
 class RegionTravelScreen extends StatefulWidget {
   const RegionTravelScreen({super.key});
@@ -341,9 +342,119 @@ class _RegionTravelScreenState extends State<RegionTravelScreen> {
                   _buildRegionCard(trainer, region),
                   const SizedBox(height: 12),
                 ],
+                _buildBattleFrontierCard(trainer),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBattleFrontierCard(Trainer trainer) {
+    final bool unlocked = trainer.isBattleFrontierUnlocked;
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: PokeDecorations.card(
+        fill: unlocked ? PokeColors.cardWhite : PokeColors.panelSoft,
+        border: unlocked ? PokeColors.leagueIndigo : PokeColors.frameBorderSoft,
+        radius: 18,
+        borderWidth: unlocked ? 1.8 : 1.4,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: PokeColors.leagueIndigo,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Text(
+                  'BATTLE FRONTIER',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                    letterSpacing: 0.7,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              if (unlocked)
+                Text(
+                  '${trainer.frontierBattlePoints} BP • ${trainer.frontierParty.length}/6 Squad',
+                  style: const TextStyle(
+                    color: PokeColors.badgeGoldDark,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
+                )
+              else
+                const Row(
+                  children: [
+                    Icon(Icons.lock_rounded,
+                        size: 14, color: PokeColors.inkSubtle),
+                    SizedBox(width: 4),
+                    Text(
+                      'LOCKED',
+                      style: TextStyle(
+                        color: PokeColors.inkSubtle,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            unlocked
+                ? 'Cross-region competitive colosseum! Import Pokémon from any unlocked region PC into your origin-locked Frontier PC, challenge Battle Tower & Battle Factory, and spend BP on Mints, Bottle Caps & Gear.'
+                : 'Become Kanto Champion (Hall of Fame) to unlock the Battle Frontier!',
+            style: const TextStyle(
+              color: PokeColors.inkMuted,
+              fontSize: 11.5,
+              height: 1.35,
+            ),
+          ),
+          if (unlocked) ...[
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  SoundService.instance.playUiTap();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BattleFrontierScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.stadium_rounded, size: 18),
+                label: const Text(
+                  'ENTER BATTLE FRONTIER',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 12,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: PokeColors.leagueIndigo,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

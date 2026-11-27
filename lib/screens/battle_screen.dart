@@ -56,6 +56,8 @@ class BattleScreen extends StatefulWidget {
   final String? continueButtonLabel;
   final String? defeatButtonLabel;
   final BattleBgmCategory? bgmCategory;
+  final bool isFrontierBattle;
+  final bool clearBattlePartyOverrideOnExit;
 
   const BattleScreen({
     super.key,
@@ -75,6 +77,8 @@ class BattleScreen extends StatefulWidget {
     this.continueButtonLabel,
     this.defeatButtonLabel,
     this.bgmCategory,
+    this.isFrontierBattle = false,
+    this.clearBattlePartyOverrideOnExit = false,
   });
 
   @override
@@ -364,6 +368,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           _recordPvpBattleOutcomeIfNeeded(playerWon: false);
         }
         _trainer.resetAllPartyStatStages();
+        if (widget.clearBattlePartyOverrideOnExit) {
+          _trainer.clearBattlePartyOverride();
+        }
         _trainer.saveProgress();
       });
     }
@@ -387,6 +394,9 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
         }
       }
       _trainer.resetAllPartyStatStages();
+      if (widget.clearBattlePartyOverrideOnExit) {
+        _trainer.clearBattlePartyOverride();
+      }
       _trainer.saveProgress();
       SoundService.instance.playBgm(BgmTrack.hubTown);
     }
@@ -1830,8 +1840,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
           await Future.delayed(const Duration(milliseconds: 1750));
           if (!mounted) return;
         }
-        // Trainer defeated! Award prize money
-        final purse = widget.prizeMoney;
+        // Trainer defeated! Award prize money (disabled in Frontier)
+        final purse = widget.isFrontierBattle ? 0 : widget.prizeMoney;
         if (purse > 0) {
           _trainer.addMoney(purse);
           _trainer.saveProgress();
@@ -2337,7 +2347,8 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   Future<void> _awardExpForOpponent({
     List<PokemonInstance>? explicitRecipients,
   }) async {
-    if (widget.isLegendaryBoss ||
+    if (widget.isFrontierBattle ||
+        widget.isLegendaryBoss ||
         _opponentPokemon.species.isLegendary ||
         _opponentPokemon.species.isMythical) {
       return;
@@ -5022,21 +5033,38 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
                       Expanded(
                         child: _buildActionButton(
                           "BAG",
-                          hasLockedMove ? "Locked in move" : "Items & Balls",
+                          widget.isFrontierBattle
+                              ? "No Bag in Frontier"
+                              : (widget.pvpSession != null
+                                  ? "No Bag in PvP"
+                                  : (hasLockedMove
+                                      ? "Locked in move"
+                                      : "Items & Balls")),
                           const Color(0xFFF59E0B),
                           const Color(0xFF9A4D05),
                           Icons.backpack_rounded,
-                          hasLockedMove
+                          (widget.isFrontierBattle || widget.pvpSession != null)
                               ? () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                          "Finish ${_playerPokemon.forcedActionLabel} first!"),
+                                      content: Text(widget.isFrontierBattle
+                                          ? "Bag items are disabled in the Battle Frontier!"
+                                          : "Bag items are disabled in Link Battles!"),
                                       duration: const Duration(seconds: 2),
                                     ),
                                   );
                                 }
-                              : _openBagModal,
+                              : (hasLockedMove
+                                  ? () {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              "Finish ${_playerPokemon.forcedActionLabel} first!"),
+                                          duration: const Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
+                                  : _openBagModal),
                           compact: compact,
                         ),
                       ),
@@ -5808,6 +5836,7 @@ class _BattleScreenState extends State<BattleScreen> with TickerProviderStateMix
   }
 
   void _openBagModal() {
+    if (widget.isFrontierBattle || widget.pvpSession != null) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

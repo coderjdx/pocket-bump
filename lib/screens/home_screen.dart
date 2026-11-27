@@ -26,6 +26,7 @@ import '../widgets/trainer_sprite.dart';
 import '../widgets/version_picker.dart';
 import 'adventure_screen.dart';
 import 'bag_screen.dart';
+import 'battle_frontier_screen.dart';
 import 'battle_screen.dart';
 import 'bump_screen.dart';
 import 'expeditions_screen.dart';
@@ -1231,6 +1232,93 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  SoundService.instance.playUiTap();
+                  Navigator.pop(ctx);
+                  if (trainer.isBattleFrontierUnlocked) {
+                    Navigator.push(
+                      this.context,
+                      MaterialPageRoute(
+                          builder: (_) => const BattleFrontierScreen()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(this.context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            "Battle Frontier unlocks after becoming Kanto Champion!"),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                  decoration: PokeDecorations.card(
+                    fill: trainer.isBattleFrontierUnlocked
+                        ? PokeColors.leagueIndigo
+                        : PokeColors.panelSoft,
+                    border: trainer.isBattleFrontierUnlocked
+                        ? PokeColors.badgeGold
+                        : PokeColors.frameBorderSoft,
+                    radius: 14,
+                    borderWidth: 1.5,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        trainer.isBattleFrontierUnlocked
+                            ? Icons.stadium_rounded
+                            : Icons.lock_rounded,
+                        color: trainer.isBattleFrontierUnlocked
+                            ? PokeColors.badgeGold
+                            : PokeColors.inkSubtle,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "BATTLE FRONTIER",
+                              style: TextStyle(
+                                color: trainer.isBattleFrontierUnlocked
+                                    ? Colors.white
+                                    : PokeColors.inkMuted,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 12.5,
+                                letterSpacing: 0.7,
+                              ),
+                            ),
+                            Text(
+                              trainer.isBattleFrontierUnlocked
+                                  ? "Battle Tower • Factory • ${trainer.frontierBattlePoints} BP"
+                                  : "Become Kanto Champion to unlock",
+                              style: TextStyle(
+                                color: trainer.isBattleFrontierUnlocked
+                                    ? Colors.white70
+                                    : PokeColors.inkSubtle,
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: trainer.isBattleFrontierUnlocked
+                            ? Colors.white
+                            : PokeColors.inkSubtle,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../models/game_region.dart';
 import '../models/pokemon_instance.dart';
 import '../models/trainer.dart';
 import '../services/bump_service.dart';
@@ -38,6 +39,8 @@ class _BumpScreenState extends State<BumpScreen>
   _BumpLinkState _linkState = _BumpLinkState.scanning;
   BumpLinkMode _selectedMode = BumpLinkMode.battle;
   List<NearbyRadarTrainer> _nearbyTrainers = const [];
+  bool _useFrontierParty = false;
+  bool _handedOffFrontierOverride = false;
 
   bool _sensorReceivingData = false;
   double _liveMagnitude = 0.0;
@@ -132,13 +135,51 @@ class _BumpScreenState extends State<BumpScreen>
       return;
     }
     SoundService.instance.playUiTap();
+    final trainer = Provider.of<Trainer>(context, listen: false);
+    bool clearedFrontier = false;
+    if (!newMode.isBattle && _useFrontierParty) {
+      _useFrontierParty = false;
+      trainer.clearBattlePartyOverride();
+      clearedFrontier = true;
+    }
     setState(() {
       _selectedMode = newMode;
       if (_linkState == _BumpLinkState.timedOut) {
         _linkState = _BumpLinkState.scanning;
       }
     });
-    _matchmaker?.setMode(newMode);
+    if (clearedFrontier) {
+      _matchmaker?.dispose();
+      _matchmaker = null;
+      _initMatchmaker();
+    } else {
+      _matchmaker?.setMode(newMode);
+    }
+  }
+
+  void _toggleFrontierParty(bool useFrontier) {
+    if (_linkState == _BumpLinkState.linking ||
+        _linkState == _BumpLinkState.matched) {
+      return;
+    }
+    final trainer = Provider.of<Trainer>(context, listen: false);
+    if (useFrontier &&
+        (!trainer.isBattleFrontierUnlocked || trainer.frontierParty.isEmpty)) {
+      return;
+    }
+    SoundService.instance.playUiTap();
+    setState(() => _useFrontierParty = useFrontier);
+    if (useFrontier) {
+      trainer.setBattlePartyOverride(
+        trainer.frontierParty,
+        suppressBadgeBonuses: true,
+      );
+    } else {
+      trainer.clearBattlePartyOverride();
+    }
+    _matchmaker?.dispose();
+    _matchmaker = null;
+    _initMatchmaker();
   }
 
   void _triggerBumpLink() {
@@ -245,6 +286,10 @@ class _BumpScreenState extends State<BumpScreen>
       );
 
       // Transfer session lifecycle to BattleScreen.
+      final bool clearFrontierOnExit = _useFrontierParty;
+      if (clearFrontierOnExit) {
+        _handedOffFrontierOverride = true;
+      }
       _matchedSession = null;
       SoundService.instance.playBumpChime();
 
@@ -260,6 +305,7 @@ class _BumpScreenState extends State<BumpScreen>
                   opponentSpriteId: session.opponentSpriteId,
                   battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
                   bgmCategory: BattleBgmCategory.special,
+                  clearBattlePartyOverrideOnExit: clearFrontierOnExit,
                 )
               : BattleScreen(
                   pvpSession: session,
@@ -271,6 +317,7 @@ class _BumpScreenState extends State<BumpScreen>
                   opponentSpriteId: session.opponentSpriteId,
                   battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
                   bgmCategory: BattleBgmCategory.special,
+                  clearBattlePartyOverrideOnExit: clearFrontierOnExit,
                 ),
         ),
       );
@@ -321,6 +368,10 @@ class _BumpScreenState extends State<BumpScreen>
     ]).then((_) {
       if (!mounted) return;
       final playerLevel = trainer.leadPokemon?.level ?? 5;
+      final bool clearFrontierOnExit = _useFrontierParty;
+      if (clearFrontierOnExit) {
+        _handedOffFrontierOverride = true;
+      }
 
       if (isDoublesPractice) {
         final rivalTeam = [
@@ -341,6 +392,7 @@ class _BumpScreenState extends State<BumpScreen>
               opponentSpriteId: 'male_blue',
               battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
               bgmCategory: BattleBgmCategory.special,
+              clearBattlePartyOverrideOnExit: clearFrontierOnExit,
             ),
           ),
         );
@@ -362,6 +414,7 @@ class _BumpScreenState extends State<BumpScreen>
               opponentSpriteId: 'male_blue',
               battleBackgroundAsset: 'assets/images/battle_bg_pvp_arena.png',
               bgmCategory: BattleBgmCategory.special,
+              clearBattlePartyOverrideOnExit: clearFrontierOnExit,
             ),
           ),
         );
@@ -371,11 +424,65 @@ class _BumpScreenState extends State<BumpScreen>
 
   @override
   void dispose() {
+    if (_useFrontierParty && !_handedOffFrontierOverride) {
+      Provider.of<Trainer>(context, listen: false).clearBattlePartyOverride();
+    }
     BumpService.stopListening();
     _matchmaker?.dispose();
     _matchedSession?.dispose();
     _pulseController.dispose();
     super.dispose();
+  }
+
+  Widget _buildTeamSourceSelector(Trainer trainer) {
+    Widget chip(String label, bool active, VoidCallback onTap) {
+      return Expanded(
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+            decoration: BoxDecoration(
+              color: active ? PokeColors.leagueIndigo : PokeColors.cardWhite,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: active
+                    ? PokeColors.leagueIndigoDark
+                    : PokeColors.frameBorderSoft,
+                width: 1.3,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: active ? Colors.white : PokeColors.inkDark,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 10.5,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        chip(
+          '${trainer.activeRegion.displayName} Party',
+          !_useFrontierParty,
+          () => _toggleFrontierParty(false),
+        ),
+        const SizedBox(width: 8),
+        chip(
+          'Battle Frontier (${trainer.frontierParty.length})',
+          _useFrontierParty,
+          () => _toggleFrontierParty(true),
+        ),
+      ],
+    );
   }
 
   Color _statusColorForState() {
@@ -737,6 +844,12 @@ class _BumpScreenState extends State<BumpScreen>
                 child: Column(
                   children: [
                     _buildModeSelector(),
+                    if (Provider.of<Trainer>(context).isBattleFrontierUnlocked &&
+                        Provider.of<Trainer>(context).frontierParty.isNotEmpty &&
+                        _selectedMode.isBattle) ...[
+                      const SizedBox(height: 6),
+                      _buildTeamSourceSelector(Provider.of<Trainer>(context)),
+                    ],
                     const SizedBox(height: 8),
 
                     // Top VS Link Status Badge

@@ -40,6 +40,8 @@ class DoubleBattleScreen extends StatefulWidget {
   final String? continueButtonLabel;
   final String? defeatButtonLabel;
   final BattleBgmCategory? bgmCategory;
+  final bool isFrontierBattle;
+  final bool clearBattlePartyOverrideOnExit;
 
   const DoubleBattleScreen({
     super.key,
@@ -57,6 +59,8 @@ class DoubleBattleScreen extends StatefulWidget {
     this.continueButtonLabel,
     this.defeatButtonLabel,
     this.bgmCategory,
+    this.isFrontierBattle = false,
+    this.clearBattlePartyOverrideOnExit = false,
   });
 
   @override
@@ -239,6 +243,9 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
       _didHealOnExit = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _trainer.resetAllPartyStatStages();
+        if (widget.clearBattlePartyOverrideOnExit) {
+          _trainer.clearBattlePartyOverride();
+        }
         _trainer.saveProgress();
       });
     }
@@ -1115,6 +1122,7 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
   }
 
   Future<void> _awardExpForDefeatedFoe(PokemonInstance foe) async {
+    if (widget.isFrontierBattle) return;
     final activeParticipants = _participatedPokemon
         .where((p) => _trainer.party.contains(p) && !p.isFainted)
         .toList();
@@ -1250,7 +1258,9 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
       if (!mounted) return;
     }
 
-    if (widget.prizeMoney > 0 && widget.pvpSession == null) {
+    if (widget.prizeMoney > 0 &&
+        widget.pvpSession == null &&
+        !widget.isFrontierBattle) {
       _trainer.addMoney(widget.prizeMoney);
       _trainer.saveProgress();
       setState(() {
@@ -1478,7 +1488,7 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
   }
 
   void _openBagModal() {
-    if (widget.pvpSession != null) return;
+    if (widget.pvpSession != null || widget.isFrontierBattle) return;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -2842,11 +2852,16 @@ class _DoubleBattleScreenState extends State<DoubleBattleScreen>
                         title: "BAG",
                         subtitle: widget.pvpSession != null
                             ? "Disabled in PvP"
-                            : "Medicine & Balls",
+                            : (widget.isFrontierBattle
+                                ? "Disabled in Frontier"
+                                : "Medicine & Balls"),
                         top: const Color(0xFFFB8C00),
                         bottom: const Color(0xFFE65100),
                         icon: Icons.backpack_rounded,
-                        onTap: widget.pvpSession != null ? null : _openBagModal,
+                        onTap: (widget.pvpSession != null ||
+                                widget.isFrontierBattle)
+                            ? null
+                            : _openBagModal,
                       ),
                     ),
                   ],

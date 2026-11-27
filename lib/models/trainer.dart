@@ -42,6 +42,12 @@ class Trainer extends ChangeNotifier {
   Map<String, int> frontierCustomItems;
   int frontierTowerBestSingles;
   int frontierTowerBestDoubles;
+  int frontierFactoryBestSingles;
+  int frontierFactoryBestDoubles;
+
+  // Transient battle override (never saved; used by Battle Frontier & Frontier PvP)
+  List<PokemonInstance>? _battlePartyOverride;
+  bool _suppressBadgeBonuses = false;
 
   Trainer({
     required this.name,
@@ -98,7 +104,9 @@ class Trainer extends ChangeNotifier {
     Map<String, int>? frontierCustomItems,
     this.frontierTowerBestSingles = 0,
     this.frontierTowerBestDoubles = 0,
-  })  : avatar = avatar ?? TrainerAvatar.presets.first,
+    this.frontierFactoryBestSingles = 0,
+    this.frontierFactoryBestDoubles = 0,
+  }) : avatar = avatar ?? TrainerAvatar.presets.first,
         lastStepDate = lastStepDate ?? todayDateKey(),
         redeemedGiftCodes = redeemedGiftCodes ?? {},
         rivals = rivals ?? [],
@@ -180,8 +188,32 @@ class Trainer extends ChangeNotifier {
   GameVersion? get gameVersion => activeSave.gameVersion;
   set gameVersion(GameVersion? v) => activeSave.gameVersion = v;
 
-  List<PokemonInstance> get party => activeSave.party;
-  set party(List<PokemonInstance> v) => activeSave.party = v;
+  List<PokemonInstance> get party => _battlePartyOverride ?? activeSave.party;
+  set party(List<PokemonInstance> v) {
+    if (_battlePartyOverride != null) {
+      _battlePartyOverride = v;
+    } else {
+      activeSave.party = v;
+    }
+  }
+
+  bool get isUsingBattlePartyOverride => _battlePartyOverride != null;
+
+  void setBattlePartyOverride(
+    List<PokemonInstance>? overrideParty, {
+    bool suppressBadgeBonuses = true,
+  }) {
+    _battlePartyOverride = overrideParty;
+    _suppressBadgeBonuses = overrideParty != null && suppressBadgeBonuses;
+    super.notifyListeners();
+  }
+
+  void clearBattlePartyOverride() {
+    if (_battlePartyOverride == null && !_suppressBadgeBonuses) return;
+    _battlePartyOverride = null;
+    _suppressBadgeBonuses = false;
+    super.notifyListeners();
+  }
 
   List<List<PokemonInstance>> get pcBoxes => activeSave.pcBoxes;
   set pcBoxes(List<List<PokemonInstance>> v) => activeSave.pcBoxes = v;
@@ -822,6 +854,7 @@ class Trainer extends ChangeNotifier {
   }
 
   double getDisobedienceChance(int pokemonLevel) {
+    if (_suppressBadgeBonuses) return 0.0;
     final requiredBadges = getBadgesRequiredForLevel(pokemonLevel);
     final currentBadges = clearedGymIds.length;
     if (currentBadges >= requiredBadges) return 0.0;
@@ -894,19 +927,26 @@ class Trainer extends ChangeNotifier {
     notifyListeners();
   }
 
-  double get atkBadgeMultiplier =>
-      (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get spaBadgeMultiplier =>
-      (clearedGymIds.contains(2) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get speBadgeMultiplier =>
-      (clearedGymIds.contains(3) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get spdBadgeMultiplier =>
-      (clearedGymIds.contains(4) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get defBadgeMultiplier =>
-      (clearedGymIds.contains(5) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get hpBadgeMultiplier =>
-      (clearedGymIds.contains(6) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
-  double get critBadgeBonus => (clearedGymIds.contains(7) ? 0.10 : 0.0);
+  double get atkBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(1) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get spaBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(2) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get speBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(3) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get spdBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(4) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get defBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(5) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get hpBadgeMultiplier => _suppressBadgeBonuses
+      ? 1.0
+      : (clearedGymIds.contains(6) ? 1.10 : 1.0) * (hasEarthBadge ? 1.05 : 1.0);
+  double get critBadgeBonus =>
+      _suppressBadgeBonuses ? 0.0 : (clearedGymIds.contains(7) ? 0.10 : 0.0);
 
   void setLeadPokemon(int index) {
     if (index <= 0 || index >= party.length) return;
@@ -1154,6 +1194,165 @@ class Trainer extends ChangeNotifier {
     destSave.syncDexFromStorage();
     notifyListeners();
     return true;
+  }
+
+  int get totalFrontierPcPokemon =>
+      frontierPcBoxes.fold(0, (sum, box) => sum + box.length);
+
+  bool get hasConsciousFrontierPokemon =>
+      frontierParty.any((p) => !p.isFainted);
+
+  void healAllFrontierParty() {
+    for (final mon in frontierParty) {
+      mon.resetBattleStateAndHeal();
+    }
+    notifyListeners();
+  }
+
+  bool withdrawFrontierPokemon(int boxIndex, int slotIndex) {
+    if (frontierParty.length >= 6 || boxIndex < 0 || boxIndex >= numPcBoxes) {
+      return false;
+    }
+    final box = frontierPcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= box.length) return false;
+    final mon = box.removeAt(slotIndex);
+    mon.resetBattleStateAndHeal();
+    frontierParty.add(mon);
+    notifyListeners();
+    return true;
+  }
+
+  bool depositFrontierPokemon(int partyIndex, {int? targetBoxIndex}) {
+    if (partyIndex < 0 || partyIndex >= frontierParty.length) return false;
+    final destIdx = _findAvailableFrontierPcBox(targetBoxIndex);
+    if (destIdx == null) return false;
+    final mon = frontierParty.removeAt(partyIndex);
+    mon.resetBattleStateAndHeal();
+    frontierPcBoxes[destIdx].add(mon);
+    notifyListeners();
+    return true;
+  }
+
+  bool swapFrontierPartyAndPc(int partyIndex, int boxIndex, int slotIndex) {
+    if (partyIndex < 0 ||
+        partyIndex >= frontierParty.length ||
+        boxIndex < 0 ||
+        boxIndex >= numPcBoxes) {
+      return false;
+    }
+    final box = frontierPcBoxes[boxIndex];
+    if (slotIndex < 0 || slotIndex >= box.length) return false;
+    final pMon = frontierParty[partyIndex];
+    final pcMon = box[slotIndex];
+    pMon.resetBattleStateAndHeal();
+    pcMon.resetBattleStateAndHeal();
+    frontierParty[partyIndex] = pcMon;
+    box[slotIndex] = pMon;
+    notifyListeners();
+    return true;
+  }
+
+  void setFrontierLead(int partyIndex) {
+    if (partyIndex <= 0 || partyIndex >= frontierParty.length) return;
+    final mon = frontierParty.removeAt(partyIndex);
+    frontierParty.insert(0, mon);
+    notifyListeners();
+  }
+
+  bool returnFrontierPartyPokemonToOrigin(int partyIndex) {
+    if (partyIndex < 0 || partyIndex >= frontierParty.length) return false;
+    final mon = frontierParty[partyIndex];
+    final originRegion = GameRegionExtension.fromStorageKey(mon.originRegion);
+    final destSave = saveForRegion(originRegion);
+    final destBoxIdx = destSave.findAvailablePcBox();
+    if (destBoxIdx == null) return false;
+    frontierParty.removeAt(partyIndex);
+    mon.resetBattleStateAndHeal();
+    destSave.pcBoxes[destBoxIdx].add(mon);
+    destSave.syncDexFromStorage();
+    notifyListeners();
+    return true;
+  }
+
+  void addBattlePoints(int amount) {
+    if (amount <= 0) return;
+    frontierBattlePoints += amount;
+    notifyListeners();
+  }
+
+  bool spendBattlePoints(int amount) {
+    if (amount <= 0) return true;
+    if (frontierBattlePoints < amount) return false;
+    frontierBattlePoints -= amount;
+    notifyListeners();
+    return true;
+  }
+
+  int getFrontierItemCount(String itemId) => frontierCustomItems[itemId] ?? 0;
+
+  void adjustFrontierItemCount(String itemId, int delta) {
+    final current = frontierCustomItems[itemId] ?? 0;
+    final updated = (current + delta).clamp(0, 99);
+    if (updated <= 0) {
+      frontierCustomItems.remove(itemId);
+    } else {
+      frontierCustomItems[itemId] = updated;
+    }
+    notifyListeners();
+  }
+
+  bool equipFrontierItemOnPokemon(PokemonInstance mon, String? itemId) {
+    if (itemId == null) {
+      final prev = mon.unequipHeldItem();
+      if (prev != null) {
+        frontierCustomItems[prev] =
+            ((frontierCustomItems[prev] ?? 0) + 1).clamp(0, 99);
+        notifyListeners();
+        return true;
+      }
+      return false;
+    }
+    final available = frontierCustomItems[itemId] ?? 0;
+    if (available <= 0) return false;
+    frontierCustomItems[itemId] = available - 1;
+    if (frontierCustomItems[itemId]! <= 0) {
+      frontierCustomItems.remove(itemId);
+    }
+    final prev = mon.equipHeldItem(itemId);
+    if (prev != null) {
+      frontierCustomItems[prev] =
+          ((frontierCustomItems[prev] ?? 0) + 1).clamp(0, 99);
+    }
+    notifyListeners();
+    return true;
+  }
+
+  void recordFrontierTowerStreak({required bool isDoubles, required int streak}) {
+    if (isDoubles) {
+      if (streak > frontierTowerBestDoubles) {
+        frontierTowerBestDoubles = streak;
+        notifyListeners();
+      }
+    } else {
+      if (streak > frontierTowerBestSingles) {
+        frontierTowerBestSingles = streak;
+        notifyListeners();
+      }
+    }
+  }
+
+  void recordFrontierFactoryStreak({required bool isDoubles, required int streak}) {
+    if (isDoubles) {
+      if (streak > frontierFactoryBestDoubles) {
+        frontierFactoryBestDoubles = streak;
+        notifyListeners();
+      }
+    } else {
+      if (streak > frontierFactoryBestSingles) {
+        frontierFactoryBestSingles = streak;
+        notifyListeners();
+      }
+    }
   }
 
   bool toggleExpShare([bool? value]) {
@@ -1423,6 +1622,8 @@ class Trainer extends ChangeNotifier {
         'battlePoints': frontierBattlePoints,
         'towerBestSingles': frontierTowerBestSingles,
         'towerBestDoubles': frontierTowerBestDoubles,
+        'factoryBestSingles': frontierFactoryBestSingles,
+        'factoryBestDoubles': frontierFactoryBestDoubles,
         'customItems': frontierCustomItems,
         'party': frontierParty.map((m) => m.toJson()).toList(),
         'pcBoxes': frontierPcBoxes
@@ -1519,6 +1720,10 @@ class Trainer extends ChangeNotifier {
           max(0, (fMap['towerBestSingles'] as num?)?.toInt() ?? 0);
       frontierTowerBestDoubles =
           max(0, (fMap['towerBestDoubles'] as num?)?.toInt() ?? 0);
+      frontierFactoryBestSingles =
+          max(0, (fMap['factoryBestSingles'] as num?)?.toInt() ?? 0);
+      frontierFactoryBestDoubles =
+          max(0, (fMap['factoryBestDoubles'] as num?)?.toInt() ?? 0);
       frontierCustomItems = {};
       final rawFItems = fMap['customItems'] as Map<String, dynamic>? ?? {};
       rawFItems.forEach((k, v) {
@@ -1552,6 +1757,8 @@ class Trainer extends ChangeNotifier {
       frontierBattlePoints = 0;
       frontierTowerBestSingles = 0;
       frontierTowerBestDoubles = 0;
+      frontierFactoryBestSingles = 0;
+      frontierFactoryBestDoubles = 0;
       frontierCustomItems = {};
       frontierParty = [];
       frontierPcBoxes = List.generate(numPcBoxes, (_) => <PokemonInstance>[]);
@@ -1623,6 +1830,8 @@ class Trainer extends ChangeNotifier {
     frontierCustomItems = {};
     frontierTowerBestSingles = 0;
     frontierTowerBestDoubles = 0;
+    frontierFactoryBestSingles = 0;
+    frontierFactoryBestDoubles = 0;
     _suppressAutoSave = false;
     super.notifyListeners();
   }

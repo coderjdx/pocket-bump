@@ -1196,7 +1196,12 @@ class BattleEngine {
   }
 
   // ─── HELD ITEMS & BERRIES ───────────────────────────────────────────────────
-  static double _getHeldItemDamageMultiplier(PokemonInstance attacker, PokemonType moveType) {
+  static double _getHeldItemDamageMultiplier(
+    PokemonInstance attacker,
+    PokemonType moveType, {
+    MoveCategory? category,
+    double typeEffectiveness = 1.0,
+  }) {
     switch (attacker.heldItemId) {
       case 'hard_stone':
         return moveType == PokemonType.rock ? 1.20 : 1.0;
@@ -1232,6 +1237,12 @@ class BattleEngine {
         return moveType == PokemonType.normal ? 1.20 : 1.0;
       case 'black_glasses':
         return moveType == PokemonType.dark ? 1.20 : 1.0;
+      case 'expert_belt':
+        return typeEffectiveness > 1.0 ? 1.20 : 1.0;
+      case 'muscle_band':
+        return category == MoveCategory.physical ? 1.15 : 1.0;
+      case 'wise_glasses':
+        return category == MoveCategory.special ? 1.15 : 1.0;
       case 'life_orb':
         return 1.30;
       default:
@@ -1574,6 +1585,9 @@ class BattleEngine {
     if (atkAb == 'super_luck') {
       critChanceDenom = max(2, critChanceDenom ~/ 2);
     }
+    if (attacker.heldItemId == 'scope_lens') {
+      critChanceDenom = max(2, critChanceDenom ~/ 2);
+    }
     if (attacker.hasFocusEnergy) {
       critChanceDenom = max(1, critChanceDenom ~/ 4);
     }
@@ -1661,7 +1675,12 @@ class BattleEngine {
 
     final double crit = isCrit ? (atkAb == 'sniper' ? 2.25 : 1.5) : 1.0;
     final double randomVariance = (85 + random.nextInt(16)) / 100.0;
-    final double heldItemMultiplier = _getHeldItemDamageMultiplier(attacker, resolvedMoveType);
+    final double heldItemMultiplier = _getHeldItemDamageMultiplier(
+      attacker,
+      resolvedMoveType,
+      category: move.category,
+      typeEffectiveness: typeMultiplier,
+    );
 
     double abilityDamageMult = 1.0;
     if (atkAb == 'tinted_lens' && typeMultiplier > 0 && typeMultiplier < 1.0) {
@@ -2913,6 +2932,7 @@ class BattleEngine {
 
       int dealtDamage = hitResult.damage;
       bool sturdySaved = false;
+      bool focusSashSaved = false;
       bool enduredHit = false;
       if (dealtDamage >= defender.currentHp) {
         if (move.id == 'false_swipe' || defender.isEnduringThisTurn) {
@@ -2923,6 +2943,11 @@ class BattleEngine {
             defender.currentHp == defender.maxHp) {
           dealtDamage = max(0, defender.currentHp - 1);
           sturdySaved = true;
+        } else if (defender.heldItemId == 'focus_sash' &&
+            defender.currentHp == defender.maxHp) {
+          dealtDamage = max(0, defender.currentHp - 1);
+          defender.heldItemId = null;
+          focusSashSaved = true;
         }
       }
 
@@ -2975,6 +3000,8 @@ class BattleEngine {
       }
       if (sturdySaved) {
         msgBuffer.write(" $defenderName endured the hit with Sturdy!");
+      } else if (focusSashSaved) {
+        msgBuffer.write(" $defenderName hung on using its Focus Sash!");
       } else if (enduredHit) {
         msgBuffer.write(" $defenderName endured the hit!");
       }
@@ -5459,11 +5486,18 @@ class BattleEngine {
       return events;
     }
 
+    bool fixedFocusSashSaved = false;
     if (!bypassDefAb &&
         defAb == 'sturdy' &&
         defender.currentHp == defender.maxHp &&
         fixedDmg >= defender.currentHp) {
       fixedDmg = max(0, defender.currentHp - 1);
+    } else if (defender.heldItemId == 'focus_sash' &&
+        defender.currentHp == defender.maxHp &&
+        fixedDmg >= defender.currentHp) {
+      fixedDmg = max(0, defender.currentHp - 1);
+      defender.heldItemId = null;
+      fixedFocusSashSaved = true;
     }
 
     final int prevHp = defender.currentHp;
@@ -5477,9 +5511,12 @@ class BattleEngine {
     }
 
     events.add(BattleStepEvent(
-      message: _ohkoMoves.contains(move.id)
-          ? "$attackerName used ${move.name}! It's a one-hit KO!"
-          : "$attackerName used ${move.name}!",
+      message: (_ohkoMoves.contains(move.id)
+              ? "$attackerName used ${move.name}! It's a one-hit KO!"
+              : "$attackerName used ${move.name}!") +
+          (fixedFocusSashSaved
+              ? " $defenderName hung on using its Focus Sash!"
+              : ''),
       isPlayerActor: isPlayer,
       moveId: move.id,
       moveType: move.type,
@@ -5965,6 +6002,7 @@ class BattleEngine {
 
     int dealtDamage = hitResult.damage;
     bool sturdySaved = false;
+    bool focusSashSaved = false;
     bool enduredHit = false;
     if (dealtDamage >= target.currentHp) {
       if (target.isEnduringThisTurn) {
@@ -5975,6 +6013,11 @@ class BattleEngine {
           target.currentHp == target.maxHp) {
         dealtDamage = max(0, target.currentHp - 1);
         sturdySaved = true;
+      } else if (target.heldItemId == 'focus_sash' &&
+          target.currentHp == target.maxHp) {
+        dealtDamage = max(0, target.currentHp - 1);
+        target.heldItemId = null;
+        focusSashSaved = true;
       }
     }
 
@@ -5996,6 +6039,8 @@ class BattleEngine {
     }
     if (sturdySaved) {
       msgBuffer.write(" $targetName endured the hit with Sturdy!");
+    } else if (focusSashSaved) {
+      msgBuffer.write(" $targetName hung on using its Focus Sash!");
     } else if (enduredHit) {
       msgBuffer.write(" $targetName endured the hit!");
     }
